@@ -27,6 +27,8 @@ with features like group count display and folding
 	<template>
 		<cosmoz-web-worker id="sortWorker">
 			<script type="text/worker">
+				/*global onmessage, postMessage */
+				"use strict";
 				var getSortFunc = function (sortOn, reverse) {
 					if (!sortOn) {
 						return;
@@ -81,7 +83,7 @@ with features like group count display and folding
 		</cosmoz-web-worker>
 		<div class="fit vertical layout" id="omnitable" class$="{{ _getClass('simple-mobile-mode', simpleMobileMode) }}">
 			<div id="header" class="horizontal layout end">
-				<div class="row-checkbox" hidden$="{{ !hasActions }}">
+				<div class="row-checkbox" hidden$="{{ !_hasActions }}">
 					<div class="horizontal layout center center-justified">
 						<paper-checkbox checkable checked="{{ allCheckboxChecked }}" on-iron-change="onAllCheckboxChange" hidden$="{{ noData }}"></paper-checkbox>
 					</div>
@@ -109,7 +111,7 @@ with features like group count display and folding
 					<iron-list runwayfactor="3" id="coreList" selectionenabled="false" class="flex" data="{{ toggledGroups.items }}" groups="{{ toggledGroups.groups }}" height="48">
 						<template>
 							<div class="divider horizontal layout center" class$="{{_computeClass(groupModel)}}">
-								<div class="row-checkbox" hidden$="{{ !hasActions }}">
+								<div class="row-checkbox" hidden$="{{ !_hasActions }}">
 									<div class="horizontal layout center center-justified">
 										<cz-letterball checkable checked="{{ groupModel.checked }}" on-change=" onGroupCheckboxChange "></cz-letterball>
 									</div>
@@ -126,7 +128,7 @@ with features like group count display and folding
 							</div>
 							<div class="item">
 								<div class="horizontal layout center" class$="{{_computeClass(model)}}">
-									<div class="row-checkbox" hidden$="{{ !hasActions }}">
+									<div class="row-checkbox" hidden$="{{ !_hasActions }}">
 										<div class="horizontal layout center center-justified">
 											<cz-letterball checkable checked="{{ model.checked }}" on-change=" onItemCheckboxChange "></cz-letterball>
 										</div>
@@ -151,7 +153,7 @@ with features like group count display and folding
 						<item-template>
 							<template>
 							<!-- <div class="divider horizontal layout center" class$="{{_computeClass(groupModel)}}">
-								<div class="row-checkbox" hidden$="{{ !hasActions }}">
+								<div class="row-checkbox" hidden$="{{ !_hasActions }}">
 									<div class="horizontal layout center center-justified">
 										<cz-letterball checkable checked="{{ groupModel.checked }}" on-change=" onGroupCheckboxChange "></cz-letterball>
 									</div>
@@ -168,7 +170,7 @@ with features like group count display and folding
 							</div> -->
 							<div class="item">
 								<div class$="{{ _computeItemClasses(item) }}">
-									<div class="row-checkbox" hidden$="{{ !hasActions }}">
+									<div class="row-checkbox" hidden$="{{ !_hasActions }}">
 										<div class="horizontal layout center center-justified">
 											<paper-checkbox checked="{{ item.checked }}" on-change="onItemCheckboxChange"></paper-checkbox>
 										</div>
@@ -254,7 +256,7 @@ with features like group count display and folding
 					<span>Num items</span>
 				</div>
 				<!-- Wrap <content> directly in within the tag to not send "text" nodes -->
-				<cz-bottom-bar class="selection" matchparent info="{{_computeInfo(selectedItems)}}" on-action=" onAction " active$="{{_computeActive(selectedItems)}}"><content id="actions" select="[action]"></content></cz-bottom-bar>
+				<cz-bottom-bar class="selection" matchparent info="{{ selectedItems.length }}" on-action="onAction" active$="{{ !isEmpty(selectedItems) }}"><content id="actions" select="[action]"></content></cz-bottom-bar>
 			</div>
 		</div>
 	</template>

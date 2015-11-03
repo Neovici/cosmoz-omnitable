@@ -212,8 +212,9 @@
 			var group = event.target.templateInstance.model.groupModel;
 			this.selectGroupItems(group);
 		},
-		onItemCheckboxChange: function (event, detail, element) {
-			var item = event.target.templateInstance.model.model;
+		onItemCheckboxChange: function (event, detail) {
+			console.log('onItemCheckboxChange', event, detail);
+			var item = event.model.__data__.item;
 			this.selectItem(item);
 		},
 		selectGroupItems: function (group) {
