@@ -1,0 +1,262 @@
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html"/>
+<link rel="import" href="../iron-flex-layout/classes/iron-flex-layout.html"/>
+<link rel="import" href="../iron-list/iron-list.html"/>
+<link rel="import" href="../iron-icons/iron-icons.html"/>
+<link rel="import" href="../iron-icon/iron-icon.html"/>
+<link rel="import" href="../paper-checkbox/paper-checkbox.html"/>
+<link rel="import" href="../cosmoz-grouped-list/cosmoz-grouped-list.html"/>
+<link rel="import" href="../cosmoz-web-worker/cosmoz-web-worker.html"/>
+<link rel="import" href="../cz-autocomplete/cz-autocomplete.html"/>
+
+<!--
+`<cosmoz-omnitable>` is an example implementation of grouping for iron-list
+with features like group count display and folding
+
+### Usage
+
+    <cosmoz-omnitable data="{{ data }}"></cosmoz-omnitable>
+
+@group Cosmoz Elements
+@element cosmoz-omnitable
+@demo demo/index.html
+-->
+
+<dom-module id="cosmoz-omnitable">
+	<link rel="import" type="css" href="cosmoz-omnitable.css"/>
+	<template>
+		<cosmoz-web-worker id="sortWorker">
+			<script type="text/worker">
+				var getSortFunc = function (sortOn, reverse) {
+					if (!sortOn) {
+						return;
+					}
+					return function (a, b) {
+						var v1 = a[sortOn],
+							v2 = b[sortOn];
+
+						if (v1 === undefined || v2 === undefined) {
+							console.warn('missing sort property', a, b, sortOn);
+							return 0;
+						}
+
+						if (typeof v1 === "object" && typeof v2 === "object") {
+							// TODO: Handle money
+							// return cz.tools.sortObject(v1, v2);
+							return 0;
+						}
+						if (typeof v1 === "number" && typeof v2 === "number") {
+							return v1 - v2;
+						}
+						if (typeof v1 === "string" && typeof v2 === "string") {
+							return v1 < v2 ? -1 : 1;
+						}
+
+						console.warn('unsupported sort', typeof v1, v1, typeof v2, v2);
+						return 0;
+					};
+				};
+
+				onmessage = function (event) {
+					var data = event.data.data,
+						list,
+						reverse,
+						sortFunc;
+
+					list = data.data;
+					reverse = !!data.reverse;
+					sortFunc = getSortFunc(data.sortOn, reverse);
+
+					console.log(data);
+
+					if (sortFunc === undefined) {
+						list.sort();
+					} else {
+						list.sort(sortFunc);
+					}
+
+					postMessage(data);
+				};
+			</script>
+		</cosmoz-web-worker>
+		<div class="fit vertical layout" id="omnitable" class$="{{ _getClass('simple-mobile-mode', simpleMobileMode) }}">
+			<div id="header" class="horizontal layout end">
+				<div class="row-checkbox" hidden$="{{ !hasActions }}">
+					<div class="horizontal layout center center-justified">
+						<paper-checkbox checkable checked="{{ allCheckboxChecked }}" on-iron-change="onAllCheckboxChange" hidden$="{{ noData }}"></paper-checkbox>
+					</div>
+				</div>
+				<template is="dom-repeat" items="{{ headersWithoutGroupOnHeader }}" as="header" index-as="index">
+					<div class$="{{ _computeHeaderClasses(header.type, index) }}" hidden$="{{ header.disabled }}">
+						<cz-autocomplete items="{{ header.values }}" placeholder="{{ header.name }}" selected-items="{{ header.filters }}" on-cz-selected-items-changed="filterItems" flex$="{{ simpleMobileMode }}"></cz-autocomplete>
+						<span>{{ header.name }}</span>
+					</div>
+				</template>
+			</div>
+			<div id="body" class="flex relative vertical layout">
+				<template is="dom-if" if="{{ noData }}">
+					<div id="emptyDataset" class="fit layout vertical center center-justified">
+						<div class="layout horizontal start">
+							<iron-icon icon="icons:announcement"></iron-icon>
+							<div class="layout vertical">
+								<h3>Working set empty</h3>
+								<p>No data to display.</p>
+							</div>
+						</div>
+					</div>
+				</template>
+				<!--<template is="dom-if" if="{{ simpleMobileMode }}">
+					<iron-list runwayfactor="3" id="coreList" selectionenabled="false" class="flex" data="{{ toggledGroups.items }}" groups="{{ toggledGroups.groups }}" height="48">
+						<template>
+							<div class="divider horizontal layout center" class$="{{_computeClass(groupModel)}}">
+								<div class="row-checkbox" hidden$="{{ !hasActions }}">
+									<div class="horizontal layout center center-justified">
+										<cz-letterball checkable checked="{{ groupModel.checked }}" on-change=" onGroupCheckboxChange "></cz-letterball>
+									</div>
+								</div>
+								<div class="flex horizontal layout center">
+									<div class="flex three"><h3>{{_computeExpression3(groupModel)}}</h3></div>
+									<div flex="">
+										<span>{{_computeExpression4(groupModel)}}</span>
+									</div>
+									<div class="horizontal layout end-justified"="{{_computeHidden(toggledGroups)}}" hidden$="{{_computeHidden(toggledGroups)}}">
+										<paper-icon-button on-click="toggleGroup" icon="{{_computeIcon(groupModel)}}"></paper-icon-button>
+									</div>
+								</div>
+							</div>
+							<div class="item">
+								<div class="horizontal layout center" class$="{{_computeClass(model)}}">
+									<div class="row-checkbox" hidden$="{{ !hasActions }}">
+										<div class="horizontal layout center center-justified">
+											<cz-letterball checkable checked="{{ model.checked }}" on-change=" onItemCheckboxChange "></cz-letterball>
+										</div>
+									</div>
+									<a class="flex horizontal layout center" href$="{{ renderLink(mobileView.linkHeader, model) }}">
+										<div class="layout vertical flex two">
+											<div class$="{{_computeClass(mobileView)}}">{{ renderItemProperty(model, mobileView.headers[0]) }}</div>
+											<div class$="{{_computeClass(mobileView)}}">{{ renderItemProperty(model, mobileView.headers[1]) }}</div>
+										</div>
+										<div class="layout vertical flex">
+											<div class$="{{_computeClass(mobileView)}}">{{ renderItemProperty(model, mobileView.headers[2]) }}</div>
+											<div class="m m4"> &nbsp; </div>
+										</div>
+									</a>
+								</div>
+							</div>
+						</template>
+					</iron-list>
+				</template> -->
+				<template is="dom-if" if="{{ !simpleMobileMode }}">
+					<cosmoz-grouped-list class="flex" data="{{ groupedItems }}">
+						<item-template>
+							<template>
+							<!-- <div class="divider horizontal layout center" class$="{{_computeClass(groupModel)}}">
+								<div class="row-checkbox" hidden$="{{ !hasActions }}">
+									<div class="horizontal layout center center-justified">
+										<cz-letterball checkable checked="{{ groupModel.checked }}" on-change=" onGroupCheckboxChange "></cz-letterball>
+									</div>
+								</div>
+								<div class="flex horizontal layout center">
+									<div class="flex three"><h3><span>{{ _groupOnHeader.name }}</span>: <span>{{ groupModel.id }}</span></h3></div>
+									<div class="flex">
+										<span>{{_computeExpression10(groupModel)}}</span>
+									</div>
+									<div class="horizontal layout end-justified" hidden$="{{_computeHidden(toggledGroups)}}">
+										<paper-icon-button on-click="toggleGroup" icon="{{_computeIcon(groupModel)}}"></paper-icon-button>
+									</div>
+								</div>
+							</div> -->
+							<div class="item">
+								<div class$="{{ _computeItemClasses(item) }}">
+									<div class="row-checkbox" hidden$="{{ !hasActions }}">
+										<div class="horizontal layout center center-justified">
+											<paper-checkbox checked="{{ item.checked }}" on-change="onItemCheckboxChange"></paper-checkbox>
+										</div>
+									</div>
+									<template is="dom-repeat" items="{{ headersWithoutGroupOnHeader }}" as="header" index-as="index">
+										<template is="dom-if" if="{{ !header.disabled }}">
+											<div class$="{{ _computeClasses('cell', header.type, index) }}">
+												<template is="dom-if" if="{{ header.editable }}">
+													<paper-input-container>
+														<input is="core-input" type="{{ header.type }}" on-change="dataRowChanged" value="{{ _computeValue(header, item) }}">
+													</paper-input-container>
+												</template>
+												<template is="dom-if" if="{{ !header.editable }}">
+													<div title="{{ renderItemProperty(item, header) }}">
+														<template is="dom-if" if="{{ header.linkbase }}">
+															<a href$="{{ renderLink(header, item) }}">{{ renderItemProperty(item, header) }}</a>
+														</template>
+														<template is="dom-if" if="{{ !header.linkbase }}">
+															<span>{{ renderItemProperty(item, header) }}</span>
+														</template>
+													</div>
+												</template>
+											</div>
+										</template>
+									</template>
+									<template is="dom-if" if="{{_computeIf(_disabledHeaders)}}">
+										<div>
+											<paper-icon-button on-click=" toggleExtraColumns " icon="{{_computeIcon(item)}}"></paper-icon-button>
+										</div>
+									</template>
+								</div>
+								<template is="dom-if" if="{{ item.expanded }}">
+									<div class="item-extra-row">
+										<div colspan="{{_computeColspan(headersWithoutGroupOnHeader)}}">
+											<template is="dom-repeat" items="{{headersWithoutGroupOnHeader}}" as="header">
+												<template is="dom-if" if="{{ header.disabled }}">
+													<div class="horizontal layout center">
+														<div flex="">{{ header.name }}</div>
+														<div>{{ renderItemProperty(item, header) }}</div>
+													</div>
+												</template>
+											</template>
+										</div>
+									</div>
+								</template>
+							</div>
+							</template>
+						</item-template>
+					</cosmoz-grouped-list>
+				</template>
+			</div>
+			<div id="footer" class="horizontal layout center">
+				<div class="horizontal layout flex center">
+					<core-label id="sortLabel">
+						<span class="label">Sorted on</span>
+						<paper-dropdown-menu label="No sorting">
+							<iron-dropdown class="dropdown" vertical-align="bottom">
+								<paper-menu class="menu" selected="{{ sortOn }}" valueattr="id">
+									<paper-item id=""><i>No sorting</i></paper-item>
+									<template is="dom-repeat" items="{{ headers }}" as="header">
+										<paper-item id="{{ header.id }}">{{ header.name }}</paper-item>
+									</template>
+								</paper-menu>
+							</iron-dropdown>
+						</paper-dropdown-menu>
+					</core-label>
+					<core-label id="groupLabel">
+						<span class="label">Grouped on</span>
+						<paper-dropdown-menu label="No grouping">
+							<iron-dropdown class="dropdown" vertical-align="bottom">
+								<paper-menu class="menu" selected="{{ groupOn }}" valueattr="id">
+									<paper-item id=""><i>No grouping</i></paper-item>
+									<template is="dom-repeat" items="{{ headers }}" as="header">
+										<paper-item id="{{ header.id }}" hidden$="{{ _allTrue(header.mobile, simpleMobileMode) }}">{{ header.name }}</paper-item>
+									</template>
+								</paper-menu>
+							</iron-dropdown>
+						</paper-dropdown-menu>
+					</core-label>
+				</div>
+				<div class="horizontal layout center" style="text-align: right; line-height: 1.6em; margin-right: 3%">
+					<span>Num groups</span><br>
+					<span>Num items</span>
+				</div>
+				<!-- Wrap <content> directly in within the tag to not send "text" nodes -->
+				<cz-bottom-bar class="selection" matchparent info="{{_computeInfo(selectedItems)}}" on-action=" onAction " active$="{{_computeActive(selectedItems)}}"><content id="actions" select="[action]"></content></cz-bottom-bar>
+			</div>
+		</div>
+	</template>
+	<script type="text/javascript" src="cosmoz-omnitable.js"></script>
+</dom-module>

@@ -1,0 +1,36 @@
+{
+  "name": "cosmoz-omnitable",
+  "main": "cosmoz-omnitable.html",
+  "version": "0.1.4",
+  "homepage": "https://github.com/Neovici/cosmoz-omnitable",
+  "authors": [
+    "Neovici Development"
+  ],
+  "description": "Polymer component for grouped iron-lists",
+  "keywords": [
+    "web-components",
+    "polymer",
+    "router",
+    "cosmoz"
+  ],
+  "license": "Apache 2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "^1.2.0",
+    "iron-component-page": "PolymerElements/iron-component-page#~1.0.7",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#~1.0.4",
+    "cosmoz-grouped-list": "Neovici/cosmoz-grouped-list#*",
+    "cosmoz-web-worker": "Neovici/cosmoz-web-worker#*",
+    "paper-checkbox": "PolymerElements/paper-checkbox#~1.0.13"
+  },
+  "resolutions": {
+    "polymer": "^1.2.0"
+  }
+}
+
