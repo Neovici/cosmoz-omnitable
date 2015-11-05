@@ -25,6 +25,13 @@ with features like group count display and folding
 <dom-module id="cosmoz-omnitable">
 	<link rel="import" type="css" href="cosmoz-omnitable.css"/>
 	<template>
+		<style>
+			:host {
+				display: block;
+				@apply(--layout-vertical);
+				@apply(--layout-relative);
+			}
+		</style>
 		<cosmoz-web-worker id="sortWorker">
 			<script type="text/worker">
 				/*global onmessage, postMessage */
@@ -81,8 +88,8 @@ with features like group count display and folding
 				};
 			</script>
 		</cosmoz-web-worker>
-		<div class="fit vertical layout" id="omnitable" class$="{{ _getClass('simple-mobile-mode', simpleMobileMode) }}">
-			<div id="header" class="horizontal layout end">
+		<div id="omnitable" class$="{{ _getClass('simple-mobile-mode', simpleMobileMode) }}">
+			<div id="header" class="relative horizontal layout end">
 				<div class="row-checkbox" hidden$="{{ !_hasActions }}">
 					<div class="horizontal layout center center-justified">
 						<paper-checkbox checkable checked="{{ allCheckboxChecked }}" on-iron-change="onAllCheckboxChange" hidden$="{{ noData }}"></paper-checkbox>
@@ -95,7 +102,7 @@ with features like group count display and folding
 					</div>
 				</template>
 			</div>
-			<div id="body" class="flex relative vertical layout">
+			<div id="body" class="flex relative layout vertical">
 				<template is="dom-if" if="{{ noData }}">
 					<div id="emptyDataset" class="fit layout vertical center center-justified">
 						<div class="layout horizontal start">
@@ -107,49 +114,8 @@ with features like group count display and folding
 						</div>
 					</div>
 				</template>
-				<!--<template is="dom-if" if="{{ simpleMobileMode }}">
-					<iron-list runwayfactor="3" id="coreList" selectionenabled="false" class="flex" data="{{ toggledGroups.items }}" groups="{{ toggledGroups.groups }}" height="48">
-						<template>
-							<div class="divider horizontal layout center" class$="{{_computeClass(groupModel)}}">
-								<div class="row-checkbox" hidden$="{{ !_hasActions }}">
-									<div class="horizontal layout center center-justified">
-										<cz-letterball checkable checked="{{ groupModel.checked }}" on-change=" onGroupCheckboxChange "></cz-letterball>
-									</div>
-								</div>
-								<div class="flex horizontal layout center">
-									<div class="flex three"><h3>{{_computeExpression3(groupModel)}}</h3></div>
-									<div flex="">
-										<span>{{_computeExpression4(groupModel)}}</span>
-									</div>
-									<div class="horizontal layout end-justified"="{{_computeHidden(toggledGroups)}}" hidden$="{{_computeHidden(toggledGroups)}}">
-										<paper-icon-button on-click="toggleGroup" icon="{{_computeIcon(groupModel)}}"></paper-icon-button>
-									</div>
-								</div>
-							</div>
-							<div class="item">
-								<div class="horizontal layout center" class$="{{_computeClass(model)}}">
-									<div class="row-checkbox" hidden$="{{ !_hasActions }}">
-										<div class="horizontal layout center center-justified">
-											<cz-letterball checkable checked="{{ model.checked }}" on-change=" onItemCheckboxChange "></cz-letterball>
-										</div>
-									</div>
-									<a class="flex horizontal layout center" href$="{{ renderLink(mobileView.linkHeader, model) }}">
-										<div class="layout vertical flex two">
-											<div class$="{{_computeClass(mobileView)}}">{{ renderItemProperty(model, mobileView.headers[0]) }}</div>
-											<div class$="{{_computeClass(mobileView)}}">{{ renderItemProperty(model, mobileView.headers[1]) }}</div>
-										</div>
-										<div class="layout vertical flex">
-											<div class$="{{_computeClass(mobileView)}}">{{ renderItemProperty(model, mobileView.headers[2]) }}</div>
-											<div class="m m4"> &nbsp; </div>
-										</div>
-									</a>
-								</div>
-							</div>
-						</template>
-					</iron-list>
-				</template> -->
 				<template is="dom-if" if="{{ !simpleMobileMode }}">
-					<cosmoz-grouped-list class="flex" data="{{ groupedItems }}">
+					<cosmoz-grouped-list class="fit" data="{{ groupedItems }}">
 						<item-template>
 							<template>
 							<!-- <div class="divider horizontal layout center" class$="{{_computeClass(groupModel)}}">

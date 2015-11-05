@@ -8,23 +8,57 @@
 
 	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 	<link rel="import" href="../cosmoz-omnitable.html">
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout.html"/>
+	<link rel="import" href="../../iron-flex-layout/classes/iron-flex-layout.html"/>
+
 </head>
 <body>
 	<template is="dom-bind" id="t">
-		<cosmoz-omnitable data="{{ data }}">
-			<header id="name">Name</header>
-			<header id="date" type="date">Date</header>
-			<!-- <header id="amount">{{ _('Amount') }}</header> -->
-		</cosmoz-omnitable>
+		<div class="layout vertical fit">
+			<h1>Omnitable sample</h1>
+			<cosmoz-omnitable data="{{ data }}" class="flex" group-on="group">
+				<header id="id">Id</header>
+				<header id="name">Name</header>
+				<header id="date" type="date">Date</header>
+				<header id="group">Group</header>
+				<!-- <header id="amount">{{ _('Amount') }}</header> -->
+			</cosmoz-omnitable>
+		</div>
 	</template>
 	<script type="text/javascript">
 /*global document, window */
 (function () {
 	"use strict";
 	window.addEventListener('WebComponentsReady', function () {
-		var tableData = '[{"date":"2015-09-13","name":"EVENTEX","_id":"563862d57c1eca16e12b1397"},{"date":"2014-09-22","name":"INVENTURE","_id":"563862d5f847052e98765115"},{"date":"2015-03-12","name":"BUZZWORKS","_id":"563862d5d66b5ef462ceb697"},{"date":"2014-08-17","name":"GEEKKO","_id":"563862d5e0e294169c1487e7"},{"date":"2014-05-01","name":"KYAGORO","_id":"563862d5997799755252204d"},{"date":"2014-03-23","name":"MIRACULA","_id":"563862d50316ce5592871226"},{"date":"2015-09-10","name":"LETPRO","_id":"563862d5393d9bc4975dc783"},{"date":"2015-06-01","name":"DECRATEX","_id":"563862d5369e77ba2eb3733d"},{"date":"2014-01-21","name":"ZAYA","_id":"563862d5ff402220a02b866f"},{"date":"2014-09-05","name":"EVEREST","_id":"563862d532a5b4c98f001e08"},{"date":"2014-11-18","name":"IPLAX","_id":"563862d577751a04fb2bf9cd"},{"date":"2014-03-21","name":"KOOGLE","_id":"563862d5ede2960d3ad23460"},{"date":"2014-12-29","name":"NEPTIDE","_id":"563862d515e110141da2fb40"},{"date":"2014-01-21","name":"CENTREXIN","_id":"563862d59c6fac2142ce5285"},{"date":"2015-02-24","name":"ANIVET","_id":"563862d53bdf842ec900363c"},{"date":"2014-08-26","name":"ORBOID","_id":"563862d5b1ecaf51259611e7"},{"date":"2015-04-01","name":"JUNIPOOR","_id":"563862d5f3d2146d7dcf8819"},{"date":"2014-11-29","name":"VIOCULAR","_id":"563862d57d3fac418a7aa8c1"},{"date":"2014-11-16","name":"CYCLONICA","_id":"563862d5b9a7a5cc59507afa"},{"date":"2015-09-15","name":"TALKOLA","_id":"563862d5a26724811d37bd62"},{"date":"2015-05-03","name":"BICOL","_id":"563862d5f3b43b424ea3561c"},{"date":"2014-04-01","name":"CUIZINE","_id":"563862d5dc196df1330e482c"},{"date":"2014-04-04","name":"KINETICUT","_id":"563862d518eda397e90ea6e8"},{"date":"2014-04-17","name":"BRISTO","_id":"563862d5c96123ab91a265f6"},{"date":"2015-02-28","name":"ORBIFLEX","_id":"563862d5100bcf422ce19b34"},{"date":"2015-07-22","name":"NEXGENE","_id":"563862d5c2380ecf2123201c"},{"date":"2014-07-12","name":"ELITA","_id":"563862d5367e674f2d733669"},{"date":"2015-08-30","name":"COLLAIRE","_id":"563862d5225d1c61f0e45af4"},{"date":"2014-01-23","name":"ZIZZLE","_id":"563862d593a74c0b8bbe70c5"},{"date":"2015-08-07","name":"NAXDIS","_id":"563862d593e4f3e03cef1346"}]';
+		var
+			data = [],
+			i,
+			j,
+			n = 0,
+			itemsCount,
+			group,
+			tableData = '[{"date":"2015-09-13","name":"EVENTEX","_id":"563862d57c1eca16e12b1397"},{"date":"2014-09-22","name":"INVENTURE","_id":"563862d5f847052e98765115"},{"date":"2015-03-12","name":"BUZZWORKS","_id":"563862d5d66b5ef462ceb697"},{"date":"2014-08-17","name":"GEEKKO","_id":"563862d5e0e294169c1487e7"},{"date":"2014-05-01","name":"KYAGORO","_id":"563862d5997799755252204d"},{"date":"2014-03-23","name":"MIRACULA","_id":"563862d50316ce5592871226"},{"date":"2015-09-10","name":"LETPRO","_id":"563862d5393d9bc4975dc783"},{"date":"2015-06-01","name":"DECRATEX","_id":"563862d5369e77ba2eb3733d"},{"date":"2014-01-21","name":"ZAYA","_id":"563862d5ff402220a02b866f"},{"date":"2014-09-05","name":"EVEREST","_id":"563862d532a5b4c98f001e08"},{"date":"2014-11-18","name":"IPLAX","_id":"563862d577751a04fb2bf9cd"},{"date":"2014-03-21","name":"KOOGLE","_id":"563862d5ede2960d3ad23460"},{"date":"2014-12-29","name":"NEPTIDE","_id":"563862d515e110141da2fb40"},{"date":"2014-01-21","name":"CENTREXIN","_id":"563862d59c6fac2142ce5285"},{"date":"2015-02-24","name":"ANIVET","_id":"563862d53bdf842ec900363c"},{"date":"2014-08-26","name":"ORBOID","_id":"563862d5b1ecaf51259611e7"},{"date":"2015-04-01","name":"JUNIPOOR","_id":"563862d5f3d2146d7dcf8819"},{"date":"2014-11-29","name":"VIOCULAR","_id":"563862d57d3fac418a7aa8c1"},{"date":"2014-11-16","name":"CYCLONICA","_id":"563862d5b9a7a5cc59507afa"},{"date":"2015-09-15","name":"TALKOLA","_id":"563862d5a26724811d37bd62"},{"date":"2015-05-03","name":"BICOL","_id":"563862d5f3b43b424ea3561c"},{"date":"2014-04-01","name":"CUIZINE","_id":"563862d5dc196df1330e482c"},{"date":"2014-04-04","name":"KINETICUT","_id":"563862d518eda397e90ea6e8"},{"date":"2014-04-17","name":"BRISTO","_id":"563862d5c96123ab91a265f6"},{"date":"2015-02-28","name":"ORBIFLEX","_id":"563862d5100bcf422ce19b34"},{"date":"2015-07-22","name":"NEXGENE","_id":"563862d5c2380ecf2123201c"},{"date":"2014-07-12","name":"ELITA","_id":"563862d5367e674f2d733669"},{"date":"2015-08-30","name":"COLLAIRE","_id":"563862d5225d1c61f0e45af4"},{"date":"2014-01-23","name":"ZIZZLE","_id":"563862d593a74c0b8bbe70c5"},{"date":"2015-08-07","name":"NAXDIS","_id":"563862d593e4f3e03cef1346"}]';
 
-		document.getElementById('t').data = JSON.parse(tableData);
+		for (i = 0; i < 20; i += 1) {
+			group =  'Group ' + i;
+			itemsCount = i * 2  + 1;
+			for (j = 0; j < itemsCount; j+= 1) {
+				data.push({
+					id: n,
+					name: group + ' item ' + j,
+					value: 0,
+					date: '2015-' + (i % 12 + 1) + '-' + (j % 28 + 1),
+					group: group
+
+				});
+				n += 1;
+			}
+		}
+
+		console.log('Generated ' + n + ' items for Omnitable');
+
+
+		document.getElementById('t').data = data; //JSON.parse(tableData);
 	});
 }());
 	</script>
