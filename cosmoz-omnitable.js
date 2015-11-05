@@ -250,23 +250,23 @@
 		},
 		filterItem: function (item) {
 			var hide = false, that = this;
-			cz.loop.array(this.headers, function (headerIndex, header) {
+			this.headers.some(function (header, headerIndex) {
 				if (header.filters !== undefined && header.filters.length > 0) {
 					var filterFail = true;
-					cz.loop.array(header.filters, function (headerFilterIndex, headerFilter) {
+					header.filters.some(function (headerFilter, headerFilterIndex) {
 						var itemVal = that.resolveProp(item, header.id);
 						if (itemVal === headerFilter.value) {
 							filterFail = false;
-							return false;
+							return true;
 						}
 						if (typeof itemVal === 'object' && that.renderObject(itemVal, false, header.type) === headerFilter.label) {
 							filterFail = false;
-							return false;
+							return true;
 						}
 					});
 					if (filterFail) {
 						hide = true;
-						return false;
+						return true;
 					}
 				}
 			});
@@ -321,12 +321,16 @@
 		},
 		setHeaderValues: function (item) {
 			var that = this;
-			cz.loop.array(this.headers, function (headerIndex, header) {
-				var value = that.resolveProp(item, header.id), hasValue = false, label = that.renderObject(value, false, header.type);
-				cz.loop.array(header.values, function (headerValueIndex, headerValue) {
+			this.headers.forEach(function (header, headerIndex) {
+				var
+					value = that.resolveProp(item, header.id),
+					hasValue = false,
+					label = that.renderObject(value, false, header.type);
+
+				header.values.some(function (headerValue, headerValueIndex) {
 					if (headerValue.label === label) {
 						hasValue = true;
-						return false;
+						return true;
 					}
 				});
 				if (!hasValue) {
@@ -344,13 +348,22 @@
 			});
 		},
 		dataRowChanged: function (event, detail, sender) {
-			var outerModel = sender.templateInstance.model, item;
-			cz.loop.object(outerModel, function (key, instance) {
+			var
+				outerModel = sender.templateInstance.model,
+				keys = Object.keys(outerModel),
+				key,
+				n = keys.length,
+				i = 0,
+				item;
+
+			for (; i < n; i += 1) {
+				key = keys[i];
 				if (key[0] === '@') {
-					item = instance.item;
-					return false;
+					item = outerModel[key].item;
+					break;
 				}
-			});
+			}
+
 			//item[outerModel.header.id] = sender.value;
 			this.fire('cz-data-row-changed', item);
 			this.fire('data-changed', {
@@ -361,7 +374,7 @@
 		disableColumn: function () {
 			var headerToDisable;
 			// disables/hides columns that for example does not fit in the current screen size.
-			cz.loop.array(this.headers, function (index, header) {
+			this.headers.forEach(function (header, index) {
 				if (!header.disabled && (headerToDisable === undefined || headerToDisable.priority >= header.priority)) {
 					headerToDisable = header;
 				}
@@ -374,7 +387,7 @@
 		},
 		enableColumn: function () {
 			var headerToEnable;
-			cz.loop.array(this.headers, function (index, header) {
+			this.headers.forEach(function (header, index) {
 				if (header.disabled && (headerToEnable === undefined || headerToEnable.priority < header.priority)) {
 					headerToEnable = header;
 				}
@@ -406,7 +419,7 @@
 
 			this.sortedGroupedItems.forEach(function (groupItems, index) {
 				filteredGroupedItems[index] = [{ placeholder: true }];
-				cz.loop.array(groupItems, function (itemIndex, item) {
+				groupItems.forEach(function (item, itemIndex) {
 					that.setHeaderValues(item);
 					if (that.needs.filtering) {
 						that.filterItem(item);
@@ -471,7 +484,7 @@
 				that = this;
 
 			if (that.groupOn) {
-				cz.loop.array(this.data, function (index, item) {
+				this.data.forEach(function (item, index) {
 					var groupOnValue = that.resolveProp(item, that.groupOn);
 					if (typeof groupOnValue === 'object') {
 						groupOnValue = that.renderObject(groupOnValue, false, that._groupOnHeader.type);
@@ -489,7 +502,7 @@
 			console.log(itemStructure);
 			Object.keys(itemStructure).forEach(function (key) {
 				groups.push({
-					name: that._groupOnHeader,
+					name: key,
 					id: key,
 					items: itemStructure[key],
 					visible: true
@@ -516,7 +529,7 @@
 				return 0;
 			});
 			if (this.hideButFirst && groups.length > 1) {
-				cz.loop.array(groups, function (index, group) {
+				groups.forEach(function (group, index) {
 					if (index === 0) {
 						return;
 					}
@@ -631,7 +644,7 @@
 			if (filteredSortedGroupedItems === undefined) {
 				return;
 			}
-			cz.loop.array(filteredSortedGroupedItems, function (index, groupItems) {
+			filteredSortedGroupedItems.forEach(function (groupItems, index) {
 				if (groupItems.length > 1 || !that.hideEmptyGroups) {
 					groups.push(that.groupedItems[index]);
 					var items = [];
@@ -726,12 +739,12 @@
 			// not found in this.$ since it's not present in Simple Mobile Mode
 			widthTds = Polymer.dom(widthSetter).querySelectorAll('.cell');
 			if (this.simpleMobileMode) {
-				cz.loop.array(headerTds, function (index, headerElement) {
+				headerTds.forEach(function (headerElement, index) {
 					headerElement.style.width = 'inherit';
 					headerElement.style.maxWidth = 'inherit';
 				});
 			} else {
-				cz.loop.array(widthTds, function (index, element) {
+				widthTds.forEach(function (element, index) {
 					var headerElement = headerTds[index], csElement = window.getComputedStyle(element, null), newWidth = element.clientWidth - parseInt(csElement.getPropertyValue('padding-left'), 10) - parseInt(csElement.getPropertyValue('padding-right'), 10);
 					headerElement.style.width = newWidth + 'px';
 					headerElement.style.maxWidth = newWidth + 'px';
@@ -833,10 +846,11 @@
 		},
 
 		_getClass: function (className, arg) {
+			var classAttr = 'layout vertical fit';
 			if (arg) {
-				return className;
+				classAttr = classAttr + ' ' + className;
 			}
-			return '';
+			return classAttr;
 		},
 
 		// TODO: Generalize into behavior, more args
