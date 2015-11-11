@@ -26,10 +26,10 @@
     "iron-flex-layout": "PolymerElements/iron-flex-layout#~1.0.0",
     "cosmoz-grouped-list": "Neovici/cosmoz-grouped-list#template-selector",
     "cosmoz-web-worker": "Neovici/cosmoz-web-worker#*",
-    "paper-checkbox": "PolymerElements/paper-checkbox#~1.0.0"
+    "paper-checkbox": "PolymerElements/paper-checkbox#~1.0.0",
+    "cosmoz-autocomplete": "neovici/cosmoz-autocomplete"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0"
   }
 }
-

@@ -7,7 +7,7 @@
 <link rel="import" href="../paper-checkbox/paper-checkbox.html"/>
 <link rel="import" href="../cosmoz-grouped-list/cosmoz-grouped-list.html"/>
 <link rel="import" href="../cosmoz-web-worker/cosmoz-web-worker.html"/>
-<link rel="import" href="../cz-autocomplete/cz-autocomplete.html"/>
+<link rel="import" href="../cosmoz-autocomplete/cosmoz-autocomplete.html"/>
 
 <!--
 `<cosmoz-omnitable>` is an example implementation of grouping for iron-list
@@ -97,8 +97,7 @@ with features like group count display and folding
 				</div>
 				<template is="dom-repeat" items="{{ headersWithoutGroupOnHeader }}" as="header" index-as="index">
 					<div class$="{{ _computeHeaderClasses(header.type, index) }}" hidden$="{{ header.disabled }}">
-						<cz-autocomplete items="{{ header.values }}" placeholder="{{ header.name }}" selected-items="{{ header.filters }}" on-cz-selected-items-changed="filterItems" flex$="{{ simpleMobileMode }}"></cz-autocomplete>
-						<span>{{ header.name }}</span>
+						<cosmoz-autocomplete items="{{ header.values }}" placeholder="{{ header.name }}" selected-items="{{ header.filters }}" on-cz-selected-items-changed="filterItems" flex$="{{ simpleMobileMode }}"></cosmoz-autocomplete>
 					</div>
 				</template>
 			</div>

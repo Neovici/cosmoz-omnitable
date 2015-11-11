@@ -1,4 +1,4 @@
-/*global cz, document, Polymer, window, d3, nv */
+/*global Polymer, window */
 (function () {
 
 	"use strict";
