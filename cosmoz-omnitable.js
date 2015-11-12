@@ -86,6 +86,10 @@
 				type: Object,
 				computed: 'toggleGroupVisibility(filteredSortedGroupedItems, toggleGroupKick)'
 			},
+			toggleGroupKick: {
+				type: Number,
+				value: 0
+			},
 
 			// private
 			_hasActions: {
@@ -96,9 +100,6 @@
 		observers: [
 			'sortGroupedItems(groupedItems, sortOn)'
 		],
-		refreshKick: 0,
-		toggleGroupKick: 0,
-		visibilityKick: 0,
 		_dataChanged: function () {
 			console.log('_dataChanged');
 			this.needs.grouping = true;
@@ -445,6 +446,7 @@
 			});
 
 			this.needs.filtering = false;
+			console.log('new filteredGroupedItems')
 			return filteredGroupedItems;
 		},
 		getHeader: function (id) {
@@ -655,7 +657,10 @@
 			item.expanded = !item.expanded;
 		},
 		toggleGroupVisibility: function (filteredSortedGroupedItems, toggleGroupKick) {
-			var groups = [], that = this, visibleGroups = [];
+			console.log('toggleGroupVisibility', filteredSortedGroupedItems);
+			var groups = [],
+				that = this,
+				visibleGroups = [];
 			this.async(this.updateWidths);
 			if (filteredSortedGroupedItems === undefined) {
 				return;
@@ -704,7 +709,7 @@
 			if (!body) {
 				return;
 			}
-			coreList = Polymer.dom(body).querySelector('#coreList');
+			coreList = Polymer.dom(body).querySelector('#groupedList');
 			fits = coreList.scrollWidth <= coreList.clientWidth;
 			/**
 			* To prevent infinite loops by multiple events, we need to check for 'bigger' events first

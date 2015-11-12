@@ -103,7 +103,7 @@ with features like group count display and folding
 				</div>
 				<template is="dom-repeat" items="{{ headersWithoutGroupOnHeader }}" as="header" index-as="index">
 					<div class$="{{ _computeHeaderClasses(header.type, index) }}" hidden$="{{ header.disabled }}">
-						<cosmoz-autocomplete items="{{ header.values }}" placeholder="{{ header.name }}" selected-items="{{ header.filters }}" on-cz-selected-items-changed="filterItems" flex$="{{ simpleMobileMode }}"></cosmoz-autocomplete>
+						<cosmoz-autocomplete items="{{ header.values }}" placeholder="{{ header.name }}" selected-items="{{ header.filters }}" on-cosmoz-selected-items-changed="filterItems" flex$="{{ simpleMobileMode }}"></cosmoz-autocomplete>
 					</div>
 				</template>
 			</div>
