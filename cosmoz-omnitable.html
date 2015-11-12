@@ -31,6 +31,10 @@ with features like group count display and folding
 				@apply(--layout-vertical);
 				@apply(--layout-relative);
 			}
+			.group-header {
+				background-color: #ccc;
+				font-weight: bold;
+			}
 		</style>
 		<cosmoz-web-worker id="sortWorker">
 			<script type="text/worker">
@@ -114,8 +118,8 @@ with features like group count display and folding
 					</div>
 				</template>
 				<template is="dom-if" if="{{ !simpleMobileMode }}">
-					<cosmoz-grouped-list class="fit" data="{{ groupedItems }}">
-						<item-template>
+					<cosmoz-grouped-list id="groupedList" class="fit" data="{{ groupedItems }}">
+						<item-template id="itemTemplate">
 							<template>
 							<!-- <div class="divider horizontal layout center" class$="{{_computeClass(groupModel)}}">
 								<div class="row-checkbox" hidden$="{{ !_hasActions }}">
@@ -182,6 +186,15 @@ with features like group count display and folding
 									</div>
 								</template>
 							</div>
+							</template>
+						</item-template>
+						<item-template id="groupTemplate">
+							<template>
+								<div class="horizontal layout center group-header" on-tap="toggleGroup">
+									<div class="flex">[[item.name]]</div>
+									<div>[[ item.items.length ]]</div>
+									<iron-icon icon="[[ getFoldIcon(folded) ]]"></iron-icon>
+								</div>
 							</template>
 						</item-template>
 					</cosmoz-grouped-list>

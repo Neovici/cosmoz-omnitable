@@ -243,11 +243,17 @@
 				}
 			}
 		},
-		toggleGroup: function (event, detail, element) {
-			var group = event.target.templateInstance.model.groupModel;
-			group.visible = !group.visible;
-			this.toggleGroupKick += 1;
+		toggleGroup: function (event) {
+			this.$.body.querySelector('#groupedList').toggleFold(event.model);
 		},
+
+		getFoldIcon: function (folded) {
+			if (folded) {
+				return 'expand-more';
+			}
+			return 'expand-less';
+		},
+
 		filterItem: function (item) {
 			var hide = false, that = this;
 			this.headers.some(function (header, headerIndex) {
