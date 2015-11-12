@@ -22,12 +22,13 @@
     "tests"
   ],
   "dependencies": {
-    "polymer": "^1.0.0",
+    "polymer": "^1.2.1",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#~1.0.0",
     "cosmoz-grouped-list": "Neovici/cosmoz-grouped-list#template-selector",
     "cosmoz-web-worker": "Neovici/cosmoz-web-worker#*",
     "paper-checkbox": "PolymerElements/paper-checkbox#~1.0.0",
-    "cosmoz-autocomplete": "neovici/cosmoz-autocomplete"
+    "cosmoz-autocomplete": "neovici/cosmoz-autocomplete",
+    "cosmoz-i18next": "neovici/cosmoz-i18next"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0"

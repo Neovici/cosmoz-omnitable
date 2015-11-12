@@ -1,9 +1,12 @@
-/*global Polymer, window */
+/*global Cosmoz, Polymer, window */
 (function () {
 
 	"use strict";
 
 	Polymer({
+		behaviors: [
+			Cosmoz.TranslatableBehavior
+		],
 		is: 'cosmoz-omnitable',
 		disabledHeaders: 0,
 		// help variable, by changing this variable, polymer gets a "kick" and refreshes. Same reasoning in similar variables below.
@@ -34,7 +37,7 @@
 			},
 			headersWithoutGroupOnHeader: {
 				type: Object,
-				computed: 'getHeadersWithoutGroupOnHeader(headers, groupOn, forceMobile)'
+				computed: 'getHeadersWithoutGroupOnHeader(headers.*, filteredSortedGroupedItems, groupOn, forceMobile)'
 			},
 			// hide all groups except first
 			hideButFirst: {
@@ -46,7 +49,8 @@
 				value: true
 			},
 			headers: {
-				type: Array
+				type: Array,
+				notify: true
 			},
 			noData: {
 				type: Boolean,
@@ -62,8 +66,7 @@
 				value: false
 			},
 			sortedGroupedItems: {
-				type: Array,
-				computed: 'sortGroupedItems(groupedItems, sortOn)'
+				type: Array
 			},
 			sortOn: {
 				type: String,
@@ -90,23 +93,26 @@
 				value: false
 			}
 		},
+		observers: [
+			'sortGroupedItems(groupedItems, sortOn)'
+		],
 		refreshKick: 0,
 		toggleGroupKick: 0,
 		visibilityKick: 0,
 		_dataChanged: function () {
+			console.log('_dataChanged');
 			this.needs.grouping = true;
 			this.needs.filtering = true;
 			this.needs.sorting = true;
 			// Delay the computing of groupedItems property until domReady, i.e. until the headers are defined.
 			if (this.headers) {
-				console.log('headers!');
+				console.log('headers!', this.headers);
 				this.groupKick += 1;
 			}
 			this.fire('data-changed', {
 				action: 'replace',
 				data: this.data
 			});
-			console.log('_dataChanged');
 		},
 		removeItem: function (item) {
 			var dataIndex, change = false;
@@ -182,8 +188,8 @@
 			this.setHeadersFromMarkup();
 			this.rendered = true;
 		},
-		_groupOnChanged: function (oldValue, newValue) {
-			console.log('asdfsd');
+		_groupOnChanged: function (newValue, oldValue) {
+			console.log('_groupOnChanged:', oldValue, "->", newValue);
 			this.needs.grouping = true;
 			this.groupKick += 1;
 		},
@@ -312,7 +318,7 @@
 					return cz.tools.money.render(obj, ui);
 				case 'date':
 				case 'datetime':
-					return 'date';
+					return obj;
 					// return cz.tools.date.render(obj, ui);
 				}
 			}
@@ -354,6 +360,7 @@
 			});
 		},
 		dataRowChanged: function (event, detail, sender) {
+			console.log('dataRowChanged');
 			var
 				outerModel = sender.templateInstance.model,
 				keys = Object.keys(outerModel),
@@ -436,6 +443,7 @@
 					}
 				});
 			});
+
 			this.needs.filtering = false;
 			return filteredGroupedItems;
 		},
@@ -450,14 +458,14 @@
 			return foundHeader;
 		},
 		getHeadersWithoutGroupOnHeader: function (headers, groupOn, forceMobile) {
-			if (!headers) {
+			if (!this.headers) {
 				return;
 			}
 			if (forceMobile) {
 				return this.mobileView.headers;
 			}
 			var filteredHeaders = [];
-			headers.forEach(function (header, index) {
+			this.headers.forEach(function (header, index) {
 				if (header.id !== groupOn) {
 					filteredHeaders.push(header);
 				}
@@ -505,7 +513,7 @@
 			} else {
 				itemStructure[''] = this.data.slice(0);
 			}
-			console.log(itemStructure);
+
 			Object.keys(itemStructure).forEach(function (key) {
 				groups.push({
 					name: key,
@@ -514,6 +522,7 @@
 					visible: true
 				});
 			});
+
 			groups.sort(function (a, b) {
 				var v1 = that.resolveProp(a.items[0], that.groupOn), v2 = that.resolveProp(b.items[0], that.groupOn);
 				if (typeof v1 === 'object' && typeof v2 === 'object') {
@@ -534,6 +543,7 @@
 				console.warn('unsupported sort', typeof v1, v1, typeof v2, v2);
 				return 0;
 			});
+
 			if (this.hideButFirst && groups.length > 1) {
 				groups.forEach(function (group, index) {
 					if (index === 0) {
@@ -542,9 +552,10 @@
 					group.visible = false;
 				});
 			}
+
 			this.needs.grouping = false;
 			this.needs.sorting = true;
-			console.log(groups);
+
 			return groups;
 		},
 		setHeadersFromMarkup: function () {
@@ -593,18 +604,18 @@
 		_computeClass: function (data) {
 			console.log('_computeClass', data);
 		},
-		sortGroupedItems: function (groupedItemsKick, sortOn) {
-			console.log('sortGroupedItems');
+		sortGroupedItems: function (groupedItems, sortOn) {
+			console.log('sortGroupedItems', groupedItems, sortOn);
 			if (!this.groupedItems) {
 				return null;
 			}
 			var items = [],
 				that = this,
-				lastIndex,
-				mappedItems;
+				numGroups = this.groupedItems.length - 1,
+				mappedItems,
+				results = 0;
 
 			this.groupedItems.forEach(function (group, index) {
-				lastIndex = index;
 				if (group.items) {
 					if (!sortOn) {
 						items[index] = group.items;
@@ -626,19 +637,18 @@
 							sortOn: 'value',
 							data: mappedItems
 						}, function (data) {
+							results += 1;
 							items[data.meta.index] = data.data.map(function (item, index) {
 								return group.items[item.index];
 							});
-							if (data.meta.group.visible || data.meta.index === lastIndex) {
+							if (results === numGroups) {
 								that.needs.filtering = true;
-								that.filterKick += 1;
+								that.sortedGroupedItems = items;
 							}
 						});
 					}
 				}
 			});
-			this.filterKick += 1;
-			return items;
 		},
 		toggleExtraColumns: function (event, detail, sender) {
 			var item = event.target.templateInstance.model.model;

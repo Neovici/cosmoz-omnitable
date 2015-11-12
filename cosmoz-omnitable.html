@@ -8,6 +8,7 @@
 <link rel="import" href="../cosmoz-grouped-list/cosmoz-grouped-list.html"/>
 <link rel="import" href="../cosmoz-web-worker/cosmoz-web-worker.html"/>
 <link rel="import" href="../cosmoz-autocomplete/cosmoz-autocomplete.html"/>
+<link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html"/>
 
 <!--
 `<cosmoz-omnitable>` is an example implementation of grouping for iron-list
@@ -80,15 +81,16 @@ with features like group count display and folding
 					reverse = !!data.reverse;
 					sortFunc = getSortFunc(data.sortOn, reverse);
 
-					console.log(data);
-
 					if (sortFunc === undefined) {
 						list.sort();
 					} else {
 						list.sort(sortFunc);
 					}
 
-					postMessage(data);
+					postMessage({
+						workerRun: event.data.workerRun,
+						data: data
+					});
 				};
 			</script>
 		</cosmoz-web-worker>
@@ -111,8 +113,8 @@ with features like group count display and folding
 						<div class="layout horizontal start">
 							<iron-icon icon="icons:announcement"></iron-icon>
 							<div class="layout vertical">
-								<h3>Working set empty</h3>
-								<p>No data to display.</p>
+								<h3>{{ _('Working set empty') }}</h3>
+								<p>{{ _('No data to display.') }}</p>
 							</div>
 						</div>
 					</div>
@@ -167,7 +169,7 @@ with features like group count display and folding
 									</template>
 									<template is="dom-if" if="{{_computeIf(_disabledHeaders)}}">
 										<div>
-											<paper-icon-button on-click=" toggleExtraColumns " icon="{{_computeIcon(item)}}"></paper-icon-button>
+											<paper-icon-button on-click="toggleExtraColumns" icon="{{_computeIcon(item)}}"></paper-icon-button>
 										</div>
 									</template>
 								</div>
@@ -191,7 +193,7 @@ with features like group count display and folding
 						<item-template id="groupTemplate">
 							<template>
 								<div class="horizontal layout center group-header" on-tap="toggleGroup">
-									<div class="flex">[[item.name]]</div>
+									<div class="flex">[[ item.name ]]</div>
 									<div>[[ item.items.length ]]</div>
 									<iron-icon icon="[[ getFoldIcon(folded) ]]"></iron-icon>
 								</div>
@@ -203,11 +205,11 @@ with features like group count display and folding
 			<div id="footer" class="horizontal layout center">
 				<div class="horizontal layout flex center">
 					<core-label id="sortLabel">
-						<span class="label">Sorted on</span>
-						<paper-dropdown-menu label="No sorting">
+						<span class="label">{{ _('Sorted on') }}</span>
+						<paper-dropdown-menu label="{{ _('No sorting') }}">
 							<iron-dropdown class="dropdown" vertical-align="bottom">
 								<paper-menu class="menu" selected="{{ sortOn }}" valueattr="id">
-									<paper-item id=""><i>No sorting</i></paper-item>
+									<paper-item id=""><i>{{ _('No sorting') }}</i></paper-item>
 									<template is="dom-repeat" items="{{ headers }}" as="header">
 										<paper-item id="{{ header.id }}">{{ header.name }}</paper-item>
 									</template>
@@ -216,11 +218,11 @@ with features like group count display and folding
 						</paper-dropdown-menu>
 					</core-label>
 					<core-label id="groupLabel">
-						<span class="label">Grouped on</span>
-						<paper-dropdown-menu label="No grouping">
+						<span class="label">{{ _('Grouped on') }}</span>
+						<paper-dropdown-menu label="{{ _('No grouping') }}">
 							<iron-dropdown class="dropdown" vertical-align="bottom">
 								<paper-menu class="menu" selected="{{ groupOn }}" valueattr="id">
-									<paper-item id=""><i>No grouping</i></paper-item>
+									<paper-item id=""><i>{{ _('No grouping') }}</i></paper-item>
 									<template is="dom-repeat" items="{{ headers }}" as="header">
 										<paper-item id="{{ header.id }}" hidden$="{{ _allTrue(header.mobile, simpleMobileMode) }}">{{ header.name }}</paper-item>
 									</template>
@@ -230,8 +232,8 @@ with features like group count display and folding
 					</core-label>
 				</div>
 				<div class="horizontal layout center" style="text-align: right; line-height: 1.6em; margin-right: 3%">
-					<span>Num groups</span><br>
-					<span>Num items</span>
+					<span>{{ ngettext('{0} group', '{0} groups', toggledGroups.groups.length, t) }}</span><br/>
+					<span>{{ ngettext('{0} row', '{0} rows', data.length, t) }}</span>
 				</div>
 				<!-- Wrap <content> directly in within the tag to not send "text" nodes -->
 				<cz-bottom-bar class="selection" matchparent info="{{ selectedItems.length }}" on-action="onAction" active$="{{ !isEmpty(selectedItems) }}"><content id="actions" select="[action]"></content></cz-bottom-bar>
