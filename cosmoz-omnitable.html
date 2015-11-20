@@ -4,12 +4,17 @@
 <link rel="import" href="../iron-list/iron-list.html"/>
 <link rel="import" href="../iron-icons/iron-icons.html"/>
 <link rel="import" href="../iron-icon/iron-icon.html"/>
+<link rel="import" href="../iron-label/iron-label.html"/>
 <link rel="import" href="../paper-checkbox/paper-checkbox.html"/>
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html"/>
+<link rel="import" href="../paper-menu/paper-menu.html"/>
+<link rel="import" href="../paper-item/paper-item.html"/>
 <link rel="import" href="../cosmoz-grouped-list/cosmoz-grouped-list.html"/>
 <link rel="import" href="../cosmoz-web-worker/cosmoz-web-worker.html"/>
 <link rel="import" href="../cosmoz-autocomplete/cosmoz-autocomplete.html"/>
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html"/>
 
+<link rel="import" href="cosmoz-omnitable-style.html">
 <!--
 `<cosmoz-omnitable>` is an example implementation of grouping for iron-list
 with features like group count display and folding
@@ -24,18 +29,14 @@ with features like group count display and folding
 -->
 
 <dom-module id="cosmoz-omnitable">
-	<link rel="import" type="css" href="cosmoz-omnitable.css"/>
 	<template>
-		<style>
-			:host {
-				display: block;
-				@apply(--layout-vertical);
-				@apply(--layout-relative);
-			}
+		<style include="cosmoz-omnitable-style">
+
 			.group-header {
 				background-color: #ccc;
 				font-weight: bold;
 			}
+
 		</style>
 		<cosmoz-web-worker id="sortWorker">
 			<script type="text/worker">
@@ -94,6 +95,7 @@ with features like group count display and folding
 				};
 			</script>
 		</cosmoz-web-worker>
+
 		<div id="omnitable" class$="{{ _getClass('simple-mobile-mode', simpleMobileMode) }}">
 			<div id="header" class="relative horizontal layout end">
 				<div class="row-checkbox" hidden$="{{ !_hasActions }}">
@@ -120,80 +122,70 @@ with features like group count display and folding
 					</div>
 				</template>
 				<template is="dom-if" if="{{ !simpleMobileMode }}">
-					<cosmoz-grouped-list id="groupedList" class="fit" data="{{ groupedItems }}">
+					<cosmoz-grouped-list id="groupedList" class="fit" data="{{ sortedFilteredGroupedItems }}">
 						<item-template id="itemTemplate">
 							<template>
-							<!-- <div class="divider horizontal layout center" class$="{{_computeClass(groupModel)}}">
-								<div class="row-checkbox" hidden$="{{ !_hasActions }}">
-									<div class="horizontal layout center center-justified">
-										<cz-letterball checkable checked="{{ groupModel.checked }}" on-change=" onGroupCheckboxChange "></cz-letterball>
-									</div>
-								</div>
-								<div class="flex horizontal layout center">
-									<div class="flex three"><h3><span>{{ _groupOnHeader.name }}</span>: <span>{{ groupModel.id }}</span></h3></div>
-									<div class="flex">
-										<span>{{_computeExpression10(groupModel)}}</span>
-									</div>
-									<div class="horizontal layout end-justified" hidden$="{{_computeHidden(toggledGroups)}}">
-										<paper-icon-button on-click="toggleGroup" icon="{{_computeIcon(groupModel)}}"></paper-icon-button>
-									</div>
-								</div>
-							</div> -->
-							<div class="item">
-								<div class$="{{ _computeItemClasses(item) }}">
-									<div class="row-checkbox" hidden$="{{ !_hasActions }}">
-										<div class="horizontal layout center center-justified">
-											<paper-checkbox checked="{{ item.checked }}" on-change="onItemCheckboxChange"></paper-checkbox>
+								<div class="item">
+									<div class$="{{ _computeItemClasses(item) }}">
+										<div class="row-checkbox" hidden$="{{ _hasActions }}">
+											<div class="horizontal layout center center-justified">
+												<paper-checkbox checked="{{ item.checked }}" on-change="onItemCheckboxChange"></paper-checkbox>
+											</div>
 										</div>
-									</div>
-									<template is="dom-repeat" items="{{ headersWithoutGroupOnHeader }}" as="header" index-as="index">
-										<template is="dom-if" if="{{ !header.disabled }}">
-											<div class$="{{ _computeClasses('cell', header.type, index) }}">
-												<template is="dom-if" if="{{ header.editable }}">
-													<paper-input-container>
-														<input is="core-input" type="{{ header.type }}" on-change="dataRowChanged" value="{{ _computeValue(header, item) }}">
-													</paper-input-container>
-												</template>
-												<template is="dom-if" if="{{ !header.editable }}">
-													<div title="{{ renderItemProperty(item, header) }}">
-														<template is="dom-if" if="{{ header.linkbase }}">
-															<a href$="{{ renderLink(header, item) }}">{{ renderItemProperty(item, header) }}</a>
-														</template>
-														<template is="dom-if" if="{{ !header.linkbase }}">
-															<span>{{ renderItemProperty(item, header) }}</span>
-														</template>
-													</div>
-												</template>
+										<template is="dom-repeat" items="{{ headersWithoutGroupOnHeader }}" as="header" index-as="index">
+											<template is="dom-if" if="{{ !header.disabled }}">
+												<div class$="{{ _computeClasses('cell', header.type, index) }}">
+													<template is="dom-if" if="{{ header.editable }}">
+														<paper-input-container>
+															<input is="core-input" type="{{ header.type }}" on-change="dataRowChanged" value="{{ _computeValue(header, item) }}">
+														</paper-input-container>
+													</template>
+													<template is="dom-if" if="{{ !header.editable }}">
+														<div title="{{ renderItemProperty(item, header) }}">
+															<template is="dom-if" if="{{ header.linkbase }}">
+																<a href$="{{ renderLink(header, item) }}">{{ renderItemProperty(item, header) }}</a>
+															</template>
+															<template is="dom-if" if="{{ !header.linkbase }}">
+																<span>{{ renderItemProperty(item, header) }}</span>
+															</template>
+														</div>
+													</template>
+												</div>
+											</template>
+										</template>
+										<template is="dom-if" if="{{_computeIf(_disabledHeaders)}}">
+											<div>
+												<paper-icon-button on-click=" toggleExtraColumns " icon="{{_computeIcon(item)}}"></paper-icon-button>
 											</div>
 										</template>
-									</template>
-									<template is="dom-if" if="{{_computeIf(_disabledHeaders)}}">
-										<div>
-											<paper-icon-button on-click="toggleExtraColumns" icon="{{_computeIcon(item)}}"></paper-icon-button>
+									</div>
+									<template is="dom-if" if="{{ item.expanded }}">
+										<div class="item-extra-row">
+											<div colspan="{{_computeColspan(headersWithoutGroupOnHeader)}}">
+												<template is="dom-repeat" items="{{headersWithoutGroupOnHeader}}" as="header">
+													<template is="dom-if" if="{{ header.disabled }}">
+														<div class="horizontal layout center">
+															<div flex="">{{ header.name }}</div>
+															<div>{{ renderItemProperty(item, header) }}</div>
+														</div>
+													</template>
+												</template>
+											</div>
 										</div>
 									</template>
 								</div>
-								<template is="dom-if" if="{{ item.expanded }}">
-									<div class="item-extra-row">
-										<div colspan="{{_computeColspan(headersWithoutGroupOnHeader)}}">
-											<template is="dom-repeat" items="{{headersWithoutGroupOnHeader}}" as="header">
-												<template is="dom-if" if="{{ header.disabled }}">
-													<div class="horizontal layout center">
-														<div flex="">{{ header.name }}</div>
-														<div>{{ renderItemProperty(item, header) }}</div>
-													</div>
-												</template>
-											</template>
-										</div>
-									</div>
-								</template>
-							</div>
 							</template>
 						</item-template>
 						<item-template id="groupTemplate">
 							<template>
 								<div class="horizontal layout center group-header" on-tap="toggleGroup">
-									<div class="flex">[[ item.name ]]</div>
+									<span hidden>{{fakeBinding}}</span>
+									<div hidden$="{{ _hasActions }}">
+										<paper-checkbox></paper-checkbox>
+									</div>
+									<div class="flex">
+										<span>{{_groupOnHeader.name}}</span>: <span>[[item.name]]</span>
+									</div>
 									<div>[[ item.items.length ]]</div>
 									<iron-icon icon="[[ getFoldIcon(folded) ]]"></iron-icon>
 								</div>
@@ -204,39 +196,39 @@ with features like group count display and folding
 			</div>
 			<div id="footer" class="horizontal layout center">
 				<div class="horizontal layout flex center">
-					<core-label id="sortLabel">
-						<span class="label">{{ _('Sorted on') }}</span>
-						<paper-dropdown-menu label="{{ _('No sorting') }}">
-							<iron-dropdown class="dropdown" vertical-align="bottom">
-								<paper-menu class="menu" selected="{{ sortOn }}" valueattr="id">
-									<paper-item id=""><i>{{ _('No sorting') }}</i></paper-item>
-									<template is="dom-repeat" items="{{ headers }}" as="header">
-										<paper-item id="{{ header.id }}">{{ header.name }}</paper-item>
-									</template>
-								</paper-menu>
-							</iron-dropdown>
+					<div class="footer-control-set">
+						<iron-label class="footer-control-label" for="sort-on-selector">{{_('Sort on:')}}</iron-label>
+						<paper-dropdown-menu id="sort-on-selector" no-label-float class="footer-control">
+							<paper-menu class="dropdown-content menu" selected="{{ sortOn }}" attr-for-selected="id">
+								<paper-item id="">
+									<div style="white-space: nowrap; font-style: italic;">No sorting</div>
+								</paper-item>
+								<template is="dom-repeat" items="{{ headers }}" as="header">
+									<paper-item id="{{ header.id }}">{{ header.name }}</paper-item>
+								</template>
+							</paper-menu>
 						</paper-dropdown-menu>
-					</core-label>
-					<core-label id="groupLabel">
-						<span class="label">{{ _('Grouped on') }}</span>
-						<paper-dropdown-menu label="{{ _('No grouping') }}">
-							<iron-dropdown class="dropdown" vertical-align="bottom">
-								<paper-menu class="menu" selected="{{ groupOn }}" valueattr="id">
-									<paper-item id=""><i>{{ _('No grouping') }}</i></paper-item>
-									<template is="dom-repeat" items="{{ headers }}" as="header">
-										<paper-item id="{{ header.id }}" hidden$="{{ _allTrue(header.mobile, simpleMobileMode) }}">{{ header.name }}</paper-item>
-									</template>
-								</paper-menu>
-							</iron-dropdown>
+					</div>
+					<div class="footer-control-set">
+						<iron-label class="footer-control-label" for="group-on-selector">{{_('Group on:')}}</iron-label>
+						<paper-dropdown-menu id="group-on-selector" no-label-float class="footer-control">
+							<paper-menu class="dropdown-content menu" selected="{{ groupOn }}" attr-for-selected="id">
+								<paper-item id=""><i style="white-space: nowrap">No grouping</i></paper-item>
+								<template is="dom-repeat" items="{{ headers }}" as="header">
+									<paper-item id="{{ header.id }}" hidden$="{{ _allTrue(header.mobile, simpleMobileMode) }}">{{ header.name }}</paper-item>
+								</template>
+							</paper-menu>
 						</paper-dropdown-menu>
-					</core-label>
+					</div>
 				</div>
-				<div class="horizontal layout center" style="text-align: right; line-height: 1.6em; margin-right: 3%">
+				<div class="vertical layout center end-justified">
 					<span>{{ ngettext('{0} group', '{0} groups', toggledGroups.groups.length, t) }}</span><br/>
 					<span>{{ ngettext('{0} row', '{0} rows', data.length, t) }}</span>
+					<div>Num items</div>
 				</div>
 				<!-- Wrap <content> directly in within the tag to not send "text" nodes -->
 				<cz-bottom-bar class="selection" matchparent info="{{ selectedItems.length }}" on-action="onAction" active$="{{ !isEmpty(selectedItems) }}"><content id="actions" select="[action]"></content></cz-bottom-bar>
+
 			</div>
 		</div>
 	</template>

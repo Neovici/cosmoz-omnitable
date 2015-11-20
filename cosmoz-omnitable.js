@@ -4,88 +4,107 @@
 	"use strict";
 
 	Polymer({
-		behaviors: [
-			Cosmoz.TranslatableBehavior
-		],
+
 		is: 'cosmoz-omnitable',
-		disabledHeaders: 0,
-		// help variable, by changing this variable, polymer gets a "kick" and refreshes. Same reasoning in similar variables below.
-		groupIndex: {},
-		needs: {},
+
 		properties: {
 			data: {
 				type: Array,
 				observer: '_dataChanged',
 				value: null
 			},
+
 			filterKick: {
 				type: Number,
 				value: 0
 			},
-			filteredSortedGroupedItems: {
-				type: Object,
-				computed: 'filterSortedGroupedItems(sortedGroupedItems, filterKick)'
-			},
+
+			// filteredSortedGroupedItems: {
+			// 	type: Object,
+			// 	computed: 'filterSortedGroupedItems(sortedGroupedItems, filterKick)'
+			// },
+
 			forceMobile: {
 				type: Boolean,
 				value: false
 			},
-			// The collection and the structure for the grouping of the data.
-			groupedItems: {
-				type: Array,
-				computed: 'groupItems(groupKick)'
-			},
+
 			headersWithoutGroupOnHeader: {
 				type: Object,
-				computed: 'getHeadersWithoutGroupOnHeader(headers.*, filteredSortedGroupedItems, groupOn, forceMobile)'
+				computed: 'getHeadersWithoutGroupOnHeader(headers.*, sortedFilteredGroupedItems, groupOn, forceMobile)'
 			},
+
 			// hide all groups except first
 			hideButFirst: {
 				type: Boolean,
 				value: true
 			},
+
 			hideEmptyGroups: {
 				type: Boolean,
 				value: true
 			},
+
 			headers: {
 				type: Array,
 				notify: true
 			},
+
 			noData: {
 				type: Boolean,
 				computed: 'isEmpty(data)'
 			},
+
 			selectedItems: {
 				type: Array
 			},
+
 			// calculated decides mobile or application view mode.
 			simpleMobileMode: {
 				type: Boolean,
 				// computed: 'forceMobile || (((headersWithoutGroupOnHeader.length - disabledHeaders) <= 3) && disabledHeaders > 0)',
 				value: false
 			},
-			sortedGroupedItems: {
-				type: Array
-			},
+
+
 			sortOn: {
 				type: String,
 				value: "name"
 			},
+
 			groupKick: {
 				type: Number,
 				value: 0
 			},
+
 			groupOn: {
 				type: String,
 				value: null,
 				observer: '_groupOnChanged'
 			},
+
+			filteredItems: {
+				type: Array,
+				computed: '_filterItems(filterKick)'
+			},
+
+			// The collection and the structure for the grouping of the data.
+			filteredGroupedItems: {
+				type: Array,
+				computed: '_groupItems(filteredItems, groupOn, groupKick)'
+			},
+
+			// will be computed by observer
+			sortedFilteredGroupedItems: {
+				type: Array
+			},
+
 			// collection of opened groups over the omnitable. This for minimizing overhead when sorting, allowing for bypassing closed groups.
 			toggledGroups: {
 				type: Object,
 				computed: 'toggleGroupVisibility(filteredSortedGroupedItems, toggleGroupKick)'
 			},
+
 			toggleGroupKick: {
 				type: Number,
 				value: 0
@@ -97,9 +116,19 @@
 				value: false
 			}
 		},
-		observers: [
-			'sortGroupedItems(groupedItems, sortOn)'
+
+		behaviors: [
+			Cosmoz.TranslatableBehavior
 		],
+
+		observers: [
+			'_sortFilteredGroupedItems(filteredGroupedItems, sortOn)'
+		],
+
+		disabledHeaders: 0,
+		// help variable, by changing this variable, polymer gets a "kick" and refreshes. Same reasoning in similar variables below.
+		groupIndex: {},
+		needs: {},
 		_dataChanged: function () {
 			console.log('_dataChanged');
 			this.needs.grouping = true;
@@ -107,13 +136,9 @@
 			this.needs.sorting = true;
 			// Delay the computing of groupedItems property until domReady, i.e. until the headers are defined.
 			if (this.headers) {
-				console.log('headers!', this.headers);
-				this.groupKick += 1;
+				this.filterKick += 1;
 			}
-			this.fire('data-changed', {
-				action: 'replace',
-				data: this.data
-			});
+
 		},
 		removeItem: function (item) {
 			var dataIndex, change = false;
@@ -190,7 +215,6 @@
 			this.rendered = true;
 		},
 		_groupOnChanged: function (newValue, oldValue) {
-			console.log('_groupOnChanged:', oldValue, "->", newValue);
 			this.needs.grouping = true;
 			this.groupKick += 1;
 		},
@@ -199,8 +223,6 @@
 			if (event.target === null) {
 				return;
 			}
-
-			console.log('onAllCheckboxChange', event.target, detail);
 
 			var element = event.target,
 				checked = element.checked,
@@ -220,7 +242,6 @@
 			this.selectGroupItems(group);
 		},
 		onItemCheckboxChange: function (event, detail) {
-			console.log('onItemCheckboxChange', event, detail);
 			var item = event.model.__data__.item;
 			this.selectItem(item);
 		},
@@ -285,6 +306,7 @@
 			});
 			item.visible = !hide;
 		},
+
 		filterItems: function (event, detail, sender) {
 			this.needs.filtering = true;
 			this.filterKick += 1;
@@ -420,8 +442,39 @@
 				});
 			});
 		},
+
+		_filterItems : function (filterKick) {
+			if (!this.headers) {
+				return null;
+			}
+			if (!this.data || this.data.length === 0) {
+				this.needs.grouping = false;
+				this.needs.sorting = false;
+				this.needs.filtering = false;
+				return;
+			}
+
+			var
+				that = this,
+				filteredItems = [];
+
+			this.clearHeaderValues();
+
+			this.data.forEach(function (item, index) {
+				that.setHeaderValues(item);
+				if (that.needs.filtering) {
+					that.filterItem(item);
+				}
+				if (item.visible) {
+					filteredItems.push(item);
+				}
+			});
+			that.needs.filtering = false;
+			that.needs.grouping = true;
+			return filteredItems;
+		},
+
 		filterSortedGroupedItems: function (sortedGroupedItems, filterKick) {
-			console.log('filterSortedGroupedItems', sortedGroupedItems);
 			if (!this.sortedGroupedItems) {
 				return null;
 			}
@@ -432,14 +485,18 @@
 			this.clearHeaderValues();
 
 			this.sortedGroupedItems.forEach(function (groupItems, index) {
-				filteredGroupedItems[index] = [{ placeholder: true }];
-				groupItems.forEach(function (item, itemIndex) {
+				filteredGroupedItems[index] = {
+					name: groupItems.name,
+					id: groupItems.id,
+					items: []
+				};
+				groupItems.items.forEach(function (item, itemIndex) {
 					that.setHeaderValues(item);
 					if (that.needs.filtering) {
 						that.filterItem(item);
 					}
 					if (item.visible) {
-						filteredGroupedItems[index].push(item);
+						filteredGroupedItems[index].items.push(item);
 						that.selectItem(item);
 					}
 				});
@@ -474,33 +531,27 @@
 			});
 			return filteredHeaders;
 		},
-		groupItems: function (groupKick) {
-			// Computed properties are created and evaluated as soon as the component is created.
-			// This function needs the headers, but they are set in the ready callback (and cannot be set earlier as it needs the DOM children),
-			// so we might be in situations where the data is available but not the headers.
-			// (was the case in invoice view, the omnitable that display invoice rows).
+
+		_groupItems: function (filteredItems, groupOn) {
 			if (!this.headers) {
 				return null;
 			}
-			if (!this.data || this.data.length === 0) {
-				this.needs.grouping = false;
-				this.needs.sorting = false;
-				this.needs.filtering = false;
+
+			if (!filteredItems || filteredItems.length === 0) {
 				return;
 			}
 			if (!this.needs.grouping) {
-				console.log('no grouping needed!', this.groupedItems);
-				return this.groupedItems;
+				return filteredItems;
 			}
-			console.log('groupItems');
-			this._groupOnHeader = this.getHeader(this.groupOn);
+
+			this._groupOnHeader = this.getHeader(groupOn);
 
 			var groups = [],
 				itemStructure = {},
 				that = this;
 
-			if (that.groupOn) {
-				this.data.forEach(function (item, index) {
+			if (groupOn) {
+				filteredItems.forEach(function (item, index) {
 					var groupOnValue = that.resolveProp(item, that.groupOn);
 					if (typeof groupOnValue === 'object') {
 						groupOnValue = that.renderObject(groupOnValue, false, that._groupOnHeader.type);
@@ -556,7 +607,6 @@
 			}
 
 			this.needs.grouping = false;
-			this.needs.sorting = true;
 
 			return groups;
 		},
@@ -601,23 +651,24 @@
 			if (this.needs.grouping) {
 				this.groupKick += 1;
 			}
-			console.log(this.headers);
 		},
+
 		_computeClass: function (data) {
 			console.log('_computeClass', data);
 		},
-		sortGroupedItems: function (groupedItems, sortOn) {
-			console.log('sortGroupedItems', groupedItems, sortOn);
-			if (!this.groupedItems) {
+
+		_sortFilteredGroupedItems: function (filteredGroupedItems, sortOn) {
+			console.log('sortGroupedItems', filteredGroupedItems, sortOn);
+			if (!filteredGroupedItems) {
 				return null;
 			}
 			var items = [],
 				that = this,
-				numGroups = this.groupedItems.length - 1,
+				numGroups = filteredGroupedItems.length,
 				mappedItems,
 				results = 0;
 
-			this.groupedItems.forEach(function (group, index) {
+			filteredGroupedItems.forEach(function (group, index) {
 				if (group.items) {
 					if (!sortOn) {
 						items[index] = group.items;
@@ -633,25 +684,31 @@
 						// Sort the reduced version of the array
 						that.$.sortWorker.process({
 							meta: {
-								group: group,
+								groupName: group.name,
+								groupId: group.id,
 								index: index
 							},
 							sortOn: 'value',
 							data: mappedItems
 						}, function (data) {
 							results += 1;
-							items[data.meta.index] = data.data.map(function (item, index) {
+							items[data.meta.index] =  {
+								name: data.meta.groupName,
+								id: data.meta.groupId
+							}
+							items[data.meta.index].items = data.data.map(function (item, index) {
 								return group.items[item.index];
 							});
 							if (results === numGroups) {
 								that.needs.filtering = true;
-								that.sortedGroupedItems = items;
+								that.sortedFilteredGroupedItems = items;
 							}
 						});
 					}
 				}
 			});
 		},
+
 		toggleExtraColumns: function (event, detail, sender) {
 			var item = event.target.templateInstance.model.model;
 			item.expanded = !item.expanded;
