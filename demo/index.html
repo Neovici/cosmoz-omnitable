@@ -14,7 +14,7 @@
 </head>
 <body>
 	<template is="dom-bind" id="t">
-		<cosmoz-i18next interpolation-prefix="$" interpolation-suffix="$" id="translations" translations="{{ translations }}"></cosmoz-i18next>
+		<cosmoz-i18next interpolation-prefix="{" interpolation-suffix="}" id="translations" translations="{{ translations }}"></cosmoz-i18next>
 		<div class="layout vertical fit">
 			<h1>Omnitable sample</h1>
 			<cosmoz-omnitable data="{{ data }}" class="flex" group-on="group">
@@ -23,6 +23,7 @@
 				<header id="date" type="date">Date</header>
 				<header id="group">Group</header>
 				<!-- <header id="amount">{{ _('Amount') }}</header> -->
+				<button action on-run="runAction">Hello</button>
 			</cosmoz-omnitable>
 		</div>
 	</template>
@@ -57,6 +58,10 @@
 		}
 
 		console.log('Generated ' + n + ' items for Omnitable');
+
+		t.runAction = function (event, detail) {
+			console.log('runAction', event, detail, detail.items);
+		};
 
 		t.translations = {
 			'Sort on:': 'Sort on'

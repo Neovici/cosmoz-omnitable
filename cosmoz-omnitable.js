@@ -146,13 +146,13 @@
 			if (this.selectedItems) {
 				dataIndex = this.selectedItems.indexOf(item);
 				if (dataIndex > -1) {
-					this.selectedItems.splice(dataIndex, 1);
+					this.splice('selectedItems', dataIndex, 1);
 					change = true;
 				}
 			}
 			dataIndex = this.data.indexOf(item);
 			if (dataIndex > -1) {
-				this.data.splice(dataIndex, 1);
+				this.splice('data', dataIndex, 1);
 				change = true;
 			}
 			if (change && item.checked) {
@@ -173,7 +173,7 @@
 				});
 			}
 		},
-		onAction: function (event, detail, element) {
+		onAction: function (event, detail) {
 			detail.item.dispatchEvent(new window.CustomEvent('run', {
 				bubbles: true,
 				cancelable: true,
@@ -182,7 +182,6 @@
 					items: this.selectedItems
 				}
 			}));
-			element.selected = undefined;
 			event.stopPropagation();
 		},
 		getSelection: function () {
@@ -262,12 +261,12 @@
 			if (item.checked) {
 				this.selectedItems = this.selectedItems || [];
 				if (this.selectedItems.indexOf(item) === -1) {
-					this.selectedItems.push(item);
+					this.push('selectedItems', item);
 				}
 			} else if (this.selectedItems) {
 				itemIndex = this.selectedItems.indexOf(item);
 				if (itemIndex > -1) {
-					this.selectedItems.splice(itemIndex, 1);
+					this.splice('selectedItems', itemIndex, 1);
 				}
 			}
 		},
@@ -860,7 +859,11 @@
 			if (obj instanceof Array && obj.length === 0) {
 				return true;
 			}
-			if (typeof obj === 'string' && obj.length === 0) {
+			var objType = typeof obj;
+			if (objType === 'string' && obj.length === 0) {
+				return true;
+			}
+			if (objType === 'number' && obj === 0) {
 				return true;
 			}
 			return false;

@@ -13,6 +13,7 @@
 <link rel="import" href="../cosmoz-web-worker/cosmoz-web-worker.html"/>
 <link rel="import" href="../cosmoz-autocomplete/cosmoz-autocomplete.html"/>
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html"/>
+<link rel="import" href="../cosmoz-bottom-bar/cosmoz-bottom-bar.html"/>
 
 <link rel="import" href="cosmoz-omnitable-style.html">
 <!--
@@ -127,7 +128,7 @@ with features like group count display and folding
 							<template>
 								<div class="item">
 									<div class$="{{ _computeItemClasses(item) }}">
-										<div class="row-checkbox" hidden$="{{ _hasActions }}">
+										<div class="row-checkbox" hidden$="{{ !_hasActions }}">
 											<div class="horizontal layout center center-justified">
 												<paper-checkbox checked="{{ item.checked }}" on-change="onItemCheckboxChange"></paper-checkbox>
 											</div>
@@ -180,7 +181,7 @@ with features like group count display and folding
 							<template>
 								<div class="horizontal layout center group-header" on-tap="toggleGroup">
 									<span hidden>{{fakeBinding}}</span>
-									<div hidden$="{{ _hasActions }}">
+									<div hidden$="{{ !_hasActions }}">
 										<paper-checkbox></paper-checkbox>
 									</div>
 									<div class="flex">
@@ -227,7 +228,7 @@ with features like group count display and folding
 					<div>Num items</div>
 				</div>
 				<!-- Wrap <content> directly in within the tag to not send "text" nodes -->
-				<cz-bottom-bar class="selection" matchparent info="{{ selectedItems.length }}" on-action="onAction" active$="{{ !isEmpty(selectedItems) }}"><content id="actions" select="[action]"></content></cz-bottom-bar>
+				<cosmoz-bottom-bar class="selection" match-parent info="{{ selectedItems.length }}" on-action="onAction" active$="{{ !isEmpty(selectedItems.length) }}"><content id="actions" select="[action]"></content></cosmoz-bottom-bar>
 
 			</div>
 		</div>
