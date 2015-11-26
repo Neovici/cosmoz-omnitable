@@ -8,27 +8,48 @@
 
 	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 	<link rel="import" href="../cosmoz-omnitable.html">
-	<link rel="import" href="../../iron-flex-layout/iron-flex-layout.html"/>
-	<link rel="import" href="../../iron-flex-layout/classes/iron-flex-layout.html"/>
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
+	<link rel="import" href="../../iron-flex-layout/classes/iron-flex-layout.html">
+	<link rel="import" href="../../paper-button/paper-button.html">
+	<link rel="import" href="../../paper-dropdown-menu/paper-dropdown-menu.html">
+	<link rel="import" href="../../paper-menu/paper-menu.html">
+	<link rel="import" href="../../paper-item/paper-item.html">
+	<link rel="import" href="../../cosmoz-i18next/cosmoz-i18next.html">
 
 </head>
-<body>
+<body class="fullbleed">
+	<dom-module id="x-page">
+		<template>
+<!-- 			<cosmoz-i18next interpolation-prefix="$" interpolation-suffix="$" id="translations"></cosmoz-i18next>
+ -->
+			<div class="layout vertical fit">
+				<h3>Cosmoz omnitable demo</h3>
+				<div>
+					<paper-dropdown-menu label="Language">
+						<paper-menu class="dropdown-content" attr-for-selected="data-language" selected="{{language}}">
+							<paper-item data-language="fr">French</paper-item>
+							<paper-item data-language="en">English</paper-item>
+						</paper-menu>
+					</paper-dropdown-menu>
+				</div>
+				<cosmoz-omnitable data="{{ data }}" class="flex" selection-enabled group-on="{{group}}">
+					<header id="id">Id</header>
+					<header id="name">Name</header>
+					<header id="date" type="date">Date</header>
+					<header id="group">Group</header>
+					<!-- <header id="amount">{{ _('Amount') }}</header> -->
+					<button action on-run="runAction">Hello</button>
+				</cosmoz-omnitable>
+			</div>
+		</template>
+	</dom-module>
+
 	<template is="dom-bind" id="t">
-		<cosmoz-i18next interpolation-prefix="{" interpolation-suffix="}" id="translations" translations="{{ translations }}"></cosmoz-i18next>
-		<div class="layout vertical fit">
-			<h1>Omnitable sample</h1>
-			<cosmoz-omnitable data="{{ data }}" class="flex" group-on="group">
-				<header id="id">Id</header>
-				<header id="name">Name</header>
-				<header id="date" type="date">Date</header>
-				<header id="group">Group</header>
-				<!-- <header id="amount">{{ _('Amount') }}</header> -->
-				<button action on-run="runAction">Hello</button>
-			</cosmoz-omnitable>
-		</div>
+		<x-page id="page"></x-page>
 	</template>
+
 	<script type="text/javascript">
-/*global document, window */
+/*global document, window, Cosmoz */
 (function () {
 	"use strict";
 	window.addEventListener('WebComponentsReady', function () {
@@ -39,7 +60,8 @@
 			n = 0,
 			itemsCount,
 			group,
-			t = document.getElementById('t');
+			t = document.getElementById('t'),
+			page = document.getElementById('page');
 
 		for (i = 0; i < 30; i += 1) {
 			group =  'Group ' + i;
@@ -57,16 +79,43 @@
 			}
 		}
 
-		console.log('Generated ' + n + ' items for Omnitable');
+		Polymer({
+			is: 'x-page',
+			properties: {
+				language: {
+					type: String,
+					value: 'fr',
+					observer: '_languageChanged'
+				},
+				group: {
+					type: String
+				}
+			},
+			_languageChanged: function () {
+				if (this.allTranslations) {
+					this.translations = this.allTranslations[this.language];
+				}
+			},
+			ready: function () {
+				this.allTranslations = {
+					fr: {
+						'Group on': 'Regrouper par'
+					},
+					en: {
+						'Group on': 'Group on'
+					}
 
-		t.runAction = function (event, detail) {
-			console.log('runAction', event, detail, detail.items);
-		};
+				};
+				if (this.language) {
+					this.translations = this.allTranslations[this.language];
+				}
+				this.data = data;
+			},
+			runAction: function (event, detail) {
+				console.log('runAction', event, detail, detail.items);
+			}
+		});
 
-		t.translations = {
-			'Sort on:': 'Sort on'
-		};
-		t.data = data; //JSON.parse(tableData);
 	});
 }());
 	</script>

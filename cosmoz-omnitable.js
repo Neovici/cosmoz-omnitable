@@ -14,15 +14,10 @@
 				value: null
 			},
 
-			filterKick: {
-				type: Number,
-				value: 0
+			headers: {
+				type: Array,
+				notify: true
 			},
-
-			// filteredSortedGroupedItems: {
-			// 	type: Object,
-			// 	computed: 'filterSortedGroupedItems(sortedGroupedItems, filterKick)'
-			// },
 
 			forceMobile: {
 				type: Boolean,
@@ -45,14 +40,15 @@
 				value: true
 			},
 
-			headers: {
-				type: Array,
-				notify: true
-			},
-
 			noData: {
 				type: Boolean,
 				computed: 'isEmpty(data)'
+			},
+
+
+			selectionEnabled: {
+				type: Boolean,
+				value: false
 			},
 
 			selectedItems: {
@@ -66,10 +62,15 @@
 				value: false
 			},
 
-
 			sortOn: {
 				type: String,
-				value: "name"
+				value: 'name'
+			},
+
+			groupOn: {
+				type: String,
+				value: null,
+				observer: '_groupOnChanged'
 			},
 
 			groupKick: {
@@ -77,10 +78,9 @@
 				value: 0
 			},
 
-			groupOn: {
-				type: String,
-				value: null,
-				observer: '_groupOnChanged'
+			filterKick: {
+				type: Number,
+				value: 0
 			},
 
 			filteredItems: {
@@ -108,37 +108,33 @@
 			toggleGroupKick: {
 				type: Number,
 				value: 0
-			},
-
-			// private
-			_hasActions: {
-				type: Boolean,
-				value: false
 			}
 		},
-
-		behaviors: [
-			Cosmoz.TranslatableBehavior
-		],
 
 		observers: [
 			'_sortFilteredGroupedItems(filteredGroupedItems, sortOn)'
 		],
 
+		behaviors: [
+			Cosmoz.TranslatableBehavior
+		],
+
 		disabledHeaders: 0,
-		// help variable, by changing this variable, polymer gets a "kick" and refreshes. Same reasoning in similar variables below.
+
 		groupIndex: {},
+
 		needs: {},
+
 		_dataChanged: function () {
 			console.log('_dataChanged');
+
 			this.needs.grouping = true;
 			this.needs.filtering = true;
 			this.needs.sorting = true;
-			// Delay the computing of groupedItems property until domReady, i.e. until the headers are defined.
-			if (this.headers) {
+
+			if (this._webWorkerReady && this.headers) {
 				this.filterKick += 1;
 			}
-
 		},
 		removeItem: function (item) {
 			var dataIndex, change = false;
@@ -208,15 +204,20 @@
 			};
 			// TODO: cz.state.app.addEventListener('resize', this.updateWidths.bind(this));
 		},
+
 		attached: function () {
 			this._hasActions = Polymer.dom(this.$.actions).getDistributedNodes().length > 0;
 			this.setHeadersFromMarkup();
 			this.rendered = true;
 		},
+
 		_groupOnChanged: function (newValue, oldValue) {
 			this.needs.grouping = true;
-			this.groupKick += 1;
+			if (this.filteredItems) {
+				this.groupKick += 1;
+			}
 		},
+
 		onAllCheckboxChange: function (event, detail) {
 
 			if (event.target === null) {
@@ -310,6 +311,7 @@
 			this.needs.filtering = true;
 			this.filterKick += 1;
 		},
+
 		clearHeaderValues: function () {
 			if (!this.headers) {
 				return;
@@ -442,69 +444,6 @@
 			});
 		},
 
-		_filterItems : function (filterKick) {
-			if (!this.headers) {
-				return null;
-			}
-			if (!this.data || this.data.length === 0) {
-				this.needs.grouping = false;
-				this.needs.sorting = false;
-				this.needs.filtering = false;
-				return;
-			}
-
-			var
-				that = this,
-				filteredItems = [];
-
-			this.clearHeaderValues();
-
-			this.data.forEach(function (item, index) {
-				that.setHeaderValues(item);
-				if (that.needs.filtering) {
-					that.filterItem(item);
-				}
-				if (item.visible) {
-					filteredItems.push(item);
-				}
-			});
-			that.needs.filtering = false;
-			that.needs.grouping = true;
-			return filteredItems;
-		},
-
-		filterSortedGroupedItems: function (sortedGroupedItems, filterKick) {
-			if (!this.sortedGroupedItems) {
-				return null;
-			}
-
-			var that = this,
-				filteredGroupedItems = [];
-
-			this.clearHeaderValues();
-
-			this.sortedGroupedItems.forEach(function (groupItems, index) {
-				filteredGroupedItems[index] = {
-					name: groupItems.name,
-					id: groupItems.id,
-					items: []
-				};
-				groupItems.items.forEach(function (item, itemIndex) {
-					that.setHeaderValues(item);
-					if (that.needs.filtering) {
-						that.filterItem(item);
-					}
-					if (item.visible) {
-						filteredGroupedItems[index].items.push(item);
-						that.selectItem(item);
-					}
-				});
-			});
-
-			this.needs.filtering = false;
-			console.log('new filteredGroupedItems')
-			return filteredGroupedItems;
-		},
 		getHeader: function (id) {
 			var foundHeader;
 			this.headers.some(function (header, index) {
@@ -515,6 +454,7 @@
 			});
 			return foundHeader;
 		},
+
 		getHeadersWithoutGroupOnHeader: function (headers, groupOn, forceMobile) {
 			if (!this.headers) {
 				return;
@@ -531,84 +471,6 @@
 			return filteredHeaders;
 		},
 
-		_groupItems: function (filteredItems, groupOn) {
-			if (!this.headers) {
-				return null;
-			}
-
-			if (!filteredItems || filteredItems.length === 0) {
-				return;
-			}
-			if (!this.needs.grouping) {
-				return filteredItems;
-			}
-
-			this._groupOnHeader = this.getHeader(groupOn);
-
-			var groups = [],
-				itemStructure = {},
-				that = this;
-
-			if (groupOn) {
-				filteredItems.forEach(function (item, index) {
-					var groupOnValue = that.resolveProp(item, that.groupOn);
-					if (typeof groupOnValue === 'object') {
-						groupOnValue = that.renderObject(groupOnValue, false, that._groupOnHeader.type);
-					}
-					if (groupOnValue !== undefined) {
-						if (!itemStructure[groupOnValue]) {
-							itemStructure[groupOnValue] = [];
-						}
-						itemStructure[groupOnValue].push(item);
-					}
-				});
-			} else {
-				itemStructure[''] = this.data.slice(0);
-			}
-
-			Object.keys(itemStructure).forEach(function (key) {
-				groups.push({
-					name: key,
-					id: key,
-					items: itemStructure[key],
-					visible: true
-				});
-			});
-
-			groups.sort(function (a, b) {
-				var v1 = that.resolveProp(a.items[0], that.groupOn), v2 = that.resolveProp(b.items[0], that.groupOn);
-				if (typeof v1 === 'object' && typeof v2 === 'object') {
-					return cz.tools.sortObject(v1, v2);
-				}
-				if (typeof v1 === 'number' && typeof v2 === 'number') {
-					return v1 - v2;
-				}
-				if (typeof v1 === 'string' && typeof v2 === 'string') {
-					return v1 < v2 ? -1 : 1;
-				}
-				if (typeof v1 === 'boolean' && typeof v2 === 'boolean') {
-					if (v1 === v2) {
-						return 0;
-					}
-					return v1 ? -1 : 1;
-				}
-				console.warn('unsupported sort', typeof v1, v1, typeof v2, v2);
-				return 0;
-			});
-
-			if (this.hideButFirst && groups.length > 1) {
-				groups.forEach(function (group, index) {
-					if (index === 0) {
-						return;
-					}
-					group.visible = false;
-				});
-			}
-
-			this.needs.grouping = false;
-
-			return groups;
-		},
 		setHeadersFromMarkup: function () {
 			var ctx = this,
 				markupHeaders = Polymer.dom(this).querySelectorAll('header'),
@@ -654,6 +516,117 @@
 
 		_computeClass: function (data) {
 			console.log('_computeClass', data);
+		},
+
+		_filterItems : function (filterKick) {
+			if (!this.headers) {
+				return null;
+			}
+			if (!this.data || this.data.length === 0) {
+				this.needs.grouping = false;
+				this.needs.sorting = false;
+				this.needs.filtering = false;
+				return;
+			}
+
+			var
+				that = this,
+				filteredItems = [];
+
+			this.clearHeaderValues();
+
+			this.data.forEach(function (item, index) {
+				that.setHeaderValues(item);
+				if (that.needs.filtering) {
+					that.filterItem(item);
+				}
+				if (item.visible) {
+					filteredItems.push(item);
+				}
+			});
+			that.needs.filtering = false;
+			that.needs.grouping = true;
+			return filteredItems;
+		},
+
+
+		_groupItems: function (filteredItems, groupOn) {
+			if (!this.headers) {
+				return null;
+			}
+
+			if (!filteredItems || filteredItems.length === 0) {
+				return;
+			}
+			if (!this.needs.grouping) {
+				return filteredItems;
+			}
+
+			this._groupOnHeader = this.getHeader(groupOn);
+
+			var groups = [],
+				itemStructure = {},
+				that = this;
+
+			if (groupOn) {
+				filteredItems.forEach(function (item, index) {
+					var groupOnValue = that.resolveProp(item, that.groupOn);
+					if (typeof groupOnValue === 'object') {
+						groupOnValue = that.renderObject(groupOnValue, false, that._groupOnHeader.type);
+					}
+					if (groupOnValue !== undefined) {
+						if (!itemStructure[groupOnValue]) {
+							itemStructure[groupOnValue] = [];
+						}
+						itemStructure[groupOnValue].push(item);
+					}
+				});
+			} else {
+				itemStructure[''] = this.filteredItems;
+			}
+
+			Object.keys(itemStructure).forEach(function (key) {
+				groups.push({
+					name: key,
+					id: key,
+					items: itemStructure[key],
+					visible: true
+				});
+			});
+
+			groups.sort(function (a, b) {
+				var v1 = that.resolveProp(a.items[0], that.groupOn), v2 = that.resolveProp(b.items[0], that.groupOn);
+				if (typeof v1 === 'object' && typeof v2 === 'object') {
+					return cz.tools.sortObject(v1, v2);
+				}
+				if (typeof v1 === 'number' && typeof v2 === 'number') {
+					return v1 - v2;
+				}
+				if (typeof v1 === 'string' && typeof v2 === 'string') {
+					return v1 < v2 ? -1 : 1;
+				}
+				if (typeof v1 === 'boolean' && typeof v2 === 'boolean') {
+					if (v1 === v2) {
+						return 0;
+					}
+					return v1 ? -1 : 1;
+				}
+				console.warn('unsupported sort', typeof v1, v1, typeof v2, v2);
+				return 0;
+			});
+
+			if (this.hideButFirst && groups.length > 1) {
+				groups.forEach(function (group, index) {
+					if (index === 0) {
+						return;
+					}
+					group.visible = false;
+				});
+			}
+
+			this.needs.grouping = false;
+
+			return groups;
 		},
 
 		_sortFilteredGroupedItems: function (filteredGroupedItems, sortOn) {
@@ -712,6 +685,7 @@
 			var item = event.target.templateInstance.model.model;
 			item.expanded = !item.expanded;
 		},
+
 		toggleGroupVisibility: function (filteredSortedGroupedItems, toggleGroupKick) {
 			console.log('toggleGroupVisibility', filteredSortedGroupedItems);
 			var groups = [],
@@ -937,6 +911,13 @@
 		// TODO: Generalize into behavior, more args
 		_allTrue: function (arg1, arg2) {
 			return arg1 && arg2;
+		},
+
+		_onWebWorkerReady: function () {
+			this._webWorkerReady = true;
+			if (this.needs.filtering) {
+				this.filterKick += 1;
+			}
 		}
 	});
 }());

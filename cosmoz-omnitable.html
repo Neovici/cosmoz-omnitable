@@ -12,9 +12,8 @@
 <link rel="import" href="../cosmoz-grouped-list/cosmoz-grouped-list.html"/>
 <link rel="import" href="../cosmoz-web-worker/cosmoz-web-worker.html"/>
 <link rel="import" href="../cosmoz-autocomplete/cosmoz-autocomplete.html"/>
-<link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html"/>
+<link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 <link rel="import" href="../cosmoz-bottom-bar/cosmoz-bottom-bar.html"/>
-
 <link rel="import" href="cosmoz-omnitable-style.html">
 <!--
 `<cosmoz-omnitable>` is an example implementation of grouping for iron-list
@@ -39,7 +38,7 @@ with features like group count display and folding
 			}
 
 		</style>
-		<cosmoz-web-worker id="sortWorker">
+		<cosmoz-web-worker id="sortWorker" on-cosmoz-web-worker-ready="_onWebWorkerReady">
 			<script type="text/worker">
 				/*global onmessage, postMessage */
 				"use strict";
@@ -99,14 +98,13 @@ with features like group count display and folding
 
 		<div id="omnitable" class$="layout vertical {{ _getClass('simple-mobile-mode', simpleMobileMode) }}">
 			<div id="header" class="relative horizontal layout end">
-				<div class="row-checkbox" hidden$="{{ !_hasActions }}">
-					<div class="horizontal layout center center-justified">
-						<paper-checkbox checkable checked="{{ allCheckboxChecked }}" on-iron-change="onAllCheckboxChange" hidden$="{{ noData }}"></paper-checkbox>
-					</div>
+				<div class="row-checkbox" style="padding-bottom: 20px;" hidden$="{{ !selectionEnabled }}">
+					<paper-checkbox checkable checked="{{ allCheckboxChecked }}" on-iron-change="onAllCheckboxChange" hidden$="{{ noData }}">
+					</paper-checkbox>
 				</div>
 				<template is="dom-repeat" items="{{ headersWithoutGroupOnHeader }}" as="header" index-as="index">
 					<div class$="{{ _computeHeaderClasses(header.type, index) }}" hidden$="{{ header.disabled }}">
-						<cosmoz-autocomplete items="{{ header.values }}" placeholder="{{ header.name }}" selected-items="{{ header.filters }}" on-cosmoz-selected-items-changed="filterItems" flex$="{{ simpleMobileMode }}"></cosmoz-autocomplete>
+						<cosmoz-autocomplete items="{{ header.values }}" placeholder="{{ header.name }}" selected-items="{{ header.filters }}" on-cosmoz-selected-items-changed="filterItems" multi-selection flex$="{{ simpleMobileMode }}"></cosmoz-autocomplete>
 					</div>
 				</template>
 			</div>
@@ -116,8 +114,8 @@ with features like group count display and folding
 						<div class="layout horizontal start">
 							<iron-icon icon="icons:announcement"></iron-icon>
 							<div class="layout vertical">
-								<h3>{{ _('Working set empty') }}</h3>
-								<p>{{ _('No data to display.') }}</p>
+								<h3>{{ _('Working set empty', t) }}</h3>
+								<p>{{ _('No data to display.', t) }}</p>
 							</div>
 						</div>
 					</div>
@@ -128,7 +126,7 @@ with features like group count display and folding
 							<template>
 								<div class="item">
 									<div class$="{{ _computeItemClasses(item) }}">
-										<div class="row-checkbox" hidden$="{{ !_hasActions }}">
+										<div class="row-checkbox" hidden$="{{ !selectionEnabled }}">
 											<div class="horizontal layout center center-justified">
 												<paper-checkbox checked="{{ item.checked }}" on-change="onItemCheckboxChange"></paper-checkbox>
 											</div>
@@ -179,13 +177,15 @@ with features like group count display and folding
 						</item-template>
 						<item-template id="groupTemplate">
 							<template>
+								<!-- This is a workaround for issue https://github.com/Polymer/polymer/issues/3063 -->
+								<!-- Do not remove this line untile issue has been addressed -->
+								<span hidden="{{fakeBinding}}"></span>
 								<div class="horizontal layout center group-header" on-tap="toggleGroup">
-									<span hidden>{{fakeBinding}}</span>
-									<div hidden$="{{ !_hasActions }}">
-										<paper-checkbox></paper-checkbox>
+									<div hidden$="{{ !selectionEnabled }}">
+										<paper-checkbox ></paper-checkbox>
 									</div>
 									<div class="flex">
-										<span>{{_groupOnHeader.name}}</span>: <span>[[item.name]]</span>
+										<span>[[_groupOnHeader.name]]</span>: <span>[[item.name]]</span>
 									</div>
 									<div>[[ item.items.length ]]</div>
 									<iron-icon icon="[[ getFoldIcon(folded) ]]"></iron-icon>
@@ -197,12 +197,12 @@ with features like group count display and folding
 			</div>
 			<div id="footer" class="horizontal layout center">
 				<div class="horizontal layout flex center">
-					<div class="footer-control-set">
-						<iron-label class="footer-control-label" for="sort-on-selector">{{_('Sort on:')}}</iron-label>
+					<div class="footer-control">
+						<iron-label class="footer-control-label" for="sort-on-selector">{{_('Sort on', t)}}</iron-label>
 						<paper-dropdown-menu id="sort-on-selector" no-label-float class="footer-control">
 							<paper-menu class="dropdown-content menu" selected="{{ sortOn }}" attr-for-selected="id">
 								<paper-item id="">
-									<div style="white-space: nowrap; font-style: italic;">No sorting</div>
+									<div style="white-space: nowrap; font-style: italic;">{{_('No sorting', t)}}</div>
 								</paper-item>
 								<template is="dom-repeat" items="{{ headers }}" as="header">
 									<paper-item id="{{ header.id }}">{{ header.name }}</paper-item>
@@ -210,11 +210,11 @@ with features like group count display and folding
 							</paper-menu>
 						</paper-dropdown-menu>
 					</div>
-					<div class="footer-control-set">
-						<iron-label class="footer-control-label" for="group-on-selector">{{_('Group on:')}}</iron-label>
+					<div class="footer-control">
+						<iron-label class="footer-control-label" for="group-on-selector">{{_('Group on', t)}}</iron-label>
 						<paper-dropdown-menu id="group-on-selector" no-label-float class="footer-control">
 							<paper-menu class="dropdown-content menu" selected="{{ groupOn }}" attr-for-selected="id">
-								<paper-item id=""><i style="white-space: nowrap">No grouping</i></paper-item>
+								<paper-item id=""><i style="white-space: nowrap">{{_('No grouping', t)}}</i></paper-item>
 								<template is="dom-repeat" items="{{ headers }}" as="header">
 									<paper-item id="{{ header.id }}" hidden$="{{ _allTrue(header.mobile, simpleMobileMode) }}">{{ header.name }}</paper-item>
 								</template>
@@ -223,11 +223,10 @@ with features like group count display and folding
 					</div>
 				</div>
 				<div class="vertical layout center end-justified">
-					<span>{{ ngettext('{0} group', '{0} groups', toggledGroups.groups.length, t) }}</span><br/>
-					<span>{{ ngettext('{0} row', '{0} rows', data.length, t) }}</span>
-					<div>Num items</div>
+					<span>{{ ngettext('__0__ group', '__0__ groups', filteredGroupedItems.length, t) }}</span><br/>
+					<span>{{ ngettext('__0__ row', '__0__ rows', filteredItems.length, t) }}</span>
 				</div>
-				<!-- Wrap <content> directly in within the tag to not send "text" nodes -->
+
 				<cosmoz-bottom-bar class="selection" match-parent info="{{ selectedItems.length }}" on-action="onAction" active$="{{ !isEmpty(selectedItems.length) }}"><content id="actions" select="[action]"></content></cosmoz-bottom-bar>
 
 			</div>

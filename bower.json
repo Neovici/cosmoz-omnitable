@@ -25,18 +25,22 @@
     "polymer": "^1.0.0",
     "cosmoz-grouped-list": "Neovici/cosmoz-grouped-list#template-selector",
     "cosmoz-web-worker": "Neovici/cosmoz-web-worker#master",
-    "cosmoz-autocomplete": "neovici/cosmoz-autocomplete",
-    "cosmoz-i18next": "Neovici/cosmoz-i18next",
+    "cosmoz-autocomplete": "neovici/cosmoz-autocomplete#master",
+    "cosmoz-i18next": "Neovici/cosmoz-i18next#master",
+    "cosmoz-bottom-bar": "neovici/cosmoz-bottom-bar#master",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0.0",
     "iron-label": "PolymerElements/iron-label#^1.0.0",
     "paper-checkbox": "PolymerElements/paper-checkbox#^1.0.0",
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^1.0.0",
     "paper-menu": "PolymerElements/paper-menu#^1.0.0",
-    "paper-item": "PolymerElements/paper-item#^1.0.0",
-    "cosmoz-bottom-bar": "neovici/cosmoz-bottom-bar"
+    "paper-item": "PolymerElements/paper-item#^1.0.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
+    "paper-button": "PolymerElements/paper-button#^1.0.0"
+  },
+  "resolutions": {
+    "cosmoz-i18next": "master"
   }
 }
