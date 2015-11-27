@@ -10,34 +10,27 @@
 	<link rel="import" href="../cosmoz-omnitable.html">
 	<link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
 	<link rel="import" href="../../iron-flex-layout/classes/iron-flex-layout.html">
-	<link rel="import" href="../../paper-button/paper-button.html">
-	<link rel="import" href="../../paper-dropdown-menu/paper-dropdown-menu.html">
-	<link rel="import" href="../../paper-menu/paper-menu.html">
-	<link rel="import" href="../../paper-item/paper-item.html">
 	<link rel="import" href="../../cosmoz-i18next/cosmoz-i18next.html">
+	<script src="../../moment/moment.js"></script>
+	<script src="../../moment/locale/sv.js"></script>
 
 </head>
 <body class="fullbleed">
 	<dom-module id="x-page">
 		<template>
-<!-- 			<cosmoz-i18next interpolation-prefix="$" interpolation-suffix="$" id="translations"></cosmoz-i18next>
- -->
 			<div class="layout vertical fit">
 				<h3>Cosmoz omnitable demo</h3>
 				<div>
-					<paper-dropdown-menu label="Language">
-						<paper-menu class="dropdown-content" attr-for-selected="data-language" selected="{{language}}">
-							<paper-item data-language="fr">French</paper-item>
-							<paper-item data-language="en">English</paper-item>
-						</paper-menu>
-					</paper-dropdown-menu>
+					<button on-tap="changeData">New data set</button>
 				</div>
 				<cosmoz-omnitable data="{{ data }}" class="flex" selection-enabled group-on="{{group}}">
 					<header id="id">Id</header>
 					<header id="name">Name</header>
-					<header id="date" type="date">Date</header>
+					<header id="randomString">Random string</header>
+					<header id="amount" render-func="renderMoney">Amount</header>
+					<header id="date" type="date" render-func="Cosmoz.formatDate">Date</header>
 					<header id="group">Group</header>
-					<!-- <header id="amount">{{ _('Amount') }}</header> -->
+
 					<button action on-run="runAction">Hello</button>
 				</cosmoz-omnitable>
 			</div>
@@ -52,67 +45,81 @@
 /*global document, window, Cosmoz */
 (function () {
 	"use strict";
-	window.addEventListener('WebComponentsReady', function () {
-		var
-			data = [],
-			i,
-			j,
-			n = 0,
-			itemsCount,
-			group,
-			t = document.getElementById('t'),
-			page = document.getElementById('page');
 
-		for (i = 0; i < 30; i += 1) {
-			group =  'Group ' + i;
-			itemsCount = i * 2  + 1;
-			for (j = 0; j < itemsCount; j+= 1) {
-				data.push({
-					id: n,
-					name: group + ' item ' + j,
-					value: 0,
-					date: '2015-' + (i % 12 + 1) + '-' + (j % 28 + 1),
-					group: group
-
-				});
-				n += 1;
-			}
+	window.Cosmoz = {
+		formatDate: function (date) {
+			return moment(date).format('L');
 		}
+	};
+
+	moment.locale('sv');
+
+	window.addEventListener('WebComponentsReady', function () {
+
+		function getRandomInt(min, max) {
+ 			 return Math.floor(Math.random() * (max - min + 1)) + min;
+		}
+
+		function getRandomDate() {
+			return new Date(2015, getRandomInt(1, 12), getRandomInt(1, 28));
+		}
+
 
 		Polymer({
 			is: 'x-page',
 			properties: {
-				language: {
-					type: String,
-					value: 'fr',
-					observer: '_languageChanged'
-				},
 				group: {
 					type: String
 				}
 			},
-			_languageChanged: function () {
-				if (this.allTranslations) {
-					this.translations = this.allTranslations[this.language];
-				}
-			},
-			ready: function () {
-				this.allTranslations = {
-					fr: {
-						'Group on': 'Regrouper par'
-					},
-					en: {
-						'Group on': 'Group on'
-					}
 
-				};
-				if (this.language) {
-					this.translations = this.allTranslations[this.language];
+			_generateData: function () {
+				var
+					data = [],
+					groupsCount = getRandomInt(10, 15),
+					i,
+					j,
+					n = 0,
+					itemsCount,
+					group;
+
+				for (i = 0; i < groupsCount; i += 1) {
+					group =  'Group ' + i;
+					itemsCount = i * 2  + 1;
+					for (j = 0; j < itemsCount; j+= 1) {
+						data.push({
+							id: n,
+							name: group + ' item ' + j,
+							value: 0,
+							randomString: 'Random string ' + getRandomInt(1, 10),
+							date: getRandomDate(),
+							amount: {
+								amount: getRandomInt(10, 100),
+								currency: 'SEK'
+							},
+							group: group
+
+						});
+						n += 1;
+					}
 				}
-				this.data = data;
+				return data;
 			},
+
+			ready: function () {
+				this.changeData();
+			},
+
+			changeData: function () {
+				this.data = this._generateData();
+			},
+
 			runAction: function (event, detail) {
 				console.log('runAction', event, detail, detail.items);
+			},
+
+			renderMoney: function (money) {
+				return money.amount + ' ' + money.currency;
 			}
 		});
 

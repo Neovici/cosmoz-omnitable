@@ -293,7 +293,7 @@
 							filterFail = false;
 							return true;
 						}
-						if (typeof itemVal === 'object' && that.renderObject(itemVal, false, header.type) === headerFilter.label) {
+						if (typeof itemVal === 'object' && that.renderObject(itemVal, false, header) === headerFilter.label) {
 							filterFail = false;
 							return true;
 						}
@@ -329,31 +329,17 @@
 				return '';
 			}
 			var prop = this.resolveProp(item, header.id);
-			return this.renderObject(prop, ui, header.type);
+			return this.renderObject(prop, ui, header);
 		},
-		renderObject: function (obj, ui, type) {
+		renderObject: function (obj, ui, header) {
 			if (obj === undefined || obj === '') {
 				return '';
 			}
-			if (type) {
-				switch (type) {
-				case 'amount':
-				case 'money':
-					return cz.tools.money.render(obj, ui);
-				case 'date':
-				case 'datetime':
-					return obj;
-					// return cz.tools.date.render(obj, ui);
-				}
+
+			if (header.renderFunc) {
+				return header.renderFunc.call(this.dataHost, obj);
 			}
-			if (typeof obj !== 'object') {
-				return obj;
-			}
-			var ret = cz.tools.renderObject(obj, ui), uo = 'unknown object';
-			if (ret === uo) {
-				console.warn(uo, obj);
-			}
-			return ret;
+			return obj;
 		},
 		setHeaderValues: function (item) {
 			var that = this;
@@ -361,7 +347,7 @@
 				var
 					value = that.resolveProp(item, header.id),
 					hasValue = false,
-					label = that.renderObject(value, false, header.type);
+					label = that.renderObject(value, false, header);
 
 				header.values.some(function (headerValue, headerValueIndex) {
 					if (headerValue.label === label) {
@@ -471,6 +457,31 @@
 			return filteredHeaders;
 		},
 
+		_getFunctionByName: function (name, context) {
+			if (!name) {
+				return undefined;
+			}
+
+			var
+				parts = name.split('.'),
+				func,
+				funcName,
+				context,
+				i;
+			if (parts.length == 1) {
+				console.log('host function');
+				func = this.dataHost[name];
+			} else {
+				var funcName = parts.pop();
+  				for(i = 0; i < parts.length; i++) {
+    				context = context[parts[i]];
+  				}
+  				func = context[funcName];
+			}
+			return typeof func == 'function' ? func : undefined;
+
+		},
+
 		setHeadersFromMarkup: function () {
 			var ctx = this,
 				markupHeaders = Polymer.dom(this).querySelectorAll('header'),
@@ -486,6 +497,7 @@
 					name: Polymer.dom(headerElement).innerHTML,
 					priority: parseInt(headerElement.getAttribute('priority') || 0, 10),
 					type: headerElement.getAttribute('type') || 'default',
+					renderFunc: ctx._getFunctionByName(headerElement.getAttribute('render-func'), window),
 					values: [],
 					filters: [],
 					wrap: headerElement.hasAttribute('wrap')
@@ -572,7 +584,7 @@
 				filteredItems.forEach(function (item, index) {
 					var groupOnValue = that.resolveProp(item, that.groupOn);
 					if (typeof groupOnValue === 'object') {
-						groupOnValue = that.renderObject(groupOnValue, false, that._groupOnHeader.type);
+						groupOnValue = that.renderObject(groupOnValue, false, that._groupOnHeader);
 					}
 					if (groupOnValue !== undefined) {
 						if (!itemStructure[groupOnValue]) {
