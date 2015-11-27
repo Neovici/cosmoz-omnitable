@@ -99,7 +99,7 @@ with features like group count display and folding
 		<div id="omnitable" class$="layout vertical {{ _getClass('simple-mobile-mode', simpleMobileMode) }}">
 			<div id="header" class="relative horizontal layout end">
 				<div class="row-checkbox" style="padding-bottom: 20px;" hidden$="{{ !selectionEnabled }}">
-					<paper-checkbox checkable checked="{{ allCheckboxChecked }}" on-iron-change="onAllCheckboxChange" hidden$="{{ noData }}">
+					<paper-checkbox checkable checked="{{ allCheckboxChecked }}" on-change="onAllCheckboxChange" hidden$="{{ noData }}">
 					</paper-checkbox>
 				</div>
 				<template is="dom-repeat" items="{{ headersWithoutGroupOnHeader }}" as="header" index-as="index">
@@ -125,7 +125,7 @@ with features like group count display and folding
 						<item-template id="itemTemplate">
 							<template>
 								<div class="item">
-									<div class$="{{ _computeItemClasses(item) }}">
+									<div class$="{{ _computeItemClasses(item.*) }}">
 										<div class="row-checkbox" hidden$="{{ !selectionEnabled }}">
 											<div class="horizontal layout center center-justified">
 												<paper-checkbox checked="{{ item.checked }}" on-change="onItemCheckboxChange"></paper-checkbox>
@@ -180,15 +180,15 @@ with features like group count display and folding
 								<!-- This is a workaround for issue https://github.com/Polymer/polymer/issues/3063 -->
 								<!-- Do not remove this line untile issue has been addressed -->
 								<span hidden="{{fakeBinding}}"></span>
-								<div class="horizontal layout center group-header" on-tap="toggleGroup">
+								<div class="horizontal layout center group-header">
 									<div hidden$="{{ !selectionEnabled }}">
-										<paper-checkbox ></paper-checkbox>
+										<paper-checkbox checked="{{item.checked}}" on-change="onGroupCheckboxChange"></paper-checkbox>
 									</div>
 									<div class="flex">
 										<span>[[_groupOnHeader.name]]</span>: <span>[[item.name]]</span>
 									</div>
 									<div>[[ item.items.length ]]</div>
-									<iron-icon icon="[[ getFoldIcon(folded) ]]"></iron-icon>
+									<iron-icon icon="[[ getFoldIcon(folded) ]]" on-tap="toggleGroup"></iron-icon>
 								</div>
 							</template>
 						</item-template>

@@ -228,35 +228,47 @@
 				checked = element.checked,
 				that = this;
 
-			if (!this.groupedItems) {
+			if (!this.sortedFilteredGroupedItems) {
 				return;
 			}
 
-			this.groupedItems.forEach(function (group, index) {
-				group.checked = checked;
+			this.sortedFilteredGroupedItems.forEach(function (group, index) {
+				that.setGroupProperty(index, "checked", checked);
 				that.selectGroupItems(group);
 			});
 		},
-		onGroupCheckboxChange: function (event, detail, element) {
-			var group = event.target.templateInstance.model.groupModel;
+		onGroupCheckboxChange: function (event) {
+			var group = event.model.item;
 			this.selectGroupItems(group);
+			event.preventDefault();
+			event.stopPropagation();
 		},
 		onItemCheckboxChange: function (event, detail) {
-			var item = event.model.__data__.item;
+			var item = event.model.item;
 			this.selectItem(item);
 		},
 		selectGroupItems: function (group) {
-			var that = this,
-				groupIndex = this.groupedItems.indexOf(group),
-				groupGroup = this.filteredSortedGroupedItems[groupIndex];
+			var
+				that = this,
+				groupIndex = this.sortedFilteredGroupedItems.indexOf(group);
 
-			groupGroup.forEach(function (item, index) {
-				item.checked = group.checked;
+			group.items.forEach(function (item, index) {
+				that.setItemPropery(groupIndex, index, 'checked', group.checked);
+
 				if (!item.placeholder) {
 					that.selectItem(item);
 				}
 			});
 		},
+
+		setItemPropery: function (groupIndex, itemIndex, path, value) {
+			this.set('sortedFilteredGroupedItems.#' + groupIndex + '.items.#' + itemIndex + '.' + path, value);
+		},
+
+		setGroupProperty: function (groupIndex, path, value) {
+			this.set('sortedFilteredGroupedItems.#' + groupIndex + '.' + path, value);
+		},
+
 		selectItem: function (item) {
 			var itemIndex;
 			if (item.checked) {
@@ -899,8 +911,10 @@
 			].join(" ");
 		},
 
-		_computeItemClasses: function (item) {
-			var classes = [
+		_computeItemClasses: function (change) {
+			var
+				item = change.base,
+				classes = [
 				'item-row'
 			];
 			if (item.checked) {
