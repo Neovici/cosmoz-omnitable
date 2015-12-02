@@ -17,27 +17,33 @@ gulp.task('update', function () {
 				var repo = 'bower_components' + path.sep + bower_dir;
 				fs.lstat(repo, function (err, stats) {
 					if (stats.isSymbolicLink()) {
-						console.log('repo needs git pull:' + repo);
-						exec('git status --porcelain', {
-							cwd: repo
-						}, function (err, stdout, stderr) {
+						fs.realpath(repo, function (err, resolvedPath) {
 							if (err) {
-								console.error("Gah error! ", err);
+								console.error("Gah error! ", err, resolvedPath);
 								return;
 							}
-							var cmd = 'git pull',
-								needs_stash = stdout.length > 0;
-							if (needs_stash) {
-								cmd = 'git stash;' + cmd + ';git stash pop';
-							}
-							exec(cmd, {
-								cwd: repo
+							console.log('repo needs git pull:' + resolvedPath);
+							exec('git status --porcelain', {
+								cwd: resolvedPath
 							}, function (err, stdout, stderr) {
-								console.log(repo, 'pull done!');
 								if (err) {
-									console.error("Gah error! ", err, stdout, stderr);
+									console.error("Gah error! ", err);
 									return;
 								}
+								var cmd = 'git pull',
+									needs_stash = stdout.length > 0;
+								if (needs_stash) {
+									cmd = 'git stash;' + cmd + ';git stash pop';
+								}
+								exec(cmd, {
+									cwd: resolvedPath
+								}, function (err, stdout, stderr) {
+									console.log(resolvedPath, 'pull done!');
+									if (err) {
+										console.error("Gah error! ", err, stdout, stderr);
+										return;
+									}
+								});
 							});
 						});
 					}
