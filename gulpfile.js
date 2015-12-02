@@ -39,7 +39,7 @@ gulp.task('update', function () {
 								if (needs_stash) {
 									gitRun('git stash', resolvedPath, function (output) {
 										gitRun('git pull', resolvedPath, function (output) {
-											gitRun('git stash', resolvedPath, function (output) {
+											gitRun('git stash pop', resolvedPath, function (output) {
 												console.log('stash pull stash done');
 											});
 										});
