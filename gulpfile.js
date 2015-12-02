@@ -4,7 +4,18 @@
 var fs = require('fs'),
 	gulp = require('gulp'),
 	path = require('path'),
-	exec = require('child_process').exec;
+	exec = require('child_process').exec,
+	gitRun = function (cmd, cwd, callback) {
+		exec(cmd, {
+			cwd: cwd
+		}, function (err, stdout, stderr) {
+			if (err) {
+				console.error("Gah error! ", err, stdout, stderr);
+				return;
+			}
+			callback(stdout);
+		});
+	};
 
 gulp.task('update', function () {
 	fs.readdir('bower_components', function (err, bower_dirs) {
@@ -23,27 +34,21 @@ gulp.task('update', function () {
 								return;
 							}
 							console.log('repo needs git pull:' + resolvedPath);
-							exec('git status --porcelain', {
-								cwd: resolvedPath
-							}, function (err, stdout, stderr) {
-								if (err) {
-									console.error("Gah error! ", err);
-									return;
-								}
-								var cmd = 'git pull',
-									needs_stash = stdout.length > 0;
+							gitRun('git status --porcelain', resolvedPath, function (output) {
+								var needs_stash = output.length > 0;
 								if (needs_stash) {
-									cmd = 'git stash;' + cmd + ';git stash pop';
+									gitRun('git stash', resolvedPath, function (output) {
+										gitRun('git pull', resolvedPath, function (output) {
+											gitRun('git stash', resolvedPath, function (output) {
+												console.log('stash pull stash done');
+											});
+										});
+									});
+								} else {
+									gitRun('git pull', resolvedPath, function (output) {
+										console.log('pull done');
+									});
 								}
-								exec(cmd, {
-									cwd: resolvedPath
-								}, function (err, stdout, stderr) {
-									console.log(resolvedPath, 'pull done!');
-									if (err) {
-										console.error("Gah error! ", err, stdout, stderr);
-										return;
-									}
-								});
 							});
 						});
 					}
