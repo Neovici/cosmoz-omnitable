@@ -96,7 +96,7 @@ with features like group count display and folding
 			</script>
 		</cosmoz-web-worker>
 
-		<div id="omnitable" class$="layout vertical {{ _getClass('simple-mobile-mode', simpleMobileMode) }}">
+		<div id="omnitable" class$="layout vertical flex {{ _getClass('simple-mobile-mode', simpleMobileMode) }}">
 			<div id="header" class="relative horizontal layout end">
 				<div class="row-checkbox" style="padding-bottom: 20px;" hidden$="{{ !selectionEnabled }}">
 					<paper-checkbox checkable checked="{{ allCheckboxChecked }}" on-change="onAllCheckboxChange" hidden$="{{ noData }}">
@@ -223,12 +223,10 @@ with features like group count display and folding
 					</div>
 				</div>
 				<div class="vertical layout center end-justified">
-					<span>{{ ngettext('__0__ group', '__0__ groups', filteredGroupedItems.length, t) }}</span><br/>
-					<span>{{ ngettext('__0__ row', '__0__ rows', filteredItems.length, t) }}</span>
+					<span>{{ ngettext('{0} group', '{0} groups', filteredGroupedItems.length, t) }}</span><br/>
+					<span>{{ ngettext('{0} row', '{0} rows', filteredItems.length, t) }}</span>
 				</div>
-
 				<cosmoz-bottom-bar class="selection" match-parent info="{{ selectedItems.length }}" on-action="onAction" active$="{{ !isEmpty(selectedItems.length) }}"><content id="actions" select="[action]"></content></cosmoz-bottom-bar>
-
 			</div>
 		</div>
 	</template>

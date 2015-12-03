@@ -927,11 +927,7 @@
 		},
 
 		_getClass: function (className, arg) {
-			var classAttr = 'layout vertical fit';
-			if (arg) {
-				classAttr = classAttr + ' ' + className;
-			}
-			return classAttr;
+			return arg ? className : '';
 		},
 
 		// TODO: Generalize into behavior, more args
