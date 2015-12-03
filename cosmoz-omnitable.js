@@ -481,7 +481,7 @@
 				context,
 				i;
 			if (parts.length == 1) {
-				console.log('host function');
+				console.log('host function', name);
 				func = this.dataHost[name];
 			} else {
 				var funcName = parts.pop();
@@ -497,7 +497,8 @@
 		setHeadersFromMarkup: function () {
 			var ctx = this,
 				markupHeaders = Polymer.dom(this).querySelectorAll('header'),
-				mobileHeaders = [], newHeaders = [];
+				mobileHeaders = [],
+				newHeaders = [];
 
 			markupHeaders.forEach(function (headerElement, index) {
 				var header = {
@@ -509,11 +510,11 @@
 					name: Polymer.dom(headerElement).innerHTML,
 					priority: parseInt(headerElement.getAttribute('priority') || 0, 10),
 					type: headerElement.getAttribute('type') || 'default',
-					renderFunc: ctx._getFunctionByName(headerElement.getAttribute('render-func'), window),
 					values: [],
 					filters: [],
 					wrap: headerElement.hasAttribute('wrap')
 				};
+				header.renderFunc = ctx._getFunctionByName(headerElement.getAttribute('render-func') || 'render' + header.type.charAt(0).toUpperCase() + header.type.substr(1), window);
 				mobileHeaders.push(header);
 				newHeaders.push(header);
 			});
