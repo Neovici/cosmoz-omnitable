@@ -116,8 +116,13 @@
 		],
 
 		behaviors: [
+			Polymer.IronResizableBehavior,
 			Cosmoz.TranslatableBehavior
 		],
+
+		listeners: {
+			'iron-resize': 'updateWidths'
+		},
 
 		disabledHeaders: 0,
 
@@ -760,11 +765,18 @@
 			if (!this.rendered) {
 				return;
 			}
-			var body = this.$ ? this.$.body : null, bigger = event && event.detail && event.detail.bigger, coreList, fits, headerTds, widthSetter, widthTds;
+			var body = this.$ ? this.$.body : null,
+				bigger = event && event.detail && event.detail.bigger,
+				coreList,
+				fits,
+				headerTds,
+				widthSetter,
+				widthTds;
+
 			if (!body) {
 				return;
 			}
-			coreList = Polymer.dom(body).querySelector('#groupedList');
+			coreList = this.$$('#groupedList');
 			fits = coreList.scrollWidth <= coreList.clientWidth;
 			/**
 			* To prevent infinite loops by multiple events, we need to check for 'bigger' events first
@@ -807,7 +819,7 @@
 				this.async(this.disableColumn);
 				return;
 			}
-			widthSetter = Polymer.dom(coreList).querySelector('.width-setter');
+			widthSetter = coreList.$$('template-selector:not([hidden]) .item:not([style])');
 			if (widthSetter === null) {
 				return;
 			}
@@ -821,7 +833,9 @@
 				});
 			} else {
 				widthTds.forEach(function (element, index) {
-					var headerElement = headerTds[index], csElement = window.getComputedStyle(element, null), newWidth = element.clientWidth - parseInt(csElement.getPropertyValue('padding-left'), 10) - parseInt(csElement.getPropertyValue('padding-right'), 10);
+					var headerElement = headerTds[index],
+						csElement = window.getComputedStyle(element, null),
+						newWidth = element.clientWidth - parseInt(csElement.getPropertyValue('padding-left'), 10) - parseInt(csElement.getPropertyValue('padding-right'), 10);
 					headerElement.style.width = newWidth + 'px';
 					headerElement.style.maxWidth = newWidth + 'px';
 				});

@@ -27,6 +27,9 @@
 					<header id="id">Id</header>
 					<header id="name">Name</header>
 					<header id="randomString">Random string</header>
+					<header id="randomString2">Random string 2</header>
+					<header id="randomString3">Random string 3</header>
+					<header id="randomString4">Random string 4</header>
 					<header id="amount" render-func="renderMoney">Amount</header>
 					<header id="date" type="date" render-func="Cosmoz.formatDate">Date</header>
 					<header id="group">Group</header>
@@ -92,6 +95,9 @@
 							name: group + ' item ' + j,
 							value: 0,
 							randomString: 'Random string ' + getRandomInt(1, 10),
+							randomString2: 'Random string 2 ' + getRandomInt(1, 10),
+							randomString3: 'Random string 3 ' + getRandomInt(1, 10),
+							randomString4: 'Random string 4 ' + getRandomInt(1, 10),
 							date: getRandomDate(),
 							amount: {
 								amount: getRandomInt(10, 100),
