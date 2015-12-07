@@ -181,7 +181,7 @@ with features like group count display and folding
 								<!-- Do not remove this line untile issue has been addressed -->
 								<span hidden="{{fakeBinding}}"></span>
 								<div class="horizontal layout center group-header">
-									<div hidden$="{{ !selectionEnabled }}">
+									<div class="row-checkbox" hidden$="{{ !selectionEnabled }}">
 										<paper-checkbox checked="{{item.checked}}" on-change="onGroupCheckboxChange"></paper-checkbox>
 									</div>
 									<div class="flex">

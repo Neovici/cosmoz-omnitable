@@ -458,7 +458,7 @@
 			return foundHeader;
 		},
 
-		getHeadersWithoutGroupOnHeader: function (headers, groupOn, forceMobile) {
+		getHeadersWithoutGroupOnHeader: function (headersNotify, sortedFilteredGroupedItems, groupOn, forceMobile) {
 			if (!this.headers) {
 				return;
 			}
