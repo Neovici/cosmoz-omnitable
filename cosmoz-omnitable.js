@@ -704,6 +704,7 @@
 							if (results === numGroups) {
 								that.needs.filtering = true;
 								that.sortedFilteredGroupedItems = items;
+								that.async(that.updateWidths);
 							}
 						});
 					}
