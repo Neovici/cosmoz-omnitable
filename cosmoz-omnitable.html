@@ -199,7 +199,7 @@ with features like group count display and folding
 				<div class="horizontal layout flex center">
 					<div class="footer-control">
 						<iron-label class="footer-control-label" for="sort-on-selector">{{_('Sort on', t)}}</iron-label>
-						<paper-dropdown-menu vertical-align="bottom" id="sort-on-selector" no-label-float class="footer-control">
+						<paper-dropdown-menu vertical-align="bottom" id="sort-on-selector" no-label-float>
 							<paper-listbox class="dropdown-content menu" selected="{{ sortOn }}" attr-for-selected="id">
 								<paper-item id="">
 									<div style="white-space: nowrap; font-style: italic;">{{_('No sorting', t)}}</div>
@@ -212,7 +212,7 @@ with features like group count display and folding
 					</div>
 					<div class="footer-control">
 						<iron-label class="footer-control-label" for="group-on-selector">{{_('Group on', t)}}</iron-label>
-						<paper-dropdown-menu vertical-align="bottom" id="group-on-selector" no-label-float class="footer-control">
+						<paper-dropdown-menu vertical-align="bottom" id="group-on-selector" no-label-float>
 							<paper-listbox class="dropdown-content menu" selected="{{ groupOn }}" attr-for-selected="id">
 								<paper-item id=""><i style="white-space: nowrap">{{_('No grouping', t)}}</i></paper-item>
 								<template is="dom-repeat" items="{{ headers }}" as="header">
@@ -222,8 +222,8 @@ with features like group count display and folding
 						</paper-dropdown-menu>
 					</div>
 				</div>
-				<div class="vertical layout center end-justified">
-					<span>{{ ngettext('{0} group', '{0} groups', filteredGroupedItems.length, t) }}</span><br/>
+				<div id="footerStats" class="vertical layout end">
+					<span>{{ ngettext('{0} group', '{0} groups', filteredGroupedItems.length, t) }}</span>
 					<span>{{ ngettext('{0} row', '{0} rows', filteredItems.length, t) }}</span>
 				</div>
 				<cosmoz-bottom-bar class="selection" match-parent info="{{ selectedItems.length }}" on-action="onAction" active$="{{ !isEmpty(selectedItems.length) }}"><content id="actions" select="[action]"></content></cosmoz-bottom-bar>
