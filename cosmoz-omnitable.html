@@ -7,7 +7,7 @@
 <link rel="import" href="../iron-label/iron-label.html"/>
 <link rel="import" href="../paper-checkbox/paper-checkbox.html"/>
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html"/>
-<link rel="import" href="../paper-menu/paper-menu.html"/>
+<link rel="import" href="../paper-listbox/paper-listbox.html"/>
 <link rel="import" href="../paper-item/paper-item.html"/>
 <link rel="import" href="../cosmoz-grouped-list/cosmoz-grouped-list.html"/>
 <link rel="import" href="../cosmoz-web-worker/cosmoz-web-worker.html"/>
@@ -199,26 +199,26 @@ with features like group count display and folding
 				<div class="horizontal layout flex center">
 					<div class="footer-control">
 						<iron-label class="footer-control-label" for="sort-on-selector">{{_('Sort on', t)}}</iron-label>
-						<paper-dropdown-menu id="sort-on-selector" no-label-float class="footer-control">
-							<paper-menu class="dropdown-content menu" selected="{{ sortOn }}" attr-for-selected="id">
+						<paper-dropdown-menu vertical-align="bottom" id="sort-on-selector" no-label-float class="footer-control">
+							<paper-listbox class="dropdown-content menu" selected="{{ sortOn }}" attr-for-selected="id">
 								<paper-item id="">
 									<div style="white-space: nowrap; font-style: italic;">{{_('No sorting', t)}}</div>
 								</paper-item>
 								<template is="dom-repeat" items="{{ headers }}" as="header">
 									<paper-item id="{{ header.id }}">{{ header.name }}</paper-item>
 								</template>
-							</paper-menu>
+							</paper-listbox>
 						</paper-dropdown-menu>
 					</div>
 					<div class="footer-control">
 						<iron-label class="footer-control-label" for="group-on-selector">{{_('Group on', t)}}</iron-label>
-						<paper-dropdown-menu id="group-on-selector" no-label-float class="footer-control">
-							<paper-menu class="dropdown-content menu" selected="{{ groupOn }}" attr-for-selected="id">
+						<paper-dropdown-menu vertical-align="bottom" id="group-on-selector" no-label-float class="footer-control">
+							<paper-listbox class="dropdown-content menu" selected="{{ groupOn }}" attr-for-selected="id">
 								<paper-item id=""><i style="white-space: nowrap">{{_('No grouping', t)}}</i></paper-item>
 								<template is="dom-repeat" items="{{ headers }}" as="header">
 									<paper-item id="{{ header.id }}" hidden$="{{ _allTrue(header.mobile, simpleMobileMode) }}">{{ header.name }}</paper-item>
 								</template>
-							</paper-menu>
+							</paper-listbox>
 						</paper-dropdown-menu>
 					</div>
 				</div>

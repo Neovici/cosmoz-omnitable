@@ -23,7 +23,7 @@
 				<div>
 					<button on-tap="changeData">New data set</button>
 				</div>
-				<cosmoz-omnitable data="{{ data }}" class="flex" selection-enabled group-on="{{group}}">
+				<cosmoz-omnitable data="{{ data }}" class="flex" selection-enabled group-on="group">
 					<header id="id">Id</header>
 					<header id="name">Name</header>
 					<header id="randomString">Random string</header>
@@ -45,7 +45,7 @@
 	</template>
 
 	<script type="text/javascript">
-/*global document, window, Cosmoz */
+/*global document, moment, window, Cosmoz */
 (function () {
 	"use strict";
 
@@ -70,11 +70,6 @@
 
 		Polymer({
 			is: 'x-page',
-			properties: {
-				group: {
-					type: String
-				}
-			},
 
 			_generateData: function () {
 				var

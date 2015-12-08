@@ -31,9 +31,9 @@
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0.0",
     "iron-label": "PolymerElements/iron-label#^1.0.0",
     "paper-checkbox": "PolymerElements/paper-checkbox#^1.0.0",
-    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^1.0.0",
-    "paper-menu": "PolymerElements/paper-menu#^1.0.0",
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^1.1.1",
     "paper-item": "PolymerElements/paper-item#^1.0.0",
+    "paper-listbox": "polymerelements/paper-listbox#~1.1.0",
     "iron-resizable-behavior": "polymerelements/iron-resizable-behavior#~1.0.2"
   },
   "devDependencies": {
