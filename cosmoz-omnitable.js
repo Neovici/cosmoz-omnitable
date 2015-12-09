@@ -778,6 +778,11 @@
 				return;
 			}
 			coreList = this.$$('#groupedList');
+
+			// TODO(pasleq): have encountered situations where coreList was not available yet. Should check why.
+			if (!coreList) {
+				return;
+			}
 			fits = coreList.scrollWidth <= coreList.clientWidth;
 			/**
 			* To prevent infinite loops by multiple events, we need to check for 'bigger' events first
