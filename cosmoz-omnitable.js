@@ -461,7 +461,7 @@
 			return filteredHeaders;
 		},
 
-		_getFunctionByName: function (name, contextParam) {
+		_getFunctionByName: function (name, context) {
 			if (!name) {
 				return undefined;
 			}
@@ -470,7 +470,6 @@
 				parts = name.split('.'),
 				func,
 				funcName,
-				context,
 				i;
 			if (parts.length === 1) {
 				console.log('host function', name);
@@ -738,23 +737,26 @@
 		 * @memberOf element/cz-omnitable
 		 */
 		updateWidths: function (event, detail, a) {
+
 			if (!this.rendered) {
 				return;
 			}
+
 			var body = this.$ ? this.$.body : null,
 				bigger,
 				groupedList,
 				groupedListList,
 				fits,
 				headerTds,
+				visibleColumns = this.columnHeaders.length,
+				second = (event && event.detail && event.detail.second) || false,
 				widthSetter,
 				widthTds;
 
 			if (!body) {
 				return;
 			}
-			bigger = body.clientWidth > this._previousWidth;
-			this._previousWidth = body.clientWidth;
+
 			groupedList = this.$$('#groupedList');
 
 			// TODO(pasleq): have encountered situations where groupedList was not available yet. Should check why.
@@ -765,6 +767,16 @@
 			// FIXME: Ugly to dive into component local dom
 			groupedListList = groupedList.$.list;
 			fits = groupedListList.scrollWidth <= groupedListList.clientWidth;
+			/* Weird bug
+			** In certain scenarios (sizing the window so that a column barely fits)
+			** body.clientWidth actually expands by itself, causing a 'bigger' event.
+			** This triggers a resize scale up, which adds a column, that doesn't fit, causing a resize down.
+			** = endless loop.
+			** Since 'disableColumn' doesn't send any parameters to 'updateWidths', we can check for an event
+			** parameter = not caused by 'disableColumn' but rather 'enableColumn' or actual resize.
+			*/
+			bigger = body.clientWidth > this._previousWidth && event;
+			this._previousWidth = body.clientWidth;
 			/**
 			* To prevent infinite loops by multiple events, we need to check for 'bigger' events first
 			* to avoid triggering a 'disableColumn' action in the upscaling process.
@@ -783,14 +795,10 @@
 				 * * it's the second scale up step - scalingup set by first event and detail.second
 				 */
 				/**
-				 * Convert undefined to false
-				 */
-				event.detail.second = event.detail.second || false;
-				/**
 				 * Make sure to sync scalingUp and detail.second since a mismatch can occur if a
 				 * 'resize' triggers a scalingUp process that hasn't completed.
 				 */
-				if (this.scalingUp === event.detail.second) {
+				if (this.scalingUp === second) {
 					this.enableColumn();
 				}
 				/**
@@ -802,7 +810,7 @@
 			* Reset scale-up status as soon as a non-'bigger' event occurs.
 			*/
 			this.scalingUp = false;
-			if (!fits) {
+			if (!fits && visibleColumns > 1) {
 				this.async(this.disableColumn);
 				return;
 			}
