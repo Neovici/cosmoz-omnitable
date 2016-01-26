@@ -19,14 +19,14 @@
 				notify: true
 			},
 
-			forceMobile: {
-				type: Boolean,
-				value: false
+			columnHeaders: {
+				type: Object,
+				computed: '_computeColumnHeaders(headers.*, sortedFilteredGroupedItems, groupOn, numDisabledHeaders)'
 			},
 
-			headersWithoutGroupOnHeader: {
-				type: Object,
-				computed: 'getHeadersWithoutGroupOnHeader(headers.*, sortedFilteredGroupedItems, groupOn, forceMobile)'
+			numDisabledHeaders: {
+				type: Number,
+				value: 0
 			},
 
 			// hide all groups except first
@@ -53,13 +53,6 @@
 
 			selectedItems: {
 				type: Array
-			},
-
-			// calculated decides mobile or application view mode.
-			simpleMobileMode: {
-				type: Boolean,
-				// computed: 'forceMobile || (((headersWithoutGroupOnHeader.length - disabledHeaders) <= 3) && disabledHeaders > 0)',
-				value: false
 			},
 
 			sortOn: {
@@ -108,6 +101,12 @@
 			toggleGroupKick: {
 				type: Number,
 				value: 0
+			},
+
+			// Keep track of width-changes to identify if we go bigger or smaller
+			_previousWidth: {
+				type: Number,
+				value: 0
 			}
 		},
 
@@ -123,8 +122,6 @@
 		listeners: {
 			'iron-resize': 'updateWidths'
 		},
-
-		disabledHeaders: 0,
 
 		groupIndex: {},
 
@@ -189,12 +186,7 @@
 			return this.selectedItems;
 		},
 		created: function () {
-			this.disabledHeaders = 0;
 			this.rendered = false;
-			this.mobileView = {
-				headers: [],
-				linkHeader: undefined
-			};
 			this.needs = {
 				grouping: true,
 				filtering: true,
@@ -392,11 +384,10 @@
 				outerModel = sender.templateInstance.model,
 				keys = Object.keys(outerModel),
 				key,
-				n = keys.length,
-				i = 0,
+				i,
 				item;
 
-			for (; i < n; i += 1) {
+			for (i = 0; i < keys.length; i += 1) {
 				key = keys[i];
 				if (key[0] === '@') {
 					item = outerModel[key].item;
@@ -421,7 +412,7 @@
 			});
 			if (headerToDisable) {
 				headerToDisable.disabled = true;
-				this.disabledHeaders += 1;
+				this.numDisabledHeaders += 1;
 				this.async(this.updateWidths);
 			}
 		},
@@ -433,14 +424,13 @@
 				}
 			});
 			headerToEnable.disabled = false;
-			this.disabledHeaders -= 1;
+			this.numDisabledHeaders -= 1;
 			// Fake a resize bigger event, in the off chance that we go past
 			// the size of two columns in one resize, like maximizing a window
 			this.async(function () {
 				this.scalingUp = true;
 				this.updateWidths({
 					detail: {
-						bigger: true,
 						second: true
 					}
 				});
@@ -458,23 +448,20 @@
 			return foundHeader;
 		},
 
-		getHeadersWithoutGroupOnHeader: function (headersNotify, sortedFilteredGroupedItems, groupOn, forceMobile) {
+		_computeColumnHeaders: function (headersNotify, sortedFilteredGroupedItems, groupOn, numDisabledHeaders) {
 			if (!this.headers) {
 				return;
 			}
-			if (forceMobile) {
-				return this.mobileView.headers;
-			}
 			var filteredHeaders = [];
 			this.headers.forEach(function (header, index) {
-				if (header.id !== groupOn) {
+				if (header.id !== groupOn && !header.disabled) {
 					filteredHeaders.push(header);
 				}
 			});
 			return filteredHeaders;
 		},
 
-		_getFunctionByName: function (name, context) {
+		_getFunctionByName: function (name, contextParam) {
 			if (!name) {
 				return undefined;
 			}
@@ -485,24 +472,23 @@
 				funcName,
 				context,
 				i;
-			if (parts.length == 1) {
+			if (parts.length === 1) {
 				console.log('host function', name);
 				func = this.dataHost[name];
 			} else {
-				var funcName = parts.pop();
-  				for(i = 0; i < parts.length; i++) {
+				funcName = parts.pop();
+  				for(i = 0; i < parts.length; i += 1) {
     				context = context[parts[i]];
   				}
   				func = context[funcName];
 			}
-			return typeof func == 'function' ? func : undefined;
+			return typeof func === 'function' ? func : undefined;
 
 		},
 
 		setHeadersFromMarkup: function () {
 			var ctx = this,
 				markupHeaders = Polymer.dom(this).querySelectorAll('header'),
-				mobileHeaders = [],
 				newHeaders = [];
 
 			markupHeaders.forEach(function (headerElement, index) {
@@ -520,23 +506,7 @@
 					wrap: headerElement.hasAttribute('wrap')
 				};
 				header.renderFunc = ctx._getFunctionByName(headerElement.getAttribute('render-func') || 'render' + header.type.charAt(0).toUpperCase() + header.type.substr(1), window);
-				mobileHeaders.push(header);
 				newHeaders.push(header);
-			});
-			mobileHeaders.sort(function (a, b) {
-				if (a.priority === b.priority) {
-					return 0;
-				}
-				return a.priority > b.priority ? -1 : 1;
-			});
-			mobileHeaders.splice(3, mobileHeaders.length - 3);
-			this.mobileView.headers = mobileHeaders;
-			mobileHeaders.some(function (header, index) {
-				header.mobile = true;
-				if (header.linkbase && !ctx.mobileView.linkHeader) {
-					ctx.mobileView.linkHeader = header;
-					return true;
-				}
 			});
 			this.headers = newHeaders;
 			if (this.needs.grouping) {
@@ -697,7 +667,7 @@
 							items[data.meta.index] =  {
 								name: data.meta.groupName,
 								id: data.meta.groupId
-							}
+							};
 							items[data.meta.index].items = data.data.map(function (item, index) {
 								return group.items[item.index];
 							});
@@ -712,8 +682,13 @@
 			});
 		},
 
+		_computeIcon: function (expanded) {
+			return expanded ? 'expand-less' : 'expand-more';
+		},
+
 		toggleExtraColumns: function (event, detail, sender) {
-			var item = event.target.templateInstance.model.model;
+			var item = event.model.__data__.item;
+			// FIXME: This doesn't re-trigger _computeIcon
 			item.expanded = !item.expanded;
 		},
 
@@ -762,13 +737,14 @@
 		 * (set event.detail.bigger = true)
 		 * @memberOf element/cz-omnitable
 		 */
-		updateWidths: function (event) {
+		updateWidths: function (event, detail, a) {
 			if (!this.rendered) {
 				return;
 			}
 			var body = this.$ ? this.$.body : null,
-				bigger = event && event.detail && event.detail.bigger,
-				coreList,
+				bigger,
+				groupedList,
+				groupedListList,
 				fits,
 				headerTds,
 				widthSetter,
@@ -777,13 +753,18 @@
 			if (!body) {
 				return;
 			}
-			coreList = this.$$('#groupedList');
+			bigger = body.clientWidth > this._previousWidth;
+			this._previousWidth = body.clientWidth;
+			groupedList = this.$$('#groupedList');
 
-			// TODO(pasleq): have encountered situations where coreList was not available yet. Should check why.
-			if (!coreList) {
+			// TODO(pasleq): have encountered situations where groupedList was not available yet. Should check why.
+			if (!groupedList) {
 				return;
 			}
-			fits = coreList.scrollWidth <= coreList.clientWidth;
+
+			// FIXME: Ugly to dive into component local dom
+			groupedListList = groupedList.$.list;
+			fits = groupedListList.scrollWidth <= groupedListList.clientWidth;
 			/**
 			* To prevent infinite loops by multiple events, we need to check for 'bigger' events first
 			* to avoid triggering a 'disableColumn' action in the upscaling process.
@@ -795,7 +776,7 @@
 			* but we don't want to return since this event might be the final one - actually updating
 			* column widths.
 			*/
-			if (fits && bigger && this.disabledHeaders > 0) {
+			if (fits && bigger && this.numDisabledHeaders > 0) {
 				/**
 				 * Only scale up if:
 				 * * It's the first scale up step - a native 'resize' event without detail.second
@@ -825,27 +806,19 @@
 				this.async(this.disableColumn);
 				return;
 			}
-			widthSetter = coreList.$$('template-selector:not([hidden]) .item:not([style])');
+			widthSetter = groupedListList.$$('template-selector:not([hidden]) .item:not([style])');
 			if (widthSetter === null) {
 				return;
 			}
 			headerTds = Polymer.dom(this.$.header).querySelectorAll('.header');
-			// not found in this.$ since it's not present in Simple Mobile Mode
 			widthTds = Polymer.dom(widthSetter).querySelectorAll('.cell');
-			if (this.simpleMobileMode) {
-				headerTds.forEach(function (headerElement, index) {
-					headerElement.style.width = 'inherit';
-					headerElement.style.maxWidth = 'inherit';
-				});
-			} else {
-				widthTds.forEach(function (element, index) {
-					var headerElement = headerTds[index],
-						csElement = window.getComputedStyle(element, null),
-						newWidth = element.clientWidth - parseInt(csElement.getPropertyValue('padding-left'), 10) - parseInt(csElement.getPropertyValue('padding-right'), 10);
-					headerElement.style.width = newWidth + 'px';
-					headerElement.style.maxWidth = newWidth + 'px';
-				});
-			}
+			widthTds.forEach(function (element, index) {
+				var headerElement = headerTds[index],
+					csElement = window.getComputedStyle(element, null),
+					newWidth = element.clientWidth - parseInt(csElement.getPropertyValue('padding-left'), 10) - parseInt(csElement.getPropertyValue('padding-right'), 10);
+				headerElement.style.width = newWidth + 'px';
+				headerElement.style.maxWidth = newWidth + 'px';
+			});
 		},
 		renderLink: function (header, model) {
 			var link;
@@ -863,7 +836,7 @@
 			}
 			return link + this.resolveProp(model, header.linkprop);
 		},
-		//TODO: @memberOf behavior/cz-common-behavior
+		//TODO: Use cosmoz-behaviors
 		/**
 		 * Helper method for Polymer 1.0+ templates - check if variable
 		 * is undefined, null, empty Array list or empty String.
@@ -887,7 +860,7 @@
 			}
 			return false;
 		},
-		//TODO: @memberOf behavior/cz-common-behavior
+		//TODO: Use cosmoz-behaviors
 		/**
 		 * Resolve a JS object path to its property value
 		 * @param  {Object} item The JS object
@@ -945,10 +918,6 @@
 				classes.push('width-setter');
 			}
 			return classes.join(' ');
-		},
-
-		_getClass: function (className, arg) {
-			return arg ? className : '';
 		},
 
 		// TODO: Generalize into behavior, more args

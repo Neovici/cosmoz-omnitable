@@ -7,8 +7,9 @@
 <link rel="import" href="../iron-label/iron-label.html"/>
 <link rel="import" href="../paper-checkbox/paper-checkbox.html"/>
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html"/>
-<link rel="import" href="../paper-listbox/paper-listbox.html"/>
+<link rel="import" href="../paper-icon-button/paper-icon-button.html"/>
 <link rel="import" href="../paper-item/paper-item.html"/>
+<link rel="import" href="../paper-listbox/paper-listbox.html"/>
 <link rel="import" href="../cosmoz-grouped-list/cosmoz-grouped-list.html"/>
 <link rel="import" href="../cosmoz-web-worker/cosmoz-web-worker.html"/>
 <link rel="import" href="../cosmoz-autocomplete/cosmoz-autocomplete.html"/>
@@ -96,15 +97,15 @@ with features like group count display and folding
 			</script>
 		</cosmoz-web-worker>
 
-		<div id="omnitable" class$="layout vertical flex {{ _getClass('simple-mobile-mode', simpleMobileMode) }}">
+		<div id="omnitable" class="layout vertical flex">
 			<div id="header" class="relative horizontal layout end">
 				<div class="row-checkbox" style="padding-bottom: 20px;" hidden$="{{ !selectionEnabled }}">
 					<paper-checkbox checkable checked="{{ allCheckboxChecked }}" on-change="onAllCheckboxChange" hidden$="{{ noData }}">
 					</paper-checkbox>
 				</div>
-				<template is="dom-repeat" items="{{ headersWithoutGroupOnHeader }}" as="header" index-as="index">
+				<template is="dom-repeat" items="{{ columnHeaders }}" as="header" index-as="index">
 					<div class$="{{ _computeHeaderClasses(header.type, index) }}" hidden$="{{ header.disabled }}">
-						<cosmoz-autocomplete items="{{ header.values }}" placeholder="{{ header.name }}" selected-items="{{ header.filters }}" on-cosmoz-selected-items-changed="filterItems" multi-selection flex$="{{ simpleMobileMode }}"></cosmoz-autocomplete>
+						<cosmoz-autocomplete items="{{ header.values }}" placeholder="{{ header.name }}" selected-items="{{ header.filters }}" on-cosmoz-selected-items-changed="filterItems" multi-selection></cosmoz-autocomplete>
 					</div>
 				</template>
 			</div>
@@ -120,80 +121,76 @@ with features like group count display and folding
 						</div>
 					</div>
 				</template>
-				<template is="dom-if" if="{{ !simpleMobileMode }}">
-					<cosmoz-grouped-list id="groupedList" class="fit" data="{{ sortedFilteredGroupedItems }}">
-						<item-template id="itemTemplate">
-							<template>
-								<div class="item">
-									<div class$="{{ _computeItemClasses(item.*) }}">
-										<div class="row-checkbox" hidden$="{{ !selectionEnabled }}">
-											<div class="horizontal layout center center-justified">
-												<paper-checkbox checked="{{ item.checked }}" on-change="onItemCheckboxChange"></paper-checkbox>
-											</div>
+				<cosmoz-grouped-list id="groupedList" class="fit" data="{{ sortedFilteredGroupedItems }}">
+					<item-template id="itemTemplate">
+						<template>
+							<div class="item">
+								<div class$="{{ _computeItemClasses(item.*) }}">
+									<div class="row-checkbox" hidden$="{{ !selectionEnabled }}">
+										<div class="horizontal layout center center-justified">
+											<paper-checkbox checked="{{ item.checked }}" on-change="onItemCheckboxChange"></paper-checkbox>
 										</div>
-										<template is="dom-repeat" items="{{ headersWithoutGroupOnHeader }}" as="header" index-as="index">
-											<template is="dom-if" if="{{ !header.disabled }}">
-												<div class$="{{ _computeClasses('cell', header.type, index) }}">
-													<template is="dom-if" if="{{ header.editable }}">
-														<paper-input-container>
-															<input is="core-input" type="{{ header.type }}" on-change="dataRowChanged" value="{{ _computeValue(header, item) }}">
-														</paper-input-container>
+									</div>
+									<template is="dom-repeat" items="{{ columnHeaders }}" as="header" index-as="index">
+										<div class$="{{ _computeClasses('cell', header.type, index) }}">
+											<template is="dom-if" if="{{ header.editable }}">
+												<paper-input-container>
+													<input is="core-input" type="{{ header.type }}" on-change="dataRowChanged" value="{{ _computeValue(header, item) }}">
+												</paper-input-container>
+											</template>
+											<template is="dom-if" if="{{ !header.editable }}">
+												<div title="{{ renderItemProperty(item, header) }}">
+													<template is="dom-if" if="{{ header.linkbase }}">
+														<a href$="{{ renderLink(header, item) }}">{{ renderItemProperty(item, header) }}</a>
 													</template>
-													<template is="dom-if" if="{{ !header.editable }}">
-														<div title="{{ renderItemProperty(item, header) }}">
-															<template is="dom-if" if="{{ header.linkbase }}">
-																<a href$="{{ renderLink(header, item) }}">{{ renderItemProperty(item, header) }}</a>
-															</template>
-															<template is="dom-if" if="{{ !header.linkbase }}">
-																<span>{{ renderItemProperty(item, header) }}</span>
-															</template>
-														</div>
+													<template is="dom-if" if="{{ !header.linkbase }}">
+														<span>{{ renderItemProperty(item, header) }}</span>
 													</template>
 												</div>
 											</template>
-										</template>
-										<template is="dom-if" if="{{_computeIf(_disabledHeaders)}}">
-											<div>
-												<paper-icon-button on-click="toggleExtraColumns" icon="{{_computeIcon(item)}}"></paper-icon-button>
-											</div>
-										</template>
-									</div>
-									<template is="dom-if" if="{{ item.expanded }}">
-										<div class="item-extra-row">
-											<div colspan="{{_computeColspan(headersWithoutGroupOnHeader)}}">
-												<template is="dom-repeat" items="{{headersWithoutGroupOnHeader}}" as="header">
-													<template is="dom-if" if="{{ header.disabled }}">
-														<div class="horizontal layout center">
-															<div flex="">{{ header.name }}</div>
-															<div>{{ renderItemProperty(item, header) }}</div>
-														</div>
-													</template>
-												</template>
-											</div>
+										</div>
+									</template>
+									<template is="dom-if" if="{{ numDisabledHeaders }}">
+										<div>
+											<paper-icon-button on-click="toggleExtraColumns" icon="{{ _computeIcon(item.expanded) }}"></paper-icon-button>
 										</div>
 									</template>
 								</div>
-							</template>
-						</item-template>
-						<item-template id="groupTemplate">
-							<template>
-								<!-- This is a workaround for issue https://github.com/Polymer/polymer/issues/3063 -->
-								<!-- Do not remove this line untile issue has been addressed -->
-								<span hidden="{{fakeBinding}}"></span>
-								<div class="horizontal layout center group-header">
-									<div class="row-checkbox" hidden$="{{ !selectionEnabled }}">
-										<paper-checkbox checked="{{item.checked}}" on-change="onGroupCheckboxChange"></paper-checkbox>
+								<template is="dom-if" if="{{ item.expanded }}">
+									<div class="item-extra-row">
+										<div colspan="{{ numDisabledHeaders }}">
+											<template is="dom-repeat" items="{{ extraHeaders }}" as="header">
+												<template is="dom-if" if="{{ header.disabled }}">
+													<div class="horizontal layout center">
+														<div class="flex">{{ header.name }}</div>
+														<div>{{ renderItemProperty(item, header) }}</div>
+													</div>
+												</template>
+											</template>
+										</div>
 									</div>
-									<div class="flex">
-										<span>[[_groupOnHeader.name]]</span>: <span>[[item.name]]</span>
-									</div>
-									<div>[[ item.items.length ]]</div>
-									<iron-icon icon="[[ getFoldIcon(folded) ]]" on-tap="toggleGroup"></iron-icon>
+								</template>
+							</div>
+						</template>
+					</item-template>
+					<item-template id="groupTemplate">
+						<template>
+							<!-- This is a workaround for issue https://github.com/Polymer/polymer/issues/3063 -->
+							<!-- Do not remove this line untile issue has been addressed -->
+							<span hidden="{{fakeBinding}}"></span>
+							<div class="horizontal layout center group-header">
+								<div class="row-checkbox" hidden$="{{ !selectionEnabled }}">
+									<paper-checkbox checked="{{item.checked}}" on-change="onGroupCheckboxChange"></paper-checkbox>
 								</div>
-							</template>
-						</item-template>
-					</cosmoz-grouped-list>
-				</template>
+								<div class="flex">
+									<span>[[_groupOnHeader.name]]</span>: <span>[[item.name]]</span>
+								</div>
+								<div>[[ item.items.length ]]</div>
+								<iron-icon icon="[[ getFoldIcon(folded) ]]" on-tap="toggleGroup"></iron-icon>
+							</div>
+						</template>
+					</item-template>
+				</cosmoz-grouped-list>
 			</div>
 			<div id="footer" class="horizontal layout center">
 				<div class="horizontal layout flex center">
@@ -216,7 +213,7 @@ with features like group count display and folding
 							<paper-listbox class="dropdown-content menu" selected="{{ groupOn }}" attr-for-selected="id">
 								<paper-item id=""><i style="white-space: nowrap">{{_('No grouping', t)}}</i></paper-item>
 								<template is="dom-repeat" items="{{ headers }}" as="header">
-									<paper-item id="{{ header.id }}" hidden$="{{ _allTrue(header.mobile, simpleMobileMode) }}">{{ header.name }}</paper-item>
+									<paper-item id="{{ header.id }}">{{ header.name }}</paper-item>
 								</template>
 							</paper-listbox>
 						</paper-dropdown-menu>
