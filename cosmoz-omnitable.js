@@ -8,6 +8,20 @@
 		is: 'cosmoz-omnitable',
 
 		properties: {
+			disabledHeaders: {
+				type: Array,
+				notify: true,
+				value: function () {
+					return [];
+				}
+			},
+
+			// FIXME: Needed to properly notify item-templates of redraw?
+			numDisabledHeaders: {
+				type: Number,
+				computed: '_returnValue(disabledHeaders.length)'
+			},
+
 			data: {
 				type: Array,
 				observer: '_dataChanged',
@@ -21,12 +35,7 @@
 
 			columnHeaders: {
 				type: Object,
-				computed: '_computeColumnHeaders(headers.*, sortedFilteredGroupedItems, groupOn, numDisabledHeaders)'
-			},
-
-			numDisabledHeaders: {
-				type: Number,
-				value: 0
+				computed: '_computeColumnHeaders(headers.length, sortedFilteredGroupedItems, groupOn, disabledHeaders.length)'
 			},
 
 			// hide all groups except first
@@ -45,6 +54,18 @@
 				computed: 'isEmpty(data)'
 			},
 
+			expandedItems: {
+				type: Array,
+				value: function () {
+					return [];
+				}
+			},
+
+			// FIXME: Needed to properly notify item-templates of redraw?
+			numExpandedItems: {
+				type: Number,
+				value: 0
+			},
 
 			selectionEnabled: {
 				type: Boolean,
@@ -126,6 +147,17 @@
 		groupIndex: {},
 
 		needs: {},
+
+		// FIXME: Obsolete this, please!
+		_returnValue: function (value) {
+			return value;
+		},
+
+		// FIXME: Template design calls this infinitely too much, horrible performance.
+		isExpanded: function (expandnotify, item, a) {
+			console.log('isExpanded', expandnotify, item, a);
+			return this.expandedItems.indexOf(item) !== -1;
+		},
 
 		_dataChanged: function () {
 			console.log('_dataChanged');
@@ -405,26 +437,30 @@
 		disableColumn: function () {
 			var headerToDisable;
 			// disables/hides columns that for example does not fit in the current screen size.
-			this.headers.forEach(function (header, index) {
-				if (!header.disabled && (headerToDisable === undefined || headerToDisable.priority >= header.priority)) {
+			this.columnHeaders.forEach(function (header, index) {
+				if (headerToDisable === undefined || headerToDisable.priority >= header.priority) {
 					headerToDisable = header;
 				}
 			});
+			console.log('disableColumn', this.disabledHeaders);
 			if (headerToDisable) {
-				headerToDisable.disabled = true;
-				this.numDisabledHeaders += 1;
+				this.push('disabledHeaders', headerToDisable);
 				this.async(this.updateWidths);
 			}
 		},
 		enableColumn: function () {
-			var headerToEnable;
-			this.headers.forEach(function (header, index) {
-				if (header.disabled && (headerToEnable === undefined || headerToEnable.priority < header.priority)) {
+			var
+				headerToEnable,
+				headerToEnableIndex;
+			this.disabledHeaders.forEach(function (header, index) {
+				if (headerToEnable === undefined || headerToEnable.priority < header.priority) {
 					headerToEnable = header;
+					headerToEnableIndex = index;
 				}
 			});
-			headerToEnable.disabled = false;
-			this.numDisabledHeaders -= 1;
+
+			console.log('enableColumn', this.disabledHeaders);
+			this.splice('disabledHeaders', headerToEnableIndex, 1);
 			// Fake a resize bigger event, in the off chance that we go past
 			// the size of two columns in one resize, like maximizing a window
 			this.async(function () {
@@ -448,16 +484,22 @@
 			return foundHeader;
 		},
 
+		hasDisabledHeaders: function (numDisabledHeaders) {
+			console.log('hasDisabledHeaders', numDisabledHeaders);
+			return numDisabledHeaders > 0;
+		},
+
 		_computeColumnHeaders: function (headersNotify, sortedFilteredGroupedItems, groupOn, numDisabledHeaders) {
+			console.log('_computeColumnHeaders');
 			if (!this.headers) {
 				return;
 			}
 			var filteredHeaders = [];
 			this.headers.forEach(function (header, index) {
-				if (header.id !== groupOn && !header.disabled) {
+				if (header.id !== groupOn && this.disabledHeaders.indexOf(header) === -1) {
 					filteredHeaders.push(header);
 				}
-			});
+			}.bind(this));
 			return filteredHeaders;
 		},
 
@@ -681,14 +723,23 @@
 			});
 		},
 
-		_computeIcon: function (expanded) {
-			return expanded ? 'expand-less' : 'expand-more';
+		_computeIcon: function (numExpandedItems, item) {
+			console.log('computeicon');
+			return this.expandedItems.indexOf(item) === -1 ? 'expand-more' : 'expand-less';
 		},
 
-		toggleExtraColumns: function (event, detail, sender) {
-			var item = event.model.__data__.item;
+		toggleExtraColumns: function (event, detail) {
+			var item = event.model.__data__.item,
+				expandIndex = this.expandedItems.indexOf(item);
+			console.log('toggleExtraColumns', event, detail);
 			// FIXME: This doesn't re-trigger _computeIcon
-			item.expanded = !item.expanded;
+			if (expandIndex === -1) {
+				this.push('expandedItems', item);
+			} else {
+				this.splice('expandedItems', expandIndex, 1);
+			}
+			this.numExpandedItems = this.expandedItems.length;
+			// item.expanded = !item.expanded;
 		},
 
 		toggleGroupVisibility: function (filteredSortedGroupedItems, toggleGroupKick) {
@@ -738,7 +789,7 @@
 		 */
 		updateWidths: function (event, detail, a) {
 
-			if (!this.rendered) {
+			if (!this.rendered || !this.columnHeaders) {
 				return;
 			}
 
@@ -788,7 +839,7 @@
 			* but we don't want to return since this event might be the final one - actually updating
 			* column widths.
 			*/
-			if (fits && bigger && this.numDisabledHeaders > 0) {
+			if (fits && bigger && this.disabledHeaders.length > 0) {
 				/**
 				 * Only scale up if:
 				 * * It's the first scale up step - a native 'resize' event without detail.second

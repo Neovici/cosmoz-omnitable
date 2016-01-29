@@ -152,20 +152,18 @@ with features like group count display and folding
 									</template>
 									<template is="dom-if" if="{{ numDisabledHeaders }}">
 										<div>
-											<paper-icon-button on-click="toggleExtraColumns" icon="{{ _computeIcon(item.expanded) }}"></paper-icon-button>
+											<paper-icon-button on-click="toggleExtraColumns" icon="{{ _computeIcon(numExpandedItems, item) }}"></paper-icon-button>
 										</div>
 									</template>
 								</div>
-								<template is="dom-if" if="{{ item.expanded }}">
+								<template is="dom-if" if="{{ isExpanded(numExpandedItems, item) }}">
 									<div class="item-extra-row">
-										<div colspan="{{ numDisabledHeaders }}">
-											<template is="dom-repeat" items="{{ extraHeaders }}" as="header">
-												<template is="dom-if" if="{{ header.disabled }}">
-													<div class="horizontal layout center">
-														<div class="flex">{{ header.name }}</div>
-														<div>{{ renderItemProperty(item, header) }}</div>
-													</div>
-												</template>
+										<div colspan="{{ disabledHeaders.length }}">
+											<template is="dom-repeat" items="{{ disabledHeaders }}" as="header">
+												<div class="horizontal layout center">
+													<div class="flex">{{ header.name }}</div>
+													<div>{{ renderItemProperty(item, header) }}</div>
+												</div>
 											</template>
 										</div>
 									</div>
