@@ -231,11 +231,13 @@
 				filtering: true,
 				sorting: true
 			};
-			// TODO: cz.state.app.addEventListener('resize', this.updateWidths.bind(this));
 		},
 
 		attached: function () {
-			this._hasActions = Polymer.dom(this.$.actions).getDistributedNodes().length > 0;
+			var hasActions = Polymer.dom(this.$.actions).getDistributedNodes().length > 0;
+			if (hasActions) {
+				this.selectionEnabled = true;
+			}
 			this.setHeadersFromMarkup();
 			this.rendered = true;
 		},
@@ -253,18 +255,16 @@
 				return;
 			}
 
-			var element = event.target,
-				checked = element.checked,
-				that = this;
+			var checked = event.target.checked;
 
 			if (!this.sortedFilteredGroupedItems) {
 				return;
 			}
 
 			this.sortedFilteredGroupedItems.forEach(function (group, index) {
-				that.setGroupProperty(index, "checked", checked);
-				that.selectGroupItems(group);
-			});
+				this.setGroupProperty(index, "checked", checked);
+				this.selectGroupItems(group);
+			}.bind(this));
 		},
 		onGroupCheckboxChange: function (event) {
 			var group = event.model.item;
@@ -357,9 +357,10 @@
 			if (!this.headers) {
 				return;
 			}
-			this.headers.forEach(function (header) {
-				header.values = [];
-			});
+			this.headers.forEach(function (header, index) {
+				console.log('clearing', header);
+				this.set('headers.' + index + '.values', []);
+			}.bind(this));
 		},
 		renderItemProperty: function (item, header, ui) {
 			if (item === undefined || header === undefined) {
@@ -463,6 +464,7 @@
 			this.splice('disabledHeaders', headerToEnableIndex, 1);
 			// Fake a resize bigger event, in the off chance that we go past
 			// the size of two columns in one resize, like maximizing a window
+			console.log('enabling', headerToEnable);
 			this.async(function () {
 				this.scalingUp = true;
 				this.updateWidths({
