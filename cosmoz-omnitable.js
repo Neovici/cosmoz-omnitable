@@ -16,12 +16,6 @@
 				}
 			},
 
-			// FIXME: Needed to properly notify item-templates of redraw?
-			numDisabledHeaders: {
-				type: Number,
-				computed: '_returnValue(disabledHeaders.length)'
-			},
-
 			data: {
 				type: Array,
 				observer: '_dataChanged',
@@ -486,11 +480,6 @@
 			return foundHeader;
 		},
 
-		hasDisabledHeaders: function (numDisabledHeaders) {
-			console.log('hasDisabledHeaders', numDisabledHeaders);
-			return numDisabledHeaders > 0;
-		},
-
 		_computeColumnHeaders: function (headersNotify, sortedFilteredGroupedItems, groupOn, numDisabledHeaders) {
 			console.log('_computeColumnHeaders');
 			if (!this.headers) {
@@ -555,10 +544,6 @@
 			if (this.needs.grouping) {
 				this.groupKick += 1;
 			}
-		},
-
-		_computeClass: function (data) {
-			console.log('_computeClass', data);
 		},
 
 		_filterItems : function (filterKick) {
@@ -725,23 +710,13 @@
 			});
 		},
 
-		_computeIcon: function (numExpandedItems, item) {
-			console.log('computeicon');
-			return this.expandedItems.indexOf(item) === -1 ? 'expand-more' : 'expand-less';
+		_computeIcon: function (item, expanded) {
+			return expanded ? 'expand-less' : 'expand-more';
 		},
 
 		toggleExtraColumns: function (event, detail) {
-			var item = event.model.__data__.item,
-				expandIndex = this.expandedItems.indexOf(item);
-			console.log('toggleExtraColumns', event, detail);
-			// FIXME: This doesn't re-trigger _computeIcon
-			if (expandIndex === -1) {
-				this.push('expandedItems', item);
-			} else {
-				this.splice('expandedItems', expandIndex, 1);
-			}
-			this.numExpandedItems = this.expandedItems.length;
-			// item.expanded = !item.expanded;
+			var item = event.model.item;
+			this.$.groupedList.toggleCollapse(item);
 		},
 
 		toggleGroupVisibility: function (filteredSortedGroupedItems, toggleGroupKick) {
@@ -966,12 +941,29 @@
 			].join(" ");
 		},
 
-		_computeItemClasses: function (change) {
+		_computeItemClasses: function (item, expanded, disabledHeadersCount) {
+			var	classes = [
+					'item'
+				];
+
+			if (disabledHeadersCount > 0) {
+				classes.push('expandable');
+			}
+
+			if (expanded) {
+				classes.push('expanded');
+			}
+
+			return classes.join(' ');
+		},
+
+		_computeItemRowClasses: function (change) {
 			var
 				item = change.base,
 				classes = [
-				'item-row'
-			];
+					'item-row'
+				];
+
 			if (item.checked) {
 				classes.push('selected');
 			}

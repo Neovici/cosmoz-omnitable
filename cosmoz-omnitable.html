@@ -124,8 +124,8 @@ with features like group count display and folding
 				<cosmoz-grouped-list id="groupedList" class="fit" data="{{ sortedFilteredGroupedItems }}">
 					<item-template id="itemTemplate">
 						<template>
-							<div class="item">
-								<div class$="{{ _computeItemClasses(item.*) }}">
+							<div class$="{{ _computeItemClasses(item, expanded, disabledHeaders.length) }}">
+								<div class$="{{ _computeItemRowClasses(item.*) }}">
 									<div class="row-checkbox" hidden$="{{ !selectionEnabled }}">
 										<div class="horizontal layout center center-justified">
 											<paper-checkbox checked="{{ item.checked }}" on-change="onItemCheckboxChange"></paper-checkbox>
@@ -150,24 +150,19 @@ with features like group count display and folding
 											</template>
 										</div>
 									</template>
-									<template is="dom-if" if="{{ numDisabledHeaders }}">
-										<div>
-											<paper-icon-button on-click="toggleExtraColumns" icon="{{ _computeIcon(numExpandedItems, item) }}"></paper-icon-button>
+									<div class="item-expand-button">
+										<paper-icon-button on-click="toggleExtraColumns" icon="{{ _computeIcon(item, expanded) }}">
+										</paper-icon-button>
+									</div>
+								</div>
+								<div class="item-extra-row">
+									<template is="dom-repeat" items="{{ disabledHeaders }}" as="header">
+										<div class="horizontal layout center">
+											<div class="flex">{{ header.name }}</div>
+											<div>{{ renderItemProperty(item, header) }}</div>
 										</div>
 									</template>
 								</div>
-								<template is="dom-if" if="{{ isExpanded(numExpandedItems, item) }}">
-									<div class="item-extra-row">
-										<div colspan="{{ disabledHeaders.length }}">
-											<template is="dom-repeat" items="{{ disabledHeaders }}" as="header">
-												<div class="horizontal layout center">
-													<div class="flex">{{ header.name }}</div>
-													<div>{{ renderItemProperty(item, header) }}</div>
-												</div>
-											</template>
-										</div>
-									</div>
-								</template>
 							</div>
 						</template>
 					</item-template>

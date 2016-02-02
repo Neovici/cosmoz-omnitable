@@ -114,6 +114,23 @@
 			.item-row paper-icon-button {
 				padding: 0;
 			}
+
+			.item-extra-row {
+				display: none;
+			}
+
+			.item-expand-button {
+				display: none;
+			}
+
+			.item.expandable .item-expand-button {
+				display: block;
+			}
+
+			.item.expandable.expanded .item-extra-row {
+				display: block;
+			}
+
 			.item-extra-row > div {
 				padding: 0 20px;
 				line-height: 1.6em;
