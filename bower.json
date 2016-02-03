@@ -42,8 +42,5 @@
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
     "paper-button": "PolymerElements/paper-button#^1.0.0",
     "moment": "~2.10.6"
-  },
-  "resolutions": {
-    "cosmoz-i18next": "master"
   }
 }
