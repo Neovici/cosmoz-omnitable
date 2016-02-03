@@ -232,6 +232,7 @@
 			if (hasActions) {
 				this.selectionEnabled = true;
 			}
+			this.$.groupedList.scrollTarget = this.$.scroller;
 			this.setHeadersFromMarkup();
 			this.rendered = true;
 		},
@@ -792,9 +793,7 @@
 				return;
 			}
 
-			// FIXME: Ugly to dive into component local dom
-			groupedListList = groupedList.$.list;
-			fits = groupedListList.scrollWidth <= groupedListList.clientWidth;
+			fits = this.$.scroller.scrollWidth <= this.$.scroller.clientWidth;
 			/* Weird bug
 			** In certain scenarios (sizing the window so that a column barely fits)
 			** body.clientWidth actually expands by itself, causing a 'bigger' event.
@@ -842,7 +841,11 @@
 				this.async(this.disableColumn);
 				return;
 			}
+
+			// FIXME: Ugly to dive into component local dom
+			groupedListList = groupedList.$.list;
 			widthSetter = groupedListList.$$('template-selector:not([hidden]) .item:not([style])');
+
 			if (widthSetter === null) {
 				return;
 			}
