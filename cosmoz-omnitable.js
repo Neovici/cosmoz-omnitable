@@ -17,9 +17,10 @@
 			},
 
 			data: {
-				type: Array,
-				observer: '_dataChanged',
-				value: null
+				type: Array
+				value: function () {
+					return [];
+				}
 			},
 
 			headers: {
@@ -126,7 +127,8 @@
 		},
 
 		observers: [
-			'_sortFilteredGroupedItems(filteredGroupedItems, sortOn)'
+			'_sortFilteredGroupedItems(filteredGroupedItems, sortOn)',
+			'_dataChanged(data.*)'
 		],
 
 		behaviors: [
