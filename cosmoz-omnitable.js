@@ -17,7 +17,7 @@
 			},
 
 			data: {
-				type: Array
+				type: Array,
 				value: function () {
 					return [];
 				}
