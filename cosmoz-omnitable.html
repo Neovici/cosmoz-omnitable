@@ -135,17 +135,15 @@ with features like group count display and folding
 										<template is="dom-repeat" items="{{ columnHeaders }}" as="header" index-as="index">
 											<div class$="{{ _computeClasses('cell', header.type, index) }}">
 												<template is="dom-if" if="{{ header.editable }}">
-													<paper-input-container>
-														<input is="core-input" type="{{ header.type }}" on-change="dataRowChanged" value="{{ _computeValue(header, item) }}">
-													</paper-input-container>
+													<paper-input type="{{ header.type }}" on-change="dataRowChanged" value="{{ renderItemProperty(item.*, header) }}"></paper-input>
 												</template>
 												<template is="dom-if" if="{{ !header.editable }}">
-													<div title="{{ renderItemProperty(item, header) }}">
+													<div title="{{ renderItemProperty(item.*, header) }}">
 														<template is="dom-if" if="{{ header.linkbase }}">
-															<a href$="{{ renderLink(header, item) }}">{{ renderItemProperty(item, header) }}</a>
+															<a href$="{{ renderLink(header, item) }}">{{ renderItemProperty(item.*, header) }}</a>
 														</template>
 														<template is="dom-if" if="{{ !header.linkbase }}">
-															<span>{{ renderItemProperty(item, header) }}</span>
+															<span>{{ renderItemProperty(item.*, header) }}</span>
 														</template>
 													</div>
 												</template>
@@ -160,7 +158,7 @@ with features like group count display and folding
 										<template is="dom-repeat" items="{{ disabledHeaders }}" as="header">
 											<div class="horizontal layout center">
 												<div class="flex">{{ header.name }}</div>
-												<div>{{ renderItemProperty(item, header) }}</div>
+												<div>{{ renderItemProperty(item.*, header) }}</div>
 											</div>
 										</template>
 									</div>

@@ -359,7 +359,10 @@
 				this.set('headers.' + index + '.values', []);
 			}.bind(this));
 		},
-		renderItemProperty: function (item, header, ui) {
+		renderItemProperty: function (itemNotify, header, ui) {
+			var
+				item = itemNotify.base,
+				prop;
 			if (item === undefined || header === undefined) {
 				return '';
 			}
@@ -367,7 +370,7 @@
 			if (item.placeholder) {
 				return '';
 			}
-			var prop = this.resolveProp(item, header.id);
+			prop = this.resolveProp(item, header.id);
 			return this.renderObject(prop, ui, header);
 		},
 		renderObject: function (obj, ui, header) {
@@ -408,25 +411,25 @@
 				});
 			});
 		},
-		dataRowChanged: function (event, detail, sender) {
-			console.log('dataRowChanged');
+		dataRowChanged: function (event, detail) {
 			var
-				outerModel = sender.templateInstance.model,
-				keys = Object.keys(outerModel),
-				key,
-				i,
-				item;
+				element = event.target,
+				model = event.model,
+				header = event.model.__data__.header,
+				item = event.model.__data__.item,
+				value = element.value;
 
-			for (i = 0; i < keys.length; i += 1) {
-				key = keys[i];
-				if (key[0] === '@') {
-					item = outerModel[key].item;
-					break;
-				}
+			if (header.type === "number") {
+				value = parseInt(value, 10);
 			}
+			model.set('item.' + header.id, value);
+			console.log('dataRowChanged', event, detail, item);
 
 			//item[outerModel.header.id] = sender.value;
-			this.fire('cz-data-row-changed', item);
+			this.fire('cz-data-row-changed', {
+				model: model,
+				item: item
+			});
 			this.fire('data-changed', {
 				action: 'updateItem',
 				data: this.data
@@ -963,6 +966,7 @@
 		},
 
 		_computeItemRowClasses: function (change) {
+			console.log('_computeItemRowClasses', change);
 			var
 				item = change.base,
 				classes = [
