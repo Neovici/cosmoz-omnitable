@@ -769,7 +769,6 @@
 			var body = this.$ ? this.$.body : null,
 				bigger,
 				groupedList,
-				groupedListList,
 				fits,
 				headerTds,
 				visibleColumns = this.columnHeaders.length,
@@ -837,9 +836,7 @@
 				return;
 			}
 
-			// FIXME: Ugly to dive into component local dom
-			groupedListList = groupedList.$.list;
-			widthSetter = groupedListList.$$('template-selector:not([hidden]) .item:not([style])');
+			widthSetter = groupedList.$$('template-selector:not([hidden]) .item:not([style])');
 
 			if (widthSetter === null) {
 				return;

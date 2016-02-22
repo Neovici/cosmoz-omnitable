@@ -22,7 +22,14 @@ with features like group count display and folding
 
 ### Usage
 
-    <cosmoz-omnitable data="{{ data }}"></cosmoz-omnitable>
+    <cosmoz-omnitable data="{{ data }}">
+    	<header id="id">Id</header>
+		<header id="name">Name</header>
+		<header id="amount" render-func="renderMoney">Amount</header>
+		<header id="date" type="date" render-func="Cosmoz.formatDate">Date</header>
+
+		<button action on-run="runAction">Hello</button>
+    </cosmoz-omnitable>
 
 @group Cosmoz Elements
 @element cosmoz-omnitable
