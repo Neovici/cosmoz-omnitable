@@ -1,0 +1,175 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../iron-flex-layout/classes/iron-flex-layout.html">
+<link rel="import" href="../iron-icons/iron-icons.html" />
+<link rel="import" href="../iron-selector/iron-selector.html" />
+<link rel="import" href="../paper-input/paper-input.html" />
+<link rel="import" href="../paper-material/paper-material.html" />
+<link rel="import" href="../juicy-html/juicy-html.html">
+<link rel="import" href="../cosmoz-selectable/cosmoz-multi-selectable-behavior.html">
+<link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
+
+
+<!--
+
+<link rel="import" href="../cosmoz-selectable/cosmoz-multi-selectable-behavior.html">
+
+
+
+`<cosmoz-autocomplete>` is a template based client-side routing solution
+
+### Usage
+
+
+
+*html example here*
+
+
+@group Cosmoz Elements
+@element cosmoz-autocomplete
+@demo demo/index.html
+-->
+
+
+<dom-module id="cosmoz-autocomplete">
+	<template>
+		<style>
+			:host {
+			display: block;
+			}
+
+			.iron-selected,
+			.result:hover,
+			:host ::content .iron-selected,
+			:host ::content .result:hover  {
+				font-weight: bold;
+				background-color: #e3f1ee;
+			}
+
+			::content .result, .result {
+				display: block;
+				padding: 5px;
+				color: inherit;
+				text-decoration: none;
+			}
+
+			.result-holder {
+				background-color: white;
+				position: absolute;
+				z-index: 1000;
+				top: 1px;
+				width: 100%;
+			}
+
+			.clearSelection {
+				text-decoration: none;
+				color: #555;
+			}
+
+			.selectedItem {
+				float: left;
+				border-radius: 5px;
+				background-color: #f9f7f6;
+				color: #666;
+				border: solid 1px darkgrey;
+				padding: 2px 3px 2px 6px;
+				margin: 0 3px 3px 0;
+				font-size: 12px;
+			}
+
+			.selectedItem span {
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			.selectedItem iron-icon {
+				width: 16px;
+				height: 16px;
+				vertical-align: middle;
+			}
+
+			.selectedItemLabel {
+				float: left;
+				margin-right: 15px;
+				color: #777;
+			}
+
+			.singleSelectedItem {
+				margin-top: 15px;
+				margin-bottom: 7px;
+			}
+
+			.singleSelectedItem > .selectedItem {
+				margin: 0;
+			}
+
+			.singleSelectedItem > .selectedItem > div {
+				text-align: center;
+				font-size: 1.3em;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			/* Input placeholder text overflow */
+			input[placeholder] { text-overflow: ellipsis; }
+			::-moz-placeholder { text-overflow: ellipsis; } /* firefox 19+ */
+			input:-moz-placeholder { text-overflow: ellipsis; }
+
+		</style>
+		<div>
+			<!-- multi selection selected items -->
+			<template is="dom-if" if="{{ _computeShowMultiSelection(multiSelection, hideSelections) }}">
+				<div id="selectedItemsList" class="horizontal layout wrap">
+					<template is="dom-repeat" items="{{ selectedItems }}">
+						<div class="selectedItem horizontal layout center">
+						<span>{{ _resolveProp(item, valueProperty) }}</span>
+							<a href="" on-click="clearOneSelection" onclick="return false;" class="clearSelection">
+								<iron-icon icon="delete"></iron-icon>
+							</a>
+						</div>
+					</template>
+				</div>
+			</template>
+			<!-- single selection selected item -->
+			<template is="dom-if" if="{{ !multiSelection }}">
+				<div class="singleSelectedItem horizontal layout center" hidden$="{{ _hideSelectedItem }}" }}>
+					<template is="dom-if" if="{{ searchType }}">
+						<div class="selectedItemLabel">{{ searchType }}:</div>
+					</template>
+					<div class="selectedItem horizontal layout flex">
+						<span>{{ _resolveProp(selectedItem, valueProperty) }}</span>
+						<a href="" on-click="clearSelection" onclick="return false;" class="clearSelection">
+							<iron-icon icon="delete"></iron-icon>
+						</a>
+					</div>
+				</div>
+			</template>
+			<!-- input field + item selector -->
+			<div hidden$="{{ _computeHideAutocomplete(multiSelection, selectedItem) }}">
+				<paper-input class="flex" label="{{placeholder}}" id="searchInput"
+					on-focus="onFocus"
+					on-blur="onBlur"
+					on-keyup="keyup"
+					value="{{ inputValue }}"
+					error-message="{{ _searchErrorMsg }}"
+					invalid="{{ _computeInvalidInput(_searchErrorMsg) }}">
+				</paper-input>
+				<div class="relative" hidden$="{{_hideSuggestions}}">
+					<paper-material elevation="1" class="result-holder">
+						<iron-selector id="searchResults" on-iron-activate="onSearchResultSelect">
+							<template is="dom-if" if="{{ resultAction }}">
+								<content id="resultAction"></content>
+							</template>
+							<template is="dom-repeat" items="{{shownlistdata}}">
+								<div index="{{ _increaseNum(index, 1) }}" class="result">
+									<template is="juicy-html" content$="{{ item.displayLabel }}"></template>
+								</div>
+							</template>
+						</iron-selector>
+					</paper-material>
+				</div>
+			</div>
+		</div>
+	</template>
+	<script type="text/javascript" src="cosmoz-autocomplete.js"></script>
+</dom-module>

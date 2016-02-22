@@ -1,0 +1,42 @@
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-menu/paper-menu.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../iron-flex-layout/classes/iron-flex-layout.html">
+<link rel="import" href="../cosmoz-viewinfo/cosmoz-viewinfo.html">
+<link rel="import" href="cosmoz-bottom-bar-style.html">
+
+<!--
+`<cosmoz-bottom-bar>` is meant as a responsive bottom-bar that can house buttons/actions and a menu for buttons that won't fit the available width.
+
+### Usage
+See demo for example usage
+
+@element cosmoz-bottom-bar
+@demo demo/index.html
+-->
+
+<dom-module id="cosmoz-bottom-bar">
+	<template>
+		<style include="cosmoz-bottom-bar-style"></style>
+		<div id="canvas" class="flex relative layout vertical">
+			<div id="bar" class="horizontal layout center flex" on-transitionend="setBarOverflow">
+				<div id="info" class="layout horizontal center">{{ info }}</div>
+				<div id="buttons" class="flex layout horizontal center end-justified">
+					<content id="actionButtons" select="[button]"></content>
+				</div>
+				<paper-menu-button hidden$="{{ !menuActions }}" id="menu" duration="250" vertical-offset="{{ barHeight }}" vertical-align="bottom" horizontal-align="right" role="group" class="layout horizontal center">
+					<paper-icon-button icon="menu" id="dropdownButton" toggles raised class="dropdown-trigger"></paper-icon-button>
+					<paper-menu id="dropdown" class="dropdown-content">
+						<content id="actionMenu"></content>
+					</paper-menu>
+				</paper-menu-button>
+			</div>
+		</div>
+	</template>
+	<script type="text/javascript" src="cosmoz-bottom-bar.js"></script>
+</dom-module>

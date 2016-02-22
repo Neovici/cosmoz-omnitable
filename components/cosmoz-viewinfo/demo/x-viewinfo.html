@@ -1,0 +1,38 @@
+<link rel="import" href="../cosmoz-viewinfo.html">
+<dom-module id="x-viewinfo">
+	<template>
+		<content></content>
+		<span>Mobile: </span><span>{{ viewInfo.mobile }}</span><br/>
+		<span>Tablet: </span><span>{{ viewInfo.tablet }}</span><br/>
+		<span>Desktop: </span><span>{{ viewInfo.desktop }}</span><br/>
+		<span>Portrait: </span><span>{{ viewInfo.portrait }}</span><br/>
+		<span>Landscape: </span><span>{{ viewInfo.landscape }}</span><br/>
+		<span>Effects: </span><span>{{ viewInfo.effects }}</span><br/>
+		<span>Height: </span><span>{{ viewInfo.height }}</span><br/>
+		<span>Width: </span><span>{{ viewInfo.width }}</span><br/>
+	</template>
+	<script type="text/javascript">
+		/*global Polymer, Cosmoz*/
+"use strict";
+Polymer({
+	behaviors: [
+		Cosmoz.ViewInfoBehavior
+	],
+	properties: {
+		label: {
+			type: String
+		}
+	},
+	is: 'x-viewinfo',
+	listeners: {
+		'viewinfo-resize': '_viewInfoResize'
+	},
+	attached: function () {
+		console.log('x-viewinfo ' + this.label + ' attached');
+	},
+	_viewInfoResize: function () {
+		console.log('x-viewinfo ' + this.label + ' resize!');
+	}
+});
+	</script>
+</dom-module>

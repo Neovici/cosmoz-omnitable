@@ -1,0 +1,35 @@
+{
+  "name": "cosmoz-autocomplete",
+  "main": "cosmoz-autocomplete.html",
+  "version": "0.0.1",
+  "homepage": "https://github.com/Neovici/cosmoz-autocomplete",
+  "authors": [
+    "Neovici Development"
+  ],
+  "description": "Polymer dom-bind based template input combined with searching drop-down behavior",
+  "keywords": [
+    "web-components",
+    "polymer",
+    "autocomplete",
+    "cosmoz"
+  ],
+  "license": "Apache 2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-flex-layout": "polymerelements/iron-flex-layout#^1.0.0",
+    "neon-animation": "polymerelements/neon-animation#^1.0.0",
+    "paper-input": "polymerelements/paper-input#^1.0.18",
+    "iron-selector": "polymerelements/iron-selector#^1.0.8",
+    "juicy-html": "~1.0.0",
+    "cosmoz-selectable": "neovici/cosmoz-selectable#master",
+    "cosmoz-i18next": "neovici/cosmoz-i18next#master"
+  }
+}

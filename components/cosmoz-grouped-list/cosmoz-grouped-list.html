@@ -1,0 +1,53 @@
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html"/>
+<link rel="import" href="../iron-flex-layout/classes/iron-flex-layout.html"/>
+<link rel="import" href="../iron-list/iron-list.html"/>
+<link rel="import" href="../iron-icons/iron-icons.html"/>
+<link rel="import" href="../iron-icon/iron-icon.html"/>
+<link rel="import" href="item-template.html">
+<link rel="import" href="template-selector.html">
+
+<!--
+`<cosmoz-grouped-list>` is an example implementation of grouping for iron-list
+with features like group count display and folding
+
+### Usage
+
+    <cosmoz-grouped-list data="{{ data }}"></cosmoz-grouped-list>
+
+@group Cosmoz Elements
+@element cosmoz-grouped-list
+@demo demo/index.html
+-->
+
+<dom-module id="cosmoz-grouped-list">
+	<template>
+		<style>
+			:host {
+				display: block;
+				position: relative;
+				@apply(--layout-vertical);
+			}
+
+			:host(:not(.has-scroll-target)) #list {
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+			}
+
+			:host(.has-scroll-target) #list {
+				flex: 1;
+			}
+
+		</style>
+
+		<iron-list id="list" items="{{flatData}}" as="item">
+			<template>
+				<template-selector item="{{item}}" on-template-selector-item-changed="_onTemplateSelectorItemChanged"></template-selector>
+			</template>
+		</iron-list>
+	</template>
+	<script type="text/javascript" src="cosmoz-grouped-list.js"></script>
+</dom-module>

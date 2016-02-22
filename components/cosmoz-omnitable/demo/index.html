@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Cosmoz Omnitable</title>
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+	<link rel="import" href="../cosmoz-omnitable.html">
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
+	<link rel="import" href="../../iron-flex-layout/classes/iron-flex-layout.html">
+	<link rel="import" href="../../cosmoz-i18next/cosmoz-i18next.html">
+	<script src="../../moment/moment.js"></script>
+	<script src="../../moment/locale/sv.js"></script>
+
+</head>
+<body class="fullbleed">
+	<dom-module id="x-page">
+		<template>
+			<div class="layout vertical fit">
+				<h3>Cosmoz omnitable demo</h3>
+				<div>
+					<button on-tap="changeData">New data set</button>
+				</div>
+				<cosmoz-omnitable data="{{ data }}" class="flex" selection-enabled group-on="group">
+					<header id="id">Id</header>
+					<header id="name">Name</header>
+					<header id="randomString">Random string</header>
+					<header id="randomString2">Random string 2</header>
+					<header id="randomString3">Random string 3</header>
+					<header id="randomString4">Random string 4</header>
+					<header id="amount" render-func="renderMoney">Amount</header>
+					<header id="date" type="date" render-func="Cosmoz.formatDate">Date</header>
+					<header id="group">Group</header>
+
+					<button action on-run="runAction">Hello</button>
+				</cosmoz-omnitable>
+			</div>
+		</template>
+	</dom-module>
+
+	<template is="dom-bind" id="t">
+		<x-page id="page"></x-page>
+	</template>
+
+	<script type="text/javascript">
+/*global document, moment, window, Cosmoz */
+(function () {
+	"use strict";
+
+	window.Cosmoz = {
+		formatDate: function (date) {
+			return moment(date).format('L');
+		}
+	};
+
+	moment.locale('sv');
+
+	window.addEventListener('WebComponentsReady', function () {
+
+		function getRandomInt(min, max) {
+ 			 return Math.floor(Math.random() * (max - min + 1)) + min;
+		}
+
+		function getRandomDate() {
+			return new Date(2015, getRandomInt(1, 12), getRandomInt(1, 28));
+		}
+
+
+		Polymer({
+			is: 'x-page',
+
+			_generateData: function () {
+				var
+					data = [],
+					groupsCount = getRandomInt(10, 15),
+					i,
+					j,
+					n = 0,
+					itemsCount,
+					group;
+
+				for (i = 0; i < groupsCount; i += 1) {
+					group =  'Group ' + i;
+					itemsCount = i * 2  + 1;
+					for (j = 0; j < itemsCount; j+= 1) {
+						data.push({
+							id: n,
+							name: group + ' item ' + j,
+							value: 0,
+							randomString: 'Random string ' + getRandomInt(1, 10),
+							randomString2: 'Random string 2 ' + getRandomInt(1, 10),
+							randomString3: 'Random string 3 ' + getRandomInt(1, 10),
+							randomString4: 'Random string 4 ' + getRandomInt(1, 10),
+							date: getRandomDate(),
+							amount: {
+								amount: getRandomInt(10, 100),
+								currency: 'SEK'
+							},
+							group: group
+
+						});
+						n += 1;
+					}
+				}
+				return data;
+			},
+
+			ready: function () {
+				this.changeData();
+			},
+
+			changeData: function () {
+				this.data = this._generateData();
+			},
+
+			runAction: function (event, detail) {
+				console.log('runAction', event, detail, detail.items);
+			},
+
+			renderMoney: function (money) {
+				return money.amount + ' ' + money.currency;
+			}
+		});
+
+	});
+}());
+	</script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<link rel="import" href="cosmoz-bottom-bar.html">
+<link rel="import" href="../cosmoz-viewinfo/cosmoz-viewinfo.html">
+
+<!--
+`cosmoz-bottom-bar-view` contains a content section and a bottom bar with actions.
+
+__Important:__ The `cosmoz-bottom-bar-view` will not display if its parent does not have a height.
+
+-->
+
+<dom-module id="cosmoz-bottom-bar-view">
+	<style type="text/css">
+
+		:host {
+			position: relative;
+			@apply(--layout-vertical);
+			height: 100%;
+		}
+
+		#scroller {
+			@apply(--layout-flex);
+			@apply(--layout-vertical);
+			position: relative;
+			overflow-y: auto;
+			overflow-x: hidden;
+		}
+
+		#scrollerArea {
+			@apply(--layout-flex);
+			position: relative;
+		}
+	</style>
+	<template>
+		<div id="scroller" style$="{{ _getPadding(viewInfo.desktop) }}">
+			<div id="scrollerArea">
+				<content id="scrollerContent" select=".cosmoz-bottom-bar-scroll"></content>
+			</div>
+		</div>
+		<cosmoz-bottom-bar id="bar" fixed$="{{ viewInfo.desktop }}" scroller="{{ scroller }}" scroller-overflow="{{ overflowing }}">
+			<content></content>
+		</cosmoz-bottom-bar>
+	</template>
+	<script type="text/javascript">
+/*global Polymer, Cosmoz*/
+
+"use strict";
+
+Polymer({
+	behaviors: [
+		Cosmoz.ViewInfoBehavior
+	],
+	is: 'cosmoz-bottom-bar-view',
+	properties: {
+		overflowing: {
+			type: Boolean,
+			value: false,
+			reflectToAttribute: true
+		},
+		scroller: {
+			type: Object
+		}
+	},
+	attached: function () {
+		this.scroller = this.$.scroller;
+	},
+	_getPadding: function (desktop) {
+		if (desktop) {
+			return;
+		}
+		return 'padding-bottom: ' + this.$.bar.barHeight + 'px';
+	}
+});
+
+	</script>
+</dom-module>

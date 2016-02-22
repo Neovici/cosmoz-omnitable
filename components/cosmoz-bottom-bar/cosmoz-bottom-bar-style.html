@@ -1,0 +1,114 @@
+<dom-module id="cosmoz-bottom-bar-style">
+	<template>
+		<style>
+			:host {
+				display: block;
+				@apply(--layout);
+				@apply(--layout-horizontal);
+			}
+
+			:host([bottom]) {
+				position: absolute;
+				bottom: 0;
+				width: 100%;
+			}
+
+			:host([matching]) {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+			}
+
+			:host([fixed]) #canvas {
+				top: initial;
+				height: initial;
+			}
+
+			:host([fixed]) #bar {
+				position: initial;
+			}
+
+			:host([fixed]) #bar,
+			:host([active]) #bar {
+				transform: translate3d(0,0,0);
+				-webkit-transform: translate3d(0,0,0);
+			}
+
+			:host([fixed]) #bar.fade,
+			:host([active]) #bar.fade {
+				opacity: 1;
+			}
+
+			#canvas {
+				overflow: hidden;
+				max-width: 100%; /* Firefox fix */
+			}
+
+			#bar {
+				font-weight: 300;
+				font-size: 15px;
+				color: black;
+				background-color: var(--cosmoz-bottom-bar-background-color, --primary-background-color);
+				transition: all 0.5s ease;
+				padding: 0 3%;
+				height: inherit;
+			}
+
+			:host(.selection) #bar {
+				background-color: #49D593;
+			}
+
+			#bar.fade {
+				opacity: 0.3;
+			}
+
+			#info, #buttons {
+				height: inherit;
+			}
+
+			#info {
+				color: #000;
+				padding-right: 3%;
+			}
+
+			#dropdownButton {
+				color: var(--cosmoz-bottom-bar-menubutton-color, --light-primary-color);
+				background-color: var(--cosmoz-bottom-bar-menubutton-background-color, --dark-primary-color);
+				@apply(--cosmoz-bottom-bar-menubutton);
+			}
+
+			:host(.selection) #info {
+				color: inherit;
+			}
+
+			#buttons {
+				overflow: hidden;
+			}
+
+			#menu {
+				padding-left: 3%;
+			}
+
+			#menu ::content paper-button {
+				border: 0;
+			}
+
+			#info,
+			#menu > div {
+				white-space: nowrap;
+			}
+
+			#buttons ::content paper-icon-button {
+				margin: 0 0.29em;
+				min-width: 40px;
+    			min-height: 40px;
+			}
+
+			#buttons ::content > * {
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+		</style>
+	</template>
+</dom-module>

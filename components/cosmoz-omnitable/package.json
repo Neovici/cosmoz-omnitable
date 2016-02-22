@@ -1,0 +1,16 @@
+{
+  "name": "cosmoz-omnitable",
+  "version": "0.2.0",
+  "description": "Cosmoz Omnitable",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.0"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/neovici/cosmoz-omnitable"
+  }
+}

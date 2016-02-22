@@ -1,0 +1,32 @@
+{
+  "name": "cosmoz-i18next",
+  "main": "cosmoz-i18next.html",
+  "version": "0.1.0",
+  "homepage": "https://github.com/Neovici/cosmoz-i18next",
+  "authors": [
+    "Neovici Development"
+  ],
+  "description": "Polymer Translation component based on i18next",
+  "keywords": [
+    "web-components",
+    "polymer",
+    "router",
+    "cosmoz"
+  ],
+  "license": "Apache 2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "^1.2.0",
+    "i18next": "^1.0.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0"
+  }
+
+}

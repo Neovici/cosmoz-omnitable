@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Cosmoz Viewinfo</title>
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+	<link rel="import" href="../../paper-styles/paper-styles.html">
+    <link rel="import" href="../../neon-animation/neon-animated-pages.html">
+    <link rel="import" href="../../neon-animation/neon-animatable.html">
+    <link rel="import" href="../../neon-animation/neon-animations.html">
+    <link rel="import" href="../../paper-drawer-panel/paper-drawer-panel.html">
+	<link rel="import" href="../cosmoz-viewinfo.html">
+	<link rel="import" href="x-viewinfo.html">
+
+	<style>
+		.toolbar {
+			padding: 8px;
+		}
+	</style>
+
+	<style is="custom-style">
+		neon-animatable {
+			color: white;
+			@apply(--layout-horizontal);
+			@apply(--layout-center-center);
+			@apply(--paper-font-display2);
+		}
+
+		neon-animatable:nth-child(1) {
+			background: var(--paper-red-500);
+		}
+
+		neon-animatable:nth-child(2) {
+			background: var(--paper-blue-500);
+		}
+
+		neon-animatable:nth-child(3) {
+			background: var(--paper-orange-500);
+		}
+
+		neon-animatable:nth-child(4) {
+			background: var(--paper-green-500);
+		}
+
+		neon-animatable:nth-child(5) {
+			background: var(--paper-purple-500);
+		}
+
+	</style>
+
+</head>
+<body class="fullbleed layout vertical">
+	<template is="dom-bind" id="template">
+		<paper-drawer-panel responsive-width="961px">
+			<div drawer>
+			This is the drawer
+			</div>
+			<div main class="fit layout vertical">
+				<div class="toolbar">
+					<button on-click="_onPrevClick">&lt;&lt;</button>
+					<button on-click="_onNextClick">&gt;&gt;</button>
+					<button paper-drawer-toggle>toggle drawer</button>
+				</div>
+				<div class="flex relative">
+					<cosmoz-viewinfo effects="8" class="fit">
+						<neon-animated-pages id="pages" class="fit" selected="[[selected]]" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
+							<neon-animatable><x-viewinfo label="page 1">Page 1</x-viewinfo></neon-animatable>
+							<neon-animatable><x-viewinfo label="page 2">Page 2</x-viewinfo></neon-animatable>
+							<neon-animatable>
+								<x-viewinfo label="page3 viewinfo 1"></x-viewinfo>
+								<x-viewinfo label="page3 viewinfo 2"></x-viewinfo>
+							</neon-animatable>
+							<neon-animatable>4</neon-animatable>
+							<neon-animatable>5</neon-animatable>
+						</neon-animated-pages>
+					</cosmoz-viewinfo>
+				</div>
+			</div>
+		</paper-drawer-panel>
+
+	</template>
+
+	<script>
+		/*global document*/
+
+		"use strict";
+
+		var scope = document.getElementById('template');
+		scope.selected = 0;
+
+		scope._onPrevClick = function () {
+			this.entryAnimation = 'slide-from-left-animation';
+			this.exitAnimation = 'slide-right-animation';
+			this.selected = this.selected === 0 ? 4 : (this.selected - 1);
+		};
+
+		scope._onNextClick = function () {
+			this.entryAnimation = 'slide-from-right-animation';
+			this.exitAnimation = 'slide-left-animation';
+			this.selected = this.selected === 4 ? 0 : (this.selected + 1);
+		};
+
+	</script>
+</body>
+</html>

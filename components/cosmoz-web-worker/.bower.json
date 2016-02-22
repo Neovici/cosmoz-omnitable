@@ -1,0 +1,38 @@
+{
+  "name": "cosmoz-web-worker",
+  "main": "cosmoz-web-worker.html",
+  "homepage": "https://github.com/Neovici/cosmoz-web-worker",
+  "authors": [
+    "Neovici Development"
+  ],
+  "description": "Polymer Web Worker component",
+  "keywords": [
+    "web-components",
+    "polymer",
+    "router",
+    "cosmoz"
+  ],
+  "license": "Apache 2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "^1.2.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0"
+  },
+  "_release": "ef5eda99f6",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "ef5eda99f6c69123f08a5b2657496cb8de8e2482"
+  },
+  "_source": "git://github.com/Neovici/cosmoz-web-worker.git",
+  "_target": "master",
+  "_originalSource": "Neovici/cosmoz-web-worker"
+}

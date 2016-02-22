@@ -1,0 +1,74 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+		<title>cosmoz-autocomplete Demo</title>
+		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+		<link rel="import" href="../cosmoz-autocomplete.html">
+		<link rel="import" href="../../paper-styles/paper-styles.html">
+		<link rel="import" href="../../paper-styles/demo-pages.html">
+	</head>
+	<body unresolved>
+		<h1>cosmoz-autocomplete</h1>
+		<!-- multi selection selected items -->
+		<div class="vertical center-justified layout">
+			<h4>Multi selection selected items</h4>
+			<div class="horizontal-section">
+				<cosmoz-autocomplete items="{{ demoItems }}"
+					multi-selection
+					placeholder="Search"
+					selected-items="{{ demoSelected }}"
+					id="a1">
+				</cosmoz-autocomplete>
+			</div>
+		</div>
+		<!-- single selection selected item -->
+		<div class="vertical center-justified layout">
+			<h4>Single selection selected item</h4>
+			<div class="horizontal-section">
+				<cosmoz-autocomplete items="{{ demoItems }}"
+					placeholder="Search"
+					selected-items="{{ demoSelected }}"
+					id="a2">
+				</cosmoz-autocomplete>
+			</div>
+		</div>
+	</body>
+<script>
+/*globals window, document,cz,Polymer */
+(function () {
+	"use strict";
+	var demoItems = [{
+			id: 'one',
+			label: 'Red selection'
+		}, {
+			id: 'two',
+			label: 'Blue selection'
+		}, {
+			id: 'three',
+			label: 'Green selection'
+		}, {
+			id: 'four',
+			label: 'Yellow selection'
+		}, {
+			id: 'five',
+			label: 'White selection'
+		}, {
+			id: 'six',
+			label: 'Black selection'
+		}];
+	document.getElementById('a1').items = demoItems;
+	document.getElementById('a2').items = demoItems;
+}());
+</script>
+</html>

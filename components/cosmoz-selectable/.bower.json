@@ -1,0 +1,39 @@
+{
+  "name": "cosmoz-selectable",
+  "main": "cosmoz-multi-selectable-behavior.html",
+  "homepage": "https://github.com/Neovici/cosmoz-selectable",
+  "authors": [
+    "Neovici Development"
+  ],
+  "description": "Polymer cosmoz selectable behaviour",
+  "keywords": [
+    "web-components",
+    "polymer",
+    "router",
+    "cosmoz"
+  ],
+  "license": "Apache 2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.0.0",
+    "iron-selector": "polymerelements/iron-selector#^1.0.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0"
+  },
+  "_release": "291f08aec1",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "291f08aec1e4df932c05e9c9fa4bda984efec18b"
+  },
+  "_source": "git://github.com/neovici/cosmoz-selectable.git",
+  "_target": "master",
+  "_originalSource": "neovici/cosmoz-selectable"
+}
