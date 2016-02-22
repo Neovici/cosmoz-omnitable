@@ -8,6 +8,9 @@
 		is: 'cosmoz-omnitable',
 
 		properties: {
+			/**
+			 * List of "disabled headers" - headers not fitting in the current screen due to screen size.
+			 */
 			disabledHeaders: {
 				type: Array,
 				notify: true,
@@ -16,6 +19,9 @@
 				}
 			},
 
+			/**
+			 * List of data to display
+			 */
 			data: {
 				type: Array,
 				value: function () {
@@ -23,103 +29,114 @@
 				}
 			},
 
+			/**
+			 * Table headers/column definitions, usually configued with markup.
+			 */
 			headers: {
 				type: Array,
 				notify: true
 			},
 
+			/**
+			 * Table headers to display (headers not disabled or grouped on)
+			 */
 			columnHeaders: {
 				type: Object,
 				computed: '_computeColumnHeaders(headers.length, sortedFilteredGroupedItems, groupOn, disabledHeaders.length)'
 			},
 
-			// hide all groups except first
+			/**
+			 * Whether to hide all groups but the first on initial load
+			 */
 			hideButFirst: {
 				type: Boolean,
 				value: true
 			},
 
+			/**
+			 * Whether to hide groups with no items.
+			 */
 			hideEmptyGroups: {
 				type: Boolean,
 				value: true
 			},
 
-			noData: {
-				type: Boolean,
-				computed: 'isEmpty(data)'
-			},
-
-			expandedItems: {
-				type: Array,
-				value: function () {
-					return [];
-				}
-			},
-
-			// FIXME: Needed to properly notify item-templates of redraw?
-			numExpandedItems: {
-				type: Number,
-				value: 0
-			},
-
+			/**
+			 * Whether to display checkboxes for item selection, and to make use of the bottom-bar for selection actions.
+			 * Will be enabled automatically if one or more elements has the attribute `action` set in the light DOM.
+			 */
 			selectionEnabled: {
 				type: Boolean,
 				value: false
 			},
 
+			/**
+			 * List of selected rows/items in `data`.
+			 */
 			selectedItems: {
 				type: Array
 			},
 
+			/**
+			 * The header ID to sort on.
+			 */
 			sortOn: {
 				type: String,
 				value: 'name'
 			},
 
+			/**
+			 * The header ID to group on.
+			 */
 			groupOn: {
 				type: String,
 				value: null,
 				observer: '_groupOnChanged'
 			},
 
+			/**
+			 * Workaround kicker to cause regrouping.
+			 */
 			groupKick: {
 				type: Number,
 				value: 0
 			},
 
+			/**
+			 * Workaround kicker to cause refiltering.
+			 */
 			filterKick: {
 				type: Number,
 				value: 0
 			},
 
+			/**
+			 * Items matching current set filter(s)
+			 */
 			filteredItems: {
 				type: Array,
 				computed: '_filterItems(filterKick)'
 			},
 
-			// The collection and the structure for the grouping of the data.
+			/**
+			 * Grouped items structure after filtering.
+			 */
 			filteredGroupedItems: {
 				type: Array,
 				computed: '_groupItems(filteredItems, groupOn, groupKick)'
 			},
 
-			// will be computed by observer
+			/**
+			 * Sorted items structure after filtering and grouping.
+			 * Set by `_sortFilteredGroupedItems()` due to the async nature of web workers.
+			 */
 			sortedFilteredGroupedItems: {
 				type: Array
 			},
 
-			// collection of opened groups over the omnitable. This for minimizing overhead when sorting, allowing for bypassing closed groups.
-			toggledGroups: {
-				type: Object,
-				computed: 'toggleGroupVisibility(filteredSortedGroupedItems, toggleGroupKick)'
-			},
-
-			toggleGroupKick: {
-				type: Number,
-				value: 0
-			},
-
-			// Keep track of width-changes to identify if we go bigger or smaller
+			/**
+			 * Keep track of width-changes to identify if we go bigger or smaller
+			 */
 			_previousWidth: {
 				type: Number,
 				value: 0
@@ -140,32 +157,31 @@
 			'iron-resize': 'updateWidths'
 		},
 
-		groupIndex: {},
+		/**
+		 * Keeps track of data re-evaluation needs when it comes to sorting, filtering and grouping.
+		 * This is to avoid making too generic property observations but rather to make well-informed
+		 * decisions when to use computing power.
+		 */
+		_needs: {},
 
-		needs: {},
-
-		// FIXME: Obsolete this, please!
-		_returnValue: function (value) {
-			return value;
-		},
-
-		// FIXME: Template design calls this infinitely too much, horrible performance.
-		isExpanded: function (expandnotify, item, a) {
-			console.log('isExpanded', expandnotify, item, a);
-			return this.expandedItems.indexOf(item) !== -1;
-		},
-
+		/**
+		 * Called when data is changed to setup up needs and check workers/filtering
+		 */
 		_dataChanged: function () {
-			console.log('_dataChanged');
-
-			this.needs.grouping = true;
-			this.needs.filtering = true;
-			this.needs.sorting = true;
+			this._needs.grouping = true;
+			this._needs.filtering = true;
+			this._needs.sorting = true;
 
 			if (this._webWorkerReady && this.headers) {
 				this.filterKick += 1;
 			}
 		},
+
+		/**
+		 * Helper method to remove an item from `data` and cause re-evaluation of table data.
+		 * @param  {Object} item Item to remove
+		 * @return {Boolean}      Whether `data` or `selectedItems` changed
+		 */
 		removeItem: function (item) {
 			var dataIndex, change = false;
 			// Removes item from selection if needed.
@@ -186,6 +202,10 @@
 			}
 			return change;
 		},
+
+		/**
+		 * Remove multiple items from `data`
+		 */
 		removeItems: function (items) {
 			var groupKick = false, i;
 			for (i = items.length - 1; i >= 0; i -= 1) {
@@ -199,6 +219,12 @@
 				});
 			}
 		},
+
+		/**
+		 * Turn an `action` event into a `run` event
+		 * @param  {Event} event  `action` event
+		 * @param  {Object} detail `action` event details
+		 */
 		onAction: function (event, detail) {
 			detail.item.dispatchEvent(new window.CustomEvent('run', {
 				bubbles: true,
@@ -210,19 +236,18 @@
 			}));
 			event.stopPropagation();
 		},
-		getSelection: function () {
-			return this.selectedItems;
-		},
+
 		created: function () {
 			this.rendered = false;
-			this.needs = {
+			this._needs = {
 				grouping: true,
 				filtering: true,
 				sorting: true
 			};
 		},
+
 		ready: function () {
-			this.needs = {
+			this._needs = {
 				grouping: true,
 				filtering: true,
 				sorting: true
@@ -240,7 +265,7 @@
 		},
 
 		_groupOnChanged: function (newValue, oldValue) {
-			this.needs.grouping = true;
+			this._needs.grouping = true;
 			if (this.filteredItems) {
 				this.groupKick += 1;
 			}
@@ -314,10 +339,7 @@
 		},
 
 		getFoldIcon: function (folded) {
-			if (folded) {
-				return 'expand-more';
-			}
-			return 'expand-less';
+			return folded ? 'expand-more' : 'expand-less';
 		},
 
 		filterItem: function (item) {
@@ -346,7 +368,7 @@
 		},
 
 		filterItems: function (event, detail, sender) {
-			this.needs.filtering = true;
+			this._needs.filtering = true;
 			this.filterKick += 1;
 		},
 
@@ -355,10 +377,10 @@
 				return;
 			}
 			this.headers.forEach(function (header, index) {
-				console.log('clearing', header);
 				this.set('headers.' + index + '.values', []);
 			}.bind(this));
 		},
+
 		renderItemProperty: function (itemNotify, header, ui) {
 			var
 				item = itemNotify.base,
@@ -373,6 +395,7 @@
 			prop = this.resolveProp(item, header.id);
 			return this.renderObject(prop, ui, header);
 		},
+
 		renderObject: function (obj, ui, header) {
 			if (obj === undefined || obj === '') {
 				return '';
@@ -383,13 +406,17 @@
 			}
 			return obj;
 		},
+
+		/**
+		 * Render a unique list of possible values to filter the dataset with, for each header/column.
+		 * @param {[type]} item [description]
+		 */
 		setHeaderValues: function (item) {
-			var that = this;
 			this.headers.forEach(function (header, headerIndex) {
 				var
-					value = that.resolveProp(item, header.id),
+					value = this.resolveProp(item, header.id),
 					hasValue = false,
-					label = that.renderObject(value, false, header);
+					label = this.renderObject(value, false, header);
 
 				header.values.some(function (headerValue, headerValueIndex) {
 					if (headerValue.label === label) {
@@ -409,7 +436,7 @@
 					}
 					return 1;
 				});
-			});
+			}.bind(this));
 		},
 		dataRowChanged: function (event, detail) {
 			var
@@ -423,7 +450,6 @@
 				value = parseInt(value, 10);
 			}
 			model.set('item.' + header.id, value);
-			console.log('dataRowChanged', event, detail, item);
 
 			//item[outerModel.header.id] = sender.value;
 			this.fire('cz-data-row-changed', {
@@ -443,7 +469,7 @@
 					headerToDisable = header;
 				}
 			});
-			console.log('disableColumn', this.disabledHeaders);
+
 			if (headerToDisable) {
 				this.push('disabledHeaders', headerToDisable);
 				this.async(this.updateWidths);
@@ -460,11 +486,9 @@
 				}
 			});
 
-			console.log('enableColumn', this.disabledHeaders);
 			this.splice('disabledHeaders', headerToEnableIndex, 1);
 			// Fake a resize bigger event, in the off chance that we go past
 			// the size of two columns in one resize, like maximizing a window
-			console.log('enabling', headerToEnable);
 			this.async(function () {
 				this.scalingUp = true;
 				this.updateWidths({
@@ -487,7 +511,6 @@
 		},
 
 		_computeColumnHeaders: function (headersNotify, sortedFilteredGroupedItems, groupOn, numDisabledHeaders) {
-			console.log('_computeColumnHeaders');
 			if (!this.headers) {
 				return;
 			}
@@ -511,7 +534,6 @@
 				funcName,
 				i;
 			if (parts.length === 1) {
-				console.log('host function', name);
 				func = this.dataHost[name];
 			} else {
 				funcName = parts.pop();
@@ -547,7 +569,7 @@
 				newHeaders.push(header);
 			});
 			this.headers = newHeaders;
-			if (this.needs.grouping) {
+			if (this._needs.grouping) {
 				this.groupKick += 1;
 			}
 		},
@@ -557,9 +579,9 @@
 				return null;
 			}
 			if (!this.data || this.data.length === 0) {
-				this.needs.grouping = false;
-				this.needs.sorting = false;
-				this.needs.filtering = false;
+				this._needs.grouping = false;
+				this._needs.sorting = false;
+				this._needs.filtering = false;
 				return;
 			}
 
@@ -571,15 +593,15 @@
 
 			this.data.forEach(function (item, index) {
 				that.setHeaderValues(item);
-				if (that.needs.filtering) {
+				if (that._needs.filtering) {
 					that.filterItem(item);
 				}
 				if (item.visible) {
 					filteredItems.push(item);
 				}
 			});
-			that.needs.filtering = false;
-			that.needs.grouping = true;
+			that._needs.filtering = false;
+			that._needs.grouping = true;
 			return filteredItems;
 		},
 
@@ -592,7 +614,7 @@
 			if (!filteredItems || filteredItems.length === 0) {
 				return;
 			}
-			if (!this.needs.grouping) {
+			if (!this._needs.grouping) {
 				return filteredItems;
 			}
 
@@ -658,13 +680,12 @@
 				});
 			}
 
-			this.needs.grouping = false;
+			this._needs.grouping = false;
 
 			return groups;
 		},
 
 		_sortFilteredGroupedItems: function (filteredGroupedItems, sortOn) {
-			console.log('sortGroupedItems', filteredGroupedItems, sortOn);
 			if (!filteredGroupedItems) {
 				return null;
 			}
@@ -706,7 +727,7 @@
 								return group.items[item.index];
 							});
 							if (results === numGroups) {
-								that.needs.filtering = true;
+								that._needs.filtering = true;
 								that.sortedFilteredGroupedItems = items;
 								that.async(that.updateWidths);
 							}
@@ -725,37 +746,6 @@
 			this.$.groupedList.toggleCollapse(item);
 		},
 
-		toggleGroupVisibility: function (filteredSortedGroupedItems, toggleGroupKick) {
-			console.log('toggleGroupVisibility', filteredSortedGroupedItems);
-			var groups = [],
-				that = this,
-				visibleGroups = [];
-			this.async(this.updateWidths);
-			if (filteredSortedGroupedItems === undefined) {
-				return;
-			}
-			filteredSortedGroupedItems.forEach(function (groupItems, index) {
-				if (groupItems.length > 1 || !that.hideEmptyGroups) {
-					groups.push(that.groupedItems[index]);
-					var items = [];
-					if (that.groupedItems[index].visible) {
-						items = groupItems;
-					} else {
-						items.push({ placeholder: true });
-					}
-					visibleGroups.push(items);
-				}
-			});
-			if (groups.length === 1 && !groups[0].visible) {
-				groups[0].visible = true;
-				this.toggleGroupKick += 1;
-				return {};
-			}
-			return {
-				groups: groups,
-				items: visibleGroups
-			};
-		},
 		getNumFiltered: function (group) {
 			if (group === undefined || group === null) {
 				return;
@@ -966,7 +956,6 @@
 		},
 
 		_computeItemRowClasses: function (change) {
-			console.log('_computeItemRowClasses', change);
 			var
 				item = change.base,
 				classes = [
@@ -989,7 +978,7 @@
 
 		_onWebWorkerReady: function () {
 			this._webWorkerReady = true;
-			if (this.needs.filtering) {
+			if (this._needs.filtering) {
 				this.filterKick += 1;
 			}
 		}
