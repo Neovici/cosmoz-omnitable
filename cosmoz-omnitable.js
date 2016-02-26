@@ -74,7 +74,8 @@
 			 * List of selected rows/items in `data`.
 			 */
 			selectedItems: {
-				type: Array
+				type: Array,
+				notify: true
 			},
 
 			/**
@@ -183,20 +184,15 @@
 		 * @return {Boolean}      Whether `data` or `selectedItems` changed
 		 */
 		removeItem: function (item) {
-			var dataIndex, change = false;
+			var change = false,
+				removed;
 			// Removes item from selection if needed.
 			if (this.selectedItems) {
-				dataIndex = this.selectedItems.indexOf(item);
-				if (dataIndex > -1) {
-					this.splice('selectedItems', dataIndex, 1);
-					change = true;
-				}
+				removed = this.arrayDelete('selectedItems', item);
+				change = removed.length > 0 || change;
 			}
-			dataIndex = this.data.indexOf(item);
-			if (dataIndex > -1) {
-				this.splice('data', dataIndex, 1);
-				change = true;
-			}
+			removed = this.arrayDelete('data', item);
+			change = removed.length > 0 || change;
 			if (change && item.checked) {
 				delete item.checked;
 			}
