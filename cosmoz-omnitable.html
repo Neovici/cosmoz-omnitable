@@ -157,8 +157,7 @@ with features like group count display and folding
 											</div>
 										</template>
 										<div class="item-expand-button">
-											<paper-icon-button on-click="toggleExtraColumns" icon="{{ _computeIcon(item, expanded) }}">
-											</paper-icon-button>
+											<paper-icon-button on-click="toggleExtraColumns" icon="{{ _computeIcon(item, expanded) }}"></paper-icon-button>
 										</div>
 									</div>
 									<div class="item-extra-row">
@@ -181,11 +180,11 @@ with features like group count display and folding
 									<div class="row-checkbox" hidden$="{{ !selectionEnabled }}">
 										<paper-checkbox checked="{{item.checked}}" on-change="onGroupCheckboxChange"></paper-checkbox>
 									</div>
-									<div class="flex">
+									<h3 class="flex title">
 										<span>[[_groupOnHeader.name]]</span>: <span>[[item.name]]</span>
-									</div>
+									</h3>
 									<div>[[ item.items.length ]]</div>
-									<iron-icon icon="[[ getFoldIcon(folded) ]]" on-tap="toggleGroup"></iron-icon>
+									<paper-icon-button icon="[[ getFoldIcon(folded) ]]" on-tap="toggleGroup"></paper-icon-button>
 								</div>
 							</template>
 						</item-template>

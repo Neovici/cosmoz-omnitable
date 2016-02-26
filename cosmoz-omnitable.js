@@ -82,7 +82,7 @@
 			 */
 			sortOn: {
 				type: String,
-				value: 'name'
+				value: null
 			},
 
 			/**
@@ -145,7 +145,7 @@
 
 		observers: [
 			'_sortFilteredGroupedItems(filteredGroupedItems, sortOn)',
-			'_dataChanged(data.*)'
+			'_dataChanged(data.length)'
 		],
 
 		behaviors: [
@@ -404,6 +404,11 @@
 			if (header.renderFunc) {
 				return header.renderFunc.call(this.dataHost, obj);
 			}
+
+			if (obj instanceof Object) {
+				return "Can't render " + JSON.stringify(obj);
+			}
+
 			return obj;
 		},
 
@@ -553,19 +558,20 @@
 
 			markupHeaders.forEach(function (headerElement, index) {
 				var header = {
-					disabled: false,
-					editable: headerElement.hasAttribute('editable'),
-					id: headerElement.id,
-					linkbase: headerElement.getAttribute('linkbase'),
-					linkprop: headerElement.getAttribute('linkprop'),
-					name: Polymer.dom(headerElement).innerHTML,
-					priority: parseInt(headerElement.getAttribute('priority') || 0, 10),
-					type: headerElement.getAttribute('type') || 'default',
-					values: [],
-					filters: [],
-					wrap: headerElement.hasAttribute('wrap')
-				};
-				header.renderFunc = ctx._getFunctionByName(headerElement.getAttribute('render-func') || 'render' + header.type.charAt(0).toUpperCase() + header.type.substr(1), window);
+						disabled: false,
+						editable: headerElement.hasAttribute('editable'),
+						id: headerElement.id,
+						linkbase: headerElement.getAttribute('linkbase'),
+						linkprop: headerElement.getAttribute('linkprop'),
+						name: Polymer.dom(headerElement).innerHTML,
+						priority: parseInt(headerElement.getAttribute('priority') || 0, 10),
+						type: headerElement.getAttribute('type') || 'default',
+						values: [],
+						filters: [],
+						wrap: headerElement.hasAttribute('wrap')
+					},
+					defaultRenderFunc = 'render' + header.type.charAt(0).toUpperCase() + header.type.substr(1);
+				header.renderFunc = ctx._getFunctionByName(headerElement.getAttribute('render-func') || defaultRenderFunc, window);
 				newHeaders.push(header);
 			});
 			this.headers = newHeaders;
@@ -687,54 +693,53 @@
 
 		_sortFilteredGroupedItems: function (filteredGroupedItems, sortOn) {
 			if (!filteredGroupedItems) {
-				return null;
+				return;
 			}
+
+			if (!sortOn) {
+				this.set('sortedFilteredGroupedItems', filteredGroupedItems);
+				return;
+			}
+
 			var items = [],
-				that = this,
 				numGroups = filteredGroupedItems.length,
 				mappedItems,
 				results = 0;
 
 			filteredGroupedItems.forEach(function (group, index) {
-				if (group.items) {
-					if (!sortOn) {
-						items[index] = group.items;
-					} else if (group.items.map) {
-						// create a reduced version of the items array to transfer to the worker
-						// with item index and property to sort on
-						mappedItems = group.items.map(function (item, originalItemIndex) {
-							return {
-								index: originalItemIndex,
-								value: item[sortOn]
-							};
+				if (group.items && group.items.map) {
+					// create a reduced version of the items array to transfer to the worker
+					// with item index and property to sort on
+					mappedItems = group.items.map(function (item, originalItemIndex) {
+						return {
+							index: originalItemIndex,
+							value: item[sortOn]
+						};
+					});
+					// Sort the reduced version of the array
+					this.$.sortWorker.process({
+						meta: {
+							groupName: group.name,
+							groupId: group.id,
+							index: index
+						},
+						sortOn: 'value',
+						data: mappedItems
+					}, function (data) {
+						results += 1;
+						items[data.meta.index] = {
+							name: data.meta.groupName,
+							id: data.meta.groupId
+						};
+						items[data.meta.index].items = data.data.map(function (item, index) {
+							return group.items[item.index];
 						});
-						// Sort the reduced version of the array
-						that.$.sortWorker.process({
-							meta: {
-								groupName: group.name,
-								groupId: group.id,
-								index: index
-							},
-							sortOn: 'value',
-							data: mappedItems
-						}, function (data) {
-							results += 1;
-							items[data.meta.index] =  {
-								name: data.meta.groupName,
-								id: data.meta.groupId
-							};
-							items[data.meta.index].items = data.data.map(function (item, index) {
-								return group.items[item.index];
-							});
-							if (results === numGroups) {
-								that._needs.filtering = true;
-								that.sortedFilteredGroupedItems = items;
-								that.async(that.updateWidths);
-							}
-						});
-					}
+						if (results === numGroups) {
+							this.set('sortedFilteredGroupedItems', items);
+						}
+					}.bind(this));
 				}
-			});
+			}.bind(this));
 		},
 
 		_computeIcon: function (item, expanded) {
