@@ -22,7 +22,7 @@
     "tests"
   ],
   "dependencies": {
-    "polymer": "~1.2.3",
+    "polymer": "^1.2.3",
     "cosmoz-grouped-list": "Neovici/cosmoz-grouped-list#master",
     "cosmoz-web-worker": "Neovici/cosmoz-web-worker#master",
     "cosmoz-autocomplete": "neovici/cosmoz-autocomplete#master",
