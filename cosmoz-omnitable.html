@@ -107,65 +107,65 @@ with features like group count display and folding
 
 		<div id="omnitable" class="layout vertical flex">
 			<div id="header" class="relative horizontal layout end">
-				<div class="row-checkbox" style="padding-bottom: 20px;" hidden$="{{ !selectionEnabled }}">
-					<paper-checkbox checkable checked="{{ allCheckboxChecked }}" on-change="onAllCheckboxChange" hidden$="{{ isEmpty(data) }}">
+				<div class="row-checkbox" style="padding-bottom: 20px;" hidden$="[[ !selectionEnabled ]]">
+					<paper-checkbox checkable checked="[[ allCheckboxChecked ]]" on-change="onAllCheckboxChange" hidden$="[[ isEmpty(data) ]]">
 					</paper-checkbox>
 				</div>
-				<template is="dom-repeat" items="{{ columnHeaders }}" as="header" index-as="index">
-					<div class$="{{ _computeHeaderClasses(header.type, index) }}" hidden$="{{ header.disabled }}">
-						<cosmoz-autocomplete items="{{ header.values }}" placeholder="{{ header.name }}" selected-items="{{ header.filters }}" on-cosmoz-selected-items-changed="filterItems" multi-selection></cosmoz-autocomplete>
+				<template is="dom-repeat" items="[[ columnHeaders ]]" as="header" index-as="index">
+					<div class$="[[ _computeHeaderClasses(header.type, index) ]]" hidden$="[[ header.disabled ]]">
+						<cosmoz-autocomplete items="[[ header.values ]]" placeholder="[[ header.name ]]" selected-items="{{ header.filters }}" on-cosmoz-selected-items-changed="filterItems" multi-selection></cosmoz-autocomplete>
 					</div>
 				</template>
 			</div>
 			<div id="body" class="flex relative layout vertical">
-				<template is="dom-if" if="{{ isEmpty(data) }}">
+				<template is="dom-if" if="[[ isEmpty(data) ]]">
 					<div id="emptyDataset" class="fit layout vertical center center-justified">
 						<div class="layout horizontal start">
 							<iron-icon icon="icons:announcement"></iron-icon>
 							<div class="layout vertical">
-								<h3>{{ _('Working set empty', t) }}</h3>
-								<p>{{ _('No data to display.', t) }}</p>
+								<h3>[[ _('Working set empty', t) ]]</h3>
+								<p>[[ _('No data to display.', t) ]]</p>
 							</div>
 						</div>
 					</div>
 				</template>
 				<div id="scroller">
-					<cosmoz-grouped-list id="groupedList" class="fit" data="{{ sortedFilteredGroupedItems }}">
+					<cosmoz-grouped-list id="groupedList" class="fit" data="[[ sortedFilteredGroupedItems ]]">
 						<item-template id="itemTemplate">
 							<template>
-								<div class$="{{ _computeItemClasses(item, expanded, disabledHeaders.length) }}">
-									<div class$="{{ _computeItemRowClasses(item.*) }}">
-										<div class="row-checkbox" hidden$="{{ !selectionEnabled }}">
+								<div class$="[[ _computeItemClasses(item, expanded, disabledHeaders.length) ]]">
+									<div class$="[[ _computeItemRowClasses(item.*) ]]">
+										<div class="row-checkbox" hidden$="[[ !selectionEnabled ]]">
 											<div class="horizontal layout center center-justified">
 												<paper-checkbox checked="{{ item.checked }}" on-change="onItemCheckboxChange"></paper-checkbox>
 											</div>
 										</div>
-										<template is="dom-repeat" items="{{ columnHeaders }}" as="header" index-as="index">
-											<div class$="{{ _computeClasses('cell', header.type, index) }}">
-												<template is="dom-if" if="{{ header.editable }}">
-													<paper-input type="{{ header.type }}" on-change="dataRowChanged" value="{{ renderItemProperty(item.*, header) }}"></paper-input>
+										<template is="dom-repeat" items="[[ columnHeaders ]]" as="header" index-as="index">
+											<div class$="[[ _computeClasses('cell', header.type, index) ]]">
+												<template is="dom-if" if="[[ header.editable ]]">
+													<paper-input type="[[ header.type ]]" on-change="dataRowChanged" value="{{ renderItemProperty(item.*, header) }}"></paper-input>
 												</template>
-												<template is="dom-if" if="{{ !header.editable }}">
-													<div title="{{ renderItemProperty(item.*, header) }}">
-														<template is="dom-if" if="{{ header.linkbase }}">
-															<a href$="{{ renderLink(header, item) }}">{{ renderItemProperty(item.*, header) }}</a>
+												<template is="dom-if" if="[[ !header.editable ]]">
+													<div title="[[ renderItemProperty(item.*, header) ]]">
+														<template is="dom-if" if="[[ header.linkbase ]]">
+															<a href$="[[ renderLink(header, item) ]]">[[ renderItemProperty(item.*, header) ]]</a>
 														</template>
-														<template is="dom-if" if="{{ !header.linkbase }}">
-															<span>{{ renderItemProperty(item.*, header) }}</span>
+														<template is="dom-if" if="[[ !header.linkbase ]]">
+															<span>[[ renderItemProperty(item.*, header) ]]</span>
 														</template>
 													</div>
 												</template>
 											</div>
 										</template>
 										<div class="item-expand-button">
-											<paper-icon-button on-click="toggleExtraColumns" icon="{{ _computeIcon(item, expanded) }}"></paper-icon-button>
+											<paper-icon-button on-click="toggleExtraColumns" icon="[[ _computeIcon(item, expanded) ]]"></paper-icon-button>
 										</div>
 									</div>
 									<div class="item-extra-row">
-										<template is="dom-repeat" items="{{ disabledHeaders }}" as="header">
+										<template is="dom-repeat" items="[[ disabledHeaders ]]" as="header">
 											<div class="horizontal layout center">
-												<div class="flex">{{ header.name }}</div>
-												<div>{{ renderItemProperty(item.*, header) }}</div>
+												<div class="flex">[[ header.name ]]</div>
+												<div>[[ renderItemProperty(item.*, header) ]]</div>
 											</div>
 										</template>
 									</div>
@@ -176,9 +176,9 @@ with features like group count display and folding
 							<template>
 								<!-- This is a workaround for issue https://github.com/Polymer/polymer/issues/3063 -->
 								<!-- Do not remove this line untile issue has been addressed -->
-								<span hidden="{{fakeBinding}}"></span>
+								<span hidden="[[fakeBinding]]"></span>
 								<div class="horizontal layout center group-header">
-									<div class="row-checkbox" hidden$="{{ !selectionEnabled }}">
+									<div class="row-checkbox" hidden$="[[ !selectionEnabled ]]">
 										<paper-checkbox checked="{{item.checked}}" on-change="onGroupCheckboxChange"></paper-checkbox>
 									</div>
 									<h3 class="flex title">
@@ -195,35 +195,35 @@ with features like group count display and folding
 			<div id="footer" class="horizontal layout center">
 				<div class="horizontal layout flex center">
 					<div class="footer-control">
-						<iron-label class="footer-control-label" for="sort-on-selector">{{_('Sort on', t)}}</iron-label>
+						<iron-label class="footer-control-label" for="sort-on-selector">[[ _('Sort on', t) ]]</iron-label>
 						<paper-dropdown-menu vertical-align="bottom" id="sort-on-selector" no-label-float>
 							<paper-listbox class="dropdown-content menu" selected="{{ sortOn }}" attr-for-selected="id">
 								<paper-item id="">
-									<div style="white-space: nowrap; font-style: italic;">{{_('No sorting', t)}}</div>
+									<div style="white-space: nowrap; font-style: italic;">[[ _('No sorting', t) ]]</div>
 								</paper-item>
-								<template is="dom-repeat" items="{{ headers }}" as="header">
-									<paper-item id="{{ header.id }}">{{ header.name }}</paper-item>
+								<template is="dom-repeat" items="[[ headers ]]" as="header">
+									<paper-item id="[[ header.id ]]">[[ header.name ]]</paper-item>
 								</template>
 							</paper-listbox>
 						</paper-dropdown-menu>
 					</div>
 					<div class="footer-control">
-						<iron-label class="footer-control-label" for="group-on-selector">{{_('Group on', t)}}</iron-label>
+						<iron-label class="footer-control-label" for="group-on-selector">[[ _('Group on', t) ]]</iron-label>
 						<paper-dropdown-menu vertical-align="bottom" id="group-on-selector" no-label-float>
 							<paper-listbox class="dropdown-content menu" selected="{{ groupOn }}" attr-for-selected="id">
-								<paper-item id=""><i style="white-space: nowrap">{{_('No grouping', t)}}</i></paper-item>
-								<template is="dom-repeat" items="{{ headers }}" as="header">
-									<paper-item id="{{ header.id }}">{{ header.name }}</paper-item>
+								<paper-item id=""><i style="white-space: nowrap">[[ _('No grouping', t) ]]</i></paper-item>
+								<template is="dom-repeat" items="[[ headers ]]" as="header">
+									<paper-item id="[[ header.id ]]">[[ header.name ]]</paper-item>
 								</template>
 							</paper-listbox>
 						</paper-dropdown-menu>
 					</div>
 				</div>
 				<div id="footerStats" class="vertical layout end">
-					<span>{{ ngettext('{0} group', '{0} groups', filteredGroupedItems.length, t) }}</span>
-					<span>{{ ngettext('{0} row', '{0} rows', filteredItems.length, t) }}</span>
+					<span>[[ ngettext('{0} group', '{0} groups', filteredGroupedItems.length, t) ]]</span>
+					<span>[[ ngettext('{0} row', '{0} rows', filteredItems.length, t) ]]</span>
 				</div>
-				<cosmoz-bottom-bar class="selection" match-parent info="{{ selectedItems.length }}" on-action="onAction" active$="{{ !isEmpty(selectedItems.length) }}"><content id="actions" select="[action]"></content></cosmoz-bottom-bar>
+				<cosmoz-bottom-bar class="selection" match-parent info="[[ selectedItems.length ]]" on-action="onAction" active$="[[ !isEmpty(selectedItems.length) ]]"><content id="actions" select="[action]"></content></cosmoz-bottom-bar>
 			</div>
 		</div>
 	</template>

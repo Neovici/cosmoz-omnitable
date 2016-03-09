@@ -18,9 +18,7 @@
 <body class="fullbleed">
 	<dom-module id="x-page">
 		<template>
-			<style include="iron-flex iron-positioning">
-				
-			</style>
+			<style include="iron-flex iron-positioning"></style>
 			<div class="layout vertical fit">
 				<h3>Cosmoz omnitable demo</h3>
 				<div>
@@ -37,7 +35,7 @@
 					<header id="date" type="date" render-func="Cosmoz.formatDate">Date</header>
 					<header id="group">Group</header>
 
-					<button action on-run="runAction">Hello</button>
+					<button action on-run="runAction">Remove</button>
 				</cosmoz-omnitable>
 			</div>
 		</template>
@@ -120,7 +118,8 @@
 			},
 
 			runAction: function (event, detail) {
-				console.log('runAction', event, detail, detail.items);
+				console.log('runAction', detail.items, event, detail, detail.items);
+				detail.omnitable.removeItems(detail.items);
 			},
 
 			renderMoney: function (money) {
