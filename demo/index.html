@@ -34,7 +34,7 @@
 					<header id="amount" render-func="renderMoney">Amount</header>
 					<header id="date" type="date" render-func="Cosmoz.formatDate">Date</header>
 					<header id="group">Group</header>
-
+					<button action on-run="updateSelectedRow">Update</button>
 					<button action on-run="runAction">Remove</button>
 				</cosmoz-omnitable>
 			</div>
@@ -115,6 +115,20 @@
 
 			changeData: function () {
 				this.data = this._generateData();
+			},
+
+			updateSelectedRow: function (event, detail) {
+				var branchId = detail.items[0].id,
+					arrayPosition = -1;
+
+				this.data.some(function (element, index) {
+					if (branchId === element.id) {
+						arrayPosition = index;
+						return true;
+					}
+				});
+
+				this.set('data.' + arrayPosition.toString() + '.randomString3', 'blablablalbal');
 			},
 
 			runAction: function (event, detail) {
