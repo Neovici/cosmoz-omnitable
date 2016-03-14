@@ -1,7 +1,7 @@
 /*global Cosmoz, Polymer, window */
 (function () {
 
-	"use strict";
+	'use strict';
 
 	Polymer({
 
@@ -72,10 +72,17 @@
 
 			/**
 			 * List of selected rows/items in `data`.
+			 * This is an empty array on startup.
+			 * (this behavior is different from `Polymer.IronMultiSelectableBehavior` whose `selectedItems` property
+			 * is undefined until something has been selected).
 			 */
 			selectedItems: {
 				type: Array,
-				notify: true
+				notify: true,
+				readOnly: true,
+				value: function () {
+					return [];
+				}
 			},
 
 			/**
@@ -280,7 +287,7 @@
 			}
 
 			this.sortedFilteredGroupedItems.forEach(function (group, index) {
-				this.setGroupProperty(index, "checked", checked);
+				this.setGroupProperty(index, 'checked', checked);
 				this.selectGroupItems(group);
 			}.bind(this));
 		},
@@ -319,7 +326,6 @@
 		selectItem: function (item) {
 			var itemIndex;
 			if (item.checked) {
-				this.selectedItems = this.selectedItems || [];
 				if (this.selectedItems.indexOf(item) === -1) {
 					this.push('selectedItems', item);
 				}
@@ -447,7 +453,7 @@
 				item = event.model.__data__.item,
 				value = element.value;
 
-			if (header.type === "number") {
+			if (header.type === 'number') {
 				value = parseInt(value, 10);
 			}
 			model.set('item.' + header.id, value);
@@ -538,10 +544,10 @@
 				func = this.dataHost[name];
 			} else {
 				funcName = parts.pop();
-  				for(i = 0; i < parts.length; i += 1) {
-    				context = context[parts[i]];
-  				}
-  				func = context[funcName];
+				for(i = 0; i < parts.length; i += 1) {
+					context = context[parts[i]];
+				}
+				func = context[funcName];
 			}
 			return typeof func === 'function' ? func : undefined;
 
@@ -924,23 +930,23 @@
 		_computeClasses: function (type, headerType, index) {
 			return [
 				type,
-				"c" + index,
-				"header-type-" + headerType
-			].join(" ");
+				'c' + index,
+				'header-type-' + headerType
+			].join(' ');
 		},
 
 		_computeHeaderClasses: function (headerType, index) {
 			return [
-				"header",
-				"c" + index,
-				"header-type-" + headerType
-			].join(" ");
+				'header',
+				'c' + index,
+				'header-type-' + headerType
+			].join(' ');
 		},
 
 		_computeItemClasses: function (item, expanded, disabledHeadersCount) {
 			var	classes = [
-					'item'
-				];
+				'item'
+			];
 
 			if (disabledHeadersCount > 0) {
 				classes.push('expandable');
