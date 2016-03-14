@@ -1,0 +1,39 @@
+{
+    "env": {
+        "browser": true
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+        "indent": [
+            2,
+            "tab"
+        ],
+        "quotes": [
+            2,
+            "single",
+            "avoid-escape"
+        ],
+        "semi": [
+            2,
+            "always"
+        ],
+        "space-before-function-paren": [
+            2,
+            {
+                "anonymous": "always",
+                "named": "never"
+            }
+        ],
+        "no-unused-vars": 0
+    },
+    "plugins": [
+        "html"
+    ],
+    "globals": {
+        "CustomElements": false,
+        "HTMLImports": false,
+        "Polymer": false,
+        "WeakMap": false
+    }
+
+}
