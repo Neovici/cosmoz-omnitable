@@ -931,7 +931,7 @@
 			return [
 				type,
 				'c' + index,
-				'header-type-' + headerType
+				'type-' + headerType
 			].join(' ');
 		},
 
