@@ -185,9 +185,7 @@
 			}
 
 			if (this.data.length !== 0) {
-				this.data.forEach(function (item, index) {
-					this.setHeaderValues(item);
-				}.bind(this));
+				this.setHeaderValues();
 			}
 		},
 
@@ -415,25 +413,34 @@
 		 * Render a unique list of possible values to filter the dataset with, for each header/column.
 		 * @param {[type]} item [description]
 		 */
-		setHeaderValues: function (item) {
-			this.headers.forEach(function (header, headerIndex) {
-				var
-					value = this.resolveProp(item, header.id),
-					hasValue = false,
-					label = this.renderObject(value, false, header);
+		setHeaderValues: function () {
+			this.data.forEach(function (item, index) {
+				this.headers.forEach(function (header, headerIndex) {
+					var
+						value = this.resolveProp(item, header.id),
+						hasValue = false,
+						label = this.renderObject(value, false, header);
 
-				header.values.some(function (headerValue, headerValueIndex) {
-					if (headerValue.label === label) {
-						hasValue = true;
-						return true;
-					}
-				});
-				if (!hasValue) {
-					header.values.push({
-						label: label,
-						value: value
+					header.values.some(function (headerValue, headerValueIndex) {
+						if (headerValue.label === label) {
+							hasValue = true;
+							return true;
+						}
 					});
-				}
+					if (!hasValue) {
+						header.values.push({
+							label: label,
+							value: value
+						});
+					}
+				}.bind(this));
+			}.bind(this));
+			this._sortHeaderValues();
+		},
+
+		_sortHeaderValues: function () {
+			this.headers.forEach(function (header, headerIndex) {
+				var valueLength = header.values.length;
 				header.values.sort(function (a, b) {
 					if (a.label < b.label) {
 						return -1;
@@ -441,7 +448,9 @@
 					return 1;
 				});
 			}.bind(this));
+
 		},
+
 		dataRowChanged: function (event, detail) {
 			var
 				element = event.target,
@@ -547,7 +556,6 @@
 				func = context[funcName];
 			}
 			return typeof func === 'function' ? func : undefined;
-
 		},
 
 		setHeadersFromMarkup: function () {
