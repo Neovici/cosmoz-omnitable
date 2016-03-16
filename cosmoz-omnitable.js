@@ -183,6 +183,12 @@
 			if (this._webWorkerReady && this.headers) {
 				this.filterKick += 1;
 			}
+
+			if (this.data.length !== 0) {
+				this.data.forEach(function (item, index) {
+					this.setHeaderValues(item);
+				}.bind(this));
+			}
 		},
 
 		/**
@@ -372,15 +378,6 @@
 		filterItems: function (event, detail, sender) {
 			this._needs.filtering = true;
 			this.filterKick += 1;
-		},
-
-		clearHeaderValues: function () {
-			if (!this.headers) {
-				return;
-			}
-			this.headers.forEach(function (header, index) {
-				this.set('headers.' + index + '.values', []);
-			}.bind(this));
 		},
 
 		renderItemProperty: function (itemNotify, header, ui) {
@@ -597,10 +594,7 @@
 				that = this,
 				filteredItems = [];
 
-			this.clearHeaderValues();
-
 			this.data.forEach(function (item, index) {
-				that.setHeaderValues(item);
 				if (that._needs.filtering) {
 					that.filterItem(item);
 				}
