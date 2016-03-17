@@ -51,8 +51,9 @@ with features like group count display and folding
 		<cosmoz-web-worker id="sortWorker" on-cosmoz-web-worker-ready="_onWebWorkerReady">
 			<script type="text/worker">
 				/*global onmessage, postMessage */
-				"use strict";
-				var getSortFunc = function (sortOn, reverse) {
+				'use strict';
+
+				var getSortFunc = function (sortOn) {
 					if (!sortOn) {
 						return;
 					}
@@ -85,17 +86,19 @@ with features like group count display and folding
 				onmessage = function (event) {
 					var data = event.data.data,
 						list,
-						reverse,
 						sortFunc;
 
 					list = data.data;
-					reverse = !!data.reverse;
-					sortFunc = getSortFunc(data.sortOn, reverse);
+					sortFunc = getSortFunc(data.sortOn);
 
 					if (sortFunc === undefined) {
 						list.sort();
 					} else {
 						list.sort(sortFunc);
+					}
+
+					if (!!data.reverse) {
+						list.reverse();
 					}
 
 					postMessage({
@@ -217,14 +220,14 @@ with features like group count display and folding
 			<div id="footer" class="horizontal layout center">
 				<div class="horizontal layout flex center">
 					<div class="footer-control">
-						<iron-label class="footer-control-label" for="sort-on-selector">[[ _('Sort on', t) ]]</iron-label>
-						<paper-dropdown-menu vertical-align="bottom" id="sort-on-selector" no-label-float>
-							<paper-listbox class="dropdown-content menu" selected="{{ sortOn }}" attr-for-selected="id">
+						<iron-label class="footer-control-label" for="sortOnSelector">[[ _('Sort on', t) ]]</iron-label>
+						<paper-dropdown-menu vertical-align="bottom" id="sortOnSelector" no-label-float>
+							<paper-listbox class="dropdown-content menu" selected="{{ sortOn }}" attr-for-selected="id" on-iron-activate="onSortSelected">
 								<paper-item id="">
 									<div style="white-space: nowrap; font-style: italic;">[[ _('No sorting', t) ]]</div>
 								</paper-item>
 								<template is="dom-repeat" items="[[ headers ]]" as="header">
-									<paper-item id="[[ header.id ]]">[[ header.name ]]</paper-item>
+									<paper-item id="[[ header.id ]]">[[ header.name ]][[ getSortOrder(header.id, sortOn, sortDescending) ]]</paper-item>
 								</template>
 							</paper-listbox>
 						</paper-dropdown-menu>

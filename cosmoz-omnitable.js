@@ -85,6 +85,14 @@
 				}
 			},
 
+			/*
+			 * Whether to reverse sort order
+			 */
+			sortDescending: {
+				type: Boolean,
+				value: false
+			},
+
 			/**
 			 * The header ID to sort on.
 			 */
@@ -152,7 +160,7 @@
 		},
 
 		observers: [
-			'_sortFilteredGroupedItems(filteredGroupedItems, sortOn)',
+			'_sortFilteredGroupedItems(filteredGroupedItems, sortOn, sortDescending)',
 			'_dataChanged(data.length)'
 		],
 
@@ -715,7 +723,7 @@
 			return groups;
 		},
 
-		_sortFilteredGroupedItems: function (filteredGroupedItems, sortOn) {
+		_sortFilteredGroupedItems: function (filteredGroupedItems, sortOn, descending) {
 			if (!filteredGroupedItems) {
 				return;
 			}
@@ -724,6 +732,8 @@
 				this.set('sortedFilteredGroupedItems', filteredGroupedItems);
 				return;
 			}
+
+			console.log('sort!');
 
 			var items = [],
 				numGroups = filteredGroupedItems.length,
@@ -747,6 +757,7 @@
 							groupId: group.id,
 							index: index
 						},
+						reverse: descending,
 						sortOn: 'value',
 						data: mappedItems
 					}, function (data) {
@@ -1007,6 +1018,31 @@
 			if (this._needs.filtering) {
 				this.filterKick += 1;
 			}
+		},
+
+		onSortSelected: function (event, detail) {
+			if (detail.selected === this.sortOn) {
+				// FIXME: Causes double re-sort
+				this.sortDescending = !this.sortDescending;
+				// FIXME: Needed to update menu label text
+				this.sortOn = '';
+				this.sortOn = detail.selected;
+				return;
+			}
+			this.sortDescending = false;
+		},
+
+		getSortOrder: function (id, sortOn, descending) {
+			if (id !== sortOn) {
+				return;
+			}
+			var dir;
+			if (descending) {
+				dir = this._('Descending');
+			} else {
+				dir = this._('Ascending');
+			}
+			return ' (' + dir + ')';
 		}
 	});
 }());
