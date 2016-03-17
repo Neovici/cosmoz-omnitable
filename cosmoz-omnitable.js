@@ -734,6 +734,7 @@
 
 			if (!sortOn) {
 				this.set('sortedFilteredGroupedItems', filteredGroupedItems);
+				this.async(this.updateWidths);
 				return;
 			}
 
@@ -778,6 +779,7 @@
 						});
 						if (results === numGroups) {
 							this.set('sortedFilteredGroupedItems', items);
+							this.async(this.updateWidths);
 						}
 					}.bind(this));
 				}

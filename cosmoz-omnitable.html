@@ -162,7 +162,7 @@ with features like group count display and folding
 										<template is="dom-repeat" items="[[ columnHeaders ]]" as="header" index-as="index">
 											<div class$="[[ _computeClasses('cell', header.type, index) ]]">
 												<template is="dom-if" if="[[ header.editable ]]">
-													<paper-input type="[[ header.type ]]" on-change="dataRowChanged" value="{{ renderItemProperty(item.*, header) }}"></paper-input>
+													<paper-input no-label-float type="[[ header.type ]]" on-change="dataRowChanged" value="{{ renderItemProperty(item.*, header) }}"></paper-input>
 												</template>
 												<template is="dom-if" if="[[ !header.editable ]]">
 													<div title="[[ renderItemProperty(item.*, header) ]]">
