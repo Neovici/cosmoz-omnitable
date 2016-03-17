@@ -36,7 +36,7 @@
     "paper-icon-button": "PolymerElements/paper-icon-button#^1.0.0",
     "paper-item": "PolymerElements/paper-item#^1.0.0",
     "paper-listbox": "PolymerElements/paper-listbox#^1.0.0",
-    "cosmoz-range-selector": "Neovici/cosmoz-range-selector"
+    "cosmoz-range-selector": "Neovici/cosmoz-range-selector#master"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
