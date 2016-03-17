@@ -192,7 +192,7 @@
 				this.filterKick += 1;
 			}
 
-			if (this.data.length !== 0) {
+			if (this.data && this.data.length !== 0) {
 				this.setHeaderValues();
 			}
 		},
@@ -736,8 +736,6 @@
 				this.set('sortedFilteredGroupedItems', filteredGroupedItems);
 				return;
 			}
-
-			console.log('sort!');
 
 			var items = [],
 				numGroups = filteredGroupedItems.length,
