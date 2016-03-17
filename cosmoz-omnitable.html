@@ -39,15 +39,9 @@ with features like group count display and folding
 
 <dom-module id="cosmoz-omnitable">
 	<template>
-		<style include="iron-flex iron-flex-alignment iron-positioning"></style>
-		<style include="cosmoz-omnitable-style">
 
-			.group-header {
-				background-color: #ccc;
-				font-weight: bold;
-			}
+		<style include="cosmoz-omnitable-style iron-flex iron-flex-alignment iron-positioning"></style>
 
-		</style>
 		<cosmoz-web-worker id="sortWorker" on-cosmoz-web-worker-ready="_onWebWorkerReady">
 			<script type="text/worker">
 				/*global onmessage, postMessage */
