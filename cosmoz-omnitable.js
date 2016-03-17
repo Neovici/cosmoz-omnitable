@@ -1043,6 +1043,17 @@
 				dir = this._('Ascending');
 			}
 			return ' (' + dir + ')';
+		},
+
+		addFilter: function (id, value) {
+			var header = this.getHeader(id),
+				headerIndex = this.headers.indexOf(header),
+				ac = this.$$('#header .header.c' + headerIndex + ' cosmoz-autocomplete');
+			if (!ac) {
+				console.warn("wtf?", ac);
+				return;
+			}
+			ac.selectByValue(value);
 		}
 	});
 }());
