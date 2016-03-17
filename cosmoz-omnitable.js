@@ -351,10 +351,11 @@
 		filterItem: function (item) {
 			var hide = false, that = this;
 			this.headers.some(function (header, headerIndex) {
+				var filterFail = true,
+						itemVal = that.resolveProp(item, header.id);
 				if (header.filters !== undefined && header.filters.length > 0) {
-					var filterFail = true;
+					filterFail = true;
 					header.filters.some(function (headerFilter, headerFilterIndex) {
-						var itemVal = that.resolveProp(item, header.id);
 						if (itemVal === headerFilter.value) {
 							filterFail = false;
 							return true;
@@ -368,6 +369,9 @@
 						hide = true;
 						return true;
 					}
+				} else if (header.rangeSelect && (header.rangeFilter.fromValue !== undefined || header.rangeFilter.toValue !== undefined)) {
+					hide = header.filterFunc.call(that.dataHost, itemVal, header.rangeFilter);
+					return hide;
 				}
 			});
 			item.visible = !hide;
@@ -447,6 +451,18 @@
 					}
 					return 1;
 				});
+
+				if (header.type === 'amount') {
+					header.values.sort(function (a, b) {
+						if (a.value.amount < b.value.amount) {
+							return -1;
+						}
+						return 1;
+					});
+
+					header.rangeMin = header.values[0].value.amount;
+					header.rangeMax = header.values[valueLength - 1].value.amount;
+				}
 			}.bind(this));
 
 		},
@@ -565,20 +581,24 @@
 
 			markupHeaders.forEach(function (headerElement, index) {
 				var header = {
-						disabled: false,
-						editable: headerElement.hasAttribute('editable'),
-						id: headerElement.id,
-						linkbase: headerElement.getAttribute('linkbase'),
-						linkprop: headerElement.getAttribute('linkprop'),
-						name: Polymer.dom(headerElement).innerHTML,
-						priority: parseInt(headerElement.getAttribute('priority') || 0, 10),
-						type: headerElement.getAttribute('type') || 'default',
-						values: [],
-						filters: [],
-						wrap: headerElement.hasAttribute('wrap')
+						disabled: 	false,
+						editable: 	headerElement.hasAttribute('editable'),
+						id: 		headerElement.id,
+						linkbase: 	headerElement.getAttribute('linkbase'),
+						linkprop: 	headerElement.getAttribute('linkprop'),
+						name: 		Polymer.dom(headerElement).innerHTML,
+						priority: 	parseInt(headerElement.getAttribute('priority') || 0, 10),
+						type: 		headerElement.getAttribute('type') || 'default',
+						values: 	[],
+						filters: 	[],
+						rangeFilter: {},
+						wrap: 		headerElement.hasAttribute('wrap'),
+						rangeSelect: headerElement.getAttribute('range-select') === 'true'
 					},
-					defaultRenderFunc = 'render' + header.type.charAt(0).toUpperCase() + header.type.substr(1);
+					defaultRenderFunc = 'render' + header.type.charAt(0).toUpperCase() + header.type.substr(1),
+					defaultFilterFunc = 'filter' + header.type.charAt(0).toUpperCase() + header.type.substr(1);
 				header.renderFunc = ctx._getFunctionByName(headerElement.getAttribute('render-func') || defaultRenderFunc, window);
+				header.filterFunc = ctx._getFunctionByName(headerElement.getAttribute('filter-func') || defaultFilterFunc, window);
 				newHeaders.push(header);
 			});
 			this.headers = newHeaders;

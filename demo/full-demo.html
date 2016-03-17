@@ -47,7 +47,7 @@
 					<header id="randomString2">Random string 2</header>
 					<header id="randomString3">Random string 3</header>
 					<header id="randomString4">Random string 4</header>
-					<header id="amount" render-func="renderMoney">Amount</header>
+					<header id="amount" type="amount" range-select="false">Amount</header>
 					<header id="date" type="date" render-func="Cosmoz.formatDate">Date</header>
 					<header id="group">Group</header>
 					<paper-button action on-run="updateSelectedRow">
@@ -118,8 +118,14 @@
 			detail.omnitable.removeItems(detail.items);
 		},
 
-		renderMoney: function (money) {
+		renderAmount: function (money) {
 			return money.amount + ' ' + money.currency;
+		},
+
+		filterAmount: function (money, filter) {
+			var fromValue = parseInt(filter.fromValue, 10),
+				toValue = parseInt(filter.toValue, 10);
+			return money.amount < fromValue || money.amount > toValue;
 		}
 	});
 }());

@@ -15,6 +15,7 @@
 <link rel="import" href="../cosmoz-autocomplete/cosmoz-autocomplete.html"/>
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 <link rel="import" href="../cosmoz-bottom-bar/cosmoz-bottom-bar.html"/>
+<link rel="import" href="../cosmoz-range-selector/cosmoz-range-selector.html"/>
 <link rel="import" href="cosmoz-omnitable-style.html">
 <!--
 `<cosmoz-omnitable>` is an example implementation of grouping for iron-list
@@ -113,7 +114,28 @@ with features like group count display and folding
 				</div>
 				<template is="dom-repeat" items="[[ columnHeaders ]]" as="header" index-as="index">
 					<div class$="[[ _computeHeaderClasses(header.type, index) ]]" hidden$="[[ header.disabled ]]">
-						<cosmoz-autocomplete items="[[ header.values ]]" placeholder="[[ header.name ]]" selected-items="{{ header.filters }}" on-cosmoz-selected-items-changed="filterItems" multi-selection></cosmoz-autocomplete>
+						<template is="dom-if" if="{{ header.rangeSelect }}">
+							<cosmoz-range-selector
+								id="range"
+								label="{{ header.name }} - select range"
+								from-label="From"
+								to-label="To"
+								type="number"
+								min="{{ header.rangeMin }}"
+								max="{{ header.rangeMax }}"
+								on-range-changed="filterItems"
+								values="{{ header.rangeFilter }}">
+							</cosmoz-range-selector>
+						</template>
+						<template is="dom-if" if="{{ !header.rangeSelect }}">
+							<cosmoz-autocomplete
+								items="[[ header.values ]]"
+								placeholder="[[ header.name ]]"
+								selected-items="{{ header.filters }}"
+								on-cosmoz-selected-items-changed="filterItems"
+								multi-selection>
+							</cosmoz-autocomplete>
+						</template>
 					</div>
 				</template>
 			</div>
