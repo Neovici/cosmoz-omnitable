@@ -631,6 +631,8 @@
 				filteredItems = [];
 
 			this.data.forEach(function (item, index) {
+				// HACK(pasleq): set a checked property to all items to avoid issues with paper-checkbox
+				item.checked = false;
 				if (that._needs.filtering) {
 					that.filterItem(item);
 				}
@@ -684,7 +686,9 @@
 					name: key,
 					id: key,
 					items: itemStructure[key],
-					visible: true
+					visible: true,
+					// HACK(pasleq): set a checked property to all groups to avoid issues with paper-checkbox
+					checked: false
 				});
 			});
 
@@ -755,7 +759,9 @@
 						meta: {
 							groupName: group.name,
 							groupId: group.id,
-							index: index
+							index: index,
+							checked: group.checked,
+							visible: group.visible
 						},
 						reverse: descending,
 						sortOn: 'value',
@@ -764,7 +770,10 @@
 						results += 1;
 						items[data.meta.index] = {
 							name: data.meta.groupName,
-							id: data.meta.groupId
+							id: data.meta.groupId,
+							// HACK(pasleq): set a checked property to all groups to workaround issue with paper-checkbox
+							checked: data.meta.checked,
+							visible: data.meta.visible
 						};
 						items[data.meta.index].items = data.data.map(function (item, index) {
 							return group.items[item.index];
