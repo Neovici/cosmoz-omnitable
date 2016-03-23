@@ -149,14 +149,15 @@ with features like group count display and folding
 					</div>
 				</template>
 				<div id="scroller">
-					<cosmoz-grouped-list id="groupedList" class="fit" data="[[ sortedFilteredGroupedItems ]]">
+					<cosmoz-grouped-list id="groupedList" class="fit" data="[[ sortedFilteredGroupedItems ]]"
+						selected-items="{{selectedItems}}">
 						<item-template id="itemTemplate">
 							<template>
 								<div class$="[[ _computeItemClasses(item, expanded, disabledHeaders.length) ]]">
 									<div class$="[[ _computeItemRowClasses(item.*) ]]">
 										<div class="row-checkbox" hidden$="[[ !selectionEnabled ]]">
 											<div class="horizontal layout center center-justified">
-												<paper-checkbox checked="{{ item.checked }}" on-change="onItemCheckboxChange"></paper-checkbox>
+												<paper-checkbox checked="{{ selected }}" on-change="onItemCheckboxChange"></paper-checkbox>
 											</div>
 										</div>
 										<template is="dom-repeat" items="[[ columnHeaders ]]" as="header" index-as="index">
@@ -198,7 +199,7 @@ with features like group count display and folding
 								<span hidden="[[fakeBinding]]"></span>
 								<div class="horizontal layout center group-header">
 									<div class="row-checkbox" hidden$="[[ !selectionEnabled ]]">
-										<paper-checkbox checked="{{item.checked}}" on-change="onGroupCheckboxChange"></paper-checkbox>
+										<paper-checkbox checked="{{ selected }}" on-change="onGroupCheckboxChange"></paper-checkbox>
 									</div>
 									<h3 class="flex title">
 										<span>[[_groupOnHeader.name]]</span>: <span>[[item.name]]</span>

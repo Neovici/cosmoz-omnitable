@@ -23,10 +23,7 @@
 			 * List of data to display
 			 */
 			data: {
-				type: Array,
-				value: function () {
-					return [];
-				}
+				type: Array
 			},
 
 			/**
@@ -72,17 +69,10 @@
 
 			/**
 			 * List of selected rows/items in `data`.
-			 * This is an empty array on startup.
-			 * (this behavior is different from `Polymer.IronMultiSelectableBehavior` whose `selectedItems` property
-			 * is undefined until something has been selected).
 			 */
 			selectedItems: {
 				type: Array,
-				notify: true,
-				readOnly: true,
-				value: function () {
-					return [];
-				}
+				notify: true
 			},
 
 			/*
@@ -203,35 +193,17 @@
 		 * @return {Boolean}      Whether `data` or `selectedItems` changed
 		 */
 		removeItem: function (item) {
-			var change = false,
-				removed;
-			// Removes item from selection if needed.
-			if (this.selectedItems) {
-				removed = this.arrayDelete('selectedItems', item);
-				change = removed.length > 0 || change;
-			}
-			removed = this.arrayDelete('data', item);
-			change = removed.length > 0 || change;
-			if (change && item.checked) {
-				delete item.checked;
-			}
-			return change;
+			this.$.groupedList.removeItem(item);
 		},
 
 		/**
 		 * Remove multiple items from `data`
 		 */
 		removeItems: function (items) {
-			var groupKick = false, i;
+			var i;
 			for (i = items.length - 1; i >= 0; i -= 1) {
-				groupKick = this.removeItem(items[i]) ? true : groupKick;
-			}
-			if (groupKick) {
-				this.groupKick += 1;
-				this.fire('data-changed', {
-					action: 'removeItem',
-					data: this.data
-				});
+				this.$.groupedList.removeItem(items[i]);
+
 			}
 		},
 
@@ -294,38 +266,44 @@
 
 			var checked = event.target.checked;
 
-			if (!this.sortedFilteredGroupedItems) {
-				return;
+			if (checked) {
+				this.$.groupedList.selectAll();
+			} else {
+				this.$.groupedList.deselectAll();
 			}
 
-			this.sortedFilteredGroupedItems.forEach(function (group, index) {
-				this.setGroupProperty(index, 'checked', checked);
-				this.selectGroupItems(group);
-			}.bind(this));
 		},
+
 		onGroupCheckboxChange: function (event) {
-			var group = event.model.item;
-			this.selectGroupItems(group);
+			var
+				group = event.model.item,
+				selected = this.$.groupedList.isGroupSelected(group);
+
+			if (selected) {
+				this.$.groupedList.deselectGroup(group);
+			} else {
+				this.$.groupedList.selectGroup(group);
+			}
+
 			event.preventDefault();
 			event.stopPropagation();
 		},
+
 		onItemCheckboxChange: function (event, detail) {
-			var item = event.model.item;
-			this.selectItem(item);
-		},
-		selectGroupItems: function (group) {
 			var
-				that = this,
-				groupIndex = this.sortedFilteredGroupedItems.indexOf(group);
+				item = event.model.item,
+				selected = this.$.groupedList.isItemSelected(item);
 
-			group.items.forEach(function (item, index) {
-				that.setItemPropery(groupIndex, index, 'checked', group.checked);
+			if (selected) {
+				this.$.groupedList.deselectItem(item);
+			} else {
+				this.$.groupedList.selectItem(item);
+			}
 
-				if (!item.placeholder) {
-					that.selectItem(item);
-				}
-			});
+			event.preventDefault();
+			event.stopPropagation();
 		},
+
 
 		setItemPropery: function (groupIndex, itemIndex, path, value) {
 			this.set('sortedFilteredGroupedItems.#' + groupIndex + '.items.#' + itemIndex + '.' + path, value);
@@ -336,18 +314,19 @@
 		},
 
 		selectItem: function (item) {
-			var itemIndex;
-			if (item.checked) {
-				if (this.selectedItems.indexOf(item) === -1) {
-					this.push('selectedItems', item);
-				}
-			} else if (this.selectedItems) {
-				itemIndex = this.selectedItems.indexOf(item);
-				if (itemIndex > -1) {
-					this.splice('selectedItems', itemIndex, 1);
-				}
-			}
+			this.$.groupedList.selectItem(item);
 		},
+
+		deselectItem: function (item) {
+			this.$.groupedList.deselectItem(item);
+		},
+
+		isItemSelect: function (item) {
+			this.$.groupedList.isItemSelected(item);
+		},
+
+
+
 		toggleGroup: function (event) {
 			this.$.body.querySelector('#groupedList').toggleFold(event.model);
 		},
