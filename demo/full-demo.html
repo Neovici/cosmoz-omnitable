@@ -31,12 +31,17 @@
 					display: block;
 					position: relative;
 				}
+
+				.action {
+					padding: 5px;
+					margin: 5px 5px 10px 5px;
+				}
 			</style>
 			<div class="layout vertical fit">
 				<h3>Cosmoz omnitable demo</h3>
 				<div class="layout horizontal center">
-					<button on-tap="changeData">Generate a new data set</button>
-					<div>
+					<button class="action" on-tap="changeData">Generate a new data set</button>
+					<div class="action">
 						Selected items count: <span>{{selectedItems.length}}</span>
 					</div>
 				</div>
