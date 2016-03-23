@@ -151,7 +151,8 @@
 
 		observers: [
 			'_sortFilteredGroupedItems(filteredGroupedItems, sortOn, sortDescending)',
-			'_dataChanged(data.length)'
+			'_dataChanged(data)',
+			'_dataAddedOrRemoved(data.splices)'
 		],
 
 		behaviors: [
@@ -173,27 +174,61 @@
 		/**
 		 * Called when data is changed to setup up needs and check workers/filtering
 		 */
-		_dataChanged: function () {
+		_dataChanged: function (data) {
 			this._needs.grouping = true;
 			this._needs.filtering = true;
 			this._needs.sorting = true;
+
+			if (this.data && this.data.length !== 0) {
+				this.setHeaderValues();
+			}
 
 			if (this._webWorkerReady && this.headers) {
 				this.filterKick += 1;
 			}
 
-			if (this.data && this.data.length !== 0) {
-				this.setHeaderValues();
+		},
+
+		_dataAddedOrRemoved: function (change) {
+			var itemsAdded, splices;
+
+			if (!change) {
+				return;
+			}
+
+			splices = change.indexSplices;
+
+			itemsAdded = splices.some(function (splice) {
+				return splice.addedCount > 0;
+			}, this);
+
+			if (itemsAdded) {
+				// If some items were added, it's easier to re-sort/re-group/re-filter
+				this._needs.grouping = true;
+				this._needs.filtering = true;
+				this._needs.sorting = true;
+			} else {
+				// When only removing items, no need to process the data again
+				splices.forEach(function (splice) {
+					splice.removed.forEach(function (item) {
+						this.$.groupedList.removeItem(item);
+					}, this);
+				}, this);
+			}
+
+			if (this._webWorkerReady && this.headers && this._needs.filtering) {
+				this.filterKick += 1;
 			}
 		},
 
+
 		/**
-		 * Helper method to remove an item from `data` and cause re-evaluation of table data.
+		 * Helper method to remove an item from `data`.
 		 * @param  {Object} item Item to remove
 		 * @return {Boolean}      Whether `data` or `selectedItems` changed
 		 */
 		removeItem: function (item) {
-			this.$.groupedList.removeItem(item);
+			this.arrayDelete('data', item);
 		},
 
 		/**
@@ -202,7 +237,7 @@
 		removeItems: function (items) {
 			var i;
 			for (i = items.length - 1; i >= 0; i -= 1) {
-				this.$.groupedList.removeItem(items[i]);
+				this.arrayDelete('data', items[i]);
 
 			}
 		},
@@ -324,8 +359,6 @@
 		isItemSelect: function (item) {
 			this.$.groupedList.isItemSelected(item);
 		},
-
-
 
 		toggleGroup: function (event) {
 			this.$.body.querySelector('#groupedList').toggleFold(event.model);

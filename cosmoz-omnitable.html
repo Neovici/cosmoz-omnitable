@@ -106,7 +106,7 @@ with features like group count display and folding
 		<div id="omnitable" class="layout vertical flex">
 			<div id="header" class="relative horizontal layout end">
 				<div class="row-checkbox" style="padding-bottom: 20px;" hidden$="[[ !selectionEnabled ]]">
-					<paper-checkbox checkable checked="[[ allCheckboxChecked ]]" on-change="onAllCheckboxChange" hidden$="[[ isEmpty(data) ]]">
+					<paper-checkbox id="selectAllCheckbox" on-change="onAllCheckboxChange" hidden$="[[ isEmpty(data) ]]">
 					</paper-checkbox>
 				</div>
 				<template is="dom-repeat" items="[[ columnHeaders ]]" as="header" index-as="index">
@@ -149,7 +149,7 @@ with features like group count display and folding
 					</div>
 				</template>
 				<div id="scroller">
-					<cosmoz-grouped-list id="groupedList" class="fit" data="[[ sortedFilteredGroupedItems ]]"
+					<cosmoz-grouped-list id="groupedList" class="fit" data="{{ sortedFilteredGroupedItems }}"
 						selected-items="{{selectedItems}}">
 						<item-template id="itemTemplate">
 							<template>
