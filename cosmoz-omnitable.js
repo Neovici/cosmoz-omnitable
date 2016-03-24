@@ -151,8 +151,7 @@
 
 		observers: [
 			'_sortFilteredGroupedItems(filteredGroupedItems, sortOn, sortDescending)',
-			'_dataChanged(data)',
-			'_dataAddedOrRemoved(data.splices)'
+			'_dataChanged(data.*)'
 		],
 
 		behaviors: [
@@ -174,7 +173,29 @@
 		/**
 		 * Called when data is changed to setup up needs and check workers/filtering
 		 */
-		_dataChanged: function (data) {
+		_dataChanged: function (change) {
+
+			var pathParts, key, dataColl, item;
+
+			if (change.path === 'data') {
+				// Data reference changed
+				this._newData(change.value);
+			} else if (change.path === 'data.splices') {
+				this._dataAddedOrRemoved(change.value);
+			} else {
+				// Data item changed
+				pathParts = change.path.split('.').slice(1);
+				if (pathParts.length >= 2) {
+					key = pathParts[0];
+					dataColl = Polymer.Collection.get(this.data);
+					item = dataColl.getItem(key);
+					this.$.groupedList.notifyItemPath(item, pathParts.slice(1).join('.'), change.value);
+				}
+			}
+		},
+
+		_newData: function (data) {
+
 			this._needs.grouping = true;
 			this._needs.filtering = true;
 			this._needs.sorting = true;
@@ -339,13 +360,19 @@
 			event.stopPropagation();
 		},
 
+		/**
+		 * Convienence method for setting a value to an item's path and notifying any
+		 * element bound to this item's path.
+		 */
+		setItemValue: function (item, itemPath, value) {
+			var dataColl, key;
 
-		setItemPropery: function (groupIndex, itemIndex, path, value) {
-			this.set('sortedFilteredGroupedItems.#' + groupIndex + '.items.#' + itemIndex + '.' + path, value);
-		},
+			dataColl = Polymer.Collection.get(this.data);
 
-		setGroupProperty: function (groupIndex, path, value) {
-			this.set('sortedFilteredGroupedItems.#' + groupIndex + '.' + path, value);
+			key = dataColl.getKey(item);
+
+			this.set('data.' + key + '.' + itemPath, value);
+
 		},
 
 		selectItem: function (item) {
@@ -371,8 +398,9 @@
 		filterItem: function (item) {
 			var hide = false, that = this;
 			this.headers.some(function (header, headerIndex) {
-				var filterFail = true,
-						itemVal = that.resolveProp(item, header.id);
+				var
+					filterFail = true,
+					itemVal = that.resolveProp(item, header.id);
 				if (header.filters !== undefined && header.filters.length > 0) {
 					filterFail = true;
 					header.filters.some(function (headerFilter, headerFilterIndex) {

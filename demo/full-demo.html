@@ -45,7 +45,7 @@
 						Selected items count: <span>{{selectedItems.length}}</span>
 					</div>
 				</div>
-				<cosmoz-omnitable data="[[data]]" class="flex" selection-enabled selected-items="{{selectedItems}}" group-on="group">
+				<cosmoz-omnitable id="omnitable" data="[[data]]" class="flex" selection-enabled selected-items="{{selectedItems}}" group-on="group">
 					<header id="id">Id</header>
 					<header id="name">Name</header>
 					<header id="randomString">Random string</header>
@@ -55,7 +55,7 @@
 					<header id="amount" type="amount" range-select="false">Amount</header>
 					<header id="date" type="date" render-func="Cosmoz.formatDate">Date</header>
 					<header id="group">Group</header>
-					<paper-button action on-run="updateSelectedRow">
+					<paper-button action on-run="updateSelectedRows">
 						<iron-icon icon="editor:mode-edit"></iron-icon>
 						<span>{{ _computeLabel('Update', selectedItems.length)}}</span>
 					</paper-button>
@@ -104,18 +104,11 @@
 			return text + ' ' + count + ' items';
 		},
 
-		updateSelectedRow: function (event, detail) {
-			var branchId = detail.items[0].id,
-				arrayPosition = -1;
+		updateSelectedRows: function (event, detail) {
+			detail.items.forEach(function (item) {
+				this.$.omnitable.setItemValue(item, 'randomString3', 'blablablalbal');
+			}, this);
 
-			this.data.some(function (element, index) {
-				if (branchId === element.id) {
-					arrayPosition = index;
-					return true;
-				}
-			});
-
-			this.set('data.' + arrayPosition.toString() + '.randomString3', 'blablablalbal');
 		},
 
 		removeItems: function (event, detail) {
