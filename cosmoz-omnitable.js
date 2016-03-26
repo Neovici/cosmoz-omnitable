@@ -146,6 +146,15 @@
 			_previousWidth: {
 				type: Number,
 				value: 0
+			},
+
+			/**
+			 * When we don't have data.
+			 * Saved in its own property since `data` will be undefined at first and not trigger evaluation
+			 */
+			_noData: {
+				type: Boolean,
+				value: true
 			}
 		},
 
@@ -191,6 +200,10 @@
 					item = dataColl.getItem(key);
 					this.$.groupedList.notifyItemPath(item, pathParts.slice(1).join('.'), change.value);
 				}
+			}
+
+			if (this.data && this.data.length > 0) {
+				this._noData = false;
 			}
 		},
 

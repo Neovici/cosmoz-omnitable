@@ -106,7 +106,7 @@ with features like group count display and folding
 		<div id="omnitable" class="layout vertical flex">
 			<div id="header" class="relative horizontal layout end">
 				<div class="row-checkbox" style="padding-bottom: 20px;" hidden$="[[ !selectionEnabled ]]">
-					<paper-checkbox id="selectAllCheckbox" on-change="onAllCheckboxChange" hidden$="[[ isEmpty(data) ]]">
+					<paper-checkbox id="selectAllCheckbox" on-change="onAllCheckboxChange" hidden$="[[ _noData ]]">
 					</paper-checkbox>
 				</div>
 				<template is="dom-repeat" items="[[ columnHeaders ]]" as="header" index-as="index">
@@ -137,7 +137,7 @@ with features like group count display and folding
 				</template>
 			</div>
 			<div id="body" class="flex relative layout vertical">
-				<template is="dom-if" if="[[ isEmpty(data) ]]">
+				<template is="dom-if" if="[[ _noData ]]">
 					<div id="emptyDataset" class="fit layout vertical center center-justified">
 						<div class="layout horizontal start">
 							<iron-icon icon="icons:announcement"></iron-icon>
