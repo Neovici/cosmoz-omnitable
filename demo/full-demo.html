@@ -45,7 +45,8 @@
 						Selected items count: <span>{{selectedItems.length}}</span>
 					</div>
 				</div>
-				<cosmoz-omnitable id="omnitable" data="[[data]]" class="flex" selection-enabled selected-items="{{selectedItems}}" group-on="group">
+				<cosmoz-omnitable id="omnitable" data="[[data]]" class="flex" selection-enabled selected-items="{{selectedItems}}">
+					<!-- group-on="group" sort-on="randomString"> -->
 					<header id="id">Id</header>
 					<header id="name">Name</header>
 					<header id="randomString">Random string</header>
@@ -92,12 +93,16 @@
 			Cosmoz.TableDemoBehavior
 		],
 
+		ready: function () {
+			//this.changeData();
+		},
+
 		attached: function () {
-			this.changeData();
+			this.data = this.generateTableDemoData(20,25, 25);
 		},
 
 		changeData: function () {
-			this.data = this.generateTableDemoData(20,25);
+			this.data = this.generateTableDemoData(20,25, 10);
 		},
 
 		_computeLabel: function (text, count) {
