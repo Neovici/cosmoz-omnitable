@@ -240,7 +240,7 @@ with features like group count display and folding
 					</div>
 				</div>
 				<div id="footerStats" class="vertical layout end">
-					<span>[[ ngettext('{0} group', '{0} groups', sortedFilteredGroupedItems.length, t) ]]</span>
+					<span>[[ ngettext('{0} group', '{0} groups', _groupsCount, t) ]]</span>
 					<span>[[ ngettext('{0} row', '{0} rows', filteredItems.length, t) ]]</span>
 				</div>
 				<cosmoz-bottom-bar class="selection" match-parent info="[[ selectedItems.length ]]" on-action="onAction" active$="[[ !isEmpty(selectedItems.length) ]]"><content id="actions" select="[action]"></content></cosmoz-bottom-bar>

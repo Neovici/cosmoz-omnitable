@@ -129,7 +129,7 @@
 			 */
 			filteredGroupedItems: {
 				type: Array,
-				computed: '_groupItems(filteredItems, groupOn, groupKick)'
+				computed: '_groupItems(filteredItems, groupKick)'
 			},
 
 			/**
@@ -155,6 +155,11 @@
 			_noData: {
 				type: Boolean,
 				value: true
+			},
+
+			_groupsCount: {
+				type: Number,
+				value: 0
 			}
 		},
 
@@ -699,7 +704,7 @@
 		},
 
 
-		_groupItems: function (filteredItems, groupOn) {
+		_groupItems: function (filteredItems, groupKick) {
 			if (!this.headers) {
 				return null;
 			}
@@ -711,13 +716,13 @@
 				return filteredItems;
 			}
 
-			this._groupOnHeader = this.getHeader(groupOn);
+			this._groupOnHeader = this.getHeader(this.groupOn);
 
 			var groups = [],
 				itemStructure = {},
 				that = this;
 
-			if (groupOn) {
+			if (this.groupOn) {
 				filteredItems.forEach(function (item, index) {
 					var groupOnValue = that.resolveProp(item, that.groupOn);
 					if (typeof groupOnValue === 'object') {
@@ -730,49 +735,50 @@
 						itemStructure[groupOnValue].push(item);
 					}
 				});
+
+				Object.keys(itemStructure).forEach(function (key) {
+					groups.push({
+						name: key,
+						id: key,
+						items: itemStructure[key],
+						visible: true
+					});
+				});
+
+				groups.sort(function (a, b) {
+					var v1 = that.resolveProp(a.items[0], that.groupOn), v2 = that.resolveProp(b.items[0], that.groupOn);
+					if (typeof v1 === 'object' && typeof v2 === 'object') {
+						return cz.tools.sortObject(v1, v2);
+					}
+					if (typeof v1 === 'number' && typeof v2 === 'number') {
+						return v1 - v2;
+					}
+					if (typeof v1 === 'string' && typeof v2 === 'string') {
+						return v1 < v2 ? -1 : 1;
+					}
+					if (typeof v1 === 'boolean' && typeof v2 === 'boolean') {
+						if (v1 === v2) {
+							return 0;
+						}
+						return v1 ? -1 : 1;
+					}
+					console.warn('unsupported sort', typeof v1, v1, typeof v2, v2);
+					return 0;
+				});
+
+				if (this.hideButFirst && groups.length > 1) {
+					groups.forEach(function (group, index) {
+						if (index === 0) {
+							return;
+						}
+						group.visible = false;
+					});
+				}
+
+				this._groupsCount = groups.length;
 			} else {
-				itemStructure[''] = this.filteredItems;
-			}
-
-			Object.keys(itemStructure).forEach(function (key) {
-				groups.push({
-					name: key,
-					id: key,
-					items: itemStructure[key],
-					visible: true,
-					// HACK(pasleq): set a checked property to all groups to avoid issues with paper-checkbox
-					checked: false
-				});
-			});
-
-			groups.sort(function (a, b) {
-				var v1 = that.resolveProp(a.items[0], that.groupOn), v2 = that.resolveProp(b.items[0], that.groupOn);
-				if (typeof v1 === 'object' && typeof v2 === 'object') {
-					return cz.tools.sortObject(v1, v2);
-				}
-				if (typeof v1 === 'number' && typeof v2 === 'number') {
-					return v1 - v2;
-				}
-				if (typeof v1 === 'string' && typeof v2 === 'string') {
-					return v1 < v2 ? -1 : 1;
-				}
-				if (typeof v1 === 'boolean' && typeof v2 === 'boolean') {
-					if (v1 === v2) {
-						return 0;
-					}
-					return v1 ? -1 : 1;
-				}
-				console.warn('unsupported sort', typeof v1, v1, typeof v2, v2);
-				return 0;
-			});
-
-			if (this.hideButFirst && groups.length > 1) {
-				groups.forEach(function (group, index) {
-					if (index === 0) {
-						return;
-					}
-					group.visible = false;
-				});
+				groups = filteredItems;
+				this._groupsCount = 0;
 			}
 
 			this._needs.grouping = false;
@@ -796,47 +802,69 @@
 				mappedItems,
 				results = 0;
 
-			filteredGroupedItems.forEach(function (group, index) {
-				if (group.items && group.items.map) {
-					// create a reduced version of the items array to transfer to the worker
-					// with item index and property to sort on
-					mappedItems = group.items.map(function (item, originalItemIndex) {
-						return {
-							index: originalItemIndex,
-							value: item[sortOn]
-						};
-					});
-					// Sort the reduced version of the array
-					this.$.sortWorker.process({
-						meta: {
-							groupName: group.name,
-							groupId: group.id,
-							index: index,
-							checked: group.checked,
-							visible: group.visible
-						},
-						reverse: descending,
-						sortOn: 'value',
-						data: mappedItems
-					}, function (data) {
-						results += 1;
-						items[data.meta.index] = {
-							name: data.meta.groupName,
-							id: data.meta.groupId,
-							// HACK(pasleq): set a checked property to all groups to workaround issue with paper-checkbox
-							checked: data.meta.checked,
-							visible: data.meta.visible
-						};
-						items[data.meta.index].items = data.data.map(function (item, index) {
-							return group.items[item.index];
+			if (this._groupsCount > 0) {
+				filteredGroupedItems.forEach(function (group, index) {
+					if (group.items && group.items.map) {
+						// create a reduced version of the items array to transfer to the worker
+						// with item index and property to sort on
+						mappedItems = group.items.map(function (item, originalItemIndex) {
+							return {
+								index: originalItemIndex,
+								value: item[sortOn]
+							};
 						});
-						if (results === numGroups) {
-							this.set('sortedFilteredGroupedItems', items);
-							this.async(this.updateWidths);
-						}
-					}.bind(this));
-				}
-			}.bind(this));
+						// Sort the reduced version of the array
+						this.$.sortWorker.process({
+							meta: {
+								groupName: group.name,
+								groupId: group.id,
+								index: index,
+								checked: group.checked,
+								visible: group.visible
+							},
+							reverse: descending,
+							sortOn: 'value',
+							data: mappedItems
+						}, function (data) {
+							results += 1;
+							items[data.meta.index] = {
+								name: data.meta.groupName,
+								id: data.meta.groupId,
+								// HACK(pasleq): set a checked property to all groups to workaround issue with paper-checkbox
+								checked: data.meta.checked,
+								visible: data.meta.visible
+							};
+							items[data.meta.index].items = data.data.map(function (item, index) {
+								return group.items[item.index];
+							});
+							if (results === numGroups) {
+								this.set('sortedFilteredGroupedItems', items);
+								this.async(this.updateWidths);
+							}
+						}.bind(this));
+					}
+				}, this);
+			} else {
+				// No grouping
+				mappedItems = filteredGroupedItems.map(function (item, originalItemIndex) {
+					return {
+						index: originalItemIndex,
+						value: item[sortOn]
+					};
+				});
+
+				this.$.sortWorker.process({
+					reverse: descending,
+					sortOn: 'value',
+					data: mappedItems
+				}, function (data) {
+					items = data.data.map(function (item, index){
+						return filteredGroupedItems[item.index];
+					});
+					this.set('sortedFilteredGroupedItems', items);
+					this.async(this.updateWidths);
+				}.bind(this));
+			}
 		},
 
 		_computeIcon: function (item, expanded) {
