@@ -1,0 +1,25 @@
+<dom-module id="cosmoz-omnitable-cell">
+	<script>
+		Polymer({
+			is: 'cosmoz-omnitable-cell',
+			properties: {
+				template: {
+					type: Object
+				},
+				item: {
+					type: Object
+				}
+			},
+
+			observers: [
+				'_render(template, item)'
+			],
+
+			_render: function (template, item) {
+				var instance = template.createInstance();
+				instance['item'] = item;
+				Polymer.dom(this).appendChild(instance.root);
+			}
+		})
+	</script>
+</dom-module>

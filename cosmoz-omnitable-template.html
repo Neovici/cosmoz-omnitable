@@ -1,0 +1,61 @@
+<script>
+	Polymer({
+
+		is: 'cosmoz-omnitable-template',
+
+		extends: 'template',
+
+		// Copied from dom-repeat, dom-if, ...
+		_template: null,
+
+		behaviors: [
+			Polymer.Templatizer
+		],
+
+		_templatesInUse: null,
+
+		ready: function () {
+
+			var instanceProps = {};
+
+			instanceProps['item'] = true;
+
+			this._instanceProps = instanceProps;
+
+			this._templatesInUse = [];
+		},
+
+		_ensureTemplatized: function () {
+			if (!this.ctor) {
+				this.templatize(this);
+			}
+		},
+
+		_forwardParentProp: function (prop, value) {
+			this._templatesInUse.forEach(function (template) {
+				template[prop] = value;
+			});
+		},
+
+		_forwardParentPath: function (path, value) {
+			this._templatesInUse.forEach(function (template) {
+				template.notifyPath(path, value, true);
+			});
+		},
+
+		createInstance: function () {
+			var instance;
+
+			this._ensureTemplatized();
+
+			instance = this.stamp({});
+
+			this._templatesInUse.push(instance);
+
+			return instance;
+		},
+
+
+
+	})
+</script>

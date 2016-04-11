@@ -39,31 +39,25 @@
 			</style>
 			<div class="layout vertical fit">
 				<h3>Cosmoz omnitable demo</h3>
+
 				<div class="layout horizontal center">
 					<button class="action" on-tap="changeData">Generate a new data set</button>
 					<div class="action">
 						Selected items count: <span>{{selectedItems.length}}</span>
 					</div>
 				</div>
+
 				<cosmoz-omnitable id="omnitable" data="[[data]]" class="flex" selection-enabled selected-items="{{selectedItems}}">
-					<!-- group-on="group" sort-on="randomString"> -->
-					<header id="id">Id</header>
-					<header id="name">Name</header>
-					<header id="randomString">Random string</header>
-					<header id="randomString2">Random string 2</header>
-					<header id="randomString3">Random string 3</header>
-					<header id="randomString4">Random string 4</header>
-					<header id="amount" type="amount" range-select="false">Amount</header>
-					<header id="date" type="date" render-func="Cosmoz.formatDate">Date</header>
-					<header id="group">Group</header>
+					<cosmoz-omnitable-column id="id"></cosmoz-omnitable-column>
+					<cosmoz-omnitable-column id="name">
+						<template is="cosmoz-omnitable-template" id="data-template">[[item.name]]</template>
+					</cosmoz-omnitable-column>
+
 					<paper-button action on-run="updateSelectedRows">
 						<iron-icon icon="editor:mode-edit"></iron-icon>
 						<span>{{ _computeLabel('Update', selectedItems.length)}}</span>
 					</paper-button>
-					<paper-button action on-run="removeItems">
-						<iron-icon icon="delete"></iron-icon>
-						<span>{{ _computeLabel('Remove', selectedItems.length)}}</span>
-					</paper-button>
+
 				</cosmoz-omnitable>
 			</div>
 		</template>

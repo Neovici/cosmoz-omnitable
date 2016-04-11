@@ -160,6 +160,10 @@
 			_groupsCount: {
 				type: Number,
 				value: 0
+			},
+
+			columns: {
+				type: Array
 			}
 		},
 
@@ -183,6 +187,42 @@
 		 * decisions when to use computing power.
 		 */
 		_needs: {},
+
+		created: function () {
+			this._columnObserver = Polymer.dom(this).observeNodes(function (info) {
+				var columns = Polymer.dom(this).querySelectorAll('cosmoz-omnitable-column');
+				if (columns && columns.length > 0) {
+					this.columns = columns;
+				}
+			}.bind(this));
+
+			this.rendered = false;
+			this._needs = {
+				grouping: true,
+				filtering: true,
+				sorting: true
+			};
+		},
+
+		ready: function () {
+			this._needs = {
+				grouping: true,
+				filtering: true,
+				sorting: true
+			};
+		},
+
+		attached: function () {
+			var hasActions = Polymer.dom(this.$.actions).getDistributedNodes().length > 0;
+			if (hasActions) {
+				this.selectionEnabled = true;
+			}
+			this.$.groupedList.scrollTarget = this.$.scroller;
+			//this.setHeadersFromMarkup();
+			this.rendered = true;
+		},
+
+
 
 		/**
 		 * Called when data is changed to setup up needs and check workers/filtering
@@ -218,11 +258,7 @@
 			this._needs.filtering = true;
 			this._needs.sorting = true;
 
-			if (this.data && this.data.length !== 0) {
-				this.setHeaderValues();
-			}
-
-			if (this._webWorkerReady && this.headers) {
+			if (this._webWorkerReady && this.columns) {
 				this.filterKick += 1;
 			}
 
@@ -296,33 +332,6 @@
 				}
 			}));
 			event.stopPropagation();
-		},
-
-		created: function () {
-			this.rendered = false;
-			this._needs = {
-				grouping: true,
-				filtering: true,
-				sorting: true
-			};
-		},
-
-		ready: function () {
-			this._needs = {
-				grouping: true,
-				filtering: true,
-				sorting: true
-			};
-		},
-
-		attached: function () {
-			var hasActions = Polymer.dom(this.$.actions).getDistributedNodes().length > 0;
-			if (hasActions) {
-				this.selectionEnabled = true;
-			}
-			this.$.groupedList.scrollTarget = this.$.scroller;
-			this.setHeadersFromMarkup();
-			this.rendered = true;
 		},
 
 		_groupOnChanged: function (newValue, oldValue) {
@@ -415,31 +424,31 @@
 
 		filterItem: function (item) {
 			var hide = false, that = this;
-			this.headers.some(function (header, headerIndex) {
-				var
-					filterFail = true,
-					itemVal = that.resolveProp(item, header.id);
-				if (header.filters !== undefined && header.filters.length > 0) {
-					filterFail = true;
-					header.filters.some(function (headerFilter, headerFilterIndex) {
-						if (itemVal === headerFilter.value) {
-							filterFail = false;
-							return true;
-						}
-						if (typeof itemVal === 'object' && that.renderObject(itemVal, false, header) === headerFilter.label) {
-							filterFail = false;
-							return true;
-						}
-					});
-					if (filterFail) {
-						hide = true;
-						return true;
-					}
-				} else if (header.rangeSelect && (header.rangeFilter.fromValue !== undefined || header.rangeFilter.toValue !== undefined)) {
-					hide = header.filterFunc.call(that.dataHost, itemVal, header.rangeFilter);
-					return hide;
-				}
-			});
+			// this.headers.some(function (header, headerIndex) {
+			// 	var
+			// 		filterFail = true,
+			// 		itemVal = that.resolveProp(item, header.id);
+			// 	if (header.filters !== undefined && header.filters.length > 0) {
+			// 		filterFail = true;
+			// 		header.filters.some(function (headerFilter, headerFilterIndex) {
+			// 			if (itemVal === headerFilter.value) {
+			// 				filterFail = false;
+			// 				return true;
+			// 			}
+			// 			if (typeof itemVal === 'object' && that.renderObject(itemVal, false, header) === headerFilter.label) {
+			// 				filterFail = false;
+			// 				return true;
+			// 			}
+			// 		});
+			// 		if (filterFail) {
+			// 			hide = true;
+			// 			return true;
+			// 		}
+			// 	} else if (header.rangeSelect && (header.rangeFilter.fromValue !== undefined || header.rangeFilter.toValue !== undefined)) {
+			// 		hide = header.filterFunc.call(that.dataHost, itemVal, header.rangeFilter);
+			// 		return hide;
+			// 	}
+			// });
 			item.visible = !hide;
 		},
 
@@ -594,6 +603,17 @@
 			});
 		},
 
+		getColumnById: function (id) {
+			var col;
+			this.columns.some(function (column) {
+				if (column.id === id) {
+					col = column;
+					return true;
+				}
+			});
+			return col;
+		},
+
 		getHeader: function (id) {
 			var foundHeader;
 			this.headers.some(function (header, index) {
@@ -674,7 +694,7 @@
 		},
 
 		_filterItems : function (filterKick) {
-			if (!this.headers) {
+			if (!this.columns) {
 				return null;
 			}
 			if (!this.data || this.data.length === 0) {
@@ -705,7 +725,7 @@
 
 
 		_groupItems: function (filteredItems, groupKick) {
-			if (!this.headers) {
+			if (!this.columns) {
 				return null;
 			}
 
@@ -716,17 +736,17 @@
 				return filteredItems;
 			}
 
-			this._groupOnHeader = this.getHeader(this.groupOn);
 
-			var groups = [],
-				itemStructure = {},
-				that = this;
+			var
+				groupOnColumn = this.getColumnById(this.groupOn),
+				groups = [],
+				itemStructure = {};
 
 			if (this.groupOn) {
 				filteredItems.forEach(function (item, index) {
-					var groupOnValue = that.resolveProp(item, that.groupOn);
+					var groupOnValue = this.resolveProp(item, this.groupOn);
 					if (typeof groupOnValue === 'object') {
-						groupOnValue = that.renderObject(groupOnValue, false, that._groupOnHeader);
+						groupOnValue = this.renderObject(groupOnValue, false, groupOnColumn);
 					}
 					if (groupOnValue !== undefined) {
 						if (!itemStructure[groupOnValue]) {
@@ -734,7 +754,7 @@
 						}
 						itemStructure[groupOnValue].push(item);
 					}
-				});
+				}, this);
 
 				Object.keys(itemStructure).forEach(function (key) {
 					groups.push({
@@ -746,7 +766,7 @@
 				});
 
 				groups.sort(function (a, b) {
-					var v1 = that.resolveProp(a.items[0], that.groupOn), v2 = that.resolveProp(b.items[0], that.groupOn);
+					var v1 = this.resolveProp(a.items[0], this.groupOn), v2 = this.resolveProp(b.items[0], this.groupOn);
 					if (typeof v1 === 'object' && typeof v2 === 'object') {
 						return cz.tools.sortObject(v1, v2);
 					}
@@ -764,7 +784,7 @@
 					}
 					console.warn('unsupported sort', typeof v1, v1, typeof v2, v2);
 					return 0;
-				});
+				}.bind(this));
 
 				if (this.hideButFirst && groups.length > 1) {
 					groups.forEach(function (group, index) {

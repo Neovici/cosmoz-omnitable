@@ -1,0 +1,47 @@
+<dom-module id="cosmoz-omnitable-column">
+	<template>
+		<template is="cosmoz-omnitable-template" id="data-template">[[_renderProp(item, id)]]</template>
+	</template>
+	<script>
+		Polymer({
+			is: 'cosmoz-omnitable-column',
+
+			properties: {
+				id: {
+					type: String
+				},
+
+				dataTemplate: {
+					type: Object,
+					value: function () {
+						return this.getDataTemplate();
+					}
+				}
+			},
+
+			attached: function () {
+
+			},
+
+			getDataTemplate: function () {
+				var template = Polymer.dom(this).querySelector('template[id="data-template"]');
+
+				if (!template) {
+					template = Polymer.dom(this.root).querySelector('template[id="data-template"]');
+				}
+
+				return template;
+			},
+
+			getHeaderTemplate: function () {
+				return Polymer.dom(this).querySelector('template[id="header-template"]');
+			},
+
+			_renderProp: function (item, id) {
+				return item[id];
+			}
+
+		});
+
+	</script>
+</dom-module>
