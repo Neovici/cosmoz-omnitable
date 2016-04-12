@@ -33,7 +33,8 @@
         "CustomElements": false,
         "HTMLImports": false,
         "Polymer": false,
-        "WeakMap": false
+        "WeakMap": false,
+        "Cosmoz": false
     }
 
 }

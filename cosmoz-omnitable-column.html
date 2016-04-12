@@ -1,7 +1,7 @@
 <link rel="import" href="cosmoz-omnitable-column-behavior.html">
 <dom-module id="cosmoz-omnitable-column">
 	<template>
-		<template is="cosmoz-omnitable-template" id="data-template">[[_renderProp(item, valuePath)]]</template>
+		<template is="cosmoz-omnitable-template" id="data-template">[[renderDefaultValue(item, valuePath)]]</template>
 	</template>
 	<script>
 		Polymer({
@@ -9,22 +9,7 @@
 
 			behaviors: [
 				Cosmoz.OmnitableColumnBehavior
-			],
-
-			_getDataTemplate: function () {
-
-				var template = Polymer.dom(this).querySelector('template[id="data-template"]');
-
-				if (!template) {
-					template = Polymer.dom(this.root).querySelector('template[id="data-template"]');
-				}
-
-				return template;
-			},
-
-			_renderProp: function (item, valuePath) {
-				return this.get(valuePath, item);
-			},
+			]
 
 		});
 

@@ -2,7 +2,7 @@
 <link rel="import" href="../cosmoz-behaviors/cosmoz-datehelper-behavior.html">
 <dom-module id="cosmoz-omnitable-column-date">
 	<template>
-		<template is="cosmoz-omnitable-template" id="data-template">[[_renderDate(item, valuePath)]]</template>
+		<template is="cosmoz-omnitable-template" id="data-template">[[renderDateValue(item, valuePath)]]</template>
 	</template>
 	<script>
 		Polymer({
@@ -13,11 +13,7 @@
 				Cosmoz.DateHelperBehavior
 			],
 
-			_getDataTemplate: function () {
-				return Polymer.dom(this.root).querySelector('template[id="data-template"]');
-			},
-
-			_renderDate: function (item, valuePath) {
+			renderDateValue: function (item, valuePath) {
 				var value = this.get(valuePath, item);
 
 				// Use MoneyHelperBehavior renderAmount function

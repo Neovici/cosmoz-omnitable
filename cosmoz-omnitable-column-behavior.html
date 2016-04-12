@@ -11,11 +11,11 @@
 		properties: {
 
 			title: {
-				type: String,
+				type: String
 			},
 
 			valuePath: {
-				type: String,
+				type: String
 			},
 
 			dataTemplate: {
@@ -33,9 +33,18 @@
 		},
 
 		_getDataTemplate: function () {
+
+			var template = Polymer.dom(this).querySelector('template[id="data-template"]');
+
+			if (!template) {
+				template = Polymer.dom(this.root).querySelector('template[id="data-template"]');
+			}
+
+			return template;
 		},
 
-		_renderProp: function (item, valuePath) {
+		renderDefaultValue: function (item, valuePath) {
+			return this.get(valuePath, item);
 		},
 
 		_getHeaderTemplate: function () {
