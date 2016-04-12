@@ -1,0 +1,30 @@
+<link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="../cosmoz-behaviors/cosmoz-moneyhelper-behavior.html">
+<dom-module id="cosmoz-omnitable-column-amount">
+	<template>
+		<template is="cosmoz-omnitable-template" id="data-template">[[_renderAmount(item, valuePath)]]</template>
+	</template>
+	<script>
+		Polymer({
+			is: 'cosmoz-omnitable-column-amount',
+
+			behaviors: [
+				Cosmoz.OmnitableColumnBehavior,
+				Cosmoz.MoneyHelperBehavior
+			],
+
+			_getDataTemplate: function () {
+				return Polymer.dom(this.root).querySelector('template[id="data-template"]');
+			},
+
+			_renderAmount: function (item, valuePath) {
+				var value = this.get(valuePath, item);
+
+				// Use MoneyHelperBehavior renderAmount function
+				return this.renderAmount(value);
+			}
+
+		});
+
+	</script>
+</dom-module>

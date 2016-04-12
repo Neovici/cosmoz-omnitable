@@ -1,0 +1,47 @@
+<script>
+
+	if (typeof Cosmoz === 'undefined') {
+		var Cosmoz = {};
+	}
+
+	/**
+	 * @polymerBehavior
+	 */
+	Cosmoz.OmnitableColumnBehavior = {
+		properties: {
+
+			title: {
+				type: String,
+			},
+
+			valuePath: {
+				type: String,
+			},
+
+			dataTemplate: {
+				type: Object,
+				notify: true
+			}
+		},
+
+		// WARN: <cosmoz-omnitable-column-*> elements are used as column definition elements,
+		// and are not distributed in omnitable DOM. Thus, the attached/detached callbacks
+		// are not called on these elements, and one should not rely on these callbacks.
+		// See https://github.com/Polymer/polymer/issues/1365
+		ready: function () {
+			this.dataTemplate = this._getDataTemplate();
+		},
+
+		_getDataTemplate: function () {
+		},
+
+		_renderProp: function (item, valuePath) {
+		},
+
+		_getHeaderTemplate: function () {
+			return Polymer.dom(this).querySelector('template[id="header-template"]');
+		}
+
+	};
+
+</script>

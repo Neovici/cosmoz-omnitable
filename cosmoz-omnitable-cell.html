@@ -4,22 +4,31 @@
 			is: 'cosmoz-omnitable-cell',
 			properties: {
 				template: {
-					type: Object
+					type: Object,
+					observer: '_templateChanged'
 				},
 				item: {
-					type: Object
+					type: Object,
+					observer: '_itemChanged'
 				}
 			},
 
-			observers: [
-				'_render(template, item)'
-			],
+			_templateInstance: null,
 
-			_render: function (template, item) {
-				var instance = template.createInstance();
-				instance['item'] = item;
-				Polymer.dom(this).appendChild(instance.root);
+			_templateChanged: function (template) {
+				this._templateInstance = template.createInstance();
+				Polymer.dom(this).appendChild(this._templateInstance.root);
+				if (this.item) {
+					this._templateInstance['item'] = this.item;
+				}
+			},
+
+			_itemChanged: function (item) {
+				if (this._templateInstance) {
+					this._templateInstance['item'] = item;
+				}
 			}
-		})
+
+		});
 	</script>
 </dom-module>

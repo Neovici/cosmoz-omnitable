@@ -190,7 +190,18 @@
 
 		created: function () {
 			this._columnObserver = Polymer.dom(this).observeNodes(function (info) {
-				var columns = Polymer.dom(this).querySelectorAll('cosmoz-omnitable-column');
+				var
+					columns = [],
+					children = this.getEffectiveChildren(),
+					i,
+					child;
+
+				for (i = 0 ; i < children.length; i+= 1) {
+					child = children[i];
+					if (child.nodeType === Node.ELEMENT_NODE && child.nodeName.indexOf('COSMOZ-OMNITABLE-COLUMN') === 0) {
+						columns.push(child);
+					}
+				}
 				if (columns && columns.length > 0) {
 					this.columns = columns;
 				}

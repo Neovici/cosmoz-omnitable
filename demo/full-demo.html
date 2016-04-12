@@ -48,16 +48,13 @@
 				</div>
 
 				<cosmoz-omnitable id="omnitable" data="[[data]]" class="flex" selection-enabled selected-items="{{selectedItems}}">
-					<cosmoz-omnitable-column id="id"></cosmoz-omnitable-column>
-					<cosmoz-omnitable-column id="name">
-						<template is="cosmoz-omnitable-template" id="data-template">[[item.name]]</template>
+					<cosmoz-omnitable-column title="Id" value-path="id"></cosmoz-omnitable-column>
+					<cosmoz-omnitable-column-amount title="Amount" value-path="amount"></cosmoz-omnitable-column-amount>
+					<cosmoz-omnitable-column-date title="Date" value-path="date"></cosmoz-omnitable-column-date>
+					<cosmoz-omnitable-column title="Sub-property" value-path="sub.subProp"></cosmoz-omnitable-column>
+					<cosmoz-omnitable-column title="Name">
+						<template is="cosmoz-omnitable-template" id="data-template">My name is '[[item.name]]'</template>
 					</cosmoz-omnitable-column>
-
-					<paper-button action on-run="updateSelectedRows">
-						<iron-icon icon="editor:mode-edit"></iron-icon>
-						<span>{{ _computeLabel('Update', selectedItems.length)}}</span>
-					</paper-button>
-
 				</cosmoz-omnitable>
 			</div>
 		</template>
@@ -113,10 +110,6 @@
 		removeItems: function (event, detail) {
 			console.log('runAction', detail.items, event, detail, detail.items);
 			detail.omnitable.removeItems(detail.items);
-		},
-
-		renderAmount: function (money) {
-			return money.amount + ' ' + money.currency;
 		},
 
 		filterAmount: function (money, filter) {

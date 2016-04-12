@@ -1,29 +1,18 @@
+<link rel="import" href="cosmoz-omnitable-column-behavior.html">
 <dom-module id="cosmoz-omnitable-column">
 	<template>
-		<template is="cosmoz-omnitable-template" id="data-template">[[_renderProp(item, id)]]</template>
+		<template is="cosmoz-omnitable-template" id="data-template">[[_renderProp(item, valuePath)]]</template>
 	</template>
 	<script>
 		Polymer({
 			is: 'cosmoz-omnitable-column',
 
-			properties: {
-				id: {
-					type: String
-				},
+			behaviors: [
+				Cosmoz.OmnitableColumnBehavior
+			],
 
-				dataTemplate: {
-					type: Object,
-					value: function () {
-						return this.getDataTemplate();
-					}
-				}
-			},
+			_getDataTemplate: function () {
 
-			attached: function () {
-
-			},
-
-			getDataTemplate: function () {
 				var template = Polymer.dom(this).querySelector('template[id="data-template"]');
 
 				if (!template) {
@@ -33,13 +22,9 @@
 				return template;
 			},
 
-			getHeaderTemplate: function () {
-				return Polymer.dom(this).querySelector('template[id="header-template"]');
+			_renderProp: function (item, valuePath) {
+				return this.get(valuePath, item);
 			},
-
-			_renderProp: function (item, id) {
-				return item[id];
-			}
 
 		});
 

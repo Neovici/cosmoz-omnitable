@@ -1,0 +1,30 @@
+<link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="../cosmoz-behaviors/cosmoz-datehelper-behavior.html">
+<dom-module id="cosmoz-omnitable-column-date">
+	<template>
+		<template is="cosmoz-omnitable-template" id="data-template">[[_renderDate(item, valuePath)]]</template>
+	</template>
+	<script>
+		Polymer({
+			is: 'cosmoz-omnitable-column-date',
+
+			behaviors: [
+				Cosmoz.OmnitableColumnBehavior,
+				Cosmoz.DateHelperBehavior
+			],
+
+			_getDataTemplate: function () {
+				return Polymer.dom(this.root).querySelector('template[id="data-template"]');
+			},
+
+			_renderDate: function (item, valuePath) {
+				var value = this.get(valuePath, item);
+
+				// Use MoneyHelperBehavior renderAmount function
+				return this.renderDate(value);
+			}
+
+		});
+
+	</script>
+</dom-module>
