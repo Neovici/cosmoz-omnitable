@@ -1,4 +1,12 @@
 <dom-module id="cosmoz-omnitable-cell">
+	<template>
+		<style>
+			:host {
+				display: block;
+			}
+		</style>
+		<content></content>
+	</template>
 	<script>
 		Polymer({
 			is: 'cosmoz-omnitable-cell',
@@ -7,9 +15,20 @@
 					type: Object,
 					observer: '_templateChanged'
 				},
+
 				item: {
 					type: Object,
 					observer: '_itemChanged'
+				},
+
+				selected: {
+					type: Boolean,
+					observer: '_selectedChanged'
+				},
+
+				expanded: {
+					type: Boolean,
+					observer: '_expandedChanged'
 				}
 			},
 
@@ -18,16 +37,33 @@
 			_templateChanged: function (template) {
 				this._templateInstance = template.createInstance();
 				Polymer.dom(this).appendChild(this._templateInstance.root);
-				if (this.item) {
-					this._templateInstance['item'] = this.item;
-				}
+				this._assignModel();
 			},
 
 			_itemChanged: function (item) {
 				if (this._templateInstance) {
-					this._templateInstance['item'] = item;
+					this._templateInstance.item = item;
 				}
+			},
+
+			_selectedChanged: function (selected, oldValue) {
+				if (this._templateInstance) {
+					this._templateInstance.selected = selected;
+				}
+			},
+
+			_expandedChanged: function (expanded, oldValue) {
+				if (this._templateInstance) {
+					this._templateInstance.expanded = expanded;
+				}
+			},
+
+			_assignModel: function () {
+				this._templateInstance.item = this.item;
+				this._templateInstance.selected = this.selected;
+				this._templateInstance.expanded = this.expanded;
 			}
+
 
 		});
 	</script>

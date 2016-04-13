@@ -307,7 +307,6 @@
 			}
 		},
 
-
 		/**
 		 * Helper method to remove an item from `data`.
 		 * @param  {Object} item Item to remove
@@ -1079,6 +1078,10 @@
 			}
 			console.warn('item does not have property/path', item, path);
 			return '';
+		},
+
+		_computeCellClasses: function (column, columnIndex) {
+			return 'cell ' + 'cell'+ columnIndex;
 		},
 
 		_computeClasses: function (type, headerType, index) {

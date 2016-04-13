@@ -19,8 +19,11 @@
 			},
 
 			dataTemplate: {
-				type: Object,
-				notify: true
+				type: Object
+			},
+
+			headerTemplate: {
+				type: Object
 			},
 
 			/**
@@ -38,10 +41,11 @@
 		// See https://github.com/Polymer/polymer/issues/1365
 		ready: function () {
 			this.dataTemplate = this._getDataTemplate();
+			this.headerTemplate = this._getHeaderTemplate();
 		},
 
 		_getDataTemplate: function () {
-			var template, templateSelector;
+			var templateSelector;
 
 			if (this.editable) {
 				templateSelector = 'template[id="edit-data-template"]';
@@ -49,18 +53,24 @@
 				templateSelector = 'template[id="data-template"]';
 			}
 
-			template = Polymer.dom(this).querySelector(templateSelector);
+			return this._getTemplate(templateSelector);
+
+		},
+
+		_getHeaderTemplate: function () {
+			var selector = 'template[id="header-template"]';
+			return this._getTemplate(selector);
+		},
+
+		_getTemplate: function (selector) {
+			var template = Polymer.dom(this).querySelector(selector);
 
 			if (!template) {
-				template = Polymer.dom(this.root).querySelector(templateSelector);
+				template = Polymer.dom(this.root).querySelector(selector);
 			}
 
 			return template;
-		},
 
-
-		_getHeaderTemplate: function () {
-			return Polymer.dom(this).querySelector('template[id="header-template"]');
 		},
 
 		renderDefaultValue: function (item, valuePath) {

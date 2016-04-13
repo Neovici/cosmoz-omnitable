@@ -3,11 +3,16 @@
 <dom-module id="cosmoz-omnitable-column-amount">
 	<template>
 		<template is="cosmoz-omnitable-template" id="data-template">[[renderAmountWithCurrency(item, valuePath)]]</template>
+
 		<template is="cosmoz-omnitable-template" id="edit-data-template">
 			<paper-input no-label-float type="number" on-change="_amountValueChanged"
 				value="[[renderAmountValue(item, valuePath)]]">
 				<div suffix>[[_getCurrency(item, valuePath)]]</div>
 			</paper-input>
+		</template>
+
+		<template is="cosmoz-omnitable-template" id="header-template">
+			<div>[[title]]</div>
 		</template>
 	</template>
 	<script>

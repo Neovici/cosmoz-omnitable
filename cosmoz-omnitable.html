@@ -22,6 +22,7 @@
 <link rel="import" href="cosmoz-omnitable-column-date.html">
 <link rel="import" href="cosmoz-omnitable-template.html">
 <link rel="import" href="cosmoz-omnitable-cell.html">
+<link rel="import" href="cosmoz-omnitable-header.html">
 <link rel="import" href="cosmoz-omnitable-style.html">
 <!--
 `<cosmoz-omnitable>` is an example implementation of grouping for iron-list
@@ -111,7 +112,13 @@ with features like group count display and folding
 
 		<div id="omnitable" class="layout vertical flex">
 			<div id="header" class="relative horizontal layout end">
-
+				<div class="row-checkbox" style="padding-bottom: 20px;" hidden$="[[ !selectionEnabled ]]">
+					<paper-checkbox id="selectAllCheckbox" on-change="onAllCheckboxChange" hidden$="[[ _noData ]]">
+					</paper-checkbox>
+				</div>
+				<template is="dom-repeat" items="[[columns]]" as="column" index-as="columnIndex">
+					<cosmoz-omnitable-header template="[[column.headerTemplate]]"></cosmoz-omnitable-header>
+				</template>
 			</div>
 			<div id="body" class="flex relative layout vertical">
 				<template is="dom-if" if="[[ _noData ]]">
@@ -131,8 +138,16 @@ with features like group count display and folding
 						<item-template id="itemTemplate">
 							<template>
 								<div class="layout horizontal center">
-									<template is="dom-repeat" items="[[ columns ]]" as="column">
-										<cosmoz-omnitable-cell template="{{column.dataTemplate}}" item="{{item}}"></cosmoz-omnitable-cell>
+									<div class="row-checkbox" hidden$="[[ !selectionEnabled ]]">
+										<paper-checkbox checked="{{ selected }}" on-change="onItemCheckboxChange"></paper-checkbox>
+									</div>
+									<template is="dom-repeat" items="[[ columns ]]" as="column" index-as="columnIndex">
+										<cosmoz-omnitable-cell class$="_computeCellClasses(column, columnIndex)"
+											template="{{column.dataTemplate}}"
+											item="{{item}}"
+											selected="{{selected}}"
+											expanded="{{expanded}}">
+										</cosmoz-omnitable-cell>
 									</template>
 								</div>
 							</template>

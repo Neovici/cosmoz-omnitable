@@ -6,6 +6,9 @@
 		<template is="cosmoz-omnitable-template" id="edit-data-template">
 			<paper-input no-label-float type="date" on-change="_dateValueChanged" value="[[renderDateValue(item, valuePath)]]"></paper-input>
 		</template>
+		<template is="cosmoz-omnitable-template" id="header-template">
+			<div>[[title]]</div>
+		</template>
 	</template>
 	<script>
 		Polymer({
