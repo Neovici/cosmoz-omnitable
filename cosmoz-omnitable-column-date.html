@@ -3,6 +3,9 @@
 <dom-module id="cosmoz-omnitable-column-date">
 	<template>
 		<template is="cosmoz-omnitable-template" id="data-template">[[renderDateValue(item, valuePath)]]</template>
+		<template is="cosmoz-omnitable-template" id="edit-data-template">
+			<paper-input no-label-float type="date" on-change="_dateValueChanged" value="[[renderDateValue(item, valuePath)]]"></paper-input>
+		</template>
 	</template>
 	<script>
 		Polymer({
@@ -12,6 +15,22 @@
 				Cosmoz.OmnitableColumnBehavior,
 				Cosmoz.DateHelperBehavior
 			],
+
+			_dateValueChanged: function (event) {
+				var
+					input = event.target,
+					value = input.value,
+					item = event.model.item,
+					dateValue;
+
+				try {
+					dateValue = new Date(value);
+					this.set(this.valuePath, dateValue, item);
+				} catch (err) {
+					input.errorMessage = 'Invalid date';
+				}
+
+			},
 
 			renderDateValue: function (item, valuePath) {
 				var value = this.get(valuePath, item);

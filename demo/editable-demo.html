@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Cosmoz Omnitable demo</title>
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+	<link rel="import" href="../../polymer/polymer.html">
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+	<link rel="import" href="../../iron-icons/editor-icons.html">
+	<link rel="import" href="../../iron-icons/iron-icons.html">
+	<link rel="import" href="../../paper-button/paper-button.html">
+	<link rel="import" href="../../cosmoz-i18next/cosmoz-i18next.html">
+	<link rel="import" href="../cosmoz-omnitable.html">
+
+	<link rel="import" href="table-demo-behavior.html">
+
+	<style is="custom-style" include="iron-flex iron-flex-alignment iron-positioning">
+
+	</style>
+
+</head>
+<body class="fullbleed">
+	<dom-module id="x-page">
+		<template>
+			<style include="iron-flex iron-positioning">
+				:host {
+					display: block;
+					position: relative;
+				}
+
+				.action {
+					padding: 5px;
+					margin: 5px 5px 10px 5px;
+				}
+			</style>
+			<div class="layout vertical fit">
+				<h3>Cosmoz omnitable demo</h3>
+
+				<div class="layout horizontal center">
+					<button class="action" on-tap="changeData">Generate a new data set</button>
+					<div class="action">
+						Selected items count: <span>{{selectedItems.length}}</span>
+					</div>
+				</div>
+
+				<cosmoz-omnitable id="omnitable" data="[[data]]" class="flex" selection-enabled selected-items="{{selectedItems}}">
+					<cosmoz-omnitable-column title="Id" value-path="id"></cosmoz-omnitable-column>
+					<cosmoz-omnitable-column-amount title="Amount" value-path="amount" editable></cosmoz-omnitable-column-amount>
+					<cosmoz-omnitable-column-date title="Date" value-path="date" editable></cosmoz-omnitable-column-date>
+					<cosmoz-omnitable-column title="Sub-property" value-path="sub.subProp" editable></cosmoz-omnitable-column>
+					<cosmoz-omnitable-column title="Random String" value-path="randomString" editable></cosmoz-omnitable-column>
+					<!-- sample column that overrides edit-data-template -->
+					<cosmoz-omnitable-column title="Name" editable>
+						<template is="cosmoz-omnitable-template" id="edit-data-template">
+							<paper-input no-label-float type="text" on-change="_itemNameChanged" value="[[item.name]]"></paper-input>
+						</template>
+					</cosmoz-omnitable-column>
+				</cosmoz-omnitable>
+			</div>
+		</template>
+	</dom-module>
+
+	<x-page class="fit"></x-page>
+
+	<script type="text/javascript">
+/*global document, window, Cosmoz, Polymer */
+(function () {
+	'use strict';
+
+
+	Polymer({
+		is: 'x-page',
+
+		properties: {
+			data: {
+				type: Array
+			},
+			selectedItems: {
+				type: Array
+			}
+		},
+
+		behaviors: [
+			Cosmoz.TableDemoBehavior
+		],
+
+		ready: function () {
+			//this.changeData();
+		},
+
+		attached: function () {
+			this.data = this.generateTableDemoData(20,25, 25);
+		},
+
+		changeData: function () {
+			this.data = this.generateTableDemoData(20,25, 10);
+		},
+
+		_computeLabel: function (text, count) {
+			return text + ' ' + count + ' items';
+		},
+
+		updateSelectedRows: function (event, detail) {
+			detail.items.forEach(function (item) {
+				this.$.omnitable.setItemValue(item, 'randomString3', 'blablablalbal');
+			}, this);
+
+		},
+
+		removeItems: function (event, detail) {
+			console.log('runAction', detail.items, event, detail, detail.items);
+			detail.omnitable.removeItems(detail.items);
+		},
+
+		filterAmount: function (money, filter) {
+			var fromValue = parseInt(filter.fromValue, 10),
+				toValue = parseInt(filter.toValue, 10);
+			return money.amount < fromValue || money.amount > toValue;
+		},
+		_itemNameChanged: function (event) {
+			var item = event.model.item;
+			this.$.omnitable.setItemValue(item, 'name', event.target.value);
+		}
+	});
+}());
+
+	</script>
+</body>
+</html>

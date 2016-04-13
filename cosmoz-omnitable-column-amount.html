@@ -2,7 +2,13 @@
 <link rel="import" href="../cosmoz-behaviors/cosmoz-moneyhelper-behavior.html">
 <dom-module id="cosmoz-omnitable-column-amount">
 	<template>
-		<template is="cosmoz-omnitable-template" id="data-template">[[renderAmountValue(item, valuePath)]]</template>
+		<template is="cosmoz-omnitable-template" id="data-template">[[renderAmountWithCurrency(item, valuePath)]]</template>
+		<template is="cosmoz-omnitable-template" id="edit-data-template">
+			<paper-input no-label-float type="number" on-change="_amountValueChanged"
+				value="[[renderAmountValue(item, valuePath)]]">
+				<div suffix>[[_getCurrency(item, valuePath)]]</div>
+			</paper-input>
+		</template>
 	</template>
 	<script>
 		Polymer({
@@ -13,11 +19,38 @@
 				Cosmoz.MoneyHelperBehavior
 			],
 
+			renderAmountWithCurrency: function (item, valuePath) {
+				var value = this.get(valuePath, item);
+				return this.renderAmount(value);
+			},
+
 			renderAmountValue: function (item, valuePath) {
 				var value = this.get(valuePath, item);
 
 				// Use MoneyHelperBehavior renderAmount function
-				return this.renderAmount(value);
+				return value.amount;
+			},
+
+			_getCurrency: function (item, valuePath) {
+				var value = this.get(valuePath, item);
+				return value && value.currency;
+			},
+
+			_amountValueChanged: function (event) {
+				var
+					input = event.target,
+					value = input.value,
+					item = event.model.item,
+					amountValue,
+					originalValue = this.get(this.valuePath, item),
+					newValue;
+
+				amountValue = Number(value);
+				newValue = {
+					amount: amountValue,
+					currency: originalValue.currency
+				};
+				this.set(this.valuePath, newValue, item);
 			}
 
 		});

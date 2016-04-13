@@ -2,6 +2,9 @@
 <dom-module id="cosmoz-omnitable-column">
 	<template>
 		<template is="cosmoz-omnitable-template" id="data-template">[[renderDefaultValue(item, valuePath)]]</template>
+		<template is="cosmoz-omnitable-template" id="edit-data-template">
+			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[renderDefaultValue(item, valuePath)]]"></paper-input>
+		</template>
 	</template>
 	<script>
 		Polymer({

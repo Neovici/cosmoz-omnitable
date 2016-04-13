@@ -130,9 +130,11 @@ with features like group count display and folding
 						selected-items="{{selectedItems}}">
 						<item-template id="itemTemplate">
 							<template>
-								<template is="dom-repeat" items="[[ columns ]]" as="column">
-									<cosmoz-omnitable-cell template="{{column.dataTemplate}}" item="{{item}}"></cosmoz-omnitable-cell>
-								</template>
+								<div class="layout horizontal center">
+									<template is="dom-repeat" items="[[ columns ]]" as="column">
+										<cosmoz-omnitable-cell template="{{column.dataTemplate}}" item="{{item}}"></cosmoz-omnitable-cell>
+									</template>
+								</div>
 							</template>
 						</item-template>
 						<item-template id="groupTemplate">
