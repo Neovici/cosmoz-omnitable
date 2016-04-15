@@ -117,7 +117,8 @@ with features like group count display and folding
 					</paper-checkbox>
 				</div>
 				<template is="dom-repeat" items="[[columns]]" as="column" index-as="columnIndex">
-					<cosmoz-omnitable-header template="[[column.headerTemplate]]"></cosmoz-omnitable-header>
+					<cosmoz-omnitable-header template="{{column.headerTemplate}}" column="{{column}}">
+					</cosmoz-omnitable-header>
 				</template>
 			</div>
 			<div id="body" class="flex relative layout vertical">
@@ -165,6 +166,10 @@ with features like group count display and folding
 					</cosmoz-grouped-list>
 				</div>
 			</div>
+		</div>
+
+		<div id="columns">
+			<content></content>
 		</div>
 	</template>
 	<script type="text/javascript" src="cosmoz-omnitable.js"></script>

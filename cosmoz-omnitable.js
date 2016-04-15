@@ -124,6 +124,13 @@
 				computed: '_filterItems(filterKick)'
 			},
 
+			filters: {
+				type: Array,
+				value: function () {
+					return [];
+				}
+			},
+
 			/**
 			 * Grouped items structure after filtering.
 			 */
@@ -163,13 +170,16 @@
 			},
 
 			columns: {
-				type: Array
+				type: Array,
+				notify: true,
+				observer: '_columnsChanged'
 			}
 		},
 
 		observers: [
 			'_sortFilteredGroupedItems(filteredGroupedItems, sortOn, sortDescending)',
-			'_dataChanged(data.*)'
+			'_dataChanged(data.*)',
+			'_filtersChanged(filters.*)'
 		],
 
 		behaviors: [
@@ -203,7 +213,7 @@
 					}
 				}
 				if (columns && columns.length > 0) {
-					this.columns = columns;
+					this.set('columns', columns);
 				}
 			}.bind(this));
 
@@ -270,6 +280,7 @@
 			this._needs.sorting = true;
 
 			if (this._webWorkerReady && this.columns) {
+				this._setColumnValues();
 				this.filterKick += 1;
 			}
 
@@ -305,6 +316,47 @@
 			if (this._webWorkerReady && this.headers && this._needs.filtering) {
 				this.filterKick += 1;
 			}
+		},
+
+		_columnsChanged: function (columns, oldColumns) {
+			this.columns.forEach(function (column) {
+				this.listen(column, 'filter-changed', '_onColumnFilterChanged');
+			}, this);
+		},
+
+		_onColumnFilterChanged: function (event) {
+			var
+				column = event.target,
+				filterValue = event.detail.value,
+				valuePath = column.valuePath,
+				existingFilter = false;
+
+			existingFilter = this.filters.some(function (filter) {
+				if (filter.path === valuePath) {
+					filter.value = filterValue;
+					return true;
+				}
+			}, this);
+
+			if (!existingFilter) {
+				this.filters.push({
+					column: column,
+					path: valuePath,
+					value: filterValue
+				});
+			}
+
+			this._needs.filtering = true;
+			this.filterKick += 1;
+		},
+
+		_filtersChanged: function (change) {
+			console.log('_filtersChanged', change);
+
+			// filters property has been changed from outside
+			// TODO: update the corresponding column
+			this._needs.filtering = true;
+			this.filterKick += 1;
 		},
 
 		/**
@@ -432,41 +484,6 @@
 			return folded ? 'expand-more' : 'expand-less';
 		},
 
-		filterItem: function (item) {
-			var hide = false, that = this;
-			// this.headers.some(function (header, headerIndex) {
-			// 	var
-			// 		filterFail = true,
-			// 		itemVal = that.resolveProp(item, header.id);
-			// 	if (header.filters !== undefined && header.filters.length > 0) {
-			// 		filterFail = true;
-			// 		header.filters.some(function (headerFilter, headerFilterIndex) {
-			// 			if (itemVal === headerFilter.value) {
-			// 				filterFail = false;
-			// 				return true;
-			// 			}
-			// 			if (typeof itemVal === 'object' && that.renderObject(itemVal, false, header) === headerFilter.label) {
-			// 				filterFail = false;
-			// 				return true;
-			// 			}
-			// 		});
-			// 		if (filterFail) {
-			// 			hide = true;
-			// 			return true;
-			// 		}
-			// 	} else if (header.rangeSelect && (header.rangeFilter.fromValue !== undefined || header.rangeFilter.toValue !== undefined)) {
-			// 		hide = header.filterFunc.call(that.dataHost, itemVal, header.rangeFilter);
-			// 		return hide;
-			// 	}
-			// });
-			item.visible = !hide;
-		},
-
-		filterItems: function (event, detail, sender) {
-			this._needs.filtering = true;
-			this.filterKick += 1;
-		},
-
 		renderItemProperty: function (itemNotify, header, ui) {
 			var
 				item = itemNotify.base,
@@ -496,6 +513,24 @@
 			}
 
 			return obj;
+		},
+
+		// TODO: provides a mean to avoid setting the values for a column
+		// TODO: should process (distinct, sort, min, max) the values at the column level depending on the column type
+		_setColumnValues: function () {
+			this.columns.forEach(function (column, colIndex) {
+				var
+					currValues = column.values,
+					newValues = [];
+
+				this.data.forEach(function (item, index) {
+					var value = this.get(column.valuePath, item);
+					newValues.push(value);
+				}, this);
+
+				this.splice.apply(this, ['columns.' + colIndex + '.values', 0, currValues.length].concat(newValues));
+
+			}, this);
 		},
 
 		/**
@@ -714,23 +749,19 @@
 				return;
 			}
 
-			var
-				that = this,
-				filteredItems = [];
+			var filteredItems = this.data.filter(function (item) {
+				return this._filterItem(item);
+			}, this);
 
-			this.data.forEach(function (item, index) {
-				// HACK(pasleq): set a checked property to all items to avoid issues with paper-checkbox
-				item.checked = false;
-				if (that._needs.filtering) {
-					that.filterItem(item);
-				}
-				if (item.visible) {
-					filteredItems.push(item);
-				}
-			});
-			that._needs.filtering = false;
-			that._needs.grouping = true;
+			this._needs.filtering = false;
+			this._needs.grouping = true;
 			return filteredItems;
+		},
+
+		_filterItem: function (item) {
+			return this.filters.every(function (filter) {
+				return filter.column.applyFilter(item, filter.value);
+			}, this);
 		},
 
 
@@ -740,7 +771,7 @@
 			}
 
 			if (!filteredItems || filteredItems.length === 0) {
-				return;
+				return [];
 			}
 			if (!this._needs.grouping) {
 				return filteredItems;

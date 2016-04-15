@@ -1,4 +1,6 @@
 <link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="../cosmoz-autocomplete/cosmoz-autocomplete.html">
+
 <dom-module id="cosmoz-omnitable-column">
 	<template>
 		<template is="cosmoz-omnitable-template" id="data-template">[[renderDefaultValue(item, valuePath)]]</template>
@@ -6,7 +8,11 @@
 			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[renderDefaultValue(item, valuePath)]]"></paper-input>
 		</template>
 		<template is="cosmoz-omnitable-template" id="header-template">
-			<div>[[title]]</div>
+			<!-- TODO: Need to rework autocomplete so that it also works with templates for rendering
+				<cosmoz-autocomplete items="[[values]]" placeholder="[[title]]" selected-items="[[filters]]" multi-selection>
+				</cosmoz-autocomplete>
+			-->
+			<paper-input label="[[title]]" value="{{filter}}"></paper-input>
 		</template>
 	</template>
 	<script>

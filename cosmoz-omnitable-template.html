@@ -32,12 +32,14 @@
 		},
 
 		_forwardParentProp: function (prop, value) {
+			//console.log('_forwardParentProp', prop, value);
 			this._templatesInUse.forEach(function (template) {
 				template[prop] = value;
 			});
 		},
 
 		_forwardParentPath: function (path, value) {
+			//console.log('_forwardParentPath', path, value);
 			this._templatesInUse.forEach(function (template) {
 				template.notifyPath(path, value, true);
 			});

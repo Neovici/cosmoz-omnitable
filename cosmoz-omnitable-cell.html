@@ -32,36 +32,37 @@
 				}
 			},
 
-			_templateInstance: null,
+			// WARN: do not use '_templateInstance' as property name
+			_cellTemplateInstance: null,
 
 			_templateChanged: function (template) {
-				this._templateInstance = template.createInstance();
-				Polymer.dom(this).appendChild(this._templateInstance.root);
+				this._cellTemplateInstance = template.createInstance();
+				Polymer.dom(this).appendChild(this._cellTemplateInstance.root);
 				this._assignModel();
 			},
 
 			_itemChanged: function (item) {
-				if (this._templateInstance) {
-					this._templateInstance.item = item;
+				if (this._cellTemplateInstance) {
+					this._cellTemplateInstance.item = item;
 				}
 			},
 
 			_selectedChanged: function (selected, oldValue) {
-				if (this._templateInstance) {
-					this._templateInstance.selected = selected;
+				if (this._cellTemplateInstance) {
+					this._cellTemplateInstance.selected = selected;
 				}
 			},
 
 			_expandedChanged: function (expanded, oldValue) {
-				if (this._templateInstance) {
-					this._templateInstance.expanded = expanded;
+				if (this._cellTemplateInstance) {
+					this._cellTemplateInstance.expanded = expanded;
 				}
 			},
 
 			_assignModel: function () {
-				this._templateInstance.item = this.item;
-				this._templateInstance.selected = this.selected;
-				this._templateInstance.expanded = this.expanded;
+				this._cellTemplateInstance.item = this.item;
+				this._cellTemplateInstance.selected = this.selected;
+				this._cellTemplateInstance.expanded = this.expanded;
 			}
 
 

@@ -11,17 +11,38 @@
 		Polymer({
 			is: 'cosmoz-omnitable-header',
 			properties: {
+
 				template: {
 					type: Object,
 					observer: '_templateChanged'
+				},
+
+				column: {
+					type: Object
 				}
 			},
 
-			_templateInstance: null,
+			observers: [
+				'_columnChanged(column.*)'
+			],
+
+			// WARN: do not use '_templateInstance' property name, as this will conflict with
+			// a property used by Templatizer
+
+			_headerTemplateInstance: null,
+
+			_columnChanged: function (columnChange) {
+				var subPath;
+				if (columnChange.path !== 'column') {
+					subPath = columnChange.path.slice(7);
+					this._headerTemplateInstance.notifyPath(subPath, columnChange.value);
+				}
+
+			},
 
 			_templateChanged: function (template) {
-				this._templateInstance = template.createInstance();
-				Polymer.dom(this).appendChild(this._templateInstance.root);
+				this._headerTemplateInstance = template.createInstance();
+				Polymer.dom(this).appendChild(this._headerTemplateInstance.root);
 			}
 
 

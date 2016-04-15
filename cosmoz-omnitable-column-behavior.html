@@ -19,11 +19,13 @@
 			},
 
 			dataTemplate: {
-				type: Object
+				type: Object,
+				notify: true
 			},
 
 			headerTemplate: {
-				type: Object
+				type: Object,
+				notify: true
 			},
 
 			/**
@@ -31,14 +33,25 @@
 			 */
 			editable: {
 				type: Boolean
-			}
+			},
 
+			filter: {
+				type: Object,
+				notify: true
+			},
+
+			/**
+			 * All values for this column.
+			 */
+			values: {
+				type: Array,
+				notify: true,
+				value: function () {
+					return [];
+				}
+			}
 		},
 
-		// WARN: <cosmoz-omnitable-column-*> elements are used only as column definition elements,
-		// and are not distributed in omnitable DOM. Thus, the attached/detached callbacks
-		// are not called on these elements, and one should not rely on these callbacks.
-		// See https://github.com/Polymer/polymer/issues/1365
 		ready: function () {
 			this.dataTemplate = this._getDataTemplate();
 			this.headerTemplate = this._getHeaderTemplate();
@@ -84,7 +97,21 @@
 				item = event.model.item;
 
 			this.set(this.valuePath, value, item);
+		},
+
+		/**
+		 * Returns true if the specified item matches this column filter
+		 * TODO: implement multiple values filters
+		 */
+		applyFilter: function (item) {
+
+			var
+				value = this.get(this.valuePath, item).toString().toLowerCase(),
+				filter = this.filter.toString().toLowerCase();
+			return value.indexOf(filter) >= 0;
 		}
+
+
 
 	};
 
