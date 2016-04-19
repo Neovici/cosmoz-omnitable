@@ -63,11 +63,16 @@
 							<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.id]]</a>
 						</template>
 					</cosmoz-omnitable-column>
+					<cosmoz-omnitable-column-boolean title="Boolean" value-path="bool"
+						true-label="Oui" false-label="Non"
+						>
+					</cosmoz-omnitable-column-boolean>
+					<cosmoz-omnitable-column title="Group" value-path="group" bind-values></cosmoz-omnitable-column>
 					<cosmoz-omnitable-column-amount title="Amount" value-path="amount"></cosmoz-omnitable-column-amount>
 					<cosmoz-omnitable-column-date title="Date" value-path="date" locale="{{locale}}"></cosmoz-omnitable-column-date>
 					<cosmoz-omnitable-column-date title="DateJSON" value-path="dateJSON" locale="{{locale}}"></cosmoz-omnitable-column-date>
 					<cosmoz-omnitable-column title="Sub-property" value-path="sub.subProp"></cosmoz-omnitable-column>
-					<cosmoz-omnitable-column title="Name" value-path="name">
+					<cosmoz-omnitable-column title="Name" value-path="name" bind-values>
 						<template is="cosmoz-omnitable-template" id="data-template">
 							<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.name]]</a>
 						</template>

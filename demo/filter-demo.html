@@ -53,6 +53,8 @@
 							<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.id]]</a>
 						</template>
 					</cosmoz-omnitable-column>
+					<cosmoz-omnitable-column-boolean title="Boolean" value-path="bool" filter="{{boolFilter}}"
+						true-label="Oui" false-label="Non"></cosmoz-omnitable-column-boolean>
 					<cosmoz-omnitable-column-amount title="Amount" value-path="amount" filter="{{amountFilter}}"></cosmoz-omnitable-column-amount>
 					<cosmoz-omnitable-column-date title="Date" value-path="dateJSON" locale="sv" filter="{{dateFilter}}"></cosmoz-omnitable-column-date>
 					<cosmoz-omnitable-column title="Sub-property" value-path="sub.subProp"></cosmoz-omnitable-column>
@@ -86,6 +88,9 @@
 			},
 			nameFilter: {
 				type: String
+			},
+			boolFilter: {
+				type: Boolean
 			}
 		},
 
@@ -106,6 +111,7 @@
 			this.nameFilter = this.data[0].name;
 			this.amountFilter = this.data[0].amount.amount;
 			this.dateFilter = this.data[0].dateJSON;
+			this.boolFilter = this.data[0].bool;
 		},
 
 		changeData: function () {

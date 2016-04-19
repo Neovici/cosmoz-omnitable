@@ -15,15 +15,17 @@
 <link rel="import" href="../cosmoz-autocomplete/cosmoz-autocomplete.html"/>
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 <link rel="import" href="../cosmoz-bottom-bar/cosmoz-bottom-bar.html"/>
-<link rel="import" href="../cosmoz-range-selector/cosmoz-range-selector.html"/>
+<!-- <link rel="import" href="../cosmoz-range-selector/cosmoz-range-selector.html"/> -->
 
 <link rel="import" href="cosmoz-omnitable-column.html">
-<link rel="import" href="cosmoz-omnitable-column-amount.html">
-<link rel="import" href="cosmoz-omnitable-column-date.html">
 <link rel="import" href="cosmoz-omnitable-template.html">
 <link rel="import" href="cosmoz-omnitable-cell.html">
 <link rel="import" href="cosmoz-omnitable-header.html">
 <link rel="import" href="cosmoz-omnitable-style.html">
+<link rel="import" href="cosmoz-omnitable-column-amount.html">
+<link rel="import" href="cosmoz-omnitable-column-date.html">
+<link rel="import" href="cosmoz-omnitable-column-boolean.html">
+
 <!--
 `<cosmoz-omnitable>` is an example implementation of grouping for iron-list
 with features like group count display and folding
@@ -143,7 +145,7 @@ with features like group count display and folding
 										<paper-checkbox checked="{{ selected }}" on-change="onItemCheckboxChange"></paper-checkbox>
 									</div>
 									<template is="dom-repeat" items="[[ columns ]]" as="column" index-as="columnIndex">
-										<cosmoz-omnitable-cell class$="_computeCellClasses(column, columnIndex)"
+										<cosmoz-omnitable-cell class$="{{_computeCellClasses(column, columnIndex)}}"
 											template="{{column.dataTemplate}}"
 											item="{{item}}"
 											selected="{{selected}}"

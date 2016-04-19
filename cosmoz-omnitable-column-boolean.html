@@ -1,0 +1,131 @@
+<link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<dom-module id="cosmoz-omnitable-column-boolean">
+	<template>
+		<template is="cosmoz-omnitable-template" id="data-template">[[renderBooleanValue(item, valuePath)]]</template>
+
+		<template is="cosmoz-omnitable-template" id="edit-data-template">
+			<paper-dropdown-menu>
+				<paper-listbox class="dropdown-content" attr-for-selected="value" on-iron-select="_selectedChanged"
+					on-iron-activate="_activate"
+					selected="[[_computeSelected(item, valuePath)]]">
+					<paper-item value="true">{{trueLabel}}</paper-item>
+					<paper-item value="false">{{falseLabel}}</paper-item>
+				</paper-listbox>
+			</paper-dropdown-menu>
+		</template>
+
+		<template is="cosmoz-omnitable-template" id="header-template">
+			<paper-dropdown-menu label="{{title}}">
+				<paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{_textFilter}}">
+					<paper-item value=""></paper-item>
+					<paper-item value="true">{{trueLabel}}</paper-item>
+					<paper-item value="false">{{falseLabel}}</paper-item>
+				</paper-listbox>
+			</paper-dropdown-menu>
+		</template>
+	</template>
+	<script>
+		Polymer({
+			is: 'cosmoz-omnitable-column-boolean',
+
+			properties: {
+				trueLabel: {
+					type: String,
+					value: 'True'
+				},
+				falseLabel: {
+					type: String,
+					value: 'False'
+				},
+				_textFilter: {
+					type: String,
+					observer: '_textFilterChanged'
+				},
+				_textValue: {
+
+				}
+			},
+
+			behaviors: [
+				Cosmoz.OmnitableColumnBehavior
+
+			],
+
+			observers: [
+				'_filterChanged(filter)'
+			],
+
+			// TODO(pasleq): same questions as for cosmoz-omnitable-column-date
+
+			_filterChangedFromInput: false,
+
+			_filterChangedFromAbove: false,
+
+			_selectedChanged: function (event) {
+				console.log('_selectedChanged', event);
+			},
+
+			_activate: function (event) {
+				console.log('_activate', event);
+			},
+
+			_textFilterChanged: function (textFilter) {
+				if (this._filterChangedFromAbove) {
+					this._filterChangedFromAbove = false;
+					return;
+				}
+				var b = null;
+				if (textFilter) {
+					b = textFilter === 'true';
+				}
+				this._filterChangedFromInput = true;
+				this.set('filter', b);
+
+			},
+
+			_filterChanged: function (filter) {
+				if (this._filterChangedFromInput) {
+					this._filterChangedFromInput = false;
+					return;
+				}
+
+				this._filterChangedFromAbove = true;
+				if (typeof(filter) === 'boolean') {
+					this._textFilter = filter.toString();
+				} else {
+					this._textFilter = null;
+				}
+
+
+			},
+
+			renderBooleanValue: function (item, valuePath) {
+				var
+					value = this.get(valuePath, item),
+					b = Boolean(value);
+
+				return b ? this.trueLabel : this.falseLabel;
+			},
+
+			applyFilter: function (item) {
+
+				if (typeof(this.filter) !== 'boolean') {
+					return true;
+				}
+
+				var
+					value = this.get(this.valuePath, item);
+
+				return value === this.filter;
+
+			},
+
+			_computeSelected: function (item, valuePath) {
+				var value = this.get(valuePath, item);
+				return value.toString();
+			}
+
+		});
+
+	</script>
+</dom-module>

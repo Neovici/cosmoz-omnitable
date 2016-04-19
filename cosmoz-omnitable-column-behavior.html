@@ -40,12 +40,16 @@
 				notify: true
 			},
 
+			bindValues: {
+				type: Boolean,
+				value: false
+			},
+
 			/**
 			 * All values for this column.
 			 */
 			values: {
 				type: Array,
-				notify: true,
 				value: function () {
 					return [];
 				}

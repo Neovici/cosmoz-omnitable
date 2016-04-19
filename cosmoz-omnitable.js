@@ -487,6 +487,9 @@
 		// TODO: should process (distinct, sort, min, max) the values at the column level depending on the column type
 		_setColumnValues: function () {
 			this.columns.forEach(function (column, colIndex) {
+				if (!column.bindValues) {
+					return;
+				}
 				var
 					currValues = column.values,
 					newValues = [];
