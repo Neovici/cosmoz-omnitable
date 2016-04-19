@@ -1,25 +1,32 @@
-<script src="../../moment/moment.js"></script>
-<script src="../../moment/locale/sv.js"></script>
-
 <script>
 
-	/*global Cosmoz,moment*/
-
-	moment.locale('sv');
+	/*global Cosmoz*/
 
 	function getRandomInt(min, max) {
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 
-	function getRandomDate () {
+	function getRandomDateJSON() {
+		return '2015-' + leftPad(getRandomInt(1, 12), 2, '0') + '-' + leftPad(getRandomInt(1, 28), 2, '0');
+	}
+
+	function getRandomDate() {
 		return new Date(2015, getRandomInt(1, 12), getRandomInt(1, 28));
 	}
 
-	Cosmoz = Cosmoz || {};
+	function leftPad(str, len, ch) {
+		str = String(str);
+		var i = -1;
+		if (!ch && ch !== 0) ch = ' ';
+		len = len - str.length;
+		while (++i < len) {
+			str = ch + str;
+		}
+		return str;
+	}
 
-	Cosmoz.formatDate = Cosmoz.formatDate || function (date) {
-		return moment(date).format('L');
-	};
+
+	Cosmoz = Cosmoz || {};
 
 	Cosmoz.TableDemoBehavior = {
 		generateTableDemoData: function (min, max, maxRandomString) {
@@ -48,6 +55,7 @@
 						randomString3: 'Random string 3 ' + getRandomInt(1, maxRandomString),
 						randomString4: 'Random string 4 ' + getRandomInt(1, maxRandomString),
 						date: getRandomDate(),
+						dateJSON: getRandomDateJSON(),
 						amount: {
 							amount: getRandomInt(10, 100),
 							currency: 'SEK'

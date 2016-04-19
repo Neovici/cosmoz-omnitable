@@ -124,13 +124,6 @@
 				computed: '_filterItems(filterKick)'
 			},
 
-			filters: {
-				type: Array,
-				value: function () {
-					return [];
-				}
-			},
-
 			/**
 			 * Grouped items structure after filtering.
 			 */
@@ -281,7 +274,7 @@
 
 			if (this._webWorkerReady && this.columns) {
 				this._setColumnValues();
-				this.filterKick += 1;
+				this._debounceFilterItems();
 			}
 
 		},
@@ -314,7 +307,7 @@
 			}
 
 			if (this._webWorkerReady && this.headers && this._needs.filtering) {
-				this.filterKick += 1;
+				this._debounceFilterItems();
 			}
 		},
 
@@ -325,40 +318,15 @@
 		},
 
 		_onColumnFilterChanged: function (event) {
-			var
-				column = event.target,
-				filterValue = event.detail.value,
-				valuePath = column.valuePath,
-				existingFilter = false;
-
-			existingFilter = this.filters.some(function (filter) {
-				if (filter.path === valuePath) {
-					filter.value = filterValue;
-					return true;
-				}
-			}, this);
-
-			if (!existingFilter) {
-				this.filters.push({
-					column: column,
-					path: valuePath,
-					value: filterValue
-				});
-			}
-
 			this._needs.filtering = true;
-			this.filterKick += 1;
+			this._debounceFilterItems();
 		},
 
-		_filtersChanged: function (change) {
-			console.log('_filtersChanged', change);
-
-			// filters property has been changed from outside
-			// TODO: update the corresponding column
-			this._needs.filtering = true;
-			this.filterKick += 1;
+		_debounceFilterItems: function () {
+			this.debounce('filterItems', function () {
+				this.filterKick += 1;
+			});
 		},
-
 		/**
 		 * Helper method to remove an item from `data`.
 		 * @param  {Object} item Item to remove
@@ -759,8 +727,8 @@
 		},
 
 		_filterItem: function (item) {
-			return this.filters.every(function (filter) {
-				return filter.column.applyFilter(item, filter.value);
+			return this.columns.every(function (column) {
+				return column.applyFilter(item);
 			}, this);
 		},
 
@@ -1171,7 +1139,7 @@
 		_onWebWorkerReady: function () {
 			this._webWorkerReady = true;
 			if (this._needs.filtering) {
-				this.filterKick += 1;
+				this._debounceFilterItems();
 			}
 		},
 

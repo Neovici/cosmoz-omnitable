@@ -12,7 +12,8 @@
 		</template>
 
 		<template is="cosmoz-omnitable-template" id="header-template">
-			<div>[[title]]</div>
+			<paper-input label="[[title]]" value="{{filter}}">
+			</paper-input>
 		</template>
 	</template>
 	<script>
@@ -56,6 +57,26 @@
 					currency: originalValue.currency
 				};
 				this.set(this.valuePath, newValue, item);
+			},
+
+			applyFilter: function (item) {
+
+				if (!this.filter) {
+					return true;
+				}
+
+				var
+					value = this.get(this.valuePath, item),
+					filterAmount;
+
+				filterAmount = Number(this.filter);
+
+				if (Number.isNaN(filterAmount)) {
+					return false;
+				}
+
+				return value.amount === filterAmount;
+
 			}
 
 		});

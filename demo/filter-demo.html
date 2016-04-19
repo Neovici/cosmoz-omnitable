@@ -45,29 +45,18 @@
 					<div class="action">
 						Selected items count: <span>{{selectedItems.length}}</span>
 					</div>
-					<div class="action">
-						<paper-dropdown-menu label="Locale">
-							<paper-listbox class="dropdown-content" selected="{{locale}}" attr-for-selected="value">
-								<paper-item value="en">en</paper-item>
-								<paper-item value="fr">fr</paper-item>
-								<paper-item value="sv">sv</paper-item>
-							</paper-listbox>
-						</paper-dropdown-menu>
-					</div>
 				</div>
 
-				<cosmoz-omnitable id="omnitable" class="flex" data="[[data]]"
-					selection-enabled selected-items="{{selectedItems}}">
+				<cosmoz-omnitable id="omnitable" data="[[data]]" class="flex" selection-enabled selected-items="{{selectedItems}}">
 					<cosmoz-omnitable-column title="Id" value-path="id">
 						<template is="cosmoz-omnitable-template" id="data-template">
 							<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.id]]</a>
 						</template>
 					</cosmoz-omnitable-column>
-					<cosmoz-omnitable-column-amount title="Amount" value-path="amount"></cosmoz-omnitable-column-amount>
-					<cosmoz-omnitable-column-date title="Date" value-path="date" locale="{{locale}}"></cosmoz-omnitable-column-date>
-					<cosmoz-omnitable-column-date title="DateJSON" value-path="dateJSON" locale="{{locale}}"></cosmoz-omnitable-column-date>
+					<cosmoz-omnitable-column-amount title="Amount" value-path="amount" filter="{{amountFilter}}"></cosmoz-omnitable-column-amount>
+					<cosmoz-omnitable-column-date title="Date" value-path="dateJSON" locale="sv" filter="{{dateFilter}}"></cosmoz-omnitable-column-date>
 					<cosmoz-omnitable-column title="Sub-property" value-path="sub.subProp"></cosmoz-omnitable-column>
-					<cosmoz-omnitable-column title="Name" value-path="name">
+					<cosmoz-omnitable-column title="Name" value-path="name" filter="{{nameFilter}}">
 						<template is="cosmoz-omnitable-template" id="data-template">
 							<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.name]]</a>
 						</template>
@@ -95,9 +84,8 @@
 			selectedItems: {
 				type: Array
 			},
-			locale: {
-				type: String,
-				value: 'en'
+			nameFilter: {
+				type: String
 			}
 		},
 
@@ -111,14 +99,17 @@
 
 		attached: function () {
 			this.data = this.generateTableDemoData(20,25, 25);
+
+			// Test
+			// set filters to display first item
+
+			this.nameFilter = this.data[0].name;
+			this.amountFilter = this.data[0].amount.amount;
+			this.dateFilter = this.data[0].dateJSON;
 		},
 
 		changeData: function () {
 			this.data = this.generateTableDemoData(20,25, 10);
-		},
-
-		_localeChanged: function(locale, oldLocale) {
-			console.log('_localeChanged', locale, oldLocale);
 		},
 
 		_computeLabel: function (text, count) {

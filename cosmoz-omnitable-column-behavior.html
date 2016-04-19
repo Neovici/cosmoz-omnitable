@@ -49,6 +49,11 @@
 				value: function () {
 					return [];
 				}
+			},
+
+			locale: {
+				type: String,
+				value: 'en'
 			}
 		},
 
@@ -104,6 +109,10 @@
 		 * TODO: implement multiple values filters
 		 */
 		applyFilter: function (item) {
+
+			if (!this.filter) {
+				return true;
+			}
 
 			var
 				value = this.get(this.valuePath, item).toString().toLowerCase(),

@@ -23,6 +23,7 @@
   ],
   "dependencies": {
     "polymer": "^1.0.0",
+    "moment": "^2.0.0",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0.0",
     "iron-label": "PolymerElements/iron-label#^1.0.0",
     "iron-resizable-behavior": "PolymerElements/iron-resizable-behavior#^1.0.0",
@@ -44,7 +45,6 @@
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
     "paper-button": "PolymerElements/paper-button#^1.0.0",
     "iron-icons": "PolymerElements/iron-icons#^1.0.0",
-    "moment": "~2.10.6",
     "web-component-tester": "^4.2.1"
   }
 }

@@ -116,11 +116,6 @@
 			detail.omnitable.removeItems(detail.items);
 		},
 
-		filterAmount: function (money, filter) {
-			var fromValue = parseInt(filter.fromValue, 10),
-				toValue = parseInt(filter.toValue, 10);
-			return money.amount < fromValue || money.amount > toValue;
-		},
 		_itemNameChanged: function (event) {
 			var item = event.model.item;
 			this.$.omnitable.setItemValue(item, 'name', event.target.value);
