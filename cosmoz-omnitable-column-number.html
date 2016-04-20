@@ -22,7 +22,7 @@
 
 		</style>
 		<template is="cosmoz-omnitable-template" id="data-template">
-			<div class="omnitable-cell-number">[[renderNumberValue(item, valuePath)]]</div>
+			<div class="omnitable-cell-number">[[renderNumberValue(item, valuePath, locale)]]</div>
 		</template>
 
 		<template is="cosmoz-omnitable-template" id="edit-data-template">
@@ -133,19 +133,19 @@
 
 			},
 
-			_toLocaleString: function (num) {
+			_toLocaleString: function (num, locale) {
 				if (num.toLocaleString) {
-					return num.toLocaleString(this.locale);
+					return num.toLocaleString(locale);
 				} else {
 					return num;
 				}
 			},
 
-			renderNumberValue: function (item, valuePath) {
+			renderNumberValue: function (item, valuePath, locale) {
 				var
 					value = this.get(valuePath, item);
 
-				return this._toLocaleString(value);
+				return this._toLocaleString(value, locale);
 			},
 
 			applyFilter: function (item) {
