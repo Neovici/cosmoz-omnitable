@@ -12,11 +12,6 @@
 			is: 'cosmoz-omnitable-header',
 			properties: {
 
-				template: {
-					type: Object,
-					observer: '_templateChanged'
-				},
-
 				column: {
 					type: Object
 				}
@@ -36,14 +31,29 @@
 				if (columnChange.path !== 'column') {
 					subPath = columnChange.path.slice(7);
 					this._headerTemplateInstance.notifyPath(subPath, columnChange.value);
+				} else {
+					this._updateTemplate(this.column);
+					this._updateStyleScope(this.column);
 				}
 
 			},
 
-			_templateChanged: function (template) {
+			_updateTemplate: function (column) {
+				var template = column.headerTemplate;
 				this._headerTemplateInstance = template.createInstance();
 				Polymer.dom(this).appendChild(this._headerTemplateInstance.root);
+			},
+
+			// HACK(pasleq): copy the style scope classes from the column to the cell, so to column styles
+			// applies to cell content
+			_updateStyleScope: function (column) {
+				var specificScope = column.getSpecificStyleScope();
+				if (specificScope) {
+					this.classList.add(specificScope);
+				}
 			}
+
+
 
 
 		});

@@ -2,7 +2,14 @@
 <link rel="import" href="../cosmoz-behaviors/cosmoz-moneyhelper-behavior.html">
 <dom-module id="cosmoz-omnitable-column-amount">
 	<template>
-		<template is="cosmoz-omnitable-template" id="data-template">[[renderAmountWithCurrency(item, valuePath)]]</template>
+		<style>
+			.omnitable-cell-amount {
+				text-align: right;
+			}
+		</style>
+		<template is="cosmoz-omnitable-template" id="data-template">
+			<div class="omnitable-cell-amount">[[renderAmountWithCurrency(item, valuePath)]]</div>
+		</template>
 
 		<template is="cosmoz-omnitable-template" id="edit-data-template">
 			<paper-input no-label-float type="number" on-change="_amountValueChanged"

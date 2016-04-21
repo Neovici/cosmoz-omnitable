@@ -50,7 +50,8 @@ with features like group count display and folding
 <dom-module id="cosmoz-omnitable">
 	<template>
 
-		<style include="cosmoz-omnitable-style iron-flex iron-flex-alignment iron-positioning"></style>
+		<style include="cosmoz-omnitable-style iron-flex iron-flex-alignment iron-positioning">
+		</style>
 
 		<cosmoz-web-worker id="sortWorker" on-cosmoz-web-worker-ready="_onWebWorkerReady">
 			<script type="text/worker">
@@ -120,7 +121,7 @@ with features like group count display and folding
 					</paper-checkbox>
 				</div>
 				<template is="dom-repeat" items="[[columns]]" as="column" index-as="columnIndex">
-					<cosmoz-omnitable-header template="{{column.headerTemplate}}" column="{{column}}">
+					<cosmoz-omnitable-header column="{{column}}">
 					</cosmoz-omnitable-header>
 				</template>
 			</div>

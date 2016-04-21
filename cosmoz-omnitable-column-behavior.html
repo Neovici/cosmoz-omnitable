@@ -122,7 +122,23 @@
 				value = this.get(this.valuePath, item).toString().toLowerCase(),
 				filter = this.filter.toString().toLowerCase();
 			return value.indexOf(filter) >= 0;
+		},
+
+		getSpecificStyleScope: function () {
+			var
+				classes = this.classList,
+				i,
+				c;
+			for (i = 0 ; i < classes.length ; i +=1) {
+				c = classes.item(i);
+				if (c.indexOf(this.is) === 0) {
+					return c;
+				}
+			}
+
 		}
+
+
 
 
 

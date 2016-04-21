@@ -1083,7 +1083,8 @@
 		},
 
 		_computeCellClasses: function (column, columnIndex) {
-			return 'cell ' + 'cell'+ columnIndex;
+			var specificScope = column.getSpecificStyleScope();
+			return 'cell ' + 'cell'+ columnIndex + (specificScope ? ' ' + specificScope : '');
 		},
 
 		_computeClasses: function (type, headerType, index) {
