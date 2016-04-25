@@ -75,19 +75,14 @@
 				notify: true
 			},
 
-			/*
-			 * Whether to reverse sort order
-			 */
-			sortDescending: {
-				type: Boolean,
-				value: false
-			},
-
 			/**
-			 * The header ID to sort on.
+			 * An object representing current sort of the table.
+			 * The object must have the following propreties:
+			 * - valuePath: item's value path to sort on
+			 * - descending: a boolean indicating of sort is done in descending order.
 			 */
 			sortOn: {
-				type: String,
+				type: Object,
 				value: null
 			},
 
@@ -170,7 +165,8 @@
 		},
 
 		observers: [
-			'_sortFilteredGroupedItems(filteredGroupedItems, sortOn, sortDescending)',
+			'_sortOnChanged(sortOn.*)',
+			'_sortFilteredGroupedItems(filteredGroupedItems, sortOn)',
 			'_dataChanged(data.*)',
 			'_filtersChanged(filters.*)'
 		],
@@ -504,60 +500,6 @@
 			}, this);
 		},
 
-		/**
-		 * Render a unique list of possible values to filter the dataset with, for each header/column.
-		 * @param {[type]} item [description]
-		 */
-		setHeaderValues: function () {
-			this.data.forEach(function (item, index) {
-				this.headers.forEach(function (header, headerIndex) {
-					var
-						value = this.resolveProp(item, header.id),
-						hasValue = false,
-						label = this.renderObject(value, false, header);
-
-					header.values.some(function (headerValue, headerValueIndex) {
-						if (headerValue.label === label) {
-							hasValue = true;
-							return true;
-						}
-					});
-					if (!hasValue) {
-						header.values.push({
-							label: label,
-							value: value
-						});
-					}
-				}.bind(this));
-			}.bind(this));
-			this._sortHeaderValues();
-		},
-
-		_sortHeaderValues: function () {
-			this.headers.forEach(function (header, headerIndex) {
-				var valueLength = header.values.length;
-				header.values.sort(function (a, b) {
-					if (a.label < b.label) {
-						return -1;
-					}
-					return 1;
-				});
-
-				if (header.type === 'amount') {
-					header.values.sort(function (a, b) {
-						if (a.value.amount < b.value.amount) {
-							return -1;
-						}
-						return 1;
-					});
-
-					header.rangeMin = header.values[0].value.amount;
-					header.rangeMax = header.values[valueLength - 1].value.amount;
-				}
-			}.bind(this));
-
-		},
-
 		dataRowChanged: function (event, detail) {
 			var
 				element = event.target,
@@ -581,6 +523,7 @@
 				data: this.data
 			});
 		},
+
 		disableColumn: function () {
 			var headerToDisable;
 			// disables/hides columns that for example does not fit in the current screen size.
@@ -674,39 +617,6 @@
 				func = context[funcName];
 			}
 			return typeof func === 'function' ? func : undefined;
-		},
-
-		setHeadersFromMarkup: function () {
-			var ctx = this,
-				markupHeaders = Polymer.dom(this).querySelectorAll('header'),
-				newHeaders = [];
-
-			markupHeaders.forEach(function (headerElement, index) {
-				var header = {
-						disabled: 	false,
-						editable: 	headerElement.hasAttribute('editable'),
-						id: 		headerElement.id,
-						linkbase: 	headerElement.getAttribute('linkbase'),
-						linkprop: 	headerElement.getAttribute('linkprop'),
-						name: 		Polymer.dom(headerElement).innerHTML,
-						priority: 	parseInt(headerElement.getAttribute('priority') || 0, 10),
-						type: 		headerElement.getAttribute('type') || 'default',
-						values: 	[],
-						filters: 	[],
-						rangeFilter: {},
-						wrap: 		headerElement.hasAttribute('wrap'),
-						rangeSelect: headerElement.getAttribute('range-select') === 'true'
-					},
-					defaultRenderFunc = 'render' + header.type.charAt(0).toUpperCase() + header.type.substr(1),
-					defaultFilterFunc = 'filter' + header.type.charAt(0).toUpperCase() + header.type.substr(1);
-				header.renderFunc = ctx._getFunctionByName(headerElement.getAttribute('render-func') || defaultRenderFunc, window);
-				header.filterFunc = ctx._getFunctionByName(headerElement.getAttribute('filter-func') || defaultFilterFunc, window);
-				newHeaders.push(header);
-			});
-			this.headers = newHeaders;
-			if (this._needs.grouping) {
-				this.groupKick += 1;
-			}
 		},
 
 		_filterItems : function (filterKick) {
@@ -842,7 +752,7 @@
 						mappedItems = group.items.map(function (item, originalItemIndex) {
 							return {
 								index: originalItemIndex,
-								value: item[sortOn]
+								value: this._currentSortColumn.getComparableValue(item, sortOn.valuePath)
 							};
 						});
 						// Sort the reduced version of the array
@@ -854,7 +764,7 @@
 								checked: group.checked,
 								visible: group.visible
 							},
-							reverse: descending,
+							reverse: sortOn.descending,
 							sortOn: 'value',
 							data: mappedItems
 						}, function (data) {
@@ -881,12 +791,12 @@
 				mappedItems = filteredGroupedItems.map(function (item, originalItemIndex) {
 					return {
 						index: originalItemIndex,
-						value: item[sortOn]
+						value: this._currentSortColumn.getComparableValue(item, sortOn.valuePath)
 					};
-				});
+				}, this);
 
 				this.$.sortWorker.process({
-					reverse: descending,
+					reverse: sortOn.descending,
 					sortOn: 'value',
 					data: mappedItems
 				}, function (data) {
@@ -1147,40 +1057,79 @@
 			}
 		},
 
-		onSortSelected: function (event, detail) {
-			if (detail.selected === this.sortOn) {
-				// FIXME: Causes double re-sort
-				this.sortDescending = !this.sortDescending;
-				// FIXME: Needed to update menu label text
-				this.sortOn = '';
-				this.sortOn = detail.selected;
+		_getSortDirection: function (column, sortOnChange) {
+			var
+				sortOn = sortOnChange.base,
+				direction = '';
+
+			if (!column) {
 				return;
 			}
-			this.sortDescending = false;
+			if (sortOn && sortOn.valuePath === column.sortOn) {
+				direction = sortOn.descending ? ' (Descending)': ' (Ascending)';
+			}
+
+			return direction;
 		},
 
-		getSortOrder: function (id, sortOn, descending) {
-			if (id !== sortOn) {
-				return;
-			}
-			var dir;
-			if (descending) {
-				dir = this._('Descending');
+		_onSortColumnActivated: function (event) {
+			var
+				column = event.model ? event.model.column : undefined,
+				selected;
+
+			if (!column) {
+				this.sortOn = null;
+				this._currentSortColumn = null;
+				this.$.sortOnSelector.selected = 0;
 			} else {
-				dir = this._('Ascending');
+				this._currentSortColumn = column;
+				selected = this.$.sortOnSelector.selected;
+				if (!this.sortOn || !this.sortOn.valuePath) {
+					this.sortOn = {
+						valuePath: column.sortOn,
+						descending: false
+					};
+				} else if (this.sortOn.valuePath === column.sortOn) {
+					this.sortOn = {
+						valuePath: this.sortOn.valuePath,
+						descending: !this.sortOn.descending
+					};
+				} else {
+					this.sortOn = {
+						valuePath: column.sortOn,
+						descending: false
+					};
+				}
+
+				// Force dropdown menu to refresh `selectedItemLabel`
+				this.$.sortOnSelector.selected = 0;
+				this.$.sortOnSelector.selected = selected;
 			}
-			return ' (' + dir + ')';
 		},
 
-		addFilter: function (id, value) {
-			var header = this.getHeader(id),
-				headerIndex = this.headers.indexOf(header),
-				ac = this.$$('#header .header.c' + headerIndex + ' cosmoz-autocomplete');
-			if (!ac) {
-				console.warn("wtf?", ac);
+		// Select the right column if sort has been changed from outside.
+		_sortOnChanged: function (sortOnChange) {
+			var
+				sortOn = sortOnChange.base,
+				elements = this.$.sortOnSelector.items,
+				element,
+				model,
+				i;
+
+			if (!sortOn || !sortOn.valuePath) {
+				this.$.sortOnSelector.selected = 0;
 				return;
 			}
-			ac.selectByValue(value);
+			for (i = 0 ; i < elements.length; i += 1) {
+				element = elements[i];
+				model = this.$.sortColumns.modelForElement(element);
+				if (model && model.column && (model.column.sortOn === sortOn.valuePath)) {
+					this._currentSortColumn = model.column;
+					this.$.sortOnSelector.selected = i;
+					return;
+				}
+			}
 		}
+
 	});
 }());

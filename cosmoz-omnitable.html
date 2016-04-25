@@ -27,6 +27,7 @@
 <link rel="import" href="cosmoz-omnitable-column-boolean.html">
 <link rel="import" href="cosmoz-omnitable-column-number.html">
 
+
 <!--
 `<cosmoz-omnitable>` is an example implementation of grouping for iron-list
 with features like group count display and folding
@@ -71,16 +72,22 @@ with features like group count display and folding
 							return 0;
 						}
 
-						if (typeof v1 === "object" && typeof v2 === "object") {
-							// TODO: Handle money
-							// return cz.tools.sortObject(v1, v2);
-							return 0;
-						}
+
+
 						if (typeof v1 === "number" && typeof v2 === "number") {
 							return v1 - v2;
 						}
+
 						if (typeof v1 === "string" && typeof v2 === "string") {
 							return v1 < v2 ? -1 : 1;
+						}
+
+						if (typeof v1 === "boolean" && typeof v2 === "boolean") {
+							if (v1 === v2) {
+								return 0;
+							} else {
+								return v1 ? -1 : 1;
+							}
 						}
 
 						console.warn('unsupported sort', typeof v1, v1, typeof v2, v2);
@@ -171,10 +178,36 @@ with features like group count display and folding
 				</div>
 			</div>
 		</div>
+		<div id="footer" class="horizontal layout center">
+			<div class="horizontal layout flex center">
+				<div class="footer-control">
+					<iron-label class="footer-control-label" for="sortOnSelector">[[ _('Sort on', t) ]]</iron-label>
+					<paper-dropdown-menu vertical-align="bottom" no-label-float>
+						<paper-listbox class="dropdown-content menu" id="sortOnSelector" selected="0" >
+							<paper-item on-tap="_onSortColumnActivated">
+								<div style="white-space: nowrap; font-style: italic;">[[ _('No sorting', t) ]]</div>
+							</paper-item>
+							</cosmoz-omnitable-sort-list-item>
+							<template is="dom-repeat" id="sortColumns" items="[[columns]]" as="column">
+								<paper-item on-tap="_onSortColumnActivated" hidden$="[[!column.sortOn]]">
+									<span>[[column.title]]</span>&nbsp;<span>[[_getSortDirection(column, sortOn.*)]]</span>
+								</paper-item>
+							</template>
+						</paper-listbox>
+					</paper-dropdown-menu>
+				</div>
+			</div>
+			<div id="footerStats" class="vertical layout end">
+				<span>[[ ngettext('{0} group', '{0} groups', _groupsCount, t) ]]</span>
+				<span>[[ ngettext('{0} row', '{0} rows', filteredItems.length, t) ]]</span>
+			</div>
+			<cosmoz-bottom-bar class="selection" match-parent info="[[ selectedItems.length ]]" on-action="onAction" active$="[[ !isEmpty(selectedItems.length) ]]"><content id="actions" select="[action]"></content></cosmoz-bottom-bar>
+		</div>
 
 		<div id="columns">
 			<content></content>
 		</div>
+
 	</template>
 	<script type="text/javascript" src="cosmoz-omnitable.js"></script>
 </dom-module>

@@ -39,8 +39,6 @@
 
 			renderAmountValue: function (item, valuePath) {
 				var value = this.get(valuePath, item);
-
-				// Use MoneyHelperBehavior renderAmount function
 				return value.amount;
 			},
 
@@ -64,6 +62,11 @@
 					currency: originalValue.currency
 				};
 				this.set(this.valuePath, newValue, item);
+			},
+
+			getComparableValue: function (item, valuePath) {
+				var value = this.get(valuePath, item);
+				return value.amount ? value.amount : null;
 			},
 
 			applyFilter: function (item) {

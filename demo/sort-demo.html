@@ -38,7 +38,10 @@
 				}
 			</style>
 			<div class="layout vertical fit">
-				<h3>Cosmoz omnitable demo</h3>
+				<h3>Cosmoz omnitable sort demo</h3>
+				<p>Table should be sorted by name (descending) on load.</p>
+				<p>The sortable fields are Id, Boolean, Value, Amount, Date, Name and Sub-property</p>
+
 
 				<div class="layout horizontal center">
 					<button class="action" on-tap="changeData">Generate a new data set</button>
@@ -57,7 +60,7 @@
 				</div>
 
 				<cosmoz-omnitable id="omnitable" class="flex" data="[[data]]"
-					selection-enabled selected-items="{{selectedItems}}">
+					selection-enabled selected-items="{{selectedItems}}" sort-on="{{sortOn}}">
 					<cosmoz-omnitable-column title="Id" value-path="id" sort-on="id">
 						<template is="cosmoz-omnitable-template" id="data-template">
 							<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.id]]</a>
@@ -67,10 +70,10 @@
 						true-label="Oui" false-label="Non">
 					</cosmoz-omnitable-column-boolean>
 					<cosmoz-omnitable-column-number title="Value" value-path="value" locale="{{locale}}" sort-on="value"></cosmoz-omnitable-column-number>
-					<cosmoz-omnitable-column title="Group" value-path="group" bind-values sort-on="group"></cosmoz-omnitable-column>
+					<cosmoz-omnitable-column title="Group" value-path="group" bind-values></cosmoz-omnitable-column>
 					<cosmoz-omnitable-column-amount title="Amount" value-path="amount" sort-on="amount"></cosmoz-omnitable-column-amount>
 					<cosmoz-omnitable-column-date title="Date" value-path="date" locale="{{locale}}" sort-on="date"></cosmoz-omnitable-column-date>
-					<cosmoz-omnitable-column-date title="DateJSON" value-path="dateJSON" locale="{{locale}}" sort-on="dateJSON"></cosmoz-omnitable-column-date>
+					<cosmoz-omnitable-column-date title="DateJSON" value-path="dateJSON" locale="{{locale}}"></cosmoz-omnitable-column-date>
 					<cosmoz-omnitable-column title="Sub-property" value-path="sub.subProp" sort-on="sub.subProp"></cosmoz-omnitable-column>
 					<cosmoz-omnitable-column title="Name" value-path="name" bind-values sort-on="name">
 						<template is="cosmoz-omnitable-template" id="data-template">
@@ -103,6 +106,9 @@
 			locale: {
 				type: String,
 				value: 'en'
+			},
+			sortOn: {
+				type: Object
 			}
 		},
 
@@ -116,6 +122,10 @@
 
 		attached: function () {
 			this.data = this.generateTableDemoData(20,25, 25);
+			this.sortOn = {
+				valuePath: 'name',
+				descending: true
+			}
 		},
 
 		changeData: function () {

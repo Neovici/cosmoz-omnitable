@@ -116,6 +116,11 @@
 
 			},
 
+			getComparableValue: function (item, valuePath) {
+				var value = this.get(valuePath, item);
+				return moment.isDate(value) ? moment(value).toISOString() : value;
+			},
+
 			renderDateValue: function (item, valuePath, userFormat, locale) {
 				var
 					value = this.get(valuePath, item),

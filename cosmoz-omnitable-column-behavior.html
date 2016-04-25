@@ -58,6 +58,10 @@
 			locale: {
 				type: String,
 				value: 'en'
+			},
+
+			sortOn: {
+				type: String
 			}
 		},
 
@@ -99,6 +103,10 @@
 			return this.get(valuePath, item);
 		},
 
+		getComparableValue: function (item, valuePath) {
+			return this.get(valuePath, item);
+		},
+
 		_valueChanged: function (event) {
 			var
 				input = event.target,
@@ -124,6 +132,11 @@
 			return value.indexOf(filter) >= 0;
 		},
 
+		/**
+		 * If a column definition uses @apply in its style, then style will be scoped using a class named
+		 * 'cosmoz-omnitable-column[-type]-XXX'.
+		 * This class needs to be applied to cosmoz-omnitable-cell and cosmoz-omnitable-header if we want column's template instances to be style correctly
+		 */
 		getSpecificStyleScope: function () {
 			var
 				classes = this.classList,
@@ -135,13 +148,7 @@
 					return c;
 				}
 			}
-
 		}
-
-
-
-
-
 	};
 
 </script>
