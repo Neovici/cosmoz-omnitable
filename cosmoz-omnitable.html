@@ -127,7 +127,7 @@ with features like group count display and folding
 					<paper-checkbox id="selectAllCheckbox" on-change="onAllCheckboxChange" hidden$="[[ _noData ]]">
 					</paper-checkbox>
 				</div>
-				<template is="dom-repeat" items="[[columns]]" as="column" index-as="columnIndex">
+				<template is="dom-repeat" items="[[visibleColumns]]" as="column" index-as="columnIndex">
 					<cosmoz-omnitable-header column="{{column}}">
 					</cosmoz-omnitable-header>
 				</template>
@@ -153,7 +153,7 @@ with features like group count display and folding
 									<div class="row-checkbox" hidden$="[[ !selectionEnabled ]]">
 										<paper-checkbox checked="{{ selected }}" on-change="onItemCheckboxChange"></paper-checkbox>
 									</div>
-									<template is="dom-repeat" items="[[ columns ]]" as="column" index-as="columnIndex">
+									<template is="dom-repeat" items="[[visibleColumns]]" as="column" index-as="columnIndex">
 										<cosmoz-omnitable-cell class$="{{_computeCellClasses(column, columnIndex)}}"
 											template="{{column.dataTemplate}}"
 											item="{{item}}"
@@ -167,10 +167,18 @@ with features like group count display and folding
 						<item-template id="groupTemplate">
 							<template>
 								<div class="horizontal layout center group-header">
-									<h3 class="flex title">
-										<span>[[item.name]]</span>
+									<div class="row-checkbox" hidden$="[[ !selectionEnabled ]]">
+										<paper-checkbox checked="{{ selected }}" on-change="onGroupCheckboxChange"></paper-checkbox>
+									</div>
+									<h3 class="flex title layout horizontal">
+										<div><span>{{_currentGroupOnColumn.title}}</span>: &nbsp;</div>
+										<cosmoz-omnitable-cell
+											template="[[_currentGroupOnColumn.dataTemplate]]"
+											item="{{item.items.0}}">
+										</cosmoz-omnitable-cell>
 									</h3>
 									<div>[[ item.items.length ]]</div>
+									<paper-icon-button icon="[[ getFoldIcon(folded) ]]" on-tap="toggleGroup"></paper-icon-button>
 								</div>
 							</template>
 						</item-template>
@@ -188,10 +196,21 @@ with features like group count display and folding
 								<div style="white-space: nowrap; font-style: italic;">[[ _('No sorting', t) ]]</div>
 							</paper-item>
 							</cosmoz-omnitable-sort-list-item>
-							<template is="dom-repeat" id="sortColumns" items="[[columns]]" as="column">
+							<template is="dom-repeat" id="sortColumns" items="[[visibleColumns]]" as="column">
 								<paper-item on-tap="_onSortColumnActivated" hidden$="[[!column.sortOn]]">
 									<span>[[column.title]]</span>&nbsp;<span>[[_getSortDirection(column, sortOn.*)]]</span>
 								</paper-item>
+							</template>
+						</paper-listbox>
+					</paper-dropdown-menu>
+				</div>
+				<div class="footer-control">
+					<iron-label class="footer-control-label" for="groupOnSelector">[[ _('Group on', t) ]]</iron-label>
+					<paper-dropdown-menu vertical-align="bottom" id="groupOnSelector" no-label-float>
+						<paper-listbox class="dropdown-content menu" selected="{{ groupOn }}" attr-for-selected="data-group-on">
+							<paper-item data-group-on=""><i style="white-space: nowrap">[[ _('No grouping', t) ]]</i></paper-item>
+							<template is="dom-repeat" items="[[columns]]" as="column">
+								<paper-item data-group-on$="[[column.groupOn]]" hidden$="[[!column.groupOn]]">[[column.title]]</paper-item>
 							</template>
 						</paper-listbox>
 					</paper-dropdown-menu>

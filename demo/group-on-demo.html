@@ -36,10 +36,16 @@
 					padding: 5px;
 					margin: 5px 5px 10px 5px;
 				}
+				p {
+					margin: 0.5ex;
+				}
 			</style>
 			<div class="layout vertical fit">
 				<h3>Cosmoz omnitable demo</h3>
-
+				<div>
+					<p>Table sould be grouped by column <code>Group</code> on load. Current <code>groupOn</code> value: <span style="color: red">{{groupOn}}</span>.</p>
+					<p>You can group the table only by columns Boolean, Group, Date, DateJSON and Sub-property</p>
+				</div>
 				<div class="layout horizontal center">
 					<button class="action" on-tap="changeData">Generate a new data set</button>
 					<div class="action">
@@ -57,8 +63,8 @@
 				</div>
 
 				<cosmoz-omnitable id="omnitable" class="flex" data="[[data]]"
-					selection-enabled selected-items="{{selectedItems}}">
-					<cosmoz-omnitable-column title="Id" value-path="id" sort-on="id" group-on="id">
+					selection-enabled selected-items="{{selectedItems}}" group-on="{{groupOn}}">
+					<cosmoz-omnitable-column title="Id" value-path="id" sort-on="id">
 						<template is="cosmoz-omnitable-template" id="data-template">
 							<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.id]]</a>
 						</template>
@@ -66,11 +72,11 @@
 					<cosmoz-omnitable-column-boolean title="Boolean" value-path="bool" sort-on="bool" group-on="bool"
 						true-label="Oui" false-label="Non">
 					</cosmoz-omnitable-column-boolean>
-					<cosmoz-omnitable-column-number title="Value" value-path="value" locale="{{locale}}" sort-on="value" group-on="value">
+					<cosmoz-omnitable-column-number title="Value" value-path="value" locale="{{locale}}" sort-on="value">
 					</cosmoz-omnitable-column-number>
 					<cosmoz-omnitable-column title="Group" value-path="group" bind-values sort-on="group" group-on="group">
 					</cosmoz-omnitable-column>
-					<cosmoz-omnitable-column-amount title="Amount" value-path="amount" sort-on="amount" group-on="amount">
+					<cosmoz-omnitable-column-amount title="Amount" value-path="amount" sort-on="amount">
 					</cosmoz-omnitable-column-amount>
 					<cosmoz-omnitable-column-date title="Date" value-path="date" locale="{{locale}}" sort-on="date" group-on="date">
 					</cosmoz-omnitable-column-date>
@@ -78,7 +84,7 @@
 					</cosmoz-omnitable-column-date>
 					<cosmoz-omnitable-column title="Sub-property" value-path="sub.subProp" sort-on="sub.subProp" group-on="sub.subProp">
 					</cosmoz-omnitable-column>
-					<cosmoz-omnitable-column title="Name" value-path="name" bind-values sort-on="name" group-on="name">
+					<cosmoz-omnitable-column title="Name" value-path="name" bind-values sort-on="name">
 						<template is="cosmoz-omnitable-template" id="data-template">
 							<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.name]]</a>
 						</template>
@@ -122,6 +128,7 @@
 
 		attached: function () {
 			this.data = this.generateTableDemoData(20,25, 25);
+			this.groupOn = "group";
 		},
 
 		changeData: function () {

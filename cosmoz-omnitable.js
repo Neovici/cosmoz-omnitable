@@ -27,22 +27,6 @@
 			},
 
 			/**
-			 * Table headers/column definitions, usually configued with markup.
-			 */
-			headers: {
-				type: Array,
-				notify: true
-			},
-
-			/**
-			 * Table headers to display (headers not disabled or grouped on)
-			 */
-			columnHeaders: {
-				type: Object,
-				computed: '_computeColumnHeaders(headers.length, sortedFilteredGroupedItems, groupOn, disabledHeaders.length)'
-			},
-
-			/**
 			 * Whether to hide all groups but the first on initial load
 			 */
 			hideButFirst: {
@@ -87,12 +71,16 @@
 			},
 
 			/**
-			 * The header ID to group on.
+			 * The item's value path to group on
 			 */
 			groupOn: {
 				type: String,
-				value: null,
+				notify: true,
 				observer: '_groupOnChanged'
+			},
+
+			_currentGroupOnColumn: {
+				type: Object
 			},
 
 			/**
@@ -161,6 +149,10 @@
 				type: Array,
 				notify: true,
 				observer: '_columnsChanged'
+			},
+
+			visibleColumns: {
+				type: Array
 			}
 		},
 
@@ -168,7 +160,8 @@
 			'_sortOnChanged(sortOn.*)',
 			'_sortFilteredGroupedItems(filteredGroupedItems, sortOn)',
 			'_dataChanged(data.*)',
-			'_filtersChanged(filters.*)'
+			'_filtersChanged(filters.*)',
+			'_updateVisibleColumns(columns)'
 		],
 
 		behaviors: [
@@ -358,13 +351,6 @@
 				}
 			}));
 			event.stopPropagation();
-		},
-
-		_groupOnChanged: function (newValue, oldValue) {
-			this._needs.grouping = true;
-			if (this.filteredItems) {
-				this.groupKick += 1;
-			}
 		},
 
 		onAllCheckboxChange: function (event, detail) {
@@ -562,62 +548,76 @@
 			});
 		},
 
-		getColumnById: function (id) {
+		_getGroupOnColumn: function () {
 			var col;
+
+			if (!this.groupOn) {
+				return;
+			}
 			this.columns.some(function (column) {
-				if (column.id === id) {
+				if (column.groupOn === this.groupOn) {
 					col = column;
 					return true;
 				}
-			});
+			}, this);
 			return col;
 		},
 
-		getHeader: function (id) {
-			var foundHeader;
-			this.headers.some(function (header, index) {
-				if (header.id === id) {
-					foundHeader = header;
-					return true;
-				}
-			});
-			return foundHeader;
-		},
-
-		_computeColumnHeaders: function (headersNotify, sortedFilteredGroupedItems, groupOn, numDisabledHeaders) {
-			if (!this.headers) {
-				return;
-			}
-			var filteredHeaders = [];
-			this.headers.forEach(function (header, index) {
-				if (header.id !== groupOn && this.disabledHeaders.indexOf(header) === -1) {
-					filteredHeaders.push(header);
-				}
-			}.bind(this));
-			return filteredHeaders;
-		},
-
-		_getFunctionByName: function (name, context) {
-			if (!name) {
-				return undefined;
-			}
-
+		_groupOnChanged: function (newValue, oldValue) {
 			var
-				parts = name.split('.'),
-				func,
-				funcName,
+				oldGroupColumnIndex = -1,
+				oldGroupColumn,
+				groupColumnIndex = -1,
+				groupColumn,
 				i;
-			if (parts.length === 1) {
-				func = this.dataHost[name];
-			} else {
-				funcName = parts.pop();
-				for(i = 0; i < parts.length; i += 1) {
-					context = context[parts[i]];
+			if (this.columns && this.visibleColumns) {
+				for (i = 0 ; i < this.columns.length; i += 1) {
+					if (oldValue && this.columns[i].groupOn === oldValue) {
+						oldGroupColumnIndex = i;
+						oldGroupColumn = this.columns[i];
+					}
+					if (newValue && this.columns[i].groupOn === newValue) {
+						groupColumnIndex = i;
+						groupColumn = this.columns[i];
+					}
 				}
-				func = context[funcName];
+
+				if (oldGroupColumnIndex >= 0) {
+					this.splice('visibleColumns', oldGroupColumnIndex, 0, oldGroupColumn);
+				}
+				if (groupColumnIndex >= 0) {
+					this.splice('visibleColumns', groupColumnIndex, 1);
+				}
+				this._currentGroupOnColumn = groupColumn;
+			} else if (this.columns) {
+				this._updateVisibleColumns(this.columns);
 			}
-			return typeof func === 'function' ? func : undefined;
+
+			this._needs.grouping = true;
+			if (this.filteredItems) {
+				this.groupKick += 1;
+			}
 		},
+
+		_updateVisibleColumns: function (columns) {
+			var
+				visibleColumns,
+				i;
+
+			if (this.groupOn) {
+				visibleColumns = [];
+				columns.forEach(function (column) {
+					if (column.groupOn !== this.groupOn) {
+						visibleColumns.push(column);
+					}
+				}, this);
+			} else {
+				visibleColumns = this.columns.slice();
+			}
+
+			this.visibleColumns = visibleColumns;
+		},
+
 
 		_filterItems : function (filterKick) {
 			if (!this.columns) {
@@ -660,16 +660,15 @@
 
 
 			var
-				groupOnColumn = this.getColumnById(this.groupOn),
+				groupOn = this.groupOn,
+				groupOnColumn = this._getGroupOnColumn(),
 				groups = [],
 				itemStructure = {};
 
-			if (this.groupOn) {
+			if (groupOn) {
 				filteredItems.forEach(function (item, index) {
-					var groupOnValue = this.resolveProp(item, this.groupOn);
-					if (typeof groupOnValue === 'object') {
-						groupOnValue = this.renderObject(groupOnValue, false, groupOnColumn);
-					}
+					var groupOnValue = groupOnColumn.getComparableValue(item, groupOn);
+
 					if (groupOnValue !== undefined) {
 						if (!itemStructure[groupOnValue]) {
 							itemStructure[groupOnValue] = [];
@@ -688,7 +687,10 @@
 				});
 
 				groups.sort(function (a, b) {
-					var v1 = this.resolveProp(a.items[0], this.groupOn), v2 = this.resolveProp(b.items[0], this.groupOn);
+					var
+						v1 = groupOnColumn.getComparableValue(a.items[0], groupOn),
+						v2 = groupOnColumn.getComparableValue(b.items[0], groupOn);
+
 					if (typeof v1 === 'object' && typeof v2 === 'object') {
 						return cz.tools.sortObject(v1, v2);
 					}
@@ -706,7 +708,7 @@
 					}
 					console.warn('unsupported sort', typeof v1, v1, typeof v2, v2);
 					return 0;
-				}.bind(this));
+				});
 
 				if (this.hideButFirst && groups.length > 1) {
 					groups.forEach(function (group, index) {
@@ -754,7 +756,7 @@
 								index: originalItemIndex,
 								value: this._currentSortColumn.getComparableValue(item, sortOn.valuePath)
 							};
-						});
+						}, this);
 						// Sort the reduced version of the array
 						this.$.sortWorker.process({
 							meta: {

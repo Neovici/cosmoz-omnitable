@@ -26,6 +26,8 @@
 
 			_headerTemplateInstance: null,
 
+			_template: null,
+
 			_columnChanged: function (columnChange) {
 				var subPath;
 				if (columnChange.path !== 'column') {
@@ -39,7 +41,23 @@
 			},
 
 			_updateTemplate: function (column) {
-				var template = column.headerTemplate;
+				var
+					template = column.headerTemplate,
+					children,
+					parent,
+					i;
+				if (this._template && this._headerTemplateInstance) {
+					this._template.removeInstance(this._headerTemplateInstance);
+					parent = Polymer.dom(this);
+					children = parent.childNodes;
+					if (children) {
+						for (i = 0 ; i < children.length ; i += 1) {
+							parent.removeChild(children[i]);
+						}
+					}
+
+				}
+				this._template = template;
 				this._headerTemplateInstance = template.createInstance();
 				Polymer.dom(this).appendChild(this._headerTemplateInstance.root);
 			},

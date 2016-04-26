@@ -31,10 +31,26 @@
 			// a property used by Templatizer
 			_cellTemplateInstance: null,
 
-			_templateChanged: function (template) {
-				this._cellTemplateInstance = template.createInstance();
-				Polymer.dom(this).appendChild(this._cellTemplateInstance.root);
-				this._assignModel();
+			_templateChanged: function (template, oldTemplate) {
+				var children, parent, i;
+				if (oldTemplate && this._cellTemplateInstance) {
+					oldTemplate.removeInstance(this._cellTemplateInstance);
+					parent = Polymer.dom(this);
+					children = parent.childNodes;
+					if (children) {
+						for (i = 0 ; i < children.length ; i+=1) {
+							parent.removeChild(children[i]);
+						}
+					}
+				}
+
+				if (template) {
+					this._cellTemplateInstance = template.createInstance();
+					Polymer.dom(this).appendChild(this._cellTemplateInstance.root);
+					this._assignModel();
+				} else {
+					this._cellTemplateInstance = null;
+				}
 			},
 
 			_itemChanged: function (item) {
