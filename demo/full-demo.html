@@ -83,6 +83,16 @@
 							<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.name]]</a>
 						</template>
 					</cosmoz-omnitable-column>
+
+					<paper-button action on-run="updateSelectedRows">
+						<iron-icon icon="editor:mode-edit"></iron-icon>
+						<span>{{ _computeLabel('Update', selectedItems.length)}}</span>
+					</paper-button>
+
+					<paper-button action on-run="removeItems">
+						<iron-icon icon="delete"></iron-icon>
+						<span>{{ _computeLabel('Remove', selectedItems.length)}}</span>
+					</paper-button>
 				</cosmoz-omnitable>
 			</div>
 		</template>
@@ -138,7 +148,7 @@
 
 		updateSelectedRows: function (event, detail) {
 			detail.items.forEach(function (item) {
-				this.$.omnitable.setItemValue(item, 'randomString3', 'blablablalbal');
+				this.$.omnitable.setItemValue(item, 'name', 'blablablalbal');
 			}, this);
 
 		},

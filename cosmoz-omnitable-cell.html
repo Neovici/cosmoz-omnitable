@@ -12,8 +12,7 @@
 				},
 
 				item: {
-					type: Object,
-					observer: '_itemChanged'
+					type: Object
 				},
 
 				selected: {
@@ -26,6 +25,10 @@
 					observer: '_expandedChanged'
 				}
 			},
+
+			observers: [
+				'_itemUpdated(item.*)'
+			],
 
 			// WARN: do not use '_templateInstance' property name, as this will conflict with
 			// a property used by Templatizer
@@ -53,9 +56,13 @@
 				}
 			},
 
-			_itemChanged: function (item) {
+			_itemUpdated: function (itemChange) {
 				if (this._cellTemplateInstance) {
-					this._cellTemplateInstance.item = item;
+					if (itemChange.path === 'item') {
+						this._cellTemplateInstance.item = itemChange.value;
+					} else {
+						this._cellTemplateInstance.notifyPath(itemChange.path, itemChange.value);
+					}
 				}
 			},
 
