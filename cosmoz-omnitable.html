@@ -146,7 +146,7 @@ with features like group count display and folding
 				</template>
 				<div id="scroller">
 					<cosmoz-grouped-list id="groupedList" class="fit" data="{{ sortedFilteredGroupedItems }}"
-						selected-items="{{selectedItems}}">
+						selected-items="{{selectedItems}}" display-empty-groups="[[displayEmptyGroups]]">
 						<item-template id="itemTemplate">
 							<template>
 								<div class="layout horizontal center">
@@ -196,7 +196,7 @@ with features like group count display and folding
 								<div style="white-space: nowrap; font-style: italic;">[[ _('No sorting', t) ]]</div>
 							</paper-item>
 							</cosmoz-omnitable-sort-list-item>
-							<template is="dom-repeat" id="sortColumns" items="[[visibleColumns]]" as="column">
+							<template is="dom-repeat" id="sortColumns" items="[[columns]]" as="column">
 								<paper-item on-tap="_onSortColumnActivated" hidden$="[[!column.sortOn]]">
 									<span>[[column.title]]</span>&nbsp;<span>[[_getSortDirection(column, sortOn.*)]]</span>
 								</paper-item>

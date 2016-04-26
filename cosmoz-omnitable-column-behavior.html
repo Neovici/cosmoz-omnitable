@@ -66,6 +66,16 @@
 
 			groupOn: {
 				type: String
+			},
+
+			/**
+			 * Used to indicate that an element using this behavior is a column definition that can be used
+			 * in cosmoz-omnitable
+			 */
+			isOmnitableColumn: {
+				type: Boolean,
+				value: true,
+				readOnly: true
 			}
 		},
 
@@ -139,7 +149,7 @@
 		/**
 		 * If a column definition uses @apply in its style, then style will be scoped using a class named
 		 * 'cosmoz-omnitable-column[-type]-XXX'.
-		 * This class needs to be applied to cosmoz-omnitable-cell and cosmoz-omnitable-header if we want column's template instances to be style correctly
+		 * This class needs to be applied to cosmoz-omnitable-cell and cosmoz-omnitable-header if we want column's template instances to be styled correctly.
 		 */
 		getSpecificStyleScope: function () {
 			var

@@ -8,16 +8,6 @@
 		is: 'cosmoz-omnitable',
 
 		properties: {
-			/**
-			 * List of "disabled headers" - headers not fitting in the current screen due to screen size.
-			 */
-			disabledHeaders: {
-				type: Array,
-				notify: true,
-				value: function () {
-					return [];
-				}
-			},
 
 			/**
 			 * List of data to display
@@ -27,19 +17,11 @@
 			},
 
 			/**
-			 * Whether to hide all groups but the first on initial load
+			 * If set to true, then group a row will be displayed for groups that contain no items.
 			 */
-			hideButFirst: {
+			displayEmptyGroups: {
 				type: Boolean,
-				value: true
-			},
-
-			/**
-			 * Whether to hide groups with no items.
-			 */
-			hideEmptyGroups: {
-				type: Boolean,
-				value: true
+				value: false
 			},
 
 			/**
@@ -79,6 +61,9 @@
 				observer: '_groupOnChanged'
 			},
 
+			/**
+			 * Column that matches the current `groupOn` value.
+			 */
 			_currentGroupOnColumn: {
 				type: Object
 			},
@@ -190,7 +175,7 @@
 
 				for (i = 0 ; i < children.length; i+= 1) {
 					child = children[i];
-					if (child.nodeType === Node.ELEMENT_NODE && child.nodeName.indexOf('COSMOZ-OMNITABLE-COLUMN') === 0) {
+					if (child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn) {
 						columns.push(child);
 					}
 				}
@@ -220,8 +205,9 @@
 			if (hasActions) {
 				this.selectionEnabled = true;
 			}
+
 			this.$.groupedList.scrollTarget = this.$.scroller;
-			//this.setHeadersFromMarkup();
+
 			this.rendered = true;
 		},
 
@@ -316,6 +302,7 @@
 				this.filterKick += 1;
 			});
 		},
+
 		/**
 		 * Helper method to remove an item from `data`.
 		 * @param  {Object} item Item to remove
@@ -422,7 +409,7 @@
 			this.$.groupedList.deselectItem(item);
 		},
 
-		isItemSelect: function (item) {
+		isItemSelected: function (item) {
 			this.$.groupedList.isItemSelected(item);
 		},
 
@@ -432,37 +419,6 @@
 
 		getFoldIcon: function (folded) {
 			return folded ? 'expand-more' : 'expand-less';
-		},
-
-		renderItemProperty: function (itemNotify, header, ui) {
-			var
-				item = itemNotify.base,
-				prop;
-			if (item === undefined || header === undefined) {
-				return '';
-			}
-			// TODO: Cleaner solution?
-			if (item.placeholder) {
-				return '';
-			}
-			prop = this.resolveProp(item, header.id);
-			return this.renderObject(prop, ui, header);
-		},
-
-		renderObject: function (obj, ui, header) {
-			if (obj === undefined || obj === '') {
-				return '';
-			}
-
-			if (header.renderFunc) {
-				return header.renderFunc.call(this.dataHost, obj);
-			}
-
-			if (obj instanceof Object) {
-				return "Can't render " + JSON.stringify(obj);
-			}
-
-			return obj;
 		},
 
 		// TODO: provides a mean to avoid setting the values for a column
@@ -486,30 +442,6 @@
 			}, this);
 		},
 
-		dataRowChanged: function (event, detail) {
-			var
-				element = event.target,
-				model = event.model,
-				header = event.model.__data__.header,
-				item = event.model.__data__.item,
-				value = element.value;
-
-			if (header.type === 'number') {
-				value = parseInt(value, 10);
-			}
-			model.set('item.' + header.id, value);
-
-			//item[outerModel.header.id] = sender.value;
-			this.fire('cz-data-row-changed', {
-				model: model,
-				item: item
-			});
-			this.fire('data-changed', {
-				action: 'updateItem',
-				data: this.data
-			});
-		},
-
 		disableColumn: function () {
 			var headerToDisable;
 			// disables/hides columns that for example does not fit in the current screen size.
@@ -524,6 +456,7 @@
 				this.async(this.updateWidths);
 			}
 		},
+
 		enableColumn: function () {
 			var
 				headerToEnable,
@@ -681,8 +614,7 @@
 					groups.push({
 						name: key,
 						id: key,
-						items: itemStructure[key],
-						visible: true
+						items: itemStructure[key]
 					});
 				});
 
@@ -692,7 +624,9 @@
 						v2 = groupOnColumn.getComparableValue(b.items[0], groupOn);
 
 					if (typeof v1 === 'object' && typeof v2 === 'object') {
-						return cz.tools.sortObject(v1, v2);
+						// HACK(pasleq): worst case, compare using values converted to string
+						v1 = v1.toString();
+						v2 = v2.toString();
 					}
 					if (typeof v1 === 'number' && typeof v2 === 'number') {
 						return v1 - v2;
@@ -706,20 +640,12 @@
 						}
 						return v1 ? -1 : 1;
 					}
-					console.warn('unsupported sort', typeof v1, v1, typeof v2, v2);
+
 					return 0;
 				});
 
-				if (this.hideButFirst && groups.length > 1) {
-					groups.forEach(function (group, index) {
-						if (index === 0) {
-							return;
-						}
-						group.visible = false;
-					});
-				}
-
 				this._groupsCount = groups.length;
+
 			} else {
 				groups = filteredItems;
 				this._groupsCount = 0;
@@ -762,9 +688,7 @@
 							meta: {
 								groupName: group.name,
 								groupId: group.id,
-								index: index,
-								checked: group.checked,
-								visible: group.visible
+								index: index
 							},
 							reverse: sortOn.descending,
 							sortOn: 'value',
@@ -773,10 +697,7 @@
 							results += 1;
 							items[data.meta.index] = {
 								name: data.meta.groupName,
-								id: data.meta.groupId,
-								// HACK(pasleq): set a checked property to all groups to workaround issue with paper-checkbox
-								checked: data.meta.checked,
-								visible: data.meta.visible
+								id: data.meta.groupId
 							};
 							items[data.meta.index].items = data.data.map(function (item, index) {
 								return group.items[item.index];
@@ -820,13 +741,6 @@
 			this.$.groupedList.toggleCollapse(item);
 		},
 
-		getNumFiltered: function (group) {
-			if (group === undefined || group === null) {
-				return;
-			}
-			var groupIndex = this.groupedItems.indexOf(group), filteredItems = this.filteredSortedGroupedItems[groupIndex].length;
-			return filteredItems - 1;
-		},
 		/**
 		 * Enable/disable columns to properly fit in the available space.
 		 *
@@ -925,22 +839,7 @@
 				headerElement.style.maxWidth = newWidth + 'px';
 			});
 		},
-		renderLink: function (header, model) {
-			var link;
-			if (!header || !model) {
-				return '';
-			}
-			if (!header.linkbase || !header.linkprop) {
-				return '#!/invalid/link';
-			}
-			if (header.linkbase[0] === '#') {
-				// static url
-				link = header.linkbase;
-			} else {
-				link = this.resolveProp(model, header.linkbase);
-			}
-			return link + this.resolveProp(model, header.linkprop);
-		},
+
 		//TODO: Use cosmoz-behaviors
 		/**
 		 * Helper method for Polymer 1.0+ templates - check if variable
@@ -964,34 +863,6 @@
 				return true;
 			}
 			return false;
-		},
-		//TODO: Use cosmoz-behaviors
-		/**
-		 * Resolve a JS object path to its property value
-		 * @param  {Object} item The JS object
-		 * @param  {String} path The (recursive) object property such as "counterParty.name"
-		 * @return {mixed}      The value of the object property
-		 * @memberOf element/cz-omnitable
-		 */
-		resolveProp: function (item, path) {
-			if (item === undefined || path === undefined) {
-				return '';
-			}
-			// TODO: Cleaner solution ?
-			if (item.placeholder && Object.keys(item).length === 1) {
-				return '';
-			}
-			if (item.hasOwnProperty(path)) {
-				return item[path];
-			}
-			var firstDotIndex = path.indexOf('.'), firstProp, restOfPropPath;
-			if (firstDotIndex > 0) {
-				firstProp = path.substring(0, firstDotIndex);
-				restOfPropPath = path.substring(firstDotIndex + 1);
-				return this.resolveProp(item[firstProp], restOfPropPath);
-			}
-			console.warn('item does not have property/path', item, path);
-			return '';
 		},
 
 		_computeCellClasses: function (column, columnIndex) {
@@ -1045,11 +916,6 @@
 				classes.push('width-setter');
 			}
 			return classes.join(' ');
-		},
-
-		// TODO: Generalize into behavior, more args
-		_allTrue: function (arg1, arg2) {
-			return arg1 && arg2;
 		},
 
 		_onWebWorkerReady: function () {
