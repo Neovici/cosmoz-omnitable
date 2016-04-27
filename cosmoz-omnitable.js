@@ -741,6 +741,37 @@
 			this.$.groupedList.toggleCollapse(item);
 		},
 
+		updateWidths: function (e) {
+
+			if (!this.rendered || !this.visibleColumns) {
+				return;
+			}
+
+			var
+				firstVisibleItemElement = this.$.groupedList.getFirstVisibleItemElement(),
+				cells,
+				cell,
+				cellWidth,
+				headers,
+				header,
+				i;
+
+			if (firstVisibleItemElement) {
+				cells = Polymer.dom(firstVisibleItemElement).querySelectorAll('cosmoz-omnitable-cell');
+				headers = Polymer.dom(this.$.header).querySelectorAll('cosmoz-omnitable-header');
+				for (i = 0; i < cells.length; i+=1) {
+					cell = cells[i];
+					header = headers[i];
+					cellWidth = cell.getComputedStyleValue('width');
+					header.style.minWidth = cellWidth;
+					header.style.maxWidth = cellWidth;
+					header.style.width = cellWidth;
+
+				}
+			}
+		},
+
+
 		/**
 		 * Enable/disable columns to properly fit in the available space.
 		 *
@@ -748,9 +779,9 @@
 		 * (set event.detail.bigger = true)
 		 * @memberOf element/cz-omnitable
 		 */
-		updateWidths: function (event, detail, a) {
+		_adjustColumns: function (event, detail, a) {
 
-			if (!this.rendered || !this.columnHeaders) {
+			if (!this.rendered || !this.visibleColumns) {
 				return;
 			}
 
@@ -867,7 +898,7 @@
 
 		_computeCellClasses: function (column, columnIndex) {
 			var specificScope = column.getSpecificStyleScope();
-			return 'cell ' + 'cell'+ columnIndex + (specificScope ? ' ' + specificScope : '');
+			return 'cell' + (specificScope ? ' ' + specificScope : '');
 		},
 
 		_computeClasses: function (type, headerType, index) {
