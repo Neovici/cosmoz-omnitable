@@ -414,7 +414,7 @@
 		},
 
 		toggleGroup: function (event) {
-			this.$.body.querySelector('#groupedList').toggleFold(event.model);
+			this.$.groupedList.toggleFold(event.model);
 		},
 
 		getFoldIcon: function (folded) {
@@ -896,58 +896,19 @@
 			return false;
 		},
 
-		_computeCellClasses: function (column, columnIndex) {
+		_computeItemRowClasses: function (selected) {
+			return selected ?  'itemRow itemRow-selected' : 'itemRow';
+		},
+
+		_computeItemRowCellClasses: function (column, columnIndex) {
 			var specificScope = column.getSpecificStyleScope();
-			return 'cell' + (specificScope ? ' ' + specificScope : '');
+			return 'itemRow-cell' + (specificScope ? ' ' + specificScope : '') + (columnIndex === 0 ? ' itemRow-cell0' : '');
 		},
 
-		_computeClasses: function (type, headerType, index) {
-			return [
-				type,
-				'c' + index,
-				'type-' + headerType
-			].join(' ');
+		_computeGroupRowClasses: function (folded) {
+			return folded ? 'groupRow groupRow-folded' : 'groupRow';
 		},
 
-		_computeHeaderClasses: function (headerType, index) {
-			return [
-				'header',
-				'c' + index,
-				'header-type-' + headerType
-			].join(' ');
-		},
-
-		_computeItemClasses: function (item, expanded, disabledHeadersCount) {
-			var	classes = [
-				'item'
-			];
-
-			if (disabledHeadersCount > 0) {
-				classes.push('expandable');
-			}
-
-			if (expanded) {
-				classes.push('expanded');
-			}
-
-			return classes.join(' ');
-		},
-
-		_computeItemRowClasses: function (change) {
-			var
-				item = change.base,
-				classes = [
-					'item-row'
-				];
-
-			if (item.checked) {
-				classes.push('selected');
-			}
-			if (item.placeholder) {
-				classes.push('width-setter');
-			}
-			return classes.join(' ');
-		},
 
 		_onWebWorkerReady: function () {
 			this._webWorkerReady = true;

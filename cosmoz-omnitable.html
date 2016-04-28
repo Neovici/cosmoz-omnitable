@@ -1,6 +1,5 @@
 <link rel="import" href="../polymer/polymer.html"/>
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html"/>
-<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html"/>
 <link rel="import" href="../iron-list/iron-list.html"/>
 <link rel="import" href="../iron-icons/iron-icons.html"/>
 <link rel="import" href="../iron-icon/iron-icon.html"/>
@@ -51,7 +50,7 @@ with features like group count display and folding
 <dom-module id="cosmoz-omnitable">
 	<template>
 
-		<style include="cosmoz-omnitable-style iron-flex iron-flex-alignment iron-positioning">
+		<style include="cosmoz-omnitable-style">
 		</style>
 
 		<cosmoz-web-worker id="sortWorker" on-cosmoz-web-worker-ready="_onWebWorkerReady">
@@ -121,40 +120,38 @@ with features like group count display and folding
 			</script>
 		</cosmoz-web-worker>
 
-		<div id="omnitable" class="layout vertical flex">
-			<div id="header" class="relative horizontal layout end">
-				<div class="row-checkbox" style="padding-bottom: 20px;" hidden$="[[ !selectionEnabled ]]">
-					<paper-checkbox id="selectAllCheckbox" on-change="onAllCheckboxChange" hidden$="[[ _noData ]]">
+		<div class="mainContainer">
+			<div class="header" id="header">
+				<div class="selectAllCheckbox" hidden$="[[ !selectionEnabled ]]">
+					<paper-checkbox on-change="onAllCheckboxChange" hidden$="[[ _noData ]]">
 					</paper-checkbox>
 				</div>
 				<template is="dom-repeat" items="[[visibleColumns]]" as="column" index-as="columnIndex">
-					<cosmoz-omnitable-header class="header" column="{{column}}">
+					<cosmoz-omnitable-header class="header-cell" column="{{column}}">
 					</cosmoz-omnitable-header>
 				</template>
 			</div>
-			<div id="body" class="flex relative layout vertical">
+			<div class="tableContent">
 				<template is="dom-if" if="[[ _noData ]]">
-					<div id="emptyDataset" class="fit layout vertical center center-justified">
-						<div class="layout horizontal start">
-							<iron-icon icon="icons:announcement"></iron-icon>
-							<div class="layout vertical">
-								<h3>[[ _('Working set empty', t) ]]</h3>
-								<p>[[ _('No data to display.', t) ]]</p>
-							</div>
+					<div class="tableContent-empty">
+						<iron-icon icon="icons:announcement"></iron-icon>
+						<div>
+							<h3>[[ _('Working set empty', t) ]]</h3>
+							<p>[[ _('No data to display.', t) ]]</p>
 						</div>
 					</div>
 				</template>
-				<div id="scroller">
-					<cosmoz-grouped-list id="groupedList" class="fit" data="{{ sortedFilteredGroupedItems }}"
+				<div class="tableContent-scroller">
+					<cosmoz-grouped-list id="groupedList" data="{{ sortedFilteredGroupedItems }}"
 						selected-items="{{selectedItems}}" display-empty-groups="[[displayEmptyGroups]]">
 						<item-template id="itemTemplate">
 							<template>
-								<div class="layout horizontal center">
-									<div class="row-checkbox" hidden$="[[ !selectionEnabled ]]">
+								<div class$="{{_computeItemRowClasses(selected)}}">
+									<div class="selectItemCheckbox" hidden$="[[ !selectionEnabled ]]">
 										<paper-checkbox checked="{{ selected }}" on-change="onItemCheckboxChange"></paper-checkbox>
 									</div>
 									<template is="dom-repeat" items="[[visibleColumns]]" as="column" index-as="columnIndex">
-										<cosmoz-omnitable-cell class$="{{_computeCellClasses(column, columnIndex)}}"
+										<cosmoz-omnitable-cell class$="{{_computeItemRowCellClasses(column, columnIndex)}}"
 											template="{{column.dataTemplate}}"
 											item="{{item}}"
 											selected="{{selected}}"
@@ -166,13 +163,13 @@ with features like group count display and folding
 						</item-template>
 						<item-template id="groupTemplate">
 							<template>
-								<div class="horizontal layout center group-header">
-									<div class="row-checkbox" hidden$="[[ !selectionEnabled ]]">
+								<div class$="{{_computeGroupRowClasses(folded)}}">
+									<div class="selectGroupCheckbox" hidden$="[[ !selectionEnabled ]]">
 										<paper-checkbox checked="{{ selected }}" on-change="onGroupCheckboxChange"></paper-checkbox>
 									</div>
-									<h3 class="flex title layout horizontal">
+									<h3 class="groupRow-label">
 										<div><span>{{_currentGroupOnColumn.title}}</span>: &nbsp;</div>
-										<cosmoz-omnitable-cell
+										<cosmoz-omnitable-cell class="groupRow-cell"
 											template="[[_currentGroupOnColumn.dataTemplate]]"
 											item="{{item.items.0}}">
 										</cosmoz-omnitable-cell>
@@ -186,8 +183,8 @@ with features like group count display and folding
 				</div>
 			</div>
 		</div>
-		<div id="footer" class="horizontal layout center">
-			<div class="horizontal layout flex center">
+		<div class="footer">
+			<div class="footer-controls">
 				<div class="footer-control">
 					<iron-label class="footer-control-label" for="sortOnSelector">[[ _('Sort on', t) ]]</iron-label>
 					<paper-dropdown-menu vertical-align="bottom" no-label-float>
@@ -216,11 +213,11 @@ with features like group count display and folding
 					</paper-dropdown-menu>
 				</div>
 			</div>
-			<div id="footerStats" class="vertical layout end">
+			<div class="footer-tableStats">
 				<span>[[ ngettext('{0} group', '{0} groups', _groupsCount, t) ]]</span>
 				<span>[[ ngettext('{0} row', '{0} rows', filteredItems.length, t) ]]</span>
 			</div>
-			<cosmoz-bottom-bar class="selection" match-parent info="[[ selectedItems.length ]]" on-action="onAction" active$="[[ !isEmpty(selectedItems.length) ]]"><content id="actions" select="[action]"></content></cosmoz-bottom-bar>
+			<cosmoz-bottom-bar class="footer-actionBar" match-parent info="[[ selectedItems.length ]]" on-action="onAction" active$="[[ !isEmpty(selectedItems.length) ]]"><content id="actions" select="[action]"></content></cosmoz-bottom-bar>
 		</div>
 
 		<div id="columns">

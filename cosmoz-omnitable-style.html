@@ -1,46 +1,99 @@
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html"/>
 <dom-module id="cosmoz-omnitable-style">
 	<template>
 		<style>
 			:host {
-				display: block;
 				@apply(--layout-vertical);
 				@apply(--layout-relative);
 				overflow: hidden;
 			}
 
-			#omnitable {
+			/* The wrapping div that contains the header, the table content and the footer */
+			.mainContainer {
 				background-color: #fff;
+				@apply(--layout-vertical);
+				@apply(--layout-flex);
+
 			}
 
-			content[select="header"] {
+			#columns {
 				display: none;
 			}
 
-			.header,
-			.cell {
-				@apply(--layout-flex);
-				padding: 0 3px;
+			.header {
+				@apply(--layout-relative);
+				@apply(--layout-horizontal);
+				@apply(--layout-end);
 			}
 
-			.cell {
-				font-size: 0.9em;
-				font-weight: 200;
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
-			}
 
-			.cell > * {
-				overflow: hidden;
-				text-overflow: ellipsis;
-			}
-
-			#body {
+			.tableContent {
 				overflow-y: auto;
 				min-height: 90px;
+				@apply(--layout-vertical);
+				@apply(--layout-flex);
+				@apply(--layout-relative);
 			}
 
-			#footer {
+			/* Empty data set styling */
+
+			.tableContent-empty {
+				@apply(--layout-fit);
+				@apply(--layout-horizontal);
+				@apply(--layout-center);
+				@apply(--layout-center-justified);
+				color: #ccc;
+			}
+
+
+			.tableContent-empty iron-icon {
+				height: 96px;
+				min-height: 96px;
+				width: 96px;
+				min-width: 96px;
+				margin-right: 24px;
+			}
+
+			.tableContent-empty > div {
+				@apply(--layout-vertical);
+				@apply(--layout-center-justified);
+				padding-bottom: 24px;
+			}
+
+			.tableContent-empty p {
+				font-size: 15px;
+				color: #ddd;
+				margin: 0;
+			}
+
+			.tableContent-empty h3 {
+				white-space: nowrap;
+				margin: 0px 0px 8px 0px;
+			}
+
+			/* End of empty data set styling */
+
+
+			.tableContent-scroller {
+				@apply(--layout-flex);
+				position: relative;
+				overflow: auto;
+			}
+
+			#groupedList {
+				@apply(--layout-fit);
+			}
+
+			.header,
+			.footer {
+				font-weight: 300;
+				font-size: 14px;
+				min-height: 20px;
+			}
+
+			.footer {
+				@apply(--layout-horizontal);
+				@apply(--layout-center);
 				padding: 3px 0;
 				border-top: solid 1px #e8e8e8;
 				background-color: #f5f5f5;
@@ -48,36 +101,68 @@
 				margin-bottom: 1px; /* Chrome overflow rendering bug? When only component in a view */
 			}
 
-			#header, #footer {
-				font-weight: 300;
-				font-size: 14px;
-				min-height: 20px;
+			.footer-controls {
+				@apply(--layout-horizontal);
+				@apply(--layout-flex);
+				@apply(--layout-center);
 			}
 
-			#footer .footer-control {
+			.footer-control {
 				margin-left: 3%;
 				@apply(--layout-horizontal);
 				@apply(--layout-center);
 			}
 
-			#footer #footerStats {
+			.footer-tableStats {
+				@apply(--layout-vertical);
+				@apply(--layout-end);
 				margin-right: 3%;
 			}
 
-			#footer #footerStats :first-child {
+
+			.footer-tableStats :first-child {
 				margin-bottom: 5px;
 			}
 
-			#footer iron-label {
+			.footer-control-label {
 				margin-right: 10px;
 			}
 
-			#scroller {
-				flex: 1;
-				position: relative;
-				overflow: auto;
+			.footer-actionBar {
+
 			}
-			.group-header {
+
+			.selectAllCheckbox,
+			.selectItemCheckbox,
+			.selectGroupCheckbox {
+				min-width: 32px;
+				max-width: 32px;
+				width: 32px;
+				padding: 1px 1px 1px 1px;
+				text-align: center;
+				vertical-align: middle;
+				margin-left: 10px;
+			}
+
+			.selectAllCheckbox {
+				padding-bottom: 14px;
+			}
+
+			.itemRow {
+				height: 24px;
+				border-bottom: solid 1px #e2e2e2;
+				padding-right: 8px;
+				@apply(--layout-horizontal);
+				@apply(--layout-center);
+			}
+
+			.itemRow.itemRow-selected {
+				background-color: #e1f8f9;
+			}
+
+			.groupRow {
+				@apply(--layout-horizontal);
+				@apply(--layout-center);
 				background-color: #efefef;
 				font-weight: 400;
 				color: #48515b;
@@ -85,19 +170,14 @@
 				border-bottom: solid 1px #d6d6d6;
 			}
 
-			.group-header.expanded {
-				background-color: #efefef;
+			.groupRow.groupRow-folded {
+				/* Add here style rules for folded group rows */
 			}
 
-			.group-header.expanded td {
-				border-top: solid 1px #efefef;
-				border-bottom: solid 1px #efefef;
-			}
-			.group-header.hidden {
-				display: none !important;
-			}
 
-			.group-header h3 {
+			.groupRow-label {
+				@apply(--layout-flex);
+				@apply(--layout-horizontal);
 				padding-left: 8px;
 				margin: 0;
 				font-size: 1.15em;
@@ -107,171 +187,26 @@
 				white-space: nowrap;
 			}
 
-			.group-header paper-button::shadow .button-content {
-				padding: 0.2em 0;
+
+			.header-cell,
+			.itemRow-cell {
+				@apply(--layout-flex);
+				padding: 0 3px;
 			}
 
-			.item-row {
-				height: 24px;
-				border-bottom: solid 1px #e2e2e2;
-				padding-right: 8px;
-				@apply(--layout-horizontal);
-				@apply(--layout-center);
-			}
-			.item-row.selected {
-				background-color: #e1f8f9;
-			}
-			.item-row paper-icon-button {
-				padding: 0;
-			}
-
-			.item-extra-row {
-				display: none;
-			}
-
-			.item-expand-button {
-				display: none;
-			}
-
-			.item.expandable .item-expand-button {
-				display: block;
-			}
-
-			.item.expandable.expanded .item-extra-row {
-				display: block;
-			}
-
-			.item-extra-row > div {
-				padding: 0 20px;
-				line-height: 1.6em;
-			}
-
-			.row-checkbox {
-				min-width: 32px;
-				max-width: 32px;
-				width: 32px;
-				padding: 1px;
-				text-align: center;
-				vertical-align: middle;
-				margin-left: 10px;
-			}
-
-			cz-letterball {
-				padding-left: 8px;
-				width: 20px;
-				height: 20px;
-			}
-
-			.type-label div {
-				text-align: center;
-				display: inline-block;
-				background-color: #aaa;
-				color: white;
-				border-radius: 5px;
-				padding: 2px 5px;
-			}
-
-			.type-amount {
-				min-width: 70px;
-				width: 100px;
-				max-width: 150px;
-				text-align: right;
-			}
-
-			.type-documentId {
-				min-width: 80px;
-				width: 100px;
-				max-width: 200px;
-			}
-
-			.header-type-date,
-			.type-date {
-				min-width: 85px;
-				width: 85px;
-				max-width: 140px;
-			}
-
-			.header-type-datetime,
-			.type-datetime {
-				min-width: 180px;
-				width: 180px;
-				max-width: 180px;
-			}
-
-			.header-type-default,
-			.type-default {
-				min-width: 75px;
-			}
-
-			.header-type-number,
-			.type-number {
-				min-width: 30px;
-				width: 50px;
-				max-width: 80px;
-				text-align: right;
-			}
-
-			.type-number paper-input-container input {
-				text-align: right;
-			}
-
-			.type-number paper-input-container {
-				max-width: 100px;
-			}
-
-			div.disabled {
-				margin: 0;
-				padding: 0;
-				width: 0;
-			}
-
-			div.wrap {
-				white-space: normal;
-			}
-
-			#emptyDataset {
-				color: #ccc;
-			}
-
-			#emptyDataset > div {
-				margin: 0 5%;
-			}
-
-			#emptyDataset iron-icon {
-				height: 96px;
-				min-height: 96px;
-				width: 96px;
-				min-width: 96px;
-				margin-right: 5%;
-			}
-
-			#emptyDataset p {
-				font-size: 15px;
-				color: #ddd;
-				margin: 0;
-			}
-
-			#emptyDataset h3 {
-				margin:  15px 0 3% 0;
+			.itemRow-cell {
+				font-size: 0.9em;
+				font-weight: 200;
 				white-space: nowrap;
-			}
-
-			.cell.c0,
-			.header.c0 {
-				padding-left: 8px;
-			}
-
-/*			#header .header:first-of-type {
-				margin-right: -8px;
-			}
-
-			.width-setter {
-				border: 0;
-				height: 0;
 				overflow: hidden;
-				padding: 0;
+				text-overflow: ellipsis;
 			}
-*/
+
+			.itemRow-cell > * {
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
 			cosmoz-bottom-bar {
 				--cosmoz-bottom-bar-background-color: #49D593;
 				color: white;
