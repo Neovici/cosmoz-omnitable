@@ -18,8 +18,8 @@
 
 <link rel="import" href="cosmoz-omnitable-column.html">
 <link rel="import" href="cosmoz-omnitable-template.html">
-<link rel="import" href="cosmoz-omnitable-cell.html">
-<link rel="import" href="cosmoz-omnitable-header.html">
+<link rel="import" href="cosmoz-omnitable-item-cell.html">
+<link rel="import" href="cosmoz-omnitable-header-cell.html">
 <link rel="import" href="cosmoz-omnitable-style.html">
 <link rel="import" href="cosmoz-omnitable-column-amount.html">
 <link rel="import" href="cosmoz-omnitable-column-date.html">
@@ -127,8 +127,8 @@ with features like group count display and folding
 					</paper-checkbox>
 				</div>
 				<template is="dom-repeat" items="[[visibleColumns]]" as="column" index-as="columnIndex">
-					<cosmoz-omnitable-header class="header-cell" column="{{column}}">
-					</cosmoz-omnitable-header>
+					<cosmoz-omnitable-header-cell class="header-cell" column="{{column}}">
+					</cosmoz-omnitable-header-cell>
 				</template>
 			</div>
 			<div class="tableContent">
@@ -151,12 +151,12 @@ with features like group count display and folding
 										<paper-checkbox checked="{{ selected }}" on-change="onItemCheckboxChange"></paper-checkbox>
 									</div>
 									<template is="dom-repeat" items="[[visibleColumns]]" as="column" index-as="columnIndex">
-										<cosmoz-omnitable-cell class$="{{_computeItemRowCellClasses(column, columnIndex)}}"
-											template="{{column.dataTemplate}}"
+										<cosmoz-omnitable-item-cell class$="{{_computeItemRowCellClasses(column, columnIndex)}}"
+											column="{{column}}"
 											item="{{item}}"
 											selected="{{selected}}"
 											expanded="{{expanded}}">
-										</cosmoz-omnitable-cell>
+										</cosmoz-omnitable-item-cell>
 									</template>
 								</div>
 							</template>
@@ -169,10 +169,11 @@ with features like group count display and folding
 									</div>
 									<h3 class="groupRow-label">
 										<div><span>{{_currentGroupOnColumn.title}}</span>: &nbsp;</div>
-										<cosmoz-omnitable-cell class="groupRow-cell"
-											template="[[_currentGroupOnColumn.dataTemplate]]"
-											item="{{item.items.0}}">
-										</cosmoz-omnitable-cell>
+										<cosmoz-omnitable-item-cell class="groupRow-cell"
+											column="[[_currentGroupOnColumn]]"
+											item="[[item.items.0]]"
+											folded="{{folded}}">
+										</cosmoz-omnitable-item-cell>
 									</h3>
 									<div>[[ item.items.length ]]</div>
 									<paper-icon-button icon="[[ getFoldIcon(folded) ]]" on-tap="toggleGroup"></paper-icon-button>
@@ -182,44 +183,44 @@ with features like group count display and folding
 					</cosmoz-grouped-list>
 				</div>
 			</div>
-		</div>
-		<div class="footer">
-			<div class="footer-controls">
-				<div class="footer-control">
-					<iron-label class="footer-control-label" for="sortOnSelector">[[ _('Sort on', t) ]]</iron-label>
-					<paper-dropdown-menu vertical-align="bottom" no-label-float>
-						<paper-listbox class="dropdown-content menu" id="sortOnSelector" selected="0" >
-							<paper-item on-tap="_onSortColumnActivated">
-								<div style="white-space: nowrap; font-style: italic;">[[ _('No sorting', t) ]]</div>
-							</paper-item>
-							</cosmoz-omnitable-sort-list-item>
-							<template is="dom-repeat" id="sortColumns" items="[[columns]]" as="column">
-								<paper-item on-tap="_onSortColumnActivated" hidden$="[[!column.sortOn]]">
-									<span>[[column.title]]</span>&nbsp;<span>[[_getSortDirection(column, sortOn.*)]]</span>
+			<div class="footer">
+				<div class="footer-controls">
+					<div class="footer-control">
+						<iron-label class="footer-control-label" for="sortOnSelector">[[ _('Sort on', t) ]]</iron-label>
+						<paper-dropdown-menu vertical-align="bottom" no-label-float>
+							<paper-listbox class="dropdown-content menu" id="sortOnSelector" selected="0" >
+								<paper-item on-tap="_onSortColumnActivated">
+									<div style="white-space: nowrap; font-style: italic;">[[ _('No sorting', t) ]]</div>
 								</paper-item>
-							</template>
-						</paper-listbox>
-					</paper-dropdown-menu>
+								</cosmoz-omnitable-sort-list-item>
+								<template is="dom-repeat" id="sortColumns" items="[[columns]]" as="column">
+									<paper-item on-tap="_onSortColumnActivated" hidden$="[[!column.sortOn]]">
+										<span>[[column.title]]</span>&nbsp;<span>[[_getSortDirection(column, sortOn.*)]]</span>
+									</paper-item>
+								</template>
+							</paper-listbox>
+						</paper-dropdown-menu>
+					</div>
+					<div class="footer-control">
+						<iron-label class="footer-control-label" for="groupOnSelector">[[ _('Group on', t) ]]</iron-label>
+						<paper-dropdown-menu vertical-align="bottom" id="groupOnSelector" no-label-float>
+							<paper-listbox class="dropdown-content menu" selected="{{ groupOn }}" attr-for-selected="data-group-on">
+								<paper-item data-group-on=""><i style="white-space: nowrap">[[ _('No grouping', t) ]]</i></paper-item>
+								<template is="dom-repeat" items="[[columns]]" as="column">
+									<paper-item data-group-on$="[[column.groupOn]]" hidden$="[[!column.groupOn]]">[[column.title]]</paper-item>
+								</template>
+							</paper-listbox>
+						</paper-dropdown-menu>
+					</div>
 				</div>
-				<div class="footer-control">
-					<iron-label class="footer-control-label" for="groupOnSelector">[[ _('Group on', t) ]]</iron-label>
-					<paper-dropdown-menu vertical-align="bottom" id="groupOnSelector" no-label-float>
-						<paper-listbox class="dropdown-content menu" selected="{{ groupOn }}" attr-for-selected="data-group-on">
-							<paper-item data-group-on=""><i style="white-space: nowrap">[[ _('No grouping', t) ]]</i></paper-item>
-							<template is="dom-repeat" items="[[columns]]" as="column">
-								<paper-item data-group-on$="[[column.groupOn]]" hidden$="[[!column.groupOn]]">[[column.title]]</paper-item>
-							</template>
-						</paper-listbox>
-					</paper-dropdown-menu>
+				<div class="footer-tableStats">
+					<span>[[ ngettext('{0} group', '{0} groups', _groupsCount, t) ]]</span>
+					<span>[[ ngettext('{0} row', '{0} rows', filteredItems.length, t) ]]</span>
 				</div>
+				<cosmoz-bottom-bar class="footer-actionBar" match-parent info="[[ selectedItems.length ]]" on-action="onAction" active$="[[ !isEmpty(selectedItems.length) ]]"><content id="actions" select="[action]"></content></cosmoz-bottom-bar>
 			</div>
-			<div class="footer-tableStats">
-				<span>[[ ngettext('{0} group', '{0} groups', _groupsCount, t) ]]</span>
-				<span>[[ ngettext('{0} row', '{0} rows', filteredItems.length, t) ]]</span>
-			</div>
-			<cosmoz-bottom-bar class="footer-actionBar" match-parent info="[[ selectedItems.length ]]" on-action="onAction" active$="[[ !isEmpty(selectedItems.length) ]]"><content id="actions" select="[action]"></content></cosmoz-bottom-bar>
-		</div>
 
+		</div>
 		<div id="columns">
 			<content></content>
 		</div>

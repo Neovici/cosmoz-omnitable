@@ -757,8 +757,8 @@
 				i;
 
 			if (firstVisibleItemElement) {
-				cells = Polymer.dom(firstVisibleItemElement).querySelectorAll('cosmoz-omnitable-cell');
-				headers = Polymer.dom(this.$.header).querySelectorAll('cosmoz-omnitable-header');
+				cells = Polymer.dom(firstVisibleItemElement).querySelectorAll('cosmoz-omnitable-item-cell');
+				headers = Polymer.dom(this.$.header).querySelectorAll('cosmoz-omnitable-header-cell');
 				for (i = 0; i < cells.length; i+=1) {
 					cell = cells[i];
 					header = headers[i];

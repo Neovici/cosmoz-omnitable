@@ -76,6 +76,20 @@
 				type: Boolean,
 				value: true,
 				readOnly: true
+			},
+
+			width: {
+				type: String,
+				value: function () {
+					return this._getDefaultWidth();
+				}
+			},
+
+			flex: {
+				type: String,
+				value: function () {
+					return this._getDefaultFlex();
+				}
 			}
 		},
 
@@ -111,6 +125,14 @@
 
 			return template;
 
+		},
+
+		_getDefaultWidth: function () {
+			return '75px';
+		},
+
+		_getDefaultFlex: function () {
+			return '1';
 		},
 
 		renderDefaultValue: function (item, valuePath) {

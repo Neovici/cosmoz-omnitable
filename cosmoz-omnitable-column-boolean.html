@@ -61,6 +61,17 @@
 
 			_filterChangedFromAbove: false,
 
+			_getDefaultWidth: function () {
+				return '75px';
+			},
+
+			/**
+			 * No need to grow, as the values in a boolean column should have known fixed width
+			 */
+			_getDefaultFlex: function () {
+				return '0';
+			},
+
 			_selectedChanged: function (event) {
 				console.log('_selectedChanged', event);
 			},

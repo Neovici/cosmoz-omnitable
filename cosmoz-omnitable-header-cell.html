@@ -1,0 +1,64 @@
+<dom-module id="cosmoz-omnitable-header-cell">
+	<template>
+		<style>
+			:host {
+				display: block;
+			}
+		</style>
+		<content></content>
+	</template>
+	<script>
+		Polymer({
+			is: 'cosmoz-omnitable-header-cell',
+			properties: {
+
+				column: {
+					type: Object
+				}
+			},
+
+			observers: [
+				'_columnChanged(column)'
+			],
+
+			// WARN: do not use '_templateInstance' property name, as this will conflict with
+			// a property used by Templatizer
+
+			_headerTemplateInstance: null,
+
+			_currentTemplate: null,
+
+
+			_columnChanged: function (newColumn, oldColumn) {
+				var oldTemplate;
+				if (newColumn) {
+					oldTemplate = this._currentTemplate;
+					this._currentTemplate = newColumn.headerTemplate;
+					this._updateTemplate(this._currentTemplate, oldTemplate);
+				}
+			},
+
+			_updateTemplate: function (newTemplate, oldTemplate) {
+				var children, parent, i;
+				if (oldTemplate && this._headerTemplateInstance) {
+					oldTemplate.removeInstance(this._headerTemplateInstance);
+					parent = Polymer.dom(this);
+					children = parent.childNodes;
+					if (children) {
+						for (i = 0 ; i < children.length ; i+=1) {
+							parent.removeChild(children[i]);
+						}
+					}
+				}
+
+				if (newTemplate) {
+					this._headerTemplateInstance = newTemplate.createInstance();
+					Polymer.dom(this).appendChild(this._headerTemplateInstance.root);
+				} else {
+					this._headerTemplateInstance = null;
+				}
+			}
+
+		});
+	</script>
+</dom-module>

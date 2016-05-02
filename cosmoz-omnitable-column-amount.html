@@ -32,6 +32,14 @@
 				Cosmoz.MoneyHelperBehavior
 			],
 
+			_getDefaultWidth: function () {
+				return '80px';
+			},
+
+			_getDefaultFlex: function () {
+				return '1';
+			},
+
 			renderAmountWithCurrency: function (item, valuePath) {
 				var value = this.get(valuePath, item);
 				return this.renderAmount(value);

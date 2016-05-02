@@ -1,14 +1,17 @@
-<dom-module id="cosmoz-omnitable-cell">
+<dom-module id="cosmoz-omnitable-item-cell">
 	<template>
 		<content></content>
 	</template>
 	<script>
 		Polymer({
-			is: 'cosmoz-omnitable-cell',
+
+			is: 'cosmoz-omnitable-item-cell',
+
 			properties: {
-				template: {
+
+				column: {
 					type: Object,
-					observer: '_templateChanged'
+					observer: '_columnChanged'
 				},
 
 				item: {
@@ -23,18 +26,36 @@
 				expanded: {
 					type: Boolean,
 					observer: '_expandedChanged'
+				},
+
+				folded: {
+					type: Boolean,
+					observer: '_foldedChanged'
 				}
 			},
 
 			observers: [
-				'_itemUpdated(item.*)'
+				'_itemUpdated(item.*)',
+				'_updateColumnWidth(column.width)',
+				'_updateColumnFlex(column.flex)'
 			],
+
+			_currentTemplate: null,
 
 			// WARN: do not use '_templateInstance' property name, as this will conflict with
 			// a property used by Templatizer
 			_cellTemplateInstance: null,
 
-			_templateChanged: function (template, oldTemplate) {
+			_columnChanged: function (newColumn, oldColumn) {
+				var oldTemplate;
+				if (newColumn) {
+					oldTemplate = this._currentTemplate;
+					this._currentTemplate = newColumn.dataTemplate;
+					this._updateTemplate(this._currentTemplate, oldTemplate);
+				}
+			},
+
+			_updateTemplate: function (newTemplate, oldTemplate) {
 				var children, parent, i;
 				if (oldTemplate && this._cellTemplateInstance) {
 					oldTemplate.removeInstance(this._cellTemplateInstance);
@@ -47,13 +68,21 @@
 					}
 				}
 
-				if (template) {
-					this._cellTemplateInstance = template.createInstance();
+				if (newTemplate) {
+					this._cellTemplateInstance = newTemplate.createInstance();
 					Polymer.dom(this).appendChild(this._cellTemplateInstance.root);
 					this._assignModel();
 				} else {
 					this._cellTemplateInstance = null;
 				}
+			},
+
+			_updateColumnWidth: function (width) {
+				this.style.flexBasis = width;
+			},
+
+			_updateColumnFlex: function (flex) {
+				this.style.flexGrow = flex;
 			},
 
 			_itemUpdated: function (itemChange) {
@@ -75,6 +104,12 @@
 			_expandedChanged: function (expanded, oldValue) {
 				if (this._cellTemplateInstance) {
 					this._cellTemplateInstance.expanded = expanded;
+				}
+			},
+
+			_foldedChanged: function (folded, oldValue) {
+				if (this._cellTemplateInstance) {
+					this._cellTemplateInstance.folded = folded;
 				}
 			},
 
