@@ -52,6 +52,14 @@
 				value: null
 			},
 
+			_sortOnSelectorItems: {
+				type: Array
+			},
+
+			_sortOnSelectorSelected: {
+				type: Number
+			},
+
 			/**
 			 * The item's value path to group on
 			 */
@@ -69,35 +77,17 @@
 			},
 
 			/**
-			 * Workaround kicker to cause regrouping.
-			 */
-			groupKick: {
-				type: Number,
-				value: 0
-			},
-
-			/**
-			 * Workaround kicker to cause refiltering.
-			 */
-			filterKick: {
-				type: Number,
-				value: 0
-			},
-
-			/**
 			 * Items matching current set filter(s)
 			 */
 			filteredItems: {
-				type: Array,
-				computed: '_filterItems(filterKick)'
+				type: Array
 			},
 
 			/**
 			 * Grouped items structure after filtering.
 			 */
 			filteredGroupedItems: {
-				type: Array,
-				computed: '_groupItems(filteredItems, groupKick)'
+				type: Array
 			},
 
 			/**
@@ -132,21 +122,19 @@
 
 			columns: {
 				type: Array,
-				notify: true,
-				observer: '_columnsChanged'
+				notify: true
 			},
 
 			visibleColumns: {
-				type: Array
+				type: Array,
+				notify: true
 			}
 		},
 
 		observers: [
 			'_sortOnChanged(sortOn.*)',
-			'_sortFilteredGroupedItems(filteredGroupedItems, sortOn)',
 			'_dataChanged(data.*)',
-			'_filtersChanged(filters.*)',
-			'_updateVisibleColumns(columns)'
+			'_updateSelectedSortIndex(_sortOnSelectorItems)'
 		],
 
 		behaviors: [
@@ -166,6 +154,7 @@
 		_needs: {},
 
 		created: function () {
+			/** WARNING: we do not support columns changes yet. */
 			this._columnObserver = Polymer.dom(this).observeNodes(function (info) {
 				var
 					columns = [],
@@ -180,24 +169,20 @@
 					}
 				}
 				if (columns && columns.length > 0) {
-					this.set('columns', columns);
+
+					this.columns = columns;
+
+					this.columns.forEach(function (column) {
+						this.listen(column, 'filter-changed', '_onColumnFilterChanged');
+					}, this);
+
+					this._updateVisibleColumns();
+
+					if (this._webWorkerReady && this.data) {
+						this._debounceFilterItems();
+					}
 				}
 			}.bind(this));
-
-			this.rendered = false;
-			this._needs = {
-				grouping: true,
-				filtering: true,
-				sorting: true
-			};
-		},
-
-		ready: function () {
-			this._needs = {
-				grouping: true,
-				filtering: true,
-				sorting: true
-			};
 		},
 
 		attached: function () {
@@ -207,11 +192,7 @@
 			}
 
 			this.$.groupedList.scrollTarget = this.$.scroller;
-
-			this.rendered = true;
 		},
-
-
 
 		/**
 		 * Called when data is changed to setup up needs and check workers/filtering
@@ -242,11 +223,6 @@
 		},
 
 		_newData: function (data) {
-
-			this._needs.grouping = true;
-			this._needs.filtering = true;
-			this._needs.sorting = true;
-
 			if (this._webWorkerReady && this.columns) {
 				this._setColumnValues();
 				this._debounceFilterItems();
@@ -267,11 +243,8 @@
 				return splice.addedCount > 0;
 			}, this);
 
-			if (itemsAdded) {
-				// If some items were added, it's easier to re-sort/re-group/re-filter
-				this._needs.grouping = true;
-				this._needs.filtering = true;
-				this._needs.sorting = true;
+			if (itemsAdded && this._webWorkerReady && this.columns) {
+				this._debounceFilterItems();
 			} else {
 				// When only removing items, no need to process the data again
 				splices.forEach(function (splice) {
@@ -280,27 +253,39 @@
 					}, this);
 				}, this);
 			}
-
-			if (this._webWorkerReady && this.headers && this._needs.filtering) {
-				this._debounceFilterItems();
-			}
-		},
-
-		_columnsChanged: function (columns, oldColumns) {
-			this.columns.forEach(function (column) {
-				this.listen(column, 'filter-changed', '_onColumnFilterChanged');
-			}, this);
-		},
-
-		_onColumnFilterChanged: function (event) {
-			this._needs.filtering = true;
-			this._debounceFilterItems();
 		},
 
 		_debounceFilterItems: function () {
 			this.debounce('filterItems', function () {
-				this.filterKick += 1;
+				this._filterItems();
 			});
+		},
+
+		_debounceGroupItems: function () {
+			this.debounce('groupItems', function () {
+				this._groupItems();
+			});
+		},
+
+		_debounceSortItems: function () {
+			this.debounce('sortItems', function () {
+				this._sortFilteredGroupedItems();
+			});
+		},
+
+		_debounceUpdateWidths: function () {
+			// This fails to set header width when group-on property is set on the table
+			//this.async(this.updateWidths);
+
+			// 16ms 'magic' number copied from iron-list
+			// But this makes headers change width after the table has completed rendering,
+			// which might look strange
+			this.debounce('updateWidths', this.updateWidths, 16);
+
+		},
+
+		_onColumnFilterChanged: function (event) {
+			this._debounceFilterItems();
 		},
 
 		/**
@@ -496,6 +481,22 @@
 			return col;
 		},
 
+		_getSortOnColumn: function () {
+			var col;
+
+			if (!this.sortOn || !this.sortOn.valuePath) {
+				return;
+			}
+			this.columns.some(function (column) {
+				if (column.sortOn === this.sortOn.valuePath) {
+					col = column;
+					return true;
+				}
+			}, this);
+			return col;
+		},
+
+
 		_groupOnChanged: function (newValue, oldValue) {
 			var
 				oldGroupColumnIndex = -1,
@@ -523,25 +524,24 @@
 				}
 				this._currentGroupOnColumn = groupColumn;
 			} else if (this.columns) {
-				this._updateVisibleColumns(this.columns);
+				this._updateVisibleColumns();
 			}
 
-			this._needs.grouping = true;
-			if (this.filteredItems) {
-				this.groupKick += 1;
-			}
+			this._debounceGroupItems();
 		},
 
-		_updateVisibleColumns: function (columns) {
+		_updateVisibleColumns: function () {
 			var
 				visibleColumns,
 				i;
 
 			if (this.groupOn) {
 				visibleColumns = [];
-				columns.forEach(function (column) {
+				this.columns.forEach(function (column) {
 					if (column.groupOn !== this.groupOn) {
 						visibleColumns.push(column);
+					} else {
+						this._currentGroupOnColumn = column;
 					}
 				}, this);
 			} else {
@@ -552,45 +552,45 @@
 		},
 
 
-		_filterItems : function (filterKick) {
-			if (!this.columns) {
-				return null;
+		_filterItems : function () {
+
+			var
+				filteredItems,
+				filteredColumns;
+
+			if (this.data && this.data.length) {
+				filteredColumns = this.columns.filter(function (column) {
+					return column.hasFilter();
+				});
+				if (filteredColumns.length) {
+					filteredItems = this.data.filter(function (item) {
+						return filteredColumns.every(function (column) {
+							return column.applyFilter(item);
+						}, this);
+					}, this);
+				} else {
+					filteredItems = this.data.slice();
+				}
+
+				this.filteredItems = filteredItems;
+				this._debounceGroupItems();
+
+			} else {
+				this.filteredItems = [];
+				this.filteredGroupedItems  = [];
+				this.sortedFilteredGroupedItems = [];
+				this._groupsCount = 0;
 			}
-			if (!this.data || this.data.length === 0) {
-				this._needs.grouping = false;
-				this._needs.sorting = false;
-				this._needs.filtering = false;
+		},
+
+		_groupItems: function () {
+
+			if (!this.filteredItems || this.filteredItems.length === 0) {
+				this.filteredGroupedItems  = [];
+				this.sortedFilteredGroupedItems = [];
+				this._groupsCount = 0;
 				return;
 			}
-
-			var filteredItems = this.data.filter(function (item) {
-				return this._filterItem(item);
-			}, this);
-
-			this._needs.filtering = false;
-			this._needs.grouping = true;
-			return filteredItems;
-		},
-
-		_filterItem: function (item) {
-			return this.columns.every(function (column) {
-				return column.applyFilter(item);
-			}, this);
-		},
-
-
-		_groupItems: function (filteredItems, groupKick) {
-			if (!this.columns) {
-				return null;
-			}
-
-			if (!filteredItems || filteredItems.length === 0) {
-				return [];
-			}
-			if (!this._needs.grouping) {
-				return filteredItems;
-			}
-
 
 			var
 				groupOn = this.groupOn,
@@ -598,8 +598,13 @@
 				groups = [],
 				itemStructure = {};
 
+
 			if (groupOn) {
-				filteredItems.forEach(function (item, index) {
+				if (!groupOnColumn) {
+					console.warn('Cannot group on ' + groupOn + ' as there is no columm configured to group on this value path.');
+					return;
+				}
+				this.filteredItems.forEach(function (item, index) {
 					var groupOnValue = groupOnColumn.getComparableValue(item, groupOn);
 
 					if (groupOnValue !== undefined) {
@@ -647,40 +652,45 @@
 				this._groupsCount = groups.length;
 
 			} else {
-				groups = filteredItems;
+				groups = this.filteredItems;
 				this._groupsCount = 0;
 			}
 
-			this._needs.grouping = false;
+			this.filteredGroupedItems = groups;
 
-			return groups;
+			this._debounceSortItems();
 		},
 
-		_sortFilteredGroupedItems: function (filteredGroupedItems, sortOn, descending) {
-			if (!filteredGroupedItems) {
+		_sortFilteredGroupedItems: function () {
+			if (!this.filteredGroupedItems) {
 				return;
 			}
 
-			if (!sortOn) {
-				this.set('sortedFilteredGroupedItems', filteredGroupedItems);
-				this.async(this.updateWidths);
-				return;
-			}
-
-			var items = [],
-				numGroups = filteredGroupedItems.length,
+			var
+				sortOn = this.sortOn,
+				sortOnColumn = this._getSortOnColumn(),
+				items = [],
+				numGroups = this.filteredGroupedItems.length,
 				mappedItems,
 				results = 0;
 
+			if (!sortOn) {
+				this.sortedFilteredGroupedItems = this.filteredGroupedItems;
+				this._debounceUpdateWidths();
+				return;
+			}
+
+
+
 			if (this._groupsCount > 0) {
-				filteredGroupedItems.forEach(function (group, index) {
+				this.filteredGroupedItems.forEach(function (group, index) {
 					if (group.items && group.items.map) {
 						// create a reduced version of the items array to transfer to the worker
 						// with item index and property to sort on
 						mappedItems = group.items.map(function (item, originalItemIndex) {
 							return {
 								index: originalItemIndex,
-								value: this._currentSortColumn.getComparableValue(item, sortOn.valuePath)
+								value: sortOnColumn.getComparableValue(item, sortOn.valuePath)
 							};
 						}, this);
 						// Sort the reduced version of the array
@@ -704,17 +714,17 @@
 							});
 							if (results === numGroups) {
 								this.set('sortedFilteredGroupedItems', items);
-								this.async(this.updateWidths);
+								this._debounceUpdateWidths();
 							}
 						}.bind(this));
 					}
 				}, this);
 			} else {
 				// No grouping
-				mappedItems = filteredGroupedItems.map(function (item, originalItemIndex) {
+				mappedItems = this.filteredGroupedItems.map(function (item, originalItemIndex) {
 					return {
 						index: originalItemIndex,
-						value: this._currentSortColumn.getComparableValue(item, sortOn.valuePath)
+						value: sortOnColumn.getComparableValue(item, sortOn.valuePath)
 					};
 				}, this);
 
@@ -724,10 +734,10 @@
 					data: mappedItems
 				}, function (data) {
 					items = data.data.map(function (item, index){
-						return filteredGroupedItems[item.index];
-					});
+						return this.filteredGroupedItems[item.index];
+					}, this);
 					this.set('sortedFilteredGroupedItems', items);
-					this.async(this.updateWidths);
+					this._debounceUpdateWidths();
 				}.bind(this));
 			}
 		},
@@ -742,10 +752,6 @@
 		},
 
 		updateWidths: function (e) {
-
-			if (!this.rendered || !this.visibleColumns) {
-				return;
-			}
 
 			var
 				firstVisibleItemElement = this.$.groupedList.getFirstVisibleItemElement(),
@@ -912,7 +918,7 @@
 
 		_onWebWorkerReady: function () {
 			this._webWorkerReady = true;
-			if (this._needs.filtering) {
+			if (this.data && this.columns) {
 				this._debounceFilterItems();
 			}
 		},
@@ -939,10 +945,8 @@
 
 			if (!column) {
 				this.sortOn = null;
-				this._currentSortColumn = null;
-				this.$.sortOnSelector.selected = 0;
+				this._sortOnSelectorSelected = 0;
 			} else {
-				this._currentSortColumn = column;
 				selected = this.$.sortOnSelector.selected;
 				if (!this.sortOn || !this.sortOn.valuePath) {
 					this.sortOn = {
@@ -962,32 +966,52 @@
 				}
 
 				// Force dropdown menu to refresh `selectedItemLabel`
-				this.$.sortOnSelector.selected = 0;
-				this.$.sortOnSelector.selected = selected;
+				this._sortOnSelectorSelected = 0;
+				this._sortOnSelectorSelected = selected;
 			}
 		},
 
 		// Select the right column if sort has been changed from outside.
 		_sortOnChanged: function (sortOnChange) {
-			var
-				sortOn = sortOnChange.base,
-				elements = this.$.sortOnSelector.items,
-				element,
-				model,
-				i;
+			var sortOn = sortOnChange.base;
 
-			if (!sortOn || !sortOn.valuePath) {
-				this.$.sortOnSelector.selected = 0;
+			if (sortOn && !sortOn.valuePath) {
+				this.sortOn = {
+					valuePath: sortOn,
+					descending: false
+				};
 				return;
 			}
-			for (i = 0 ; i < elements.length; i += 1) {
-				element = elements[i];
-				model = this.$.sortColumns.modelForElement(element);
-				if (model && model.column && (model.column.sortOn === sortOn.valuePath)) {
-					this._currentSortColumn = model.column;
-					this.$.sortOnSelector.selected = i;
-					return;
+			if (!sortOn || !sortOn.valuePath) {
+				this._sortOnSelectorSelected = 0;
+			}
+
+			this._updateSelectedSortIndex();
+
+			this._debounceSortItems();
+		},
+
+		_updateSelectedSortIndex: function () {
+			var
+				element,
+				model,
+				i,
+				newIndex;
+
+			if (!this.sortOn || !this.sortOn.valuePath || !this._sortOnSelectorItems) {
+				newIndex = 0;
+			} else {
+				for (i = 0 ; i < this._sortOnSelectorItems.length; i += 1) {
+					element = this._sortOnSelectorItems[i];
+					model = this.$.sortColumns.modelForElement(element);
+					if (model && model.column && (model.column.sortOn === this.sortOn.valuePath)) {
+						newIndex = i;
+					}
 				}
+			}
+
+			if (newIndex !== this._sortOnSelectorSelected) {
+				this._sortOnSelectorSelected = newIndex;
 			}
 		}
 

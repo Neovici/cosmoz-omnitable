@@ -149,10 +149,6 @@
 
 			applyFilter: function (item) {
 
-				if (!this.filter) {
-					return true;
-				}
-
 				var
 					value = this.get(this.valuePath, item);
 
@@ -162,6 +158,10 @@
 
 				return value === this.filter;
 
+			},
+
+			hasFilter: function (item) {
+				return !!this.filter;
 			}
 
 		});

@@ -188,7 +188,8 @@ with features like group count display and folding
 					<div class="footer-control">
 						<iron-label class="footer-control-label" for="sortOnSelector">[[ _('Sort on', t) ]]</iron-label>
 						<paper-dropdown-menu vertical-align="bottom" no-label-float>
-							<paper-listbox class="dropdown-content menu" id="sortOnSelector" selected="0" >
+							<paper-listbox class="dropdown-content menu" id="sortOnSelector" items="{{_sortOnSelectorItems}}"
+								selected="{{_sortOnSelectorSelected}}">
 								<paper-item on-tap="_onSortColumnActivated">
 									<div style="white-space: nowrap; font-style: italic;">[[ _('No sorting', t) ]]</div>
 								</paper-item>

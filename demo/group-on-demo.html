@@ -43,7 +43,7 @@
 			<div class="layout vertical fit">
 				<h3>Cosmoz omnitable demo</h3>
 				<div>
-					<p>Table sould be grouped by column <code>Group</code> on load. Current <code>groupOn</code> value: <span style="color: red">{{groupOn}}</span>.</p>
+					<p>Table sould be grouped by column <code>Group</code> on load. Current <code>groupOn</code> value: <span style="color: red">{{group}}</span>.</p>
 					<p>You can group the table only by columns Boolean, Group, Date, DateJSON and Sub-property</p>
 				</div>
 				<div class="layout horizontal center">
@@ -63,7 +63,7 @@
 				</div>
 
 				<cosmoz-omnitable id="omnitable" class="flex" data="[[data]]"
-					selection-enabled selected-items="{{selectedItems}}" group-on="{{groupOn}}">
+					selection-enabled selected-items="{{selectedItems}}" group-on="{{group}}">
 					<cosmoz-omnitable-column title="Id" value-path="id" sort-on="id">
 						<template is="cosmoz-omnitable-template" id="data-template">
 							<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.id]]</a>
@@ -115,6 +115,10 @@
 			locale: {
 				type: String,
 				value: 'en'
+			},
+			group: {
+				type: String,
+				value: 'group'
 			}
 		},
 
@@ -128,7 +132,6 @@
 
 		attached: function () {
 			this.data = this.generateTableDemoData(20,25, 25);
-			this.groupOn = "group";
 		},
 
 		changeData: function () {

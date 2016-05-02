@@ -120,15 +120,15 @@
 
 			applyFilter: function (item) {
 
-				if (typeof(this.filter) !== 'boolean') {
-					return true;
-				}
-
 				var
 					value = this.get(this.valuePath, item);
 
 				return value === this.filter;
 
+			},
+
+			hasFilter: function () {
+				return typeof(this.filter) === 'boolean';
 			},
 
 			_computeSelected: function (item, valuePath) {

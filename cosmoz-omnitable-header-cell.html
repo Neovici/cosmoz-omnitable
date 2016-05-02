@@ -35,6 +35,7 @@
 					oldTemplate = this._currentTemplate;
 					this._currentTemplate = newColumn.headerTemplate;
 					this._updateTemplate(this._currentTemplate, oldTemplate);
+					this._updateSpecificStyleScope(newColumn);
 				}
 			},
 
@@ -56,6 +57,15 @@
 					Polymer.dom(this).appendChild(this._headerTemplateInstance.root);
 				} else {
 					this._headerTemplateInstance = null;
+				}
+			},
+
+			// HACK(pasleq): copy the style scope classes from the column to the cell, so to column styles
+			// applies to cell content
+			_updateSpecificStyleScope: function (column) {
+				var specificScope = column.getSpecificStyleScope();
+				if (specificScope) {
+					this.classList.add(specificScope);
 				}
 			}
 

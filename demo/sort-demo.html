@@ -108,7 +108,13 @@
 				value: 'en'
 			},
 			sortOn: {
-				type: Object
+				type: Object,
+				value: function () {
+					return {
+						valuePath: 'name',
+						descending: true
+					};
+				}
 			}
 		},
 
@@ -122,10 +128,6 @@
 
 		attached: function () {
 			this.data = this.generateTableDemoData(20,25, 25);
-			this.sortOn = {
-				valuePath: 'name',
-				descending: true
-			}
 		},
 
 		changeData: function () {

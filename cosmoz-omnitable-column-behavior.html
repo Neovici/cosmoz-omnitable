@@ -153,19 +153,22 @@
 		},
 
 		/**
-		 * Returns true if the specified item matches this column filter
+		 * Returns true if the specified item matches this column filter.
+		 * IMPORTANT: Ensure a filter is defined for this column using `hasFilter` function
+		 * before use the `applyFilter` function.
+		 *
 		 * TODO: implement multiple values filters
 		 */
 		applyFilter: function (item) {
-
-			if (!this.filter) {
-				return true;
-			}
 
 			var
 				value = this.get(this.valuePath, item).toString().toLowerCase(),
 				filter = this.filter.toString().toLowerCase();
 			return value.indexOf(filter) >= 0;
+		},
+
+		hasFilter: function () {
+			return !!this.filter;
 		},
 
 		/**

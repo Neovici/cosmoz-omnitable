@@ -159,10 +159,6 @@
 
 			applyFilter: function (item) {
 
-				if (!this.filter) {
-					return;
-				}
-
 				var
 					value = this.get(this.valuePath, item),
 					minValue = this.filter.minValue,
@@ -183,6 +179,10 @@
 
 				return valid;
 
+			},
+
+			hasFilter: function () {
+				return this.filter && (typeof(this.filter.minValue) === 'number' || typeof(this.filter.maxValue) === 'number');
 			},
 
 			_fireCloseSearchDropdownMenu: function (event) {
