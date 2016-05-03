@@ -110,7 +110,11 @@
 			// set filters to display first item
 
 			this.nameFilter = this.data[0].name;
-			this.amountFilter = this.data[0].amount.amount;
+			this.amountFilter = {
+				minValue: this.data[0].amount.amount,
+				maxValue: this.data[0].amount.amount
+			};
+
 			this.dateFilter = this.data[0].dateJSON;
 			this.boolFilter = this.data[0].bool;
 			this.numberFilter = {

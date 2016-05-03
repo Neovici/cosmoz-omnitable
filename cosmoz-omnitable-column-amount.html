@@ -1,4 +1,4 @@
-<link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-number-behavior.html">
 <link rel="import" href="../cosmoz-behaviors/cosmoz-moneyhelper-behavior.html">
 <dom-module id="cosmoz-omnitable-column-amount">
 	<template>
@@ -6,7 +6,22 @@
 			.omnitable-cell-amount {
 				text-align: right;
 			}
+
+			.searchHeaderDropdown {
+				@apply(--layout-vertical);
+				padding: 16px 0px;
+			}
+
+			.searchHeaderDropdown > paper-input {
+				padding: 0px 16px;
+			}
+
+			.searchHeaderDropdownButtons {
+				@apply(--layout-horizontal);
+				@apply(--layout-end-justified);
+			}
 		</style>
+
 		<template is="cosmoz-omnitable-template" id="data-template">
 			<div class="omnitable-cell-amount">[[renderAmountWithCurrency(item, valuePath)]]</div>
 		</template>
@@ -19,8 +34,14 @@
 		</template>
 
 		<template is="cosmoz-omnitable-template" id="header-template">
-			<paper-input label="[[title]]" value="{{filter}}">
-			</paper-input>
+			<paper-dropdown-menu id="searchDropDownMenu" label="{{title}}" placeholder="{{_computeFilterText(filter.*)}}" on-close="_closeSearchDropdownMenu">
+				<div class="dropdown-content searchHeaderDropdown">
+					<paper-input label="Minimum [[title]]" type="number" value="{{_numberFilter.minValue}}"></paper-input>
+					<paper-input label="Maximum [[title]]" type="number" value="{{_numberFilter.maxValue}}"></paper-input>
+					<div class="searchHeaderDropdownButtons"><paper-button on-tap="_fireCloseSearchDropdownMenu">OK</paper-button></div>
+				</div>
+				<div>
+			</paper-dropdown-menu>
 		</template>
 	</template>
 	<script>
@@ -28,7 +49,7 @@
 			is: 'cosmoz-omnitable-column-amount',
 
 			behaviors: [
-				Cosmoz.OmnitableColumnBehavior,
+				Cosmoz.OmnitableColumnNumberBehavior,
 				Cosmoz.MoneyHelperBehavior
 			],
 
@@ -77,28 +98,7 @@
 			getComparableValue: function (item, valuePath) {
 				var value = this.get(valuePath, item);
 				return typeof(value.amount) === 'number' ? value.amount : null;
-			},
-
-			applyFilter: function (item) {
-
-				if (!this.filter) {
-					return true;
-				}
-
-				var
-					value = this.get(this.valuePath, item),
-					filterAmount;
-
-				filterAmount = Number(this.filter);
-
-				if (Number.isNaN(filterAmount)) {
-					return false;
-				}
-
-				return value.amount === filterAmount;
-
 			}
-
 		});
 
 	</script>
