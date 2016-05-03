@@ -42,7 +42,9 @@
 
 			renderAmountWithCurrency: function (item, valuePath) {
 				var value = this.get(valuePath, item);
-				return this.renderAmount(value);
+				if (value) {
+					return this.renderAmount(value);
+				}
 			},
 
 			renderAmountValue: function (item, valuePath) {
@@ -74,7 +76,7 @@
 
 			getComparableValue: function (item, valuePath) {
 				var value = this.get(valuePath, item);
-				return value.amount ? value.amount : null;
+				return typeof(value.amount) === 'number' ? value.amount : null;
 			},
 
 			applyFilter: function (item) {
