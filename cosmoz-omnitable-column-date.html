@@ -24,7 +24,9 @@
 				 */
 				parseFormat: {
 					type: String,
-					value: 'YYYY-MM-DD'
+					value: function () {
+						return moment.ISO_8601;
+					}
 				},
 
 				/**
@@ -138,6 +140,10 @@
 					value = this.get(valuePath, item),
 					d,
 					formatted;
+
+				if (!value) {
+					return;
+				}
 				if (moment.isDate(value)) {
 					d = moment(value);
 				} else {
