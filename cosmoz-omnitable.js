@@ -774,6 +774,10 @@
 					header.style.width = cellWidth;
 
 				}
+			} else if (!e) {
+				// updateWidths was not triggered by a resize event, and it seems cosmoz-grouped-list did not
+				// finishes to render list items. Try to updateWidths after next repaint.
+				this._debounceUpdateWidths();
 			}
 		},
 
