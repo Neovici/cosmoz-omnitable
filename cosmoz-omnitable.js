@@ -966,11 +966,12 @@
 				return;
 			}
 
-			widthSetter = groupedList.$$('template-selector:not([hidden]) .item:not([style])');
+			widthSetter = this.$.groupedList.getFirstVisibleItemElement();
 
-			if (widthSetter === null) {
+			if (!widthSetter) {
 				return;
 			}
+
 			headerTds = Polymer.dom(this.$.header).querySelectorAll('.header');
 			widthTds = Polymer.dom(widthSetter).querySelectorAll('.cell');
 			widthTds.forEach(function (element, index) {
@@ -981,6 +982,7 @@
 				headerElement.style.maxWidth = newWidth + 'px';
 			});
 		},
+
 		renderLink: function (header, model) {
 			var link;
 			if (!header || !model) {
