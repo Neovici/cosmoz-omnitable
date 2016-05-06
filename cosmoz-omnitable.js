@@ -31,7 +31,8 @@
 			 */
 			headers: {
 				type: Array,
-				notify: true
+				notify: true,
+				observer: 'setHeaderValues'
 			},
 
 			/**
@@ -218,14 +219,15 @@
 			this._needs.filtering = true;
 			this._needs.sorting = true;
 
-			if (this.data && this.data.length !== 0) {
-				this.setHeaderValues();
-			}
+			if (this.headers) {
+				if (this.data && this.data.length !== 0) {
+					this.setHeaderValues();
+				}
 
-			if (this._webWorkerReady && this.headers) {
-				this.filterKick += 1;
+				if (this._webWorkerReady) {
+					this.filterKick += 1;
+				}
 			}
-
 		},
 
 		_dataAddedOrRemoved: function (change) {
@@ -484,6 +486,9 @@
 		 * @param {[type]} item [description]
 		 */
 		setHeaderValues: function () {
+			if (!this.data || !this.headers) {
+				return;
+			}
 			this.data.forEach(function (item, index) {
 				this.headers.forEach(function (header, headerIndex) {
 					var
@@ -984,20 +989,21 @@
 		},
 
 		renderLink: function (header, model) {
-			var link;
-			if (!header || !model) {
-				return '';
+			if (!header || !model || !header.linkbase || !header.linkprop) {
+				return;
 			}
-			if (!header.linkbase || !header.linkprop) {
-				return '#!/invalid/link';
+
+			var linkprop = this.resolveProp(model, header.linkprop);
+
+			if (linkprop === '') {
+				return;
 			}
+
 			if (header.linkbase[0] === '#') {
 				// static url
-				link = header.linkbase;
-			} else {
-				link = this.resolveProp(model, header.linkbase);
+				return header.linkbase + linkprop;
 			}
-			return link + this.resolveProp(model, header.linkprop);
+			return this.resolveProp(model, header.linkbase) + linkprop;
 		},
 		//TODO: Use cosmoz-behaviors
 		/**
