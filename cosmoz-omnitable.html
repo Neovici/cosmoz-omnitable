@@ -215,8 +215,7 @@ with features like group count display and folding
 			<div id="footer" class="horizontal layout center">
 				<div class="horizontal layout flex center">
 					<div class="footer-control">
-						<iron-label class="footer-control-label" for="sortOnSelector">[[ _('Sort on', t) ]]</iron-label>
-						<paper-dropdown-menu vertical-align="bottom" id="sortOnSelector" no-label-float>
+						<paper-dropdown-menu no-animations vertical-align="bottom" id="sortOnSelector" label="[[ _('Sort on', t) ]]">
 							<paper-listbox class="dropdown-content menu" selected="{{ sortOn }}" attr-for-selected="id" on-iron-activate="onSortSelected">
 								<paper-item id="">
 									<div style="white-space: nowrap; font-style: italic;">[[ _('No sorting', t) ]]</div>
@@ -228,8 +227,7 @@ with features like group count display and folding
 						</paper-dropdown-menu>
 					</div>
 					<div class="footer-control">
-						<iron-label class="footer-control-label" for="group-on-selector">[[ _('Group on', t) ]]</iron-label>
-						<paper-dropdown-menu vertical-align="bottom" id="group-on-selector" no-label-float>
+						<paper-dropdown-menu no-animations vertical-align="bottom" id="group-on-selector" label="[[ _('Group on', t) ]]">
 							<paper-listbox class="dropdown-content menu" selected="{{ groupOn }}" attr-for-selected="id">
 								<paper-item id=""><i style="white-space: nowrap">[[ _('No grouping', t) ]]</i></paper-item>
 								<template is="dom-repeat" items="[[ headers ]]" as="header">
