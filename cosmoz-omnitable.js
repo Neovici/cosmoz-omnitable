@@ -97,7 +97,7 @@
 			 */
 			groupOn: {
 				type: String,
-				value: null,
+				value: '',
 				observer: '_groupOnChanged'
 			},
 
