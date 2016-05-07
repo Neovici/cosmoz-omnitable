@@ -175,7 +175,7 @@
 		],
 
 		listeners: {
-			'iron-resize': 'updateWidths'
+			'iron-resize': '_onResize'
 		},
 
 		/**
@@ -572,7 +572,7 @@
 
 			if (headerToDisable) {
 				this.push('disabledHeaders', headerToDisable);
-				this.async(this.updateWidths);
+				this._debounceUpdateWidths();
 			}
 		},
 		enableColumn: function () {
@@ -798,7 +798,7 @@
 
 			if (!sortOn) {
 				this.set('sortedFilteredGroupedItems', filteredGroupedItems);
-				this.async(this.updateWidths);
+				this._debounceUpdateWidths();
 				return;
 			}
 
@@ -844,7 +844,7 @@
 							});
 							if (results === numGroups) {
 								this.set('sortedFilteredGroupedItems', items);
-								this.async(this.updateWidths);
+								this._debounceUpdateWidths();
 							}
 						}.bind(this));
 					}
@@ -867,7 +867,7 @@
 						return filteredGroupedItems[item.index];
 					});
 					this.set('sortedFilteredGroupedItems', items);
-					this.async(this.updateWidths);
+					this._debounceUpdateWidths();
 				}.bind(this));
 			}
 		},
@@ -888,6 +888,23 @@
 			var groupIndex = this.groupedItems.indexOf(group), filteredItems = this.filteredSortedGroupedItems[groupIndex].length;
 			return filteredItems - 1;
 		},
+
+		_onResize: function (event, detail, a) {
+			var item = this.$.groupedList.getFirstVisibleItemElement();
+			if (!item) {
+				this.debounce('updateWidths', function () {
+					this.updateWidths(event, detail, a);
+				}.bind(this), 16);
+			} else {
+				this.cancelDebouncer('updateWidths');
+				this.updateWidths(event, detail, a);
+			}
+		},
+
+		_debounceUpdateWidths: function () {
+			this.debounce('updateWidths', this.updateWidths.bind(this), 16);
+		},
+
 		/**
 		 * Enable/disable columns to properly fit in the available space.
 		 *
