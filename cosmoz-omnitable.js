@@ -754,7 +754,8 @@
 				});
 
 				groups.sort(function (a, b) {
-					var v1 = that.resolveProp(a.items[0], that.groupOn), v2 = that.resolveProp(b.items[0], that.groupOn);
+					var v1 = this.get(this.groupOn, a.items[0]),
+						v2 = this.get(this.groupOn, b.items[0]);
 					if (typeof v1 === 'object' && typeof v2 === 'object') {
 						return cz.tools.sortObject(v1, v2);
 					}
@@ -772,7 +773,7 @@
 					}
 					console.warn('unsupported sort', typeof v1, v1, typeof v2, v2);
 					return 0;
-				});
+				}.bind(this));
 
 				if (this.hideButFirst && groups.length > 1) {
 					groups.forEach(function (group, index) {
@@ -818,9 +819,9 @@
 						mappedItems = group.items.map(function (item, originalItemIndex) {
 							return {
 								index: originalItemIndex,
-								value: item[sortOn]
+								value: this.get(sortOn, item)
 							};
-						});
+						}.bind(this));
 						// Sort the reduced version of the array
 						this.$.sortWorker.process({
 							meta: {
