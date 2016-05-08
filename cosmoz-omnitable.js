@@ -516,6 +516,9 @@
 		_sortHeaderValues: function () {
 			this.headers.forEach(function (header, headerIndex) {
 				var valueLength = header.values.length;
+				if (valueLength === 0) {
+					return;
+				}
 				header.values.sort(function (a, b) {
 					if (a.label < b.label) {
 						return -1;
