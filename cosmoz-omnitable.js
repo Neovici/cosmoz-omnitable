@@ -809,19 +809,20 @@
 			var items = [],
 				numGroups = filteredGroupedItems.length,
 				mappedItems,
-				results = 0;
+				results = 0,
+				itemMapper = function (item, originalItemIndex) {
+					return {
+						index: originalItemIndex,
+						value: this.get(sortOn, item)
+					};
+				}.bind(this);
 
 			if (this._groupsCount > 0) {
 				filteredGroupedItems.forEach(function (group, index) {
 					if (group.items && group.items.map) {
 						// create a reduced version of the items array to transfer to the worker
 						// with item index and property to sort on
-						mappedItems = group.items.map(function (item, originalItemIndex) {
-							return {
-								index: originalItemIndex,
-								value: this.get(sortOn, item)
-							};
-						}.bind(this));
+						mappedItems = group.items.map(itemMapper);
 						// Sort the reduced version of the array
 						this.$.sortWorker.process({
 							meta: {
@@ -855,12 +856,7 @@
 				}, this);
 			} else {
 				// No grouping
-				mappedItems = filteredGroupedItems.map(function (item, originalItemIndex) {
-					return {
-						index: originalItemIndex,
-						value: item[sortOn]
-					};
-				});
+				mappedItems = filteredGroupedItems.map(itemMapper);
 
 				this.$.sortWorker.process({
 					reverse: descending,
