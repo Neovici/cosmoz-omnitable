@@ -47,35 +47,62 @@ with features like group count display and folding
 				/*global onmessage, postMessage */
 				'use strict';
 
-				var getSortFunc = function (sortOn) {
-					if (!sortOn) {
-						return;
-					}
-					return function (a, b) {
-						var v1 = a[sortOn],
-							v2 = b[sortOn];
+				var rates = {
+						EUR: 9.29,
+						USD: 8.13,
+						DKK: 1.24
+					},
+					getSek = function (money) {
+						if (money.currency === 'SEK') {
+							return money.amount;
+						}
+						var rate = rates[money.currency];
+						if (!rate) {
+							return;
+						}
+						return money.amount * rate;
+					},
+					getSortFunc = function (sortOn) {
+						if (!sortOn) {
+							return;
+						}
+						return function (a, b) {
+							var v1 = a[sortOn],
+								v2 = b[sortOn];
 
-						if (v1 === undefined || v2 === undefined) {
-							console.warn('missing sort property', a, b, sortOn);
+							if (v1 === undefined || v2 === undefined) {
+								console.warn('missing sort property', a, b, sortOn);
+								return 0;
+							}
+
+							if (typeof v1 === "object" && typeof v2 === "object") {
+								if (typeof v1.amount === "number" &&
+									typeof v1.currency === "string" &&
+									typeof v2.amount === "number" &&
+									typeof v2.currency === "string") {
+									if (v1.currency === v2.currency) {
+										return v1.amount - v2.amount;
+									}
+									var sek1 = getSek(v1),
+										sek2 = getSek(v2);
+									if (sek1 === undefined || sek2 === undefined) {
+										return 0;
+									}
+									return sek1 - sek2;
+								}
+								return 0;
+							}
+							if (typeof v1 === "number" && typeof v2 === "number") {
+								return v1 - v2;
+							}
+							if (typeof v1 === "string" && typeof v2 === "string") {
+								return v1 < v2 ? -1 : 1;
+							}
+
+							console.warn('unsupported sort', typeof v1, v1, typeof v2, v2);
 							return 0;
-						}
-
-						if (typeof v1 === "object" && typeof v2 === "object") {
-							// TODO: Handle money
-							// return cz.tools.sortObject(v1, v2);
-							return 0;
-						}
-						if (typeof v1 === "number" && typeof v2 === "number") {
-							return v1 - v2;
-						}
-						if (typeof v1 === "string" && typeof v2 === "string") {
-							return v1 < v2 ? -1 : 1;
-						}
-
-						console.warn('unsupported sort', typeof v1, v1, typeof v2, v2);
-						return 0;
+						};
 					};
-				};
 
 				onmessage = function (event) {
 					var data = event.data.data,
