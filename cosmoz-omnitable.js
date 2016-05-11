@@ -416,33 +416,23 @@
 		},
 
 		filterItem: function (item) {
-			var hide = false, that = this;
-			this.headers.some(function (header, headerIndex) {
-				var
-					filterFail = true,
-					itemVal = that.resolveProp(item, header.id);
-				if (header.filters !== undefined && header.filters.length > 0) {
-					filterFail = true;
-					header.filters.some(function (headerFilter, headerFilterIndex) {
+			return !this.headers.some(function (header) {
+				var itemVal = this.get(header.id, item);
+				if (header.filters && header.filters.length > 0) {
+					return header.filters.some(function (headerFilter) {
 						if (itemVal === headerFilter.value) {
-							filterFail = false;
-							return true;
+							return;
 						}
-						if (typeof itemVal === 'object' && that.renderObject(itemVal, false, header) === headerFilter.label) {
-							filterFail = false;
-							return true;
+						if (typeof itemVal === 'object' && this.renderObject(itemVal, false, header) === headerFilter.label) {
+							return;
 						}
-					});
-					if (filterFail) {
-						hide = true;
 						return true;
-					}
-				} else if (header.rangeSelect && (header.rangeFilter.fromValue !== undefined || header.rangeFilter.toValue !== undefined)) {
-					hide = header.filterFunc.call(that.dataHost, itemVal, header.rangeFilter);
-					return hide;
+					}.bind(this));
 				}
-			});
-			item.visible = !hide;
+				if (header.rangeSelect && (header.rangeFilter.fromValue !== undefined || header.rangeFilter.toValue !== undefined)) {
+					return header.filterFunc.call(this.dataHost, itemVal, header.rangeFilter);
+				}
+			}.bind(this));
 		},
 
 		filterItems: function (event, detail, sender) {
@@ -698,9 +688,9 @@
 
 			this.data.forEach(function (item, index) {
 				// HACK(pasleq): set a checked property to all items to avoid issues with paper-checkbox
-				item.checked = false;
+				item.checked = !!item.checked;
 				if (that._needs.filtering) {
-					that.filterItem(item);
+					item.visible = that.filterItem(item);
 				}
 				if (item.visible) {
 					filteredItems.push(item);
