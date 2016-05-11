@@ -717,9 +717,15 @@
 				return null;
 			}
 
-			if (!filteredItems || filteredItems.length === 0) {
+			if (!filteredItems) {
 				return;
 			}
+
+			if (filteredItems.length === 0) {
+				this._groupsCount = 0;
+				return [];
+			}
+
 			if (!this._needs.grouping) {
 				return filteredItems;
 			}
