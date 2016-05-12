@@ -624,22 +624,26 @@
 				parts = name.split('.'),
 				func,
 				funcName,
-				i;
+				i,
+				dataHost = this.dataHost;
 			if (parts.length === 1) {
-				func = this.dataHost[name];
-			} else {
-				funcName = parts.pop();
-				for(i = 0; i < parts.length; i += 1) {
-					context = context[parts[i]];
+				func = dataHost[name];
+				while (func === undefined && dataHost !== undefined) {
+					func = dataHost[name];
+					dataHost = dataHost.dataHost;
 				}
-				func = context[funcName];
+				return func;
 			}
+			funcName = parts.pop();
+			for(i = 0; i < parts.length; i += 1) {
+				context = context[parts[i]];
+			}
+			func = context[funcName];
 			return typeof func === 'function' ? func : undefined;
 		},
 
 		setHeadersFromMarkup: function () {
-			var ctx = this,
-				markupHeaders = Polymer.dom(this).querySelectorAll('header'),
+			var markupHeaders = Polymer.dom(this).querySelectorAll('header'),
 				newHeaders = [];
 
 			markupHeaders.forEach(function (headerElement, index) {
@@ -660,10 +664,10 @@
 					},
 					defaultRenderFunc = 'render' + header.type.charAt(0).toUpperCase() + header.type.substr(1),
 					defaultFilterFunc = 'filter' + header.type.charAt(0).toUpperCase() + header.type.substr(1);
-				header.renderFunc = ctx._getFunctionByName(headerElement.getAttribute('render-func') || defaultRenderFunc, window);
-				header.filterFunc = ctx._getFunctionByName(headerElement.getAttribute('filter-func') || defaultFilterFunc, window);
+				header.renderFunc = this._getFunctionByName(headerElement.getAttribute('render-func') || defaultRenderFunc, window);
+				header.filterFunc = this._getFunctionByName(headerElement.getAttribute('filter-func') || defaultFilterFunc, window);
 				newHeaders.push(header);
-			});
+			}.bind(this));
 			this.headers = newHeaders;
 			if (this._needs.grouping) {
 				this.groupKick += 1;
