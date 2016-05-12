@@ -419,14 +419,13 @@
 			return !this.headers.some(function (header) {
 				var itemVal = this.get(header.id, item);
 				if (header.filters && header.filters.length > 0) {
-					return header.filters.some(function (headerFilter) {
+					return !header.filters.some(function (headerFilter) {
 						if (itemVal === headerFilter.value) {
-							return;
+							return true;
 						}
 						if (typeof itemVal === 'object' && this.renderObject(itemVal, false, header) === headerFilter.label) {
-							return;
+							return true;
 						}
-						return true;
 					}.bind(this));
 				}
 				if (header.rangeSelect && (header.rangeFilter.fromValue !== undefined || header.rangeFilter.toValue !== undefined)) {
