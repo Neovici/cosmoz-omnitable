@@ -682,7 +682,7 @@
 				this._needs.grouping = false;
 				this._needs.sorting = false;
 				this._needs.filtering = false;
-				return;
+				return [];
 			}
 
 			var

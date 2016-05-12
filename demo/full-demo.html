@@ -41,6 +41,7 @@
 				<h3>Cosmoz omnitable demo</h3>
 				<div class="layout horizontal center">
 					<button class="action" on-tap="changeData">Generate a new data set</button>
+					<button class="action" on-tap="emptyData">Empty data set</button>
 					<div class="action">
 						Selected items count: <span>{{selectedItems.length}}</span>
 					</div>
@@ -103,6 +104,10 @@
 
 		changeData: function () {
 			this.data = this.generateTableDemoData(20,25, 10);
+		},
+
+		emptyData: function () {
+			this.data = [];
 		},
 
 		_computeLabel: function (text, count) {
