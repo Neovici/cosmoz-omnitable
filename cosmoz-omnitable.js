@@ -732,7 +732,7 @@
 			if (this.groupOn) {
 				filteredItems.forEach(function (item, index) {
 					var groupOnValue = that.resolveProp(item, that.groupOn);
-					if (typeof groupOnValue === 'object') {
+					if (typeof groupOnValue === 'object' || that._groupOnHeader.type === 'date' || that._groupOnHeader.type === 'datetime') {
 						groupOnValue = that.renderObject(groupOnValue, false, that._groupOnHeader);
 					}
 					if (groupOnValue !== undefined) {
