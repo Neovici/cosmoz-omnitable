@@ -31,16 +31,14 @@
 			 */
 			headers: {
 				type: Array,
-				notify: true,
-				observer: 'setHeaderValues'
+				notify: true
 			},
 
 			/**
 			 * Table headers to display (headers not disabled or grouped on)
 			 */
 			columnHeaders: {
-				type: Object,
-				computed: '_computeColumnHeaders(headers.length, sortedFilteredGroupedItems, groupOn, disabledHeaders.length)'
+				type: Object
 			},
 
 			/**
@@ -166,7 +164,8 @@
 
 		observers: [
 			'_sortFilteredGroupedItems(filteredGroupedItems, sortOn, sortDescending)',
-			'_dataChanged(data.*)'
+			'_dataChanged(data.*)',
+			'_computeColumnHeaders(headers.length, disabledHeaders.length, sortedFilteredGroupedItems, groupOn)'
 		],
 
 		behaviors: [
@@ -220,8 +219,8 @@
 			this._needs.sorting = true;
 
 			if (this.headers) {
-				if (this.data && this.data.length !== 0) {
-					this.setHeaderValues();
+				if (this.data && this.data.length) {
+					this._setHeaderValues();
 				}
 
 				if (this._webWorkerReady) {
@@ -474,10 +473,20 @@
 		 * Render a unique list of possible values to filter the dataset with, for each header/column.
 		 * @param {[type]} item [description]
 		 */
-		setHeaderValues: function () {
+		_setHeaderValues: function (data, headers) {
 			if (!this.data || !this.headers) {
 				return;
 			}
+
+			this.headers.forEach(function (header) {
+				if (header.values.length) {
+					// Clear previous values.
+					// Warning, this is not enough to have cosmoz-autocomplete update its values.
+					// Notifying header.values changes is done in _computeColumnHeaders
+					header.values = [];
+				}
+			}, this);
+
 			this.data.forEach(function (item, index) {
 				this.headers.forEach(function (header, headerIndex) {
 					var
@@ -602,17 +611,24 @@
 			return foundHeader;
 		},
 
-		_computeColumnHeaders: function (headersNotify, sortedFilteredGroupedItems, groupOn, numDisabledHeaders) {
+		_computeColumnHeaders: function (headersCount, disabledHeadersCount, sortedFilteredGroupedItems, groupOn) {
 			if (!this.headers) {
 				return;
 			}
+
 			var filteredHeaders = [];
 			this.headers.forEach(function (header, index) {
 				if (header.id !== groupOn && this.disabledHeaders.indexOf(header) === -1) {
 					filteredHeaders.push(header);
 				}
 			}.bind(this));
-			return filteredHeaders;
+
+			this.columnHeaders = filteredHeaders;
+
+			// See https://github.com/Polymer/polymer/issues/3548
+			this.columnHeaders.forEach(function (header, index) {
+				this.notifyPath('columnHeaders.' + index + '.values', header.values);
+			}, this);
 		},
 
 		_getFunctionByName: function (name, context) {
@@ -894,8 +910,8 @@
 				this.debounce('updateWidths', function () {
 					this.updateWidths(event, detail, a);
 				}.bind(this), 16);
-			} else {
-				this.cancelDebouncer('updateWidths');
+			} else if (!this.isDebouncerActive('updateWidths')) {
+				// If there is a debouncer scheduled to run updateWitdth, let it run.
 				this.updateWidths(event, detail, a);
 			}
 		},
