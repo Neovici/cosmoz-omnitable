@@ -164,8 +164,8 @@
 
 		observers: [
 			'_sortFilteredGroupedItems(filteredGroupedItems, sortOn, sortDescending)',
-			'_dataChanged(data.*)',
-			'_computeColumnHeaders(headers.length, disabledHeaders.length, sortedFilteredGroupedItems, groupOn)'
+			'_dataChanged(data.*, headers)',
+			'_computeColumnHeaders(sortedFilteredGroupedItems, disabledHeaders.length)'
 		],
 
 		behaviors: [
@@ -187,7 +187,7 @@
 		/**
 		 * Called when data is changed to setup up needs and check workers/filtering
 		 */
-		_dataChanged: function (change) {
+		_dataChanged: function (change, headers) {
 
 			var pathParts, key, dataColl, item;
 
@@ -209,6 +209,8 @@
 
 			if (this.data && this.data.length > 0) {
 				this._noData = false;
+			} else {
+				this._noData = true;
 			}
 		},
 
@@ -218,14 +220,10 @@
 			this._needs.filtering = true;
 			this._needs.sorting = true;
 
-			if (this.headers) {
-				if (this.data && this.data.length) {
-					this._setHeaderValues();
-				}
+			this._setHeaderValues();
 
-				if (this._webWorkerReady) {
-					this.filterKick += 1;
-				}
+			if (this._webWorkerReady) {
+				this.filterKick += 1;
 			}
 		},
 
@@ -473,7 +471,7 @@
 		 * Render a unique list of possible values to filter the dataset with, for each header/column.
 		 * @param {[type]} item [description]
 		 */
-		_setHeaderValues: function (data, headers) {
+		_setHeaderValues: function () {
 			if (!this.data || !this.headers) {
 				return;
 			}
@@ -611,17 +609,17 @@
 			return foundHeader;
 		},
 
-		_computeColumnHeaders: function (headersCount, disabledHeadersCount, sortedFilteredGroupedItems, groupOn) {
+		_computeColumnHeaders: function (sortedFilteredGroupedItems,  disabledHeadersCount) {
 			if (!this.headers) {
 				return;
 			}
 
 			var filteredHeaders = [];
 			this.headers.forEach(function (header, index) {
-				if (header.id !== groupOn && this.disabledHeaders.indexOf(header) === -1) {
+				if (header.id !== this.groupOn && this.disabledHeaders.indexOf(header) === -1) {
 					filteredHeaders.push(header);
 				}
-			}.bind(this));
+			}, this);
 
 			this.columnHeaders = filteredHeaders;
 
