@@ -136,7 +136,8 @@
 			 * Set by `_sortFilteredGroupedItems()` due to the async nature of web workers.
 			 */
 			sortedFilteredGroupedItems: {
-				type: Array
+				type: Array,
+				notify: true
 			},
 
 			/**
@@ -159,6 +160,10 @@
 			_groupsCount: {
 				type: Number,
 				value: 0
+			},
+			groupOnHeaderName: {
+				type: 'String',
+				notify: true
 			}
 		},
 
@@ -738,6 +743,7 @@
 			}
 
 			this._groupOnHeader = this.getHeader(this.groupOn);
+			this.groupOnHeaderName = this._groupOnHeader.name;
 
 			var groups = [],
 				itemStructure = {},
