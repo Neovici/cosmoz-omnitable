@@ -743,7 +743,7 @@
 			}
 
 			this._groupOnHeader = this.getHeader(this.groupOn);
-			this.groupOnHeaderName = this._groupOnHeader.name;
+			this.groupOnHeaderName = this._groupOnHeader ? this._groupOnHeader.name : '';
 
 			var groups = [],
 				itemStructure = {},
