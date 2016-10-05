@@ -52,10 +52,7 @@
 				value: null
 			},
 
-			_sortOnSelectorItems: {
-				type: Array
-			},
-
+			// Index of the selected item in the sortOn listbox
 			_sortOnSelectorSelected: {
 				type: Number
 			},
@@ -66,6 +63,7 @@
 			groupOn: {
 				type: String,
 				notify: true,
+				value: '',
 				observer: '_groupOnChanged'
 			},
 
@@ -92,7 +90,6 @@
 
 			/**
 			 * Sorted items structure after filtering and grouping.
-			 * Set by `_sortFilteredGroupedItems()` due to the async nature of web workers.
 			 */
 			sortedFilteredGroupedItems: {
 				type: Array
@@ -133,8 +130,7 @@
 
 		observers: [
 			'_sortOnChanged(sortOn.*)',
-			'_dataChanged(data.*)',
-			'_updateSelectedSortIndex(_sortOnSelectorItems)'
+			'_dataChanged(data.*)'
 		],
 
 		behaviors: [
@@ -164,6 +160,7 @@
 
 				for (i = 0 ; i < children.length; i+= 1) {
 					child = children[i];
+					// `isOmnitableColumn` is a property from cosmoz-omnitable-column-behavior
 					if (child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn) {
 						columns.push(child);
 					}
@@ -256,30 +253,21 @@
 		},
 
 		_debounceFilterItems: function () {
-			this.debounce('filterItems', function () {
-				this._filterItems();
-			});
+			this.debounce('filterItems', this._filterItems);
 		},
 
 		_debounceGroupItems: function () {
-			this.debounce('groupItems', function () {
-				this._groupItems();
-			});
+			this.debounce('groupItems', this._groupItems);
 		},
 
 		_debounceSortItems: function () {
-			this.debounce('sortItems', function () {
-				this._sortFilteredGroupedItems();
-			});
+			this.debounce('sortItems', this._sortFilteredGroupedItems);
 		},
 
 		_debounceUpdateWidths: function () {
-			// This fails to set header width when group-on property is set on the table
-			//this.async(this.updateWidths);
-
 			// 16ms 'magic' number copied from iron-list
 			// But this makes headers change width after the table has completed rendering,
-			// which might look strange
+			// which might look strange.
 			this.debounce('updateWidths', this.updateWidths, 16);
 
 		},
@@ -291,21 +279,29 @@
 		/**
 		 * Helper method to remove an item from `data`.
 		 * @param  {Object} item Item to remove
-		 * @return {Boolean}      Whether `data` or `selectedItems` changed
+		 * @return {Object} item removed
 		 */
 		removeItem: function (item) {
-			this.arrayDelete('data', item);
+			var removed = this.arrayDelete('data', item);
+			if (removed && removed.length) {
+				return removed[0];
+			}
 		},
 
 		/**
 		 * Remove multiple items from `data`
+		 * @param {Array} an array of items to remove
+		 * @return {Array} Array containing removed items
 		 */
 		removeItems: function (items) {
-			var i;
+			var i, removedItems = [], removed;
 			for (i = items.length - 1; i >= 0; i -= 1) {
-				this.arrayDelete('data', items[i]);
-
+				removed = this.arrayDelete('data', items[i]);
+				if (removed) {
+					removedItems = removedItems.concat(removed);
+				}
 			}
+			return removed;
 		},
 
 		/**
@@ -341,7 +337,8 @@
 
 		},
 
-		onGroupCheckboxChange: function (event) {
+		// Handle selection/deselection of a group
+		_onGroupCheckboxChange: function (event) {
 			var
 				group = event.model.item,
 				selected = this.$.groupedList.isGroupSelected(group);
@@ -356,7 +353,8 @@
 			event.stopPropagation();
 		},
 
-		onItemCheckboxChange: function (event, detail) {
+		// Handle selection/deselection of an item
+		_onItemCheckboxChange: function (event, detail) {
 			var
 				item = event.model.item,
 				selected = this.$.groupedList.isItemSelected(item);
@@ -398,6 +396,9 @@
 			this.$.groupedList.isItemSelected(item);
 		},
 
+		/**
+		 * Toggle folding of a group
+		 */
 		toggleGroup: function (event) {
 			this.$.groupedList.toggleFold(event.model);
 		},
@@ -466,6 +467,9 @@
 			});
 		},
 
+		/**
+		 * Returns the column corresponding to the current `groupOn` value
+		 */
 		_getGroupOnColumn: function () {
 			var col;
 
@@ -481,6 +485,9 @@
 			return col;
 		},
 
+		/**
+		 * Returns the column representing the current `sortOn` value
+		 */
 		_getSortOnColumn: function () {
 			var col;
 
@@ -495,7 +502,6 @@
 			}, this);
 			return col;
 		},
-
 
 		_groupOnChanged: function (newValue, oldValue) {
 			var
@@ -551,14 +557,13 @@
 			this.visibleColumns = visibleColumns;
 		},
 
-
 		_filterItems : function () {
-
 			var
 				filteredItems,
 				filteredColumns;
 
 			if (this.data && this.data.length) {
+				// Call filtering code only on columns that has a filter
 				filteredColumns = this.columns.filter(function (column) {
 					return column.hasFilter();
 				});
@@ -604,6 +609,7 @@
 					console.warn('Cannot group on ' + groupOn + ' as there is no columm configured to group on this value path.');
 					return;
 				}
+
 				this.filteredItems.forEach(function (item, index) {
 					var groupOnValue = groupOnColumn.getComparableValue(item, groupOn);
 
@@ -672,7 +678,8 @@
 				items = [],
 				numGroups = this.filteredGroupedItems.length,
 				mappedItems,
-				results = 0;
+				results = 0,
+				itemMapper;
 
 			if (!sortOn) {
 				this.sortedFilteredGroupedItems = this.filteredGroupedItems;
@@ -680,19 +687,19 @@
 				return;
 			}
 
-
-
+			itemMapper = function (item, originalItemIndex) {
+				return {
+					index: originalItemIndex,
+					value: sortOnColumn.getComparableValue(item, sortOn.valuePath)
+				};
+			};
 			if (this._groupsCount > 0) {
 				this.filteredGroupedItems.forEach(function (group, index) {
 					if (group.items && group.items.map) {
 						// create a reduced version of the items array to transfer to the worker
 						// with item index and property to sort on
-						mappedItems = group.items.map(function (item, originalItemIndex) {
-							return {
-								index: originalItemIndex,
-								value: sortOnColumn.getComparableValue(item, sortOn.valuePath)
-							};
-						}, this);
+						mappedItems = group.items.map(itemMapper, this);
+
 						// Sort the reduced version of the array
 						this.$.sortWorker.process({
 							meta: {
@@ -721,12 +728,7 @@
 				}, this);
 			} else {
 				// No grouping
-				mappedItems = this.filteredGroupedItems.map(function (item, originalItemIndex) {
-					return {
-						index: originalItemIndex,
-						value: sortOnColumn.getComparableValue(item, sortOn.valuePath)
-					};
-				}, this);
+				mappedItems = this.filteredGroupedItems.map(itemMapper, this);
 
 				this.$.sortWorker.process({
 					reverse: sortOn.descending,
@@ -742,17 +744,18 @@
 			}
 		},
 
+		// TODO(pasleq): re-implement expand/collapse of single item
 		_computeIcon: function (item, expanded) {
 			return expanded ? 'expand-less' : 'expand-more';
 		},
 
+		// TODO(pasleq): re-implement expand/collapse of single item
 		toggleExtraColumns: function (event, detail) {
 			var item = event.model.item;
 			this.$.groupedList.toggleCollapse(item);
 		},
 
 		updateWidths: function (e) {
-
 			var
 				firstVisibleItemElement = this.$.groupedList.getFirstVisibleItemElement(),
 				cells,
@@ -919,7 +922,6 @@
 			return folded ? 'groupRow groupRow-folded' : 'groupRow';
 		},
 
-
 		_onWebWorkerReady: function () {
 			this._webWorkerReady = true;
 			if (this.data && this.columns) {
@@ -942,7 +944,10 @@
 			return direction;
 		},
 
-		_onSortColumnActivated: function (event) {
+		/**
+		 * Called when a item from the sortOn dropdown is activated (tap)
+		 */
+		_onSortColumnActivate: function (event) {
 			var
 				column = event.model ? event.model.column : undefined,
 				selected;
@@ -997,21 +1002,21 @@
 
 		_updateSelectedSortIndex: function () {
 			var
-				element,
-				model,
-				i,
-				newIndex;
+				newIndex,
+				sortOnSelectorItems = this.$.sortOnSelector.items,
+				sortColumns;
 
-			if (!this.sortOn || !this.sortOn.valuePath || !this._sortOnSelectorItems) {
+			if (!this.sortOn || !this.sortOn.valuePath || !sortOnSelectorItems.length) {
 				newIndex = 0;
 			} else {
-				for (i = 0 ; i < this._sortOnSelectorItems.length; i += 1) {
-					element = this._sortOnSelectorItems[i];
-					model = this.$.sortColumns.modelForElement(element);
+				sortColumns = this.$.sortColumns;
+				sortOnSelectorItems.some(function (element, i) {
+					var model = sortColumns.modelForElement(element);
 					if (model && model.column && (model.column.sortOn === this.sortOn.valuePath)) {
 						newIndex = i;
+						return true;
 					}
-				}
+				}, this);
 			}
 
 			if (newIndex !== this._sortOnSelectorSelected) {

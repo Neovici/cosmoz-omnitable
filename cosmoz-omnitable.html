@@ -148,7 +148,7 @@ with features like group count display and folding
 							<template>
 								<div class$="{{_computeItemRowClasses(selected)}}">
 									<div class="selectItemCheckbox" hidden$="[[ !selectionEnabled ]]">
-										<paper-checkbox checked="{{ selected }}" on-change="onItemCheckboxChange"></paper-checkbox>
+										<paper-checkbox checked="{{ selected }}" on-change="_onItemCheckboxChange"></paper-checkbox>
 									</div>
 									<template is="dom-repeat" items="[[visibleColumns]]" as="column" index-as="columnIndex">
 										<cosmoz-omnitable-item-cell class$="{{_computeItemRowCellClasses(column, columnIndex)}}"
@@ -165,7 +165,7 @@ with features like group count display and folding
 							<template>
 								<div class$="{{_computeGroupRowClasses(folded)}}">
 									<div class="selectGroupCheckbox" hidden$="[[ !selectionEnabled ]]">
-										<paper-checkbox checked="{{ selected }}" on-change="onGroupCheckboxChange"></paper-checkbox>
+										<paper-checkbox checked="{{ selected }}" on-change="_onGroupCheckboxChange"></paper-checkbox>
 									</div>
 									<h3 class="groupRow-label">
 										<div><span>{{_currentGroupOnColumn.title}}</span>: &nbsp;</div>
@@ -186,16 +186,14 @@ with features like group count display and folding
 			<div class="footer">
 				<div class="footer-controls">
 					<div class="footer-control">
-						<iron-label class="footer-control-label" for="sortOnSelector">[[ _('Sort on', t) ]]</iron-label>
-						<paper-dropdown-menu vertical-align="bottom" no-label-float>
-							<paper-listbox class="dropdown-content menu" id="sortOnSelector" items="{{_sortOnSelectorItems}}"
-								selected="{{_sortOnSelectorSelected}}">
-								<paper-item on-tap="_onSortColumnActivated">
+						<paper-dropdown-menu no-animation vertical-align="bottom" label="[[_('Sort on', t)]]">
+							<paper-listbox class="dropdown-content menu" id="sortOnSelector" on-iron-items-changed="_updateSelectedSortIndex" selected="{{_sortOnSelectorSelected}}">
+								<paper-item on-tap="_onSortColumnActivate">
 									<div style="white-space: nowrap; font-style: italic;">[[ _('No sorting', t) ]]</div>
 								</paper-item>
 								</cosmoz-omnitable-sort-list-item>
 								<template is="dom-repeat" id="sortColumns" items="[[columns]]" as="column">
-									<paper-item on-tap="_onSortColumnActivated" hidden$="[[!column.sortOn]]">
+									<paper-item on-tap="_onSortColumnActivate" hidden$="[[!column.sortOn]]">
 										<span>[[column.title]]</span>&nbsp;<span>[[_getSortDirection(column, sortOn.*)]]</span>
 									</paper-item>
 								</template>
@@ -203,8 +201,7 @@ with features like group count display and folding
 						</paper-dropdown-menu>
 					</div>
 					<div class="footer-control">
-						<iron-label class="footer-control-label" for="groupOnSelector">[[ _('Group on', t) ]]</iron-label>
-						<paper-dropdown-menu vertical-align="bottom" id="groupOnSelector" no-label-float>
+						<paper-dropdown-menu no-animation vertical-align="bottom" id="groupOnSelector" label="[[_('Group on', t)]]">
 							<paper-listbox class="dropdown-content menu" selected="{{ groupOn }}" attr-for-selected="data-group-on">
 								<paper-item data-group-on=""><i style="white-space: nowrap">[[ _('No grouping', t) ]]</i></paper-item>
 								<template is="dom-repeat" items="[[columns]]" as="column">
