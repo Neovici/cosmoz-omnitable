@@ -131,11 +131,15 @@
 		},
 
 		attached: function () {
-			this.data = this.generateTableDemoData(100, 110, 25);
+			var data = this.generateTableDemoData(10, 11, 25);
+			this.async(function () {
+				this.data = data;
+			}.bind(this), 16);
+
 		},
 
 		changeData: function () {
-			this.data = this.generateTableDemoData(100, 110, 10);
+			this.data = this.generateTableDemoData(10, 11, 10);
 		},
 
 		_localeChanged: function (locale, oldLocale) {

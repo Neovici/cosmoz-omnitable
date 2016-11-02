@@ -144,7 +144,7 @@ with features like group count display and folding
 				<div class="tableContent-scroller">
 					<cosmoz-grouped-list id="groupedList" data="{{ sortedFilteredGroupedItems }}"
 						selected-items="{{selectedItems}}" display-empty-groups="[[displayEmptyGroups]]">
-						<item-template id="itemTemplate">
+						<cosmoz-grouped-list-template id="itemTemplate">
 							<template>
 								<div class$="{{_computeItemRowClasses(selected)}}">
 									<div class="selectItemCheckbox" hidden$="[[ !selectionEnabled ]]">
@@ -160,8 +160,8 @@ with features like group count display and folding
 									</template>
 								</div>
 							</template>
-						</item-template>
-						<item-template id="groupTemplate">
+						</cosmoz-grouped-list-template>
+						<cosmoz-grouped-list-template id="groupTemplate">
 							<template>
 								<div class$="{{_computeGroupRowClasses(folded)}}">
 									<div class="selectGroupCheckbox" hidden$="[[ !selectionEnabled ]]">
@@ -179,7 +179,7 @@ with features like group count display and folding
 									<paper-icon-button icon="[[ getFoldIcon(folded) ]]" on-tap="toggleGroup"></paper-icon-button>
 								</div>
 							</template>
-						</item-template>
+						</cosmoz-grouped-list-template>
 					</cosmoz-grouped-list>
 				</div>
 			</div>
