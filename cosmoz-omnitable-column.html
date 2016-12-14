@@ -3,17 +3,23 @@
 
 <dom-module id="cosmoz-omnitable-column">
 	<template>
-		<template is="cosmoz-omnitable-template" id="data-template">[[renderDefaultValue(item, valuePath)]]</template>
-		<template is="cosmoz-omnitable-template" id="edit-data-template">
-			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[renderDefaultValue(item, valuePath)]]"></paper-input>
-		</template>
-		<template is="cosmoz-omnitable-template" id="header-template">
-			<!-- TODO: Need to rework autocomplete so that it also works with templates for rendering
-				<cosmoz-autocomplete items="[[values]]" placeholder="[[title]]" selected-items="[[filters]]" multi-selection>
-				</cosmoz-autocomplete>
-			-->
-			<paper-input label="[[title]]" value="{{filter}}"></paper-input>
-		</template>
+
+		<cosmoz-omnitable-templatizer id="data-templatizer">
+			<template><span class="default-column">[[renderDefaultValue(item, valuePath)]]</span></template>
+		</cosmoz-omnitable-templatizer>
+
+		<cosmoz-omnitable-templatizer id="edit-data-templatizer">
+			<template>
+				<paper-input no-label-float type="text" on-change="_valueChanged" value="[[renderDefaultValue(item, valuePath)]]"></paper-input>
+			</template>
+		</cosmoz-omnitable-templatizer>
+
+		<cosmoz-omnitable-templatizer id="header-templatizer">
+			<template>
+				<paper-input label="[[title]]" value="{{filter}}"></paper-input>
+			</template>
+		</cosmoz-omnitable-templatizer>
+
 	</template>
 	<script>
 		Polymer({

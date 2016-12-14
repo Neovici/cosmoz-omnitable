@@ -1,12 +1,14 @@
 <script>
 	Polymer({
 
-		is: 'cosmoz-omnitable-template',
+		is: 'cosmoz-omnitable-templatizer',
 
-		extends: 'template',
-
-		// Copied from dom-repeat, dom-if, ...
-		_template: null,
+		properties: {
+			template: {
+				type: Object,
+				observer: '_templateChanged'
+			}
+		},
 
 		behaviors: [
 			Polymer.Templatizer
@@ -23,11 +25,19 @@
 			this._instanceProps = instanceProps;
 
 			this._templatesInUse = [];
+
+			this.template = Polymer.dom(this).querySelector('template');
+		},
+
+		_templateChanged: function (newTemplate) {
+			if (this.ctor) {
+				this.templatize(newTemplate);
+			}
 		},
 
 		_ensureTemplatized: function () {
 			if (!this.ctor) {
-				this.templatize(this);
+				this.templatize(this.template);
 			}
 		},
 

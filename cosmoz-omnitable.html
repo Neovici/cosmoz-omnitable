@@ -16,8 +16,8 @@
 <link rel="import" href="../cosmoz-bottom-bar/cosmoz-bottom-bar.html"/>
 <!-- <link rel="import" href="../cosmoz-range-selector/cosmoz-range-selector.html"/> -->
 
+<link rel="import" href="cosmoz-omnitable-templatizer.html">
 <link rel="import" href="cosmoz-omnitable-column.html">
-<link rel="import" href="cosmoz-omnitable-template.html">
 <link rel="import" href="cosmoz-omnitable-item-cell.html">
 <link rel="import" href="cosmoz-omnitable-header-cell.html">
 <link rel="import" href="cosmoz-omnitable-style.html">
@@ -215,7 +215,9 @@ with features like group count display and folding
 					<span>[[ ngettext('{0} group', '{0} groups', _groupsCount, t) ]]</span>
 					<span>[[ ngettext('{0} row', '{0} rows', filteredItems.length, t) ]]</span>
 				</div>
-				<cosmoz-bottom-bar class="footer-actionBar" match-parent info="[[ selectedItems.length ]]" on-action="onAction" active$="[[ !isEmpty(selectedItems.length) ]]"><content id="actions" select="[action]"></content></cosmoz-bottom-bar>
+				<cosmoz-bottom-bar class="footer-actionBar" match-parent info="[[ selectedItems.length ]]" on-action="onAction" active$="[[ !isEmpty(selectedItems.length) ]]">
+					<content id="actions" select="[action]"></content>
+				</cosmoz-bottom-bar>
 			</div>
 
 		</div>

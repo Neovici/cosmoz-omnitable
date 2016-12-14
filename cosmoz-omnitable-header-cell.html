@@ -26,49 +26,33 @@
 
 			_headerTemplateInstance: null,
 
-			_currentTemplate: null,
-
-
 			_columnChanged: function (newColumn, oldColumn) {
-				var oldTemplate;
+				var oldTemplateInstance;
 				if (newColumn) {
-					oldTemplate = this._currentTemplate;
-					this._currentTemplate = newColumn.headerTemplate;
-					this._updateTemplate(this._currentTemplate, oldTemplate);
-					this._updateSpecificStyleScope(newColumn);
+					oldTemplateInstance = this._headerTemplateInstance;
+					this._updateTemplate(newColumn.getHeaderTemplateInstance(), oldTemplateInstance);
 				}
 			},
 
-			_updateTemplate: function (newTemplate, oldTemplate) {
+			_updateTemplate: function (newTemplateInstance, oldTemplateInstance) {
 				var children, parent, i;
-				if (oldTemplate && this._headerTemplateInstance) {
-					oldTemplate.removeInstance(this._headerTemplateInstance);
-					parent = Polymer.dom(this);
-					children = parent.childNodes;
-					if (children) {
-						for (i = 0 ; i < children.length ; i+=1) {
-							parent.removeChild(children[i]);
-						}
+
+				// Remove current content
+				parent = Polymer.dom(this);
+				children = parent.childNodes;
+				if (children) {
+					for (i = 0 ; i < children.length ; i+=1) {
+						parent.removeChild(children[i]);
 					}
 				}
 
-				if (newTemplate) {
-					this._headerTemplateInstance = newTemplate.createInstance();
-					Polymer.dom(this).appendChild(this._headerTemplateInstance.root);
+				if (newTemplateInstance) {
+					Polymer.dom(this).appendChild(newTemplateInstance.root);
+					this._headerTemplateInstance = newTemplateInstance;
 				} else {
-					this._headerTemplateInstance = null;
-				}
-			},
-
-			// HACK(pasleq): copy the style scope classes from the column to the cell, so to column styles
-			// applies to cell content
-			_updateSpecificStyleScope: function (column) {
-				var specificScope = column.getSpecificStyleScope();
-				if (specificScope) {
-					this.classList.add(specificScope);
+					this._cellTemplateInstance = null;
 				}
 			}
-
 		});
 	</script>
 </dom-module>

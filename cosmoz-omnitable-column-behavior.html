@@ -18,16 +18,6 @@
 				type: String
 			},
 
-			dataTemplate: {
-				type: Object,
-				notify: true
-			},
-
-			headerTemplate: {
-				type: Object,
-				notify: true
-			},
-
 			/**
 			 * If true, the column will be editable by using an input element for rendering.
 			 */
@@ -93,40 +83,43 @@
 			}
 		},
 
-		ready: function () {
-			this.dataTemplate = this._getDataTemplate();
-			this.headerTemplate = this._getHeaderTemplate();
-		},
+		_dataTemplatizer: null,
 
-		_getDataTemplate: function () {
-			var templateSelector;
+		_headerTemplatizer: null,
+
+		ready: function () {
+			var customDataTemplate, customHeaderTemplate;
 
 			if (this.editable) {
-				templateSelector = 'template[id="edit-data-template"]';
+				this._dataTemplatizer = Polymer.dom(this.root).querySelector('cosmoz-omnitable-templatizer[id="edit-data-templatizer"]');
+				customDataTemplate = Polymer.dom(this).querySelector('template[id="edit-data-template"]');
 			} else {
-				templateSelector = 'template[id="data-template"]';
+				this._dataTemplatizer = Polymer.dom(this.root).querySelector('cosmoz-omnitable-templatizer[id="data-templatizer"]');
+				customDataTemplate = Polymer.dom(this).querySelector('template[id="data-template"]');
 			}
 
-			return this._getTemplate(templateSelector);
-
-		},
-
-		_getHeaderTemplate: function () {
-			var selector = 'template[id="header-template"]';
-			return this._getTemplate(selector);
-		},
-
-		_getTemplate: function (selector) {
-			var template = Polymer.dom(this).querySelector(selector);
-
-			if (!template) {
-				template = Polymer.dom(this.root).querySelector(selector);
+			if (customDataTemplate) {
+				this._dataTemplatizer.template = customDataTemplate;
 			}
 
-			return template;
-
+			this._headerTemplatizer =  Polymer.dom(this.root).querySelector('cosmoz-omnitable-templatizer[id="header-templatizer"]');
+			customHeaderTemplate = Polymer.dom(this).querySelector('template[id="header-template"]');
+			if (customHeaderTemplate) {
+				this._headerTemplatizer.template = customHeaderTemplate;
+			}
 		},
 
+		getDataTemplateInstance: function () {
+			return this._dataTemplatizer.createInstance();
+		},
+
+		getHeaderTemplateInstance: function () {
+			return this._headerTemplatizer.createInstance();
+		},
+
+		/**
+		 * Override this in column elements if you need a different default width
+		 */
 		_getDefaultWidth: function () {
 			return '75px';
 		},

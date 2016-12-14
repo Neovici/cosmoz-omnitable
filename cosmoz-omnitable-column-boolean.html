@@ -1,28 +1,37 @@
 <link rel="import" href="cosmoz-omnitable-column-behavior.html">
 <dom-module id="cosmoz-omnitable-column-boolean">
 	<template>
-		<template is="cosmoz-omnitable-template" id="data-template">[[renderBooleanValue(item, valuePath)]]</template>
 
-		<template is="cosmoz-omnitable-template" id="edit-data-template">
-			<paper-dropdown-menu>
-				<paper-listbox class="dropdown-content" attr-for-selected="value" on-iron-select="_selectedChanged"
-					on-iron-activate="_activate"
-					selected="[[_computeSelected(item, valuePath)]]">
-					<paper-item value="true">{{trueLabel}}</paper-item>
-					<paper-item value="false">{{falseLabel}}</paper-item>
-				</paper-listbox>
-			</paper-dropdown-menu>
-		</template>
+		<cosmoz-omnitable-templatizer id="data-templatizer">
+			<template>
+				[[renderBooleanValue(item, valuePath)]]
+			</template>
+		</cosmoz-omnitable-templatizer>
 
-		<template is="cosmoz-omnitable-template" id="header-template">
-			<paper-dropdown-menu label="{{title}}">
-				<paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{_textFilter}}">
-					<paper-item value=""></paper-item>
-					<paper-item value="true">{{trueLabel}}</paper-item>
-					<paper-item value="false">{{falseLabel}}</paper-item>
-				</paper-listbox>
-			</paper-dropdown-menu>
-		</template>
+		<cosmoz-omnitable-templatizer id="edit-data-templatizer">
+			<template>
+				<paper-dropdown-menu>
+					<paper-listbox class="dropdown-content" attr-for-selected="value" on-iron-select="_selectedChanged"
+						on-iron-activate="_activate"
+						selected="[[_computeSelected(item, valuePath)]]">
+						<paper-item value="true">{{trueLabel}}</paper-item>
+						<paper-item value="false">{{falseLabel}}</paper-item>
+					</paper-listbox>
+				</paper-dropdown-menu>
+			</template>
+		</cosmoz-omnitable-templatizer>
+
+		<cosmoz-omnitable-templatizer id="header-templatizer">
+			<template>
+				<paper-dropdown-menu label="{{title}}">
+					<paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{_textFilter}}">
+						<paper-item value=""></paper-item>
+						<paper-item value="true">{{trueLabel}}</paper-item>
+						<paper-item value="false">{{falseLabel}}</paper-item>
+					</paper-listbox>
+				</paper-dropdown-menu>
+			</template>
+		</cosmoz-omnitable-templatizer>
 	</template>
 	<script>
 		Polymer({

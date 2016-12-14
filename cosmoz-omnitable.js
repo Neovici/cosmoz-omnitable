@@ -914,7 +914,7 @@
 		},
 
 		_computeItemRowCellClasses: function (column, columnIndex) {
-			var specificScope = column.getSpecificStyleScope();
+			var specificScope; // = column.getSpecificStyleScope();
 			return 'itemRow-cell' + (specificScope ? ' ' + specificScope : '') + (columnIndex === 0 ? ' itemRow-cell0' : '');
 		},
 

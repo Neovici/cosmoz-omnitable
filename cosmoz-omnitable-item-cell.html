@@ -40,37 +40,35 @@
 				'_updateColumnFlex(column.flex)'
 			],
 
-			_currentTemplate: null,
-
 			// WARN: do not use '_templateInstance' property name, as this will conflict with
 			// a property used by Templatizer
 			_cellTemplateInstance: null,
 
-			_columnChanged: function (newColumn, oldColumn) {
-				var oldTemplate;
+			attached: function () {
+				console.log(this.item, this.column, this.domHost);
+			},
+
+			_columnChanged: function (newColumn) {
 				if (newColumn) {
-					oldTemplate = this._currentTemplate;
-					this._currentTemplate = newColumn.dataTemplate;
-					this._updateTemplate(this._currentTemplate, oldTemplate);
+					this._updateTemplate(newColumn.getDataTemplateInstance());
 				}
 			},
 
-			_updateTemplate: function (newTemplate, oldTemplate) {
+			_updateTemplate: function (instance) {
 				var children, parent, i;
-				if (oldTemplate && this._cellTemplateInstance) {
-					oldTemplate.removeInstance(this._cellTemplateInstance);
-					parent = Polymer.dom(this);
-					children = parent.childNodes;
-					if (children) {
-						for (i = 0 ; i < children.length ; i+=1) {
-							parent.removeChild(children[i]);
-						}
+
+				// Remove current content
+				parent = Polymer.dom(this);
+				children = parent.childNodes;
+				if (children) {
+					for (i = 0 ; i < children.length ; i+=1) {
+						parent.removeChild(children[i]);
 					}
 				}
 
-				if (newTemplate) {
-					this._cellTemplateInstance = newTemplate.createInstance();
-					Polymer.dom(this).appendChild(this._cellTemplateInstance.root);
+				if (instance) {
+					Polymer.dom(this).appendChild(instance.root);
+					this._cellTemplateInstance = instance;
 					this._assignModel();
 				} else {
 					this._cellTemplateInstance = null;

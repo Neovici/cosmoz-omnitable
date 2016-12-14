@@ -58,7 +58,7 @@
 					<cosmoz-omnitable-column title="Random String" value-path="randomString" editable></cosmoz-omnitable-column>
 					<!-- sample column that overrides edit-data-template -->
 					<cosmoz-omnitable-column title="Name" editable>
-						<template is="cosmoz-omnitable-template" id="edit-data-template">
+						<template id="edit-data-template">
 							<paper-input no-label-float type="text" on-change="_itemNameChanged" value="[[item.name]]"></paper-input>
 						</template>
 					</cosmoz-omnitable-column>
