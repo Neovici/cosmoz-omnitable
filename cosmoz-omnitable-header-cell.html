@@ -28,9 +28,16 @@
 
 			_columnChanged: function (newColumn, oldColumn) {
 				var oldTemplateInstance;
+
+				if (oldColumn && oldColumn.headerCellClass) {
+					this.toggleClass(oldColumn.headerCellClass, false);
+				}
 				if (newColumn) {
 					oldTemplateInstance = this._headerTemplateInstance;
 					this._updateTemplate(newColumn.getHeaderTemplateInstance(), oldTemplateInstance);
+					if (newColumn.headerCellClass) {
+						this.toggleClass(newColumn.headerCellClass, true);
+					}
 				}
 			},
 
@@ -49,6 +56,11 @@
 				if (newTemplateInstance) {
 					Polymer.dom(this).appendChild(newTemplateInstance.root);
 					this._headerTemplateInstance = newTemplateInstance;
+					// HACK(pasleq): remove column style scope and set style scope from omnitable
+					if (!Polymer.Settings.useNativeShadow) {
+						Polymer.StyleTransformer.dom(this, this.column.is, false, true);
+						Polymer.StyleTransformer.dom(this, 'cosmoz-omnitable', false, false);
+					}
 				} else {
 					this._cellTemplateInstance = null;
 				}

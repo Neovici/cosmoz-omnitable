@@ -20,7 +20,7 @@
 <link rel="import" href="cosmoz-omnitable-column.html">
 <link rel="import" href="cosmoz-omnitable-item-cell.html">
 <link rel="import" href="cosmoz-omnitable-header-cell.html">
-<link rel="import" href="cosmoz-omnitable-style.html">
+<link rel="import" href="cosmoz-omnitable-styles.html">
 <link rel="import" href="cosmoz-omnitable-column-amount.html">
 <link rel="import" href="cosmoz-omnitable-column-date.html">
 <link rel="import" href="cosmoz-omnitable-column-boolean.html">
@@ -50,7 +50,55 @@ with features like group count display and folding
 <dom-module id="cosmoz-omnitable">
 	<template>
 
-		<style include="cosmoz-omnitable-style">
+		<style include="cosmoz-omnitable-styles cosmoz-omnitable-column-amount-styles cosmoz-omnitable-column-number-styles">
+			/*
+				HACK(pasleq): apply a mixin per column index to allow external styling of the columns.
+				This means there is a limit in the number of columns that can be externally styled.
+			 */
+			.cosmoz-omnitable-column-0 {
+				@apply(--cosmoz-omnitable-column-0);
+			}
+
+			.cosmoz-omnitable-column-1 {
+				@apply(--cosmoz-omnitable-column-1);
+			}
+
+			.cosmoz-omnitable-column-2 {
+				@apply(--cosmoz-omnitable-column-2);
+			}
+
+			.cosmoz-omnitable-column-3 {
+				@apply(--cosmoz-omnitable-column-3);
+			}
+
+			.cosmoz-omnitable-column-4 {
+				@apply(--cosmoz-omnitable-column-4);
+			}
+
+			.cosmoz-omnitable-column-5 {
+				@apply(--cosmoz-omnitable-column-5);
+			}
+
+			.cosmoz-omnitable-column-6 {
+				@apply(--cosmoz-omnitable-column-6);
+			}
+
+			.cosmoz-omnitable-column-7 {
+				@apply(--cosmoz-omnitable-column-7);
+			}
+
+			.cosmoz-omnitable-column-8 {
+				@apply(--cosmoz-omnitable-column-8);
+			}
+
+			.cosmoz-omnitable-column-9 {
+				@apply(--cosmoz-omnitable-column-9);
+			}
+
+			.cosmoz-omnitable-column-10 {
+				@apply(--cosmoz-omnitable-column-10);
+			}
+
 		</style>
 
 		<cosmoz-web-worker id="sortWorker" on-cosmoz-web-worker-ready="_onWebWorkerReady">

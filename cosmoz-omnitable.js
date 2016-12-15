@@ -914,8 +914,10 @@
 		},
 
 		_computeItemRowCellClasses: function (column, columnIndex) {
-			var specificScope; // = column.getSpecificStyleScope();
-			return 'itemRow-cell' + (specificScope ? ' ' + specificScope : '') + (columnIndex === 0 ? ' itemRow-cell0' : '');
+			var originalIndex = this.columns.indexOf(column);
+			return 'itemRow-cell'
+				+ (column.cellClass ? ' ' + column.cellClass + ' ' : '')
+				+ ' cosmoz-omnitable-column-' + originalIndex;
 		},
 
 		_computeGroupRowClasses: function (folded) {

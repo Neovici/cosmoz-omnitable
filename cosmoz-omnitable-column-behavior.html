@@ -80,6 +80,20 @@
 				value: function () {
 					return this._getDefaultFlex();
 				}
+			},
+
+			cellClass: {
+				type: String,
+				value: function () {
+					return this._getDefaultCellClass();
+				}
+			},
+
+			headerCellClass: {
+				type: String,
+				value: function () {
+					return this._getDefaultHeaderCellClass();
+				}
 			}
 		},
 
@@ -126,6 +140,14 @@
 
 		_getDefaultFlex: function () {
 			return '1';
+		},
+
+		_getDefaultCellClass: function () {
+			return 'default-cell';
+		},
+
+		_getDefaultHeaderCellClass: function () {
+			return 'default-header-cell';
 		},
 
 		renderDefaultValue: function (item, valuePath) {

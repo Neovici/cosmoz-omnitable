@@ -1,26 +1,33 @@
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="cosmoz-omnitable-column-number-behavior.html">
 
-<dom-module id="cosmoz-omnitable-column-number">
+<dom-module id="cosmoz-omnitable-column-number-styles">
 	<template>
 		<style>
-			.omnitable-cell-number {
+			.number-cell {
 				text-align: right;
 			}
 
-			.searchHeaderDropdown {
+			.number-header-cell .searchHeaderDropdown {
 				@apply(--layout-vertical);
 				padding: 16px 0px;
 			}
 
-			.searchHeaderDropdown > paper-input {
+			.number-header-cell .searchHeaderDropdown > paper-input {
 				padding: 0px 16px;
 			}
 
-			.searchHeaderDropdownButtons {
+			.number-header-cell .searchHeaderDropdownButtons {
 				@apply(--layout-horizontal);
 				@apply(--layout-end-justified);
 			}
+
+		</style>
+	</template>
+</dom-module>
+<dom-module id="cosmoz-omnitable-column-number">
+	<template>
+		<style>
 
 		</style>
 
@@ -63,6 +70,14 @@
 
 			_getDefaultFlex: function () {
 				return '1';
+			},
+
+			_getDefaultCellClass: function () {
+				return 'number-cell';
+			},
+
+			_getDefaultHeaderCellClass: function () {
+				return 'number-header-cell';
 			},
 
 			_toLocaleString: function (num, locale) {

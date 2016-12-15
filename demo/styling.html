@@ -36,10 +36,31 @@
 					padding: 5px;
 					margin: 5px 5px 10px 5px;
 				}
+
+				#omnitable {
+					--cosmoz-omnitable-column-0: {
+						background-color: green;
+					};
+
+					--cosmoz-omnitable-column-8: {
+						background-color: deepskyblue;
+					};
+				}
 			</style>
 			<div class="layout vertical fit">
 				<h3>Cosmoz omnitable demo</h3>
+				<p>Individual columns can by styled using CSS mixins, for example:</p>
+				<pre>
+				#omnitable {
+					--cosmoz-omnitable-column-0: {
+						background-color: green;
+					};
 
+					--cosmoz-omnitable-column-8: {
+						background-color: deepskyblue;
+					};
+				}
+				</pre>
 				<div class="layout horizontal center">
 					<button class="action" on-tap="changeData">Generate a new data set</button>
 					<div class="action">
