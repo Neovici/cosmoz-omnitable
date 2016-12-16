@@ -11,10 +11,8 @@
 <link rel="import" href="../paper-listbox/paper-listbox.html"/>
 <link rel="import" href="../cosmoz-grouped-list/cosmoz-grouped-list.html"/>
 <link rel="import" href="../cosmoz-web-worker/cosmoz-web-worker.html"/>
-<link rel="import" href="../cosmoz-autocomplete/cosmoz-autocomplete.html"/>
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 <link rel="import" href="../cosmoz-bottom-bar/cosmoz-bottom-bar.html"/>
-<!-- <link rel="import" href="../cosmoz-range-selector/cosmoz-range-selector.html"/> -->
 
 <link rel="import" href="cosmoz-omnitable-templatizer.html">
 <link rel="import" href="cosmoz-omnitable-column.html">
@@ -28,25 +26,12 @@
 
 
 <!--
-`<cosmoz-omnitable>` is an example implementation of grouping for iron-list
-with features like group count display and folding
-
-### Usage
-
-    <cosmoz-omnitable data="{{ data }}">
-    	<header id="id">Id</header>
-		<header id="name">Name</header>
-		<header id="amount" render-func="renderMoney">Amount</header>
-		<header id="date" type="date" render-func="Cosmoz.formatDate">Date</header>
-
-		<button action on-run="runAction">Hello</button>
-    </cosmoz-omnitable>
+`<cosmoz-omnitable>`
 
 @group Cosmoz Elements
 @element cosmoz-omnitable
 @demo demo/index.html
 -->
-
 <dom-module id="cosmoz-omnitable">
 	<template>
 
@@ -276,3 +261,4 @@ with features like group count display and folding
 	</template>
 	<script type="text/javascript" src="cosmoz-omnitable.js"></script>
 </dom-module>
+

@@ -38,18 +38,22 @@
 			is: 'cosmoz-omnitable-column-boolean',
 
 			properties: {
+
 				trueLabel: {
 					type: String,
 					value: 'True'
 				},
+
 				falseLabel: {
 					type: String,
 					value: 'False'
 				},
+
 				_textFilter: {
 					type: String,
 					observer: '_textFilterChanged'
 				},
+
 				_textValue: {
 
 				}
@@ -57,7 +61,6 @@
 
 			behaviors: [
 				Cosmoz.OmnitableColumnBehavior
-
 			],
 
 			observers: [

@@ -4,9 +4,7 @@
 		var Cosmoz = {};
 	}
 
-	/**
-	 * @polymerBehavior
-	 */
+	/** @polymerBehavior */
 	Cosmoz.OmnitableColumnBehavior = {
 		properties: {
 
@@ -184,24 +182,6 @@
 
 		hasFilter: function () {
 			return !!this.filter;
-		},
-
-		/**
-		 * If a column definition uses @apply in its style, then style will be scoped using a class named
-		 * 'cosmoz-omnitable-column[-type]-XXX'.
-		 * This class needs to be applied to cosmoz-omnitable-cell and cosmoz-omnitable-header if we want column's template instances to be styled correctly.
-		 */
-		getSpecificStyleScope: function () {
-			var
-				classes = this.classList,
-				i,
-				c;
-			for (i = 0 ; i < classes.length ; i +=1) {
-				c = classes.item(i);
-				if (c.indexOf(this.is) === 0) {
-					return c;
-				}
-			}
 		}
 	};
 

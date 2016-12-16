@@ -8,8 +8,8 @@
 
 	/**
 	 * Common behavior for column that represents numbers. Used by cosmoz-omnitable-column-number and cosmoz-omnitable-column-amount.
-	 * @polymerBehavior
 	 */
+	/** @polymerBehavior Cosmoz.OmnitableColumnNumberBehavior */
 	Cosmoz.OmnitableColumnNumberBehaviorImpl = {
 
 		properties: {
@@ -136,6 +136,7 @@
 
 	};
 
+	/** @polymerBehavior */
 	Cosmoz.OmnitableColumnNumberBehavior = [
 		Cosmoz.OmnitableColumnBehavior,
 		Cosmoz.OmnitableColumnNumberBehaviorImpl
