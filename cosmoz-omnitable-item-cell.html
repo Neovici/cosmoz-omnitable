@@ -44,10 +44,6 @@
 			// a property used by Templatizer
 			_cellTemplateInstance: null,
 
-			attached: function () {
-				console.log(this.item, this.column, this.domHost);
-			},
-
 			_columnChanged: function (newColumn, oldColumn) {
 				if (newColumn) {
 					this._updateTemplate(newColumn.getDataTemplateInstance());

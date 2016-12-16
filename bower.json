@@ -44,6 +44,8 @@
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
     "paper-button": "PolymerElements/paper-button#^1.0.0",
     "iron-icons": "PolymerElements/iron-icons#^1.0.0",
-    "web-component-tester": "^4.2.1"
+    "web-component-tester": "^4.2.1",
+    "marked-element": "^1.2.0",
+    "prism-element": "^1.2.0"
   }
 }
