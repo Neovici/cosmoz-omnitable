@@ -560,17 +560,21 @@
 		_filterItems : function () {
 			var
 				filteredItems,
-				filteredColumns;
+				filterFunctions;
 
 			if (this.data && this.data.length) {
 				// Call filtering code only on columns that has a filter
-				filteredColumns = this.columns.filter(function (column) {
-					return column.hasFilter();
+				filterFunctions = this.columns.map(function (column) {
+					return column.getFilterFn();
 				});
-				if (filteredColumns.length) {
+				filterFunctions = filterFunctions.filter(function (f) {
+					return f !== undefined;
+				});
+
+				if (filterFunctions.length) {
 					filteredItems = this.data.filter(function (item) {
-						return filteredColumns.every(function (column) {
-							return column.applyFilter(item);
+						return filterFunctions.every(function (filterFn) {
+							return filterFn(item);
 						}, this);
 					}, this);
 				} else {

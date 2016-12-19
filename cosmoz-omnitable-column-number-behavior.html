@@ -94,12 +94,17 @@
 
 		},
 
-		applyFilter: function (item) {
+		getFilterFn: function () {
+			if (this.filter && (typeof(this.filter.minValue) === 'number' || typeof(this.filter.maxValue) === 'number')) {
+				return this._applySingleFilter.bind(this, this.filter);
+			}
+		},
 
+		_applySingleFilter: function (filter, item) {
 			var
 				value = this.getComparableValue(item, this.valuePath),
-				minValue = this.filter.minValue,
-				maxValue = this.filter.maxValue,
+				minValue = filter.minValue,
+				maxValue = filter.maxValue,
 				minValueType = typeof(minValue),
 				maxValueType = typeof(maxValue),
 				valid = false;
@@ -115,11 +120,6 @@
 			}
 
 			return valid;
-
-		},
-
-		hasFilter: function () {
-			return this.filter && (typeof(this.filter.minValue) === 'number' || typeof(this.filter.maxValue) === 'number');
 		},
 
 		_fireCloseSearchDropdownMenu: function (event) {

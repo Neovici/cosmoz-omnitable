@@ -163,23 +163,31 @@
 				return formatted;
 			},
 
-			applyFilter: function (item) {
+			getFilterFn: function () {
+				if (this.filter) {
+					if (Array.isArray(this.filter)) {
+						return this._applyMultiFilter.bind(this, this.filter);
+					} else {
+						return this._applySingleFilter.bind(this, this.filter);
+					}
+				}
+			},
 
-				var
-					value = this.get(this.valuePath, item);
+			_applyMultiFilter: function (filterArray, item) {
+				return filterArray.some(function (filter) {
+					this._applySingleFilter(filter, item);
+				}, this);
+			},
+
+			_applySingleFilter: function (filter, item) {
+				var value = this.get(this.valuePath, item);
 
 				if (moment.isDate(value)) {
 					value = moment(value).format(this.parseFormat);
 				}
 
 				return value === this.filter;
-
-			},
-
-			hasFilter: function (item) {
-				return !!this.filter;
 			}
-
 		});
 
 	</script>

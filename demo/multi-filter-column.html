@@ -1,0 +1,50 @@
+<link rel="import" href="../cosmoz-omnitable-column-behavior.html">
+
+<dom-module id="multi-filter-column">
+	<template>
+
+		<cosmoz-omnitable-templatizer id="data-templatizer">
+			<template><span class="default-column">[[renderDefaultValue(item, valuePath)]]</span></template>
+		</cosmoz-omnitable-templatizer>
+
+		<cosmoz-omnitable-templatizer id="edit-data-templatizer">
+			<template>
+				<paper-input no-label-float type="text" on-change="_valueChanged" value="[[renderDefaultValue(item, valuePath)]]"></paper-input>
+			</template>
+		</cosmoz-omnitable-templatizer>
+
+		<cosmoz-omnitable-templatizer id="header-templatizer">
+			<template>
+				<paper-input label="[[title]]" value="{{filters}}"></paper-input>
+			</template>
+		</cosmoz-omnitable-templatizer>
+
+	</template>
+	<script>
+		Polymer({
+			is: 'multi-filter-column',
+
+			properties: {
+				filters: {
+					type: String,
+					observer: '_filtersChanged'
+				}
+			},
+
+			behaviors: [
+				Cosmoz.OmnitableColumnBehavior
+			],
+
+			_filtersChanged: function (newFilters) {
+				if (newFilters && newFilters !== '') {
+					var filterArray = newFilters.split(',');
+					this.filter = filterArray.filter(function (elem) {
+						return elem !== '';
+					});
+				}
+			}
+
+		});
+
+	</script>
+</dom-module>

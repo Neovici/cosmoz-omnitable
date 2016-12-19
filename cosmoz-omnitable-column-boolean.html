@@ -130,17 +130,15 @@
 				return b ? this.trueLabel : this.falseLabel;
 			},
 
-			applyFilter: function (item) {
-
-				var
-					value = this.get(this.valuePath, item);
-
-				return value === this.filter;
-
+			getFilterFn: function () {
+				if (typeof(this.filter) === 'boolean') {
+					return this._applySingleFilter.bind(this);
+				}
 			},
 
-			hasFilter: function () {
-				return typeof(this.filter) === 'boolean';
+			_applySingleFilter: function (item) {
+				var value = this.get(this.valuePath, item);
+				return value === this.filter;
 			},
 
 			_computeSelected: function (item, valuePath) {
