@@ -42,6 +42,7 @@
 
 				<div class="layout horizontal center">
 					<button class="action" on-tap="changeData">Generate a new data set</button>
+					<button class="action" on-tap="emptyData">Generate an empty data set</button>
 					<div class="action">
 						Selected items count: <span>{{selectedItems.length}}</span>
 					</div>
@@ -136,12 +137,16 @@
 			var data = this.generateTableDemoData(10, 11, 25);
 			this.async(function () {
 				this.data = data;
-			}.bind(this), 16);
+			}.bind(this), 100);
 
 		},
 
 		changeData: function () {
 			this.data = this.generateTableDemoData(10, 11, 10);
+		},
+
+		emptyData: function () {
+			this.data = [];
 		},
 
 		_localeChanged: function (locale, oldLocale) {

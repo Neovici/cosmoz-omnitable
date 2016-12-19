@@ -176,7 +176,12 @@
 				</template>
 				<div class="tableContent-scroller">
 					<cosmoz-grouped-list id="groupedList" data="{{ sortedFilteredGroupedItems }}"
-						selected-items="{{selectedItems}}" display-empty-groups="[[displayEmptyGroups]]">
+						selected-items="{{selectedItems}}" display-empty-groups="[[displayEmptyGroups]]" warm-up="35">
+						<cosmoz-grouped-list-template id="warmUpTemplate">
+							<template>
+								<div style="min-height: 25px;"></div>
+							</template>
+						</cosmoz-grouped-list-template>
 						<cosmoz-grouped-list-template id="itemTemplate">
 							<template>
 								<div class$="{{_computeItemRowClasses(selected)}}">
