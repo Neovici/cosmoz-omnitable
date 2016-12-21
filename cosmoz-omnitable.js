@@ -424,6 +424,7 @@
 					newValues.push(value);
 				}, this);
 
+				column.set('values', newValues);
 				this.splice.apply(this, ['columns.' + colIndex + '.values', 0, currValues.length].concat(newValues));
 
 			}, this);
