@@ -164,7 +164,7 @@
 					</cosmoz-omnitable-header-cell>
 				</template>
 			</div>
-			<div class="tableContent">
+			<div class="tableContent" id="tableContent">
 				<template is="dom-if" if="[[ _noData ]]">
 					<div class="tableContent-empty">
 						<iron-icon icon="icons:announcement"></iron-icon>
@@ -174,7 +174,7 @@
 						</div>
 					</div>
 				</template>
-				<div class="tableContent-scroller">
+				<div class="tableContent-scroller" id="scroller">
 					<cosmoz-grouped-list id="groupedList" data="{{ sortedFilteredGroupedItems }}"
 						selected-items="{{selectedItems}}" display-empty-groups="[[displayEmptyGroups]]" warm-up="35">
 						<cosmoz-grouped-list-template id="warmUpTemplate">

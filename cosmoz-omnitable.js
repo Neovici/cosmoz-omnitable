@@ -117,12 +117,24 @@
 				value: 0
 			},
 
+			/**
+			 * List of columns definition for this table.
+			 */
 			columns: {
 				type: Array,
 				notify: true
 			},
 
+
+			/**
+			 * List of <b>visible</b> columns.
+			 */
 			visibleColumns: {
+				type: Array,
+				notify: true
+			},
+
+			disabledColumns: {
 				type: Array,
 				notify: true
 			}
@@ -139,15 +151,12 @@
 		],
 
 		listeners: {
-			'iron-resize': 'updateWidths'
+			'iron-resize': '_onResize'
 		},
 
-		/**
-		 * Keeps track of data re-evaluation needs when it comes to sorting, filtering and grouping.
-		 * This is to avoid making too generic property observations but rather to make well-informed
-		 * decisions when to use computing power.
-		 */
-		_needs: {},
+		_disabledColumnsIndexes: null,
+
+		_scalingUp: false,
 
 		created: function () {
 			/** WARNING: we do not support columns changes yet. */
@@ -262,14 +271,6 @@
 
 		_debounceSortItems: function () {
 			this.debounce('sortItems', this._sortFilteredGroupedItems);
-		},
-
-		_debounceUpdateWidths: function () {
-			// 16ms 'magic' number copied from iron-list
-			// But this makes headers change width after the table has completed rendering,
-			// which might look strange.
-			this.debounce('updateWidths', this.updateWidths, 16);
-
 		},
 
 		_onColumnFilterChanged: function (event) {
@@ -428,45 +429,6 @@
 			}, this);
 		},
 
-		disableColumn: function () {
-			var headerToDisable;
-			// disables/hides columns that for example does not fit in the current screen size.
-			this.columnHeaders.forEach(function (header, index) {
-				if (headerToDisable === undefined || headerToDisable.priority >= header.priority) {
-					headerToDisable = header;
-				}
-			});
-
-			if (headerToDisable) {
-				this.push('disabledHeaders', headerToDisable);
-				this.async(this.updateWidths);
-			}
-		},
-
-		enableColumn: function () {
-			var
-				headerToEnable,
-				headerToEnableIndex;
-			this.disabledHeaders.forEach(function (header, index) {
-				if (headerToEnable === undefined || headerToEnable.priority < header.priority) {
-					headerToEnable = header;
-					headerToEnableIndex = index;
-				}
-			});
-
-			this.splice('disabledHeaders', headerToEnableIndex, 1);
-			// Fake a resize bigger event, in the off chance that we go past
-			// the size of two columns in one resize, like maximizing a window
-			this.async(function () {
-				this.scalingUp = true;
-				this.updateWidths({
-					detail: {
-						second: true
-					}
-				});
-			});
-		},
-
 		/**
 		 * Returns the column corresponding to the current `groupOn` value
 		 */
@@ -555,6 +517,8 @@
 			}
 
 			this.visibleColumns = visibleColumns;
+			this.disabledColumns = [];
+			this._disabledColumnsIndexes = [];
 		},
 
 		_filterItems : function () {
@@ -687,7 +651,7 @@
 
 			if (!sortOn) {
 				this.sortedFilteredGroupedItems = this.filteredGroupedItems;
-				this._debounceUpdateWidths();
+				this._debounceAdjustColumns();
 				return;
 			}
 
@@ -725,7 +689,7 @@
 							});
 							if (results === numGroups) {
 								this.set('sortedFilteredGroupedItems', items);
-								this._debounceUpdateWidths();
+								this._debounceAdjustColumns();
 							}
 						}.bind(this));
 					}
@@ -743,7 +707,7 @@
 						return this.filteredGroupedItems[item.index];
 					}, this);
 					this.set('sortedFilteredGroupedItems', items);
-					this._debounceUpdateWidths();
+					this._debounceAdjustColumns();
 				}.bind(this));
 			}
 		},
@@ -759,133 +723,139 @@
 			this.$.groupedList.toggleCollapse(item);
 		},
 
-		updateWidths: function (e) {
+		_onResize: function (e) {
+			this._debounceAdjustColumns();
+		},
+
+		_debounceAdjustColumns: function () {
+			// 16ms 'magic' number copied from iron-list
+			// But this makes headers change width after the table has completed rendering,
+			// which might look strange.
+			this.debounce('adjustColumns', this._adjustColumns, 16);
+		},
+
+		/**
+		 * Enable/disable columns to properly fit in the available space.
+		 * Adjust headers width according to cells width
+		 *
+		 * @memberOf element/cz-omnitable
+		 */
+		_adjustColumns: function () {
 			var
-				firstVisibleItemElement = this.$.groupedList.getFirstVisibleItemElement(),
+				firstRow = this.$.groupedList.getFirstVisibleItemElement(),
+				tableContent = this.$ ? this.$.tableContent : null,
+				bigger,
+				fits,
 				cells,
+				hasOverflowingCell,
+				currentWidth;
+
+			if (!tableContent || !firstRow) {
+				this._debounceAdjustColumns();
+				return;
+			}
+
+			cells = Polymer.dom(firstRow).querySelectorAll('cosmoz-omnitable-item-cell');
+
+			// Check each cell individually for overflow
+			// It's not possible to check if the table overflows width, because a cell might
+			// shrink below it's flex-basis.
+			hasOverflowingCell = cells.some(function (cell) {
+				var overflow = cell.scrollWidth > cell.clientWidth;
+				if (overflow) {
+					return true;
+				} else {
+					return false;
+				}
+			});
+
+			currentWidth = tableContent.clientWidth;
+
+			if (!hasOverflowingCell) {
+				if (this._canScaleUp(currentWidth)) {
+					this._enableColumn();
+					return;
+				}
+			} else {
+				this._overflowConfig = {
+					columns: this.visibleColumns.length,
+					width: currentWidth
+				};
+				this._disableColumn();
+				return;
+			}
+
+			this._adjustHeadersWidth(cells);
+		},
+
+		_adjustHeadersWidth: function (cells) {
+			var
 				cell,
 				cellWidth,
 				headers,
 				header,
 				i;
 
-			if (firstVisibleItemElement) {
-				cells = Polymer.dom(firstVisibleItemElement).querySelectorAll('cosmoz-omnitable-item-cell');
-				headers = Polymer.dom(this.$.header).querySelectorAll('cosmoz-omnitable-header-cell');
-				for (i = 0; i < cells.length; i+=1) {
-					cell = cells[i];
-					header = headers[i];
-					cellWidth = cell.getComputedStyleValue('width');
-					header.style.minWidth = cellWidth;
-					header.style.maxWidth = cellWidth;
-					header.style.width = cellWidth;
-
-				}
-			} else if (!e) {
-				// updateWidths was not triggered by a resize event, and it seems cosmoz-grouped-list did not
-				// finishes to render list items. Try to updateWidths after next repaint.
-				this._debounceUpdateWidths();
+			headers = Polymer.dom(this.$.header).querySelectorAll('cosmoz-omnitable-header-cell');
+			for (i = 0; i < cells.length; i+=1) {
+				cell = cells[i];
+				header = headers[i];
+				cellWidth = cell.getComputedStyleValue('width');
+				header.style.minWidth = cellWidth;
+				header.style.maxWidth = cellWidth;
+				header.style.width = cellWidth;
 			}
 		},
 
+		_canScaleUp: function (width) {
 
-		/**
-		 * Enable/disable columns to properly fit in the available space.
-		 *
-		 * @param  {Event} event    (optional) Resize event, required for "bigger" events
-		 * (set event.detail.bigger = true)
-		 * @memberOf element/cz-omnitable
-		 */
-		_adjustColumns: function (event, detail, a) {
-
-			if (!this.rendered || !this.visibleColumns) {
-				return;
+			if (this.disabledColumns.length === 0) {
+				return false;
 			}
 
-			var body = this.$ ? this.$.body : null,
-				bigger,
-				groupedList,
-				fits,
-				headerTds,
-				visibleColumns = this.columnHeaders.length,
-				second = (event && event.detail && event.detail.second) || false,
-				widthSetter,
-				widthTds;
-
-			if (!body) {
-				return;
+			if (!this._overflowConfig) {
+				return true;
 			}
 
-			groupedList = this.$$('#groupedList');
-
-			// TODO(pasleq): have encountered situations where groupedList was not available yet. Should check why.
-			if (!groupedList) {
-				return;
+			if (width > this._overflowConfig.width) {
+				return true;
 			}
 
-			fits = this.$.scroller.scrollWidth <= this.$.scroller.clientWidth;
-			/* Weird bug
-			** In certain scenarios (sizing the window so that a column barely fits)
-			** body.clientWidth actually expands by itself, causing a 'bigger' event.
-			** This triggers a resize scale up, which adds a column, that doesn't fit, causing a resize down.
-			** = endless loop.
-			** Since 'disableColumn' doesn't send any parameters to 'updateWidths', we can check for an event
-			** parameter = not caused by 'disableColumn' but rather 'enableColumn' or actual resize.
-			*/
-			bigger = body.clientWidth > this._previousWidth && event;
-			this._previousWidth = body.clientWidth;
-			/**
-			* To prevent infinite loops by multiple events, we need to check for 'bigger' events first
-			* to avoid triggering a 'disableColumn' action in the upscaling process.
-			*
-			* Also make sure that the body is not overflowing (fits), when receiving multiple resize up
-			* events during a "scale up", we can hit an async infinite loop otherwise.
-			*
-			* Finally, there's no point in trying to enable a header if there aren't any disabled ones,
-			* but we don't want to return since this event might be the final one - actually updating
-			* column widths.
-			*/
-			if (fits && bigger && this.disabledHeaders.length > 0) {
-				/**
-				 * Only scale up if:
-				 * * It's the first scale up step - a native 'resize' event without detail.second
-				 * * it's the second scale up step - scalingup set by first event and detail.second
-				 */
-				/**
-				 * Make sure to sync scalingUp and detail.second since a mismatch can occur if a
-				 * 'resize' triggers a scalingUp process that hasn't completed.
-				 */
-				if (this.scalingUp === second) {
-					this.enableColumn();
+			if ((this.visibleColumns.length + 1) < this._overflowConfig.columns) {
+				return true;
+			}
+
+			return false;
+		},
+
+		_disableColumn: function () {
+			var disabledColumn, disabledColumnIndex;
+			// disables/hides columns that for example does not fit in the current screen size.
+			this.visibleColumns.forEach(function (column, index) {
+				if (disabledColumn === undefined || disabledColumn.priority >= column.priority) {
+					disabledColumn = column;
+					disabledColumnIndex = index;
 				}
-				/**
-				 * Discard any 'resize'-up events until the scale up is completed.
-				 */
-				return;
-			}
-			/**
-			* Reset scale-up status as soon as a non-'bigger' event occurs.
-			*/
-			this.scalingUp = false;
-			if (!fits && visibleColumns > 1) {
-				this.async(this.disableColumn);
-				return;
-			}
-
-			widthSetter = groupedList.$$('template-selector:not([hidden]) .item:not([style])');
-
-			if (widthSetter === null) {
-				return;
-			}
-			headerTds = Polymer.dom(this.$.header).querySelectorAll('.header');
-			widthTds = Polymer.dom(widthSetter).querySelectorAll('.cell');
-			widthTds.forEach(function (element, index) {
-				var headerElement = headerTds[index],
-					csElement = window.getComputedStyle(element, null),
-					newWidth = element.clientWidth - parseInt(csElement.getPropertyValue('padding-left'), 10) - parseInt(csElement.getPropertyValue('padding-right'), 10);
-				headerElement.style.width = newWidth + 'px';
-				headerElement.style.maxWidth = newWidth + 'px';
 			});
+
+			if (disabledColumn) {
+				this.push('disabledColumns', disabledColumn);
+				this._disabledColumnsIndexes.push(disabledColumnIndex);
+				this.splice('visibleColumns', disabledColumnIndex, 1);
+				this._debounceAdjustColumns();
+			}
+		},
+
+		_enableColumn: function () {
+
+			// Columns are disabled by priority, so we can re-enable them
+			var
+				column = this.pop('disabledColumns'),
+				columnIndex = this._disabledColumnsIndexes.pop();
+
+			this.splice('visibleColumns', columnIndex, 0, column);
+
+			this._debounceAdjustColumns();
 		},
 
 		//TODO: Use cosmoz-behaviors
