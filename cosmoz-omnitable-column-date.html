@@ -166,7 +166,9 @@
 			getFilterFn: function () {
 				if (this.filter) {
 					if (Array.isArray(this.filter)) {
-						return this._applyMultiFilter.bind(this, this.filter);
+						if (this.filter.length > 0) {
+							return this._applyMultiFilter.bind(this, this.filter);
+						}
 					} else {
 						return this._applySingleFilter.bind(this, this.filter);
 					}

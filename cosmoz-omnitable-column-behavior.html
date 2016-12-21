@@ -173,10 +173,12 @@
 		getFilterFn: function () {
 			if (this.filter) {
 				if (Array.isArray(this.filter)) {
-					var filterArray = this.filter.map(function (element) {
-						return element.toString().toLowerCase();
-					});
-					return this._applyMultiFilter.bind(this, filterArray);
+					if (this.filter.length > 0) {
+						var filterArray = this.filter.map(function (element) {
+							return element.toString().toLowerCase();
+						});
+						return this._applyMultiFilter.bind(this, filterArray);
+					}
 				} else {
 					return this._applySingleFilter.bind(this, this.filter.toString().toLowerCase());
 				}
