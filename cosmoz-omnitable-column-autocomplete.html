@@ -1,5 +1,5 @@
 <link rel="import" href="cosmoz-omnitable-column-behavior.html">
-<link rel="import" href="../cosmoz-autocomplete/cosmoz-autocomplete.html">
+<link rel="import" href="cosmoz-omnitable-column-autocomplete-behavior.html">
 
 <dom-module id="cosmoz-omnitable-column-autocomplete">
 	<template>
@@ -17,9 +17,9 @@
 		<cosmoz-omnitable-templatizer id="header-templatizer">
 			<template>
 				<cosmoz-autocomplete
-					items="[[_autocompleteItems]]"
+					items="[[autocompleteItems]]"
 					placeholder="[[title]]"
-					selected-items="{{_autocompleteSelectedItems}}"
+					selected-items="{{autocompleteSelectedItems}}"
 					multi-selection
 				></cosmoz-autocomplete>
 			</template>
@@ -30,59 +30,11 @@
 		Polymer({
 			is: 'cosmoz-omnitable-column-autocomplete',
 
-			properties: {
-				_autocompleteItems: {
-					type: Array,
-					notify: true
-				},
-				_autocompleteSelectedItems: {
-					type: Array
-				}
-			},
-
 			behaviors: [
-				Cosmoz.OmnitableColumnBehavior
-			],
+				Cosmoz.OmnitableColumnBehavior,
+				Cosmoz.OmnitableColumnAutocompleteBehavior
+			]
 
-			created: function () {
-				this.bindValues = true;
-			},
-
-			observers: [
-				'_valuesChanged(values.*)',
-				'_autocompleteSelectedItemsChanged(_autocompleteSelectedItems.*)'
-			],
-
-			_valuesChanged: function (change) {
-				this._autocompleteItems = this.values.map(function (value) {
-					return {
-						label: value,
-						value: value
-					};
-				});
-			},
-
-			_autocompleteSelectedItemsChanged: function (change) {
-				this.filter = this._autocompleteSelectedItems.map(function (item) {
-					return item.value;
-				});
-			},
-
-
-			_applySingleFilter: function (filterString, item) {
-
-				var value = this.get(this.valuePath, item).toString().toLowerCase();
-
-				return value === filterString;
-			},
-
-			_applyMultiFilter: function (filterArray, item) {
-				var	value = this.get(this.valuePath, item).toString().toLowerCase();
-
-				return filterArray.some(function (filter) {
-					return value === filter;
-				});
-			}
 		});
 
 	</script>

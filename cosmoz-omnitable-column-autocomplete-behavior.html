@@ -1,0 +1,63 @@
+<link rel="import" href="../cosmoz-autocomplete/cosmoz-autocomplete.html">
+<script>
+
+	if (typeof Cosmoz === 'undefined') {
+		var Cosmoz = {};
+	}
+
+	/** @polymerBehavior */
+	Cosmoz.OmnitableColumnAutocompleteBehavior = {
+		properties: {
+			autocompleteItems: {
+				type: Array,
+				notify: true
+			},
+			autocompleteSelectedItems: {
+				type: Array
+			}
+		},
+
+		created: function () {
+			this.bindValues = true;
+		},
+
+		observers: [
+			'_valuesChanged(values.*)',
+			'_autocompleteSelectedItemsChanged(autocompleteSelectedItems.*)'
+		],
+
+		_valuesChanged: function (change) {
+			this.autocompleteItems = this.values.map(function (value) {
+				return {
+					value: value,
+					label: this._getLabelForValue(value)
+				};
+			}, this);
+		},
+
+		_getLabelForValue: function (value) {
+			return value.toString();
+		},
+
+		_autocompleteSelectedItemsChanged: function (change) {
+			this.filter = this.autocompleteSelectedItems.map(function (item) {
+				return item.value;
+			});
+		},
+
+		_applySingleFilter: function (filterString, item) {
+
+			var value = this.get(this.valuePath, item).toString().toLowerCase();
+
+			return value === filterString;
+		},
+
+		_applyMultiFilter: function (filterArray, item) {
+			var	value = this.get(this.valuePath, item).toString().toLowerCase();
+
+			return filterArray.some(function (filter) {
+				return value === filter;
+			});
+		}
+	};
+</script>
