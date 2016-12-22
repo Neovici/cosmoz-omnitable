@@ -97,6 +97,11 @@
 			priority: {
 				type: Number,
 				value: 0
+			},
+
+			dataTemplate: {
+				type: Object,
+				observer: '_dataTemplateChanged'
 			}
 		},
 
@@ -112,7 +117,11 @@
 				customDataTemplate = Polymer.dom(this).querySelector('template[id="edit-data-template"]');
 			} else {
 				this._dataTemplatizer = Polymer.dom(this.root).querySelector('cosmoz-omnitable-templatizer[id="data-templatizer"]');
-				customDataTemplate = Polymer.dom(this).querySelector('template[id="data-template"]');
+				if (this.dataTemplate) {
+					customDataTemplate = this.dataTemplate;
+				} else {
+					customDataTemplate = Polymer.dom(this).querySelector('template[id="data-template"]');
+				}
 			}
 
 			if (customDataTemplate) {
@@ -123,6 +132,12 @@
 			customHeaderTemplate = Polymer.dom(this).querySelector('template[id="header-template"]');
 			if (customHeaderTemplate) {
 				this._headerTemplatizer.template = customHeaderTemplate;
+			}
+		},
+
+		_dataTemplateChanged: function (dataTemplate) {
+			if (dataTemplate && this._dataTemplatizer) {
+				this._dataTemplatizer.template = dataTemplate;
 			}
 		},
 

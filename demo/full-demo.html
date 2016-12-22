@@ -71,7 +71,7 @@
 					</cosmoz-omnitable-column-boolean>
 					<cosmoz-omnitable-column-number title="Value" value-path="value" locale="{{locale}}" sort-on="value" group-on="value" width="80px" flex="0">
 					</cosmoz-omnitable-column-number>
-					<cosmoz-omnitable-column-autocomplete title="Group" value-path="group" bind-values sort-on="group" group-on="group">
+					<cosmoz-omnitable-column-autocomplete title="Group" value-path="group" sort-on="group" group-on="group">
 					</cosmoz-omnitable-column-autocomplete>
 					<cosmoz-omnitable-column-amount title="Amount" value-path="amount" sort-on="amount" group-on="amount">
 					</cosmoz-omnitable-column-amount>
@@ -81,10 +81,14 @@
 					</cosmoz-omnitable-column-date>
 					<cosmoz-omnitable-column title="Sub-property" value-path="sub.subProp" sort-on="sub.subProp" group-on="sub.subProp" flex="2">
 					</cosmoz-omnitable-column>
-					<cosmoz-omnitable-column title="Name" value-path="name" bind-values sort-on="name" group-on="name" width="50px" flex="2">
+					<cosmoz-omnitable-column title="Name" value-path="name" sort-on="name" group-on="name" width="50px" flex="2">
 						<template id="data-template">
 							<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.name]]</a>
 						</template>
+					</cosmoz-omnitable-column>
+					<cosmoz-omnitable-column title="Custom template"
+						value-path="name" sort-on="name" group-on="name" width="50px" flex="2"
+						data-template="[[customNameTemplate]]">
 					</cosmoz-omnitable-column>
 
 					<paper-button action on-run="updateSelectedRows">
@@ -97,11 +101,17 @@
 						<span>{{ _computeLabel('Remove', selectedItems.length)}}</span>
 					</paper-button>
 				</cosmoz-omnitable>
+
+
 			</div>
 		</template>
 	</dom-module>
 
-	<x-page class="fit"></x-page>
+	<x-page class="fit">
+		<template id="customNameTemplate">
+			<span style="background: red;">[[item.name]]</span>
+		</template>
+	</x-page>
 
 	<script type="text/javascript">
 /*global document, window, Cosmoz, Polymer */
@@ -122,6 +132,9 @@
 			locale: {
 				type: String,
 				value: 'en'
+			},
+			customNameTemplate: {
+				type: Object
 			}
 		},
 
@@ -138,6 +151,7 @@
 			this.async(function () {
 				this.data = data;
 			}.bind(this), 100);
+			this.customNameTemplate = Polymer.dom(this).querySelector('#customNameTemplate');
 
 		},
 
