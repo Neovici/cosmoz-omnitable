@@ -27,7 +27,10 @@
 		],
 
 		_valuesChanged: function (change) {
-			this.autocompleteItems = this.values.map(function (value) {
+			var filteredValues = this.values.filter(function (value, index, array) {
+				return array.indexOf(value) === index;
+			});
+			this.autocompleteItems = filteredValues.map(function (value) {
 				return {
 					value: value,
 					label: this._getLabelForValue(value)
