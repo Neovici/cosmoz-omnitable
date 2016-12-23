@@ -92,7 +92,8 @@
 			 * Sorted items structure after filtering and grouping.
 			 */
 			sortedFilteredGroupedItems: {
-				type: Array
+				type: Array,
+				notify: true
 			},
 
 			/**
@@ -415,9 +416,7 @@
 				if (!column.bindValues) {
 					return;
 				}
-				var
-					currValues = column.values,
-					newValues = [];
+				var	newValues = [];
 
 				this.data.forEach(function (item, index) {
 					var value = this.get(column.valuePath, item);
@@ -425,7 +424,6 @@
 				}, this);
 
 				column.set('values', newValues);
-				this.splice.apply(this, ['columns.' + colIndex + '.values', 0, currValues.length].concat(newValues));
 
 			}, this);
 		},
