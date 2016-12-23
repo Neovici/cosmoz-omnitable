@@ -420,7 +420,9 @@
 
 				this.data.forEach(function (item, index) {
 					var value = this.get(column.valuePath, item);
-					newValues.push(value);
+					if (value) {
+						newValues.push(value);
+					}
 				}, this);
 
 				column.set('values', newValues);
@@ -888,6 +890,7 @@
 		_onWebWorkerReady: function () {
 			this._webWorkerReady = true;
 			if (this.data && this.columns) {
+				this._setColumnValues();
 				this._debounceFilterItems();
 			}
 		},
