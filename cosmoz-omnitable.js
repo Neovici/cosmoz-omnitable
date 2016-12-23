@@ -743,10 +743,8 @@
 			var
 				firstRow = this.$.groupedList.getFirstVisibleItemElement(),
 				tableContent = this.$ ? this.$.tableContent : null,
-				bigger,
 				fits,
 				cells,
-				hasOverflowingCell,
 				currentWidth;
 
 			if (!tableContent || !firstRow) {
@@ -754,23 +752,11 @@
 				return;
 			}
 
-			cells = Polymer.dom(firstRow).querySelectorAll('cosmoz-omnitable-item-cell');
-
-			// Check each cell individually for overflow
-			// It's not possible to check if the table overflows width, because a cell might
-			// shrink below it's flex-basis.
-			hasOverflowingCell = cells.some(function (cell) {
-				var overflow = cell.scrollWidth > cell.clientWidth;
-				if (overflow) {
-					return true;
-				} else {
-					return false;
-				}
-			});
+			fits = this.$.scroller.scrollWidth <= this.$.scroller.clientWidth;
 
 			currentWidth = tableContent.clientWidth;
 
-			if (!hasOverflowingCell) {
+			if (fits) {
 				if (this._canScaleUp(currentWidth)) {
 					this._enableColumn();
 					return;
@@ -783,6 +769,8 @@
 				this._disableColumn();
 				return;
 			}
+
+			cells = Polymer.dom(firstRow).querySelectorAll('cosmoz-omnitable-item-cell');
 
 			this._adjustHeadersWidth(cells);
 		},

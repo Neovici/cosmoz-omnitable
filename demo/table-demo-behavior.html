@@ -37,7 +37,15 @@
 				j,
 				n = 0,
 				itemsCount,
-				group;
+				group,
+				descriptions = [
+					'Lorem ipsum dolor sit amet',
+					'Nunc tristique',
+					'Curabitur vestibulum',
+					'Cras laoreet',
+					'Himenaeos',
+					'maximus diam purus at mauris'
+				];
 
 			for (i = 0; i < groupsCount; i += 1) {
 				group =  'Group ' + i;
@@ -49,7 +57,7 @@
 						value: getRandomInt(0, 10000),
 						bool: getRandomInt(0, 100) > 50,
 						sub: {
-							subProp: 'sub prop ' + (i * 10 + j)
+							subProp: descriptions[n % descriptions.length]
 						},
 						randomString: 'Random string ' + getRandomInt(1, maxRandomString),
 						randomString2: 'Random string 2 ' + getRandomInt(1, maxRandomString),
