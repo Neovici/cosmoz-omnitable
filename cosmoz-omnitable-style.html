@@ -3,8 +3,8 @@
 		<style>
 			:host {
 				display: block;
-				@apply(--layout-vertical);
-				@apply(--layout-relative);
+				@apply --layout-vertical;
+				@apply --layout-relative;
 				overflow: hidden;
 			}
 
@@ -18,7 +18,7 @@
 
 			.header,
 			.cell {
-				@apply(--layout-flex);
+				@apply --layout-flex;
 				padding: 0 3px;
 			}
 
@@ -48,8 +48,8 @@
 
 			#footer .footer-control {
 				margin-left: 3%;
-				@apply(--layout-horizontal);
-				@apply(--layout-center);
+				@apply --layout-horizontal;
+				@apply --layout-center;
 			}
 
 			#footer #footerStats {
@@ -108,8 +108,8 @@
 				height: 24px;
 				border-bottom: solid 1px #e2e2e2;
 				padding-right: 8px;
-				@apply(--layout-horizontal);
-				@apply(--layout-center);
+				@apply --layout-horizontal;
+				@apply --layout-center;
 			}
 			.item-row.selected {
 				background-color: #e1f8f9;
