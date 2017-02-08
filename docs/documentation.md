@@ -147,7 +147,7 @@ For `cosmoz-omnitable-column`
 
 This template will render an input element. When the user enters text in this input, it will
 set the `filter` property of the column, which will trigger a filtering of the
-data (see [Filtering](#Filtering)).
+data (see [Filtering](#filtering)).
 
 ## Type specific columns
 

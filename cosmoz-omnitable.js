@@ -206,27 +206,13 @@
 		 */
 		_dataChanged: function (change) {
 
-			var pathParts, key, dataColl, item;
-
-			if (change.path === 'data') {
-				// Data reference changed
-				this._newData(change.value);
-			} else if (change.path === 'data.splices') {
-				this._dataAddedOrRemoved(change.value);
-			} else {
-				// Data item changed
-				pathParts = change.path.split('.').slice(1);
-				if (pathParts.length >= 2) {
-					key = pathParts[0];
-					dataColl = Polymer.Collection.get(this.data);
-					item = dataColl.getItem(key);
-					this.$.groupedList.notifyItemPath(item, pathParts.slice(1).join('.'), change.value);
-				}
-			}
-
 			if (this.data && this.data.length > 0) {
 				this._noData = false;
 			}
+
+			// Since Polymer 2.0 removed key-based path and splice notifications,
+			// handle data changes by reset the array.
+			this._newData();
 		},
 
 		_newData: function (data) {
@@ -235,31 +221,6 @@
 				this._debounceFilterItems();
 			}
 
-		},
-
-		_dataAddedOrRemoved: function (change) {
-			var itemsAdded, splices;
-
-			if (!change) {
-				return;
-			}
-
-			splices = change.indexSplices;
-
-			itemsAdded = splices.some(function (splice) {
-				return splice.addedCount > 0;
-			}, this);
-
-			if (itemsAdded && this._webWorkerReady && this.columns) {
-				this._debounceFilterItems();
-			} else {
-				// When only removing items, no need to process the data again
-				splices.forEach(function (splice) {
-					splice.removed.forEach(function (item) {
-						this.$.groupedList.removeItem(item);
-					}, this);
-				}, this);
-			}
 		},
 
 		_debounceFilterItems: function () {
