@@ -924,7 +924,9 @@
 
 			this._updateSelectedSortIndex();
 
-			this._debounceSortItems();
+			if (this.data && this.data.length && this._webWorkerReady && this.columns) {
+				this._debounceSortItems();
+			}
 		},
 
 		_updateSelectedSortIndex: function () {
