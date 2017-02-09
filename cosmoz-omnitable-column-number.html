@@ -81,7 +81,7 @@
 			},
 
 			_toLocaleString: function (num, locale) {
-				if (num.toLocaleString) {
+				if (num && num.toLocaleString) {
 					return num.toLocaleString(locale);
 				} else {
 					return num;
