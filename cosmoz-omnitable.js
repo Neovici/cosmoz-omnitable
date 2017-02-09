@@ -70,8 +70,10 @@
 			/**
 			 * Column that matches the current `groupOn` value.
 			 */
-			_currentGroupOnColumn: {
-				type: Object
+			groupOnColumn: {
+				type: Object,
+				readOnly: true,
+				notify: true
 			},
 
 			/**
@@ -452,7 +454,7 @@
 				if (groupColumnIndex >= 0) {
 					this.splice('visibleColumns', groupColumnIndex, 1);
 				}
-				this._currentGroupOnColumn = groupColumn;
+				this._setGroupOnColumn(groupColumn);
 			} else if (this.columns) {
 				this._updateVisibleColumns();
 			}
@@ -471,7 +473,7 @@
 					if (column.groupOn !== this.groupOn) {
 						visibleColumns.push(column);
 					} else {
-						this._currentGroupOnColumn = column;
+						this._setGroupOnColumn(column);
 					}
 				}, this);
 			} else {
