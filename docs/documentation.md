@@ -23,8 +23,9 @@ The `cosmoz-omnitable-column` element defines the html templates used to render
 the data, while the element prototype is fully defined in the
 `Cosmoz.OmnitableColumnBehavior` behavior.
 
-This allows for type specific columns elements, that defines new rendering
-templates, and might override the default column's prototype as well.
+The types specific column elements defines new rendering templates and use
+`Cosmoz.OmnitableColumnBehavior` as base pototype that they might override to
+provide type specific functionalities.
 
 ### Basic usage
 
@@ -64,6 +65,8 @@ renderDefaultValue: function (item, valuePath) {
 > get() is a function of Polymer.Base
 > https://www.polymer-project.org/1.0/docs/api/Polymer.Base#method-get)
 
+#### Custom data templates in light dom
+
 It is possible to change this default template, by specifying another template in the column
 light dom, for example:
 
@@ -84,6 +87,21 @@ It is also simple to add a link to a data cell:
    </template>
 </cosmoz-omnitable-column>
 ```
+#### Custom data templates defined elsewhere
+
+It is also possible to specify a data template for a column using the `data-template`
+attribute:
+
+```html
+<cosmoz-omnitable-column title="Id" value-path="id" data-template="[[myDataTemplate]]">
+</cosmoz-omnitable-column>
+```
+
+In your code, you need to set `myDataTemplate` to the template you want to use:
+
+```js
+this.myDataTemplate = Polymer.dom(...).querySelector(another template);
+```
 
 ### Sorting and grouping
 
@@ -96,22 +114,26 @@ It is also simple to add a link to a data cell:
 </cosmoz-omnitable-column>
 ```
 
-The `sort-on` and `group-on` attributes are paths, like `value-path`, representing the values
-used when sorting or grouping the data items. When not present, `cosmoz-omnitable`
-do not offer to sort or group on this column.
+The `sort-on` and `group-on` attributes are paths, like `value-path`.
 
-In order to compare column values, `cosmoz-omnitable` uses the following function from
-`Cosmoz.OmnitableColumnBehavior` :
+When these attributes are present on a column, `cosmoz-omnitable` adds this column
+to the dropdown lists used to change sorting and grouping of the data items.
+
+These paths represents item's value that will be used for sorting/grouping the data. They
+might be different from `value-path`.
+
+In order to compare column values when sorting and grouping, `cosmoz-omnitable` uses the
+values returned by the following function from `Cosmoz.OmnitableColumnBehavior` :
 
 ```js
-getComparableValue: function (item, sortOnOrGroupOnPath) {
-   return this.get(sortOnOrGroupOnPath, item);
+getComparableValue: function (item, sortOn_path_or_groupOn_path) {
+   return this.get(sortOn_path_or_groupOn_path, item);
 },
 ```
 
 The values are then compared using standard javascript comparison operator.
 
-In type specific columns implementations, this function can be overriden to allow
+In type specific columns implementations, this function is overriden to allow
 correct comparison of types.
 
 ### Filtering
@@ -127,8 +149,9 @@ The `filter` attribute is used to filter the data.
 If a column has a defined value for the `filter` attribute, then `cosmoz-omnitable`
 will apply a filter function to each item.
 
-For `cosmoz-omnitable-column` column, the filter function depends on the `filter` value:
-* a string: the value at `value-path` is converted to lower-cased string and then compared
+For `cosmoz-omnitable-column` column, the filter function depends on the `filter` value.
+If it is:
+* a string, the value at `value-path` is converted to lower-cased string and then compared
 using `indexOf` with the filter string
 * an array of strings: lower-cased value is compared to each filter string until one match
 using `indexOf`
