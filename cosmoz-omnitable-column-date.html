@@ -1,0 +1,196 @@
+<link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<script type="text/javascript" src="../moment/min/moment-with-locales.min.js"></script>
+
+<dom-module id="cosmoz-omnitable-column-date">
+	<template>
+		<cosmoz-omnitable-templatizer id="data-templatizer">
+			<template>
+				[[renderDateValue(item, valuePath, userFormat, locale)]]
+			</template>
+		</cosmoz-omnitable-templatizer>
+
+		<cosmoz-omnitable-templatizer id="edit-data-templatizer">
+			<template>
+				<paper-input no-label-float type="date" on-change="_dateValueChanged"
+				value="[[renderDateValue(item, valuePath, userFormat, locale)]]"></paper-input>
+			</template>
+		</cosmoz-omnitable-templatizer>
+
+		<cosmoz-omnitable-templatizer id="header-templatizer">
+			<template>
+				<paper-input id="searchFilter" label="[[title]]"
+					error-message="{{errorMessage}}" placeholder="{{_expandedUserFormat}}" value="{{_filterInput}}"></paper-input>
+			</template>
+		</cosmoz-omnitable-templatizer>
+	</template>
+	<script>
+		/*global Cosmoz, moment */
+		Polymer({
+			is: 'cosmoz-omnitable-column-date',
+
+			properties: {
+				/**
+				 * The format in which we receive the date values
+				 */
+				parseFormat: {
+					type: String,
+					value: function () {
+						return moment.ISO_8601;
+					}
+				},
+
+				/**
+				 * This is the format used to interact with the user, i.e. the format used
+				 * to render dates and to parse date entered by the user.
+				 * Should be a moment.js date format (http://momentjs.com/docs/#/displaying/format/)
+				 */
+				userFormat: {
+					type: String,
+					value: 'L'
+				},
+
+				_expandedUserFormat: {
+					type: String,
+					computed: '_expandUserFormat(userFormat, locale)'
+				},
+
+				_filterInput: {
+					type: String,
+					observer: '_filterInputChanged'
+				}
+			},
+
+			behaviors: [
+				Cosmoz.OmnitableColumnBehavior
+			],
+
+			observers: [
+				'_filterChanged(filter)'
+			],
+
+			// HACK: prevent recursive call to filter and filterInput observers
+			// TODO(pasleq): Am I doing something wrong here with _filterInput and filter ?
+			_filterChangedFromAbove: false,
+
+			_filterChangedFromInput: false,
+
+
+			_getDefaultWidth: function () {
+				return '7em';
+			},
+
+			/**
+			 * No need to grow, as the values in a date column should have known fixed width
+			 */
+			_getDefaultFlex: function () {
+				return '0';
+			},
+
+			_expandUserFormat: function (userFormat, locale) {
+				var m, longFormat;
+
+				m = moment().locale(locale);
+
+				longFormat = m.localeData().longDateFormat(userFormat);
+
+				if (!longFormat) {
+					longFormat = userFormat;
+				}
+
+				return longFormat;
+			},
+
+			_filterChanged: function (filter) {
+				if (this._filterChangedFromInput) {
+					this._filterChangedFromInput = false;
+					return;
+				}
+				this._filterChangedFromAbove = true;
+				this._filterInput = moment(filter, this.parseFormat, true).locale(this.locale).format(this.userFormat);
+			},
+
+			_filterInputChanged: function (filterInput) {
+				if (this._filterChangedFromAbove) {
+					this._filterChangedFromAbove = false;
+					return;
+				}
+				var parsedFilter = moment(filterInput, this._expandedUserFormat, true);
+
+				this._filterChangedFromInput = true;
+				if (parsedFilter.isValid()) {
+					this.set('filter', parsedFilter.format(this.parseFormat));
+				} else {
+					this.set('filter', null);
+				}
+			},
+
+			_dateValueChanged: function (event) {
+				var
+					input = event.target,
+					value = input.value,
+					item = event.model.item,
+					dateValue;
+
+				try {
+					dateValue = new Date(value);
+					this.set(this.valuePath, dateValue, item);
+				} catch (err) {
+					input.errorMessage = 'Invalid date';
+				}
+
+			},
+
+			getComparableValue: function (item, valuePath) {
+				var value = this.get(valuePath, item);
+				return moment.isDate(value) ? moment(value).toISOString() : value;
+			},
+
+			renderDateValue: function (item, valuePath, userFormat, locale) {
+				var
+					value = this.get(valuePath, item),
+					d,
+					formatted;
+
+				if (!value) {
+					return;
+				}
+				if (moment.isDate(value)) {
+					d = moment(value);
+				} else {
+					d = moment(value, this.parseFormat, true);
+				}
+				formatted = d.locale(locale).format(userFormat);
+				return formatted;
+			},
+
+			getFilterFn: function () {
+				if (this.filter) {
+					if (Array.isArray(this.filter)) {
+						if (this.filter.length > 0) {
+							return this._applyMultiFilter.bind(this, this.filter);
+						}
+					} else {
+						return this._applySingleFilter.bind(this, this.filter);
+					}
+				}
+			},
+
+			_applyMultiFilter: function (filterArray, item) {
+				return filterArray.some(function (filter) {
+					this._applySingleFilter(filter, item);
+				}, this);
+			},
+
+			_applySingleFilter: function (filter, item) {
+				var value = this.get(this.valuePath, item);
+
+				if (moment.isDate(value)) {
+					value = moment(value).format(this.parseFormat);
+				}
+
+				return value === this.filter;
+			}
+		});
+
+	</script>
+</dom-module>

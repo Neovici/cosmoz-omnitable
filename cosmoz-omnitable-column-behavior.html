@@ -1,0 +1,218 @@
+<script>
+
+	if (typeof Cosmoz === 'undefined') {
+		var Cosmoz = {};
+	}
+
+	/** @polymerBehavior */
+	Cosmoz.OmnitableColumnBehavior = {
+		properties: {
+
+			title: {
+				type: String
+			},
+
+			valuePath: {
+				type: String
+			},
+
+			/**
+			 * If true, the column will be editable by using an input element for rendering.
+			 */
+			editable: {
+				type: Boolean
+			},
+
+			filter: {
+				type: Object,
+				notify: true
+			},
+
+			bindValues: {
+				type: Boolean,
+				value: false
+			},
+
+			/**
+			 * All values for this column.
+			 */
+			values: {
+				type: Array
+			},
+
+			locale: {
+				type: String,
+				value: 'en'
+			},
+
+			sortOn: {
+				type: String
+			},
+
+			groupOn: {
+				type: String
+			},
+
+			/**
+			 * Used to indicate that an element using this behavior is a column definition that can be used
+			 * in cosmoz-omnitable
+			 */
+			isOmnitableColumn: {
+				type: Boolean,
+				value: true,
+				readOnly: true
+			},
+
+			width: {
+				type: String,
+				value: function () {
+					return this._getDefaultWidth();
+				}
+			},
+
+			flex: {
+				type: String,
+				value: function () {
+					return this._getDefaultFlex();
+				}
+			},
+
+			cellClass: {
+				type: String,
+				value: function () {
+					return this._getDefaultCellClass();
+				}
+			},
+
+			headerCellClass: {
+				type: String,
+				value: function () {
+					return this._getDefaultHeaderCellClass();
+				}
+			},
+
+			priority: {
+				type: Number,
+				value: 0
+			},
+
+			dataTemplate: {
+				type: Object,
+				observer: '_dataTemplateChanged'
+			}
+		},
+
+		_dataTemplatizer: null,
+
+		_headerTemplatizer: null,
+
+		ready: function () {
+			var customDataTemplate, customHeaderTemplate;
+
+			if (this.editable) {
+				this._dataTemplatizer = Polymer.dom(this.root).querySelector('cosmoz-omnitable-templatizer[id="edit-data-templatizer"]');
+				customDataTemplate = Polymer.dom(this).querySelector('template[id="edit-data-template"]');
+			} else {
+				this._dataTemplatizer = Polymer.dom(this.root).querySelector('cosmoz-omnitable-templatizer[id="data-templatizer"]');
+				if (this.dataTemplate) {
+					customDataTemplate = this.dataTemplate;
+				} else {
+					customDataTemplate = Polymer.dom(this).querySelector('template[id="data-template"]');
+				}
+			}
+
+			if (customDataTemplate) {
+				this._dataTemplatizer.template = customDataTemplate;
+			}
+
+			this._headerTemplatizer =  Polymer.dom(this.root).querySelector('cosmoz-omnitable-templatizer[id="header-templatizer"]');
+			customHeaderTemplate = Polymer.dom(this).querySelector('template[id="header-template"]');
+			if (customHeaderTemplate) {
+				this._headerTemplatizer.template = customHeaderTemplate;
+			}
+		},
+
+		_dataTemplateChanged: function (dataTemplate) {
+			if (dataTemplate && this._dataTemplatizer) {
+				this._dataTemplatizer.template = dataTemplate;
+			}
+		},
+
+		getDataTemplateInstance: function () {
+			return this._dataTemplatizer.createInstance();
+		},
+
+		getHeaderTemplateInstance: function () {
+			return this._headerTemplatizer.createInstance();
+		},
+
+		/**
+		 * Override this in column elements if you need a different default width
+		 */
+		_getDefaultWidth: function () {
+			return '75px';
+		},
+
+		_getDefaultFlex: function () {
+			return '1';
+		},
+
+		_getDefaultCellClass: function () {
+			return 'default-cell';
+		},
+
+		_getDefaultHeaderCellClass: function () {
+			return 'default-header-cell';
+		},
+
+		renderDefaultValue: function (item, valuePath) {
+			return this.get(valuePath, item);
+		},
+
+		getComparableValue: function (item, valuePath) {
+			return this.get(valuePath, item);
+		},
+
+		_valueChanged: function (event) {
+			var
+				input = event.target,
+				value = input.value,
+				item = event.model.item;
+
+			this.set(this.valuePath, value, item);
+		},
+
+		getFilterFn: function () {
+			if (this.filter) {
+				if (Array.isArray(this.filter)) {
+					if (this.filter.length > 0) {
+						var filterArray = this.filter.map(function (element) {
+							return element.toString().toLowerCase();
+						});
+						return this._applyMultiFilter.bind(this, filterArray);
+					}
+				} else {
+					return this._applySingleFilter.bind(this, this.filter.toString().toLowerCase());
+				}
+			}
+		},
+
+		_applySingleFilter: function (filterString, item) {
+
+			var
+				value = this.get(this.valuePath, item).toString().toLowerCase();
+
+			return value.indexOf(filterString) >= 0;
+		},
+
+		_applyMultiFilter: function (filterArray, item) {
+			var	value = this.get(this.valuePath, item).toString().toLowerCase();
+
+			return filterArray.some(function (filter) {
+				return value.indexOf(filter) >= 0;
+			});
+		}
+
+	};
+
+</script>

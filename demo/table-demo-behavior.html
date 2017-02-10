@@ -1,25 +1,32 @@
-<script src="../../moment/moment.js"></script>
-<script src="../../moment/locale/sv.js"></script>
-
 <script>
 
-	/*global Cosmoz,moment*/
-
-	moment.locale('sv');
+	/*global Cosmoz*/
 
 	function getRandomInt(min, max) {
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 
-	function getRandomDate () {
+	function getRandomDateJSON() {
+		return '2015-' + leftPad(getRandomInt(1, 12), 2, '0') + '-' + leftPad(getRandomInt(1, 28), 2, '0');
+	}
+
+	function getRandomDate() {
 		return new Date(2015, getRandomInt(1, 12), getRandomInt(1, 28));
 	}
 
-	Cosmoz = Cosmoz || {};
+	function leftPad(str, len, ch) {
+		str = String(str);
+		var i = -1;
+		if (!ch && ch !== 0) ch = ' ';
+		len = len - str.length;
+		while (++i < len) {
+			str = ch + str;
+		}
+		return str;
+	}
 
-	Cosmoz.formatDate = Cosmoz.formatDate || function (date) {
-		return moment(date).format('L');
-	};
+
+	Cosmoz = Cosmoz || {};
 
 	Cosmoz.TableDemoBehavior = {
 		generateTableDemoData: function (min, max, maxRandomString) {
@@ -30,7 +37,15 @@
 				j,
 				n = 0,
 				itemsCount,
-				group;
+				group,
+				descriptions = [
+					'Lorem ipsum dolor sit amet',
+					'Nunc tristique',
+					'Curabitur vestibulum',
+					'Cras laoreet',
+					'Himenaeos',
+					'maximus diam purus at mauris'
+				];
 
 			for (i = 0; i < groupsCount; i += 1) {
 				group =  'Group ' + i;
@@ -39,12 +54,17 @@
 					data.push({
 						id: n,
 						name: group + ' item ' + j,
-						value: 0,
+						value: getRandomInt(0, 10000),
+						bool: getRandomInt(0, 100) > 50,
+						sub: {
+							subProp: descriptions[n % descriptions.length]
+						},
 						randomString: 'Random string ' + getRandomInt(1, maxRandomString),
 						randomString2: 'Random string 2 ' + getRandomInt(1, maxRandomString),
 						randomString3: 'Random string 3 ' + getRandomInt(1, maxRandomString),
 						randomString4: 'Random string 4 ' + getRandomInt(1, maxRandomString),
 						date: getRandomDate(),
+						dateJSON: getRandomDateJSON(),
 						amount: {
 							amount: getRandomInt(10, 100),
 							currency: 'SEK'

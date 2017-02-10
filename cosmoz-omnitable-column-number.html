@@ -1,0 +1,101 @@
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="cosmoz-omnitable-column-number-behavior.html">
+
+<dom-module id="cosmoz-omnitable-column-number-styles">
+	<template>
+		<style>
+			.number-cell {
+				text-align: right;
+			}
+
+			.number-header-cell .searchHeaderDropdown {
+				@apply(--layout-vertical);
+				padding: 16px 0px;
+			}
+
+			.number-header-cell .searchHeaderDropdown > paper-input {
+				padding: 0px 16px;
+			}
+
+			.number-header-cell .searchHeaderDropdownButtons {
+				@apply(--layout-horizontal);
+				@apply(--layout-end-justified);
+			}
+
+		</style>
+	</template>
+</dom-module>
+<dom-module id="cosmoz-omnitable-column-number">
+	<template>
+		<style>
+
+		</style>
+
+		<cosmoz-omnitable-templatizer id="data-templatizer">
+			<template>
+				<div class="omnitable-cell-number">[[renderNumberValue(item, valuePath, locale)]]</div>
+			</template>
+		</cosmoz-omnitable-templatizer>
+
+		<cosmoz-omnitable-templatizer id="edit-data-templatizer">
+			<template>
+				<paper-input no-label-float type="number" on-change="_valueChanged" value="[[renderNumberValue(item, valuePath)]]"></paper-input>
+			</template>
+		</cosmoz-omnitable-templatizer>
+
+		<cosmoz-omnitable-templatizer id="header-templatizer">
+			<template>
+				<paper-dropdown-menu id="searchDropDownMenu"
+						label="{{title}}" placeholder="{{_computeFilterText(filter.*)}}" on-close="_closeSearchDropdownMenu">
+					<div class="dropdown-content searchHeaderDropdown">
+						<paper-input label="Minimum [[title]]" type="number" value="{{_numberFilter.minValue}}"></paper-input>
+						<paper-input label="Maximum [[title]]" type="number" value="{{_numberFilter.maxValue}}"></paper-input>
+						<div class="searchHeaderDropdownButtons"><paper-button on-tap="_fireCloseSearchDropdownMenu">OK</paper-button></div>
+					</div>
+				</paper-dropdown-menu>
+			</template>
+		</cosmoz-omnitable-templatizer>
+	</template>
+	<script>
+		Polymer({
+			is: 'cosmoz-omnitable-column-number',
+
+			behaviors: [
+				Cosmoz.OmnitableColumnNumberBehavior
+			],
+
+			_getDefaultWidth: function () {
+				return '30px';
+			},
+
+			_getDefaultFlex: function () {
+				return '1';
+			},
+
+			_getDefaultCellClass: function () {
+				return 'number-cell';
+			},
+
+			_getDefaultHeaderCellClass: function () {
+				return 'number-header-cell';
+			},
+
+			_toLocaleString: function (num, locale) {
+				if (num && num.toLocaleString) {
+					return num.toLocaleString(locale);
+				} else {
+					return num;
+				}
+			},
+
+			renderNumberValue: function (item, valuePath, locale) {
+				var
+					value = this.get(valuePath, item);
+
+				return this._toLocaleString(value, locale);
+			}
+
+		});
+
+	</script>
+</dom-module>

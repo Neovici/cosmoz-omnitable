@@ -24,7 +24,13 @@
                 "named": "never"
             }
         ],
-        "no-unused-vars": 0
+        "no-unused-vars": 0,
+        "no-console": [
+          2,
+          {
+            "allow": ["warn", "error"]
+          }
+        ]
     },
     "plugins": [
         "html"
@@ -33,7 +39,8 @@
         "CustomElements": false,
         "HTMLImports": false,
         "Polymer": false,
-        "WeakMap": false
+        "WeakMap": false,
+        "Cosmoz": false
     }
 
 }

@@ -8,16 +8,6 @@
 		is: 'cosmoz-omnitable',
 
 		properties: {
-			/**
-			 * List of "disabled headers" - headers not fitting in the current screen due to screen size.
-			 */
-			disabledHeaders: {
-				type: Array,
-				notify: true,
-				value: function () {
-					return [];
-				}
-			},
 
 			/**
 			 * List of data to display
@@ -27,34 +17,11 @@
 			},
 
 			/**
-			 * Table headers/column definitions, usually configued with markup.
+			 * If set to true, then group a row will be displayed for groups that contain no items.
 			 */
-			headers: {
-				type: Array,
-				notify: true
-			},
-
-			/**
-			 * Table headers to display (headers not disabled or grouped on)
-			 */
-			columnHeaders: {
-				type: Object
-			},
-
-			/**
-			 * Whether to hide all groups but the first on initial load
-			 */
-			hideButFirst: {
+			displayEmptyGroups: {
 				type: Boolean,
-				value: true
-			},
-
-			/**
-			 * Whether to hide groups with no items.
-			 */
-			hideEmptyGroups: {
-				type: Boolean,
-				value: true
+				value: false
 			},
 
 			/**
@@ -74,66 +41,57 @@
 				notify: true
 			},
 
-			/*
-			 * Whether to reverse sort order
-			 */
-			sortDescending: {
-				type: Boolean,
-				value: false
-			},
-
 			/**
-			 * The header ID to sort on.
+			 * An object representing current sort of the table.
+			 * The object must have the following propreties:
+			 * - valuePath: item's value path to sort on
+			 * - descending: a boolean indicating of sort is done in descending order.
 			 */
 			sortOn: {
-				type: String,
+				type: Object,
 				value: null
 			},
 
+			// Index of the selected item in the sortOn listbox
+			_sortOnSelectorSelected: {
+				type: Number
+			},
+
 			/**
-			 * The header ID to group on.
+			 * The item's value path to group on
 			 */
 			groupOn: {
 				type: String,
+				notify: true,
 				value: '',
 				observer: '_groupOnChanged'
 			},
 
 			/**
-			 * Workaround kicker to cause regrouping.
+			 * Column that matches the current `groupOn` value.
 			 */
-			groupKick: {
-				type: Number,
-				value: 0
-			},
-
-			/**
-			 * Workaround kicker to cause refiltering.
-			 */
-			filterKick: {
-				type: Number,
-				value: 0
+			groupOnColumn: {
+				type: Object,
+				readOnly: true,
+				notify: true
 			},
 
 			/**
 			 * Items matching current set filter(s)
 			 */
 			filteredItems: {
-				type: Array,
-				computed: '_filterItems(filterKick)'
+				type: Array
 			},
 
 			/**
 			 * Grouped items structure after filtering.
 			 */
 			filteredGroupedItems: {
-				type: Array,
-				computed: '_groupItems(filteredItems, groupKick)'
+				type: Array
 			},
 
 			/**
 			 * Sorted items structure after filtering and grouping.
-			 * Set by `_sortFilteredGroupedItems()` due to the async nature of web workers.
 			 */
 			sortedFilteredGroupedItems: {
 				type: Array,
@@ -161,16 +119,33 @@
 				type: Number,
 				value: 0
 			},
-			groupOnHeaderName: {
-				type: 'String',
+
+			/**
+			 * List of columns definition for this table.
+			 */
+			columns: {
+				type: Array,
+				notify: true
+			},
+
+
+			/**
+			 * List of <b>visible</b> columns.
+			 */
+			visibleColumns: {
+				type: Array,
+				notify: true
+			},
+
+			disabledColumns: {
+				type: Array,
 				notify: true
 			}
 		},
 
 		observers: [
-			'_sortFilteredGroupedItems(filteredGroupedItems, sortOn, sortDescending)',
-			'_dataChanged(data.*, headers)',
-			'_computeColumnHeaders(sortedFilteredGroupedItems, disabledHeaders.length)'
+			'_sortOnChanged(sortOn.*)',
+			'_dataChanged(data.*)'
 		],
 
 		behaviors: [
@@ -182,107 +157,116 @@
 			'iron-resize': '_onResize'
 		},
 
-		/**
-		 * Keeps track of data re-evaluation needs when it comes to sorting, filtering and grouping.
-		 * This is to avoid making too generic property observations but rather to make well-informed
-		 * decisions when to use computing power.
-		 */
-		_needs: {},
+		_disabledColumnsIndexes: null,
+
+		_scalingUp: false,
+
+		created: function () {
+			/** WARNING: we do not support columns changes yet. */
+			this._columnObserver = Polymer.dom(this).observeNodes(function (info) {
+				var
+					columns = [],
+					children = this.getEffectiveChildren(),
+					i,
+					child;
+
+				for (i = 0 ; i < children.length; i+= 1) {
+					child = children[i];
+					// `isOmnitableColumn` is a property from cosmoz-omnitable-column-behavior
+					if (child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn) {
+						columns.push(child);
+					}
+				}
+				if (columns && columns.length > 0) {
+
+					this.columns = columns;
+
+					this.columns.forEach(function (column) {
+						this.listen(column, 'filter-changed', '_onColumnFilterChanged');
+					}, this);
+
+					this._updateVisibleColumns();
+
+					if (this._webWorkerReady && this.data) {
+						this._debounceFilterItems();
+					}
+				}
+			}.bind(this));
+		},
+
+		attached: function () {
+			var hasActions = Polymer.dom(this.$.actions).getDistributedNodes().length > 0;
+			if (hasActions) {
+				this.selectionEnabled = true;
+			}
+
+			this.$.groupedList.scrollTarget = this.$.scroller;
+		},
 
 		/**
 		 * Called when data is changed to setup up needs and check workers/filtering
 		 */
-		_dataChanged: function (change, headers) {
-
-			var pathParts, key, dataColl, item;
-
-			if (change.path === 'data') {
-				// Data reference changed
-				this._newData(change.value);
-			} else if (change.path === 'data.splices') {
-				this._dataAddedOrRemoved(change.value);
-			} else {
-				// Data item changed
-				pathParts = change.path.split('.').slice(1);
-				if (pathParts.length >= 2) {
-					key = pathParts[0];
-					dataColl = Polymer.Collection.get(this.data);
-					item = dataColl.getItem(key);
-					this.$.groupedList.notifyItemPath(item, pathParts.slice(1).join('.'), change.value);
-				}
-			}
+		_dataChanged: function (change) {
 
 			if (this.data && this.data.length > 0) {
 				this._noData = false;
-			} else {
-				this._noData = true;
 			}
+
+			// Since Polymer 2.0 removed key-based path and splice notifications,
+			// handle data changes by reset the array.
+			this._newData();
 		},
 
 		_newData: function (data) {
-
-			this._needs.grouping = true;
-			this._needs.filtering = true;
-			this._needs.sorting = true;
-
-			this._setHeaderValues();
-
-			if (this._webWorkerReady) {
-				this.filterKick += 1;
+			if (this._webWorkerReady && this.columns) {
+				this._setColumnValues();
+				this._debounceFilterItems();
 			}
+
 		},
 
-		_dataAddedOrRemoved: function (change) {
-			var itemsAdded, splices;
-
-			if (!change) {
-				return;
-			}
-
-			splices = change.indexSplices;
-
-			itemsAdded = splices.some(function (splice) {
-				return splice.addedCount > 0;
-			}, this);
-
-			if (itemsAdded) {
-				// If some items were added, it's easier to re-sort/re-group/re-filter
-				this._needs.grouping = true;
-				this._needs.filtering = true;
-				this._needs.sorting = true;
-			} else {
-				// When only removing items, no need to process the data again
-				splices.forEach(function (splice) {
-					splice.removed.forEach(function (item) {
-						this.$.groupedList.removeItem(item);
-					}, this);
-				}, this);
-			}
-
-			if (this._webWorkerReady && this.headers && this._needs.filtering) {
-				this.filterKick += 1;
-			}
+		_debounceFilterItems: function () {
+			this.debounce('filterItems', this._filterItems);
 		},
 
+		_debounceGroupItems: function () {
+			this.debounce('groupItems', this._groupItems);
+		},
+
+		_debounceSortItems: function () {
+			this.debounce('sortItems', this._sortFilteredGroupedItems);
+		},
+
+		_onColumnFilterChanged: function (event) {
+			this._debounceFilterItems();
+		},
 
 		/**
 		 * Helper method to remove an item from `data`.
 		 * @param  {Object} item Item to remove
-		 * @return {Boolean}      Whether `data` or `selectedItems` changed
+		 * @return {Object} item removed
 		 */
 		removeItem: function (item) {
-			this.arrayDelete('data', item);
+			var removed = this.arrayDelete('data', item);
+			if (removed && removed.length) {
+				return removed[0];
+			}
 		},
 
 		/**
 		 * Remove multiple items from `data`
+		 * @param {Array} an array of items to remove
+		 * @return {Array} Array containing removed items
 		 */
 		removeItems: function (items) {
-			var i;
+			var i, removedItems = [], removed;
 			for (i = items.length - 1; i >= 0; i -= 1) {
-				this.arrayDelete('data', items[i]);
-
+				removed = this.arrayDelete('data', items[i]);
+				if (removed) {
+					removedItems = removedItems.concat(removed);
+				}
 			}
+			return removed;
 		},
 
 		/**
@@ -302,40 +286,6 @@
 			event.stopPropagation();
 		},
 
-		created: function () {
-			this.rendered = false;
-			this._needs = {
-				grouping: true,
-				filtering: true,
-				sorting: true
-			};
-		},
-
-		ready: function () {
-			this._needs = {
-				grouping: true,
-				filtering: true,
-				sorting: true
-			};
-		},
-
-		attached: function () {
-			var hasActions = Polymer.dom(this.$.actions).getDistributedNodes().length > 0;
-			if (hasActions) {
-				this.selectionEnabled = true;
-			}
-			this.$.groupedList.scrollTarget = this.$.scroller;
-			this.setHeadersFromMarkup();
-			this.rendered = true;
-		},
-
-		_groupOnChanged: function (newValue, oldValue) {
-			this._needs.grouping = true;
-			if (this.filteredItems) {
-				this.groupKick += 1;
-			}
-		},
-
 		onAllCheckboxChange: function (event, detail) {
 
 			if (event.target === null) {
@@ -352,7 +302,8 @@
 
 		},
 
-		onGroupCheckboxChange: function (event) {
+		// Handle selection/deselection of a group
+		_onGroupCheckboxChange: function (event) {
 			var
 				group = event.model.item,
 				selected = this.$.groupedList.isGroupSelected(group);
@@ -367,7 +318,8 @@
 			event.stopPropagation();
 		},
 
-		onItemCheckboxChange: function (event, detail) {
+		// Handle selection/deselection of an item
+		_onItemCheckboxChange: function (event, detail) {
 			var
 				item = event.model.item,
 				selected = this.$.groupedList.isItemSelected(item);
@@ -405,378 +357,219 @@
 			this.$.groupedList.deselectItem(item);
 		},
 
-		isItemSelect: function (item) {
+		isItemSelected: function (item) {
 			this.$.groupedList.isItemSelected(item);
 		},
 
+		/**
+		 * Toggle folding of a group
+		 */
 		toggleGroup: function (event) {
-			this.$.body.querySelector('#groupedList').toggleFold(event.model);
+			this.$.groupedList.toggleFold(event.model);
 		},
 
 		getFoldIcon: function (folded) {
 			return folded ? 'expand-more' : 'expand-less';
 		},
 
-		filterItem: function (item) {
-			return !this.headers.some(function (header) {
-				var itemVal = this.get(header.id, item);
-				if (header.filters && header.filters.length > 0) {
-					return !header.filters.some(function (headerFilter) {
-						if (itemVal === headerFilter.value) {
-							return true;
-						}
-						if (typeof itemVal === 'object' && this.renderObject(itemVal, false, header) === headerFilter.label) {
-							return true;
-						}
-					}.bind(this));
+		// TODO: provides a mean to avoid setting the values for a column
+		// TODO: should process (distinct, sort, min, max) the values at the column level depending on the column type
+		_setColumnValues: function () {
+			this.columns.forEach(function (column, colIndex) {
+				if (!column.bindValues) {
+					return;
 				}
-				if (header.rangeSelect && (header.rangeFilter.fromValue !== undefined || header.rangeFilter.toValue !== undefined)) {
-					return header.filterFunc.call(this.dataHost, itemVal, header.rangeFilter);
-				}
-			}.bind(this));
-		},
+				var	newValues = [];
 
-		filterItems: function (event, detail, sender) {
-			this._needs.filtering = true;
-			this.filterKick += 1;
-		},
+				this.data.forEach(function (item, index) {
+					var value = this.get(column.valuePath, item);
+					if (value) {
+						newValues.push(value);
+					}
+				}, this);
 
-		renderItemProperty: function (itemNotify, header, ui) {
-			var
-				item = itemNotify.base,
-				prop;
-			if (item === undefined || header === undefined) {
-				return '';
-			}
-			// TODO: Cleaner solution?
-			if (item.placeholder) {
-				return '';
-			}
-			prop = this.resolveProp(item, header.id);
-			return this.renderObject(prop, ui, header);
-		},
+				column.set('values', newValues);
 
-		renderObject: function (obj, ui, header) {
-			if (obj === undefined || obj === '') {
-				return '';
-			}
-
-			if (header.renderFunc) {
-				return header.renderFunc.call(this.dataHost, obj);
-			}
-
-			if (obj instanceof Object) {
-				return "Can't render " + JSON.stringify(obj);
-			}
-
-			return obj;
+			}, this);
 		},
 
 		/**
-		 * Render a unique list of possible values to filter the dataset with, for each header/column.
-		 * @param {[type]} item [description]
+		 * Returns the column corresponding to the current `groupOn` value
 		 */
-		_setHeaderValues: function () {
-			if (!this.data || !this.headers) {
+		_getGroupOnColumn: function () {
+			var col;
+
+			if (!this.groupOn) {
 				return;
 			}
-
-			this.headers.forEach(function (header) {
-				if (header.values.length) {
-					// Clear previous values.
-					// Warning, this is not enough to have cosmoz-autocomplete update its values.
-					// Notifying header.values changes is done in _computeColumnHeaders
-					header.values = [];
-				}
-			}, this);
-
-			this.data.forEach(function (item, index) {
-				this.headers.forEach(function (header, headerIndex) {
-					var
-						value = this.resolveProp(item, header.id),
-						hasValue = false,
-						label = this.renderObject(value, false, header);
-
-					header.values.some(function (headerValue, headerValueIndex) {
-						if (headerValue.label === label) {
-							hasValue = true;
-							return true;
-						}
-					});
-					if (!hasValue) {
-						header.values.push({
-							label: label,
-							value: value
-						});
-					}
-				}.bind(this));
-			}.bind(this));
-			this._sortHeaderValues();
-		},
-
-		_sortHeaderValues: function () {
-			this.headers.forEach(function (header, headerIndex) {
-				var valueLength = header.values.length;
-				if (valueLength === 0) {
-					return;
-				}
-				header.values.sort(function (a, b) {
-					if (a.label < b.label) {
-						return -1;
-					}
-					return 1;
-				});
-
-				if (header.type === 'amount') {
-					header.values.sort(function (a, b) {
-						if (a.value.amount < b.value.amount) {
-							return -1;
-						}
-						return 1;
-					});
-
-					header.rangeMin = header.values[0].value.amount;
-					header.rangeMax = header.values[valueLength - 1].value.amount;
-				}
-			}.bind(this));
-
-		},
-
-		dataRowChanged: function (event, detail) {
-			var
-				element = event.target,
-				model = event.model,
-				header = event.model.__data__.header,
-				item = event.model.__data__.item,
-				value = element.value;
-
-			if (header.type === 'number') {
-				value = parseInt(value, 10);
-			}
-			model.set('item.' + header.id, value);
-
-			//item[outerModel.header.id] = sender.value;
-			this.fire('cz-data-row-changed', {
-				model: model,
-				item: item
-			});
-			this.fire('data-changed', {
-				action: 'updateItem',
-				data: this.data
-			});
-		},
-		disableColumn: function () {
-			var headerToDisable;
-			// disables/hides columns that for example does not fit in the current screen size.
-			this.columnHeaders.forEach(function (header, index) {
-				if (headerToDisable === undefined || headerToDisable.priority >= header.priority) {
-					headerToDisable = header;
-				}
-			});
-
-			if (headerToDisable) {
-				this.push('disabledHeaders', headerToDisable);
-				this._debounceUpdateWidths();
-			}
-		},
-		enableColumn: function () {
-			var
-				headerToEnable,
-				headerToEnableIndex;
-			this.disabledHeaders.forEach(function (header, index) {
-				if (headerToEnable === undefined || headerToEnable.priority < header.priority) {
-					headerToEnable = header;
-					headerToEnableIndex = index;
-				}
-			});
-
-			this.splice('disabledHeaders', headerToEnableIndex, 1);
-			// Fake a resize bigger event, in the off chance that we go past
-			// the size of two columns in one resize, like maximizing a window
-			this.async(function () {
-				this.scalingUp = true;
-				this.updateWidths({
-					detail: {
-						second: true
-					}
-				});
-			});
-		},
-
-		getHeader: function (id) {
-			var foundHeader;
-			this.headers.some(function (header, index) {
-				if (header.id === id) {
-					foundHeader = header;
+			this.columns.some(function (column) {
+				if (column.groupOn === this.groupOn) {
+					col = column;
 					return true;
 				}
-			});
-			return foundHeader;
+			}, this);
+			return col;
 		},
 
-		_computeColumnHeaders: function (sortedFilteredGroupedItems,  disabledHeadersCount) {
-			if (!this.headers) {
+		/**
+		 * Returns the column representing the current `sortOn` value
+		 */
+		_getSortOnColumn: function () {
+			var col;
+
+			if (!this.sortOn || !this.sortOn.valuePath) {
 				return;
 			}
-
-			var filteredHeaders = [];
-			this.headers.forEach(function (header, index) {
-				if (header.id !== this.groupOn && this.disabledHeaders.indexOf(header) === -1) {
-					filteredHeaders.push(header);
+			this.columns.some(function (column) {
+				if (column.sortOn === this.sortOn.valuePath) {
+					col = column;
+					return true;
 				}
 			}, this);
-
-			this.columnHeaders = filteredHeaders;
-
-			// See https://github.com/Polymer/polymer/issues/3548
-			this.columnHeaders.forEach(function (header, index) {
-				this.notifyPath('columnHeaders.' + index + '.values', header.values);
-			}, this);
+			return col;
 		},
 
-		_getFunctionByName: function (name, context) {
-			if (!name) {
-				return undefined;
-			}
-
+		_groupOnChanged: function (newValue, oldValue) {
 			var
-				parts = name.split('.'),
-				func,
-				funcName,
-				i,
-				dataHost = this.dataHost;
-			if (parts.length === 1) {
-				func = dataHost[name];
-				while (func === undefined && dataHost !== undefined) {
-					func = dataHost[name];
-					dataHost = dataHost.dataHost;
+				oldGroupColumnIndex = -1,
+				oldGroupColumn,
+				groupColumnIndex = -1,
+				groupColumn,
+				i;
+			if (this.columns && this.visibleColumns) {
+				for (i = 0 ; i < this.columns.length; i += 1) {
+					if (oldValue && this.columns[i].groupOn === oldValue) {
+						oldGroupColumnIndex = i;
+						oldGroupColumn = this.columns[i];
+					}
+					if (newValue && this.columns[i].groupOn === newValue) {
+						groupColumnIndex = i;
+						groupColumn = this.columns[i];
+					}
 				}
-				return func;
+
+				if (oldGroupColumnIndex >= 0) {
+					this.splice('visibleColumns', oldGroupColumnIndex, 0, oldGroupColumn);
+				}
+				if (groupColumnIndex >= 0) {
+					this.splice('visibleColumns', groupColumnIndex, 1);
+				}
+				this._setGroupOnColumn(groupColumn);
+			} else if (this.columns) {
+				this._updateVisibleColumns();
 			}
-			funcName = parts.pop();
-			for(i = 0; i < parts.length; i += 1) {
-				context = context[parts[i]];
-			}
-			func = context[funcName];
-			return typeof func === 'function' ? func : undefined;
+
+			this._debounceGroupItems();
 		},
 
-		setHeadersFromMarkup: function () {
-			var markupHeaders = Polymer.dom(this).querySelectorAll('header'),
-				newHeaders = [];
-
-			markupHeaders.forEach(function (headerElement, index) {
-				var header = {
-						disabled: 	false,
-						editable: 	headerElement.hasAttribute('editable'),
-						id: 		headerElement.id,
-						linkbase: 	headerElement.getAttribute('linkbase'),
-						linkprop: 	headerElement.getAttribute('linkprop'),
-						name: 		Polymer.dom(headerElement).innerHTML,
-						priority: 	parseInt(headerElement.getAttribute('priority') || 0, 10),
-						type: 		headerElement.getAttribute('type') || 'default',
-						values: 	[],
-						filters: 	[],
-						rangeFilter: {},
-						wrap: 		headerElement.hasAttribute('wrap'),
-						rangeSelect: headerElement.getAttribute('range-select') === 'true'
-					},
-					defaultRenderFunc = 'render' + header.type.charAt(0).toUpperCase() + header.type.substr(1),
-					defaultFilterFunc = 'filter' + header.type.charAt(0).toUpperCase() + header.type.substr(1);
-				header.renderFunc = this._getFunctionByName(headerElement.getAttribute('render-func') || defaultRenderFunc, window);
-				header.filterFunc = this._getFunctionByName(headerElement.getAttribute('filter-func') || defaultFilterFunc, window);
-				newHeaders.push(header);
-			}.bind(this));
-			this.headers = newHeaders;
-			if (this._needs.grouping) {
-				this.groupKick += 1;
-			}
-		},
-
-		_filterItems : function (filterKick) {
-			if (!this.headers) {
-				return null;
-			}
-			if (!this.data || this.data.length === 0) {
-				this._needs.grouping = false;
-				this._needs.sorting = false;
-				this._needs.filtering = false;
-				return [];
-			}
-
+		_updateVisibleColumns: function () {
 			var
-				that = this,
-				filteredItems = [];
-
-			this.data.forEach(function (item, index) {
-				// HACK(pasleq): set a checked property to all items to avoid issues with paper-checkbox
-				item.checked = !!item.checked;
-				if (that._needs.filtering) {
-					item.visible = that.filterItem(item);
-				}
-				if (item.visible) {
-					filteredItems.push(item);
-				}
-			});
-			that._needs.filtering = false;
-			that._needs.grouping = true;
-			return filteredItems;
-		},
-
-
-		_groupItems: function (filteredItems, groupKick) {
-			if (!this.headers) {
-				return null;
-			}
-
-			if (!filteredItems) {
-				return;
-			}
-
-			if (filteredItems.length === 0) {
-				this._groupsCount = 0;
-				return [];
-			}
-
-			if (!this._needs.grouping) {
-				return filteredItems;
-			}
-
-			this._groupOnHeader = this.getHeader(this.groupOn);
-			this.groupOnHeaderName = this._groupOnHeader ? this._groupOnHeader.name : '';
-
-			var groups = [],
-				itemStructure = {},
-				that = this;
+				visibleColumns,
+				i;
 
 			if (this.groupOn) {
-				filteredItems.forEach(function (item, index) {
-					var groupOnValue = that.resolveProp(item, that.groupOn);
-					if (typeof groupOnValue === 'object' || that._groupOnHeader.type === 'date' || that._groupOnHeader.type === 'datetime') {
-						groupOnValue = that.renderObject(groupOnValue, false, that._groupOnHeader);
+				visibleColumns = [];
+				this.columns.forEach(function (column) {
+					if (column.groupOn !== this.groupOn) {
+						visibleColumns.push(column);
+					} else {
+						this._setGroupOnColumn(column);
 					}
+				}, this);
+			} else {
+				visibleColumns = this.columns.slice();
+			}
+
+			this.visibleColumns = visibleColumns;
+			this.disabledColumns = [];
+			this._disabledColumnsIndexes = [];
+		},
+
+		_filterItems : function () {
+			var
+				filteredItems,
+				filterFunctions;
+
+			if (this.data && this.data.length) {
+				// Call filtering code only on columns that has a filter
+				filterFunctions = this.columns.map(function (column) {
+					return column.getFilterFn();
+				});
+				filterFunctions = filterFunctions.filter(function (f) {
+					return f !== undefined;
+				});
+
+				if (filterFunctions.length) {
+					filteredItems = this.data.filter(function (item) {
+						return filterFunctions.every(function (filterFn) {
+							return filterFn(item);
+						}, this);
+					}, this);
+				} else {
+					filteredItems = this.data.slice();
+				}
+
+				this.filteredItems = filteredItems;
+				this._debounceGroupItems();
+
+			} else {
+				this.filteredItems = [];
+				this.filteredGroupedItems  = [];
+				this.sortedFilteredGroupedItems = [];
+				this._groupsCount = 0;
+			}
+		},
+
+		_groupItems: function () {
+
+			if (!this.filteredItems || this.filteredItems.length === 0) {
+				this.filteredGroupedItems  = [];
+				this.sortedFilteredGroupedItems = [];
+				this._groupsCount = 0;
+				return;
+			}
+
+			var
+				groupOn = this.groupOn,
+				groupOnColumn = this._getGroupOnColumn(),
+				groups = [],
+				itemStructure = {};
+
+
+			if (groupOn) {
+				if (!groupOnColumn) {
+					console.warn('Cannot group on ' + groupOn + ' as there is no columm configured to group on this value path.');
+					return;
+				}
+
+				this.filteredItems.forEach(function (item, index) {
+					var groupOnValue = groupOnColumn.getComparableValue(item, groupOn);
+
 					if (groupOnValue !== undefined) {
 						if (!itemStructure[groupOnValue]) {
 							itemStructure[groupOnValue] = [];
 						}
 						itemStructure[groupOnValue].push(item);
 					}
-				});
+				}, this);
 
 				Object.keys(itemStructure).forEach(function (key) {
 					groups.push({
 						name: key,
 						id: key,
-						items: itemStructure[key],
-						visible: true
+						items: itemStructure[key]
 					});
 				});
 
 				groups.sort(function (a, b) {
-					var v1 = this.get(this.groupOn, a.items[0]),
-						v2 = this.get(this.groupOn, b.items[0]);
+					var
+						v1 = groupOnColumn.getComparableValue(a.items[0], groupOn),
+						v2 = groupOnColumn.getComparableValue(b.items[0], groupOn);
+
 					if (typeof v1 === 'object' && typeof v2 === 'object') {
-						return cz.tools.sortObject(v1, v2);
+						// HACK(pasleq): worst case, compare using values converted to string
+						v1 = v1.toString();
+						v2 = v2.toString();
 					}
 					if (typeof v1 === 'number' && typeof v2 === 'number') {
 						return v1 - v2;
@@ -790,257 +583,233 @@
 						}
 						return v1 ? -1 : 1;
 					}
-					console.warn('unsupported sort', typeof v1, v1, typeof v2, v2);
-					return 0;
-				}.bind(this));
 
-				if (this.hideButFirst && groups.length > 1) {
-					groups.forEach(function (group, index) {
-						if (index === 0) {
-							return;
-						}
-						group.visible = false;
-					});
-				}
+					return 0;
+				});
 
 				this._groupsCount = groups.length;
+
 			} else {
-				groups = filteredItems;
+				groups = this.filteredItems;
 				this._groupsCount = 0;
 			}
 
-			this._needs.grouping = false;
+			this.filteredGroupedItems = groups;
 
-			return groups;
+			this._debounceSortItems();
 		},
 
-		_sortFilteredGroupedItems: function (filteredGroupedItems, sortOn, descending) {
-			if (!filteredGroupedItems) {
+		_sortFilteredGroupedItems: function () {
+			if (!this.filteredGroupedItems) {
 				return;
 			}
 
-			if (!sortOn) {
-				this.set('sortedFilteredGroupedItems', filteredGroupedItems);
-				this._debounceUpdateWidths();
-				return;
-			}
-
-			var items = [],
-				numGroups = filteredGroupedItems.length,
+			var
+				sortOn = this.sortOn,
+				sortOnColumn = this._getSortOnColumn(),
+				items = [],
+				numGroups = this.filteredGroupedItems.length,
 				mappedItems,
 				results = 0,
-				itemMapper = function (item, originalItemIndex) {
-					return {
-						index: originalItemIndex,
-						value: this.get(sortOn, item)
-					};
-				}.bind(this);
+				itemMapper;
 
+			if (!sortOn) {
+				this.sortedFilteredGroupedItems = this.filteredGroupedItems;
+				this._debounceAdjustColumns();
+				return;
+			}
+
+			itemMapper = function (item, originalItemIndex) {
+				return {
+					index: originalItemIndex,
+					value: sortOnColumn.getComparableValue(item, sortOn.valuePath)
+				};
+			};
 			if (this._groupsCount > 0) {
-				filteredGroupedItems.forEach(function (group, index) {
+				this.filteredGroupedItems.forEach(function (group, index) {
 					if (group.items && group.items.map) {
 						// create a reduced version of the items array to transfer to the worker
 						// with item index and property to sort on
-						mappedItems = group.items.map(itemMapper);
+						mappedItems = group.items.map(itemMapper, this);
+
 						// Sort the reduced version of the array
 						this.$.sortWorker.process({
 							meta: {
 								groupName: group.name,
 								groupId: group.id,
-								index: index,
-								checked: group.checked,
-								visible: group.visible
+								index: index
 							},
-							reverse: descending,
+							reverse: sortOn.descending,
 							sortOn: 'value',
 							data: mappedItems
 						}, function (data) {
 							results += 1;
 							items[data.meta.index] = {
 								name: data.meta.groupName,
-								id: data.meta.groupId,
-								// HACK(pasleq): set a checked property to all groups to workaround issue with paper-checkbox
-								checked: data.meta.checked,
-								visible: data.meta.visible
+								id: data.meta.groupId
 							};
 							items[data.meta.index].items = data.data.map(function (item, index) {
 								return group.items[item.index];
 							});
 							if (results === numGroups) {
 								this.set('sortedFilteredGroupedItems', items);
-								this._debounceUpdateWidths();
+								this._debounceAdjustColumns();
 							}
 						}.bind(this));
 					}
 				}, this);
 			} else {
 				// No grouping
-				mappedItems = filteredGroupedItems.map(itemMapper);
+				mappedItems = this.filteredGroupedItems.map(itemMapper, this);
 
 				this.$.sortWorker.process({
-					reverse: descending,
+					reverse: sortOn.descending,
 					sortOn: 'value',
 					data: mappedItems
 				}, function (data) {
 					items = data.data.map(function (item, index){
-						return filteredGroupedItems[item.index];
-					});
+						return this.filteredGroupedItems[item.index];
+					}, this);
 					this.set('sortedFilteredGroupedItems', items);
-					this._debounceUpdateWidths();
+					this._debounceAdjustColumns();
 				}.bind(this));
 			}
 		},
 
+		// TODO(pasleq): re-implement expand/collapse of single item
 		_computeIcon: function (item, expanded) {
 			return expanded ? 'expand-less' : 'expand-more';
 		},
 
+		// TODO(pasleq): re-implement expand/collapse of single item
 		toggleExtraColumns: function (event, detail) {
 			var item = event.model.item;
 			this.$.groupedList.toggleCollapse(item);
 		},
 
-		getNumFiltered: function (group) {
-			if (group === undefined || group === null) {
-				return;
-			}
-			var groupIndex = this.groupedItems.indexOf(group), filteredItems = this.filteredSortedGroupedItems[groupIndex].length;
-			return filteredItems - 1;
+		_onResize: function (e) {
+			this._debounceAdjustColumns();
 		},
 
-		_onResize: function (event, detail, a) {
-			var item = this.$.groupedList.getFirstVisibleItemElement();
-			if (!item) {
-				this.debounce('updateWidths', function () {
-					this.updateWidths(event, detail, a);
-				}.bind(this), 16);
-			} else if (!this.isDebouncerActive('updateWidths')) {
-				// If there is a debouncer scheduled to run updateWitdth, let it run.
-				this.updateWidths(event, detail, a);
-			}
-		},
-
-		_debounceUpdateWidths: function () {
-			this.debounce('updateWidths', this.updateWidths.bind(this), 16);
+		_debounceAdjustColumns: function () {
+			// 16ms 'magic' number copied from iron-list
+			// But this makes headers change width after the table has completed rendering,
+			// which might look strange.
+			this.debounce('adjustColumns', this._adjustColumns, 16);
 		},
 
 		/**
 		 * Enable/disable columns to properly fit in the available space.
+		 * Adjust headers width according to cells width
 		 *
-		 * @param  {Event} event    (optional) Resize event, required for "bigger" events
-		 * (set event.detail.bigger = true)
 		 * @memberOf element/cz-omnitable
 		 */
-		updateWidths: function (event, detail, a) {
-
-			if (!this.rendered || !this.columnHeaders) {
-				return;
-			}
-
-			var body = this.$ ? this.$.body : null,
-				bigger,
-				groupedList,
+		_adjustColumns: function () {
+			var
+				firstRow = this.$.groupedList.getFirstVisibleItemElement(),
+				tableContent = this.$ ? this.$.tableContent : null,
 				fits,
-				headerTds,
-				visibleColumns = this.columnHeaders.length,
-				second = (event && event.detail && event.detail.second) || false,
-				widthSetter,
-				widthTds;
+				cells,
+				currentWidth;
 
-			if (!body) {
-				return;
-			}
-
-			groupedList = this.$$('#groupedList');
-
-			// TODO(pasleq): have encountered situations where groupedList was not available yet. Should check why.
-			if (!groupedList) {
+			if (!tableContent || !firstRow) {
+				this._debounceAdjustColumns();
 				return;
 			}
 
 			fits = this.$.scroller.scrollWidth <= this.$.scroller.clientWidth;
-			/* Weird bug
-			** In certain scenarios (sizing the window so that a column barely fits)
-			** body.clientWidth actually expands by itself, causing a 'bigger' event.
-			** This triggers a resize scale up, which adds a column, that doesn't fit, causing a resize down.
-			** = endless loop.
-			** Since 'disableColumn' doesn't send any parameters to 'updateWidths', we can check for an event
-			** parameter = not caused by 'disableColumn' but rather 'enableColumn' or actual resize.
-			*/
-			bigger = body.clientWidth > this._previousWidth && event;
-			this._previousWidth = body.clientWidth;
-			/**
-			* To prevent infinite loops by multiple events, we need to check for 'bigger' events first
-			* to avoid triggering a 'disableColumn' action in the upscaling process.
-			*
-			* Also make sure that the body is not overflowing (fits), when receiving multiple resize up
-			* events during a "scale up", we can hit an async infinite loop otherwise.
-			*
-			* Finally, there's no point in trying to enable a header if there aren't any disabled ones,
-			* but we don't want to return since this event might be the final one - actually updating
-			* column widths.
-			*/
-			if (fits && bigger && this.disabledHeaders.length > 0) {
-				/**
-				 * Only scale up if:
-				 * * It's the first scale up step - a native 'resize' event without detail.second
-				 * * it's the second scale up step - scalingup set by first event and detail.second
-				 */
-				/**
-				 * Make sure to sync scalingUp and detail.second since a mismatch can occur if a
-				 * 'resize' triggers a scalingUp process that hasn't completed.
-				 */
-				if (this.scalingUp === second) {
-					this.enableColumn();
+
+			currentWidth = tableContent.clientWidth;
+
+			if (fits) {
+				if (this._canScaleUp(currentWidth)) {
+					this._enableColumn();
+					return;
 				}
-				/**
-				 * Discard any 'resize'-up events until the scale up is completed.
-				 */
-				return;
-			}
-			/**
-			* Reset scale-up status as soon as a non-'bigger' event occurs.
-			*/
-			this.scalingUp = false;
-			if (!fits && visibleColumns > 1) {
-				this.async(this.disableColumn);
+			} else {
+				this._overflowConfig = {
+					columns: this.visibleColumns.length,
+					width: currentWidth
+				};
+				this._disableColumn();
 				return;
 			}
 
-			widthSetter = this.$.groupedList.getFirstVisibleItemElement();
+			cells = Polymer.dom(firstRow).querySelectorAll('cosmoz-omnitable-item-cell');
 
-			if (!widthSetter) {
-				return;
+			this._adjustHeadersWidth(cells);
+		},
+
+		_adjustHeadersWidth: function (cells) {
+			var
+				cell,
+				cellWidth,
+				headers,
+				header,
+				i;
+
+			headers = Polymer.dom(this.$.header).querySelectorAll('cosmoz-omnitable-header-cell');
+			for (i = 0; i < cells.length; i+=1) {
+				cell = cells[i];
+				header = headers[i];
+				cellWidth = cell.getComputedStyleValue('width');
+				header.style.minWidth = cellWidth;
+				header.style.maxWidth = cellWidth;
+				header.style.width = cellWidth;
+			}
+		},
+
+		_canScaleUp: function (width) {
+
+			if (this.disabledColumns.length === 0) {
+				return false;
 			}
 
-			headerTds = Polymer.dom(this.$.header).querySelectorAll('.header');
-			widthTds = Polymer.dom(widthSetter).querySelectorAll('.cell');
-			widthTds.forEach(function (element, index) {
-				var headerElement = headerTds[index],
-					csElement = window.getComputedStyle(element, null),
-					newWidth = element.clientWidth - parseInt(csElement.getPropertyValue('padding-left'), 10) - parseInt(csElement.getPropertyValue('padding-right'), 10);
-				headerElement.style.width = newWidth + 'px';
-				headerElement.style.maxWidth = newWidth + 'px';
+			if (!this._overflowConfig) {
+				return true;
+			}
+
+			if (width > this._overflowConfig.width) {
+				return true;
+			}
+
+			if ((this.visibleColumns.length + 1) < this._overflowConfig.columns) {
+				return true;
+			}
+
+			return false;
+		},
+
+		_disableColumn: function () {
+			var disabledColumn, disabledColumnIndex;
+			// disables/hides columns that for example does not fit in the current screen size.
+			this.visibleColumns.forEach(function (column, index) {
+				if (disabledColumn === undefined || disabledColumn.priority >= column.priority) {
+					disabledColumn = column;
+					disabledColumnIndex = index;
+				}
 			});
+
+			if (disabledColumn) {
+				this.push('disabledColumns', disabledColumn);
+				this._disabledColumnsIndexes.push(disabledColumnIndex);
+				this.splice('visibleColumns', disabledColumnIndex, 1);
+				this._debounceAdjustColumns();
+			}
 		},
 
-		renderLink: function (header, model) {
-			if (!header || !model || !header.linkbase || !header.linkprop) {
-				return;
-			}
+		_enableColumn: function () {
 
-			var linkprop = this.resolveProp(model, header.linkprop);
+			// Columns are disabled by priority, so we can re-enable them
+			var
+				column = this.pop('disabledColumns'),
+				columnIndex = this._disabledColumnsIndexes.pop();
 
-			if (linkprop === '') {
-				return;
-			}
+			this.splice('visibleColumns', columnIndex, 0, column);
 
-			if (header.linkbase[0] === '#') {
-				// static url
-				return header.linkbase + linkprop;
-			}
-			return this.resolveProp(model, header.linkbase) + linkprop;
+			this._debounceAdjustColumns();
 		},
+
 		//TODO: Use cosmoz-behaviors
 		/**
 		 * Helper method for Polymer 1.0+ templates - check if variable
@@ -1065,129 +834,126 @@
 			}
 			return false;
 		},
-		//TODO: Use cosmoz-behaviors
-		/**
-		 * Resolve a JS object path to its property value
-		 * @param  {Object} item The JS object
-		 * @param  {String} path The (recursive) object property such as "counterParty.name"
-		 * @return {mixed}      The value of the object property
-		 * @memberOf element/cz-omnitable
-		 */
-		resolveProp: function (item, path) {
-			if (item === undefined || path === undefined) {
-				return '';
-			}
-			// TODO: Cleaner solution ?
-			if (item.placeholder && Object.keys(item).length === 1) {
-				return '';
-			}
-			if (item.hasOwnProperty(path)) {
-				return item[path];
-			}
-			var firstDotIndex = path.indexOf('.'), firstProp, restOfPropPath;
-			if (firstDotIndex > 0) {
-				firstProp = path.substring(0, firstDotIndex);
-				restOfPropPath = path.substring(firstDotIndex + 1);
-				return this.resolveProp(item[firstProp], restOfPropPath);
-			}
-			console.warn('item does not have property/path', item, path);
-			return '';
+
+		_computeItemRowClasses: function (selected) {
+			return selected ?  'itemRow itemRow-selected' : 'itemRow';
 		},
 
-		_computeClasses: function (type, headerType, index) {
-			return [
-				type,
-				'c' + index,
-				'type-' + headerType
-			].join(' ');
+		_computeItemRowCellClasses: function (column, columnIndex) {
+			var originalIndex = this.columns.indexOf(column);
+			return 'itemRow-cell'
+				+ (column.cellClass ? ' ' + column.cellClass + ' ' : '')
+				+ ' cosmoz-omnitable-column-' + originalIndex;
 		},
 
-		_computeHeaderClasses: function (headerType, index) {
-			return [
-				'header',
-				'c' + index,
-				'header-type-' + headerType
-			].join(' ');
-		},
-
-		_computeItemClasses: function (item, expanded, disabledHeadersCount) {
-			var	classes = [
-				'item'
-			];
-
-			if (disabledHeadersCount > 0) {
-				classes.push('expandable');
-			}
-
-			if (expanded) {
-				classes.push('expanded');
-			}
-
-			return classes.join(' ');
-		},
-
-		_computeItemRowClasses: function (change) {
-			var
-				item = change.base,
-				classes = [
-					'item-row'
-				];
-
-			if (item.checked) {
-				classes.push('selected');
-			}
-			if (item.placeholder) {
-				classes.push('width-setter');
-			}
-			return classes.join(' ');
-		},
-
-		// TODO: Generalize into behavior, more args
-		_allTrue: function (arg1, arg2) {
-			return arg1 && arg2;
+		_computeGroupRowClasses: function (folded) {
+			return folded ? 'groupRow groupRow-folded' : 'groupRow';
 		},
 
 		_onWebWorkerReady: function () {
 			this._webWorkerReady = true;
-			if (this._needs.filtering) {
-				this.filterKick += 1;
+			if (this.data && this.columns) {
+				this._setColumnValues();
+				this._debounceFilterItems();
 			}
 		},
 
-		onSortSelected: function (event, detail) {
-			if (detail.selected === this.sortOn) {
-				// FIXME: Causes double re-sort
-				this.sortDescending = !this.sortDescending;
-				// FIXME: Needed to update menu label text
-				this.sortOn = '';
-				this.sortOn = detail.selected;
+		_getSortDirection: function (column, sortOnChange) {
+			var
+				sortOn = sortOnChange.base,
+				direction = '';
+
+			if (!column) {
 				return;
 			}
-			this.sortDescending = false;
+			if (sortOn && sortOn.valuePath === column.sortOn) {
+				direction = sortOn.descending ? ' (Descending)': ' (Ascending)';
+			}
+
+			return direction;
 		},
 
-		getSortOrder: function (id, sortOn, descending) {
-			if (id !== sortOn) {
-				return;
-			}
-			var dir;
-			if (descending) {
-				dir = this._('Descending');
+		/**
+		 * Called when a item from the sortOn dropdown is activated (tap)
+		 */
+		_onSortColumnActivate: function (event) {
+			var
+				column = event.model ? event.model.column : undefined,
+				selected;
+
+			if (!column) {
+				this.sortOn = null;
+				this._sortOnSelectorSelected = 0;
 			} else {
-				dir = this._('Ascending');
+				selected = this.$.sortOnSelector.selected;
+				if (!this.sortOn || !this.sortOn.valuePath) {
+					this.sortOn = {
+						valuePath: column.sortOn,
+						descending: false
+					};
+				} else if (this.sortOn.valuePath === column.sortOn) {
+					this.sortOn = {
+						valuePath: this.sortOn.valuePath,
+						descending: !this.sortOn.descending
+					};
+				} else {
+					this.sortOn = {
+						valuePath: column.sortOn,
+						descending: false
+					};
+				}
+
+				// Force dropdown menu to refresh `selectedItemLabel`
+				this._sortOnSelectorSelected = 0;
+				this._sortOnSelectorSelected = selected;
 			}
-			return ' (' + dir + ')';
 		},
 
-		addFilter: function (id, value) {
-			var header = this.getHeader(id),
-				headerIndex = this.headers.indexOf(header),
-				ac = this.$$('#header .header.c' + headerIndex + ' cosmoz-autocomplete');
-			if (!ac) {
-				console.warn("wtf?", ac);
+		// Select the right column if sort has been changed from outside.
+		_sortOnChanged: function (sortOnChange) {
+			var sortOn = sortOnChange.base;
+
+			if (sortOn && !sortOn.valuePath) {
+				this.sortOn = {
+					valuePath: sortOn,
+					descending: false
+				};
 				return;
 			}
-			ac.selectByValue(value);
+			if (!sortOn || !sortOn.valuePath) {
+				this._sortOnSelectorSelected = 0;
+			}
+
+			this._updateSelectedSortIndex();
+
+			if (this.data && this.data.length && this._webWorkerReady && this.columns) {
+				this._debounceSortItems();
+			}
+		},
+
+		_updateSelectedSortIndex: function () {
+			var
+				newIndex,
+				sortOnSelectorItems = this.$.sortOnSelector.items,
+				sortColumns;
+
+			if (!this.sortOn || !this.sortOn.valuePath || !sortOnSelectorItems.length) {
+				newIndex = 0;
+			} else {
+				sortColumns = this.$.sortColumns;
+				sortOnSelectorItems.some(function (element, i) {
+					var model = sortColumns.modelForElement(element);
+					if (model && model.column && (model.column.sortOn === this.sortOn.valuePath)) {
+						newIndex = i;
+						return true;
+					}
+				}, this);
+			}
+
+			if (newIndex !== this._sortOnSelectorSelected) {
+				this._sortOnSelectorSelected = newIndex;
+			}
 		}
+
 	});
 }());

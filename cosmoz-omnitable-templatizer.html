@@ -1,0 +1,82 @@
+<script>
+	Polymer({
+
+		is: 'cosmoz-omnitable-templatizer',
+
+		properties: {
+			template: {
+				type: Object,
+				observer: '_templateChanged'
+			}
+		},
+
+		behaviors: [
+			Polymer.Templatizer
+		],
+
+		_templatesInUse: null,
+
+		ready: function () {
+
+			var instanceProps = {};
+
+			instanceProps['item'] = true;
+
+			this._instanceProps = instanceProps;
+
+			this._templatesInUse = [];
+
+			this.template = Polymer.dom(this).querySelector('template');
+		},
+
+		_templateChanged: function (newTemplate) {
+			if (this.ctor) {
+				this.templatize(newTemplate);
+			}
+		},
+
+		_ensureTemplatized: function () {
+			if (!this.ctor) {
+				this.templatize(this.template);
+			}
+		},
+
+		_forwardParentProp: function (prop, value) {
+			//console.log('_forwardParentProp', prop, value);
+			this._templatesInUse.forEach(function (template) {
+				template[prop] = value;
+			});
+		},
+
+		_forwardParentPath: function (path, value) {
+			//console.log('_forwardParentPath', path, value);
+			this._templatesInUse.forEach(function (template) {
+				template.notifyPath(path, value, true);
+			});
+		},
+
+		createInstance: function () {
+			var instance;
+
+			this._ensureTemplatized();
+
+			instance = this.stamp({});
+
+			this._templatesInUse.push(instance);
+
+			return instance;
+		},
+
+		removeInstance: function (instance) {
+			var i = 0;
+			for (i = 0; i < this._templatesInUse.length ; i+=1) {
+				if (this._templatesInUse[i] === instance) {
+					this._templatesInUse.splice(i, 1);
+					break;
+				}
+
+			}
+		}
+
+	});
+</script>
