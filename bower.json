@@ -32,7 +32,7 @@
     "paper-icon-button": "PolymerElements/paper-icon-button#^1.0.0",
     "paper-item": "PolymerElements/paper-item#^1.0.0",
     "paper-listbox": "PolymerElements/paper-listbox#^1.0.0",
-    "cosmoz-grouped-list": "Neovici/cosmoz-grouped-list#perf-rework",
+    "cosmoz-grouped-list": "Neovici/cosmoz-grouped-list#master",
     "cosmoz-web-worker": "Neovici/cosmoz-web-worker#master",
     "cosmoz-autocomplete": "neovici/cosmoz-autocomplete#master",
     "cosmoz-i18next": "Neovici/cosmoz-i18next#master",
