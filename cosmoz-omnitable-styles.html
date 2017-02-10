@@ -3,16 +3,16 @@
 	<template>
 		<style>
 			:host {
-				@apply(--layout-vertical);
-				@apply(--layout-relative);
+				@apply --layout-vertical;
+				@apply --layout-relative;
 				overflow: hidden;
 			}
 
 			/* The wrapping div that contains the header, the table content and the footer */
 			.mainContainer {
 				background-color: #fff;
-				@apply(--layout-vertical);
-				@apply(--layout-flex);
+				@apply --layout-vertical;
+				@apply --layout-flex;
 
 			}
 
@@ -21,27 +21,27 @@
 			}
 
 			.header {
-				@apply(--layout-relative);
-				@apply(--layout-horizontal);
-				@apply(--layout-end);
+				@apply --layout-relative;
+				@apply --layout-horizontal;
+				@apply --layout-end;
 			}
 
 
 			.tableContent {
 				overflow-y: auto;
 				min-height: 90px;
-				@apply(--layout-vertical);
-				@apply(--layout-flex);
-				@apply(--layout-relative);
+				@apply --layout-vertical;
+				@apply --layout-flex;
+				@apply --layout-relative;
 			}
 
 			/* Empty data set styling */
 
 			.tableContent-empty {
-				@apply(--layout-fit);
-				@apply(--layout-horizontal);
-				@apply(--layout-center);
-				@apply(--layout-center-justified);
+				@apply --layout-fit;
+				@apply --layout-horizontal;
+				@apply --layout-center;
+				@apply --layout-center-justified;
 				color: #ccc;
 			}
 
@@ -55,8 +55,8 @@
 			}
 
 			.tableContent-empty > div {
-				@apply(--layout-vertical);
-				@apply(--layout-center-justified);
+				@apply --layout-vertical;
+				@apply --layout-center-justified;
 				padding-bottom: 24px;
 			}
 
@@ -75,13 +75,13 @@
 
 
 			.tableContent-scroller {
-				@apply(--layout-flex);
+				@apply --layout-flex;
 				position: relative;
 				overflow: auto;
 			}
 
 			#groupedList {
-				@apply(--layout-fit);
+				@apply --layout-fit;
 			}
 
 			.header,
@@ -92,8 +92,8 @@
 			}
 
 			.footer {
-				@apply(--layout-horizontal);
-				@apply(--layout-center);
+				@apply --layout-horizontal;
+				@apply --layout-center;
 				padding: 3px 0;
 				border-top: solid 1px #e8e8e8;
 				background-color: #f5f5f5;
@@ -102,20 +102,20 @@
 			}
 
 			.footer-controls {
-				@apply(--layout-horizontal);
-				@apply(--layout-flex);
-				@apply(--layout-center);
+				@apply --layout-horizontal;
+				@apply --layout-flex;
+				@apply --layout-center;
 			}
 
 			.footer-control {
 				margin-left: 3%;
-				@apply(--layout-horizontal);
-				@apply(--layout-center);
+				@apply --layout-horizontal;
+				@apply --layout-center;
 			}
 
 			.footer-tableStats {
-				@apply(--layout-vertical);
-				@apply(--layout-end);
+				@apply --layout-vertical;
+				@apply --layout-end;
 				margin-right: 3%;
 			}
 
@@ -152,18 +152,18 @@
 				height: 24px;
 				border-bottom: solid 1px #e2e2e2;
 				padding-right: 8px;
-				@apply(--layout-horizontal);
-				@apply(--layout-center);
+				@apply --layout-horizontal;
+				@apply --layout-center;
 			}
 
 			.itemRow.itemRow-selected {
 				background-color: #e1f8f9;
-				@apply(--cosmoz-omnitable-selected-row);
+				@apply --cosmoz-omnitable-selected-row;
 			}
 
 			.groupRow {
-				@apply(--layout-horizontal);
-				@apply(--layout-center);
+				@apply --layout-horizontal;
+				@apply --layout-center;
 				background-color: #efefef;
 				font-weight: 400;
 				color: #48515b;
@@ -177,8 +177,8 @@
 
 
 			.groupRow-label {
-				@apply(--layout-flex);
-				@apply(--layout-horizontal);
+				@apply --layout-flex;
+				@apply --layout-horizontal;
 				padding-left: 8px;
 				margin: 0;
 				font-size: 1.15em;
