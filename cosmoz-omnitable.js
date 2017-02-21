@@ -430,32 +430,7 @@
 		},
 
 		_groupOnChanged: function (newValue, oldValue) {
-			var
-				oldGroupColumnIndex = -1,
-				oldGroupColumn,
-				groupColumnIndex = -1,
-				groupColumn,
-				i;
-			if (this.columns && this.visibleColumns) {
-				for (i = 0 ; i < this.columns.length; i += 1) {
-					if (oldValue && this.columns[i].groupOn === oldValue) {
-						oldGroupColumnIndex = i;
-						oldGroupColumn = this.columns[i];
-					}
-					if (newValue && this.columns[i].groupOn === newValue) {
-						groupColumnIndex = i;
-						groupColumn = this.columns[i];
-					}
-				}
-
-				if (oldGroupColumnIndex >= 0) {
-					this.splice('visibleColumns', oldGroupColumnIndex, 0, oldGroupColumn);
-				}
-				if (groupColumnIndex >= 0) {
-					this.splice('visibleColumns', groupColumnIndex, 1);
-				}
-				this._setGroupOnColumn(groupColumn);
-			} else if (this.columns) {
+			if (this.columns) {
 				this._updateVisibleColumns();
 			}
 
