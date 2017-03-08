@@ -588,7 +588,7 @@
 				results = 0,
 				itemMapper;
 
-			if (!sortOn) {
+			if (!sortOn || !sortOnColumn) {
 				this.sortedFilteredGroupedItems = this.filteredGroupedItems;
 				this._debounceAdjustColumns();
 				return;
