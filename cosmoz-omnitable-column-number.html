@@ -81,16 +81,14 @@
 			},
 
 			_toLocaleString: function (num, locale) {
-				if (num && num.toLocaleString) {
+				if (num && locale && num.toLocaleString) {
 					return num.toLocaleString(locale);
-				} else {
-					return num;
 				}
+				return num;
 			},
 
 			renderNumberValue: function (item, valuePath, locale) {
-				var
-					value = this.get(valuePath, item);
+				var value = this.get(valuePath, item);
 
 				return this._toLocaleString(value, locale);
 			}

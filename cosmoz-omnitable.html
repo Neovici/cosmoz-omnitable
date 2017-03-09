@@ -190,7 +190,7 @@
 										<paper-checkbox checked="{{ selected }}" on-change="_onItemCheckboxChange"></paper-checkbox>
 									</div>
 									<template is="dom-repeat" items="[[visibleColumns]]" as="column" index-as="columnIndex">
-										<cosmoz-omnitable-item-cell class$="{{_computeItemRowCellClasses(column, columnIndex)}}"
+										<cosmoz-omnitable-item-cell class$="[[ _computeItemRowCellClasses(column, columnIndex) ]]"
 											column="{{column}}"
 											item="{{item}}"
 											selected="{{selected}}"
@@ -233,7 +233,7 @@
 								</cosmoz-omnitable-sort-list-item>
 								<template is="dom-repeat" id="sortColumns" items="[[columns]]" as="column">
 									<paper-item on-tap="_onSortColumnActivate" hidden$="[[!column.sortOn]]">
-										<span>[[column.title]]</span>&nbsp;<span>[[_getSortDirection(column, sortOn.*)]]</span>
+										<span>[[ column.title ]]</span>&nbsp;<span>[[ _getSortDirection(column, sortOn.*) ]]</span>
 									</paper-item>
 								</template>
 							</paper-listbox>

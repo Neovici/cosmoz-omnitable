@@ -14,6 +14,7 @@
 	<link rel="import" href="../../iron-icons/iron-icons.html">
 	<link rel="import" href="../../paper-button/paper-button.html">
 	<link rel="import" href="../../cosmoz-i18next/cosmoz-i18next.html">
+	<link rel="import" href="../../cosmoz-moment/cosmoz-moment.html">
 	<link rel="import" href="../cosmoz-omnitable.html">
 
 	<link rel="import" href="table-demo-behavior.html">
@@ -22,7 +23,7 @@
 
 	</style>
 
-</head>
+</head> 
 <body class="fullbleed">
 	<dom-module id="x-page">
 		<template>
@@ -40,6 +41,8 @@
 			<div class="layout vertical fit">
 				<h3>Cosmoz omnitable demo</h3>
 
+				<cosmoz-moment locale="[[ locale ]]"></cosmoz-moment>
+
 				<div class="layout horizontal center">
 					<button class="action" on-tap="changeData">Generate a new data set</button>
 					<button class="action" on-tap="emptyData">Generate an empty data set</button>
@@ -48,7 +51,7 @@
 					</div>
 					<div class="action">
 						<paper-dropdown-menu label="Locale">
-							<paper-listbox class="dropdown-content" selected="{{locale}}" attr-for-selected="value">
+							<paper-listbox class="dropdown-content" selected="{{ locale }}" attr-for-selected="value">
 								<paper-item value="en">en</paper-item>
 								<paper-item value="fr">fr</paper-item>
 								<paper-item value="sv">sv</paper-item>
@@ -69,15 +72,15 @@
 					<cosmoz-omnitable-column-boolean title="Boolean" value-path="bool" sort-on="bool" group-on="bool"
 						true-label="Oui" false-label="Non">
 					</cosmoz-omnitable-column-boolean>
-					<cosmoz-omnitable-column-number title="Value" value-path="value" locale="{{locale}}" sort-on="value" group-on="value" >
+					<cosmoz-omnitable-column-number title="Value" value-path="value" sort-on="value" group-on="value" >
 					</cosmoz-omnitable-column-number>
 					<cosmoz-omnitable-column-autocomplete title="Group" value-path="group" sort-on="group" group-on="group">
 					</cosmoz-omnitable-column-autocomplete>
 					<cosmoz-omnitable-column-amount title="Amount" value-path="amount" sort-on="amount" group-on="amount">
 					</cosmoz-omnitable-column-amount>
-					<cosmoz-omnitable-column-date title="Date" value-path="date" locale="{{locale}}" sort-on="date" group-on="date">
+					<cosmoz-omnitable-column-date title="Date" value-path="date" sort-on="date" group-on="date">
 					</cosmoz-omnitable-column-date>
-					<cosmoz-omnitable-column-date title="DateJSON" value-path="dateJSON" locale="{{locale}}" sort-on="dateJSON" group-on="dateJSON">
+					<cosmoz-omnitable-column-date title="DateJSON" value-path="dateJSON" sort-on="dateJSON" group-on="dateJSON">
 					</cosmoz-omnitable-column-date>
 					<cosmoz-omnitable-column title="Sub-property" value-path="sub.subProp" sort-on="sub.subProp" group-on="sub.subProp" flex="5">
 					</cosmoz-omnitable-column>
@@ -93,12 +96,12 @@
 
 					<paper-button action on-run="updateSelectedRows">
 						<iron-icon icon="editor:mode-edit"></iron-icon>
-						<span>{{ _computeLabel('Update', selectedItems.length)}}</span>
+						<span>Update [[ selectedItems.length ]] items</span>
 					</paper-button>
 
 					<paper-button action on-run="removeItems">
 						<iron-icon icon="delete"></iron-icon>
-						<span>{{ _computeLabel('Remove', selectedItems.length)}}</span>
+						<span>Remove [[ selectedItems.length ]] items</span>
 					</paper-button>
 				</cosmoz-omnitable>
 
@@ -161,14 +164,6 @@
 
 		emptyData: function () {
 			this.data = [];
-		},
-
-		_localeChanged: function (locale, oldLocale) {
-			console.log('_localeChanged', locale, oldLocale);
-		},
-
-		_computeLabel: function (text, count) {
-			return text + ' ' + count + ' items';
 		},
 
 		updateSelectedRows: function (event, detail) {

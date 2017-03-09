@@ -40,11 +40,6 @@
 				type: Array
 			},
 
-			locale: {
-				type: String,
-				value: 'en'
-			},
-
 			sortOn: {
 				type: String
 			},
@@ -183,25 +178,22 @@
 		},
 
 		getFilterFn: function () {
-			if (this.filter) {
-				if (Array.isArray(this.filter)) {
-					if (this.filter.length > 0) {
-						var filterArray = this.filter.map(function (element) {
-							return element.toString().toLowerCase();
-						});
-						return this._applyMultiFilter.bind(this, filterArray);
-					}
-				} else {
-					return this._applySingleFilter.bind(this, this.filter.toString().toLowerCase());
-				}
+			if (!this.filter) {
+				return;
+			}
+			if (!Array.isArray(this.filter)) {
+				return this._applySingleFilter.bind(this, this.filter.toString().toLowerCase());
+			}
+			if (this.filter.length > 0) {
+				var filterArray = this.filter.map(function (element) {
+					return element.toString().toLowerCase();
+				});
+				return this._applyMultiFilter.bind(this, filterArray);
 			}
 		},
 
 		_applySingleFilter: function (filterString, item) {
-
-			var
-				value = this.get(this.valuePath, item).toString().toLowerCase();
-
+			var value = this.get(this.valuePath, item).toString().toLowerCase();
 			return value.indexOf(filterString) >= 0;
 		},
 

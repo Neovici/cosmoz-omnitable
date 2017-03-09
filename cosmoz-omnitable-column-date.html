@@ -1,25 +1,27 @@
 <link rel="import" href="cosmoz-omnitable-column-behavior.html">
-<script type="text/javascript" src="../moment/min/moment-with-locales.min.js"></script>
+
+<link rel="import" href="../cosmoz-moment/cosmoz-moment.html">
+
 
 <dom-module id="cosmoz-omnitable-column-date">
 	<template>
 		<cosmoz-omnitable-templatizer id="data-templatizer">
 			<template>
-				[[renderDateValue(item, valuePath, userFormat, locale)]]
+				[[ renderDateValue(item, valuePath, userFormat, locale) ]]
 			</template>
 		</cosmoz-omnitable-templatizer>
 
 		<cosmoz-omnitable-templatizer id="edit-data-templatizer">
 			<template>
 				<paper-input no-label-float type="date" on-change="_dateValueChanged"
-				value="[[renderDateValue(item, valuePath, userFormat, locale)]]"></paper-input>
+				value="[[ renderDateValue(item, valuePath, userFormat, locale) ]]"></paper-input>
 			</template>
 		</cosmoz-omnitable-templatizer>
 
 		<cosmoz-omnitable-templatizer id="header-templatizer">
 			<template>
-				<paper-input id="searchFilter" label="[[title]]"
-					error-message="{{errorMessage}}" placeholder="{{_expandedUserFormat}}" value="{{_filterInput}}"></paper-input>
+				<paper-input type="date" id="searchFilter" label="[[title]]"
+					error-message="{{ errorMessage }}" placeholder="[[ _expandUserFormat(userFormat, locale) ]]" value="{{ _filterInput }}"></paper-input>
 			</template>
 		</cosmoz-omnitable-templatizer>
 	</template>
@@ -30,16 +32,6 @@
 
 			properties: {
 				/**
-				 * The format in which we receive the date values
-				 */
-				parseFormat: {
-					type: String,
-					value: function () {
-						return moment.ISO_8601;
-					}
-				},
-
-				/**
 				 * This is the format used to interact with the user, i.e. the format used
 				 * to render dates and to parse date entered by the user.
 				 * Should be a moment.js date format (http://momentjs.com/docs/#/displaying/format/)
@@ -49,11 +41,6 @@
 					value: 'L'
 				},
 
-				_expandedUserFormat: {
-					type: String,
-					computed: '_expandUserFormat(userFormat, locale)'
-				},
-
 				_filterInput: {
 					type: String,
 					observer: '_filterInputChanged'
@@ -61,7 +48,9 @@
 			},
 
 			behaviors: [
-				Cosmoz.OmnitableColumnBehavior
+				Cosmoz.MomentBehavior,
+				Cosmoz.OmnitableColumnBehavior,
+				Cosmoz.TranslatableBehavior
 			],
 
 			observers: [
@@ -76,7 +65,7 @@
 
 
 			_getDefaultWidth: function () {
-				return '7em';
+				return '10em';
 			},
 
 			/**
@@ -86,18 +75,8 @@
 				return '0';
 			},
 
-			_expandUserFormat: function (userFormat, locale) {
-				var m, longFormat;
-
-				m = moment().locale(locale);
-
-				longFormat = m.localeData().longDateFormat(userFormat);
-
-				if (!longFormat) {
-					longFormat = userFormat;
-				}
-
-				return longFormat;
+			_expandUserFormat: function (userFormat) {
+				return this.moment.localeData().longDateFormat(userFormat);
 			},
 
 			_filterChanged: function (filter) {
@@ -106,7 +85,7 @@
 					return;
 				}
 				this._filterChangedFromAbove = true;
-				this._filterInput = moment(filter, this.parseFormat, true).locale(this.locale).format(this.userFormat);
+				this._filterInput = this.moment(filter).format(this.userFormat);
 			},
 
 			_filterInputChanged: function (filterInput) {
@@ -114,11 +93,11 @@
 					this._filterChangedFromAbove = false;
 					return;
 				}
-				var parsedFilter = moment(filterInput, this._expandedUserFormat, true);
+				var parsedFilter = moment(filterInput, this.userFormat, true);
 
 				this._filterChangedFromInput = true;
 				if (parsedFilter.isValid()) {
-					this.set('filter', parsedFilter.format(this.parseFormat));
+					this.set('filter', parsedFilter);
 				} else {
 					this.set('filter', null);
 				}
@@ -142,36 +121,23 @@
 
 			getComparableValue: function (item, valuePath) {
 				var value = this.get(valuePath, item);
-				return moment.isDate(value) ? moment(value).toISOString() : value;
+				return moment(value).valueOf();
 			},
 
 			renderDateValue: function (item, valuePath, userFormat, locale) {
-				var
-					value = this.get(valuePath, item),
-					d,
-					formatted;
-
-				if (!value) {
-					return;
-				}
-				if (moment.isDate(value)) {
-					d = moment(value);
-				} else {
-					d = moment(value, this.parseFormat, true);
-				}
-				formatted = d.locale(locale).format(userFormat);
-				return formatted;
+				var value = this.get(valuePath, item);
+				return moment(value).locale(locale).format(userFormat);
 			},
 
 			getFilterFn: function () {
-				if (this.filter) {
-					if (Array.isArray(this.filter)) {
-						if (this.filter.length > 0) {
-							return this._applyMultiFilter.bind(this, this.filter);
-						}
-					} else {
-						return this._applySingleFilter.bind(this, this.filter);
-					}
+				if (!this.filter) {
+					return;
+				}
+				if (!Array.isArray(this.filter)) {
+					return this._applySingleFilter.bind(this, this.filter);
+				}
+				if (this.filter.length > 0) {
+					return this._applyMultiFilter.bind(this, this.filter);
 				}
 			},
 
@@ -183,12 +149,7 @@
 
 			_applySingleFilter: function (filter, item) {
 				var value = this.get(this.valuePath, item);
-
-				if (moment.isDate(value)) {
-					value = moment(value).format(this.parseFormat);
-				}
-
-				return value === this.filter;
+				return moment(value).isSame(filter);
 			}
 		});
 

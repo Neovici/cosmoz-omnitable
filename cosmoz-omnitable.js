@@ -461,30 +461,26 @@
 		},
 
 		_filterItems : function () {
-			var
-				filteredItems,
-				filterFunctions;
-
 			if (this.data && this.data.length) {
 				// Call filtering code only on columns that has a filter
-				filterFunctions = this.columns.map(function (column) {
-					return column.getFilterFn();
-				});
-				filterFunctions = filterFunctions.filter(function (f) {
-					return f !== undefined;
-				});
+				var filterFunctions = this.columns
+						.map(function (column) {
+							return column.getFilterFn();
+						})
+						.filter(function (f) {
+							return f !== undefined;
+						});
 
 				if (filterFunctions.length) {
-					filteredItems = this.data.filter(function (item) {
+					this.filteredItems = this.data.filter(function (item) {
 						return filterFunctions.every(function (filterFn) {
 							return filterFn(item);
 						}, this);
 					}, this);
 				} else {
-					filteredItems = this.data.slice();
+					this.filteredItems = this.data.slice();
 				}
 
-				this.filteredItems = filteredItems;
 				this._debounceGroupItems();
 
 			} else {
@@ -528,12 +524,12 @@
 					}
 				}, this);
 
-				Object.keys(itemStructure).forEach(function (key) {
-					groups.push({
+				groups = Object.keys(itemStructure).map(function (key) {
+					return {
 						name: key,
 						id: key,
 						items: itemStructure[key]
-					});
+					};
 				});
 
 				groups.sort(function (a, b) {
@@ -842,7 +838,8 @@
 				return;
 			}
 			if (sortOn && sortOn.valuePath === column.sortOn) {
-				direction = sortOn.descending ? ' (Descending)': ' (Ascending)';
+				direction = sortOn.descending ? this._('Descending') : this._('Ascending');
+				return '(' + direction + ')';
 			}
 
 			return direction;
@@ -907,17 +904,14 @@
 		},
 
 		_updateSelectedSortIndex: function () {
-			var
-				newIndex,
-				sortOnSelectorItems = this.$.sortOnSelector.items,
-				sortColumns;
+			var newIndex,
+				sortOnSelectorItems = this.$.sortOnSelector.items;
 
 			if (!this.sortOn || !this.sortOn.valuePath || !sortOnSelectorItems.length) {
 				newIndex = 0;
 			} else {
-				sortColumns = this.$.sortColumns;
 				sortOnSelectorItems.some(function (element, i) {
-					var model = sortColumns.modelForElement(element);
+					var model = this.$.sortColumns.modelForElement(element);
 					if (model && model.column && (model.column.sortOn === this.sortOn.valuePath)) {
 						newIndex = i;
 						return true;
