@@ -21,9 +21,16 @@
 
 		<cosmoz-omnitable-templatizer id="header-templatizer">
 			<template>
-				<paper-input type="date" min="[[ _formatISODate(_possibleDateRange.min) ]]" max="[[ _formatISODate(_possibleDateRange.max) ]]"
-					 label="[[ title ]]" error-message="{{ errorMessage }}" placeholder="[[ _expandUserFormat(userFormat, locale) ]]" value="{{ _filterInput }}">
-				</paper-input>
+				<paper-dropdown-menu no-animations label="[[ title ]]" placeholder="[[ _expandUserFormat(userFormat, locale) ]]">
+					<div class="dropdown-content" style="padding: 10px;">
+						<paper-input type="date" min="[[ _formatISODate(_possibleDateRange.min) ]]" max="[[ _formatISODate(_latestAfter) ]]"
+							label="[[ _('Date after', t) ]]" placeholder="[[ _expandUserFormat(userFormat, locale) ]]" value="{{ _filterInput.start }}">
+						</paper-input>
+						<paper-input type="date" min="[[ _formatISODate(_earliestBefore) ]]" max="[[ _formatISODate(_possibleDateRange.max) ]]"
+							label="[[ _('Date before', t) ]]" placeholder="[[ _expandUserFormat(userFormat, locale) ]]" value="{{ _filterInput.end }}">
+						</paper-input>
+					</div>
+				</paper-dropdown-menu>
 			</template>
 		</cosmoz-omnitable-templatizer>
 	</template>
@@ -41,6 +48,11 @@
 					readOnly: true,
 					value: true
 				},
+
+				filter: {
+					type: Object,
+					computed: '_computeFilter(_filterInput.start, _filterInput.end)'
+				},
 				/**
 				 * This is the format used to interact with the user, i.e. the format used
 				 * to render dates and to parse date entered by the user.
@@ -52,13 +64,28 @@
 				},
 
 				_filterInput: {
-					type: String,
-					observer: '_filterInputChanged'
+					type: Object,
+					value: function () {
+						return {
+							start: null,
+							end: null
+						};
+					}
 				},
 
 				_possibleDateRange: {
 					type: Object,
 					computed: '_computePossibleDateRange(values.*)'
+				},
+
+				_latestAfter: {
+					type: Object,
+					computed: '_getMinMax(_possibleDateRange.max, _filterInput.end, 0)'
+				},
+
+				_earliestBefore: {
+					type: Object,
+					computed: '_getMinMax(_possibleDateRange.min, _filterInput.start, 1)'
 				}
 			},
 
@@ -68,9 +95,23 @@
 				Cosmoz.TranslatableBehavior
 			],
 
-			observers: [
-				'_filterChanged(filter)'
-			],
+			_getMinMax: function (firstRaw, secondRaw, max) {
+				var doMax = max === 1,
+					first = moment(firstRaw),
+					second = moment(secondRaw);
+
+				if (!first && second && second.isValid()) {
+					return second;
+				}
+				if (!second && first && first.isValid()) {
+					return first;
+				}
+
+				if (first.isAfter(second)) {
+					return doMax ? first : second;
+				}
+				return doMax ? second : first;
+			},
 
 			_computePossibleDateRange: function (change) {
 				return change.base.reduce(function (acc, item) {
@@ -84,11 +125,6 @@
 					return acc;
 				}, {});
 			},
-
-			// HACK: prevent recursive call to filter and filterInput observers
-			// TODO(pasleq): Am I doing something wrong here with _filterInput and filter ?
-			_filterChangedFromAbove: false,
-			_filterChangedFromInput: false,
 
 			_formatISODate: function (mom) {
 				return mom.format('YYYY-MM-DD');
@@ -109,28 +145,15 @@
 				return this.moment.localeData().longDateFormat(userFormat);
 			},
 
-			_filterChanged: function (filter) {
-				if (this._filterChangedFromInput) {
-					this._filterChangedFromInput = false;
-					return;
-				}
-				this._filterChangedFromAbove = true;
-				this._filterInput = this.moment(filter).format(this.userFormat);
-			},
+			_computeFilter: function (start, end) {
 
-			_filterInputChanged: function (filterInput) {
-				if (this._filterChangedFromAbove) {
-					this._filterChangedFromAbove = false;
-					return;
-				}
-				var parsedFilter = moment(filterInput, this.userFormat, true);
+				var start = moment(start),
+					end = moment(end);
 
-				this._filterChangedFromInput = true;
-				if (parsedFilter.isValid()) {
-					this.set('filter', parsedFilter);
-				} else {
-					this.set('filter', null);
-				}
+				return {
+					start: start.isValid() ? start : undefined,
+					end: end.isValid() ? end : undefined
+				};
 			},
 
 			_dateValueChanged: function (event) {
@@ -178,8 +201,18 @@
 			},
 
 			_applySingleFilter: function (filter, item) {
-				var value = this.get(this.valuePath, item);
-				return moment(value).isSame(filter);
+				var value = this.get(this.valuePath, item),
+					mom = moment(value);
+
+				if (filter.start && mom.isBefore(filter.start)) {
+					return false;
+				}
+
+				if (filter.end && mom.isAfter(filter.end)) {
+					return false;
+				}
+
+				return true;
 			}
 		});
 
