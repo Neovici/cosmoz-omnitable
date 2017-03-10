@@ -24,10 +24,10 @@
 				<paper-dropdown-menu no-animations label="[[ title ]]" placeholder="[[ _expandUserFormat(userFormat, locale) ]]">
 					<div class="dropdown-content" style="padding: 10px;">
 						<paper-input type="date" min="[[ _formatISODate(_possibleDateRange.min) ]]" max="[[ _formatISODate(_latestAfter) ]]"
-							label="[[ _('Date after', t) ]]" placeholder="[[ _expandUserFormat(userFormat, locale) ]]" value="{{ _filterInput.start }}">
+							label="[[ _('From date', t) ]]" placeholder="[[ _expandUserFormat(userFormat, locale) ]]" value="{{ _filterInput.start }}">
 						</paper-input>
 						<paper-input type="date" min="[[ _formatISODate(_earliestBefore) ]]" max="[[ _formatISODate(_possibleDateRange.max) ]]"
-							label="[[ _('Date before', t) ]]" placeholder="[[ _expandUserFormat(userFormat, locale) ]]" value="{{ _filterInput.end }}">
+							label="[[ _('Until date', t) ]]" placeholder="[[ _expandUserFormat(userFormat, locale) ]]" value="{{ _filterInput.end }}">
 						</paper-input>
 					</div>
 				</paper-dropdown-menu>
@@ -100,16 +100,18 @@
 					first = moment(firstRaw),
 					second = moment(secondRaw);
 
-				if (!first && second && second.isValid()) {
+				if (!first.isValid() && second.isValid()) {
 					return second;
 				}
-				if (!second && first && first.isValid()) {
+
+				if (!second.isValid() && first.isValid()) {
 					return first;
 				}
 
 				if (first.isAfter(second)) {
 					return doMax ? first : second;
 				}
+				
 				return doMax ? second : first;
 			},
 
@@ -127,6 +129,9 @@
 			},
 
 			_formatISODate: function (mom) {
+				if (!mom) {
+					return;
+				}
 				return mom.format('YYYY-MM-DD');
 			},
 
@@ -151,8 +156,8 @@
 					end = moment(end);
 
 				return {
-					start: start.isValid() ? start : undefined,
-					end: end.isValid() ? end : undefined
+					start: start.isValid() ? start : null,
+					end: end.isValid() ? end : null
 				};
 			},
 
