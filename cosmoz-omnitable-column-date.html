@@ -14,14 +14,16 @@
 		<cosmoz-omnitable-templatizer id="edit-data-templatizer">
 			<template>
 				<paper-input no-label-float type="date" on-change="_dateValueChanged"
-				value="[[ renderDateValue(item, valuePath, userFormat, locale) ]]"></paper-input>
+					value="[[ renderDateValue(item, valuePath, userFormat, locale) ]]">
+				</paper-input>
 			</template>
 		</cosmoz-omnitable-templatizer>
 
 		<cosmoz-omnitable-templatizer id="header-templatizer">
 			<template>
-				<paper-input type="date" id="searchFilter" label="[[title]]"
-					error-message="{{ errorMessage }}" placeholder="[[ _expandUserFormat(userFormat, locale) ]]" value="{{ _filterInput }}"></paper-input>
+				<paper-input type="date" min="[[ _formatISODate(_possibleDateRange.min) ]]" max="[[ _formatISODate(_possibleDateRange.max) ]]"
+					 label="[[ title ]]" error-message="{{ errorMessage }}" placeholder="[[ _expandUserFormat(userFormat, locale) ]]" value="{{ _filterInput }}">
+				</paper-input>
 			</template>
 		</cosmoz-omnitable-templatizer>
 	</template>
@@ -31,6 +33,14 @@
 			is: 'cosmoz-omnitable-column-date',
 
 			properties: {
+				/**
+				 * Ask for a list of values
+				 */
+				bindValues: {
+					type: Boolean,
+					readOnly: true,
+					value: true
+				},
 				/**
 				 * This is the format used to interact with the user, i.e. the format used
 				 * to render dates and to parse date entered by the user.
@@ -44,6 +54,11 @@
 				_filterInput: {
 					type: String,
 					observer: '_filterInputChanged'
+				},
+
+				_possibleDateRange: {
+					type: Object,
+					computed: '_computePossibleDateRange(values.*)'
 				}
 			},
 
@@ -57,12 +72,27 @@
 				'_filterChanged(filter)'
 			],
 
+			_computePossibleDateRange: function (change) {
+				return change.base.reduce(function (acc, item) {
+					var mom = moment(item);
+					if (!acc.min || mom.isBefore(acc.min)) {
+						acc.min = mom;
+					}
+					if (!acc.max || mom.isAfter(acc.max)) {
+						acc.max = mom;
+					}
+					return acc;
+				}, {});
+			},
+
 			// HACK: prevent recursive call to filter and filterInput observers
 			// TODO(pasleq): Am I doing something wrong here with _filterInput and filter ?
 			_filterChangedFromAbove: false,
-
 			_filterChangedFromInput: false,
 
+			_formatISODate: function (mom) {
+				return mom.format('YYYY-MM-DD');
+			},
 
 			_getDefaultWidth: function () {
 				return '10em';

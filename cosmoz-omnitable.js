@@ -500,8 +500,7 @@
 				return;
 			}
 
-			var
-				groupOn = this.groupOn,
+			var groupOn = this.groupOn,
 				groupOnColumn = this._getGroupOnColumn(),
 				groups = [],
 				itemStructure = {};

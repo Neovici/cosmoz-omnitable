@@ -41,6 +41,12 @@
 				folded: {
 					type: Boolean,
 					observer: '_foldedChanged'
+				},
+
+				title: {
+					type: String,
+					reflectToAttribute: true,
+					computed: 'get(column.valuePath, item)'
 				}
 			},
 
@@ -127,7 +133,6 @@
 				this._cellTemplateInstance.selected = this.selected;
 				this._cellTemplateInstance.expanded = this.expanded;
 			}
-
 
 		});
 	</script>

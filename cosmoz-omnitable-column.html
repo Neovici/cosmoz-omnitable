@@ -4,12 +4,12 @@
 	<template>
 
 		<cosmoz-omnitable-templatizer id="data-templatizer">
-			<template><span class="default-column">[[renderDefaultValue(item, valuePath)]]</span></template>
+			<template><span class="default-column">[[ renderDefaultValue(item, valuePath) ]]</span></template>
 		</cosmoz-omnitable-templatizer>
 
 		<cosmoz-omnitable-templatizer id="edit-data-templatizer">
 			<template>
-				<paper-input no-label-float type="text" on-change="_valueChanged" value="[[renderDefaultValue(item, valuePath)]]"></paper-input>
+				<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ renderDefaultValue(item, valuePath) ]]"></paper-input>
 			</template>
 		</cosmoz-omnitable-templatizer>
 

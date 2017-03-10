@@ -10,32 +10,38 @@
 		properties: {
 			autocompleteItems: {
 				type: Array,
-				notify: true
+				notify: true,
+				computed: '_computeAutocompleteItems(values.*)'
 			},
 			autocompleteSelectedItems: {
 				type: Array
-			}
-		},
-
-		created: function () {
-			this.bindValues = true;
+			},
+			/**
+			 * Ask for a list of values
+			 */
+			bindValues: {
+				type: Boolean,
+				readOnly: true,
+				value: true
+			},
 		},
 
 		observers: [
-			'_valuesChanged(values.*)',
 			'_autocompleteSelectedItemsChanged(autocompleteSelectedItems.*)'
 		],
 
-		_valuesChanged: function (change) {
-			var filteredValues = this.values.filter(function (value, index, array) {
-				return array.indexOf(value) === index;
-			});
-			this.autocompleteItems = filteredValues.map(function (value) {
-				return {
-					value: value,
-					label: this._getLabelForValue(value)
-				};
-			}, this);
+		_computeAutocompleteItems: function (change) {
+			return change.base
+				.filter(function (value, index, array) {
+					// Make the item list unique
+					return array.indexOf(value) === index;
+				})
+				.map(function (value) {
+					return {
+						value: value,
+						label: this._getLabelForValue(value)
+					};
+				}, this);
 		},
 
 		_getLabelForValue: function (value) {
@@ -49,9 +55,7 @@
 		},
 
 		_applySingleFilter: function (filterString, item) {
-
 			var value = this.get(this.valuePath, item).toString().toLowerCase();
-
 			return value === filterString;
 		},
 

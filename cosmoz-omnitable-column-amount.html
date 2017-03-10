@@ -29,26 +29,24 @@
 	<template>
 		<cosmoz-omnitable-templatizer id="data-templatizer">
 			<template>
-				<span>
-					[[renderAmountWithCurrency(item, valuePath)]]
-				</span>
+				<span>[[ renderAmountWithCurrency(item, valuePath) ]]</span>
 			</template>
 		</cosmoz-omnitable-templatizer>
 
 		<cosmoz-omnitable-templatizer id="edit-data-templatizer">
 			<template>
 				<paper-input no-label-float type="number" on-change="_amountValueChanged"
-					value="[[renderAmountValue(item, valuePath)]]">
-					<div suffix>[[_getCurrency(item, valuePath)]]</div>
+					value="[[ renderAmountValue(item, valuePath) ]]">
+					<div suffix>[[ _getCurrency(item, valuePath) ]]</div>
 				</paper-input>
 			</template>
 
 		<cosmoz-omnitable-templatizer id="header-templatizer">
 			<template>
-				<paper-dropdown-menu id="searchDropDownMenu" label="{{title}}" placeholder="{{_computeFilterText(filter.*)}}" on-close="_closeSearchDropdownMenu">
+				<paper-dropdown-menu id="searchDropDownMenu" label="[[ title ]]" placeholder="[[ _computeFilterText(filter.*) ]]" on-close="_closeSearchDropdownMenu">
 					<div class="dropdown-content searchHeaderDropdown">
-						<paper-input label="Minimum [[title]]" type="number" value="{{_numberFilter.minValue}}"></paper-input>
-						<paper-input label="Maximum [[title]]" type="number" value="{{_numberFilter.maxValue}}"></paper-input>
+						<paper-input label="[[ _('Minimum {0}', title) ]]" type="number" value="{{ _numberFilter.minValue }}"></paper-input>
+						<paper-input label="[[ _('Maximum {0}', title) ]]" type="number" value="{{ _numberFilter.maxValue }}"></paper-input>
 						<div class="searchHeaderDropdownButtons"><paper-button on-tap="_fireCloseSearchDropdownMenu">OK</paper-button></div>
 					</div>
 				</paper-dropdown-menu>
@@ -61,7 +59,8 @@
 
 			behaviors: [
 				Cosmoz.OmnitableColumnNumberBehavior,
-				Cosmoz.MoneyHelperBehavior
+				Cosmoz.MoneyHelperBehavior,
+				Cosmoz.TranslatableBehavior
 			],
 
 			_getDefaultWidth: function () {
