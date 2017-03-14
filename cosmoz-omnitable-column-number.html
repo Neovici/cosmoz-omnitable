@@ -1,56 +1,31 @@
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="cosmoz-omnitable-column-number-behavior.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 
-<dom-module id="cosmoz-omnitable-column-number-styles">
-	<template>
-		<style>
-			.number-cell {
-				text-align: right;
-			}
-
-			.number-header-cell .searchHeaderDropdown {
-				@apply --layout-vertical;
-				padding: 16px 0px;
-			}
-
-			.number-header-cell .searchHeaderDropdown > paper-input {
-				padding: 0px 16px;
-			}
-
-			.number-header-cell .searchHeaderDropdownButtons {
-				@apply --layout-horizontal;
-				@apply --layout-end-justified;
-			}
-
-		</style>
-	</template>
-</dom-module>
 <dom-module id="cosmoz-omnitable-column-number">
 	<template>
-		<style>
-
-		</style>
-
 		<cosmoz-omnitable-templatizer id="data-templatizer">
 			<template>
-				<div class="omnitable-cell-number">[[renderNumberValue(item, valuePath, locale)]]</div>
+				<div class="omnitable-cell-number">[[ renderNumberValue(item, valuePath, locale) ]]</div>
 			</template>
 		</cosmoz-omnitable-templatizer>
 
 		<cosmoz-omnitable-templatizer id="edit-data-templatizer">
 			<template>
-				<paper-input no-label-float type="number" on-change="_valueChanged" value="[[renderNumberValue(item, valuePath)]]"></paper-input>
+				<paper-input no-label-float type="number" on-change="_valueChanged" value="[[ renderNumberValue(item, valuePath) ]]"></paper-input>
 			</template>
 		</cosmoz-omnitable-templatizer>
 
 		<cosmoz-omnitable-templatizer id="header-templatizer">
 			<template>
-				<paper-dropdown-menu id="searchDropDownMenu"
-						label="{{title}}" placeholder="{{_computeFilterText(filter.*)}}" on-close="_closeSearchDropdownMenu">
-					<div class="dropdown-content searchHeaderDropdown">
-						<paper-input label="Minimum [[title]]" type="number" value="{{_numberFilter.minValue}}"></paper-input>
-						<paper-input label="Maximum [[title]]" type="number" value="{{_numberFilter.maxValue}}"></paper-input>
-						<div class="searchHeaderDropdownButtons"><paper-button on-tap="_fireCloseSearchDropdownMenu">OK</paper-button></div>
+				<paper-dropdown-menu no-animations label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _filterText ]]">
+					<div class="dropdown-content" style="padding: 10px;">
+						<paper-input type="number" label="[[ _('From', t) ]]" value="{{ _filterInput.min }}"
+							min="[[ _possibleNumberRange.min ]]" max="[[ _lowestMax ]]">
+						</paper-input>
+						<paper-input type="number" label="[[ _('To', t) ]]" value="{{ _filterInput.max }}"
+							min="[[ _highestMin ]]" max="[[ _possibleNumberRange.max ]]">
+						</paper-input>
 					</div>
 				</paper-dropdown-menu>
 			</template>
@@ -61,8 +36,118 @@
 			is: 'cosmoz-omnitable-column-number',
 
 			behaviors: [
-				Cosmoz.OmnitableColumnNumberBehavior
+				Cosmoz.OmnitableColumnBehavior,
+				Cosmoz.TranslatableBehavior
 			],
+
+			properties: {
+				bindValues: {
+					type: Boolean,
+					readOnly: true,
+					value: true
+				},
+				filter: {
+					type: Object,
+					value: function () {
+						return {
+							min: null,
+							max: null
+						};
+					}
+				},
+				_filterText: {
+					type: String,
+					computed: '_computeFilterText(locale, filter.*)'
+				},
+				locale: {
+					type: String,
+					value: null
+				},
+				_filterInput: {
+					type: Object,
+					value: function () {
+						return {
+							min: null,
+							max: null
+						};
+					}
+				},
+				_possibleNumberRange: {
+					type: Object,
+					computed: '_computePossibleNumberRange(values.*)'
+				},
+				_lowestMax: {
+					type: Object,
+					computed: '_getMinMax(_possibleNumberRange.max, filter.max, 0)'
+				},
+				_highestMin: {
+					type: Object,
+					computed: '_getMinMax(_possibleNumberRange.min, filter.min, 1)'
+				}
+			},
+
+			observers: [
+				'_debounceSetFilter(_filterInput.*)'
+			],
+
+			_computeFilterText: function (locale, filterNotify) {
+				var filter = filterNotify.base,
+					text = [];
+
+				if (typeof(filter.min) === 'number') {
+					text.push(this._toLocaleString(filter.min, locale));
+				}
+				text.push(' - ');
+				if (typeof(filter.max) === 'number') {
+					text.push(this._toLocaleString(filter.max, locale));
+				}
+				return text.length > 1 ? text.join('') : undefined;
+			},
+
+			_computePossibleNumberRange: function (change) {
+				return change.base.reduce(function (acc, item) {
+					// TODO: Use fx
+					if (!acc.max || item > acc.max) {
+						acc.max = item;
+					}
+					if (!acc.min || item < acc.min) {
+						acc.min = item;
+					}
+					return acc;
+				}, {});
+			},
+
+			_debounceSetFilter: function (_filterInputNotify) {
+				this.debounce('setFilter', this._setFilter, 600);
+			},
+
+			_enforceLowestMax: function (minRangeValue, minRangeMax) {
+				if (minRangeValue === null) {
+					return;
+				}
+				if (minRangeValue > minRangeMax) {
+					this.set('_filterInput.min', minRangeMax);
+				}
+			},
+			
+			_enforceHighestMin: function (maxRangeValue, maxRangeMin) {
+				if (maxRangeValue === null) {
+					return;
+				}
+				if (maxRangeValue < maxRangeMin) {
+					this.set('_filterInput.max', maxRangeMin);
+				}
+			},
+
+			_setFilter: function () {
+				this._enforceLowestMax(this._filterInput.min, this._lowestMax);
+				this._enforceHighestMin(this._filterInput.max, this._highestMin);
+				var newFilter = this._filterInput;
+				this.set('filter', {
+					min: newFilter.min !== null && newFilter.min !== '' ? Number(newFilter.min) : undefined,
+					max: newFilter.max !== null && newFilter.max !== '' ? Number(newFilter.max) : undefined
+				});
+			},
 
 			_getDefaultWidth: function () {
 				return '30px';
@@ -73,23 +158,68 @@
 			},
 
 			_getDefaultCellClass: function () {
-				return 'number-cell';
+				return 'number-cell align-right';
 			},
 
 			_getDefaultHeaderCellClass: function () {
 				return 'number-header-cell';
 			},
 
+			_getMinMax: function (first, second, max) {
+				var doMax = max === 1;
+
+				// TODO: Use fx
+
+				if (first === null && second !== null) {
+					return second;
+				}
+
+				if (second === null && first !== null) {
+					return first;
+				}
+
+				if (first > second) {
+					return doMax ? first : second;
+				}
+				
+				return doMax ? second : first;
+			},
+
 			_toLocaleString: function (num, locale) {
-				if (num && locale && num.toLocaleString) {
-					return num.toLocaleString(locale);
+				if (num !== undefined && num !== null && num.toLocaleString) {
+					return num.toLocaleString(locale || undefined);
 				}
 				return num;
 			},
 
+			getFilterFn: function () {
+				if (this.filter && (typeof(this.filter.min) === 'number' || typeof(this.filter.max) === 'number')) {
+					return this._applySingleFilter.bind(this, this.filter);
+				}
+			},
+
+			_applySingleFilter: function (filter, item) {
+				var value = this.getComparableValue(item, this.valuePath),
+					minValue = this.getComparableValue(filter, 'min'),
+					maxValue = this.getComparableValue(filter, 'max');
+
+				if (value === null) {
+					return false;
+				}
+
+				if (minValue !== null && value < minValue) {
+					return false;
+				}
+
+				if (maxValue !== null && value > maxValue) {
+					return false;
+				}
+
+				return true;
+			},
+
 			renderNumberValue: function (item, valuePath, locale) {
 				var value = this.get(valuePath, item);
-
 				return this._toLocaleString(value, locale);
 			}
 

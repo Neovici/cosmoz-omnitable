@@ -467,8 +467,8 @@
 						.map(function (column) {
 							return column.getFilterFn();
 						})
-						.filter(function (f) {
-							return f !== undefined;
+						.filter(function (fn) {
+							return fn !== undefined;
 						});
 
 				if (filterFunctions.length) {

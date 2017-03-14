@@ -36,7 +36,7 @@
 <dom-module id="cosmoz-omnitable">
 	<template>
 
-		<style include="cosmoz-omnitable-styles cosmoz-omnitable-column-amount-styles cosmoz-omnitable-column-number-styles">
+		<style include="cosmoz-omnitable-styles">
 			/*
 				HACK(pasleq): apply a mixin per column index to allow external styling of the columns.
 				This means there is a limit in the number of columns that can be externally styled.
@@ -161,7 +161,7 @@
 					</paper-checkbox>
 				</div>
 				<template is="dom-repeat" items="[[visibleColumns]]" as="column" index-as="columnIndex">
-					<cosmoz-omnitable-header-cell class="header-cell" column="{{column}}">
+					<cosmoz-omnitable-header-cell class="header-cell" column="{{ column }}">
 					</cosmoz-omnitable-header-cell>
 				</template>
 			</div>
@@ -177,7 +177,7 @@
 				</template>
 				<div class="tableContent-scroller" id="scroller">
 					<cosmoz-grouped-list id="groupedList" data="{{ sortedFilteredGroupedItems }}"
-						selected-items="{{selectedItems}}" display-empty-groups="[[displayEmptyGroups]]" warm-up="35">
+						selected-items="{{ selectedItems }}" display-empty-groups="[[ displayEmptyGroups ]]" warm-up="35">
 						<cosmoz-grouped-list-template id="warmUpTemplate">
 							<template>
 								<div style="min-height: 25px;"></div>
@@ -185,16 +185,16 @@
 						</cosmoz-grouped-list-template>
 						<cosmoz-grouped-list-template id="itemTemplate">
 							<template>
-								<div class$="{{_computeItemRowClasses(selected)}}">
+								<div class$="[[ _computeItemRowClasses(selected) ]]">
 									<div class="selectItemCheckbox" hidden$="[[ !selectionEnabled ]]">
 										<paper-checkbox checked="{{ selected }}" on-change="_onItemCheckboxChange"></paper-checkbox>
 									</div>
-									<template is="dom-repeat" items="[[visibleColumns]]" as="column" index-as="columnIndex">
+									<template is="dom-repeat" items="[[ visibleColumns ]]" as="column" index-as="columnIndex">
 										<cosmoz-omnitable-item-cell class$="[[ _computeItemRowCellClasses(column, columnIndex) ]]"
-											column="{{column}}"
-											item="{{item}}"
-											selected="{{selected}}"
-											expanded="{{expanded}}">
+											column="{{ column }}"
+											item="{{ item }}"
+											selected="{{ selected }}"
+											expanded="{{ expanded }}">
 										</cosmoz-omnitable-item-cell>
 									</template>
 								</div>
@@ -202,16 +202,16 @@
 						</cosmoz-grouped-list-template>
 						<cosmoz-grouped-list-template id="groupTemplate">
 							<template>
-								<div class$="{{_computeGroupRowClasses(folded)}}">
+								<div class$="[[ _computeGroupRowClasses(folded) ]]">
 									<div class="selectGroupCheckbox" hidden$="[[ !selectionEnabled ]]">
 										<paper-checkbox checked="{{ selected }}" on-change="_onGroupCheckboxChange"></paper-checkbox>
 									</div>
 									<h3 class="groupRow-label">
-										<div><span>{{groupOnColumn.title}}</span>: &nbsp;</div>
+										<div><span>[[ groupOnColumn.title ]]</span>: &nbsp;</div>
 										<cosmoz-omnitable-item-cell class="groupRow-cell"
-											column="[[groupOnColumn]]"
-											item="[[item.items.0]]"
-											folded="{{folded}}">
+											column="[[ groupOnColumn ]]"
+											item="[[ item.items.0 ]]"
+											folded="{{ folded }}">
 										</cosmoz-omnitable-item-cell>
 									</h3>
 									<div>[[ item.items.length ]]</div>
@@ -226,13 +226,13 @@
 				<div class="footer-controls">
 					<div class="footer-control">
 						<paper-dropdown-menu no-animations vertical-align="bottom" id="sortOnSelectorMenu" label="[[_('Sort on', t)]]">
-							<paper-listbox class="dropdown-content menu" id="sortOnSelector" on-iron-items-changed="_updateSelectedSortIndex" selected="{{_sortOnSelectorSelected}}">
+							<paper-listbox class="dropdown-content menu" id="sortOnSelector" on-iron-items-changed="_updateSelectedSortIndex" selected="{{ _sortOnSelectorSelected }}">
 								<paper-item on-tap="_onSortColumnActivate">
 									<div style="white-space: nowrap; font-style: italic;">[[ _('No sorting', t) ]]</div>
 								</paper-item>
 								</cosmoz-omnitable-sort-list-item>
-								<template is="dom-repeat" id="sortColumns" items="[[columns]]" as="column">
-									<paper-item on-tap="_onSortColumnActivate" hidden$="[[!column.sortOn]]">
+								<template is="dom-repeat" id="sortColumns" items="[[ columns ]]" as="column">
+									<paper-item on-tap="_onSortColumnActivate" hidden$="[[ !column.sortOn ]]">
 										<span>[[ column.title ]]</span>&nbsp;<span>[[ _getSortDirection(column, sortOn.*) ]]</span>
 									</paper-item>
 								</template>
@@ -240,11 +240,11 @@
 						</paper-dropdown-menu>
 					</div>
 					<div class="footer-control">
-						<paper-dropdown-menu no-animations vertical-align="bottom" id="groupOnSelector" label="[[_('Group on', t)]]">
+						<paper-dropdown-menu no-animations vertical-align="bottom" id="groupOnSelector" label="[[ _('Group on', t) ]]">
 							<paper-listbox class="dropdown-content menu" selected="{{ groupOn }}" attr-for-selected="data-group-on">
 								<paper-item data-group-on=""><i style="white-space: nowrap">[[ _('No grouping', t) ]]</i></paper-item>
-								<template is="dom-repeat" items="[[columns]]" as="column">
-									<paper-item data-group-on$="[[column.groupOn]]" hidden$="[[!column.groupOn]]">[[column.title]]</paper-item>
+								<template is="dom-repeat" items="[[ columns ]]" as="column">
+									<paper-item data-group-on$="[[ column.groupOn ]]" hidden$="[[ !column.groupOn ]]">[[ column.title ]]</paper-item>
 								</template>
 							</paper-listbox>
 						</paper-dropdown-menu>

@@ -1,29 +1,7 @@
-<link rel="import" href="cosmoz-omnitable-column-number-behavior.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+
 <link rel="import" href="../cosmoz-behaviors/cosmoz-moneyhelper-behavior.html">
-
-<dom-module id="cosmoz-omnitable-column-amount-styles">
-	<template>
-		<style>
-			.amount-cell {
-				text-align: right;
-			}
-
-			.amount-header-cell .searchHeaderDropdown {
-				@apply --layout-vertical;
-				padding: 16px 0px;
-			}
-
-			.amount-header-cell .searchHeaderDropdown > paper-input {
-				padding: 0px 16px;
-			}
-
-			.amount-header-cell .searchHeaderDropdownButtons {
-				@apply --layout-horizontal;
-				@apply --layout-end-justified;
-			}
-		</style>
-	</template>
-</dom-module>
 
 <dom-module id="cosmoz-omnitable-column-amount">
 	<template>
@@ -43,11 +21,16 @@
 
 		<cosmoz-omnitable-templatizer id="header-templatizer">
 			<template>
-				<paper-dropdown-menu id="searchDropDownMenu" label="[[ title ]]" placeholder="[[ _computeFilterText(filter.*) ]]" on-close="_closeSearchDropdownMenu">
-					<div class="dropdown-content searchHeaderDropdown">
-						<paper-input label="[[ _('Minimum {0}', title) ]]" type="number" value="{{ _numberFilter.minValue }}"></paper-input>
-						<paper-input label="[[ _('Maximum {0}', title) ]]" type="number" value="{{ _numberFilter.maxValue }}"></paper-input>
-						<div class="searchHeaderDropdownButtons"><paper-button on-tap="_fireCloseSearchDropdownMenu">OK</paper-button></div>
+				<paper-dropdown-menu no-animations label="[[ title ]]" title="[[ _filterText ]]" placeholder="[[ _filterText ]]">
+					<div class="dropdown-content" style="padding: 10px;">
+						<paper-input type="number" label="[[ _('Minimum amount', t) ]]" value="[[ renderNumberAmount(filter.min) ]]"
+								min="[[ _possibleAmountRange.min.amount ]]" max="[[ _lowestMax.amount ]]" on-change="_setMinValue">
+							<div suffix>[[ filter.min.currency ]]</div>
+						</paper-input>
+						<paper-input type="number" label="[[ _('Maximum amount', t) ]]" value="[[ renderNumberAmount(filter.max) ]]"
+								min="[[ _highestMin.amount ]]" max="[[ _possibleAmountRange.max.amount ]]" on-change="_setMaxValue">
+							<div suffix>[[ filter.max.currency ]]</div>
+						</paper-input>
 					</div>
 				</paper-dropdown-menu>
 			</template>
@@ -58,10 +41,43 @@
 			is: 'cosmoz-omnitable-column-amount',
 
 			behaviors: [
-				Cosmoz.OmnitableColumnNumberBehavior,
+				Cosmoz.OmnitableColumnBehavior,
 				Cosmoz.MoneyHelperBehavior,
 				Cosmoz.TranslatableBehavior
 			],
+
+			properties: {
+				bindValues: {
+					type: Boolean,
+					readOnly: true,
+					value: true
+				},
+				filter: {
+					type: Object,
+					value: function () {
+						return {
+							min: { currency: 'SEK' },
+							max: { currency: 'SEK' }
+						};
+					}
+				},
+				_filterText: {
+					type: String,
+					computed: '_computeFilterText(filter.*)'
+				},
+				_possibleAmountRange: {
+					type: Object,
+					computed: '_computePossibleAmountRange(values.*)'
+				},
+				_lowestMax: {
+					type: Object,
+					computed: '_getMinMax(_possibleAmountRange.max, filter.max, 0)'
+				},
+				_highestMin: {
+					type: Object,
+					computed: '_getMinMax(_possibleAmountRange.min, filter.min, 1)'
+				}
+			},
 
 			_getDefaultWidth: function () {
 				return '70px';
@@ -72,13 +88,93 @@
 			},
 
 			_getDefaultCellClass: function () {
-				return 'amount-cell';
+				return 'amount-cell align-right';
 			},
 
 			_getDefaultHeaderCellClass: function () {
 				return 'amount-header-cell';
 			},
 
+			_computeFilterText: function (filterNotify) {
+				var filter = filterNotify.base,
+					text = [];
+				if (typeof(filter.min.amount) === 'number') {
+					text.push(this.renderAmount(filter.min));
+				}
+				text.push(' - ');
+				if (typeof(filter.max.amount) === 'number') {
+					text.push(this.renderAmount(filter.max));
+				}
+				return text.length > 1 ? text.join('') : undefined;
+			},
+
+			_computePossibleAmountRange: function (change) {
+				return change.base.reduce(function (acc, item) {
+					// TODO: Use fx
+					if (!acc.max || item.amount > acc.max.amount) {
+						acc.max = item;
+					}
+					if (!acc.min || item.amount < acc.min.amount) {
+						acc.min = item;
+					}
+					return acc;
+				}, {});
+			},
+
+			_getMinMax: function (first, second, max) {
+				var doMax = max === 1;
+
+				// TODO: Use fx
+
+				if (!first.amount && second.amount) {
+					return second;
+				}
+
+				if (!second.amount && first.amount) {
+					return first;
+				}
+
+				if (first.amount > second.amount) {
+					return doMax ? first : second;
+				}
+				
+				return doMax ? second : first;
+			},
+
+			_getNumberValue: function (value) {
+				if (value === null || value === undefined || value === '') {
+					return;
+				}
+				value = Number(value);
+				if (Number.isNaN(value)) {
+					console.warn('Not a number', event.target.value);
+					return;
+				}
+				return value;
+			},
+			
+			_setMinValue: function (event) {
+				var value = this._getNumberValue(event.target.value);
+				if (value === undefined) {
+					return;
+				}
+				this.set('filter.min.amount', value);
+			},
+
+			_setMaxValue: function (event) {
+				var value = this._getNumberValue(event.target.value);
+				if (value === undefined) {
+					return;
+				}
+				this.set('filter.max.amount', value);
+			},
+
+			renderNumberAmount: function (item) {
+				if (!item) {
+					return;
+				}
+				return accounting.formatNumber(item.amount, item.currency);
+			},
 
 			renderAmountWithCurrency: function (item, valuePath) {
 				var value = this.get(valuePath, item);
@@ -116,7 +212,32 @@
 
 			getComparableValue: function (item, valuePath) {
 				var value = this.get(valuePath, item);
+				// TODO: fx
 				return typeof(value.amount) === 'number' ? value.amount : null;
+			},
+
+			getFilterFn: function () {
+				return this._applySingleFilter.bind(this, this.filter);
+			},
+
+			_applySingleFilter: function (filter, item) {
+				var value = this.getComparableValue(item, this.valuePath),
+					minValue = this.getComparableValue(filter, 'min'),
+					maxValue = this.getComparableValue(filter, 'max');
+
+				if (value === null) {
+					return false;
+				}
+
+				if (minValue !== null && value < minValue) {
+					return false;
+				}
+
+				if (maxValue !== null && value > maxValue) {
+					return false;
+				}
+
+				return true;
 			}
 		});
 

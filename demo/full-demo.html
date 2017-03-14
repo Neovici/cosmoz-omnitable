@@ -50,7 +50,7 @@
 						Selected items count: <span>{{selectedItems.length}}</span>
 					</div>
 					<div class="action">
-						<paper-dropdown-menu label="Locale">
+						<paper-dropdown-menu label="Locale" no-animations>
 							<paper-listbox class="dropdown-content" selected="{{ locale }}" attr-for-selected="value">
 								<paper-item value="en">en</paper-item>
 								<paper-item value="fr">fr</paper-item>
@@ -72,7 +72,7 @@
 					<cosmoz-omnitable-column-boolean title="Boolean" value-path="bool" sort-on="bool" group-on="bool"
 						true-label="Oui" false-label="Non">
 					</cosmoz-omnitable-column-boolean>
-					<cosmoz-omnitable-column-number title="Value" value-path="value" sort-on="value" group-on="value" >
+					<cosmoz-omnitable-column-number title="Value" value-path="value" sort-on="value" group-on="value" locale="[[ locale ]]">
 					</cosmoz-omnitable-column-number>
 					<cosmoz-omnitable-column-autocomplete title="Group" value-path="group" sort-on="group" group-on="group">
 					</cosmoz-omnitable-column-autocomplete>

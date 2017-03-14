@@ -1,5 +1,8 @@
 <link rel="import" href="cosmoz-omnitable-column-behavior.html">
 
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+
 <link rel="import" href="../cosmoz-moment/cosmoz-moment.html">
 
 
@@ -21,13 +24,13 @@
 
 		<cosmoz-omnitable-templatizer id="header-templatizer">
 			<template>
-				<paper-dropdown-menu no-animations label="[[ title ]]" placeholder="[[ _expandUserFormat(userFormat, locale) ]]">
+				<paper-dropdown-menu no-animations label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _filterText ]]">
 					<div class="dropdown-content" style="padding: 10px;">
 						<paper-input type="date" min="[[ _formatISODate(_possibleDateRange.min) ]]" max="[[ _formatISODate(_latestAfter) ]]"
-							label="[[ _('From date', t) ]]" placeholder="[[ _expandUserFormat(userFormat, locale) ]]" value="{{ _filterInput.start }}">
+							label="[[ _('From date', t) ]]" value="{{ _filterInput.start }}">
 						</paper-input>
 						<paper-input type="date" min="[[ _formatISODate(_earliestBefore) ]]" max="[[ _formatISODate(_possibleDateRange.max) ]]"
-							label="[[ _('Until date', t) ]]" placeholder="[[ _expandUserFormat(userFormat, locale) ]]" value="{{ _filterInput.end }}">
+							label="[[ _('Until date', t) ]]" value="{{ _filterInput.end }}">
 						</paper-input>
 					</div>
 				</paper-dropdown-menu>
@@ -71,6 +74,11 @@
 							end: null
 						};
 					}
+				},
+
+				_filterText: {
+					type: String,
+					computed: '_computeFilterText(locale, filter.*)'
 				},
 
 				_possibleDateRange: {
@@ -161,6 +169,19 @@
 				};
 			},
 
+			_computeFilterText: function (locale, filterNotify) {
+				var filter = filterNotify.base,
+					text = [];
+				if (filter.start !== null) {
+					text.push(filter.start.locale(locale).format(this.userFormat));
+				}
+				text.push(' - ');
+				if (filter.end !== null) {
+					text.push(filter.end.locale(locale).format(this.userFormat));
+				}
+				return text.length > 1 ? text.join('') : undefined;
+			},
+
 			_dateValueChanged: function (event) {
 				var
 					input = event.target,
@@ -191,18 +212,7 @@
 				if (!this.filter) {
 					return;
 				}
-				if (!Array.isArray(this.filter)) {
-					return this._applySingleFilter.bind(this, this.filter);
-				}
-				if (this.filter.length > 0) {
-					return this._applyMultiFilter.bind(this, this.filter);
-				}
-			},
-
-			_applyMultiFilter: function (filterArray, item) {
-				return filterArray.some(function (filter) {
-					this._applySingleFilter(filter, item);
-				}, this);
+				return this._applySingleFilter.bind(this, this.filter);
 			},
 
 			_applySingleFilter: function (filter, item) {
