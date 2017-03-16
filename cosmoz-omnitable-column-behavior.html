@@ -13,7 +13,8 @@
 			},
 
 			valuePath: {
-				type: String
+				type: String,
+				observer: 'valuePathChanged'
 			},
 
 			/**
@@ -166,6 +167,18 @@
 
 		renderDefaultValue: function (item, valuePath) {
 			return this.get(valuePath, item);
+		},
+
+		valuePathChanged: function (newPath, oldPath) {
+			if (newPath === undefined || newPath === null) {
+				return;
+			}
+			if (this.groupOn === oldPath || this.groupOn === undefined) {
+				this.set('groupOn', newPath);
+			}
+			if (this.sortOn === oldPath || this.sortOn === undefined) {
+				this.set('sortOn', newPath);
+			}
 		},
 
 		getComparableValue: function (item, valuePath) {
