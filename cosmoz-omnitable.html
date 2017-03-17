@@ -1,6 +1,6 @@
 <link rel="import" href="../polymer/polymer.html"/>
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html"/>
-<link rel="import" href="../iron-list/iron-list.html"/>
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html"/>
 <link rel="import" href="../iron-icons/iron-icons.html"/>
 <link rel="import" href="../iron-icon/iron-icon.html"/>
 <link rel="import" href="../iron-label/iron-label.html"/>
@@ -36,7 +36,7 @@
 <dom-module id="cosmoz-omnitable">
 	<template>
 
-		<style include="cosmoz-omnitable-styles">
+		<style include="cosmoz-omnitable-styles iron-flex">
 			/*
 				HACK(pasleq): apply a mixin per column index to allow external styling of the columns.
 				This means there is a limit in the number of columns that can be externally styled.
@@ -160,7 +160,7 @@
 					<paper-checkbox on-change="onAllCheckboxChange" hidden$="[[ _noData ]]">
 					</paper-checkbox>
 				</div>
-				<template is="dom-repeat" items="[[visibleColumns]]" as="column" index-as="columnIndex">
+				<template is="dom-repeat" items="[[ visibleColumns ]]" as="column" index-as="columnIndex">
 					<cosmoz-omnitable-header-cell class="header-cell" column="{{ column }}">
 					</cosmoz-omnitable-header-cell>
 				</template>
@@ -196,6 +196,23 @@
 											selected="{{ selected }}"
 											expanded="{{ expanded }}">
 										</cosmoz-omnitable-item-cell>
+									</template>
+									<div class="item-expander" hidden="[[ isEmpty(disabledColumns.length) ]]">
+										<paper-icon-button icon="[[ getItemFoldIcon(expandedItems.length, item) ]]" on-tap="toggleItem"></paper-icon-button>
+									</div>
+								</div>
+								<div hidden="[[ itemIsFolded(disabledColumns.length, expandedItems.length, item) ]]" class="vertical layout">
+									<template is="dom-repeat" items="[[ disabledColumns ]]" as="column" index-as="columnIndex">
+										<div class="horizontal layout center">
+											<cosmoz-omnitable-header-cell class="header-cell" column="{{ column }}" style="width: 50%; flex: initial;">
+											</cosmoz-omnitable-header-cell>
+											<cosmoz-omnitable-item-cell class$="[[ _computeItemRowCellClasses(column, columnIndex) ]]" style="width: 50%;"
+												column="{{ column }}"
+												item="{{ item }}"
+												selected="{{ selected }}"
+												expanded="{{ expanded }}">
+											</cosmoz-omnitable-item-cell>
+										</div>
 									</template>
 								</div>
 							</template>

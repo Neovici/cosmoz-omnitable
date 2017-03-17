@@ -25,6 +25,16 @@
 			},
 
 			/**
+			 * Rows/items that are expanded when columns are disabled
+			 */
+			expandedItems: {
+				type: Array,
+				value: function () {
+					return [];
+				}
+			},
+
+			/**
 			 * Whether to display checkboxes for item selection, and to make use of the bottom-bar for selection actions.
 			 * Will be enabled automatically if one or more elements has the attribute `action` set in the light DOM.
 			 */
@@ -145,7 +155,8 @@
 
 		observers: [
 			'_sortOnChanged(sortOn.*)',
-			'_dataChanged(data.*)'
+			'_dataChanged(data.*)',
+			'_debounceUpdateExpandedItemsSize(disabledColumns.length)'
 		],
 
 		behaviors: [
@@ -235,6 +246,12 @@
 
 		_debounceSortItems: function () {
 			this.debounce('sortItems', this._sortFilteredGroupedItems);
+		},
+
+		_updateExpandedItemsSize: function (disabledColumnsLength) {
+			this.expandedItems.forEach(function (item, index) {
+				this.$.groupedList.updateSize(item);
+			}, this);
 		},
 
 		_onColumnFilterChanged: function (event) {
@@ -339,14 +356,10 @@
 		 * element bound to this item's path.
 		 */
 		setItemValue: function (item, itemPath, value) {
-			var dataColl, key;
-
-			dataColl = Polymer.Collection.get(this.data);
-
-			key = dataColl.getKey(item);
-
+			var dataColl = Polymer.Collection.get(this.data),
+				key = dataColl.getKey(item);
+			
 			this.set('data.' + key + '.' + itemPath, value);
-
 		},
 
 		selectItem: function (item) {
@@ -368,6 +381,25 @@
 			this.$.groupedList.toggleFold(event.model);
 		},
 
+		toggleItem: function (event, detail) {
+			var item = event.model.item,
+				itemIndex = this.expandedItems.indexOf(item);
+			if (itemIndex === -1) {
+				this.push('expandedItems', item);
+			} else {
+				this.splice('expandedItems', itemIndex, 1);
+			}
+			this.$.groupedList.updateSize(item);
+		},
+
+		itemIsFolded:  function (disabledColumnsLength, expandedItemsLength, item) {
+			return disabledColumnsLength === 0 || this.expandedItems.indexOf(item) === -1;
+		},
+
+		getItemFoldIcon: function (expandedItemsLength, item) {
+			return this.getFoldIcon(this.itemIsFolded(expandedItemsLength, item));
+		},
+
 		getFoldIcon: function (folded) {
 			return folded ? 'expand-more' : 'expand-less';
 		},
@@ -375,20 +407,18 @@
 		// TODO: provides a mean to avoid setting the values for a column
 		// TODO: should process (distinct, sort, min, max) the values at the column level depending on the column type
 		_setColumnValues: function () {
-			this.columns.forEach(function (column, colIndex) {
+			this.columns.forEach(function (column) {
 				if (!column.bindValues) {
 					return;
 				}
-				var	newValues = [];
 
-				this.data.forEach(function (item, index) {
-					var value = this.get(column.valuePath, item);
-					if (value) {
-						newValues.push(value);
-					}
-				}, this);
-
-				column.set('values', newValues);
+				column.set('values', this.data
+					.map(function (item, index) {
+						return this.get(column.valuePath, item);
+					}, this)
+					.filter(function (value, index, self) {
+						return value !== undefined && value !== null && self.indexOf(value) === index;
+					}));
 
 			}, this);
 		},
@@ -596,8 +626,11 @@
 				};
 			};
 			if (this._groupsCount > 0) {
-				this.filteredGroupedItems.forEach(function (group, index) {
-					if (group.items && group.items.map) {
+				this.filteredGroupedItems
+					.filter(function (group) {
+						return group.items && group.items.map;
+					})
+					.forEach(function (group, index) {
 						// create a reduced version of the items array to transfer to the worker
 						// with item index and property to sort on
 						mappedItems = group.items.map(itemMapper, this);
@@ -626,8 +659,7 @@
 								this._debounceAdjustColumns();
 							}
 						}.bind(this));
-					}
-				}, this);
+					}, this);
 			} else {
 				// No grouping
 				mappedItems = this.filteredGroupedItems.map(itemMapper, this);
@@ -637,10 +669,9 @@
 					sortOn: 'value',
 					data: mappedItems
 				}, function (data) {
-					items = data.data.map(function (item, index){
+					this.set('sortedFilteredGroupedItems', data.data.map(function (item, index){
 						return this.filteredGroupedItems[item.index];
-					}, this);
-					this.set('sortedFilteredGroupedItems', items);
+					}, this));
 					this._debounceAdjustColumns();
 				}.bind(this));
 			}
@@ -667,6 +698,9 @@
 			// which might look strange.
 			this.debounce('adjustColumns', this._adjustColumns, 16);
 		},
+		_debounceUpdateExpandedItemsSize: function () {
+			this.debounce('_updateExpandedItemsSize', this._updateExpandedItemsSize, 16);
+		},
 
 		/**
 		 * Enable/disable columns to properly fit in the available space.
@@ -675,21 +709,28 @@
 		 * @memberOf element/cz-omnitable
 		 */
 		_adjustColumns: function () {
-			var
-				firstRow = this.$.groupedList.getFirstVisibleItemElement(),
-				tableContent = this.$ ? this.$.tableContent : null,
+			var firstRow = this.$.groupedList.getFirstVisibleItemElement(),
+				tableContent = this.$.tableContent,
 				fits,
 				cells,
-				currentWidth;
+				currentWidth,
+				scroller;
 
 			if (!tableContent || !firstRow) {
 				this._debounceAdjustColumns();
 				return;
 			}
 
-			fits = this.$.scroller.scrollWidth <= this.$.scroller.clientWidth;
-
+			scroller = this.$.scroller;
+			fits = scroller.scrollWidth <= scroller.clientWidth;
 			currentWidth = tableContent.clientWidth;
+			cells = Polymer.dom(firstRow).querySelectorAll('cosmoz-omnitable-item-cell');
+
+			if (fits) {
+				fits = cells.every(function (cell) {
+					return cell.scrollWidth <= cell.clientWidth;
+				});
+			}
 
 			if (fits) {
 				if (this._canScaleUp(currentWidth)) {
@@ -705,28 +746,26 @@
 				return;
 			}
 
-			cells = Polymer.dom(firstRow).querySelectorAll('cosmoz-omnitable-item-cell');
-
 			this._adjustHeadersWidth(cells);
 		},
 
 		_adjustHeadersWidth: function (cells) {
-			var
-				cell,
-				cellWidth,
-				headers,
-				header,
-				i;
+			var headers = Polymer.dom(this.$.header).querySelectorAll('cosmoz-omnitable-header-cell');
 
-			headers = Polymer.dom(this.$.header).querySelectorAll('cosmoz-omnitable-header-cell');
-			for (i = 0; i < cells.length; i+=1) {
-				cell = cells[i];
-				header = headers[i];
-				cellWidth = cell.getComputedStyleValue('width');
+			cells.forEach(function (cell, index) {
+				var header = headers[index],
+					cellWidth;
+
+				// disabled column headers
+				if (header === undefined) {
+					return;
+				}
+
+				cellWidth = cell.getComputedStyleValue('width')
 				header.style.minWidth = cellWidth;
 				header.style.maxWidth = cellWidth;
 				header.style.width = cellWidth;
-			}
+			});
 		},
 
 		_canScaleUp: function (width) {
@@ -771,8 +810,7 @@
 		_enableColumn: function () {
 
 			// Columns are disabled by priority, so we can re-enable them
-			var
-				column = this.pop('disabledColumns'),
+			var column = this.pop('disabledColumns'),
 				columnIndex = this._disabledColumnsIndexes.pop();
 
 			this.splice('visibleColumns', columnIndex, 0, column);
