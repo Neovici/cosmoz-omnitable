@@ -4,26 +4,22 @@
 <dom-module id="cosmoz-omnitable-column-autocomplete">
 	<template>
 
-		<cosmoz-omnitable-templatizer id="data-templatizer">
-			<template><span class="default-column">[[ renderDefaultValue(item, valuePath) ]]</span></template>
-		</cosmoz-omnitable-templatizer>
+		<template id="data-template">
+			<span class="default-column">[[ renderDefaultValue(item, valuePath) ]]</span>
+		</template>
 
-		<cosmoz-omnitable-templatizer id="edit-data-templatizer">
-			<template>
-				<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ renderDefaultValue(item, valuePath) ]]"></paper-input>
-			</template>
-		</cosmoz-omnitable-templatizer>
+		<template id="edit-data-template">
+			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ renderDefaultValue(item, valuePath) ]]"></paper-input>
+		</template>
 
-		<cosmoz-omnitable-templatizer id="header-templatizer">
-			<template>
-				<cosmoz-autocomplete
-					items="[[autocompleteItems]]"
-					placeholder="[[title]]"
-					selected-items="{{autocompleteSelectedItems}}"
-					multi-selection
-				></cosmoz-autocomplete>
-			</template>
-		</cosmoz-omnitable-templatizer>
+		<template id="header-template">
+			<cosmoz-autocomplete
+				items="[[autocompleteItems]]"
+				placeholder="[[title]]"
+				selected-items="{{autocompleteSelectedItems}}"
+				multi-selection
+			></cosmoz-autocomplete>
+		</template>
 
 	</template>
 	<script>

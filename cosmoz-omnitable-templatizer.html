@@ -3,13 +3,6 @@
 
 		is: 'cosmoz-omnitable-templatizer',
 
-		properties: {
-			template: {
-				type: Object,
-				observer: '_templateChanged'
-			}
-		},
-
 		behaviors: [
 			Polymer.Templatizer
 		],
@@ -25,19 +18,22 @@
 			this._instanceProps = instanceProps;
 
 			this._templatesInUse = [];
-
-			this.template = Polymer.dom(this).querySelector('template');
 		},
 
-		_templateChanged: function (newTemplate) {
-			if (this.ctor) {
-				this.templatize(newTemplate);
-			}
+		init: function (template, host) {
+			this._template = template;
+			this._templateHost = host;
+			this.dataHost = host;
 		},
+
+		_getRootDataHost: function () {
+			return this._templateHost;
+		},
+
 
 		_ensureTemplatized: function () {
 			if (!this.ctor) {
-				this.templatize(this.template);
+				this.templatize(this._template);
 			}
 		},
 

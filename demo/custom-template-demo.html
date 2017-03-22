@@ -39,7 +39,7 @@
 				}
 			</style>
 			<div class="layout vertical fit">
-				<h3>Cosmoz omnitable demo</h3>
+				<h3>Cosmoz omnitable templates demo</h3>
 
 				<cosmoz-moment locale="[[ locale ]]"></cosmoz-moment>
 
@@ -60,49 +60,22 @@
 					</div>
 				</div>
 
-				<cosmoz-omnitable id="omnitable" class="flex" data="[[data]]"
-					selection-enabled selected-items="{{selectedItems}}">
-					<cosmoz-omnitable-column-autocomplete title="Id" value-path="id" sort-on="id" group-on="id">
+				<cosmoz-omnitable id="omnitable" class="flex" data="[[data]]" selection-enabled selected-items="{{selectedItems}}">
+					<cosmoz-omnitable-column title="Id" value-path="id" sort-on="id" group-on="id">
 						<template id="data-template">
-							<span on-tap="onTap">
+							<span>
+								<span>[[_customFunction(item)]]</span>
 								<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.id]]</a>
 							</span>
 						</template>
-					</cosmoz-omnitable-column-autocomplete>
-					<cosmoz-omnitable-column-boolean title="Boolean" value-path="bool" sort-on="bool" group-on="bool"
-						true-label="Oui" false-label="Non">
-					</cosmoz-omnitable-column-boolean>
-					<cosmoz-omnitable-column-number title="Value" value-path="value" sort-on="value" group-on="value" locale="[[ locale ]]">
-					</cosmoz-omnitable-column-number>
-					<cosmoz-omnitable-column-autocomplete title="Group" value-path="group" sort-on="group" group-on="group">
-					</cosmoz-omnitable-column-autocomplete>
-					<cosmoz-omnitable-column-amount title="Amount" value-path="amount" sort-on="amount" group-on="amount">
-					</cosmoz-omnitable-column-amount>
-					<cosmoz-omnitable-column-date title="Date" value-path="date" sort-on="date" group-on="date">
-					</cosmoz-omnitable-column-date>
-					<cosmoz-omnitable-column-date title="DateJSON" value-path="dateJSON" sort-on="dateJSON" group-on="dateJSON">
-					</cosmoz-omnitable-column-date>
-					<cosmoz-omnitable-column title="Sub-property" value-path="sub.subProp" sort-on="sub.subProp" group-on="sub.subProp" flex="5">
-					</cosmoz-omnitable-column>
-					<cosmoz-omnitable-column title="Name" value-path="name" sort-on="name" group-on="name" flex="2">
-						<template id="data-template">
-							<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.name]]</a>
-						</template>
-					</cosmoz-omnitable-column>
-					<cosmoz-omnitable-column title="Custom template"
-						value-path="name" sort-on="name" width="50px" flex="2"
-						data-template="[[customNameTemplate]]">
 					</cosmoz-omnitable-column>
 
-					<paper-button action on-run="updateSelectedRows">
-						<iron-icon icon="editor:mode-edit"></iron-icon>
-						<span>Update [[ selectedItems.length ]] items</span>
-					</paper-button>
+					<cosmoz-omnitable-column title="Value" value-path="value" sort-on="value" group-on="value">
+					</cosmoz-omnitable-column>
 
-					<paper-button action on-run="removeItems">
-						<iron-icon icon="delete"></iron-icon>
-						<span>Remove [[ selectedItems.length ]] items</span>
-					</paper-button>
+					<cosmoz-omnitable-column title="Amount" value-path="amount" sort-on="amount" group-on="amount"
+						data-template="[[customDataTemplate]]">
+					</cosmoz-omnitable-column>
 				</cosmoz-omnitable>
 
 
@@ -111,8 +84,8 @@
 	</dom-module>
 
 	<x-page class="fit">
-		<template id="customNameTemplate">
-			<span style="background: red;" on-tap="onTap">[[item.name]]</span>
+		<template id="customDataTemplate">
+			<span style="background: red;" on-tap="onTap">[[item.amount.amount]]</span>
 		</template>
 	</x-page>
 
@@ -136,7 +109,7 @@
 				type: String,
 				value: 'en'
 			},
-			customNameTemplate: {
+			customDataTemplate: {
 				type: Object
 			}
 		},
@@ -154,7 +127,7 @@
 			this.async(function () {
 				this.data = data;
 			}.bind(this), 100);
-			this.customNameTemplate = Polymer.dom(this).querySelector('#customNameTemplate');
+			this.customDataTemplate = Polymer.dom(this).querySelector('#customDataTemplate');
 
 		},
 
@@ -166,20 +139,12 @@
 			this.data = [];
 		},
 
-		updateSelectedRows: function (event, detail) {
-			detail.items.forEach(function (item) {
-				this.$.omnitable.setItemValue(item, 'name', 'blablablalbal');
-			}, this);
-
-		},
-
-		removeItems: function (event, detail) {
-			console.log('runAction', detail.items, event, detail, detail.items);
-			detail.omnitable.removeItems(detail.items);
-		},
-
 		onTap: function (event) {
 			console.log('onTap', event);
+		},
+
+		_customFunction: function (item) {
+			return "bla " + item.id + " bla";
 		}
 
 	});

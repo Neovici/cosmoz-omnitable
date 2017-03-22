@@ -5,36 +5,31 @@
 
 <dom-module id="cosmoz-omnitable-column-amount">
 	<template>
-		<cosmoz-omnitable-templatizer id="data-templatizer">
-			<template>
-				<span>[[ renderAmountWithCurrency(item, valuePath) ]]</span>
-			</template>
-		</cosmoz-omnitable-templatizer>
+		<template id="data-template">
+			<span>[[ renderAmountWithCurrency(item, valuePath) ]]</span>
+		</template>
 
-		<cosmoz-omnitable-templatizer id="edit-data-templatizer">
-			<template>
-				<paper-input no-label-float type="number" on-change="_amountValueChanged"
-					value="[[ renderAmountValue(item, valuePath) ]]">
-					<div suffix>[[ _getCurrency(item, valuePath) ]]</div>
-				</paper-input>
-			</template>
+		<template id="edit-data-template">
+			<paper-input no-label-float type="number" on-change="_amountValueChanged"
+				value="[[ renderAmountValue(item, valuePath) ]]">
+				<div suffix>[[ _getCurrency(item, valuePath) ]]</div>
+			</paper-input>
+		</template>
 
-		<cosmoz-omnitable-templatizer id="header-templatizer">
-			<template>
-				<paper-dropdown-menu no-animations label="[[ title ]]" title="[[ _filterText ]]" placeholder="[[ _filterText ]]">
-					<div class="dropdown-content" style="padding: 10px;">
-						<paper-input type="number" label="[[ _('Minimum amount', t) ]]" value="[[ renderNumberAmount(filter.min) ]]"
-								min="[[ _possibleAmountRange.min.amount ]]" max="[[ _lowestMax.amount ]]" on-change="_setMinValue">
-							<div suffix>[[ filter.min.currency ]]</div>
-						</paper-input>
-						<paper-input type="number" label="[[ _('Maximum amount', t) ]]" value="[[ renderNumberAmount(filter.max) ]]"
-								min="[[ _highestMin.amount ]]" max="[[ _possibleAmountRange.max.amount ]]" on-change="_setMaxValue">
-							<div suffix>[[ filter.max.currency ]]</div>
-						</paper-input>
-					</div>
-				</paper-dropdown-menu>
-			</template>
-		</cosmoz-omnitable-templatizer>
+		<template id="header-template">
+			<paper-dropdown-menu no-animations label="[[ title ]]" title="[[ _filterText ]]" placeholder="[[ _filterText ]]">
+				<div class="dropdown-content" style="padding: 10px;">
+					<paper-input type="number" label="[[ _('Minimum amount', t) ]]" value="[[ renderNumberAmount(filter.min) ]]"
+							min="[[ _possibleAmountRange.min.amount ]]" max="[[ _lowestMax.amount ]]" on-change="_setMinValue">
+						<div suffix>[[ filter.min.currency ]]</div>
+					</paper-input>
+					<paper-input type="number" label="[[ _('Maximum amount', t) ]]" value="[[ renderNumberAmount(filter.max) ]]"
+							min="[[ _highestMin.amount ]]" max="[[ _possibleAmountRange.max.amount ]]" on-change="_setMaxValue">
+						<div suffix>[[ filter.max.currency ]]</div>
+					</paper-input>
+				</div>
+			</paper-dropdown-menu>
+		</template>
 	</template>
 	<script>
 		Polymer({
@@ -137,7 +132,7 @@
 				if (first.amount > second.amount) {
 					return doMax ? first : second;
 				}
-				
+
 				return doMax ? second : first;
 			},
 
@@ -152,7 +147,7 @@
 				}
 				return value;
 			},
-			
+
 			_setMinValue: function (event) {
 				var value = this._getNumberValue(event.target.value);
 				if (value === undefined) {
@@ -185,7 +180,9 @@
 
 			renderAmountValue: function (item, valuePath) {
 				var value = this.get(valuePath, item);
-				return value.amount;
+				if (value) {
+					return value.amount;
+				}
 			},
 
 			_getCurrency: function (item, valuePath) {
