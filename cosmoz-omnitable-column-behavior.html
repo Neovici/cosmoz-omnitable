@@ -107,38 +107,47 @@
 		_headerTemplatizer: null,
 
 		ready: function () {
-			var customDataTemplate, customHeaderTemplate;
+			this._headerTemplatizer = this._createTemplatizer('template[id="header-template"');
+		},
 
-			if (this.editable) {
-				this._dataTemplatizer = Polymer.dom(this.root).querySelector('cosmoz-omnitable-templatizer[id="edit-data-templatizer"]');
-				customDataTemplate = Polymer.dom(this).querySelector('template[id="edit-data-template"]');
+		_createTemplatizer: function (templateElementOrSelector) {
+			var
+				template,
+				templateHost,
+				templatizer;
+
+			if (templateElementOrSelector instanceof HTMLTemplateElement) {
+				template = templateElementOrSelector;
+				templateHost = Polymer.dom(templateElementOrSelector).parentNode;
 			} else {
-				this._dataTemplatizer = Polymer.dom(this.root).querySelector('cosmoz-omnitable-templatizer[id="data-templatizer"]');
-				if (this.dataTemplate) {
-					customDataTemplate = this.dataTemplate;
+				template = Polymer.dom(this).querySelector(templateElementOrSelector);
+				if (template) {
+					templateHost = Polymer.dom(this).getOwnerRoot().host;
 				} else {
-					customDataTemplate = Polymer.dom(this).querySelector('template[id="data-template"]');
+					template = Polymer.dom(this.root).querySelector(templateElementOrSelector);
+					templateHost = Polymer.dom(this.root).getOwnerRoot().host;
 				}
 			}
 
-			if (customDataTemplate) {
-				this._dataTemplatizer.template = customDataTemplate;
-			}
-
-			this._headerTemplatizer =  Polymer.dom(this.root).querySelector('cosmoz-omnitable-templatizer[id="header-templatizer"]');
-			customHeaderTemplate = Polymer.dom(this).querySelector('template[id="header-template"]');
-			if (customHeaderTemplate) {
-				this._headerTemplatizer.template = customHeaderTemplate;
-			}
+			templatizer = document.createElement('cosmoz-omnitable-templatizer');
+			templatizer.init(template, templateHost);
+			return templatizer;
 		},
 
 		_dataTemplateChanged: function (dataTemplate) {
-			if (dataTemplate && this._dataTemplatizer) {
-				this._dataTemplatizer.template = dataTemplate;
-			}
+			this._dataTemplatizer = this._createTemplatizer(dataTemplate);
 		},
 
 		getDataTemplateInstance: function () {
+			var selector;
+			if (!this._dataTemplatizer) {
+				if (this.editable) {
+					selector = 'template[id="edit-data-template"';
+				} else {
+					selector = 'template[id="data-template"';
+				}
+				this._dataTemplatizer = this._createTemplatizer(selector);
+			}
 			return this._dataTemplatizer.createInstance();
 		},
 

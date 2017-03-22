@@ -4,32 +4,26 @@
 
 <dom-module id="cosmoz-omnitable-column-number">
 	<template>
-		<cosmoz-omnitable-templatizer id="data-templatizer">
-			<template>
-				<div class="omnitable-cell-number">[[ renderNumberValue(item, valuePath, locale) ]]</div>
-			</template>
-		</cosmoz-omnitable-templatizer>
+		<template id="data-template">
+			<div class="omnitable-cell-number">[[ renderNumberValue(item, valuePath, locale) ]]</div>
+		</template>
 
-		<cosmoz-omnitable-templatizer id="edit-data-templatizer">
-			<template>
-				<paper-input no-label-float type="number" on-change="_valueChanged" value="[[ renderNumberValue(item, valuePath) ]]"></paper-input>
-			</template>
-		</cosmoz-omnitable-templatizer>
+		<template id="edit-data-template">
+			<paper-input no-label-float type="number" on-change="_valueChanged" value="[[ renderDefaultValue(item, valuePath) ]]"></paper-input>
+		</template>
 
-		<cosmoz-omnitable-templatizer id="header-templatizer">
-			<template>
-				<paper-dropdown-menu no-animations label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _filterText ]]">
-					<div class="dropdown-content" style="padding: 10px;">
-						<paper-input type="number" label="[[ _('From', t) ]]" value="{{ _filterInput.min }}"
-							min="[[ _possibleNumberRange.min ]]" max="[[ _lowestMax ]]">
-						</paper-input>
-						<paper-input type="number" label="[[ _('To', t) ]]" value="{{ _filterInput.max }}"
-							min="[[ _highestMin ]]" max="[[ _possibleNumberRange.max ]]">
-						</paper-input>
-					</div>
-				</paper-dropdown-menu>
-			</template>
-		</cosmoz-omnitable-templatizer>
+		<template id="header-template">
+			<paper-dropdown-menu no-animations label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _filterText ]]">
+				<div class="dropdown-content" style="padding: 10px;">
+					<paper-input type="number" label="[[ _('From', t) ]]" value="{{ _filterInput.min }}"
+						min="[[ _possibleNumberRange.min ]]" max="[[ _lowestMax ]]">
+					</paper-input>
+					<paper-input type="number" label="[[ _('To', t) ]]" value="{{ _filterInput.max }}"
+						min="[[ _highestMin ]]" max="[[ _possibleNumberRange.max ]]">
+					</paper-input>
+				</div>
+			</paper-dropdown-menu>
+		</template>
 	</template>
 	<script>
 		Polymer({
@@ -129,7 +123,7 @@
 					this.set('_filterInput.min', minRangeMax);
 				}
 			},
-			
+
 			_enforceHighestMin: function (maxRangeValue, maxRangeMin) {
 				if (maxRangeValue === null) {
 					return;
@@ -181,7 +175,7 @@
 				if (first > second) {
 					return doMax ? first : second;
 				}
-				
+
 				return doMax ? second : first;
 			},
 

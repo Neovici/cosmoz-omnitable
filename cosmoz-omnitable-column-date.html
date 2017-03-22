@@ -8,34 +8,28 @@
 
 <dom-module id="cosmoz-omnitable-column-date">
 	<template>
-		<cosmoz-omnitable-templatizer id="data-templatizer">
-			<template>
-				[[ renderDateValue(item, valuePath, userFormat, locale) ]]
-			</template>
-		</cosmoz-omnitable-templatizer>
+		<template id="data-template">
+			[[ renderDateValue(item, valuePath, userFormat, locale) ]]
+		</template>
 
-		<cosmoz-omnitable-templatizer id="edit-data-templatizer">
-			<template>
-				<paper-input no-label-float type="date" on-change="_dateValueChanged"
-					value="[[ renderDateValue(item, valuePath, userFormat, locale) ]]">
-				</paper-input>
-			</template>
-		</cosmoz-omnitable-templatizer>
+		<template id="edit-data-template">
+			<paper-input no-label-float type="date" on-change="_dateValueChanged"
+				value="[[ renderDateValue(item, valuePath, userFormat, locale) ]]">
+			</paper-input>
+		</template>
 
-		<cosmoz-omnitable-templatizer id="header-templatizer">
-			<template>
-				<paper-dropdown-menu no-animations label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _filterText ]]">
-					<div class="dropdown-content" style="padding: 10px;">
-						<paper-input type="date" min="[[ _formatISODate(_possibleDateRange.min) ]]" max="[[ _formatISODate(_latestAfter) ]]"
-							label="[[ _('From date', t) ]]" value="{{ _filterInput.start }}">
-						</paper-input>
-						<paper-input type="date" min="[[ _formatISODate(_earliestBefore) ]]" max="[[ _formatISODate(_possibleDateRange.max) ]]"
-							label="[[ _('Until date', t) ]]" value="{{ _filterInput.end }}">
-						</paper-input>
-					</div>
-				</paper-dropdown-menu>
-			</template>
-		</cosmoz-omnitable-templatizer>
+		<template id="header-template">
+			<paper-dropdown-menu no-animations label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _filterText ]]">
+				<div class="dropdown-content" style="padding: 10px;">
+					<paper-input type="date" min="[[ _formatISODate(_possibleDateRange.min) ]]" max="[[ _formatISODate(_latestAfter) ]]"
+						label="[[ _('From date', t) ]]" value="{{ _filterInput.start }}">
+					</paper-input>
+					<paper-input type="date" min="[[ _formatISODate(_earliestBefore) ]]" max="[[ _formatISODate(_possibleDateRange.max) ]]"
+						label="[[ _('Until date', t) ]]" value="{{ _filterInput.end }}">
+					</paper-input>
+				</div>
+			</paper-dropdown-menu>
+		</template>
 	</template>
 	<script>
 		/*global Cosmoz, moment */
@@ -119,7 +113,7 @@
 				if (first.isAfter(second)) {
 					return doMax ? first : second;
 				}
-				
+
 				return doMax ? second : first;
 			},
 
