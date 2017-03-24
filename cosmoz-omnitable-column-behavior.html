@@ -135,16 +135,18 @@
 		},
 
 		_dataTemplateChanged: function (dataTemplate) {
-			this._dataTemplatizer = this._createTemplatizer(dataTemplate);
+			if (dataTemplate !== undefined && dataTemplate !== null) {
+				this._dataTemplatizer = this._createTemplatizer(dataTemplate);
+			}
 		},
 
 		getDataTemplateInstance: function () {
 			var selector;
 			if (!this._dataTemplatizer) {
 				if (this.editable) {
-					selector = 'template[id="edit-data-template"';
+					selector = 'template[id="edit-data-template"]';
 				} else {
-					selector = 'template[id="data-template"';
+					selector = 'template[id="data-template"]';
 				}
 				this._dataTemplatizer = this._createTemplatizer(selector);
 			}
