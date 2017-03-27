@@ -151,6 +151,11 @@
 
 		attached: function () {
 			var data = this.generateTableDemoData(10, 11, 25);
+			// Used to test filtering and sorting when a row has an undefined or null amount or number
+			data[0].amount = undefined;
+			data[1].value = undefined;
+			data[2].amount = null;
+			data[3].value = null;
 			this.async(function () {
 				this.data = data;
 			}.bind(this), 100);

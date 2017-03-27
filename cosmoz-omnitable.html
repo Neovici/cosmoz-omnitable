@@ -92,7 +92,7 @@
 				/*global onmessage, postMessage */
 				'use strict';
 
-				var getSortFunc = function (sortOn) {
+				var ascSortFunc = function (sortOn) {
 					if (!sortOn) {
 						return;
 					}
@@ -100,12 +100,17 @@
 						var v1 = a[sortOn],
 							v2 = b[sortOn];
 
-						if (v1 === undefined || v2 === undefined) {
-							console.warn('missing sort property', a, b, sortOn);
+						if (v1 === v2) {
 							return 0;
 						}
 
+						if (v1 === undefined) {
+							return -1;
+						}
 
+						if (v2 === undefined) {
+							return 1;
+						}
 
 						if (typeof v1 === "number" && typeof v2 === "number") {
 							return v1 - v2;
@@ -127,6 +132,46 @@
 						return 0;
 					};
 				};
+				var descSortFunc = function (sortOn) {
+					if (!sortOn) {
+						return;
+					}
+					return function (a, b) {
+						var v1 = a[sortOn],
+							v2 = b[sortOn];
+
+						if (v1 === v2) {
+							return 0;
+						}
+
+						if (v1 === undefined) {
+							return -1;
+						}
+
+						if (v2 === undefined) {
+							return 1;
+						}
+
+						if (typeof v1 === "number" && typeof v2 === "number") {
+							return v2 - v1;
+						}
+
+						if (typeof v1 === "string" && typeof v2 === "string") {
+							return v2 < v1 ? -1 : 1;
+						}
+
+						if (typeof v1 === "boolean" && typeof v2 === "boolean") {
+							if (v1 === v2) {
+								return 0;
+							} else {
+								return v1 ? 1 : -1;
+							}
+						}
+
+						console.warn('unsupported sort', typeof v1, v1, typeof v2, v2);
+						return 0;
+					};
+				};
 
 				onmessage = function (event) {
 					var data = event.data.data,
@@ -134,18 +179,8 @@
 						sortFunc;
 
 					list = data.data;
-					sortFunc = getSortFunc(data.sortOn);
-
-					if (sortFunc === undefined) {
-						list.sort();
-					} else {
-						list.sort(sortFunc);
-					}
-
-					if (!!data.reverse) {
-						list.reverse();
-					}
-
+					sortFunc = !data.reverse ? ascSortFunc(data.sortOn) : descSortFunc(data.sortOn);
+					list.sort(sortFunc);
 					postMessage({
 						workerRun: event.data.workerRun,
 						data: data

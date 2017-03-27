@@ -192,20 +192,23 @@
 				}
 			},
 
+			getComparableValue: function (item, valuePath) {
+				var value = this.get(valuePath, item);
+				if (value !== undefined && value !== null && typeof(value) === 'number') {
+					return value;
+				}
+			},
+
 			_applySingleFilter: function (filter, item) {
 				var value = this.getComparableValue(item, this.valuePath),
 					minValue = this.getComparableValue(filter, 'min'),
 					maxValue = this.getComparableValue(filter, 'max');
 
-				if (value === null) {
+				if (value < minValue) {
 					return false;
 				}
 
-				if (minValue !== null && value < minValue) {
-					return false;
-				}
-
-				if (maxValue !== null && value > maxValue) {
+				if (value > maxValue) {
 					return false;
 				}
 
