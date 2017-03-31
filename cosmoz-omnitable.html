@@ -307,13 +307,13 @@
 					<span>[[ ngettext('{0} row', '{0} rows', filteredItems.length, t) ]]</span>
 				</div>
 				<cosmoz-bottom-bar class="footer-actionBar" match-parent info="[[ selectedItems.length ]]" on-action="onAction" active$="[[ !isEmpty(selectedItems.length) ]]">
-					<content id="actions" select="[action]"></content>
+					<slot name="actions" id="actions"></slot>
 				</cosmoz-bottom-bar>
 			</div>
 
 		</div>
 		<div id="columns">
-			<content></content>
+			<slot></slot>
 		</div>
 
 	</template>

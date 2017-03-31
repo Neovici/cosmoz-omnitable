@@ -209,6 +209,7 @@
 
 			getComparableValue: function (item, valuePath) {
 				var value = this.get(valuePath, item);
+				// TODO: fx
 				if (value !== undefined && value !== null && typeof(value.amount) === 'number') {
 					return value.amount;
 				}

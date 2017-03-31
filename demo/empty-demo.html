@@ -84,12 +84,12 @@
 						</template>
 					</cosmoz-omnitable-column>
 
-					<paper-button action on-run="updateSelectedRows">
+					<paper-button slot="actions" on-run="updateSelectedRows">
 						<iron-icon icon="editor:mode-edit"></iron-icon>
 						<span>{{ _computeLabel('Update', selectedItems.length)}}</span>
 					</paper-button>
 
-					<paper-button action on-run="removeItems">
+					<paper-button slot="actions" on-run="removeItems">
 						<iron-icon icon="delete"></iron-icon>
 						<span>{{ _computeLabel('Remove', selectedItems.length)}}</span>
 					</paper-button>

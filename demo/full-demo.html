@@ -94,12 +94,12 @@
 						data-template="[[customNameTemplate]]">
 					</cosmoz-omnitable-column>
 
-					<paper-button action on-run="updateSelectedRows">
+					<paper-button slot="actions" on-run="updateSelectedRows">
 						<iron-icon icon="editor:mode-edit"></iron-icon>
 						<span>Update [[ selectedItems.length ]] items</span>
 					</paper-button>
 
-					<paper-button action on-run="removeItems">
+					<paper-button slot="actions" on-run="removeItems">
 						<iron-icon icon="delete"></iron-icon>
 						<span>Remove [[ selectedItems.length ]] items</span>
 					</paper-button>
