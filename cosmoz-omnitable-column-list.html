@@ -1,0 +1,135 @@
+<link rel="import" href="../iron-collapse/iron-collapse.html">
+
+<link rel="import" href="../cosmoz-autocomplete/cosmoz-autocomplete.html">
+
+<link rel="import" href="cosmoz-omnitable-column-behavior.html">
+
+<dom-module id="cosmoz-omnitable-column-list">
+	<template>
+		<template id="data-template">
+			<paper-button toggles on-tap="_toggleContent"><iron-icon icon="[[ _getIcon(item) ]]"></iron-icon>[[ _getHeadingText(item, valuePath) ]]</paper-button>
+			<iron-collapse on-iron-resize="_onResize" id="listContent">
+				<ul>
+					<template is="dom-repeat" items="[[ get(valuePath, item) ]]" as="listitem">
+						<li>[[ _renderListItem(listitem) ]]</li>
+					</template>
+				</ul>
+			</iron-collapse>
+		</template>
+
+		<template id="edit-data-template">
+			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ renderDefaultValue(item, valuePath) ]]"></paper-input>
+		</template>
+
+		<template id="header-template">
+			<cosmoz-autocomplete
+				items="[[ autocompleteItems ]]"
+				placeholder="[[ title ]]"
+				selected-items="{{ autocompleteSelectedItems }}"
+				multi-selection
+			></cosmoz-autocomplete>
+		</template>
+	</template>
+
+	<script type="text/javascript">
+		Polymer({
+			is: 'cosmoz-omnitable-column-list',
+
+			behaviors: [
+				Cosmoz.OmnitableColumnBehavior,
+				Cosmoz.TranslatableBehavior,
+				Polymer.IronResizableBehavior
+			],
+
+			properties: {
+				autocompleteItems: {
+					type: Array,
+					notify: true,
+					computed: '_computeAutocompleteItems(values.length)'
+				},
+				autocompleteSelectedItems: {
+					type: Array
+				},
+				/**
+				 * Ask for a list of values
+				 */
+				bindValues: {
+					type: Boolean,
+					readOnly: true,
+					value: true
+				},
+				filter: {
+					type: Object,
+					computed: '_computeFilter(autocompleteSelectedItems.length)'
+				}
+			},
+
+			
+		_onResize: function (event, detail) {
+			console.log('_onresize', event, detail);
+		},
+
+			_computeAutocompleteItems: function (change) {
+				return this.values
+					.filter(function (value, index, array) {
+						// Make the item list unique
+						return array.indexOf(value) === index;
+					})
+					.map(function (value) {
+						return {
+							value: value,
+							label: this._getLabelForValue(value)
+						};
+					}, this);
+			},
+
+			_getHeadingText: function (item, valuePath) {
+				var list = this.get(valuePath, item);
+				return list !== undefined ? this._('Show {0} items', list.length) : this._('No list');
+			},
+
+			_getLabelForValue: function (value) {
+				return value.toString();
+			},
+
+			_getIcon: function (item) {
+				return 'icons:expand-more';
+			},
+
+			_computeFilter: function (change) {
+				return this.autocompleteSelectedItems.map(function (item) {
+					return item.value;
+				});
+			},
+
+			_renderListItem: function (listitem) {
+				return listitem;
+			},
+
+			_toggleContent: function (event, detail) {
+				var model = event.model;
+				// FIXME: Ugly, unsafe
+				var active = event.target.active,
+					listContent = event.target.nextElementSibling;
+
+				listContent.opened = active;
+				listContent.notifyResize();
+				
+				console.log(active, listContent);
+			},
+
+			_applySingleFilter: function (filterString, item) {
+				var value = this.get(this.valuePath, item).toString().toLowerCase();
+				return value === filterString;
+			},
+
+			_applyMultiFilter: function (filterArray, item) {
+				var	value = this.get(this.valuePath, item).toString().toLowerCase();
+
+				return filterArray.some(function (filter) {
+					return value === filter;
+				});
+			}
+		});
+	</script>
+</dom-module>

@@ -688,7 +688,7 @@
 			this.$.groupedList.toggleCollapse(item);
 		},
 
-		_onResize: function (e) {
+		_onResize: function (event) {
 			this._debounceAdjustColumns();
 		},
 
