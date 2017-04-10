@@ -1,9 +1,7 @@
 <link rel="import" href="cosmoz-omnitable-column-behavior.html">
-<link rel="import" href="cosmoz-omnitable-column-autocomplete-behavior.html">
 
 <dom-module id="cosmoz-omnitable-column-autocomplete">
 	<template>
-
 		<template id="data-template">
 			<span class="default-column">[[ renderDefaultValue(item, valuePath) ]]</span>
 		</template>
@@ -14,24 +12,81 @@
 
 		<template id="header-template">
 			<cosmoz-autocomplete
-				items="[[autocompleteItems]]"
-				placeholder="[[title]]"
-				selected-items="{{autocompleteSelectedItems}}"
+				items="[[ autocompleteItems ]]"
+				placeholder="[[ title ]]"
+				selected-items="{{ autocompleteSelectedItems }}"
 				multi-selection
 			></cosmoz-autocomplete>
 		</template>
-
 	</template>
+
 	<script>
 		Polymer({
 			is: 'cosmoz-omnitable-column-autocomplete',
 
 			behaviors: [
-				Cosmoz.OmnitableColumnBehavior,
-				Cosmoz.OmnitableColumnAutocompleteBehavior
-			]
+				Cosmoz.OmnitableColumnBehavior
+			],
 
+			properties: {
+				autocompleteItems: {
+					type: Array,
+					notify: true,
+					computed: '_computeAutocompleteItems(values.length)'
+				},
+				autocompleteSelectedItems: {
+					type: Array
+				},
+				/**
+				 * Ask for a list of values
+				 */
+				bindValues: {
+					type: Boolean,
+					readOnly: true,
+					value: true
+				},
+				filter: {
+					type: Object,
+					computed: '_computeFilter(autocompleteSelectedItems.length)'
+				}
+			},
+
+			_computeAutocompleteItems: function (change) {
+				return this.values
+					.filter(function (value, index, array) {
+						// Make the item list unique
+						return array.indexOf(value) === index;
+					})
+					.map(function (value) {
+						return {
+							value: value,
+							label: this._getLabelForValue(value)
+						};
+					}, this);
+			},
+
+			_getLabelForValue: function (value) {
+				return value.toString();
+			},
+
+			_computeFilter: function (change) {
+				return this.autocompleteSelectedItems.map(function (item) {
+					return item.value;
+				});
+			},
+
+			_applySingleFilter: function (filterString, item) {
+				var value = this.get(this.valuePath, item).toString().toLowerCase();
+				return value === filterString;
+			},
+
+			_applyMultiFilter: function (filterArray, item) {
+				var	value = this.get(this.valuePath, item).toString().toLowerCase();
+
+				return filterArray.some(function (filter) {
+					return value === filter;
+				});
+			}
 		});
-
 	</script>
 </dom-module>
