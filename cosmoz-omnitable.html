@@ -311,7 +311,8 @@
 					<span>[[ ngettext('{0} group', '{0} groups', _groupsCount, t) ]]</span>
 					<span>[[ ngettext('{0} row', '{0} rows', filteredItems.length, t) ]]</span>
 				</div>
-				<cosmoz-bottom-bar class="footer-actionBar" match-parent info="[[ selectedItems.length ]]" on-action="onAction" active$="[[ !isEmpty(selectedItems.length) ]]">
+				<cosmoz-bottom-bar class="footer-actionBar" match-parent on-action="onAction" active$="[[ !isEmpty(selectedItems.length) ]]">
+					<div slot="info">[[ ngettext('{0} selected item', '{0} selected items', selectedItems.length, t) ]]</div>
 					<slot name="actions" id="actions"></slot>
 				</cosmoz-bottom-bar>
 			</div>
