@@ -143,14 +143,27 @@
 				min-height: 24px;
 				border-bottom: solid 1px #e2e2e2;
 				padding-right: 8px;
-				margin-top: 0.5em;
 				@apply --layout-horizontal;
-				@apply --layout-start;
+				@apply --layout-center;
 			}
 
 			.itemRow.itemRow-selected {
 				background-color: #e1f8f9;
 				@apply --cosmoz-omnitable-selected-row;
+			}
+
+			.item-expander paper-icon-button {
+				min-height: 24px;
+				max-height: 24px;
+				padding: 0;
+			}
+
+			.expanded-columns {
+				@apply --layout-vertical;
+				padding: 5px 44px;
+				font-size: 1.1em;
+				border-bottom: solid 1px #e2e2e2;
+    			background-color: #fafafa;
 			}
 
 			.groupRow {

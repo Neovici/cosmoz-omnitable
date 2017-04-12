@@ -241,7 +241,7 @@
 										<paper-icon-button icon="[[ getItemFoldIcon(expandedItems.length, item) ]]" on-tap="toggleItem"></paper-icon-button>
 									</div>
 								</div>
-								<div hidden="[[ itemIsFolded(disabledColumns.length, expandedItems.length, item) ]]" class="vertical layout">
+								<div hidden="[[ itemIsFolded(disabledColumns.length, expandedItems.length, item) ]]" class="expanded-columns">
 									<template is="dom-repeat" items="[[ disabledColumns ]]" as="column" index-as="columnIndex">
 										<div class="horizontal layout center">
 											<cosmoz-omnitable-header-cell class="header-cell" column="{{ column }}" style="width: 50%; flex: initial;">
