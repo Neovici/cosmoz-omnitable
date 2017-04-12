@@ -1,0 +1,111 @@
+<link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
+
+<dom-module id="cosmoz-omnitable-column-list-data">
+	<template>
+		<style>
+			:host {
+				display: block;
+			}
+
+			[hidden] {
+				display: none;
+			}
+
+			ul {
+				margin-top: 0;
+				padding-left: 1em;
+			}
+		</style>
+
+		<ul hidden$="[[ _isEmpty(items) ]]">
+			<li>
+				<span>[[ _firstItem(items) ]]</span>
+			</li>
+			<li class="see-more" hidden$="[[_hideExpand(items, _expanded)]]">
+				<a href="#" on-tap="_toggleExpand">[[ _('and {0} more', _othersCount) ]]</a>
+			</li>
+			<template is="dom-repeat" items="[[ _otherItems(items, _expanded) ]]" as="item">
+				<li>
+					<span class="item">[[item]]</span>
+				</li>
+			</template>
+			<li class="see-less" hidden$="[[ _hideCollapse(items, _expanded) ]]">
+				<a href="#" on-tap="_toggleExpand">[[ _('See less') ]]</a>
+			</li>
+		</ul>
+	</template>
+	<script>
+		Polymer({
+			is: 'cosmoz-omnitable-column-list-data',
+
+			properties: {
+				items: {
+					type: Array
+				},
+
+				_expanded: {
+					type: Boolean,
+					value: false
+				},
+
+				_othersCount: {
+					type: Number,
+					computed: '_computeOthersCount(items)'
+				}
+			},
+
+			behaviors: [
+				Cosmoz.TranslatableBehavior,
+				Polymer.IronResizableBehavior
+			],
+
+			_isEmpty: function(items) {
+				return items === undefined || items === null || items.length === 0;
+			},
+
+			_firstItem: function(items) {
+				if (items !== undefined && items !== null && items.length > 0) {
+					return items[0];
+				}
+			},
+
+			_hideExpand: function (items, expanded) {
+				if (items !== undefined && items.length !== null) {
+					return items.length <= 2 || expanded;
+				}
+				return true;
+			},
+
+			_hideCollapse: function (items, expanded) {
+				if (items !== undefined && items.length !== null) {
+					return items.length <= 2 || !expanded;
+				}
+				return true;
+
+			},
+
+			_otherItems: function (items, expanded) {
+				if (items !== undefined && items !== null) {
+					if (items.length <= 2 || expanded) {
+						return items.slice(1);
+					}
+				}
+			},
+
+			_computeOthersCount: function (items) {
+				if (items !== undefined && items !== null) {
+					return items.length - 1;
+				}
+			},
+
+			_toggleExpand: function (event) {
+				this._expanded = !this._expanded;
+				event.stopPropagation();
+				event.preventDefault();
+				this.notifyResize();
+			}
+		});
+	</script>
+</dom-module>

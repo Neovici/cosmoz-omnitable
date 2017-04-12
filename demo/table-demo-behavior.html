@@ -51,6 +51,10 @@
 				group =  'Group ' + i;
 				itemsCount = i * 2  + 1;
 				for (j = 0; j < itemsCount; j+= 1) {
+					var listValue = [], listValueCount = n % 10;
+					for (var k = 0; k < listValueCount; k+=1) {
+						listValue.push('Item ' + k);
+					}
 					data.push({
 						id: n,
 						name: group + ' item ' + j,
@@ -70,19 +74,7 @@
 							currency: 'SEK'
 						},
 						group: group,
-						list: [
-							"item 1",
-							"item 2",
-							"item 3",
-							"item 4",
-							"item 5",
-							"item 6",
-							"item 7",
-							"item 8",
-							"item 9",
-							"item 10"
-						]
-
+						list: listValue
 					});
 					n += 1;
 				}

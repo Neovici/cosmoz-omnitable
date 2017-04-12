@@ -139,11 +139,13 @@
 			}
 
 			.itemRow {
-				height: 24px;
+				/* set a min-height for rows so that rows with empty values are visible */
+				min-height: 24px;
 				border-bottom: solid 1px #e2e2e2;
 				padding-right: 8px;
+				margin-top: 0.5em;
 				@apply --layout-horizontal;
-				@apply --layout-center;
+				@apply --layout-start;
 			}
 
 			.itemRow.itemRow-selected {

@@ -165,12 +165,25 @@
 		],
 
 		listeners: {
-			'iron-resize': '_onResize'
+			'iron-resize': '_onResize',
+			'update-item-size': '_onUpdateItemSize'
 		},
 
 		_disabledColumnsIndexes: null,
 
 		_scalingUp: false,
+
+		_onUpdateItemSize: function (event, detail) {
+			if (!detail || !detail.item) {
+				return;
+			}
+			this.$.groupedList.updateSize(detail.item);
+			this.async(function () {
+				this.$.groupedList.updateSize(detail.item);
+			}, 500);
+			console.log(this.$.groupedList._flatData.indexOf(detail.item));
+			console.log('_onUpdateItemSize wasdfasdfsadf', event, detail);
+		},
 
 		created: function () {
 			/** WARNING: we do not support columns changes yet. */
@@ -358,7 +371,7 @@
 		setItemValue: function (item, itemPath, value) {
 			var dataColl = Polymer.Collection.get(this.data),
 				key = dataColl.getKey(item);
-			
+
 			this.set('data.' + key + '.' + itemPath, value);
 		},
 
