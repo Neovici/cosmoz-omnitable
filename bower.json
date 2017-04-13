@@ -46,6 +46,10 @@
     "iron-icons": "PolymerElements/iron-icons#^1.0.0",
     "web-component-tester": "^4.2.1",
     "marked-element": "^1.2.0",
-    "prism-element": "^1.2.0"
+    "prism-element": "^1.2.0",
+    "cosmoz-viewinfo": "Neovici/cosmoz-viewinfo"
+  },
+  "resolutions": {
+    "cosmoz-viewinfo": "master"
   }
 }

@@ -15,6 +15,8 @@
 	<link rel="import" href="../../paper-button/paper-button.html">
 	<link rel="import" href="../../cosmoz-i18next/cosmoz-i18next.html">
 	<link rel="import" href="../../cosmoz-moment/cosmoz-moment.html">
+	<link rel="import" href="../../cosmoz-moment/cosmoz-moment.html">
+	<link rel="import" href="../../cosmoz-viewinfo/cosmoz-viewinfo.html">
 	<link rel="import" href="../cosmoz-omnitable.html">
 
 	<link rel="import" href="table-demo-behavior.html">
@@ -38,7 +40,8 @@
 					margin: 5px 5px 10px 5px;
 				}
 			</style>
-			<div class="layout vertical fit">
+
+			<cosmoz-viewinfo class="layout vertical fit">
 				<h3>Cosmoz omnitable demo</h3>
 
 				<cosmoz-i18next
@@ -109,10 +112,16 @@
 						<iron-icon icon="delete"></iron-icon>
 						<span>Remove [[ selectedItems.length ]] items</span>
 					</paper-button>
+					<paper-item slot="actions"><paper-button>
+						bigger bigger button 5
+					</paper-button></paper-item>
+					<paper-item slot="actions"><paper-button>
+						bigger bigger bigger button 6
+					</paper-button></paper-item>
 				</cosmoz-omnitable>
 
 
-			</div>
+			</cosmoz-viewinfo>
 		</template>
 	</dom-module>
 
