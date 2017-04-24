@@ -23,12 +23,7 @@
 <link rel="import" href="cosmoz-omnitable-styles.html">
 <link rel="import" href="cosmoz-omnitable-templatizer.html">
 
-<link rel="import" href="cosmoz-omnitable-column-amount.html">
-<link rel="import" href="cosmoz-omnitable-column-autocomplete.html">
-<link rel="import" href="cosmoz-omnitable-column-boolean.html">
-<link rel="import" href="cosmoz-omnitable-column-date.html">
-<link rel="import" href="cosmoz-omnitable-column-list.html">
-<link rel="import" href="cosmoz-omnitable-column-number.html">
+<link rel="import" href="cosmoz-omnitable-columns.html">
 
 
 <!--
@@ -241,20 +236,22 @@
 										<paper-icon-button icon="[[ getItemFoldIcon(expandedItems.length, item) ]]" on-tap="toggleItem"></paper-icon-button>
 									</div>
 								</div>
-								<div hidden="[[ itemIsFolded(disabledColumns.length, expandedItems.length, item) ]]" class="expanded-columns">
-									<template is="dom-repeat" items="[[ disabledColumns ]]" as="column" index-as="columnIndex">
-										<div class="horizontal layout center">
-											<cosmoz-omnitable-header-cell class="header-cell" column="{{ column }}" style="width: 50%; flex: initial;">
-											</cosmoz-omnitable-header-cell>
-											<cosmoz-omnitable-item-cell class$="[[ _computeItemRowCellClasses(column, columnIndex) ]]" style="width: 50%;"
-												column="{{ column }}"
-												item="{{ item }}"
-												selected="{{ selected }}"
-												expanded="{{ expanded }}">
-											</cosmoz-omnitable-item-cell>
-										</div>
-									</template>
-								</div>
+								<template is="dom-if" if="[[ !itemIsFolded(disabledColumns.length, expandedItems.length, item) ]]">
+									<div class="expanded-columns">
+										<template is="dom-repeat" items="[[ disabledColumns ]]" as="column" index-as="columnIndex">
+											<div class="horizontal layout center">
+												<cosmoz-omnitable-header-cell class="header-cell" column="{{ column }}" style="width: 50%; flex: initial;">
+												</cosmoz-omnitable-header-cell>
+												<cosmoz-omnitable-item-cell class$="[[ _computeItemRowCellClasses(column, columnIndex) ]]" style="width: 50%;"
+													column="{{ column }}"
+													item="{{ item }}"
+													selected="{{ selected }}"
+													expanded="{{ expanded }}">
+												</cosmoz-omnitable-item-cell>
+											</div>
+										</template>
+									</div>
+								</template>
 							</template>
 						</cosmoz-grouped-list-template>
 						<cosmoz-grouped-list-template id="groupTemplate">

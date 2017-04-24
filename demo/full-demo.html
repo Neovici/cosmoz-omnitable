@@ -54,7 +54,7 @@
 					<button class="action" on-tap="changeData">Generate a new data set</button>
 					<button class="action" on-tap="emptyData">Generate an empty data set</button>
 					<div class="action">
-						Selected items count: <span>{{selectedItems.length}}</span>
+						Selected items count: <span>[[ selectedItems.length ]]</span>
 					</div>
 					<div class="action">
 						<paper-dropdown-menu label="Locale" no-animations>
@@ -67,12 +67,11 @@
 					</div>
 				</div>
 
-				<cosmoz-omnitable id="omnitable" class="flex" data="[[data]]"
-					selection-enabled selected-items="{{selectedItems}}">
+				<cosmoz-omnitable id="omnitable" class="flex" data="[[ data ]]" selection-enabled selected-items="{{ selectedItems }}">
 					<cosmoz-omnitable-column-autocomplete title="Id" value-path="id" sort-on="id" group-on="id">
 						<template id="data-template">
 							<span on-tap="onTap">
-								<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.id]]</a>
+								<a href="#!/purchase/suppliers/view?id=[[ item.id ]]">[[ item.id ]]</a>
 							</span>
 						</template>
 					</cosmoz-omnitable-column-autocomplete>
@@ -95,12 +94,12 @@
 					</cosmoz-omnitable-column>
 					<cosmoz-omnitable-column title="Name" value-path="name" sort-on="name" group-on="name" flex="2">
 						<template id="data-template">
-							<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.name]]</a>
+							<a href="#!/purchase/suppliers/view?id=[[ item.id ]]">[[ item.name ]]</a>
 						</template>
 					</cosmoz-omnitable-column>
 					<cosmoz-omnitable-column title="Custom template"
 						value-path="name" sort-on="name" width="50px" flex="2"
-						data-template="[[customNameTemplate]]">
+						data-template="[[ customNameTemplate ]]">
 					</cosmoz-omnitable-column>
 
 					<paper-button slot="actions" on-run="updateSelectedRows">
@@ -127,7 +126,7 @@
 
 	<x-page class="fit">
 		<template id="customNameTemplate">
-			<span style="background: red;" on-tap="onTap">[[item.name]]</span>
+			<span style="background: red;" on-tap="onTap">[[ item.name ]]</span>
 		</template>
 	</x-page>
 
