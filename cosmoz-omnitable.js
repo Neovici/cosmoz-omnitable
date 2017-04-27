@@ -424,6 +424,11 @@
 				if (!column.bindValues) {
 					return;
 				}
+				
+				if (!column.valuePath) {
+					console.error('value path is not defined for column', column, 'with bindValues');
+					return;
+				}
 
 				column.set('values', this.data
 					.map(function (item, index) {
