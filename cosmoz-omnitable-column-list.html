@@ -10,7 +10,7 @@
 		</template>
 
 		<template id="edit-data-template">
-			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ renderDefaultValue(item, valuePath) ]]"></paper-input>
+			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]"></paper-input>
 		</template>
 
 		<template id="header-template">
@@ -53,7 +53,7 @@
 				},
 
 				filter: {
-					type: Object,
+					type: Array,
 					computed: '_computeFilter(autocompleteSelectedItems.length)'
 				}
 			},
@@ -93,12 +93,10 @@
 
 			_applyMultiFilter: function (filterArray, item) {
 				var	listValue = this.get(this.valuePath, item);
-
-				var match = listValue.some(function (val) {
+				
+				return listValue.some(function (val) {
 					return filterArray.indexOf(val.toString().toLowerCase()) >= 0;
 				});
-
-				return match;
 			}
 		});
 	</script>

@@ -9,7 +9,7 @@
 		</template>
 
 		<template id="edit-data-template">
-			<paper-input no-label-float type="number" on-change="_valueChanged" value="[[ renderDefaultValue(item, valuePath) ]]"></paper-input>
+			<paper-input no-label-float type="number" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]"></paper-input>
 		</template>
 
 		<template id="header-template">
@@ -219,8 +219,6 @@
 				var value = this.get(valuePath, item);
 				return this._toLocaleString(value, locale);
 			}
-
 		});
-
 	</script>
 </dom-module>

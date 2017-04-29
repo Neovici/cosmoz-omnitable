@@ -202,6 +202,11 @@
 				return moment(value).locale(locale).format(userFormat);
 			},
 
+			getString: function (item, valuePath) {
+				var value = this.get(valuePath, item);
+				return moment(value).format(this.userFormat);
+			},
+
 			getFilterFn: function () {
 				if (!this.filter) {
 					return;

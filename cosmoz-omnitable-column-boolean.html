@@ -3,26 +3,26 @@
 	<template>
 
 		<template id="data-template">
-			[[renderBooleanValue(item, valuePath)]]
+			[[ getString(item, valuePath) ]]
 		</template>
 
 		<template id="edit-data-template">
 			<paper-dropdown-menu>
 				<paper-listbox class="dropdown-content" attr-for-selected="value" on-iron-select="_selectedChanged"
 					on-iron-activate="_activate"
-					selected="[[_computeSelected(item, valuePath)]]">
-					<paper-item value="true">{{trueLabel}}</paper-item>
-					<paper-item value="false">{{falseLabel}}</paper-item>
+					selected="[[ _computeSelected(item, valuePath) ]]">
+					<paper-item value="true">[[ trueLabel ]]</paper-item>
+					<paper-item value="false">[[ falseLabel ]]</paper-item>
 				</paper-listbox>
 			</paper-dropdown-menu>
 		</template>
 
 		<template id="header-template">
-			<paper-dropdown-menu label="{{title}}">
-				<paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{_textFilter}}">
+			<paper-dropdown-menu label="[[ title ]]">
+				<paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{ _textFilter }}">
 					<paper-item value=""></paper-item>
-					<paper-item value="true">{{trueLabel}}</paper-item>
-					<paper-item value="false">{{falseLabel}}</paper-item>
+					<paper-item value="true">[[ trueLabel ]]</paper-item>
+					<paper-item value="false">[[ falseLabel ]]</paper-item>
 				</paper-listbox>
 			</paper-dropdown-menu>
 		</template>
@@ -117,12 +117,9 @@
 
 			},
 
-			renderBooleanValue: function (item, valuePath) {
-				var
-					value = this.get(valuePath, item),
-					b = Boolean(value);
-
-				return b ? this.trueLabel : this.falseLabel;
+			getString: function (item, valuePath) {
+				var value = this.get(valuePath, item);
+				return Boolean(value) ? this.trueLabel : this.falseLabel;
 			},
 
 			getFilterFn: function () {

@@ -46,7 +46,7 @@
 				title: {
 					type: String,
 					reflectToAttribute: true,
-					computed: 'get(column.valuePath, item)'
+					computed: '_getTitle(column, item)'
 				}
 			},
 
@@ -64,6 +64,10 @@
 				if (newColumn) {
 					this._updateTemplate(newColumn.getDataTemplateInstance());
 				}
+			},
+
+			_getTitle: function (column, item) {
+				return column.getString(item, column.valuePath);
 			},
 
 			_updateTemplate: function (instance) {

@@ -6,7 +6,7 @@
 <dom-module id="cosmoz-omnitable-column-amount">
 	<template>
 		<template id="data-template">
-			<span>[[ renderAmountWithCurrency(item, valuePath) ]]</span>
+			<span>[[ getString(item, valuePath) ]]</span>
 		</template>
 
 		<template id="edit-data-template">
@@ -171,7 +171,7 @@
 				return accounting.formatNumber(item.amount, item.currency);
 			},
 
-			renderAmountWithCurrency: function (item, valuePath) {
+			getString: function (item, valuePath) {
 				var value = this.get(valuePath, item);
 				if (value) {
 					return this.renderAmount(value);

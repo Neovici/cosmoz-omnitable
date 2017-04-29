@@ -19,7 +19,7 @@
 			}
 		</style>
 
-		<ul hidden$="[[ _isEmpty(items) ]]">
+		<ul hidden$="[[ isEmpty(items) ]]">
 			<li>
 				<span>[[ _firstItem(items) ]]</span>
 			</li>
@@ -57,15 +57,12 @@
 			},
 
 			behaviors: [
+				Cosmoz.TemplateHelperBehavior,
 				Cosmoz.TranslatableBehavior,
 				Polymer.IronResizableBehavior
 			],
 
-			_isEmpty: function(items) {
-				return items === undefined || items === null || items.length === 0;
-			},
-
-			_firstItem: function(items) {
+			_firstItem: function (items) {
 				if (items !== undefined && items !== null && items.length > 0) {
 					return items[0];
 				}
@@ -83,7 +80,6 @@
 					return items.length <= 2 || !expanded;
 				}
 				return true;
-
 			},
 
 			_otherItems: function (items, expanded) {
