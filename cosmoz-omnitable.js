@@ -746,7 +746,7 @@
 
 			if (fits) {
 				fits = cells.every(function (cell) {
-					return cell.scrollWidth <= cell.clientWidth;
+					return cell.column.overflow || cell.scrollWidth <= cell.clientWidth;
 				});
 			}
 

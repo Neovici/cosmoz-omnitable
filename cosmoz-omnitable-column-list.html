@@ -58,11 +58,11 @@
 				}
 			},
 
-			_computeAutocompleteItems: function (change) {
-				var items = this.values
+			_computeAutocompleteItems: function (numValues) {
+				return this.values
 					.reduce(function(acc, val) {
 						return acc.concat(val);
-					})
+					}, [])
 					.filter(function (value, index, array) {
 						// Make the item list unique
 						return array.indexOf(value) === index;
@@ -74,8 +74,6 @@
 							label: this._getLabelForValue(value)
 						};
 					}, this);
-
-				return items;
 			},
 
 			_getLabelForValue: function (value) {
