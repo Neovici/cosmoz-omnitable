@@ -71,11 +71,11 @@
 			},
 
 			_updateTemplate: function (instance) {
-				var children, parent, i;
+				var parent = Polymer.dom(this),
+					children = parent.childNodes,
+					i;
 
 				// Remove current content
-				parent = Polymer.dom(this);
-				children = parent.childNodes;
 				if (children) {
 					for (i = 0 ; i < children.length ; i+=1) {
 						parent.removeChild(children[i]);

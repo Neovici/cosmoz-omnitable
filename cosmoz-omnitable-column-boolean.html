@@ -108,7 +108,7 @@
 				}
 
 				this._filterChangedFromAbove = true;
-				if (typeof(filter) === 'boolean') {
+				if (typeof filter === 'boolean') {
 					this._textFilter = filter.toString();
 				} else {
 					this._textFilter = null;
@@ -123,7 +123,7 @@
 			},
 
 			getFilterFn: function () {
-				if (typeof(this.filter) === 'boolean') {
+				if (typeof this.filter === 'boolean') {
 					return this._applySingleFilter.bind(this);
 				}
 			},

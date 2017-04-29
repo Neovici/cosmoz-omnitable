@@ -289,7 +289,10 @@
 		 * @return {Array} Array containing removed items
 		 */
 		removeItems: function (items) {
-			var i, removedItems = [], removed;
+			var i,
+				removedItems = [],
+				removed;
+
 			for (i = items.length - 1; i >= 0; i -= 1) {
 				removed = this.arrayDelete('data', items[i]);
 				if (removed) {
@@ -424,7 +427,7 @@
 				if (!column.bindValues) {
 					return;
 				}
-				
+
 				if (!column.valuePath) {
 					console.error('value path is not defined for column', column, 'with bindValues');
 					return;
@@ -779,7 +782,7 @@
 					return;
 				}
 
-				cellWidth = cell.getComputedStyleValue('width')
+				cellWidth = cell.getComputedStyleValue('width');
 				header.style.minWidth = cellWidth;
 				header.style.maxWidth = cellWidth;
 				header.style.width = cellWidth;
@@ -800,7 +803,7 @@
 				return true;
 			}
 
-			if ((this.visibleColumns.length + 1) < this._overflowConfig.columns) {
+			if (this.visibleColumns.length + 1 < this._overflowConfig.columns) {
 				return true;
 			}
 
@@ -808,7 +811,8 @@
 		},
 
 		_disableColumn: function () {
-			var disabledColumn, disabledColumnIndex;
+			var disabledColumn,
+				disabledColumnIndex;
 			// disables/hides columns that for example does not fit in the current screen size.
 			this.visibleColumns.forEach(function (column, index) {
 				if (disabledColumn === undefined || disabledColumn.priority >= column.priority) {
@@ -967,7 +971,7 @@
 			} else {
 				sortOnSelectorItems.some(function (element, i) {
 					var model = this.$.sortColumns.modelForElement(element);
-					if (model && model.column && (model.column.sortOn === this.sortOn.valuePath)) {
+					if (model && model.column && model.column.sortOn === this.sortOn.valuePath) {
 						newIndex = i;
 						return true;
 					}

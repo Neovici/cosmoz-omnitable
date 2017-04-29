@@ -154,8 +154,8 @@
 
 			_computeFilter: function (start, end) {
 
-				var start = moment(start),
-					end = moment(end);
+				start = moment(start);
+				end = moment(end);
 
 				return {
 					start: start.isValid() ? start : null,

@@ -93,11 +93,11 @@
 			_computeFilterText: function (filterNotify) {
 				var filter = filterNotify.base,
 					text = [];
-				if (typeof(filter.min.amount) === 'number') {
+				if (typeof filter.min.amount === 'number') {
 					text.push(this.renderAmount(filter.min));
 				}
 				text.push(' - ');
-				if (typeof(filter.max.amount) === 'number') {
+				if (typeof filter.max.amount === 'number') {
 					text.push(this.renderAmount(filter.max));
 				}
 				return text.length > 1 ? text.join('') : undefined;
@@ -210,7 +210,7 @@
 			getComparableValue: function (item, valuePath) {
 				var value = this.get(valuePath, item);
 				// TODO: fx
-				if (value !== undefined && value !== null && typeof(value.amount) === 'number') {
+				if (value !== undefined && value !== null && typeof value.amount === 'number') {
 					return value.amount;
 				}
 			},

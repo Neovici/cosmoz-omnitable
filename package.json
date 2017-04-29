@@ -1,16 +1,31 @@
 {
   "name": "cosmoz-omnitable",
-  "version": "0.2.0",
-  "description": "Cosmoz Omnitable",
-  "dependencies": {},
+  "version": "1.0.0",
+  "description": "[![Build Status](https://travis-ci.org/Neovici/cosmoz-omnitable.svg?branch=master)](https://travis-ci.org/Neovici/cosmoz-omnitable)",
+  "main": "cosmoz-omnitable.html",
+  "directories": {
+    "test": "test"
+  },
   "devDependencies": {
+    "eslint": "^3.9.1",
+    "eslint-plugin-html": "^1.5.5"
     "gulp": "^3.9.0"
   },
-  "engines": {
-    "node": ">=0.10.0"
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/neovici/cosmoz-omnitable"
-  }
+    "url": "git+https://github.com/neovici/cosmoz-omnitable.git"
+  },
+  "keywords": [
+    "polymer",
+    "web-components"
+  ],
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/neovici/cosmoz-omnitable/issues"
+  },
+  "homepage": "https://github.com/neovici/cosmoz-omnitable#readme"
 }

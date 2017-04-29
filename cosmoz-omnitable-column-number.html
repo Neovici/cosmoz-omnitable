@@ -88,11 +88,11 @@
 				var filter = filterNotify.base,
 					text = [];
 
-				if (typeof(filter.min) === 'number') {
+				if (typeof filter.min === 'number') {
 					text.push(this._toLocaleString(filter.min, locale));
 				}
 				text.push(' - ');
-				if (typeof(filter.max) === 'number') {
+				if (typeof filter.max === 'number') {
 					text.push(this._toLocaleString(filter.max, locale));
 				}
 				return text.length > 1 ? text.join('') : undefined;
@@ -187,14 +187,14 @@
 			},
 
 			getFilterFn: function () {
-				if (this.filter && (typeof(this.filter.min) === 'number' || typeof(this.filter.max) === 'number')) {
+				if (this.filter && (typeof this.filter.min === 'number' || typeof this.filter.max === 'number')) {
 					return this._applySingleFilter.bind(this, this.filter);
 				}
 			},
 
 			getComparableValue: function (item, valuePath) {
 				var value = this.get(valuePath, item);
-				if (value !== undefined && value !== null && typeof(value) === 'number') {
+				if (value !== undefined && value !== null && typeof value === 'number') {
 					return value;
 				}
 			},

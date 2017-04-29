@@ -60,7 +60,7 @@
 
 			_computeAutocompleteItems: function (numValues) {
 				return this.values
-					.reduce(function(acc, val) {
+					.reduce(function (acc, val) {
 						return acc.concat(val);
 					}, [])
 					.filter(function (value, index, array) {
@@ -93,7 +93,7 @@
 
 			_applyMultiFilter: function (filterArray, item) {
 				var	listValue = this.get(this.valuePath, item);
-				
+
 				return listValue.some(function (val) {
 					return filterArray.indexOf(val.toString().toLowerCase()) >= 0;
 				});
