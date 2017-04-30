@@ -3,11 +3,11 @@
 <dom-module id="cosmoz-omnitable-column-autocomplete">
 	<template>
 		<template id="data-template">
-			<span class="default-column">[[ renderDefaultValue(item, valuePath) ]]</span>
+			<span class="default-column">[[ getString(item, valuePath) ]]</span>
 		</template>
 
 		<template id="edit-data-template">
-			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ renderDefaultValue(item, valuePath) ]]"></paper-input>
+			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]"></paper-input>
 		</template>
 
 		<template id="header-template">
