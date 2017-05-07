@@ -190,7 +190,7 @@
 
 		<div class="mainContainer">
 			<div class="header" id="header">
-				<div class="selectAllCheckbox" hidden$="[[ !hasActions ]]">
+				<div class="selectAllCheckbox" hidden$="[[ !_showCheckboxes ]]">
 					<paper-checkbox on-change="onAllCheckboxChange" hidden$="[[ _noData ]]">
 					</paper-checkbox>
 				</div>
@@ -220,7 +220,7 @@
 						<cosmoz-grouped-list-template id="itemTemplate">
 							<template>
 								<div class$="[[ _computeItemRowClasses(selected) ]]">
-									<div class="selectItemCheckbox" hidden$="[[ !hasActions ]]">
+									<div class="selectItemCheckbox" hidden$="[[ !_showCheckboxes ]]">
 										<paper-checkbox checked="{{ selected }}" on-change="_onItemCheckboxChange"></paper-checkbox>
 									</div>
 									<template is="dom-repeat" items="[[ visibleColumns ]]" as="column" index-as="columnIndex">
@@ -256,7 +256,7 @@
 						<cosmoz-grouped-list-template id="groupTemplate">
 							<template>
 								<div class$="[[ _computeGroupRowClasses(folded) ]]">
-									<div class="selectGroupCheckbox" hidden$="[[ !hasActions ]]">
+									<div class="selectGroupCheckbox" hidden$="[[ !_showCheckboxes ]]">
 										<paper-checkbox checked="{{ selected }}" on-change="_onGroupCheckboxChange"></paper-checkbox>
 									</div>
 									<h3 class="groupRow-label">

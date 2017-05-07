@@ -35,12 +35,19 @@
 			},
 
 			/**
-			 * Whether to display checkboxes for item selection, and to make use of the bottom-bar for selection actions.
-			 * Will be enabled if bottom-bar has actions.
+			 * Whether bottom-bar has actions.
 			 */
 			hasActions: {
 				type: Boolean,
 				value: false
+			},
+
+			/**
+			 * Whether to show checkboxes to perform bottom-bar actions on
+			 */
+			_showCheckboxes: {
+				type: Boolean,
+				computed: '_computeShowCheckboxes(_noData, hasActions)'
 			},
 
 			/**
@@ -137,7 +144,6 @@
 				type: Array,
 				notify: true
 			},
-
 
 			/**
 			 * List of <b>visible</b> columns.
@@ -363,7 +369,7 @@
 		},
 
 		/**
-		 * Convienence method for setting a value to an item's path and notifying any
+		 * Convenience method for setting a value to an item's path and notifying any
 		 * element bound to this item's path.
 		 */
 		setItemValue: function (item, itemPath, value) {
@@ -551,7 +557,6 @@
 				groups = [],
 				itemStructure = {};
 
-
 			if (groupOn) {
 				if (!groupOnColumn) {
 					console.warn('Cannot group on ' + groupOn + ' as there is no columm configured to group on this value path.');
@@ -620,8 +625,7 @@
 				return;
 			}
 
-			var
-				sortOn = this.sortOn,
+			var sortOn = this.sortOn,
 				sortOnColumn = this._getSortOnColumn(),
 				items = [],
 				numGroups = this.filteredGroupedItems.length,
@@ -696,6 +700,10 @@
 		// TODO(pasleq): re-implement expand/collapse of single item
 		_computeIcon: function (item, expanded) {
 			return expanded ? 'expand-less' : 'expand-more';
+		},
+
+		_computeShowCheckboxes: function (noData, hasActions) {
+			return !noData && hasActions;
 		},
 
 		// TODO(pasleq): re-implement expand/collapse of single item
