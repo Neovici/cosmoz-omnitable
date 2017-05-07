@@ -36,9 +36,9 @@
 
 			/**
 			 * Whether to display checkboxes for item selection, and to make use of the bottom-bar for selection actions.
-			 * Will be enabled automatically if one or more elements has the attribute `action` set in the light DOM.
+			 * Will be enabled if bottom-bar has actions.
 			 */
-			selectionEnabled: {
+			hasActions: {
 				type: Boolean,
 				value: false
 			},
@@ -219,11 +219,6 @@
 		},
 
 		attached: function () {
-			var hasActions = Polymer.dom(this.$.actions).getDistributedNodes().length > 0;
-			if (hasActions) {
-				this.selectionEnabled = true;
-			}
-
 			this.$.groupedList.scrollTarget = this.$.scroller;
 		},
 
@@ -783,6 +778,7 @@
 				}
 
 				cellWidth = cell.getComputedStyleValue('width');
+				header.toggleClass('flex', false);
 				header.style.minWidth = cellWidth;
 				header.style.maxWidth = cellWidth;
 				header.style.width = cellWidth;

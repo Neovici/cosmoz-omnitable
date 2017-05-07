@@ -190,12 +190,12 @@
 
 		<div class="mainContainer">
 			<div class="header" id="header">
-				<div class="selectAllCheckbox" hidden$="[[ !selectionEnabled ]]">
+				<div class="selectAllCheckbox" hidden$="[[ !hasActions ]]">
 					<paper-checkbox on-change="onAllCheckboxChange" hidden$="[[ _noData ]]">
 					</paper-checkbox>
 				</div>
 				<template is="dom-repeat" items="[[ visibleColumns ]]" as="column" index-as="columnIndex">
-					<cosmoz-omnitable-header-cell class="header-cell" column="{{ column }}">
+					<cosmoz-omnitable-header-cell class="flex header-cell" column="{{ column }}">
 					</cosmoz-omnitable-header-cell>
 				</template>
 			</div>
@@ -220,7 +220,7 @@
 						<cosmoz-grouped-list-template id="itemTemplate">
 							<template>
 								<div class$="[[ _computeItemRowClasses(selected) ]]">
-									<div class="selectItemCheckbox" hidden$="[[ !selectionEnabled ]]">
+									<div class="selectItemCheckbox" hidden$="[[ !hasActions ]]">
 										<paper-checkbox checked="{{ selected }}" on-change="_onItemCheckboxChange"></paper-checkbox>
 									</div>
 									<template is="dom-repeat" items="[[ visibleColumns ]]" as="column" index-as="columnIndex">
@@ -256,7 +256,7 @@
 						<cosmoz-grouped-list-template id="groupTemplate">
 							<template>
 								<div class$="[[ _computeGroupRowClasses(folded) ]]">
-									<div class="selectGroupCheckbox" hidden$="[[ !selectionEnabled ]]">
+									<div class="selectGroupCheckbox" hidden$="[[ !hasActions ]]">
 										<paper-checkbox checked="{{ selected }}" on-change="_onGroupCheckboxChange"></paper-checkbox>
 									</div>
 									<h3 class="groupRow-label">
@@ -304,7 +304,7 @@
 					<span>[[ ngettext('{0} group', '{0} groups', _groupsCount, t) ]]</span>
 					<span>[[ ngettext('{0} row', '{0} rows', filteredItems.length, t) ]]</span>
 				</div>
-				<cosmoz-bottom-bar id="bottomBar" class="footer-actionBar" match-parent on-action="onAction" active$="[[ !isEmpty(selectedItems.length) ]]">
+				<cosmoz-bottom-bar id="bottomBar" class="footer-actionBar" match-parent has-actions="{{ hasActions }}" on-action="onAction" active$="[[ !isEmpty(selectedItems.length) ]]">
 					<div slot="info">[[ ngettext('{0} selected item', '{0} selected items', selectedItems.length, t) ]]</div>
 					<slot name="actions" id="actions"></slot>
 					<!-- These slots are neened by cosmoz-bottom-bar
