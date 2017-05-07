@@ -32,6 +32,7 @@
 		</template>
 	</template>
 	<script>
+		/*global accounting*/
 		Polymer({
 			is: 'cosmoz-omnitable-column-amount',
 
@@ -172,7 +173,7 @@
 			},
 
 			getString: function (item, valuePath) {
-				var value = this.get(valuePath, item);
+				var value = this.get(valuePath || this.valuePath, item);
 				if (value) {
 					return this.renderAmount(value);
 				}

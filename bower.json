@@ -37,7 +37,8 @@
     "cosmoz-i18next": "Neovici/cosmoz-i18next#master",
     "cosmoz-bottom-bar": "neovici/cosmoz-bottom-bar#master",
     "cosmoz-behaviors": "neovici/cosmoz-behaviors#master",
-    "cosmoz-moment": "neovici/cosmoz-moment#master"
+    "cosmoz-moment": "neovici/cosmoz-moment#master",
+    "import-filesaver": "JaySunSyn/import-filesaver"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

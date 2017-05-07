@@ -118,7 +118,7 @@
 			},
 
 			getString: function (item, valuePath) {
-				var value = this.get(valuePath, item);
+				var value = this.get(valuePath || this.valuePath, item);
 				return Boolean(value) ? this.trueLabel : this.falseLabel;
 			},
 

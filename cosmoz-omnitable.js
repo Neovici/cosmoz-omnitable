@@ -1,4 +1,4 @@
-/*global Cosmoz, Polymer, window */
+/*global Cosmoz, Polymer, window, saveAs */
 (function () {
 
 	'use strict';
@@ -8,6 +8,14 @@
 		is: 'cosmoz-omnitable',
 
 		properties: {
+
+			/**
+			 * Filename when saving as CSV
+			 */
+			csvFilename: {
+				type: String,
+				value: 'omnitable.csv'
+			},
 
 			/**
 			 * List of data to display
@@ -985,6 +993,32 @@
 			if (newIndex !== this._sortOnSelectorSelected) {
 				this._sortOnSelectorSelected = newIndex;
 			}
+		},
+
+		_makeCsvField: function (str) {
+			var result = str.replace(/"/g, '""');
+			if (result.search(/("|,|\n)/g) >= 0) {
+				return '"' + result + '"';
+			}
+			return str;
+		},
+
+		saveAsCsvAction: function (event) {
+			var separator = ',',
+				header = this.columns.map(function (column) {
+					return this._makeCsvField(column.title);
+				}, this).join(separator) + '\n',
+				rows = this.selectedItems.map(function (item) {
+					return this.columns.map(function (column) {
+						return this._makeCsvField(String(column.getString(item) || ''));
+					}, this).join(separator) + '\n';
+				}, this);
+
+			rows.unshift(header);
+
+			saveAs(new File(rows, this.csvFilename, {
+				type: 'text/csv;charset=utf-8'
+			}));
 		}
 
 	});

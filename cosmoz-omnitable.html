@@ -17,6 +17,8 @@
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 <link rel="import" href="../cosmoz-bottom-bar/cosmoz-bottom-bar.html"/>
 
+<link rel="import" href="../import-filesaver/import-filesaver.html"/>
+
 <link rel="import" href="cosmoz-omnitable-column.html">
 <link rel="import" href="cosmoz-omnitable-header-cell.html">
 <link rel="import" href="cosmoz-omnitable-item-cell.html">
@@ -311,6 +313,7 @@
 						as it might change the slot of the actions to distribute them in the menu -->
 					<slot name="bottom-bar-toolbar"></slot>
 					<slot name="bottom-bar-menu"></slot>
+					<paper-button on-action="saveAsCsvAction">[[ _('Save as CSV', t) ]]</paper-button>
 				</cosmoz-bottom-bar>
 			</div>
 

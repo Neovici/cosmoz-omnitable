@@ -188,7 +188,7 @@
 		},
 
 		getString: function (item, valuePath) {
-			return this.get(valuePath, item);
+			return this.get(valuePath || this.valuePath, item);
 		},
 
 		valuePathChanged: function (newPath, oldPath) {
