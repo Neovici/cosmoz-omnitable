@@ -520,7 +520,7 @@
 			this._disabledColumnsIndexes = [];
 		},
 
-		_filterItems : function () {
+		_filterItems: function () {
 			if (this.data && this.data.length) {
 				// Call filtering code only on columns that has a filter
 				var filterFunctions = this.columns
@@ -782,7 +782,9 @@
 		},
 
 		_adjustHeadersWidth: function (cells) {
-			var headers = Polymer.dom(this.$.header).querySelectorAll('cosmoz-omnitable-header-cell');
+			var headers = Polymer.dom(this.$.header).querySelectorAll('cosmoz-omnitable-header-cell'),
+				sfgi = this.sortedFilteredGroupedItems,
+				hasVisibleData = sfgi && Array.isArray(sfgi) && sfgi.length > 0;
 
 			cells.forEach(function (cell, index) {
 				var header = headers[index],
@@ -794,9 +796,9 @@
 				}
 
 				cellWidth = cell.getComputedStyleValue('width');
-				header.toggleClass('flex', false);
+				header.toggleClass('flex', !hasVisibleData);
 				header.style.minWidth = cellWidth;
-				header.style.maxWidth = cellWidth;
+				header.style.maxWidth = cellWidth === 'auto' ? 'none' : cellWidth;
 				header.style.width = cellWidth;
 			});
 		},

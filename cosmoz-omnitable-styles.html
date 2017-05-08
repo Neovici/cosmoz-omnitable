@@ -160,10 +160,31 @@
 
 			.expanded-columns {
 				@apply --layout-vertical;
-				padding: 5px 44px;
-				font-size: 1.1em;
+				padding: 5px 4%;
+				line-height: 1.3em;
 				border-bottom: solid 1px #e2e2e2;
     			background-color: #fafafa;
+			}
+
+			.expanded-columns > .row {
+				@apply --layout-horizontal;
+				@apply --layout-center;
+			}
+
+			.expanded-columns > .row > div {
+				width: 50%;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				flex: initial;
+			}
+
+			.expanded-columns > .row > cosmoz-omnitable-item-cell {
+				width: 50%;
+				text-align: right;
+				flex-grow: 1 !important;
+				flex-basis: 100px !important;
+				@apply --layout-end;
 			}
 
 			.groupRow {
@@ -191,6 +212,14 @@
 				overflow: hidden;
 				text-overflow: ellipsis;
 				white-space: nowrap;
+			}
+
+			.groupRow-label > cosmoz-omnitable-item-cell {
+				flex: 1;
+			}
+
+			.rtl {
+				direction: rtl;
 			}
 
 			.align-right {
