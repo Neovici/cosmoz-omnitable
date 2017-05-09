@@ -19,12 +19,12 @@
 		<template id="header-template">
 			<paper-dropdown-menu no-animations label="[[ title ]]" title="[[ _filterText ]]" placeholder="[[ _filterText ]]">
 				<div class="dropdown-content" style="padding: 10px;">
-					<paper-input type="number" label="[[ _('Minimum amount', t) ]]" value="[[ renderNumberAmount(filter.min) ]]"
-							min="[[ _possibleAmountRange.min.amount ]]" max="[[ _lowestMax.amount ]]" on-change="_setMinValue">
+					<paper-input type="number" label="[[ _('Minimum amount', t) ]]" on-change="_setMinValue"
+							min="[[ _possibleAmountRange.min.amount ]]" max="[[ _lowestMax.amount ]]">
 						<div suffix>[[ filter.min.currency ]]</div>
 					</paper-input>
-					<paper-input type="number" label="[[ _('Maximum amount', t) ]]" value="[[ renderNumberAmount(filter.max) ]]"
-							min="[[ _highestMin.amount ]]" max="[[ _possibleAmountRange.max.amount ]]" on-change="_setMaxValue">
+					<paper-input type="number" label="[[ _('Maximum amount', t) ]]" on-change="_setMaxValue"
+							min="[[ _highestMin.amount ]]" max="[[ _possibleAmountRange.max.amount ]]">
 						<div suffix>[[ filter.max.currency ]]</div>
 					</paper-input>
 				</div>
@@ -101,7 +101,7 @@
 				if (typeof filter.max.amount === 'number') {
 					text.push(this.renderAmount(filter.max));
 				}
-				return text.length > 1 ? text.join('') : undefined;
+				return text.length > 1 ? text.join('') : null;
 			},
 
 			_computePossibleAmountRange: function (change) {
@@ -151,17 +151,11 @@
 
 			_setMinValue: function (event) {
 				var value = this._getNumberValue(event.target.value);
-				if (value === undefined) {
-					return;
-				}
 				this.set('filter.min.amount', value);
 			},
 
 			_setMaxValue: function (event) {
 				var value = this._getNumberValue(event.target.value);
-				if (value === undefined) {
-					return;
-				}
 				this.set('filter.max.amount', value);
 			},
 

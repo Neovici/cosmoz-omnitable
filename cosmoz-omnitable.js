@@ -164,6 +164,11 @@
 			disabledColumns: {
 				type: Array,
 				notify: true
+			},
+
+			_tooStrictFilterInfo: {
+				type: Boolean,
+				computed: '_computeTooStrictFilterInfo(_noData, sortedFilteredGroupedItems.length)'
 			}
 		},
 
@@ -241,9 +246,7 @@
 		 */
 		_dataChanged: function (change) {
 
-			if (this.data && this.data.length > 0) {
-				this._noData = false;
-			}
+			this._noData = !this.data || !Array.isArray(this.data) || this.data.length < 1;
 
 			// Since Polymer 2.0 removed key-based path and splice notifications,
 			// handle data changes by reset the array.
@@ -256,6 +259,10 @@
 				this._debounceFilterItems();
 			}
 
+		},
+
+		_computeTooStrictFilterInfo: function (noData, numVisibleItems) {
+			return !noData && numVisibleItems < 1;
 		},
 
 		_debounceFilterItems: function () {
@@ -432,6 +439,9 @@
 		// TODO: provides a mean to avoid setting the values for a column
 		// TODO: should process (distinct, sort, min, max) the values at the column level depending on the column type
 		_setColumnValues: function () {
+			if (!this.data || !Array.isArray(this.data) || this.data.length < 1) {
+				return;
+			}
 			this.columns.forEach(function (column) {
 				if (!column.bindValues) {
 					return;

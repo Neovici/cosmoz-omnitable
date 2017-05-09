@@ -208,16 +208,16 @@
 						<iron-icon icon="icons:announcement"></iron-icon>
 						<div>
 							<h3>[[ _('Working set empty', t) ]]</h3>
-							<p>[[ _('No data to display.', t) ]]</p>
+							<p>[[ _('No data to display', t) ]]</p>
 						</div>
 					</div>
 				</template>
-				<template is="dom-if" if="[[ isEmpty(sortedFilteredGroupedItems) ]]">
+				<template is="dom-if" if="[[ _tooStrictFilterInfo ]]">
 					<div class="tableContent-empty">
 						<iron-icon icon="icons:announcement"></iron-icon>
 						<div>
-							<h3>[[ _('Nothing matching filter', t) ]]</h3>
-							<p>[[ _('Try relaxing your conditions.', t) ]]</p>
+							<h3>[[ _('Filter too strict', t) ]]</h3>
+							<p>[[ _('No matches for selection', t) ]]</p>
 						</div>
 					</div>
 				</template>
@@ -325,8 +325,8 @@
 					<paper-button on-action="saveAsCsvAction">[[ _('Save as CSV', t) ]]</paper-button>
 				</cosmoz-bottom-bar>
 			</div>
-
 		</div>
+
 		<div id="columns">
 			<slot></slot>
 		</div>
@@ -334,4 +334,3 @@
 	</template>
 	<script type="text/javascript" src="cosmoz-omnitable.js"></script>
 </dom-module>
-
