@@ -67,11 +67,17 @@
 				},
 				_lowestMax: {
 					type: Object,
-					computed: '_getMinMax(_possibleAmountRange.max, filter.max, 0)'
+					computed: '_getMinMax(_possibleAmountRange.max, filter.max.*, 0)'
 				},
 				_highestMin: {
 					type: Object,
-					computed: '_getMinMax(_possibleAmountRange.min, filter.min, 1)'
+					computed: '_getMinMax(_possibleAmountRange.min, filter.min.*, 1)'
+				},
+				values: {
+					type: Array,
+					value: function () {
+						return [];
+					}
 				}
 			},
 
@@ -105,7 +111,14 @@
 			},
 
 			_computePossibleAmountRange: function (change) {
-				return change.base.reduce(function (acc, item) {
+				var values = change.base;
+				if (!values || !Array.isArray(values) || values.length < 1) {
+					return {
+						min: { amount: null },
+						max: { amount: null }
+					};
+				}
+				return values.reduce(function (acc, item) {
 					// TODO: Use fx
 					if (!acc.max || item.amount > acc.max.amount) {
 						acc.max = item;
@@ -117,24 +130,27 @@
 				}, {});
 			},
 
-			_getMinMax: function (first, second, max) {
-				var doMax = max === 1;
+			_getMinMax: function (first, secondNotify, max) {
+				var doMax = max === 1,
+					second = secondNotify.base,
+					ret;
 
 				// TODO: Use fx
 
 				if (!first.amount && second.amount) {
-					return second;
+					ret = second;
+				} else if (!second.amount && first.amount) {
+					ret = first;
+				} else if (first.amount > second.amount) {
+					ret = doMax ? first : second;
+				} else {
+					ret = doMax ? second : first;
 				}
-
-				if (!second.amount && first.amount) {
-					return first;
-				}
-
-				if (first.amount > second.amount) {
-					return doMax ? first : second;
-				}
-
-				return doMax ? second : first;
+				// shallow copy object to trigger observers
+				return {
+					currency: ret.currency,
+					amount: ret.amount
+				};
 			},
 
 			_getNumberValue: function (value) {

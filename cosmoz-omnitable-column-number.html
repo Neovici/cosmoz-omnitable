@@ -49,13 +49,15 @@
 						};
 					}
 				},
-				_filterText: {
-					type: String,
-					computed: '_computeFilterText(locale, filter.*)'
-				},
 				locale: {
 					type: String,
 					value: null
+				},
+				values: {
+					type: Array,
+					value: function () {
+						return [];
+					}
 				},
 				_filterInput: {
 					type: Object,
@@ -65,6 +67,10 @@
 							max: null
 						};
 					}
+				},
+				_filterText: {
+					type: String,
+					computed: '_computeFilterText(locale, filter.*)'
 				},
 				_possibleNumberRange: {
 					type: Object,
@@ -95,11 +101,18 @@
 				if (typeof filter.max === 'number') {
 					text.push(this._toLocaleString(filter.max, locale));
 				}
-				return text.length > 1 ? text.join('') : undefined;
+				return text.length > 1 ? text.join('') : null;
 			},
 
 			_computePossibleNumberRange: function (change) {
-				return change.base.reduce(function (acc, item) {
+				var values = change.base;
+				if (!values || !Array.isArray(values) || values.length < 1) {
+					return {
+						min: null,
+						max: null
+					};
+				}
+				return values.reduce(function (acc, item) {
 					// TODO: Use fx
 					if (!acc.max || item > acc.max) {
 						acc.max = item;
@@ -116,7 +129,7 @@
 			},
 
 			_enforceLowestMax: function (minRangeValue, minRangeMax) {
-				if (minRangeValue === null) {
+				if (minRangeValue === null || minRangeMax === null || minRangeValue === '' || minRangeMax === '') {
 					return;
 				}
 				if (minRangeValue > minRangeMax) {
@@ -125,7 +138,7 @@
 			},
 
 			_enforceHighestMin: function (maxRangeValue, maxRangeMin) {
-				if (maxRangeValue === null) {
+				if (maxRangeValue === null || maxRangeMin === null || maxRangeValue === '' || maxRangeMin === '') {
 					return;
 				}
 				if (maxRangeValue < maxRangeMin) {
@@ -138,8 +151,8 @@
 				this._enforceHighestMin(this._filterInput.max, this._highestMin);
 				var newFilter = this._filterInput;
 				this.set('filter', {
-					min: newFilter.min !== null && newFilter.min !== '' ? Number(newFilter.min) : undefined,
-					max: newFilter.max !== null && newFilter.max !== '' ? Number(newFilter.max) : undefined
+					min: newFilter.min !== null && newFilter.min !== '' ? Number(newFilter.min) : null,
+					max: newFilter.max !== null && newFilter.max !== '' ? Number(newFilter.max) : null
 				});
 			},
 

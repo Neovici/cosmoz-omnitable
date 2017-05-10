@@ -60,6 +60,13 @@
 					value: 'L'
 				},
 
+				values: {
+					type: Array,
+					value: function () {
+						return [];
+					}
+				},
+
 				_filterInput: {
 					type: Object,
 					value: function () {
@@ -118,7 +125,14 @@
 			},
 
 			_computePossibleDateRange: function (change) {
-				return change.base.reduce(function (acc, item) {
+				var values = change.base;
+				if (!values || !Array.isArray(values) || values.length < 1) {
+					return {
+						min: null,
+						max: null
+					};
+				}
+				return values.reduce(function (acc, item) {
 					var mom = moment(item);
 					if (!acc.min || mom.isBefore(acc.min)) {
 						acc.min = mom;
@@ -173,7 +187,7 @@
 				if (filter.end !== null) {
 					text.push(filter.end.locale(locale).format(this.userFormat));
 				}
-				return text.length > 1 ? text.join('') : undefined;
+				return text.length > 1 ? text.join('') : null;
 			},
 
 			_dateValueChanged: function (event) {
