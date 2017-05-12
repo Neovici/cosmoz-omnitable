@@ -513,13 +513,12 @@
 				i;
 
 			if (this.groupOn) {
-				visibleColumns = [];
-				this.columns.forEach(function (column) {
-					if (column.groupOn !== this.groupOn) {
-						visibleColumns.push(column);
-					} else {
+				visibleColumns = this.columns.filter(function (column) {
+					if (column.groupOn === this.groupOn) {
 						this._setGroupOnColumn(column);
+						return false;
 					}
+					return true;
 				}, this);
 			} else {
 				visibleColumns = this.columns.slice();
@@ -1016,7 +1015,7 @@
 		},
 
 		saveAsCsvAction: function (event) {
-			var separator = ',',
+			var separator = ';',
 				header = this.columns.map(function (column) {
 					return this._makeCsvField(column.title);
 				}, this).join(separator) + '\n',
