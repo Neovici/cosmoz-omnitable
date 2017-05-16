@@ -34,14 +34,16 @@
 			_headerTemplateInstance: null,
 
 			_columnChanged: function (newColumn, oldColumn) {
-				var oldTemplateInstance;
-
 				if (oldColumn && oldColumn.headerCellClass) {
 					this.toggleClass(oldColumn.headerCellClass, false);
 				}
 				if (newColumn) {
-					oldTemplateInstance = this._headerTemplateInstance;
-					this._updateTemplate(newColumn.getHeaderTemplateInstance(), oldTemplateInstance);
+					var oldTemplateInstance = this._headerTemplateInstance,
+						newTemplateInstance = newColumn.getHeaderTemplateInstance();
+					if (!newTemplateInstance) {
+						return;
+					}
+					this._updateTemplate(newTemplateInstance, oldTemplateInstance);
 					if (newColumn.headerCellClass) {
 						this.toggleClass(newColumn.headerCellClass, true);
 					}

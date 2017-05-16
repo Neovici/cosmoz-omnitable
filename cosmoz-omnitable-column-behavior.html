@@ -165,6 +165,9 @@
 		},
 
 		getHeaderTemplateInstance: function () {
+			if (!this._headerTemplatizer || !this._headerTemplatizer.createInstance) {
+				return;
+			}
 			return this._headerTemplatizer.createInstance();
 		},
 
