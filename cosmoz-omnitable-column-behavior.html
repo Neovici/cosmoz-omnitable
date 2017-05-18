@@ -122,10 +122,10 @@
 		},
 
 		_createTemplatizer: function (templateElementOrSelector) {
-			var
-				template,
+			var template,
 				templateHost,
-				templatizer;
+				templatizer,
+				root;
 
 			if (templateElementOrSelector instanceof HTMLTemplateElement) {
 				template = templateElementOrSelector;
@@ -133,10 +133,13 @@
 			} else {
 				template = Polymer.dom(this).querySelector(templateElementOrSelector);
 				if (template) {
-					templateHost = Polymer.dom(this).getOwnerRoot().host;
+					root = Polymer.dom(this).getOwnerRoot();
 				} else {
+					root = Polymer.dom(this.root).getOwnerRoot();
 					template = Polymer.dom(this.root).querySelector(templateElementOrSelector);
-					templateHost = Polymer.dom(this.root).getOwnerRoot().host;
+				}
+				if (root) {
+					templateHost = root.host;
 				}
 			}
 
