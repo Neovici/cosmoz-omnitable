@@ -1016,13 +1016,18 @@
 
 		saveAsCsvAction: function (event) {
 			var separator = ';',
+				lf = '\n',
 				header = this.columns.map(function (column) {
 					return this._makeCsvField(column.title);
-				}, this).join(separator) + '\n',
+				}, this).join(separator) + lf,
 				rows = this.selectedItems.map(function (item) {
 					return this.columns.map(function (column) {
-						return this._makeCsvField(String(column.getString(item) || ''));
-					}, this).join(separator) + '\n';
+						var cell = column.getString(item);
+						if (cell === undefined || cell === null) {
+							cell = '';
+						}
+						return this._makeCsvField(String(cell));
+					}, this).join(separator) + lf;
 				}, this);
 
 			rows.unshift(header);
