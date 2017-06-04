@@ -121,6 +121,18 @@
 			this._headerTemplatizer = this._createTemplatizer('template[id="header-template"');
 		},
 
+		detached: function () {
+			if (this._headerTemplatizer) {
+				this._headerTemplatizer.releaseAllInstances();
+				this._headerTemplatizer = null;
+			}
+
+			if (this._dataTemplatizer) {
+				this._dataTemplatizer.releaseAllInstances();
+				this._dataTemplatizer = null;
+			}
+		},
+
 		_createTemplatizer: function (templateElementOrSelector) {
 			var template,
 				templateHost,
@@ -165,6 +177,18 @@
 				this._dataTemplatizer = this._createTemplatizer(selector);
 			}
 			return this._dataTemplatizer.createInstance();
+		},
+
+		releaseDataTemplateInstance: function (instance) {
+			if (this._dataTemplatizer) {
+				this._dataTemplatizer.releaseInstance(instance);
+			}
+		},
+
+		releaseHeaderTemplateInstance: function (instance) {
+			if (this._headerTemplatizer) {
+				this._headerTemplatizer.releaseInstance(instance);
+			}
 		},
 
 		getHeaderTemplateInstance: function () {

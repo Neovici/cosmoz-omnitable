@@ -1,4 +1,8 @@
 <script>
+(function () {
+	'use strict';
+
+	var totalInstances = 0;
 	Polymer({
 
 		is: 'cosmoz-omnitable-templatizer',
@@ -30,7 +34,6 @@
 			return this._templateHost;
 		},
 
-
 		_ensureTemplatized: function () {
 			if (!this.ctor) {
 				this.templatize(this._template);
@@ -60,19 +63,27 @@
 
 			this._templatesInUse.push(instance);
 
+			totalInstances++;
 			return instance;
 		},
 
-		removeInstance: function (instance) {
+		releaseInstance: function (instance) {
 			var i = 0;
 			for (i = 0; i < this._templatesInUse.length ; i+=1) {
 				if (this._templatesInUse[i] === instance) {
 					this._templatesInUse.splice(i, 1);
-					break;
+					return;
 				}
-
 			}
+
+			console.warn('templatizer: no such instance', totalInstances);
+		},
+
+		releaseAllInstances: function () {
+			this.totalInstances -= this._templatesInUse.length;
+			this._templatesInUse = null;
 		}
 
 	});
+}());
 </script>

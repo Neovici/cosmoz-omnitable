@@ -33,24 +33,37 @@
 
 			_headerTemplateInstance: null,
 
-			_columnChanged: function (newColumn, oldColumn) {
-				if (oldColumn && oldColumn.headerCellClass) {
-					this.toggleClass(oldColumn.headerCellClass, false);
+			detached: function () {
+				if (this.column && this._headerTemplateInstance) {
+					this.column.releaseHeaderTemplateInstance(this._headerTemplateInstance);
+					this._headerTemplateInstance = null;
 				}
-				if (newColumn) {
-					var oldTemplateInstance = this._headerTemplateInstance,
-						newTemplateInstance = newColumn.getHeaderTemplateInstance();
-					if (!newTemplateInstance) {
-						return;
+
+				this._updateTemplate(null);
+			},
+
+			_columnChanged: function (newColumn, oldColumn) {
+				if (oldColumn) {
+
+					if (oldColumn.headerCellClass) {
+						this.toggleClass(oldColumn.headerCellClass, false);
 					}
-					this._updateTemplate(newTemplateInstance, oldTemplateInstance);
+
+					if (this._headerTemplateInstance) {
+						oldColumn.releaseHeaderTemplateInstance(this._headerTemplateInstance);
+						this._headerTemplateInstance = null;
+					}
+				}
+
+				if (newColumn) {
+					this._updateTemplate(newColumn.getHeaderTemplateInstance());
 					if (newColumn.headerCellClass) {
 						this.toggleClass(newColumn.headerCellClass, true);
 					}
 				}
 			},
 
-			_updateTemplate: function (newTemplateInstance, oldTemplateInstance) {
+			_updateTemplate: function (newTemplateInstance) {
 				var parent = Polymer.dom(this),
 					children = parent.childNodes,
 					i;
@@ -70,8 +83,6 @@
 						Polymer.StyleTransformer.dom(this, this.column.is, false, true);
 						Polymer.StyleTransformer.dom(this, 'cosmoz-omnitable', false, false);
 					}
-				} else {
-					this._cellTemplateInstance = null;
 				}
 			}
 		});

@@ -60,7 +60,21 @@
 			// a property used by Templatizer
 			_cellTemplateInstance: null,
 
+			detached: function () {
+				if (this.column && this._cellTemplateInstance) {
+					this.column.releaseDataTemplateInstance(this._cellTemplateInstance);
+					this._cellTemplateInstance =  null;
+				}
+
+				this._updateTemplate(null);
+			},
+
 			_columnChanged: function (newColumn, oldColumn) {
+				if (oldColumn && this._cellTemplateInstance) {
+					oldColumn.releaseDataTemplateInstance(this._cellTemplateInstance);
+					this._cellTemplateInstance = null;
+				}
+
 				if (newColumn) {
 					this._updateTemplate(newColumn.getDataTemplateInstance());
 				}
@@ -91,8 +105,6 @@
 					}
 					this._cellTemplateInstance = instance;
 					this._assignModel();
-				} else {
-					this._cellTemplateInstance = null;
 				}
 			},
 
