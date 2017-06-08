@@ -241,6 +241,17 @@
 			this.$.groupedList.scrollTarget = this.$.scroller;
 		},
 
+		detached: function () {
+			// Reset all 'notify' properties to null, to avoid Polymer's eventCache keep references to detached DOM tree.
+			// TODO(pasleq): investigate if all these properties should really use 'notify'.
+			this.sortedFilteredGroupedItems = [];
+			this._setGroupOnColumn(null);
+			this.visibleColumns = null;
+			this.disabledColumns = null;
+			this.columns = null;
+			this.selectedItems = null;
+		},
+
 		/**
 		 * Called when data is changed to setup up needs and check workers/filtering
 		 */
@@ -814,7 +825,7 @@
 
 		_canScaleUp: function (width) {
 
-			if (this.disabledColumns.length === 0) {
+			if (!this.disabledColumns || this.disabledColumns.length === 0) {
 				return false;
 			}
 

@@ -70,18 +70,21 @@
 			},
 
 			_columnChanged: function (newColumn, oldColumn) {
+				var newTemplateInstance;
 				if (oldColumn && this._cellTemplateInstance) {
 					oldColumn.releaseDataTemplateInstance(this._cellTemplateInstance);
 					this._cellTemplateInstance = null;
 				}
 
 				if (newColumn) {
-					this._updateTemplate(newColumn.getDataTemplateInstance());
+					newTemplateInstance = newColumn.getDataTemplateInstance();
 				}
+
+				this._updateTemplate(newTemplateInstance);
 			},
 
 			_getTitle: function (column, item) {
-				return column.getString(item, column.valuePath);
+				return column && column.getString(item, column.valuePath);
 			},
 
 			_updateTemplate: function (instance) {

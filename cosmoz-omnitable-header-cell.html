@@ -43,8 +43,8 @@
 			},
 
 			_columnChanged: function (newColumn, oldColumn) {
+				var newTemplateInstance;
 				if (oldColumn) {
-
 					if (oldColumn.headerCellClass) {
 						this.toggleClass(oldColumn.headerCellClass, false);
 					}
@@ -56,11 +56,13 @@
 				}
 
 				if (newColumn) {
-					this._updateTemplate(newColumn.getHeaderTemplateInstance());
+					newTemplateInstance = newColumn.getHeaderTemplateInstance();
 					if (newColumn.headerCellClass) {
 						this.toggleClass(newColumn.headerCellClass, true);
 					}
 				}
+
+				this._updateTemplate(newTemplateInstance);
 			},
 
 			_updateTemplate: function (newTemplateInstance) {

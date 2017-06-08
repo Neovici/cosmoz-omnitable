@@ -110,12 +110,18 @@
 			dataTemplate: {
 				type: Object,
 				observer: '_dataTemplateChanged'
+			},
+
+			_dataTemplatizer: {
+				type: Object,
+				value: null
+			},
+
+			_headerTemplatizer: {
+				type: Object,
+				value: null
 			}
 		},
-
-		_dataTemplatizer: null,
-
-		_headerTemplatizer: null,
 
 		ready: function () {
 			this._headerTemplatizer = this._createTemplatizer('template[id="header-template"');
