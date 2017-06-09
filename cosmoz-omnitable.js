@@ -239,9 +239,12 @@
 
 		attached: function () {
 			this.$.groupedList.scrollTarget = this.$.scroller;
+			this._isDetached = false;
 		},
 
 		detached: function () {
+			// Just in case we get detached before a planned debouncer has not run yet.
+			this.cancelDebouncer('adjustColumns');
 			// Reset all 'notify' properties to null, to avoid Polymer's eventCache keep references to detached DOM tree.
 			// TODO(pasleq): investigate if all these properties should really use 'notify'.
 			this.sortedFilteredGroupedItems = [];
@@ -250,6 +253,7 @@
 			this.disabledColumns = null;
 			this.columns = null;
 			this.selectedItems = null;
+			this._isDetached = true;
 		},
 
 		/**
@@ -717,6 +721,15 @@
 					sortOn: 'value',
 					data: mappedItems
 				}, function (data) {
+					// If this omnitable was detached while the web worker was working,
+					// we can't do anything with the sort result.
+					// We should definitively not call _debounceAdjustColumns,
+					// as this will result in a reference to this omnitable being kept
+					// in Polymer debouncers list.
+					if (this._isDetached) {
+						return;
+					}
+
 					this.set('sortedFilteredGroupedItems', data.data.map(function (item, index){
 						return this.filteredGroupedItems[item.index];
 					}, this));
@@ -767,6 +780,11 @@
 				cells,
 				currentWidth,
 				scroller;
+
+			// Safety check, but should never happen
+			if (this._isDetached) {
+				return;
+			}
 
 			if (!tableContent || !firstRow) {
 				this._debounceAdjustColumns();
