@@ -17,13 +17,14 @@
 		</template>
 
 		<template id="header-template">
-			<paper-dropdown-menu no-animations label="[[ title ]]" title="[[ _filterText ]]" placeholder="[[ _filterText ]]">
-				<div class="dropdown-content" style="padding: 10px;">
-					<paper-input type="number" label="[[ _('Minimum amount', t) ]]" on-change="_setMinValue"
+			<paper-dropdown-menu no-animations label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _tooltip ]]">
+				<div class="dropdown-content" style="padding: 15px; min-width: 150px;">
+					<h3 style="margin: 0;">[[ title ]]</h3>
+					<paper-input type="number" label="[[ _('Min amount', t) ]]" title="[[ _('Minimum amount', t) ]]" on-change="_setMinValue"
 							min="[[ _possibleAmountRange.min.amount ]]" max="[[ _lowestMax.amount ]]">
 						<div suffix>[[ filter.min.currency ]]</div>
 					</paper-input>
-					<paper-input type="number" label="[[ _('Maximum amount', t) ]]" on-change="_setMaxValue"
+					<paper-input type="number" label="[[ _('Max amount', t) ]]" title="[[ _('Maximum amount', t) ]]" on-change="_setMaxValue"
 							min="[[ _highestMin.amount ]]" max="[[ _possibleAmountRange.max.amount ]]">
 						<div suffix>[[ filter.max.currency ]]</div>
 					</paper-input>
@@ -72,6 +73,10 @@
 				_highestMin: {
 					type: Object,
 					computed: '_getMinMax(_possibleAmountRange.min, filter.min.*, 1)'
+				},
+				_tooltip: {
+					type: String,
+					computed: '_computeTooltip(title, _filterText)'
 				},
 				values: {
 					type: Array,
@@ -128,6 +133,14 @@
 					}
 					return acc;
 				}, {});
+			},
+
+			_computeTooltip: function (title, filterText) {
+				var ret = title;
+				if (filterText !== undefined && filterText !== null) {
+					ret += ': ' + filterText;
+				}
+				return ret;
 			},
 
 			_getMinMax: function (first, secondNotify, max) {

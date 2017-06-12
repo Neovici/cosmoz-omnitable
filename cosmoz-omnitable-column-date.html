@@ -19,8 +19,9 @@
 		</template>
 
 		<template id="header-template">
-			<paper-dropdown-menu no-animations label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _filterText ]]">
-				<div class="dropdown-content" style="padding: 10px;">
+			<paper-dropdown-menu no-animations label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _tooltip ]]">
+				<div class="dropdown-content" style="padding: 15px; min-width: 100px;">
+					<h3 style="margin: 0;">[[ title ]]</h3>
 					<paper-input type="date" min="[[ _formatISODate(_possibleDateRange.min) ]]" max="[[ _formatISODate(_latestAfter) ]]"
 						label="[[ _('From date', t) ]]" value="{{ _filterInput.start }}">
 					</paper-input>
@@ -95,6 +96,10 @@
 				_earliestBefore: {
 					type: Object,
 					computed: '_getMinMax(_possibleDateRange.min, _filterInput.start, 1)'
+				},
+				_tooltip: {
+					type: String,
+					computed: '_computeTooltip(title, _filterText)'
 				}
 			},
 
@@ -142,6 +147,14 @@
 					}
 					return acc;
 				}, {});
+			},
+
+			_computeTooltip: function (title, filterText) {
+				var ret = title;
+				if (filterText !== undefined && filterText !== null) {
+					ret += ': ' + filterText;
+				}
+				return ret;
 			},
 
 			_formatISODate: function (mom) {
