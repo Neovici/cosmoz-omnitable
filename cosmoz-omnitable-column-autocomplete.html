@@ -70,9 +70,14 @@
 			},
 
 			_computeFilter: function (change) {
-				return this.autocompleteSelectedItems.map(function (item) {
-					return item.value;
-				});
+				return this.autocompleteSelectedItems
+					.filter(function (item) {
+						return item !== undefined && item !== null &&
+							item.value !== undefined && item.value !== null;
+					})
+					.map(function (item) {
+						return item.value;
+					});
 			},
 
 			_applySingleFilter: function (filterString, item) {
