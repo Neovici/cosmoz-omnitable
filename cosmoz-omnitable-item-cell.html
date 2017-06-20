@@ -8,11 +8,11 @@
 				overflow: hidden;
 				text-overflow: ellipsis;
 			}
-
 		</style>
 		<slot></slot>
 	</template>
 	<script>
+	(function () {
 		Polymer({
 
 			is: 'cosmoz-omnitable-item-cell',
@@ -56,59 +56,43 @@
 				'_updateColumnFlex(column.flex)'
 			],
 
-			// WARN: do not use '_templateInstance' property name, as this will conflict with
-			// a property used by Templatizer
 			_cellTemplateInstance: null,
 
-			detached: function () {
-				if (this.column && this._cellTemplateInstance) {
-					this.column.releaseDataTemplateInstance(this._cellTemplateInstance);
-					this._cellTemplateInstance =  null;
-				}
-
-				this._updateTemplate(null);
-			},
-
-			_columnChanged: function (newColumn, oldColumn) {
-				var newTemplateInstance;
-				if (oldColumn && this._cellTemplateInstance) {
-					oldColumn.releaseDataTemplateInstance(this._cellTemplateInstance);
-					this._cellTemplateInstance = null;
-				}
-
+			_columnChanged: function (newColumn) {
 				if (newColumn) {
-					newTemplateInstance = newColumn.getDataTemplateInstance();
+
+					this._cellTemplateInstance = newColumn.dataTemplatizer.getInstance();
+					Polymer.dom(this).appendChild(this._cellTemplateInstance.root);
+					this._assignModel(this._cellTemplateInstance);
+					// HACK(pasleq): remove column style scope and set style scope from omnitable
+					if (!Polymer.Settings.useNativeShadow) {
+						Polymer.StyleTransformer.dom(this, this.column.is, false, true);
+						Polymer.StyleTransformer.dom(this, 'cosmoz-omnitable', false, false);
+					}
 				}
-
-				this._updateTemplate(newTemplateInstance);
 			},
 
-			_getTitle: function (column, item) {
-				return column && column.getString(item, column.valuePath);
+			_assignModel: function (instance) {
+				instance.item = this.item;
+				instance.selected = this.selected;
+				instance.expanded = this.expanded;
 			},
 
-			_updateTemplate: function (instance) {
+			clearContent: function () {
 				var parent = Polymer.dom(this),
 					children = parent.childNodes,
 					i;
-
-				// Remove current content
 				if (children) {
 					for (i = 0 ; i < children.length ; i+=1) {
 						parent.removeChild(children[i]);
 					}
 				}
 
-				if (instance) {
-					Polymer.dom(this).appendChild(instance.root);
-					// HACK(pasleq): remove column style scope and set style scope from omnitable
-					if (!Polymer.Settings.useNativeShadow) {
-						Polymer.StyleTransformer.dom(this, this.column.is, false, true);
-						Polymer.StyleTransformer.dom(this, 'cosmoz-omnitable', false, false);
-					}
-					this._cellTemplateInstance = instance;
-					this._assignModel();
-				}
+				this._cellTemplateInstance = null;
+			},
+
+			_getTitle: function (column, item) {
+				return column && column.getString(item, column.valuePath);
 			},
 
 			_updateColumnWidth: function (width) {
@@ -147,12 +131,8 @@
 				}
 			},
 
-			_assignModel: function () {
-				this._cellTemplateInstance.item = this.item;
-				this._cellTemplateInstance.selected = this.selected;
-				this._cellTemplateInstance.expanded = this.expanded;
-			}
 
 		});
+	}());
 	</script>
 </dom-module>

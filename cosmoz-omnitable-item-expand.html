@@ -1,0 +1,104 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cosmoz-omnitable-repeater-behavior.html">
+<link rel="import" href="cosmoz-omnitable-item-expand-line.html">
+
+<dom-module id="cosmoz-omnitable-item-expand">
+	<template>
+		<style>
+			:host(:not([hidden])) {
+				@apply --layout-vertical;
+			}
+
+			:host[hidden] {
+				display: none !important;
+			}
+
+			:host > ::slotted(*) {
+				padding: 0 3px;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+
+		</style>
+		<slot name="item-expand-line"></slot>
+	</template>
+</dom-module>
+
+<script>
+(function () {
+	'use strict';
+
+	Polymer({
+
+		is: 'cosmoz-omnitable-item-expand',
+
+		behaviors: [
+			Cosmoz.OmnitableRepeaterBehavior
+		],
+
+		properties: {
+			item: {
+				type: Object
+			},
+
+			selected: {
+				type: Boolean,
+				observer: '_selectedChanged'
+			},
+
+			expanded: {
+				type: Boolean,
+				observer: '_expandedChanged'
+			},
+
+		},
+
+		_elementType: 'cosmoz-omnitable-item-expand-line',
+
+		_slotName: 'item-expand-line',
+
+		_getTemplateInstance: function (column) {
+			return column.dataTemplatizer.getInstance();
+		},
+
+		_detachTemplateInstance: function (instance, column, element) {
+			column.dataTemplatizer.detachInstance(instance, element);
+		},
+
+		_configureElement: function (element, column) {
+			element.column = column;
+		},
+
+		_configureTemplateInstance: function (instance) {
+			instance.item = this.item;
+			instance.selected = this.selected;
+			instance.expanded = this.expanded;
+		},
+
+		_itemUpdated: function (itemChange) {
+			if (itemChange.path === 'item') {
+				this.elements.forEach(function (element) {
+					this.getElementTemplateInstance(element).item = itemChange.value;
+				}, this);
+			} else {
+				this.elements.forEach(function (element) {
+					this.getElementTemplateInstance(element).notifyPath(itemChange.path, itemChange.value);
+				}, this);
+			}
+		},
+
+		_selectedChanged: function (selected) {
+			this.templateInstances.forEach(function (instance) {
+				instance.selected = selected;
+			});
+		},
+
+		_expandedChanged: function (expanded) {
+			this.templateInstances.forEach(function (instance) {
+				instance.expanded = expanded;
+			});
+		}
+
+	});
+}());
+</script>

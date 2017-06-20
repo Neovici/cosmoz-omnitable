@@ -33,16 +33,6 @@
 			},
 
 			/**
-			 * Rows/items that are expanded when columns are disabled
-			 */
-			expandedItems: {
-				type: Array,
-				value: function () {
-					return [];
-				}
-			},
-
-			/**
 			 * Whether bottom-bar has actions.
 			 */
 			hasActions: {
@@ -174,8 +164,7 @@
 
 		observers: [
 			'_sortOnChanged(sortOn.*)',
-			'_dataChanged(data.*)',
-			'_debounceUpdateExpandedItemsSize(disabledColumns.length)'
+			'_dataChanged(data.*)'
 		],
 
 		behaviors: [
@@ -211,15 +200,20 @@
 					columns = [],
 					children = this.getEffectiveChildren(),
 					i,
-					child;
+					child,
+					styleModules,
+					styleModulesElement,
+					shadowDom;
 
 				for (i = 0 ; i < children.length; i+= 1) {
 					child = children[i];
 					// `isOmnitableColumn` is a property from cosmoz-omnitable-column-behavior
 					if (child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn) {
+						child.__index = i;
 						columns.push(child);
 					}
 				}
+
 				if (columns && columns.length > 0) {
 
 					this.columns = columns;
@@ -245,14 +239,6 @@
 		detached: function () {
 			// Just in case we get detached before a planned debouncer has not run yet.
 			this.cancelDebouncer('adjustColumns');
-			// Reset all 'notify' properties to null, to avoid Polymer's eventCache keep references to detached DOM tree.
-			// TODO(pasleq): investigate if all these properties should really use 'notify'.
-			this.sortedFilteredGroupedItems = [];
-			this._setGroupOnColumn(null);
-			this.visibleColumns = null;
-			this.disabledColumns = null;
-			this.columns = null;
-			this.selectedItems = null;
 			this._isDetached = true;
 		},
 
@@ -429,26 +415,12 @@
 		},
 
 		toggleItem: function (event, detail) {
-			var item = event.model.item,
-				itemIndex = this.expandedItems.indexOf(item);
-			if (itemIndex === -1) {
-				this.push('expandedItems', item);
-			} else {
-				this.splice('expandedItems', itemIndex, 1);
-			}
-			this.$.groupedList.updateSize(item);
+			var item = event.model.item;
+			this.$.groupedList.toggleCollapse(item);
 		},
 
-		itemIsFolded:  function (disabledColumnsLength, expandedItemsLength, item) {
-			return disabledColumnsLength === 0 || this.expandedItems.indexOf(item) === -1;
-		},
-
-		getItemFoldIcon: function (expandedItemsLength, item) {
-			return this.getFoldIcon(this.itemIsFolded(expandedItemsLength, item));
-		},
-
-		getFoldIcon: function (folded) {
-			return folded ? 'expand-more' : 'expand-less';
+		getFoldIcon: function (expanded) {
+			return expanded ? 'expand-less' : 'expand-more';
 		},
 
 		// TODO: provides a mean to avoid setting the values for a column
@@ -768,6 +740,13 @@
 		},
 
 		/**
+		 * True if the current list is visible.
+		 */
+		get _isVisible() {
+			return Boolean(this.offsetWidth || this.offsetHeight);
+		},
+
+		/**
 		 * Enable/disable columns to properly fit in the available space.
 		 * Adjust headers width according to cells width
 		 *
@@ -779,10 +758,11 @@
 				fits,
 				cells,
 				currentWidth,
-				scroller;
+				scroller,
+				itemRow;
 
 			// Safety check, but should never happen
-			if (this._isDetached) {
+			if (this._isDetached || !this._isVisible) {
 				return;
 			}
 
@@ -794,11 +774,12 @@
 			scroller = this.$.scroller;
 			fits = scroller.scrollWidth <= scroller.clientWidth;
 			currentWidth = tableContent.clientWidth;
-			cells = Polymer.dom(firstRow).querySelectorAll('cosmoz-omnitable-item-cell');
+			itemRow = Polymer.dom(firstRow).querySelector('cosmoz-omnitable-item-row');
+			cells = Polymer.dom(itemRow).children;
 
 			if (fits) {
 				fits = cells.every(function (cell) {
-					return cell.column.overflow || cell.scrollWidth <= cell.clientWidth;
+					return cell.__column.overflow || cell.scrollWidth <= cell.clientWidth;
 				});
 			}
 
@@ -820,7 +801,8 @@
 		},
 
 		_adjustHeadersWidth: function (cells) {
-			var headers = Polymer.dom(this.$.header).querySelectorAll('cosmoz-omnitable-header-cell'),
+			var headerRow = Polymer.dom(this.$.header).querySelector('cosmoz-omnitable-header-row'),
+				headers = Polymer.dom(headerRow).children,
 				sfgi = this.sortedFilteredGroupedItems,
 				hasVisibleData = sfgi && Array.isArray(sfgi) && sfgi.length > 0;
 
@@ -833,12 +815,12 @@
 					return;
 				}
 
-				cellWidth = cell.getComputedStyleValue('width');
-				header.toggleClass('flex', !hasVisibleData);
+				cellWidth = getComputedStyle(cell).getPropertyValue('width');
+				this.toggleClass('flex', !hasVisibleData, header);
 				header.style.minWidth = cellWidth;
 				header.style.maxWidth = cellWidth === 'auto' ? 'none' : cellWidth;
 				header.style.width = cellWidth;
-			});
+			}, this);
 		},
 
 		_canScaleUp: function (width) {

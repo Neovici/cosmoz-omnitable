@@ -1,0 +1,39 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html"/>
+
+<dom-module id="cosmoz-omnitable-item-expand-line">
+	<template>
+		<style>
+			:host {
+				@apply --layout-horizontal;
+			}
+
+			.itm-expand-label {
+				@apply --layout-flex;
+
+			}
+			.item-expand-value {
+				@apply --layout-flex-2;
+			}
+		</style>
+		<div class="itm-expand-label" title="[[ column.title ]]">[[ column.title ]]</div>
+		<div class="item-expand-value">
+			<slot></slot>
+		</div>
+	</template>
+</dom-module>
+
+<script>
+(function () {
+	'use strict';
+	Polymer({
+		is: 'cosmoz-omnitable-item-expand-line',
+
+		properties: {
+			column: {
+				type: Object
+			}
+		}
+	});
+}());
+</script>

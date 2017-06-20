@@ -1,0 +1,57 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cosmoz-omnitable-repeater-behavior.html">
+
+<dom-module id="cosmoz-omnitable-header-row">
+	<template>
+		<style>
+			:host {
+				@apply --layout-horizontal;
+				@apply --layout-end;
+			}
+
+			:host > ::slotted(*) {
+				padding: 0 3px;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+
+		</style>
+		<slot name="header-cell"></slot>
+	</template>
+</dom-module>
+
+<script>
+(function () {
+	'use strict';
+
+	Polymer({
+
+		is: 'cosmoz-omnitable-header-row',
+
+		behaviors: [
+			Cosmoz.OmnitableRepeaterBehavior
+		],
+
+		_elementType: 'div',
+
+		_slotName: 'header-cell',
+
+		_getTemplateInstance: function (column) {
+			return column.headerTemplatizer.getInstance();
+		},
+
+		_detachTemplateInstance: function (instance, column, element) {
+			column.headerTemplatizer.detachInstance(instance, element);
+		},
+
+		_configureElement: function (element, column) {
+			this.toggleClass(column.headerCellClass, true, element);
+			element.setAttribute('title', column.title);
+			// HACK(pasleq): sets omnitable style scope to the cell element
+			if (!Polymer.Settings.useNativeShadow) {
+				Polymer.StyleTransformer.dom(element, 'cosmoz-omnitable', false, false);
+			}
+		},
+	});
+}());
+</script>

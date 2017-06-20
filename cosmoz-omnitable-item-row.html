@@ -1,0 +1,125 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cosmoz-omnitable-repeater-behavior.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html"/>
+
+<dom-module id="cosmoz-omnitable-item-row">
+	<template>
+		<style>
+			:host {
+				@apply --layout-horizontal;
+				@apply --layout-flex;
+			}
+
+			:host > ::slotted(*) {
+				flex: 1 0 auto;
+				padding: 0 3px;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+		</style>
+		<slot name="item-cell"></slot>
+	</template>
+</dom-module>
+
+<script>
+(function () {
+	'use strict';
+
+	Polymer({
+
+		is: 'cosmoz-omnitable-item-row',
+
+		behaviors: [
+			Cosmoz.OmnitableRepeaterBehavior
+		],
+
+		properties: {
+			item: {
+				type: Object
+			},
+
+			selected: {
+				type: Boolean,
+				observer: '_selectedChanged'
+			},
+
+			expanded: {
+				type: Boolean,
+				observer: '_expandedChanged'
+			},
+
+		},
+
+		observers: [
+			'_itemUpdated(item.*)',
+		],
+
+		_elementType: 'div',
+
+		_slotName: 'item-cell',
+
+		_getTemplateInstance: function (column) {
+			return column.dataTemplatizer.getInstance();
+		},
+
+		_detachTemplateInstance: function (instance, column, element) {
+			column.dataTemplatizer.detachInstance(instance, element);
+		},
+
+		_configureElement: function (element, column) {
+			element.style.flexBasis = column.width;
+			element.style.flexGrow = column.flex;
+			element.setAttribute('title', this._getCellTitle(column, this.item));
+			element.setAttribute('class', this._computeItemRowCellClasses(column));
+			// HACK(pasleq): sets omnitable style scope to the cell element
+			if (!Polymer.Settings.useNativeShadow) {
+				Polymer.StyleTransformer.dom(element, 'cosmoz-omnitable', false, false);
+			}
+		},
+
+		_configureTemplateInstance: function (instance) {
+			instance.item = this.item;
+			instance.selected = this.selected;
+			instance.expanded = this.expanded;
+		},
+
+		_computeItemRowCellClasses: function (column) {
+			var originalIndex = column.__index;
+			return 'itemRow-cell'
+				+ (column.cellClass ? ' ' + column.cellClass + ' ' : '')
+				+ ' cosmoz-omnitable-column-' + originalIndex;
+		},
+
+		_itemUpdated: function (itemChange) {
+			if (itemChange.path === 'item') {
+				this.elements.forEach(function (element) {
+					this.getElementTemplateInstance(element).item = itemChange.value;
+					element.setAttribute('title', this._getCellTitle(this.getElementColumn(element), this.item));
+				}, this);
+			} else {
+				this.elements.forEach(function (element) {
+					this.getElementTemplateInstance(element).notifyPath(itemChange.path, itemChange.value);
+				}, this);
+			}
+		},
+
+		_selectedChanged: function (selected) {
+			this.templateInstances.forEach(function (instance) {
+				instance.selected = selected;
+			});
+		},
+
+		_expandedChanged: function (expanded) {
+			this.templateInstances.forEach(function (instance) {
+				instance.expanded = expanded;
+			});
+		},
+
+		_getCellTitle: function (column, item) {
+			return column && column.getString(item, column.valuePath);
+		},
+	});
+}());
+</script>

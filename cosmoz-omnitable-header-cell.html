@@ -25,68 +25,46 @@
 				column: {
 					type: Object,
 					observer: '_columnChanged'
-				}
-			},
-
-			// WARN: do not use '_templateInstance' property name, as this will conflict with
-			// a property used by Templatizer
-
-			_headerTemplateInstance: null,
-
-			detached: function () {
-				if (this.column && this._headerTemplateInstance) {
-					this.column.releaseHeaderTemplateInstance(this._headerTemplateInstance);
-					this._headerTemplateInstance = null;
-				}
-
-				this._updateTemplate(null);
+				},
 			},
 
 			_columnChanged: function (newColumn, oldColumn) {
-				var newTemplateInstance;
 				if (oldColumn) {
 					if (oldColumn.headerCellClass) {
 						this.toggleClass(oldColumn.headerCellClass, false);
 					}
-
-					if (this._headerTemplateInstance) {
-						oldColumn.releaseHeaderTemplateInstance(this._headerTemplateInstance);
-						this._headerTemplateInstance = null;
-					}
+					oldColumn.releaseCells();
 				}
 
 				if (newColumn) {
-					newTemplateInstance = newColumn.getHeaderTemplateInstance();
 					if (newColumn.headerCellClass) {
 						this.toggleClass(newColumn.headerCellClass, true);
 					}
-				}
 
-				this._updateTemplate(newTemplateInstance);
-			},
+					newColumn.releaseCells();
+					newColumn.setHeaderCell(this);
+					var templateInstance = newColumn.getHeaderTemplateInstance();
+					Polymer.dom(this).appendChild(templateInstance.root);
 
-			_updateTemplate: function (newTemplateInstance) {
-				var parent = Polymer.dom(this),
-					children = parent.childNodes,
-					i;
-
-				// Remove current content
-				if (children) {
-					for (i = 0 ; i < children.length ; i+=1) {
-						parent.removeChild(children[i]);
-					}
-				}
-
-				if (newTemplateInstance) {
-					Polymer.dom(this).appendChild(newTemplateInstance.root);
-					this._headerTemplateInstance = newTemplateInstance;
 					// HACK(pasleq): remove column style scope and set style scope from omnitable
 					if (!Polymer.Settings.useNativeShadow) {
 						Polymer.StyleTransformer.dom(this, this.column.is, false, true);
 						Polymer.StyleTransformer.dom(this, 'cosmoz-omnitable', false, false);
 					}
 				}
-			}
+			},
+
+			clearContent: function () {
+				var parent = Polymer.dom(this),
+					children = parent.childNodes,
+					i;
+				if (children) {
+					for (i = 0 ; i < children.length ; i+=1) {
+						parent.removeChild(children[i]);
+					}
+				}
+			},
+
 		});
 	</script>
 </dom-module>
