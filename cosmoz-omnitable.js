@@ -188,10 +188,7 @@
 					columns = [],
 					children = this.getEffectiveChildren(),
 					i,
-					child,
-					styleModules,
-					styleModulesElement,
-					shadowDom;
+					child;
 
 				for (i = 0 ; i < children.length; i+= 1) {
 					child = children[i];
