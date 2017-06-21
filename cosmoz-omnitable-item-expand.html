@@ -59,10 +59,12 @@
 			hidden: {
 				type: Boolean,
 				reflectToAttribute: true,
-				computed: '_computeHidden(columns.length)'
 			}
-
 		},
+
+		observers: [
+			'_updateSize(columns.length)'
+		],
 
 		_elementType: 'cosmoz-omnitable-item-expand-line',
 
@@ -86,8 +88,12 @@
 			instance.expanded = this.expanded;
 		},
 
-		_computeHidden: function (disabledColumnsCount) {
-			return disabledColumnsCount === 0;
+		_updateSize: function (columnsCount) {
+			this.hidden = columnsCount === 0;
+			if (this.expanded) {
+				// Notify omnitable that this item is expanded and my need individual resize
+				this.fire('update-item-size', { item: this.item }, { bubbles: true});
+			}
 		},
 
 		_itemUpdated: function (itemChange) {

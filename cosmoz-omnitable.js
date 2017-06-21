@@ -181,18 +181,6 @@
 
 		_scalingUp: false,
 
-		_onUpdateItemSize: function (event, detail) {
-			if (!detail || !detail.item) {
-				return;
-			}
-			this.$.groupedList.updateSize(detail.item);
-			this.async(function () {
-				this.$.groupedList.updateSize(detail.item);
-			}, 500);
-			console.log(this.$.groupedList._flatData.indexOf(detail.item));
-			console.log('_onUpdateItemSize wasdfasdfsadf', event, detail);
-		},
-
 		created: function () {
 			/** WARNING: we do not support columns changes yet. */
 			this._columnObserver = Polymer.dom(this).observeNodes(function (info) {
@@ -259,7 +247,13 @@
 				this._setColumnValues();
 				this._debounceFilterItems();
 			}
+		},
 
+		_onUpdateItemSize: function (event, detail) {
+			if (detail && detail.item) {
+				this.$.groupedList.updateSize(detail.item);
+			}
+			event.stopPropagation();
 		},
 
 		_computeTooStrictFilterInfo: function (noData, numVisibleItems) {
@@ -276,12 +270,6 @@
 
 		_debounceSortItems: function () {
 			this.debounce('sortItems', this._sortFilteredGroupedItems);
-		},
-
-		_updateExpandedItemsSize: function (disabledColumnsLength) {
-			this.expandedItems.forEach(function (item, index) {
-				this.$.groupedList.updateSize(item);
-			}, this);
 		},
 
 		_onColumnFilterChanged: function (event) {
@@ -734,9 +722,6 @@
 			// But this makes headers change width after the table has completed rendering,
 			// which might look strange.
 			this.debounce('adjustColumns', this._adjustColumns, 16);
-		},
-		_debounceUpdateExpandedItemsSize: function () {
-			this.debounce('_updateExpandedItemsSize', this._updateExpandedItemsSize, 16);
 		},
 
 		/**
