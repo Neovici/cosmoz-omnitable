@@ -47,10 +47,6 @@
 		_configureElement: function (element, column) {
 			this.toggleClass(column.headerCellClass, true, element);
 			element.setAttribute('title', column.title);
-			// HACK(pasleq): sets omnitable style scope to the cell element
-			if (!Polymer.Settings.useNativeShadow) {
-				Polymer.StyleTransformer.dom(element, 'cosmoz-omnitable', false, false);
-			}
 		},
 	});
 }());

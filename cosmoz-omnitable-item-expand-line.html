@@ -6,15 +6,26 @@
 		<style>
 			:host {
 				@apply --layout-horizontal;
+				@apply --layout-center;
+				@apply --layout-wrap;
 			}
 
-			.itm-expand-label {
-				@apply --layout-flex;
-
+			.item-expand-label {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				flex: initial;
+				@apply --cosmoz-omnitable-item-expand-label;
 			}
+
 			.item-expand-value {
-				@apply --layout-flex-2;
+				text-align: right;
+				flex-grow: 1 !important;
+				flex-basis: 100px !important;
+				white-space: nowrap;
+				@apply --cosmoz-omnitable-item-expand-value;
 			}
+
 		</style>
 		<div class="itm-expand-label" title="[[ column.title ]]">[[ column.title ]]</div>
 		<div class="item-expand-value">

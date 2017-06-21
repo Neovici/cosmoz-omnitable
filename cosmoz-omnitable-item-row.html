@@ -73,10 +73,6 @@
 			element.style.flexGrow = column.flex;
 			element.setAttribute('title', this._getCellTitle(column, this.item));
 			element.setAttribute('class', this._computeItemRowCellClasses(column));
-			// HACK(pasleq): sets omnitable style scope to the cell element
-			if (!Polymer.Settings.useNativeShadow) {
-				Polymer.StyleTransformer.dom(element, 'cosmoz-omnitable', false, false);
-			}
 		},
 
 		_configureTemplateInstance: function (instance) {

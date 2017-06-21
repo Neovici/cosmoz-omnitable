@@ -5,18 +5,21 @@
 <dom-module id="cosmoz-omnitable-item-expand">
 	<template>
 		<style>
-			:host(:not([hidden])) {
+			:host([expanded]) {
 				@apply --layout-vertical;
+				padding: 5px 4%;
+				line-height: 1.3em;
+				border-bottom: solid 1px #e2e2e2;
+    			background-color: #fafafa;
+				@apply --cosmoz-omnitable-item-expand;
+			}
+
+			:host(:not([expanded])) {
+				display: none !important;
 			}
 
 			:host[hidden] {
 				display: none !important;
-			}
-
-			:host > ::slotted(*) {
-				padding: 0 3px;
-				white-space: nowrap;
-				text-overflow: ellipsis;
 			}
 
 		</style>
@@ -48,8 +51,16 @@
 
 			expanded: {
 				type: Boolean,
+				value: false,
+				reflectToAttribute: true,
 				observer: '_expandedChanged'
 			},
+
+			hidden: {
+				type: Boolean,
+				reflectToAttribute: true,
+				computed: '_computeHidden(columns.length)'
+			}
 
 		},
 
@@ -73,6 +84,10 @@
 			instance.item = this.item;
 			instance.selected = this.selected;
 			instance.expanded = this.expanded;
+		},
+
+		_computeHidden: function (disabledColumnsCount) {
+			return disabledColumnsCount === 0;
 		},
 
 		_itemUpdated: function (itemChange) {
