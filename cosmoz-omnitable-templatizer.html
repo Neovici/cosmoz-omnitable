@@ -71,9 +71,9 @@
 			} else {
 				this._ensureTemplatized();
 				instance = this.stamp({});
-				this._templateInstancesInUse.push(instance);
 			}
 
+			this._templateInstancesInUse.push(instance);
 			return instance;
 		},
 
