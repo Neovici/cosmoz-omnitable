@@ -47,6 +47,7 @@
 
 		_configureElement: function (element, column) {
 			this.toggleClass(column.headerCellClass, true, element);
+			this.toggleClass('header-cell', true, element);
 			element.setAttribute('title', column.title);
 		},
 	});

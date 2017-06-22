@@ -396,7 +396,14 @@
 		 * Toggle folding of a group
 		 */
 		toggleGroup: function (event) {
+			var firstRow = this.$.groupedList.getFirstVisibleItemElement(),
+				folded = event.model.folded;
+
 			this.$.groupedList.toggleFold(event.model);
+
+			if (!firstRow && folded) {
+				this._debounceAdjustColumns();
+			}
 		},
 
 		toggleItem: function (event, detail) {
@@ -735,27 +742,47 @@
 		 * @memberOf element/cz-omnitable
 		 */
 		_adjustColumns: function () {
-			var firstRow = this.$.groupedList.getFirstVisibleItemElement(),
-				tableContent = this.$.tableContent,
+			var firstRow,
 				fits,
 				cells,
 				currentWidth,
 				scroller,
-				itemRow;
+				itemRow,
+				hasVisibleData,
+				visibleData,
+				headerRow,
+				headers;
 
 			// Safety check, but should never happen
 			if (this._isDetached || !this._isVisible) {
 				return;
 			}
 
-			if (!tableContent || !firstRow) {
+			visibleData = this.sortedFilteredGroupedItems;
+			hasVisibleData = visibleData && Array.isArray(visibleData) && visibleData.length > 0;
+			firstRow = this.$.groupedList.getFirstVisibleItemElement();
+			if (!hasVisibleData || (!firstRow && this.$.groupedList.hasRenderedData)) {
+				// reset headers width
+				headerRow = Polymer.dom(this.$.header).querySelector('cosmoz-omnitable-header-row');
+				headers = Polymer.dom(headerRow).children;
+				headers.forEach(function (header) {
+					header.style.minWidth = 'auto';
+					header.style.maxWidth = 'none';
+					header.style.width = 'auto';
+				});
+				return;
+			}
+
+			if (!firstRow) {
+				// There is visible data, but nothing rendered in cosmoz-grouped-list yet.
+				// Retry later.
 				this._debounceAdjustColumns();
 				return;
 			}
 
 			scroller = this.$.scroller;
 			fits = scroller.scrollWidth <= scroller.clientWidth;
-			currentWidth = tableContent.clientWidth;
+			currentWidth = this.$.tableContent.clientWidth;
 			itemRow = Polymer.dom(firstRow).querySelector('cosmoz-omnitable-item-row');
 			cells = Polymer.dom(itemRow).children;
 
@@ -784,9 +811,7 @@
 
 		_adjustHeadersWidth: function (cells) {
 			var headerRow = Polymer.dom(this.$.header).querySelector('cosmoz-omnitable-header-row'),
-				headers = Polymer.dom(headerRow).children,
-				sfgi = this.sortedFilteredGroupedItems,
-				hasVisibleData = sfgi && Array.isArray(sfgi) && sfgi.length > 0;
+				headers = Polymer.dom(headerRow).children;
 
 			cells.forEach(function (cell, index) {
 				var header = headers[index],
@@ -798,7 +823,6 @@
 				}
 
 				cellWidth = getComputedStyle(cell).getPropertyValue('width');
-				this.toggleClass('flex', !hasVisibleData, header);
 				header.style.minWidth = cellWidth;
 				header.style.maxWidth = cellWidth === 'auto' ? 'none' : cellWidth;
 				header.style.width = cellWidth;
