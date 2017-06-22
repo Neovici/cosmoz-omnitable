@@ -45,10 +45,16 @@
 					readOnly: true,
 					value: true
 				},
+
 				filter: {
 					type: Object,
 					computed: '_computeFilter(autocompleteSelectedItems.length)'
-				}
+				},
+
+			},
+
+			_getDefaultHeaderCellClass: function () {
+				return 'autocomplete-header-cell';
 			},
 
 			_computeAutocompleteItems: function (change) {

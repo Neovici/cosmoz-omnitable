@@ -26,6 +26,13 @@
 				@apply --layout-end;
 			}
 
+			.header > cosmoz-omnitable-header-row {
+				@apply --layout-flex;
+			}
+
+			.header-cell > * {
+				width: 100%;
+			}
 
 			.tableContent {
 				overflow-y: auto;
@@ -138,6 +145,11 @@
 				padding-bottom: 14px;
 			}
 
+			.item-row-wrapper {
+				display: block;
+				width: 100%;
+			}
+
 			.itemRow {
 				/* set a min-height for rows so that rows with empty values are visible */
 				min-height: 24px;
@@ -158,35 +170,6 @@
 				padding: 0;
 			}
 
-			.expanded-columns {
-				@apply --layout-vertical;
-				padding: 5px 4%;
-				line-height: 1.3em;
-				border-bottom: solid 1px #e2e2e2;
-    			background-color: #fafafa;
-			}
-
-			.expanded-columns > .row {
-				@apply --layout-horizontal;
-				@apply --layout-center;
-			}
-
-			.expanded-columns > .row > div {
-				width: 50%;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
-				flex: initial;
-			}
-
-			.expanded-columns > .row > cosmoz-omnitable-item-cell {
-				width: 50%;
-				text-align: right;
-				flex-grow: 1 !important;
-				flex-basis: 100px !important;
-				@apply --layout-end;
-			}
-
 			.groupRow {
 				@apply --layout-horizontal;
 				@apply --layout-center;
@@ -201,7 +184,6 @@
 				/* Add here style rules for folded group rows */
 			}
 
-
 			.groupRow-label {
 				@apply --layout-flex;
 				@apply --layout-horizontal;
@@ -214,8 +196,8 @@
 				white-space: nowrap;
 			}
 
-			.groupRow-label > cosmoz-omnitable-item-cell {
-				flex: 1;
+			.groupRow-label > cosmoz-omnitable-group-row {
+				@apply --layout-flex;
 			}
 
 			.rtl {

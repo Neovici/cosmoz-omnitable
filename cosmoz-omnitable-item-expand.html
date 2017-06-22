@@ -1,0 +1,125 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cosmoz-omnitable-repeater-behavior.html">
+<link rel="import" href="cosmoz-omnitable-item-expand-line.html">
+
+<dom-module id="cosmoz-omnitable-item-expand">
+	<template>
+		<style>
+			:host([expanded]) {
+				@apply --layout-vertical;
+				padding: 5px 4%;
+				line-height: 1.3em;
+				border-bottom: solid 1px #e2e2e2;
+    			background-color: #fafafa;
+				@apply --cosmoz-omnitable-item-expand;
+			}
+
+			:host(:not([expanded])) {
+				display: none !important;
+			}
+
+			:host([hidden]) {
+				display: none !important;
+			}
+
+		</style>
+		<slot name="item-expand-line"></slot>
+	</template>
+</dom-module>
+
+<script>
+(function () {
+	'use strict';
+
+	Polymer({
+
+		is: 'cosmoz-omnitable-item-expand',
+
+		behaviors: [
+			Cosmoz.OmnitableRepeaterBehavior
+		],
+
+		properties: {
+			item: {
+				type: Object
+			},
+
+			selected: {
+				type: Boolean,
+				observer: '_selectedChanged'
+			},
+
+			expanded: {
+				type: Boolean,
+				value: false,
+				reflectToAttribute: true,
+				observer: '_expandedChanged'
+			},
+
+			hidden: {
+				type: Boolean,
+				reflectToAttribute: true,
+			}
+		},
+
+		observers: [
+			'_updateSize(columns.length)'
+		],
+
+		_elementType: 'cosmoz-omnitable-item-expand-line',
+
+		_slotName: 'item-expand-line',
+
+		_getTemplateInstance: function (column) {
+			return column.dataTemplatizer.getInstance();
+		},
+
+		_detachTemplateInstance: function (instance, column, element) {
+			column.dataTemplatizer.detachInstance(instance, element);
+		},
+
+		_configureElement: function (element, column) {
+			element.column = column;
+		},
+
+		_configureTemplateInstance: function (instance) {
+			instance.item = this.item;
+			instance.selected = this.selected;
+			instance.expanded = this.expanded;
+		},
+
+		_updateSize: function (columnsCount) {
+			this.hidden = columnsCount === 0;
+			if (this.expanded) {
+				// Notify omnitable that this item is expanded and my need individual resize
+				this.fire('update-item-size', { item: this.item }, { bubbles: true});
+			}
+		},
+
+		_itemUpdated: function (itemChange) {
+			if (itemChange.path === 'item') {
+				this.elements.forEach(function (element) {
+					this.getElementTemplateInstance(element).item = itemChange.value;
+				}, this);
+			} else {
+				this.elements.forEach(function (element) {
+					this.getElementTemplateInstance(element).notifyPath(itemChange.path, itemChange.value);
+				}, this);
+			}
+		},
+
+		_selectedChanged: function (selected) {
+			this.templateInstances.forEach(function (instance) {
+				instance.selected = selected;
+			});
+		},
+
+		_expandedChanged: function (expanded) {
+			this.templateInstances.forEach(function (instance) {
+				instance.expanded = expanded;
+			});
+		}
+
+	});
+}());
+</script>

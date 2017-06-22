@@ -27,6 +27,38 @@
 
 </head>
 <body class="fullbleed">
+	<dom-module id="x-container">
+		<template>
+			<style>
+				:host {
+					@apply --layout-vertical;
+				}
+				#content1 {
+					@apply --layout-flex;
+					@apply --layout-relative;
+				}
+				#content2 {
+					@apply --layout-flex;
+					@apply --layout-relative;
+				}
+			</style>
+
+			<button on-tap="toggleSlot">Change slot</button>
+			<template is="dom-if" if="[[ !showContent2 ]]" restamp>
+				<h1>Content1</h1>
+				<div id="content1">
+					<slot></slot>
+				</div>
+			</template>
+			<template is="dom-if" if="[[ showContent2 ]]" restamp>
+				<h1>Content2</h1>
+				<div id="content2">
+					<slot></slot>
+				</div>
+			</template>
+		</template>
+	</dom-module>
+
 	<dom-module id="x-page">
 		<template>
 			<style include="iron-flex iron-positioning">
@@ -52,7 +84,6 @@
 
 				<div class="layout horizontal center">
 					<button class="action" on-tap="changeData">Generate a new data set</button>
-					<button class="action" on-tap="changeSmallData">Generate a new small data set</button>
 					<button class="action" on-tap="emptyData">Generate an empty data set</button>
 					<div class="action">
 						Selected items count: <span>[[ selectedItems.length ]]</span>
@@ -67,59 +98,59 @@
 						</paper-dropdown-menu>
 					</div>
 				</div>
+				<x-container class="flex">
+					<cosmoz-omnitable id="omnitable" class="fit" data="[[ data ]]" selection-enabled selected-items="{{ selectedItems }}">
+						<cosmoz-omnitable-column-autocomplete title="Id" value-path="id" sort-on="id" group-on="id">
+							<template id="data-template">
+								<span on-tap="onTap">
+									<a href="#!/purchase/suppliers/view?id=[[ item.id ]]">[[ item.id ]]</a>
+								</span>
+							</template>
+						</cosmoz-omnitable-column-autocomplete>
+						<cosmoz-omnitable-column-boolean title="Boolean" value-path="bool" sort-on="bool" group-on="bool"
+							true-label="Oui" false-label="Non">
+						</cosmoz-omnitable-column-boolean>
+						<cosmoz-omnitable-column-number title="Value" value-path="value" sort-on="value" group-on="value" locale="[[ locale ]]">
+						</cosmoz-omnitable-column-number>
+						<cosmoz-omnitable-column-autocomplete title="Group" value-path="group" sort-on="group" group-on="group">
+						</cosmoz-omnitable-column-autocomplete>
+						<cosmoz-omnitable-column-amount title="Amount" value-path="amount" sort-on="amount" group-on="amount">
+						</cosmoz-omnitable-column-amount>
+						<cosmoz-omnitable-column-date title="Date" value-path="date" sort-on="date" group-on="date">
+						</cosmoz-omnitable-column-date>
+						<cosmoz-omnitable-column-date title="DateJSON" value-path="dateJSON" sort-on="dateJSON" group-on="dateJSON">
+						</cosmoz-omnitable-column-date>
+						<cosmoz-omnitable-column-list title="List" value-path="list">
+						</cosmoz-omnitable-column-list>
+						<cosmoz-omnitable-column title="Sub-property" value-path="sub.subProp" sort-on="sub.subProp" group-on="sub.subProp" flex="5">
+						</cosmoz-omnitable-column>
+						<cosmoz-omnitable-column title="Name" value-path="name" sort-on="name" group-on="name" flex="2">
+							<template id="data-template">
+								<a href="#!/purchase/suppliers/view?id=[[ item.id ]]">[[ item.name ]]</a>
+							</template>
+						</cosmoz-omnitable-column>
+						<cosmoz-omnitable-column title="Custom template"
+							value-path="name" sort-on="name" width="50px" flex="2"
+							data-template="[[ customNameTemplate ]]">
+						</cosmoz-omnitable-column>
 
-				<cosmoz-omnitable id="omnitable" class="flex" data="[[ data ]]" selection-enabled selected-items="{{ selectedItems }}">
-					<cosmoz-omnitable-column-autocomplete title="Id" value-path="id" sort-on="id" group-on="id">
-						<template id="data-template">
-							<span on-tap="onTap">
-								<a href="#!/purchase/suppliers/view?id=[[ item.id ]]">[[ item.id ]]</a>
-							</span>
-						</template>
-					</cosmoz-omnitable-column-autocomplete>
-					<cosmoz-omnitable-column-boolean title="Boolean" value-path="bool" sort-on="bool" group-on="bool"
-						true-label="Oui" false-label="Non">
-					</cosmoz-omnitable-column-boolean>
-					<cosmoz-omnitable-column-number title="Value" value-path="value" sort-on="value" group-on="value" locale="[[ locale ]]">
-					</cosmoz-omnitable-column-number>
-					<cosmoz-omnitable-column-autocomplete title="Group" value-path="group" sort-on="group" group-on="group">
-					</cosmoz-omnitable-column-autocomplete>
-					<cosmoz-omnitable-column-amount title="Amount" value-path="amount" sort-on="amount" group-on="amount">
-					</cosmoz-omnitable-column-amount>
-					<cosmoz-omnitable-column-date title="Date" value-path="date" sort-on="date" group-on="date">
-					</cosmoz-omnitable-column-date>
-					<cosmoz-omnitable-column-date title="DateJSON" value-path="dateJSON" sort-on="dateJSON" group-on="dateJSON">
-					</cosmoz-omnitable-column-date>
-					<cosmoz-omnitable-column-list title="List" value-path="list">
-					</cosmoz-omnitable-column-list>
-					<cosmoz-omnitable-column title="Sub-property" value-path="sub.subProp" sort-on="sub.subProp" group-on="sub.subProp" flex="5">
-					</cosmoz-omnitable-column>
-					<cosmoz-omnitable-column title="Name" value-path="name" sort-on="name" group-on="name" flex="2">
-						<template id="data-template">
-							<a href="#!/purchase/suppliers/view?id=[[ item.id ]]">[[ item.name ]]</a>
-						</template>
-					</cosmoz-omnitable-column>
-					<cosmoz-omnitable-column title="Custom template"
-						value-path="name" sort-on="name" width="50px" flex="2"
-						data-template="[[ customNameTemplate ]]">
-					</cosmoz-omnitable-column>
+						<paper-button slot="actions" on-run="updateSelectedRows">
+							<iron-icon icon="editor:mode-edit"></iron-icon>
+							<span>Update [[ selectedItems.length ]] items</span>
+						</paper-button>
 
-					<paper-button slot="actions" on-run="updateSelectedRows">
-						<iron-icon icon="editor:mode-edit"></iron-icon>
-						<span>Update [[ selectedItems.length ]] items</span>
-					</paper-button>
-
-					<paper-button slot="actions" on-run="removeItems">
-						<iron-icon icon="delete"></iron-icon>
-						<span>Remove [[ selectedItems.length ]] items</span>
-					</paper-button>
-					<paper-item slot="actions"><paper-button>
-						bigger bigger button 5
-					</paper-button></paper-item>
-					<paper-item slot="actions"><paper-button>
-						bigger bigger bigger button 6
-					</paper-button></paper-item>
-				</cosmoz-omnitable>
-
+						<paper-button slot="actions" on-run="removeItems">
+							<iron-icon icon="delete"></iron-icon>
+							<span>Remove [[ selectedItems.length ]] items</span>
+						</paper-button>
+						<paper-item slot="actions"><paper-button>
+							bigger bigger button 5
+						</paper-button></paper-item>
+						<paper-item slot="actions"><paper-button>
+							bigger bigger bigger button 6
+						</paper-button></paper-item>
+					</cosmoz-omnitable>
+				</x-container>
 
 			</cosmoz-viewinfo>
 		</template>
@@ -135,7 +166,18 @@
 /*global document, window, Cosmoz, Polymer */
 (function () {
 	'use strict';
-
+	Polymer({
+		is: 'x-container',
+		properties: {
+			showContent2: {
+				type: Boolean,
+				value: false
+			}
+		},
+		toggleSlot: function () {
+			this.showContent2 = !this.showContent2;
+		}
+	});
 
 	Polymer({
 		is: 'x-page',
@@ -180,10 +222,6 @@
 
 		changeData: function () {
 			this.data = this.generateTableDemoData(10, 11, 10);
-		},
-
-		changeSmallData: function () {
-			this.data = this.generateTableDemoData(2, 2, 10);
 		},
 
 		emptyData: function () {

@@ -21,8 +21,11 @@
 <link rel="import" href="../import-filesaver/import-filesaver.html"/>
 
 <link rel="import" href="cosmoz-omnitable-column.html">
-<link rel="import" href="cosmoz-omnitable-header-cell.html">
-<link rel="import" href="cosmoz-omnitable-item-cell.html">
+<link rel="import" href="cosmoz-omnitable-header-row.html">
+<link rel="import" href="cosmoz-omnitable-item-row.html">
+<link rel="import" href="cosmoz-omnitable-item-expand.html">
+<link rel="import" href="cosmoz-omnitable-item-expand-line.html">
+<link rel="import" href="cosmoz-omnitable-group-row.html">
 <link rel="import" href="cosmoz-omnitable-styles.html">
 
 <link rel="import" href="cosmoz-omnitable-columns.html">
@@ -37,57 +40,7 @@
 -->
 <dom-module id="cosmoz-omnitable">
 	<template>
-
-		<style include="cosmoz-omnitable-styles iron-flex">
-			/*
-				HACK(pasleq): apply a mixin per column index to allow external styling of the columns.
-				This means there is a limit in the number of columns that can be externally styled.
-			 */
-			.cosmoz-omnitable-column-0 {
-				@apply --cosmoz-omnitable-column-0;
-			}
-
-			.cosmoz-omnitable-column-1 {
-				@apply --cosmoz-omnitable-column-1;
-			}
-
-			.cosmoz-omnitable-column-2 {
-				@apply --cosmoz-omnitable-column-2;
-			}
-
-			.cosmoz-omnitable-column-3 {
-				@apply --cosmoz-omnitable-column-3;
-			}
-
-			.cosmoz-omnitable-column-4 {
-				@apply --cosmoz-omnitable-column-4;
-			}
-
-			.cosmoz-omnitable-column-5 {
-				@apply --cosmoz-omnitable-column-5;
-			}
-
-			.cosmoz-omnitable-column-6 {
-				@apply --cosmoz-omnitable-column-6;
-			}
-
-			.cosmoz-omnitable-column-7 {
-				@apply --cosmoz-omnitable-column-7;
-			}
-
-			.cosmoz-omnitable-column-8 {
-				@apply --cosmoz-omnitable-column-8;
-			}
-
-			.cosmoz-omnitable-column-9 {
-				@apply --cosmoz-omnitable-column-9;
-			}
-
-			.cosmoz-omnitable-column-10 {
-				@apply --cosmoz-omnitable-column-10;
-			}
-
-		</style>
+		<style include="cosmoz-omnitable-styles iron-flex"></style>
 
 		<cosmoz-web-worker id="sortWorker" on-cosmoz-web-worker-ready="_onWebWorkerReady">
 			<script type="text/worker">
@@ -197,10 +150,7 @@
 					<paper-checkbox on-change="onAllCheckboxChange" hidden$="[[ _noData ]]">
 					</paper-checkbox>
 				</div>
-				<template is="dom-repeat" items="[[ visibleColumns ]]" as="column" index-as="columnIndex">
-					<cosmoz-omnitable-header-cell class="flex header-cell" column="{{ column }}">
-					</cosmoz-omnitable-header-cell>
-				</template>
+				<cosmoz-omnitable-header-row columns="[[ visibleColumns ]]"></cosmoz-omnitable-header-row>
 			</div>
 			<div class="tableContent" id="tableContent">
 				<template is="dom-if" if="[[ _noData ]]">
@@ -223,45 +173,31 @@
 				</template>
 				<div class="tableContent-scroller" id="scroller">
 					<cosmoz-grouped-list id="groupedList" data="{{ sortedFilteredGroupedItems }}"
-						selected-items="{{ selectedItems }}" display-empty-groups="[[ displayEmptyGroups ]]" warm-up="35">
-						<cosmoz-grouped-list-template id="warmUpTemplate">
-							<template>
-								<div style="min-height: 25px;"></div>
-							</template>
-						</cosmoz-grouped-list-template>
+						selected-items="{{ selectedItems }}" display-empty-groups="[[ displayEmptyGroups ]]">
 						<cosmoz-grouped-list-template id="itemTemplate">
 							<template>
-								<div class$="[[ _computeItemRowClasses(selected) ]]">
-									<div class="selectItemCheckbox" hidden$="[[ !_showCheckboxes ]]">
-										<paper-checkbox checked="{{ selected }}" on-change="_onItemCheckboxChange"></paper-checkbox>
-									</div>
-									<template is="dom-repeat" items="[[ visibleColumns ]]" as="column" index-as="columnIndex">
-										<cosmoz-omnitable-item-cell class$="[[ _computeItemRowCellClasses(column, columnIndex) ]]"
-											column="{{ column }}"
-											item="{{ item }}"
+								<div class="item-row-wrapper">
+									<div class$="[[ _computeItemRowClasses(selected) ]]">
+										<div class="selectItemCheckbox" hidden$="[[ !_showCheckboxes ]]">
+											<paper-checkbox checked="{{ selected }}" on-change="_onItemCheckboxChange"></paper-checkbox>
+										</div>
+										<cosmoz-omnitable-item-row
+											columns="[[ visibleColumns ]]"
 											selected="{{ selected }}"
-											expanded="{{ expanded }}">
-										</cosmoz-omnitable-item-cell>
-									</template>
-									<div class="item-expander" hidden="[[ isEmpty(disabledColumns.length) ]]">
-										<paper-icon-button icon="[[ getItemFoldIcon(expandedItems.length, item) ]]" on-tap="toggleItem"></paper-icon-button>
+											expanded="{{ expanded }}"
+											item="[[ item ]]">
+										</cosmoz-omnitable-item-row>
+										<div class="item-expander" hidden="[[ isEmpty(disabledColumns.length) ]]">
+											<paper-icon-button icon="[[ getFoldIcon(expanded) ]]" on-tap="toggleItem"></paper-icon-button>
+										</div>
 									</div>
+									<cosmoz-omnitable-item-expand
+										columns="[[ disabledColumns ]]"
+										item="[[item]]"
+										selected="{{ selected }}"
+										expanded="{{ expanded }}">
+									</cosmoz-omnitable-item-expand>
 								</div>
-								<template is="dom-if" if="[[ !itemIsFolded(disabledColumns.length, expandedItems.length, item) ]]">
-									<div class="expanded-columns">
-										<template is="dom-repeat" items="[[ disabledColumns ]]" as="column" index-as="columnIndex">
-											<div class="row">
-												<div title="[[ column.title ]]">[[ column.title ]]</div>
-												<cosmoz-omnitable-item-cell class$="[[ _computeItemRowCellClasses(column, columnIndex) ]]"
-													column="{{ column }}"
-													item="{{ item }}"
-													selected="{{ selected }}"
-													expanded="{{ expanded }}">
-												</cosmoz-omnitable-item-cell>
-											</div>
-										</template>
-									</div>
-								</template>
 							</template>
 						</cosmoz-grouped-list-template>
 						<cosmoz-grouped-list-template id="groupTemplate">
@@ -270,13 +206,15 @@
 									<div class="selectGroupCheckbox" hidden$="[[ !_showCheckboxes ]]">
 										<paper-checkbox checked="{{ selected }}" on-change="_onGroupCheckboxChange"></paper-checkbox>
 									</div>
+
 									<h3 class="groupRow-label">
 										<div><span>[[ groupOnColumn.title ]]</span>: &nbsp;</div>
-										<cosmoz-omnitable-item-cell class="groupRow-cell"
+										<cosmoz-omnitable-group-row
 											column="[[ groupOnColumn ]]"
 											item="[[ item.items.0 ]]"
-											folded="{{ folded }}">
-										</cosmoz-omnitable-item-cell>
+											selected="[[ selected ]]"
+											folded="[[ folded ]]">
+										</cosmoz-omnitable-group-row>
 									</h3>
 									<div>[[ item.items.length ]]</div>
 									<paper-icon-button icon="[[ getFoldIcon(folded) ]]" on-tap="toggleGroup"></paper-icon-button>

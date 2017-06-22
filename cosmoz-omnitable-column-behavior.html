@@ -1,10 +1,9 @@
 <link rel="import" href="cosmoz-omnitable-templatizer.html">
 
 <script>
+	window.Cosmoz = window.Cosmoz || {};
 
-	if (typeof Cosmoz === 'undefined') {
-		var Cosmoz = {};
-	}
+	Cosmoz.OmnitableColumnStyleModules = [];
 
 	/** @polymerBehavior */
 	Cosmoz.OmnitableColumnBehavior = {
@@ -93,6 +92,13 @@
 				}
 			},
 
+			styleModule: {
+				type: String,
+				value: function () {
+					return this._getDefaultStyleModule();
+				}
+			},
+
 			/**
 			 * Allow column to overflow without triggering
 			 * column folding (good for long descriptions)
@@ -120,23 +126,14 @@
 			_headerTemplatizer: {
 				type: Object,
 				value: null
-			}
+			},
 		},
+
+		StyleModules: [],
 
 		ready: function () {
 			this._headerTemplatizer = this._createTemplatizer('template[id="header-template"');
-		},
-
-		detached: function () {
-			if (this._headerTemplatizer) {
-				this._headerTemplatizer.releaseAllInstances();
-				this._headerTemplatizer = null;
-			}
-
-			if (this._dataTemplatizer) {
-				this._dataTemplatizer.releaseAllInstances();
-				this._dataTemplatizer = null;
-			}
+			this._itemCells = [];
 		},
 
 		_createTemplatizer: function (templateElementOrSelector) {
@@ -172,7 +169,8 @@
 			}
 		},
 
-		getDataTemplateInstance: function () {
+
+		get dataTemplatizer() {
 			var selector;
 			if (!this._dataTemplatizer) {
 				if (this.editable) {
@@ -182,19 +180,11 @@
 				}
 				this._dataTemplatizer = this._createTemplatizer(selector);
 			}
-			return this._dataTemplatizer.createInstance();
+			return this._dataTemplatizer;
 		},
 
-		releaseDataTemplateInstance: function (instance) {
-			if (this._dataTemplatizer) {
-				this._dataTemplatizer.releaseInstance(instance);
-			}
-		},
-
-		releaseHeaderTemplateInstance: function (instance) {
-			if (this._headerTemplatizer) {
-				this._headerTemplatizer.releaseInstance(instance);
-			}
+		get headerTemplatizer() {
+			return this._headerTemplatizer;
 		},
 
 		getHeaderTemplateInstance: function () {
@@ -202,6 +192,12 @@
 				return;
 			}
 			return this._headerTemplatizer.createInstance();
+		},
+
+		releaseHeaderTemplateInstance: function (instance) {
+			if (this._headerTemplatizer) {
+				this._headerTemplatizer.releaseInstance(instance);
+			}
 		},
 
 		/**
@@ -221,6 +217,10 @@
 
 		_getDefaultHeaderCellClass: function () {
 			return 'default-header-cell';
+		},
+
+		_getDefaultStyleModule: function () {
+			return;
 		},
 
 		getString: function (item, valuePath) {

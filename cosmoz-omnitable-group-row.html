@@ -1,0 +1,107 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="cosmoz-omnitable-repeater-behavior.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html"/>
+
+<dom-module id="cosmoz-omnitable-group-row">
+	<template>
+		<slot name="group-row"></slot>
+	</template>
+	<script>
+(function () {
+	Polymer({
+
+		is: 'cosmoz-omnitable-group-row',
+
+		behaviors: [
+			Cosmoz.OmnitableRepeaterBehavior
+		],
+
+		properties: {
+
+			column: {
+				type: Object,
+				observer: '_columnChanged'
+			},
+
+			item: {
+				type: Object
+			},
+
+			selected: {
+				type: Boolean,
+				observer: '_selectedChanged'
+			},
+
+			folded: {
+				type: Boolean,
+				observer: '_foldedChanged'
+			},
+		},
+
+		observers: [
+			'_itemUpdated(item.*)',
+		],
+
+		_elementType: 'div',
+
+		_slotName: 'group-row',
+
+		_columnChanged: function (newColumn) {
+			if (this.columns && this.columns.length > 0) {
+				this.splice('columns', 0, 1, newColumn);
+			} else {
+				this.columns =  [newColumn];
+			}
+		},
+
+		_getTemplateInstance: function (column) {
+			return column.dataTemplatizer.getInstance();
+		},
+
+		_detachTemplateInstance: function (instance, column, element) {
+			column.dataTemplatizer.detachInstance(instance, element);
+		},
+
+		_configureElement: function (element, column) {
+
+		},
+
+		_configureTemplateInstance: function (instance) {
+			instance.item = this.item;
+			instance.selected = this.selected;
+			instance.folded = this.folded;
+		},
+
+		_itemUpdated: function (itemChange) {
+			if (itemChange.path === 'item') {
+				this.elements.forEach(function (element) {
+					this.getElementTemplateInstance(element).item = itemChange.value;
+				}, this);
+			} else {
+				this.elements.forEach(function (element) {
+					this.getElementTemplateInstance(element).notifyPath(itemChange.path, itemChange.value);
+				}, this);
+			}
+		},
+
+		_selectedChanged: function (selected) {
+			this.templateInstances.forEach(function (instance) {
+				instance.selected = selected;
+			});
+		},
+
+		_expandedChanged: function (expanded) {
+			this.templateInstances.forEach(function (instance) {
+				instance.expanded = expanded;
+			});
+		},
+
+		_foldedChanged: function (folded) {
+			this.templateInstances.forEach(function (instance) {
+				instance.folded = folded;
+			});
+		},
+	});
+}());
+	</script>
+</dom-module>

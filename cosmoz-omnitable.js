@@ -33,16 +33,6 @@
 			},
 
 			/**
-			 * Rows/items that are expanded when columns are disabled
-			 */
-			expandedItems: {
-				type: Array,
-				value: function () {
-					return [];
-				}
-			},
-
-			/**
 			 * Whether bottom-bar has actions.
 			 */
 			hasActions: {
@@ -174,8 +164,7 @@
 
 		observers: [
 			'_sortOnChanged(sortOn.*)',
-			'_dataChanged(data.*)',
-			'_debounceUpdateExpandedItemsSize(disabledColumns.length)'
+			'_dataChanged(data.*)'
 		],
 
 		behaviors: [
@@ -192,18 +181,6 @@
 
 		_scalingUp: false,
 
-		_onUpdateItemSize: function (event, detail) {
-			if (!detail || !detail.item) {
-				return;
-			}
-			this.$.groupedList.updateSize(detail.item);
-			this.async(function () {
-				this.$.groupedList.updateSize(detail.item);
-			}, 500);
-			console.log(this.$.groupedList._flatData.indexOf(detail.item));
-			console.log('_onUpdateItemSize wasdfasdfsadf', event, detail);
-		},
-
 		created: function () {
 			/** WARNING: we do not support columns changes yet. */
 			this._columnObserver = Polymer.dom(this).observeNodes(function (info) {
@@ -217,9 +194,11 @@
 					child = children[i];
 					// `isOmnitableColumn` is a property from cosmoz-omnitable-column-behavior
 					if (child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn) {
+						child.__index = i;
 						columns.push(child);
 					}
 				}
+
 				if (columns && columns.length > 0) {
 
 					this.columns = columns;
@@ -245,14 +224,6 @@
 		detached: function () {
 			// Just in case we get detached before a planned debouncer has not run yet.
 			this.cancelDebouncer('adjustColumns');
-			// Reset all 'notify' properties to null, to avoid Polymer's eventCache keep references to detached DOM tree.
-			// TODO(pasleq): investigate if all these properties should really use 'notify'.
-			this.sortedFilteredGroupedItems = [];
-			this._setGroupOnColumn(null);
-			this.visibleColumns = null;
-			this.disabledColumns = null;
-			this.columns = null;
-			this.selectedItems = null;
 			this._isDetached = true;
 		},
 
@@ -273,7 +244,13 @@
 				this._setColumnValues();
 				this._debounceFilterItems();
 			}
+		},
 
+		_onUpdateItemSize: function (event, detail) {
+			if (detail && detail.item) {
+				this.$.groupedList.updateSize(detail.item);
+			}
+			event.stopPropagation();
 		},
 
 		_computeTooStrictFilterInfo: function (noData, numVisibleItems) {
@@ -290,12 +267,6 @@
 
 		_debounceSortItems: function () {
 			this.debounce('sortItems', this._sortFilteredGroupedItems);
-		},
-
-		_updateExpandedItemsSize: function (disabledColumnsLength) {
-			this.expandedItems.forEach(function (item, index) {
-				this.$.groupedList.updateSize(item);
-			}, this);
 		},
 
 		_onColumnFilterChanged: function (event) {
@@ -425,30 +396,23 @@
 		 * Toggle folding of a group
 		 */
 		toggleGroup: function (event) {
+			var firstRow = this.$.groupedList.getFirstVisibleItemElement(),
+				folded = event.model.folded;
+
 			this.$.groupedList.toggleFold(event.model);
+
+			if (!firstRow && folded) {
+				this._debounceAdjustColumns();
+			}
 		},
 
 		toggleItem: function (event, detail) {
-			var item = event.model.item,
-				itemIndex = this.expandedItems.indexOf(item);
-			if (itemIndex === -1) {
-				this.push('expandedItems', item);
-			} else {
-				this.splice('expandedItems', itemIndex, 1);
-			}
-			this.$.groupedList.updateSize(item);
+			var item = event.model.item;
+			this.$.groupedList.toggleCollapse(item);
 		},
 
-		itemIsFolded:  function (disabledColumnsLength, expandedItemsLength, item) {
-			return disabledColumnsLength === 0 || this.expandedItems.indexOf(item) === -1;
-		},
-
-		getItemFoldIcon: function (expandedItemsLength, item) {
-			return this.getFoldIcon(this.itemIsFolded(expandedItemsLength, item));
-		},
-
-		getFoldIcon: function (folded) {
-			return folded ? 'expand-more' : 'expand-less';
+		getFoldIcon: function (expanded) {
+			return expanded ? 'expand-less' : 'expand-more';
 		},
 
 		// TODO: provides a mean to avoid setting the values for a column
@@ -763,8 +727,12 @@
 			// which might look strange.
 			this.debounce('adjustColumns', this._adjustColumns, 16);
 		},
-		_debounceUpdateExpandedItemsSize: function () {
-			this.debounce('_updateExpandedItemsSize', this._updateExpandedItemsSize, 16);
+
+		/**
+		 * True if the current list is visible.
+		 */
+		get _isVisible() {
+			return Boolean(this.offsetWidth || this.offsetHeight);
 		},
 
 		/**
@@ -774,31 +742,53 @@
 		 * @memberOf element/cz-omnitable
 		 */
 		_adjustColumns: function () {
-			var firstRow = this.$.groupedList.getFirstVisibleItemElement(),
-				tableContent = this.$.tableContent,
+			var firstRow,
 				fits,
 				cells,
 				currentWidth,
-				scroller;
+				scroller,
+				itemRow,
+				hasVisibleData,
+				visibleData,
+				headerRow,
+				headers;
 
 			// Safety check, but should never happen
-			if (this._isDetached) {
+			if (this._isDetached || !this._isVisible) {
 				return;
 			}
 
-			if (!tableContent || !firstRow) {
+			visibleData = this.sortedFilteredGroupedItems;
+			hasVisibleData = visibleData && Array.isArray(visibleData) && visibleData.length > 0;
+			firstRow = this.$.groupedList.getFirstVisibleItemElement();
+			if (!hasVisibleData || (!firstRow && this.$.groupedList.hasRenderedData)) {
+				// reset headers width
+				headerRow = Polymer.dom(this.$.header).querySelector('cosmoz-omnitable-header-row');
+				headers = Polymer.dom(headerRow).children;
+				headers.forEach(function (header) {
+					header.style.minWidth = 'auto';
+					header.style.maxWidth = 'none';
+					header.style.width = 'auto';
+				});
+				return;
+			}
+
+			if (!firstRow) {
+				// There is visible data, but nothing rendered in cosmoz-grouped-list yet.
+				// Retry later.
 				this._debounceAdjustColumns();
 				return;
 			}
 
 			scroller = this.$.scroller;
 			fits = scroller.scrollWidth <= scroller.clientWidth;
-			currentWidth = tableContent.clientWidth;
-			cells = Polymer.dom(firstRow).querySelectorAll('cosmoz-omnitable-item-cell');
+			currentWidth = this.$.tableContent.clientWidth;
+			itemRow = Polymer.dom(firstRow).querySelector('cosmoz-omnitable-item-row');
+			cells = Polymer.dom(itemRow).children;
 
 			if (fits) {
 				fits = cells.every(function (cell) {
-					return cell.column.overflow || cell.scrollWidth <= cell.clientWidth;
+					return cell.__column.overflow || cell.scrollWidth <= cell.clientWidth;
 				});
 			}
 
@@ -820,9 +810,8 @@
 		},
 
 		_adjustHeadersWidth: function (cells) {
-			var headers = Polymer.dom(this.$.header).querySelectorAll('cosmoz-omnitable-header-cell'),
-				sfgi = this.sortedFilteredGroupedItems,
-				hasVisibleData = sfgi && Array.isArray(sfgi) && sfgi.length > 0;
+			var headerRow = Polymer.dom(this.$.header).querySelector('cosmoz-omnitable-header-row'),
+				headers = Polymer.dom(headerRow).children;
 
 			cells.forEach(function (cell, index) {
 				var header = headers[index],
@@ -833,12 +822,11 @@
 					return;
 				}
 
-				cellWidth = cell.getComputedStyleValue('width');
-				header.toggleClass('flex', !hasVisibleData);
+				cellWidth = getComputedStyle(cell).getPropertyValue('width');
 				header.style.minWidth = cellWidth;
 				header.style.maxWidth = cellWidth === 'auto' ? 'none' : cellWidth;
 				header.style.width = cellWidth;
-			});
+			}, this);
 		},
 
 		_canScaleUp: function (width) {

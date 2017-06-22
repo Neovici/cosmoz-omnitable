@@ -1,8 +1,8 @@
+<link rel="import" href="../polymer/polymer.html">
 <script>
 (function () {
 	'use strict';
 
-	var totalInstances = 0;
 	Polymer({
 
 		is: 'cosmoz-omnitable-templatizer',
@@ -11,7 +11,9 @@
 			Polymer.Templatizer
 		],
 
-		_templatesInUse: null,
+		_templateInstancesInUse: null,
+
+		_reusableTemplateInstances: null,
 
 		ready: function () {
 
@@ -21,7 +23,8 @@
 
 			this._instanceProps = instanceProps;
 
-			this._templatesInUse = [];
+			this._templateInstancesInUse = [];
+			this._reusableTemplateInstances = [];
 		},
 
 		init: function (template, host) {
@@ -42,46 +45,75 @@
 
 		_forwardParentProp: function (prop, value) {
 			//console.log('_forwardParentProp', prop, value);
-			this._templatesInUse.forEach(function (template) {
+			this._templateInstancesInUse.forEach(function (template) {
+				template[prop] = value;
+			});
+			this._reusableTemplateInstances.forEach(function (template) {
 				template[prop] = value;
 			});
 		},
 
 		_forwardParentPath: function (path, value) {
 			//console.log('_forwardParentPath', path, value);
-			this._templatesInUse.forEach(function (template) {
+			this._templateInstancesInUse.forEach(function (template) {
+				template.notifyPath(path, value, true);
+			});
+			this._reusableTemplateInstances.forEach(function (template) {
 				template.notifyPath(path, value, true);
 			});
 		},
 
-		createInstance: function () {
+		getInstance: function () {
 			var instance;
 
-			this._ensureTemplatized();
+			if (this._reusableTemplateInstances.length > 0) {
+				instance = this._reusableTemplateInstances.pop();
+			} else {
+				this._ensureTemplatized();
+				instance = this.stamp({});
+			}
 
-			instance = this.stamp({});
-
-			this._templatesInUse.push(instance);
-
-			totalInstances++;
+			this._templateInstancesInUse.push(instance);
 			return instance;
+		},
+
+		detachInstance: function (instance, parentElement) {
+			var children,
+				i,
+				root;
+
+			for (i = 0; i < this._templateInstancesInUse.length ; i+=1) {
+				if (this._templateInstancesInUse[i] === instance) {
+					this._templateInstancesInUse.splice(i, 1);
+					this._reusableTemplateInstances.push(instance);
+
+					children = Polymer.dom(parentElement).childNodes;
+					root = Polymer.dom(instance.root);
+					if (children) {
+						for (i = 0; i < children.length; i++) {
+							root.appendChild(children[i]);
+						}
+					}
+
+					return;
+				}
+			}
 		},
 
 		releaseInstance: function (instance) {
 			var i = 0;
-			for (i = 0; i < this._templatesInUse.length ; i+=1) {
-				if (this._templatesInUse[i] === instance) {
-					this._templatesInUse.splice(i, 1);
+			for (i = 0; i < this._templateInstancesInUse.length ; i+=1) {
+				if (this._templateInstancesInUse[i] === instance) {
+					this._templateInstancesInUse.splice(i, 1);
+					this._reusableTemplateInstances.push(instance);
 					return;
 				}
 			}
-
-			console.warn('templatizer: no such instance', totalInstances);
 		},
 
-		releaseAllInstances: function () {
-			this.totalInstances -= this._templatesInUse.length;
-			this._templatesInUse = null;
+		releaseInstances: function () {
+			this._reusableTemplateInstances = this._templateInstancesInUse;
+			this._templateInstancesInUse = [];
 		}
 
 	});
