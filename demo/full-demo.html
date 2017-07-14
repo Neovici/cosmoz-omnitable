@@ -103,6 +103,10 @@
 						data-template="[[ customNameTemplate ]]">
 					</cosmoz-omnitable-column>
 
+					<template is="dom-repeat" items="[[ _getRowItems(selectedItems.length) ]]">
+						<paper-button>[[ item ]]</paper-button>
+					</template>
+
 					<paper-button slot="actions" on-run="updateSelectedRows">
 						<iron-icon icon="editor:mode-edit"></iron-icon>
 						<span>Update [[ selectedItems.length ]] items</span>
@@ -204,6 +208,12 @@
 
 		onTap: function (event) {
 			console.log('onTap', event);
+		},
+
+		_getRowItems: function (numSelected) {
+			return new Array(numSelected).map(function (none, arr, i) {
+				return 'action ' + (i + 1);
+			});
 		}
 
 	});
