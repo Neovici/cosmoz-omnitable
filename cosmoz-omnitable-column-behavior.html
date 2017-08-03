@@ -223,7 +223,12 @@
 			return;
 		},
 
-		getString: function (item, valuePath) {
+		getString: function (item, valuePathArg) {
+			var valuePath = valuePathArg || this.valuePath;
+			if (valuePath === undefined) {
+				console.error(this, 'has undefined valuePath arg', valuePathArg, 'and valuePath setting', this.valuePath, 'for item', item);
+				return;
+			}
 			return this.get(valuePath || this.valuePath, item);
 		},
 

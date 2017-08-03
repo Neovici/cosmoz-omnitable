@@ -183,35 +183,40 @@
 
 		created: function () {
 			/** WARNING: we do not support columns changes yet. */
+			// `isOmnitableColumn` is a property from cosmoz-omnitable-column-behavior
 			this._columnObserver = Polymer.dom(this).observeNodes(function (info) {
-				var
-					columns = [],
-					children = this.getEffectiveChildren(),
-					i,
-					child;
+				var columns,
+					changedColumns = info.addedNodes
+						.concat(info.removedNodes)
+						.filter(function (child) {
+							return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn;
+						});
 
-				for (i = 0 ; i < children.length; i+= 1) {
-					child = children[i];
-					// `isOmnitableColumn` is a property from cosmoz-omnitable-column-behavior
-					if (child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn) {
-						child.__index = i;
-						columns.push(child);
-					}
+				if (changedColumns.length === 0) {
+					return;
 				}
 
-				if (columns && columns.length > 0) {
+				columns = this.getEffectiveChildren().filter(function (child, index) {
+					child.__index = index;
+					return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn;
+				});
 
-					this.columns = columns;
+				if (!columns || columns.length === 0) {
+					return;
+				}
 
-					this.columns.forEach(function (column) {
-						this.listen(column, 'filter-changed', '_onColumnFilterChanged');
-					}, this);
+				// TODO: Un-listen from old columns ?
 
-					this._updateVisibleColumns();
+				this.columns = columns;
 
-					if (this._webWorkerReady && this.data) {
-						this._debounceFilterItems();
-					}
+				this.columns.forEach(function (column) {
+					this.listen(column, 'filter-changed', '_onColumnFilterChanged');
+				}, this);
+
+				this._updateVisibleColumns();
+
+				if (this._webWorkerReady && this.data) {
+					this._debounceFilterItems();
 				}
 			}.bind(this));
 		},
