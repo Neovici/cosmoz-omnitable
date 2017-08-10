@@ -3,12 +3,12 @@
 		"mocha": true
 	},
 	"globals": {
-		"suite": false,
-		"test": false,
+		"a11ySuite": false,
 		"assert": false,
 		"fixture": false,
-		"a11ySuite": false,
 		"MockInteractions": false,
+		"suite": false,
+		"test": false,
 		"WCT": false
 	}
 }
