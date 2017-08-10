@@ -172,12 +172,12 @@
 				if (value === null || value === undefined || value === '') {
 					return;
 				}
-				value = Number(value);
-				if (Number.isNaN(value)) {
-					console.warn('Not a number', event.target.value);
+				var number =  Number(value);
+				if (Number.isNaN(number)) {
+					console.warn('Not a number', value);
 					return;
 				}
-				return value;
+				return number;
 			},
 
 			_setMinValue: function (event) {
