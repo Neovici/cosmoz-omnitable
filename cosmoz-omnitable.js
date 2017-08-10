@@ -766,7 +766,7 @@
 			visibleData = this.sortedFilteredGroupedItems;
 			hasVisibleData = visibleData && Array.isArray(visibleData) && visibleData.length > 0;
 			firstRow = this.$.groupedList.getFirstVisibleItemElement();
-			if (!hasVisibleData || (!firstRow && this.$.groupedList.hasRenderedData)) {
+			if (!hasVisibleData || !firstRow && this.$.groupedList.hasRenderedData) {
 				// reset headers width
 				headerRow = Polymer.dom(this.$.header).querySelector('cosmoz-omnitable-header-row');
 				headers = Polymer.dom(headerRow).children;
