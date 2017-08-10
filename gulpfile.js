@@ -62,4 +62,6 @@ gulp.task('update', function () {
 // Load custom tasks from the `tasks` directory
 try {
 	require('require-dir')('tasks');
-} catch (ignore) {}
+} catch (ignore) {
+	//
+}
