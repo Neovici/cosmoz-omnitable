@@ -82,7 +82,7 @@
 				i,
 				root;
 
-			for (i = 0; i < this._templateInstancesInUse.length ; i+=1) {
+			for (i = 0; i < this._templateInstancesInUse.length ; i += 1) {
 				if (this._templateInstancesInUse[i] === instance) {
 					this._templateInstancesInUse.splice(i, 1);
 					this._reusableTemplateInstances.push(instance);
@@ -102,7 +102,7 @@
 
 		releaseInstance: function (instance) {
 			var i = 0;
-			for (i = 0; i < this._templateInstancesInUse.length ; i+=1) {
+			for (i = 0; i < this._templateInstancesInUse.length ; i += 1) {
 				if (this._templateInstancesInUse[i] === instance) {
 					this._templateInstancesInUse.splice(i, 1);
 					this._reusableTemplateInstances.push(instance);
