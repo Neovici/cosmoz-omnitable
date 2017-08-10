@@ -41,43 +41,43 @@
 
 	<script>
 		/*global HTMLImports,Polymer */
-HTMLImports.whenReady(function () {
-	Polymer({
-		is: 'x-templatizer',
-		behaviors: [
-			Polymer.Templatizer
-		],
-		_ensureTemplatized: function () {
-			if (!this.ctor) {
-				this._template = Polymer.dom(this).querySelector('template');
-				this.templatize(this._template);
-			}
-		},
-		addContent: function () {
-			this._ensureTemplatized();
+		HTMLImports.whenReady(function () {
+			Polymer({
+				is: 'x-templatizer',
+				behaviors: [
+					Polymer.Templatizer
+				],
+				_ensureTemplatized: function () {
+					if (!this.ctor) {
+						this._template = Polymer.dom(this).querySelector('template');
+						this.templatize(this._template);
+					}
+				},
+				addContent: function () {
+					this._ensureTemplatized();
 
-			var instance = this.stamp({});
+					var instance = this.stamp({});
 
-			Polymer.dom(this).appendChild(instance.root);
-		},
+					Polymer.dom(this).appendChild(instance.root);
+				},
 
-		_forwardParentProp: function (prop, value) {
-			console.log('implement forwarding prop to template instances', prop, value);
-		}
+				_forwardParentProp: function (prop, value) {
+					console.log('implement forwarding prop to template instances', prop, value);
+				}
 
-	});
+			});
 
-	Polymer({
-		is: 'x-elem',
-		properties: {
-			_hasActions: {
-				type: Number,
-				notify: true,
-				value: 0
-			}
-		}
-	});
-});
+			Polymer({
+				is: 'x-elem',
+				properties: {
+					_hasActions: {
+						type: Number,
+						notify: true,
+						value: 0
+					}
+				}
+			});
+		});
 	</script>
 
 	<x-elem></x-elem>

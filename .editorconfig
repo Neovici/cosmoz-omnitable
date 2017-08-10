@@ -9,5 +9,8 @@ indent_style = tab
 trim_trailing_whitespace = true
 insert_final_newline = true
 
-[*.json]
+[*.{json,yml}]
 indent_style = space
+
+[{.eslintrc.json, test/.eslintrc, .jslintrc}]
+indent_style = tab

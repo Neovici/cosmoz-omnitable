@@ -4,6 +4,7 @@
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 
 <link rel="import" href="../cosmoz-behaviors/cosmoz-moneyhelper-behavior.html">
+<link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 
 <dom-module id="cosmoz-omnitable-column-amount">
 	<template>
@@ -172,12 +173,12 @@
 				if (value === null || value === undefined || value === '') {
 					return;
 				}
-				value = Number(value);
-				if (Number.isNaN(value)) {
-					console.warn('Not a number', event.target.value);
+				var number =  Number(value);
+				if (Number.isNaN(number)) {
+					console.warn('Not a number', value);
 					return;
 				}
-				return value;
+				return number;
 			},
 
 			_setMinValue: function (event) {
