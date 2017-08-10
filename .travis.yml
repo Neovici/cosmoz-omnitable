@@ -9,10 +9,14 @@ addons:
     - google-chrome
     packages:
     - google-chrome-stable
+cache:
+  directories:
+    - node_modules
+    - $HOME/.cache/bower
 before_script:
-- npm install -g bower polylint web-component-tester
-- bower install
-- polylint --no-recursion
+- npm run lint
+script:
+  - xvfb-run npm run test
 script: xvfb-run wct
 notifications:
   slack:
