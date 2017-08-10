@@ -74,6 +74,7 @@
 
 			/**
 			 * No need to grow, as the values in a boolean column should have known fixed width
+			 * @returns {String} Default flex
 			 */
 			_getDefaultFlex: function () {
 				return '0';
@@ -119,7 +120,7 @@
 
 			getString: function (item, valuePath) {
 				var value = this.get(valuePath || this.valuePath, item);
-				return Boolean(value) ? this.trueLabel : this.falseLabel;
+				return value ? this.trueLabel : this.falseLabel;
 			},
 
 			getFilterFn: function () {
