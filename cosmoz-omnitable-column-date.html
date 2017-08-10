@@ -170,6 +170,7 @@
 
 			/**
 			 * No need to grow, as the values in a date column should have known fixed width
+			 * @returns {String} Default flex
 			 */
 			_getDefaultFlex: function () {
 				return '0';
@@ -180,13 +181,12 @@
 			},
 
 			_computeFilter: function (start, end) {
-
-				start = moment(start);
-				end = moment(end);
+				var startMoment = moment(start),
+					endMoment = moment(end);
 
 				return {
-					start: start.isValid() ? start : null,
-					end: end.isValid() ? end : null
+					start: startMoment.isValid() ? startMoment : null,
+					end: endMoment.isValid() ? endMoment : null
 				};
 			},
 
