@@ -100,12 +100,14 @@
 					</cosmoz-omnitable-column>
 					<cosmoz-omnitable-column title="Custom template"
 						value-path="name" sort-on="name" width="50px" flex="2"
-						cell-template="[[ customNameTemplate ]]">
+						data-template$="[[ customNameTemplate ]]">
 					</cosmoz-omnitable-column>
 
-					<template  is="dom-repeat" items="[[ _getRowItems(selectedItems.length) ]]">
-						<paper-button slot="actions">[[ item ]]</paper-button>
-					</template>
+					<div slot="actions">
+						<template  is="dom-repeat" items="[[ _getRowItems(selectedItems.length) ]]">
+							<paper-button>[[ item ]]</paper-button>
+						</template>
+					</div>
 
 					<paper-button slot="actions" on-run="updateSelectedRows">
 						<iron-icon icon="editor:mode-edit"></iron-icon>
