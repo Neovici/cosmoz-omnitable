@@ -89,11 +89,11 @@ It is also simple to add a link to a data cell:
 ```
 #### Custom data templates defined elsewhere
 
-It is also possible to specify a data template for a column using the `data-template`
+It is also possible to specify a cell template for a column using the `cell-template`
 attribute:
 
 ```html
-<cosmoz-omnitable-column title="Id" value-path="id" data-template="[[myDataTemplate]]">
+<cosmoz-omnitable-column title="Id" value-path="id" cell-template="[[myDataTemplate]]">
 </cosmoz-omnitable-column>
 ```
 
