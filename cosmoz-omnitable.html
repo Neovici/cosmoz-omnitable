@@ -27,7 +27,7 @@
 <link rel="import" href="cosmoz-omnitable-item-expand-line.html">
 <link rel="import" href="cosmoz-omnitable-group-row.html">
 <link rel="import" href="cosmoz-omnitable-styles.html">
-
+<link rel="import" href="cosmoz-omnitable-active-filters.html">
 <link rel="import" href="cosmoz-omnitable-columns.html">
 
 
@@ -145,6 +145,7 @@
 		</cosmoz-web-worker>
 
 		<div class="mainContainer">
+			<cosmoz-omnitable-active-filters></cosmoz-omnitable-active-filters>				
 			<div class="header" id="header">
 				<div class="selectAllCheckbox" hidden$="[[ !_showCheckboxes ]]">
 					<paper-checkbox on-change="onAllCheckboxChange" hidden$="[[ _noData ]]">
