@@ -113,9 +113,9 @@
 				value: 0
 			},
 
-			dataTemplate: {
+			cellTemplate: {
 				type: Object,
-				observer: '_dataTemplateChanged'
+				observer: '_cellTemplateChanged'
 			},
 
 			_dataTemplatizer: {
@@ -163,9 +163,9 @@
 			return templatizer;
 		},
 
-		_dataTemplateChanged: function (dataTemplate) {
-			if (dataTemplate !== undefined && dataTemplate !== null) {
-				this._dataTemplatizer = this._createTemplatizer(dataTemplate);
+		_cellTemplateChanged: function (cellTemplate) {
+			if (cellTemplate !== undefined && cellTemplate !== null) {
+				this._dataTemplatizer = this._createTemplatizer(cellTemplate);
 			}
 		},
 
