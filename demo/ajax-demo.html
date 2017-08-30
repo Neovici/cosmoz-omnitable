@@ -38,14 +38,15 @@
 
 		<div class="vertical layout fit">
 			<h3>Cosmoz omnitable demo</h3>
-			<iron-ajax auto url="data.json" last-response="{{ data }}"></iron-ajax>
+			<iron-ajax auto url="data.json" params="[[ getSearchParams(eyeColorFilter.splices) ]]" last-response="{{ data }}"></iron-ajax>
+			<iron-ajax auto url="eyeColors.json" loading="{{ eyeColorSearching }}" params="[[ getEyeColorSearch(eyeColorQuery) ]]" last-response="{{ eyeColorValues }}"></iron-ajax>
 
 			<cosmoz-omnitable id="omnitable" class="flex" data="[[ data ]]">
 				<cosmoz-omnitable-column-autocomplete title="Company" value-path="company">
 				</cosmoz-omnitable-column-autocomplete>
 				<cosmoz-omnitable-column-boolean title="Is active" value-path="isActive" true-label="Oui" false-label="Non">
 				</cosmoz-omnitable-column-boolean>
-				<cosmoz-omnitable-column-autocomplete title="Eye color" value-path="eyeColor">
+				<cosmoz-omnitable-column-autocomplete external-values loading="[[ eyeColorSearching ]]" filter="{{ eyeColorFilter }}" query="{{ eyeColorQuery }}" values="[[ eyeColorValues ]]" title="Eye color" value-path="eyeColor">
 				</cosmoz-omnitable-column-autocomplete>
 				<cosmoz-omnitable-column-number title="Age" value-path="age">
 				</cosmoz-omnitable-column-number>
@@ -67,7 +68,22 @@
 /*global window */
 (function () {
 	'use strict';
+	var t = document.getElementById('t');
 
+	t.getEyeColorSearch = function (query) {
+		return {
+			q: query
+		};
+	};
+
+	t.getSearchParams = function (filterSplice) {
+		if (!filterSplice) {
+			return;
+		}
+		return {
+			eyeColor: filterSplice.indexSplices[0].object
+		};
+	};
 }());
 	</script>
 </body>
