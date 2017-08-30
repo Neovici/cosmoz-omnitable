@@ -448,7 +448,7 @@
 				return;
 			}
 			this.columns.forEach(function (column) {
-				if (!column.bindValues) {
+				if (!column.bindValues || column.externalValues) {
 					return;
 				}
 

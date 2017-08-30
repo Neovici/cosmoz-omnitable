@@ -32,10 +32,26 @@
 			editable: {
 				type: Boolean
 			},
-
+	
+			/**
+			 * Values to filter this column will be managed outside of omnitable
+			 */
+			externalValues: {
+				type: Boolean,
+				value: false
+			},
+	
 			filter: {
 				type: Object,
 				notify: true
+			},
+
+			/**
+			 * Indicate that the column is loading/performing work
+			 */
+			loading: {
+				type: Boolean,
+				value: false
 			},
 
 			/**
