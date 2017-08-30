@@ -59,9 +59,9 @@
 					<cosmoz-omnitable-column-date title="Date" value-path="date" editable></cosmoz-omnitable-column-date>
 					<cosmoz-omnitable-column title="Sub-property" value-path="sub.subProp" editable></cosmoz-omnitable-column>
 					<cosmoz-omnitable-column title="Random String" value-path="randomString" editable></cosmoz-omnitable-column>
-					<!-- sample column that overrides edit-data-template -->
+					<!-- sample column that overrides edit-cell -->
 					<cosmoz-omnitable-column title="Name" editable>
-						<template id="edit-data-template">
+						<template class="edit-cell">
 							<paper-input no-label-float type="text" on-change="_itemNameChanged" value="[[item.name]]"></paper-input>
 						</template>
 					</cosmoz-omnitable-column>

@@ -62,7 +62,7 @@
 
 				<cosmoz-omnitable id="omnitable" class="flex" data="[[data]]" selection-enabled selected-items="{{selectedItems}}">
 					<cosmoz-omnitable-column title="Id" value-path="id" sort-on="id" group-on="id">
-						<template id="data-template">
+						<template class="cell">
 							<span>
 								<span>[[_customFunction(item)]]</span>
 								<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.id]]</a>

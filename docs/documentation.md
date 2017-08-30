@@ -72,7 +72,7 @@ light dom, for example:
 
 ```html
 <cosmoz-omnitable-column title="Id" value-path="id">
-   <template id="data-template">
+   <template class="cell">
       <span><b>[[item.id]]</b></span>
    </template>
 </cosmoz-omnitable-column>
@@ -82,7 +82,7 @@ It is also simple to add a link to a data cell:
 
 ```html
 <cosmoz-omnitable-column title="Id" value-path="id">
-   <template id="data-template">
+   <template class="cell">
       <span><a href="path/to/view?id=[[item.id]]&otherparam=[[item.otherProp]]">[[item.id]]</a></span>
    </template>
 </cosmoz-omnitable-column>
