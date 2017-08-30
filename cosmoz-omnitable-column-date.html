@@ -158,7 +158,7 @@
 			},
 
 			_formatISODate: function (mom) {
-				if (!mom) {
+				if (!mom || !mom.isValid()) {
 					return;
 				}
 				return mom.format('YYYY-MM-DD');
