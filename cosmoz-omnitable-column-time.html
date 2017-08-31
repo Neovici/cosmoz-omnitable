@@ -1,0 +1,169 @@
+<link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="../cosmoz-moment/cosmoz-moment.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+
+<dom-module id="cosmoz-omnitable-column-time">
+	<template>
+		<style>
+			:host {
+				display: block;
+			}
+
+			.dropdown-content {
+				padding: 15px;
+				min-width: 100px;
+			}
+
+			h3.dropdown-content {
+				margin: 0;
+			}
+		</style>
+
+		<template id="data-template">
+			[[ getString(item, valuePath) ]]
+		</template>
+
+		<template id="edit-data-template">
+			
+		</template>
+
+		<template id="header-template">
+			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _tooltip ]]" no-animations>
+				<div class="dropdown-content">
+					<h3>[[ title ]]</h3>
+					<paper-input
+						type="time" label="[[ _('From time', t) ]]" step$="[[filterStep]]" value="{{ _filterInput.start }}">
+					</paper-input>
+					<paper-input
+						type="time" label="[[ _('Until time', t) ]]" step$="[[filterStep]]" value="{{ _filterInput.end }}">
+					</paper-input>
+				</div>
+			</paper-dropdown-menu>
+		</template>
+		
+	</template>
+	<script>
+		Polymer({
+			is: 'cosmoz-omnitable-column-time',
+
+			behaviors: [
+				Cosmoz.MomentBehavior,
+				Cosmoz.OmnitableColumnBehavior,
+				Cosmoz.TranslatableBehavior
+			],
+
+			properties: {
+				userFormat: {
+					type: String,
+					value: 'HH:mm:ss'
+				},
+				/*
+				 * Specifies the value granularity of the time input's value in the filter.
+				 * 1 => full seconds
+				 * 0.1 => milliseconds
+				 */
+				filterStep: {
+					type: String,
+					value: "1"
+				},
+
+				_filterInput: {
+					type: Object,
+					value: function () {
+						return {
+							start: null,
+							end: null
+						};
+					}
+				},
+
+				filter: {
+					type: Object,
+					computed: '_computeFilter(_filterInput.start, _filterInput.end)'
+				},
+
+				_filterText: {
+					type: String,
+					computed: '_computeFilterText(locale, filter.*)'
+				},
+
+				_tooltip: {
+					type: String,
+					computed: '_computeTooltip(title, _filterText)'
+				},
+
+				_placeholderDate: {
+					type: String,
+					value: '01-01-1970'
+				}
+			},
+
+			_computeFilter: function (startTime, endTime) {			
+				var startMoment = moment(this._placeholderDate + ' ' + startTime),
+					endMoment = moment(this._placeholderDate + ' ' + endTime);
+
+				return {
+					start: startMoment.isValid() ? startMoment : null,
+					end: endMoment.isValid() ? endMoment : null
+				};
+			},
+
+			_computeFilterText: function (locale, filterNotify) {
+				var filter = filterNotify.base,
+					text = [];
+				if (filter.start !== null) {
+					text.push(filter.start.locale(locale).format(this.userFormat));
+				}
+				text.push(' - ');
+				if (filter.end !== null) {
+					text.push(filter.end.locale(locale).format(this.userFormat));
+				}
+				return text.length > 1 ? text.join('') : null;
+			},
+
+			_computeTooltip: function (title, filterText) {
+				var ret = title;
+				if (filterText !== undefined && filterText !== null) {
+					ret += ': ' + filterText;
+				}
+				return ret;
+			},
+
+			getComparableValue: function (item, valuePath) {
+				var value = this.get(valuePath, item);
+				return parseInt(moment(value).format('mmss'))
+			},
+
+			getString: function (item, valuePath) {
+				var value = this.get(valuePath || this.valuePath, item);
+				if (!value) {
+					return '';
+				}
+				return moment(value).format(this.userFormat);
+			},
+
+			getFilterFn: function () {
+				if (!this.filter) {
+					return;
+				}
+				return this._applySingleFilter.bind(this, this.filter);
+			},
+
+			_applySingleFilter: function (filter, item) {
+				var value = this.get(this.valuePath, item),
+					momTime = moment(value).format('mm:ss:SS'),
+					mom = moment(this._placeholderDate + ' ' + momTime);
+
+				if (filter.start && mom.isBefore(filter.start)) {
+					return false;
+				}
+
+				if (filter.end && mom.isAfter(filter.end)) {
+					return false;
+				}
+
+				return true;
+			}
+		});
+	</script>
+</dom-module>
