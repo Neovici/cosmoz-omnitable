@@ -541,6 +541,10 @@
 			return col || vpCol;
 		},
 
+		_orAttr(obj, ...args) {
+			return obj[args.find(a => obj[a])];
+		},
+
 		_groupOnChanged: function (newValue, oldValue) {
 			if (this.columns) {
 				this._updateVisibleColumns();
@@ -550,12 +554,14 @@
 		},
 
 		_updateVisibleColumns: function () {
-			var visibleColumns = this.columns.slice();
+			var visibleColumns = this.columns.slice(),
+				groupOnColumn;
 
 			if (this.groupOn) {
+				groupOnColumn = this._getColumn({ name: this.groupOn, alternativeColumnAtrribute: 'groupOn' });
 				visibleColumns = visibleColumns.filter(function (column) {
-					if (column.groupOn === this.groupOn) {
-						this._setGroupOnColumn(column);
+					if (column === groupOnColumn) {
+						this._setGroupOnColumn(groupOnColumn);
 						return false;
 					}
 					return true;
@@ -608,7 +614,7 @@
 			}
 
 			var groupOn = this.groupOn,
-				groupOnColumn = this._getGroupOnColumn(),
+				groupOnColumn = this._getColumn({ name: groupOn, alternativeColumnAtrribute: 'groupOn' }),
 				groups = [],
 				itemStructure = {};
 
@@ -619,7 +625,7 @@
 				}
 
 				this.filteredItems.forEach(function (item, index) {
-					var groupOnValue = groupOnColumn.getComparableValue(item, groupOn);
+					var groupOnValue = groupOnColumn.getComparableValue(item, groupOnColumn.groupOn);
 
 					if (groupOnValue !== undefined) {
 						if (!itemStructure[groupOnValue]) {
