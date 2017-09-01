@@ -467,21 +467,23 @@
 
 			}, this);
 		},
-
-		_getColumn({ name, columnAttribute = 'name', alternativeColumnAtrribute } = {}) {
+		/*
+		 * Returns a column based on a name
+		 */
+		_getColumn({ attributeValue, attribute = 'name', alternativeAttribute } = {}) {
 			var col,
 				altCol;
 
-			if (!name) {
+			if (!attributeValue) {
 				return;
 			}
 
 			this.columns.find(column => {
-				if (column[columnAttribute] === name) {
+				if (column[attribute] === attributeValue) {
 					col = column;
 					return true;
 				}
-				if (alternativeColumnAtrribute && column[alternativeColumnAtrribute] === name) {
+				if (alternativeAttribute && column[alternativeAttribute] === attributeValue) {
 					altCol = column;
 				}
 			}, this);
@@ -493,54 +495,10 @@
 
 			return col || altCol;
 		},
-
-		/**
-		 * Returns the column corresponding to the current `groupOn` value
+		/*
+		 * Returns the value of an object attribute based on the first given valid attribute name.
+		 * _orAttr({name: 'Jon', age: 4}, 'firstName', 'lastName', 'name'); // returns Jon
 		 */
-		_getGroupOnColumn: function () {
-			var col;
-
-			if (!this.groupOn) {
-				return;
-			}
-			this.columns.some(function (column) {
-				if (column.groupOn === this.groupOn) {
-					col = column;
-					return true;
-				}
-			}, this);
-			return col;
-		},
-
-		/**
-		 * Returns the column representing the current `sortOn` value
-		 */
-		_getSortOnColumn: function () {
-			var col,
-				vpCol;
-
-			if (!this.sortOn || !this.sortOn.valuePath) {
-				return;
-			}
-
-			this.columns.find(column => {
-				if (column.name === this.sortOn.valuePath) {
-					col = column;
-					return true;
-				}
-				if (column.sortOn === this.sortOn.valuePath) {
-					vpCol = column;
-				}
-			}, this);
-
-			if (!col && vpCol) {
-				console.warn('Sorting should be based on the unique name attribute rather than on the value-path.\n' +
-				'Initiate <my-col name="time" value-path="date"> and set sortOn="time" to sort on the time column!');
-			}
-
-			return col || vpCol;
-		},
-
 		_orAttr(obj, ...args) {
 			return obj[args.find(a => obj[a])];
 		},
@@ -558,7 +516,7 @@
 				groupOnColumn;
 
 			if (this.groupOn) {
-				groupOnColumn = this._getColumn({ name: this.groupOn, alternativeColumnAtrribute: 'groupOn' });
+				groupOnColumn = this._getColumn({ attributeValue: this.groupOn, alternativeAttribute: 'groupOn' });
 				visibleColumns = visibleColumns.filter(function (column) {
 					if (column === groupOnColumn) {
 						this._setGroupOnColumn(groupOnColumn);
@@ -614,7 +572,7 @@
 			}
 
 			var groupOn = this.groupOn,
-				groupOnColumn = this._getColumn({ name: groupOn, alternativeColumnAtrribute: 'groupOn' }),
+				groupOnColumn = this._getColumn({ attributeValue: groupOn, alternativeAttribute: 'groupOn' }),
 				groups = [],
 				itemStructure = {};
 
@@ -696,7 +654,7 @@
 
 			if (sortOn && !sortOnColumn) {
 				console.warn('Use sortOnColumn instead of sortOn to change the sorting and ensure validity!');
-				sortOnColumn = this._getColumn({ name: this.sortOn.valuePath, alternativeColumnAtrribute: 'sortOn' });
+				sortOnColumn = this._getColumn({ attributeValue: this.sortOn.valuePath, alternativeAttribute: 'sortOn' });
 			}
 
 			if (!sortOn || !sortOnColumn) {
@@ -1021,7 +979,7 @@
 				selected;
 			if (!column) {
 				this.sortOn = null;
-				this.sortOnSelectorSelected = 0;
+				this._sortOnSelectorSelected = 0;
 			} else {
 				selected = this.$.sortOnSelector.selected;
 				if (!this.sortOn || !this.sortOn.valuePath) {
@@ -1045,8 +1003,8 @@
 				}
 
 				// Force dropdown menu to refresh `selectedItemLabel`
-				this.sortOnSelectorSelected = 0;
-				this.sortOnSelectorSelected = selected;
+				this._sortOnSelectorSelected = 0;
+				this._sortOnSelectorSelected = selected;
 			}
 		},
 
@@ -1057,7 +1015,7 @@
 
 			if (sortOn && !sortOn.column) {
 
-				column = this._getColumn({ name: sortOn.name || sortOn.valuePath || sortOn, alternativeColumnAtrribute: 'valuePath' });
+				column = this._getColumn({ attributeValue: sortOn.name || sortOn.valuePath || sortOn, alternativeAttribute: 'valuePath' });
 
 				if (!column) {
 					return;
@@ -1069,7 +1027,7 @@
 				};
 			}
 			if (!sortOn || !sortOn.valuePath) {
-				this.sortOnSelectorSelected = 0;
+				this._sortOnSelectorSelected = 0;
 			}
 
 			this._updateSelectedSortIndex();
@@ -1086,17 +1044,17 @@
 			if (!this.sortOn || !this.sortOn.valuePath || !sortOnSelectorItems.length) {
 				newIndex = 0;
 			} else {
-				sortOnSelectorItems.some(function (element, i) {
+				sortOnSelectorItems.find((element, i) => {
 					var model = this.$.sortColumns.modelForElement(element);
-					if (model && model.column && model.column.sortOn === this.sortOn.valuePath) {
+					if (model && model.column && model.column === this.sortOn.column) {
 						newIndex = i;
 						return true;
 					}
 				}, this);
 			}
 
-			if (newIndex !== this.sortOnSelectorSelected) {
-				this.sortOnSelectorSelected = newIndex;
+			if (newIndex !== this._sortOnSelectorSelected) {
+				this._sortOnSelectorSelected = newIndex;
 			}
 		},
 
