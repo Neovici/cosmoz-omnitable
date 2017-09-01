@@ -129,9 +129,12 @@
 				return ret;
 			},
 
+			// Used when grouping/filtering/sorting
 			getComparableValue: function (item, valuePath) {
-				var value = this.get(valuePath, item);
-				return parseInt(moment(value).format('mmss'))
+				var value = this.get(valuePath, item),
+					momTime = moment(value).format(this.userFormat),
+					mom = moment(this._placeholderDate + ' ' + momTime);
+				return mom.format(this.userFormat);
 			},
 
 			getString: function (item, valuePath) {

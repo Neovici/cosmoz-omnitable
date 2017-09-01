@@ -133,7 +133,7 @@
 						list,
 						sortFunc;
 
-					list = data.data;
+						list = data.data;
 					sortFunc = !data.reverse ? ascSortFunc(data.sortOn) : descSortFunc(data.sortOn);
 					list.sort(sortFunc);
 					postMessage({

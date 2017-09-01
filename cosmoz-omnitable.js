@@ -468,6 +468,32 @@
 			}, this);
 		},
 
+		_getColumn({ name, columnAttribute = 'name', alternativeColumnAtrribute } = {}) {
+			var col,
+				altCol;
+
+			if (!name) {
+				return;
+			}
+
+			this.columns.find(column => {
+				if (column[columnAttribute] === name) {
+					col = column;
+					return true;
+				}
+				if (alternativeColumnAtrribute && column[alternativeColumnAtrribute] === name) {
+					altCol = column;
+				}
+			}, this);
+
+			if (!col && altCol) {
+				console.warn('Sorting/Grouping should be based on the unique name attribute rather than on the value-path.\n' +
+				'e.g. Create <my-col name="time" value-path="date"> and set sortOn="time" to sort on the time column!');
+			}
+
+			return col || altCol;
+		},
+
 		/**
 		 * Returns the column corresponding to the current `groupOn` value
 		 */
@@ -490,18 +516,29 @@
 		 * Returns the column representing the current `sortOn` value
 		 */
 		_getSortOnColumn: function () {
-			var col;
+			var col,
+				vpCol;
 
 			if (!this.sortOn || !this.sortOn.valuePath) {
 				return;
 			}
-			this.columns.some(function (column) {
-				if (column.sortOn === this.sortOn.valuePath) {
+
+			this.columns.find(column => {
+				if (column.name === this.sortOn.valuePath) {
 					col = column;
 					return true;
 				}
+				if (column.sortOn === this.sortOn.valuePath) {
+					vpCol = column;
+				}
 			}, this);
-			return col;
+
+			if (!col && vpCol) {
+				console.warn('Sorting should be based on the unique name attribute rather than on the value-path.\n' +
+				'Initiate <my-col name="time" value-path="date"> and set sortOn="time" to sort on the time column!');
+			}
+
+			return col || vpCol;
 		},
 
 		_groupOnChanged: function (newValue, oldValue) {
@@ -644,12 +681,17 @@
 			}
 
 			var sortOn = this.sortOn,
-				sortOnColumn = this._getSortOnColumn(),
+				sortOnColumn = sortOn ? sortOn.column : null,
 				items = [],
 				numGroups = this.filteredGroupedItems.length,
 				mappedItems,
 				results = 0,
 				itemMapper;
+
+			if (sortOn && !sortOnColumn) {
+				console.warn('Use sortOnColumn instead of sortOn to change the sorting and ensure validity!');
+				sortOnColumn = this._getColumn({ name: this.sortOn.valuePath, alternativeColumnAtrribute: 'sortOn' });
+			}
 
 			if (!sortOn || !sortOnColumn) {
 				this.sortedFilteredGroupedItems = this.filteredGroupedItems;
@@ -701,7 +743,6 @@
 			} else {
 				// No grouping
 				mappedItems = this.filteredGroupedItems.map(itemMapper, this);
-
 				this.$.sortWorker.process({
 					reverse: sortOn.descending,
 					sortOn: 'value',
@@ -892,7 +933,6 @@
 		},
 
 		_enableColumn: function () {
-
 			// Columns are disabled by priority, so we can re-enable them
 			var column = this.pop('disabledColumns'),
 				columnIndex = this._disabledColumnsIndexes.pop();
@@ -973,48 +1013,57 @@
 			var
 				column = event.model ? event.model.column : undefined,
 				selected;
-
 			if (!column) {
 				this.sortOn = null;
-				this._sortOnSelectorSelected = 0;
+				this.sortOnSelectorSelected = 0;
 			} else {
 				selected = this.$.sortOnSelector.selected;
 				if (!this.sortOn || !this.sortOn.valuePath) {
 					this.sortOn = {
 						valuePath: column.sortOn,
-						descending: false
+						descending: false,
+						column: column
 					};
 				} else if (this.sortOn.valuePath === column.sortOn) {
 					this.sortOn = {
 						valuePath: this.sortOn.valuePath,
-						descending: !this.sortOn.descending
+						descending: !this.sortOn.descending,
+						column: column
 					};
 				} else {
 					this.sortOn = {
 						valuePath: column.sortOn,
-						descending: false
+						descending: false,
+						column: column
 					};
 				}
 
 				// Force dropdown menu to refresh `selectedItemLabel`
-				this._sortOnSelectorSelected = 0;
-				this._sortOnSelectorSelected = selected;
+				this.sortOnSelectorSelected = 0;
+				this.sortOnSelectorSelected = selected;
 			}
 		},
 
 		// Select the right column if sort has been changed from outside.
 		_sortOnChanged: function (sortOnChange) {
-			var sortOn = sortOnChange.base;
+			var sortOn = sortOnChange.base,
+				column;
 
-			if (sortOn && !sortOn.valuePath) {
+			if (sortOn && !sortOn.column) {
+
+				column = this._getColumn({ name: sortOn.name || sortOn.valuePath || sortOn, alternativeColumnAtrribute: 'valuePath' });
+
+				if (!column) {
+					return;
+				}
 				this.sortOn = {
-					valuePath: sortOn,
-					descending: false
+					valuePath: column ? column.sortOn : null,
+					descending: sortOn.descending || false,
+					column: column
 				};
-				return;
 			}
 			if (!sortOn || !sortOn.valuePath) {
-				this._sortOnSelectorSelected = 0;
+				this.sortOnSelectorSelected = 0;
 			}
 
 			this._updateSelectedSortIndex();
@@ -1040,8 +1089,8 @@
 				}, this);
 			}
 
-			if (newIndex !== this._sortOnSelectorSelected) {
-				this._sortOnSelectorSelected = newIndex;
+			if (newIndex !== this.sortOnSelectorSelected) {
+				this.sortOnSelectorSelected = newIndex;
 			}
 		},
 
