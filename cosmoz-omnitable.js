@@ -222,7 +222,7 @@
 				if (column.name && columnNames[column.name]) {
 					console.error('The name attribute needs to be unique among all columns! Not unique on column', column.name);
 				} else
-				
+
 				if (!column.name){
 					console.error('The name attribute needs to be set on all columns! Missing on column', column.title);
 					// No name set; Try to set name attribute via valuePath
@@ -488,43 +488,15 @@
 
 			}, this);
 		},
-
-		/**
-		 * Returns the column corresponding to the current `groupOn` value
+		/*
+		 * Returns a column based on an attribute
 		 */
-		_getGroupOnColumn: function () {
-			var col;
-
-			if (!this.groupOn) {
+		_getColumn(attributeValue, attribute = 'name') {
+			if (!attributeValue) {
 				return;
 			}
-			this.columns.some(function (column) {
-				if (column.groupOn === this.groupOn) {
-					col = column;
-					return true;
-				}
-			}, this);
-			return col;
+			return this.columns.find(column => column[attribute] === attributeValue);
 		},
-
-		/**
-		 * Returns the column representing the current `sortOn` value
-		 */
-		_getSortOnColumn: function () {
-			var col;
-
-			if (!this.sortOn || !this.sortOn.valuePath) {
-				return;
-			}
-			this.columns.some(function (column) {
-				if (column.sortOn === this.sortOn.valuePath) {
-					col = column;
-					return true;
-				}
-			}, this);
-			return col;
-		},
-
 		_groupOnChanged: function (newValue, oldValue) {
 			if (this.columns) {
 				this._updateVisibleColumns();
@@ -592,7 +564,7 @@
 			}
 
 			var groupOn = this.groupOn,
-				groupOnColumn = this._getGroupOnColumn(),
+				groupOnColumn = this._getColumn(this.groupOn),
 				groups = [],
 				itemStructure = {};
 
@@ -665,7 +637,7 @@
 			}
 
 			var sortOn = this.sortOn,
-				sortOnColumn = this._getSortOnColumn(),
+				sortOnColumn = this._getColumn(this.sortOn ? this.sortOn.valuePath : null),
 				items = [],
 				numGroups = this.filteredGroupedItems.length,
 				mappedItems,
