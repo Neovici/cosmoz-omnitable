@@ -238,11 +238,11 @@
 					</div>
 					<div class="footer-control">
 						<paper-dropdown-menu no-animations vertical-align="bottom" horizontal-align="right" id="sortOnSelectorMenu" label="[[_('Sort on', t)]]">
-							<paper-listbox class="dropdown-content menu" id="sortOnSelector" on-iron-items-changed="_updateSelectedSortIndex" selected="{{ _sortOnSelectorSelected }}">
-								<paper-item on-tap="_onSortColumnActivate"><i style="white-space: nowrap;">[[ _('No sorting', t) ]]</i></paper-item>
+							<paper-listbox class="dropdown-content menu" id="sortOnSelector" selected="{{ _sortOnSelectorSelected }}">
+								<paper-item on-tap="_sortItemTapped"><i style="white-space: nowrap;">[[ _('No sorting', t) ]]</i></paper-item>
 								<template is="dom-repeat" id="sortColumns" items="[[ columns ]]" as="column">
-									<paper-item on-tap="_onSortColumnActivate" hidden$="[[ !column.sortOn ]]">
-										<span>[[ column.title ]]</span>&nbsp;<span>[[ _getSortDirection(column, _sortOn.*) ]]</span>
+									<paper-item on-tap="_sortItemTapped" hidden$="[[ !column.sortOn ]]" data-name$="[[ column.name ]]">
+										<span>[[ column.title ]]</span>&nbsp;<span hidden="[[ !_showSortDirection(column, _sortOn.*) ]]">[[ _descendingText ]]</span>
 									</paper-item>
 								</template>
 							</paper-listbox>

@@ -69,6 +69,11 @@
 				value: false
 			},
 
+			_descendingText: {
+				type: String,
+				computed: '_computeDescendingString(_sortOn)'
+			},
+
 			sortOn: {
 				type: String
 			},
@@ -76,17 +81,19 @@
 			/**
 			 * An object representing current sort of the table.
 			 * The object must have the following propreties:
-			 * - valuePath: item's value path to sort on
+			 * - columnName: item's value path to sort on
 			 * - descending: a boolean indicating of sort is done in descending order.
 			 */
 			_sortOn: {
 				type: Object,
-				value: null
+				value: null,
+				observer: '_debounceSortItems'
 			},
 
 			// Index of the selected item in the sortOn listbox
 			_sortOnSelectorSelected: {
-				type: Number
+				type: Number,
+				value: 0
 			},
 
 			/**
@@ -181,7 +188,6 @@
 
 		observers: [
 			'_createSortOnObject(sortOn, descending)',
-			'_sortOnChanged(_sortOn.*)',
 			'_dataChanged(data.*)'
 		],
 
@@ -284,6 +290,22 @@
 			this._isDetached = true;
 		},
 
+		_computeDescendingString(sortOn) {
+			if (!sortOn) {
+				return '';
+			}
+			var direction = sortOn.descending ? this._('Descending') : this._('Ascending');
+			return `(${direction})`;
+		},
+
+		_showSortDirection(column, sortOnChange) {
+			var sortOn = sortOnChange.base;
+			if (!column || !sortOn) {
+				return false;
+			}
+			return sortOn.columnName === column.name;
+		},
+
 		/**
 		 * Called when data is changed to setup up needs and check workers/filtering
 		 */
@@ -323,6 +345,9 @@
 		},
 
 		_debounceSortItems: function () {
+			if (!this.data || !this.data.length || !this._webWorkerReady || !this.columns) {
+				return;
+			}
 			this.debounce('sortItems', this._sortFilteredGroupedItems);
 		},
 
@@ -507,6 +532,7 @@
 			}
 			return this.columns.find(column => column[attribute] === attributeValue);
 		},
+
 		_groupOnChanged: function (newValue, oldValue) {
 			if (this.columns) {
 				this._updateVisibleColumns();
@@ -647,7 +673,7 @@
 			}
 
 			var sortOn = this._sortOn,
-				sortOnColumn = this._getColumn(this._sortOn ? this._sortOn.valuePath : null),
+				sortOnColumn = this._getColumn(this._sortOn ? this._sortOn.columnName : null),
 				items = [],
 				numGroups = this.filteredGroupedItems.length,
 				mappedItems,
@@ -663,7 +689,7 @@
 			itemMapper = function (item, originalItemIndex) {
 				return {
 					index: originalItemIndex,
-					value: sortOnColumn.getComparableValue(item, sortOn.valuePath)
+					value: sortOnColumn.getComparableValue(item, sortOn.columnName)
 				};
 			};
 			if (this._groupsCount > 0) {
@@ -952,104 +978,22 @@
 				this._debounceFilterItems();
 			}
 		},
-
-		_getSortDirection: function (column, sortOnChange) {
-			var
-				sortOn = sortOnChange.base,
-				direction = '';
-
-			if (!column) {
-				return;
-			}
-			if (sortOn && sortOn.valuePath === column.sortOn) {
-				direction = sortOn.descending ? this._('Descending') : this._('Ascending');
-				return '(' + direction + ')';
-			}
-
-			return direction;
-		},
-
 		/**
 		 * Called when a item from the sortOn dropdown is activated (tap)
 		 */
-		_onSortColumnActivate: function (event) {
-			var
-				column = event.model ? event.model.column : undefined,
-				selected;
-
-			if (!column) {
-				this._sortOn = null;
-				this._sortOnSelectorSelected = 0;
-			} else {
-				selected = this.$.sortOnSelector.selected;
-				if (!this._sortOn || !this._sortOn.valuePath) {
-					this._sortOn = {
-						valuePath: column.sortOn,
-						descending: false
-					};
-				} else if (this._sortOn.valuePath === column.sortOn) {
-					this._sortOn = {
-						valuePath: this._sortOn.valuePath,
-						descending: !this._sortOn.descending
-					};
-				} else {
-					this._sortOn = {
-						valuePath: column.sortOn,
-						descending: false
-					};
-				}
-
-				// Force dropdown menu to refresh `selectedItemLabel`
-				this._sortOnSelectorSelected = 0;
-				this._sortOnSelectorSelected = selected;
-			}
+		_sortItemTapped: function (event) {
+			var column = event.model ? event.model.column : undefined,
+				descending = this._sortOn && this._sortOn.columnName === column.sortOn ? !this._sortOn.descending : false;
+			this.set('_sortOn', {columnName: column.sortOn, descending: descending});
 		},
 
-		_createSortOnObject: function (valuePath, descending) {
-			this.set('sortOn', {valuePath: valuePath, descending: descending});
+		_createSortOnObject: function (columnName, descending) {
+			this.set('_sortOn', {columnName: columnName, descending: descending});
+			this._selectSortSelectorItem(columnName);
 		},
 
-		// Select the right column if sort has been changed from outside.
-		_sortOnChanged: function (sortOnChange) {
-			var sortOn = sortOnChange.base;
-
-			if (sortOn && !sortOn.valuePath) {
-				this._sortOn = {
-					valuePath: sortOn,
-					descending: false
-				};
-				return;
-			}
-			if (!sortOn || !sortOn.valuePath) {
-				this._sortOnSelectorSelected = 0;
-			}
-
-			this._updateSelectedSortIndex();
-
-			if (this.data && this.data.length && this._webWorkerReady && this.columns) {
-				this._debounceSortItems();
-			}
-		},
-
-		_updateSelectedSortIndex: function () {
-			var newIndex,
-				sortOnSelectorItems = this.$.sortOnSelector.items;
-
-			if (!this._sortOn || !this._sortOn.valuePath || !sortOnSelectorItems.length) {
-				newIndex = 0;
-			} else {
-				sortOnSelectorItems.some(function (element, i) {
-					var model = this.$.sortColumns.modelForElement(element);
-					if (model && model.column && model.column.sortOn === this._sortOn.valuePath) {
-						newIndex = i;
-						return true;
-					}
-				}, this);
-			}
-
-			if (newIndex !== this._sortOnSelectorSelected) {
-				this._sortOnSelectorSelected = newIndex;
-			}
+		_selectSortSelectorItem(value, dataAttribute = 'name') {
+			this._sortOnSelectorSelected = this.$.sortOnSelector.items.findIndex(item => item.dataset[dataAttribute] === value);
 		},
 
 		_makeCsvField: function (str) {
