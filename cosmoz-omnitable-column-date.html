@@ -158,7 +158,7 @@
 			},
 
 			_formatISODate: function (mom) {
-				if (!mom) {
+				if (!mom || !mom.isValid()) {
 					return;
 				}
 				return mom.format('YYYY-MM-DD');
@@ -226,7 +226,7 @@
 
 			renderDateValue: function (item, valuePath, userFormat, locale) {
 				var value = this.get(valuePath, item);
-				if (!value === undefined || value === null || value === '') {
+				if (!value) {
 					return;
 				}
 				return moment(value).locale(locale).format(userFormat);
@@ -234,7 +234,7 @@
 
 			getString: function (item, valuePath) {
 				var value = this.get(valuePath || this.valuePath, item);
-				if (!value === undefined || value === null || value === '') {
+				if (!value) {
 					return '';
 				}
 				return moment(value).format(this.userFormat);
