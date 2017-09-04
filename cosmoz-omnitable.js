@@ -64,13 +64,22 @@
 				notify: true
 			},
 
+			descending: {
+				type: Boolean,
+				value: false
+			},
+
+			sortOn: {
+				type: String
+			},
+
 			/**
 			 * An object representing current sort of the table.
 			 * The object must have the following propreties:
 			 * - valuePath: item's value path to sort on
 			 * - descending: a boolean indicating of sort is done in descending order.
 			 */
-			sortOn: {
+			_sortOn: {
 				type: Object,
 				value: null
 			},
@@ -171,7 +180,8 @@
 		},
 
 		observers: [
-			'_sortOnChanged(sortOn.*)',
+			'_createSortOnObject(sortOn, descending)',
+			'_sortOnChanged(_sortOn.*)',
 			'_dataChanged(data.*)'
 		],
 
@@ -636,8 +646,8 @@
 				return;
 			}
 
-			var sortOn = this.sortOn,
-				sortOnColumn = this._getColumn(this.sortOn ? this.sortOn.valuePath : null),
+			var sortOn = this._sortOn,
+				sortOnColumn = this._getColumn(this._sortOn ? this._sortOn.valuePath : null),
 				items = [],
 				numGroups = this.filteredGroupedItems.length,
 				mappedItems,
@@ -968,22 +978,22 @@
 				selected;
 
 			if (!column) {
-				this.sortOn = null;
+				this._sortOn = null;
 				this._sortOnSelectorSelected = 0;
 			} else {
 				selected = this.$.sortOnSelector.selected;
-				if (!this.sortOn || !this.sortOn.valuePath) {
-					this.sortOn = {
+				if (!this._sortOn || !this._sortOn.valuePath) {
+					this._sortOn = {
 						valuePath: column.sortOn,
 						descending: false
 					};
-				} else if (this.sortOn.valuePath === column.sortOn) {
-					this.sortOn = {
-						valuePath: this.sortOn.valuePath,
-						descending: !this.sortOn.descending
+				} else if (this._sortOn.valuePath === column.sortOn) {
+					this._sortOn = {
+						valuePath: this._sortOn.valuePath,
+						descending: !this._sortOn.descending
 					};
 				} else {
-					this.sortOn = {
+					this._sortOn = {
 						valuePath: column.sortOn,
 						descending: false
 					};
@@ -995,12 +1005,16 @@
 			}
 		},
 
+		_createSortOnObject: function (valuePath, descending) {
+			this.set('sortOn', {valuePath: valuePath, descending: descending});
+		},
+
 		// Select the right column if sort has been changed from outside.
 		_sortOnChanged: function (sortOnChange) {
 			var sortOn = sortOnChange.base;
 
 			if (sortOn && !sortOn.valuePath) {
-				this.sortOn = {
+				this._sortOn = {
 					valuePath: sortOn,
 					descending: false
 				};
@@ -1021,12 +1035,12 @@
 			var newIndex,
 				sortOnSelectorItems = this.$.sortOnSelector.items;
 
-			if (!this.sortOn || !this.sortOn.valuePath || !sortOnSelectorItems.length) {
+			if (!this._sortOn || !this._sortOn.valuePath || !sortOnSelectorItems.length) {
 				newIndex = 0;
 			} else {
 				sortOnSelectorItems.some(function (element, i) {
 					var model = this.$.sortColumns.modelForElement(element);
-					if (model && model.column && model.column.sortOn === this.sortOn.valuePath) {
+					if (model && model.column && model.column.sortOn === this._sortOn.valuePath) {
 						newIndex = i;
 						return true;
 					}
