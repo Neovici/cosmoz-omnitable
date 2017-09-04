@@ -7,15 +7,15 @@
 
 <dom-module id="cosmoz-omnitable-column-number">
 	<template>
-		<template id="data-template">
+		<template class="cell">
 			<div class="omnitable-cell-number">[[ renderNumberValue(item, valuePath, locale) ]]</div>
 		</template>
 
-		<template id="edit-data-template">
+		<template class="edit-cell">
 			<paper-input no-label-float type="number" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]"></paper-input>
 		</template>
 
-		<template id="header-template">
+		<template class="header">
 			<paper-dropdown-menu no-animations label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _tooltip ]]">
 				<div class="dropdown-content" style="padding: 15px; min-width: 100px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>

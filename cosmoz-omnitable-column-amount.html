@@ -8,18 +8,18 @@
 
 <dom-module id="cosmoz-omnitable-column-amount">
 	<template>
-		<template id="data-template">
+		<template class="cell">
 			<span>[[ getString(item, valuePath) ]]</span>
 		</template>
 
-		<template id="edit-data-template">
+		<template class="edit-cell">
 			<paper-input no-label-float type="number" on-change="_amountValueChanged"
 				value="[[ renderAmountValue(item, valuePath) ]]">
 				<div suffix>[[ _getCurrency(item, valuePath) ]]</div>
 			</paper-input>
 		</template>
 
-		<template id="header-template">
+		<template class="header">
 			<paper-dropdown-menu no-animations label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _tooltip ]]">
 				<div class="dropdown-content" style="padding: 15px; min-width: 150px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>

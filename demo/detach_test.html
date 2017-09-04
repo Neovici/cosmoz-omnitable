@@ -101,7 +101,7 @@
 				<x-container class="flex">
 					<cosmoz-omnitable id="omnitable" class="fit" data="[[ data ]]" selection-enabled selected-items="{{ selectedItems }}">
 						<cosmoz-omnitable-column-autocomplete title="Id" value-path="id" sort-on="id" group-on="id">
-							<template id="data-template">
+							<template class="cell">
 								<span on-tap="onTap">
 									<a href="#!/purchase/suppliers/view?id=[[ item.id ]]">[[ item.id ]]</a>
 								</span>
@@ -125,13 +125,13 @@
 						<cosmoz-omnitable-column title="Sub-property" value-path="sub.subProp" sort-on="sub.subProp" group-on="sub.subProp" flex="5">
 						</cosmoz-omnitable-column>
 						<cosmoz-omnitable-column title="Name" value-path="name" sort-on="name" group-on="name" flex="2">
-							<template id="data-template">
+							<template class="cell">
 								<a href="#!/purchase/suppliers/view?id=[[ item.id ]]">[[ item.name ]]</a>
 							</template>
 						</cosmoz-omnitable-column>
 						<cosmoz-omnitable-column title="Custom template"
 							value-path="name" sort-on="name" width="50px" flex="2"
-							data-template="[[ customNameTemplate ]]">
+							cell-template="[[ customNameTemplate ]]">
 						</cosmoz-omnitable-column>
 
 						<paper-button slot="actions" on-run="updateSelectedRows">

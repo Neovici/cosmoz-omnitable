@@ -5,16 +5,16 @@
 
 <dom-module id="cosmoz-omnitable-column-list">
 	<template>
-		<template id="data-template">
+		<template class="cell">
 			<cosmoz-omnitable-column-list-data items="[[ get(valuePath, item) ]]">
 			</cosmoz-omnitable-column-list-data>
 		</template>
 
-		<template id="edit-data-template">
+		<template class="edit-cell">
 			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]"></paper-input>
 		</template>
 
-		<template id="header-template">
+		<template class="header">
 			<cosmoz-autocomplete
 				items="[[ autocompleteItems ]]"
 				placeholder="[[ title ]]"

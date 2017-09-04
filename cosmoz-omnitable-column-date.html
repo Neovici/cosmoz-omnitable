@@ -8,17 +8,17 @@
 
 <dom-module id="cosmoz-omnitable-column-date">
 	<template>
-		<template id="data-template">
+		<template class="cell">
 			[[ renderDateValue(item, valuePath, userFormat, locale) ]]
 		</template>
 
-		<template id="edit-data-template">
+		<template class="edit-cell">
 			<paper-input no-label-float type="date" on-change="_dateValueChanged"
 				value="[[ renderDateValue(item, valuePath, userFormat, locale) ]]">
 			</paper-input>
 		</template>
 
-		<template id="header-template">
+		<template class="header">
 			<paper-dropdown-menu no-animations label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _tooltip ]]">
 				<div class="dropdown-content" style="padding: 15px; min-width: 100px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
