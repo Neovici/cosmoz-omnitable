@@ -3,15 +3,15 @@
 
 <dom-module id="cosmoz-omnitable-column">
 	<template>
-		<template id="data-template">
+		<template class="cell">
 			<span class="default-column">[[ getString(item, valuePath) ]]</span>
 		</template>
 
-		<template id="edit-data-template">
+		<template class="edit-cell">
 			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]"></paper-input>
 		</template>
 
-		<template id="header-template">
+		<template class="header">
 			<paper-input label="[[ title ]]" value="{{ filter }}"></paper-input>
 		</template>
 

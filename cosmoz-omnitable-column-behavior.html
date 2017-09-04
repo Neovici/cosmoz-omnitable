@@ -144,9 +144,9 @@
 				value: 0
 			},
 
-			dataTemplate: {
+			cellTemplate: {
 				type: Object,
-				observer: '_dataTemplateChanged'
+				observer: '_cellTemplateChanged'
 			},
 
 			_dataTemplatizer: {
@@ -163,7 +163,7 @@
 		StyleModules: [],
 
 		ready: function () {
-			this._headerTemplatizer = this._createTemplatizer('template[id="header-template"');
+			this._headerTemplatizer = this._createTemplatizer('template.header');
 			this._itemCells = [];
 		},
 
@@ -172,7 +172,6 @@
 				templateHost,
 				templatizer,
 				root;
-
 			if (templateElementOrSelector instanceof HTMLTemplateElement) {
 				template = templateElementOrSelector;
 				templateHost = Polymer.dom(templateElementOrSelector).parentNode;
@@ -194,9 +193,9 @@
 			return templatizer;
 		},
 
-		_dataTemplateChanged: function (dataTemplate) {
-			if (dataTemplate !== undefined && dataTemplate !== null) {
-				this._dataTemplatizer = this._createTemplatizer(dataTemplate);
+		_cellTemplateChanged: function (cellTemplate) {
+			if (cellTemplate !== undefined && cellTemplate !== null) {
+				this._dataTemplatizer = this._createTemplatizer(cellTemplate);
 			}
 		},
 
@@ -205,9 +204,9 @@
 			var selector;
 			if (!this._dataTemplatizer) {
 				if (this.editable) {
-					selector = 'template[id="edit-data-template"]';
+					selector = 'template.edit-cell';
 				} else {
-					selector = 'template[id="data-template"]';
+					selector = 'template.cell';
 				}
 				this._dataTemplatizer = this._createTemplatizer(selector);
 			}

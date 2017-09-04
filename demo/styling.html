@@ -93,7 +93,7 @@
 				<cosmoz-omnitable id="omnitable" class="flex" data="[[data]]"
 					selection-enabled selected-items="{{selectedItems}}">
 					<cosmoz-omnitable-column title="Id" value-path="id" sort-on="id" group-on="id" width="30px" flex="1">
-						<template id="data-template">
+						<template class="cell">
 							<span>
 								<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.id]]</a>
 							</span>
@@ -115,7 +115,7 @@
 					<cosmoz-omnitable-column title="Sub-property" value-path="sub.subProp" sort-on="sub.subProp" group-on="sub.subProp" flex="2">
 					</cosmoz-omnitable-column>
 					<cosmoz-omnitable-column title="Name" value-path="name" bind-values sort-on="name" group-on="name" width="50px" flex="2">
-						<template id="data-template">
+						<template class="cell">
 							<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.name]]</a>
 						</template>
 					</cosmoz-omnitable-column>

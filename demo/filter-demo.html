@@ -59,7 +59,7 @@
 
 				<cosmoz-omnitable id="omnitable" data="[[data]]" class="flex" selection-enabled selected-items="{{selectedItems}}">
 					<cosmoz-omnitable-column title="Id" value-path="id">
-						<template id="data-template">
+						<template class="cell">
 							<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.id]]</a>
 						</template>
 					</cosmoz-omnitable-column>
@@ -70,7 +70,7 @@
 					<cosmoz-omnitable-column-date title="Date" value-path="dateJSON" locale="sv" filter="{{dateFilter}}"></cosmoz-omnitable-column-date>
 					<cosmoz-omnitable-column title="Sub-property" value-path="sub.subProp"></cosmoz-omnitable-column>
 					<cosmoz-omnitable-column title="Name" value-path="name" filter="{{nameFilter}}">
-						<template id="data-template">
+						<template class="cell">
 							<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.name]]</a>
 						</template>
 					</cosmoz-omnitable-column>

@@ -6,11 +6,11 @@
 <dom-module id="cosmoz-omnitable-column-boolean">
 	<template>
 
-		<template id="data-template">
+		<template class="cell">
 			[[ getString(item, valuePath) ]]
 		</template>
 
-		<template id="edit-data-template">
+		<template class="edit-cell">
 			<paper-dropdown-menu>
 				<paper-listbox class="dropdown-content" attr-for-selected="value" on-iron-select="_selectedChanged"
 					on-iron-activate="_activate"
@@ -21,7 +21,7 @@
 			</paper-dropdown-menu>
 		</template>
 
-		<template id="header-template">
+		<template class="header">
 			<paper-dropdown-menu label="[[ title ]]">
 				<paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{ _textFilter }}">
 					<paper-item value=""></paper-item>
