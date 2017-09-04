@@ -191,9 +191,11 @@
 
 		_updateColumns: function () {
 			var columns = this.getEffectiveChildren().filter(function (child, index) {
-				child.__index = index;
-				return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn;
-			});
+					child.__index = index;
+					return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn;
+				}),
+				columnNames = {},
+				valuePathNames;
 
 			if (Array.isArray(this.enabledColumns)) {
 				columns = columns.filter(function (column) {
@@ -215,6 +217,25 @@
 
 			this.columns.forEach(function (column) {
 				this.listen(column, 'filter-changed', '_onColumnFilterChanged');
+
+				// Check correct column setup
+				if (column.name && columnNames[column.name]) {
+					console.error('The name attribute needs to be unique among all columns! Not unique on column', column.name);
+				} else
+				
+				if (!column.name){
+					console.error('The name attribute needs to be set on all columns! Missing on column', column.title);
+					// No name set; Try to set name attribute via valuePath
+					if (!valuePathNames) {
+						valuePathNames = this.columns.map(c => c.valuePath);
+					}
+					var hasUniqueValuePath = valuePathNames.filter(n => n === column.valuePath).length === 1;
+					if (hasUniqueValuePath && !columnNames[column.name]) {
+						column.setAttribute('name', column.valuePath);
+					}
+				}
+
+				columnNames[column.name] = true;
 			}, this);
 
 			this._updateVisibleColumns();
