@@ -12,7 +12,7 @@
 
 		<template class="edit-cell">
 			<paper-dropdown-menu>
-				<paper-listbox class="dropdown-content" attr-for-selected="value" on-iron-select="_selectedChanged"
+				<paper-listbox class="dropdown-content" slot="dropdown-content" attr-for-selected="value" on-iron-select="_selectedChanged"
 					on-iron-activate="_activate"
 					selected="[[ _computeSelected(item, valuePath) ]]">
 					<paper-item value="true">[[ trueLabel ]]</paper-item>
@@ -23,7 +23,7 @@
 
 		<template class="header">
 			<paper-dropdown-menu label="[[ title ]]">
-				<paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{ _textFilter }}">
+				<paper-listbox class="dropdown-content" slot="dropdown-content" attr-for-selected="value" selected="{{ _textFilter }}">
 					<paper-item value=""></paper-item>
 					<paper-item value="true">[[ trueLabel ]]</paper-item>
 					<paper-item value="false">[[ falseLabel ]]</paper-item>

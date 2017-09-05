@@ -1,5 +1,7 @@
+<link rel="import" href="../paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../paper-autocomplete-chips/paper-autocomplete-chips.html">
+
 <link rel="import" href="cosmoz-omnitable-column-behavior.html">
-<link rel="import" href="../cosmoz-autocomplete/cosmoz-autocomplete.html">
 
 <dom-module id="cosmoz-omnitable-column-autocomplete">
 	<template>
@@ -12,15 +14,13 @@
 		</template>
 
 		<template class="header">
-			<cosmoz-autocomplete
-				input-value="{{ query }}"
+			<paper-autocomplete-chips
+				text="{{ query }}"
 				items="[[ values ]]"
-				loading="[[ loading ]]"
-				value-property=""
 				placeholder="[[ title ]]"
-				selected-items="{{ filter }}"
-				multi-selection
-			></cosmoz-autocomplete>
+				selected-items="{{ filter }}">
+				<paper-spinner-lite style="width: 20px; height: 20px;" slot="suffix" active="[[ loading ]]" hidden="[[ !loading ]]"></paper-spinner-lite>
+			</paper-input-autocomplete-chips>
 		</template>
 	</template>
 
