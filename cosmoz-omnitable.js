@@ -247,7 +247,7 @@
 						valuePathNames = this.columns.map(c => c.valuePath);
 					}
 					var hasUniqueValuePath = valuePathNames.filter(n => n === column.valuePath).length === 1;
-					if (hasUniqueValuePath && !columnNames[column.name]) {
+					if (hasUniqueValuePath && !columnNames[column.valuePath]) {
 						column.setAttribute('name', column.valuePath);
 					}
 				}
