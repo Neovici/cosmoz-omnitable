@@ -1,4 +1,4 @@
-<link rel="import" href="../cosmoz-autocomplete/cosmoz-autocomplete.html">
+<link rel="import" href="../paper-autocomplete-chips/paper-autocomplete-chips.html">
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 <link rel="import" href="cosmoz-omnitable-column-behavior.html">
 <link rel="import" href="cosmoz-omnitable-column-list-data.html">
@@ -15,12 +15,12 @@
 		</template>
 
 		<template class="header">
-			<cosmoz-autocomplete
+			<paper-autocomplete-chips
 				items="[[ autocompleteItems ]]"
 				placeholder="[[ title ]]"
 				selected-items="{{ autocompleteSelectedItems }}"
-				multi-selection
-			></cosmoz-autocomplete>
+				text-property="label">
+			</paper-input-autocomplete-chips>
 		</template>
 	</template>
 

@@ -34,12 +34,12 @@
 		"paper-listbox": "PolymerElements/paper-listbox#^2.0.0",
 		"cosmoz-grouped-list": "Neovici/cosmoz-grouped-list#master",
 		"cosmoz-web-worker": "Neovici/cosmoz-web-worker#master",
-		"cosmoz-autocomplete": "neovici/cosmoz-autocomplete#master",
 		"cosmoz-i18next": "Neovici/cosmoz-i18next#master",
 		"cosmoz-bottom-bar": "neovici/cosmoz-bottom-bar#master",
 		"cosmoz-behaviors": "neovici/cosmoz-behaviors#master",
 		"cosmoz-moment": "neovici/cosmoz-moment#master",
-		"import-filesaver": "JaySunSyn/import-filesaver"
+		"import-filesaver": "JaySunSyn/import-filesaver",
+		"paper-autocomplete-chips": "neovici/paper-autocomplete-chips#master"
 	},
 	"devDependencies": {
 		"iron-component-page": "PolymerElements/iron-component-page#^2.0.0",
