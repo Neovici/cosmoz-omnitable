@@ -39,7 +39,8 @@
 		"cosmoz-behaviors": "neovici/cosmoz-behaviors#master",
 		"cosmoz-moment": "neovici/cosmoz-moment#master",
 		"import-filesaver": "JaySunSyn/import-filesaver",
-		"paper-autocomplete-chips": "neovici/paper-autocomplete-chips#master"
+		"paper-autocomplete-chips": "neovici/paper-autocomplete-chips#master",
+		"paper-spinner": "^2.0.0"
 	},
 	"devDependencies": {
 		"iron-component-page": "PolymerElements/iron-component-page#^2.0.0",
