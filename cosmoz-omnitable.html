@@ -227,8 +227,8 @@
 			<div class="footer">
 				<div class="footer-controls">
 					<div class="footer-control">
-						<paper-dropdown-menu no-animations vertical-align="bottom" horizontal-align="left" id="groupOnSelector" label="[[ _('Group on', t) ]]">
-							<paper-listbox class="dropdown-content menu" selected="{{ groupOn }}" attr-for-selected="data-group-on">
+						<paper-dropdown-menu vertical-align="bottom" horizontal-align="left" id="groupOnSelector" label="[[ _('Group on', t) ]]">
+							<paper-listbox class="dropdown-content menu" slot="dropdown-content" selected="{{ groupOn }}" attr-for-selected="data-group-on">
 								<paper-item data-group-on=""><i style="white-space: nowrap">[[ _('No grouping', t) ]]</i></paper-item>
 								<template is="dom-repeat" items="[[ columns ]]" as="column">
 									<paper-item data-group-on$="[[ column.groupOn ]]" hidden$="[[ !column.groupOn ]]">[[ column.title ]]</paper-item>
@@ -237,8 +237,8 @@
 						</paper-dropdown-menu>
 					</div>
 					<div class="footer-control">
-						<paper-dropdown-menu no-animations vertical-align="bottom" horizontal-align="right" id="sortOnSelectorMenu" label="[[_('Sort on', t)]]">
-							<paper-listbox class="dropdown-content menu" id="sortOnSelector" selected="{{ _sortOnSelectorSelected }}">
+						<paper-dropdown-menu vertical-align="bottom" horizontal-align="right" id="sortOnSelectorMenu" label="[[_('Sort on', t)]]">
+							<paper-listbox class="dropdown-content menu" slot="dropdown-content" id="sortOnSelector" selected="{{ _sortOnSelectorSelected }}">
 								<paper-item on-tap="_sortItemTapped"><i style="white-space: nowrap;">[[ _('No sorting', t) ]]</i></paper-item>
 								<template is="dom-repeat" id="sortColumns" items="[[ columns ]]" as="column">
 									<paper-item on-tap="_sortItemTapped" hidden$="[[ !column.sortOn ]]" data-name$="[[ column.name ]]">
