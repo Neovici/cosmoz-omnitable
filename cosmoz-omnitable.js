@@ -71,7 +71,8 @@
 
 			_descendingText: {
 				type: String,
-				computed: '_computeDescendingString(_sortOn)'
+				computed: '_computeDescendingString(_sortOn)',
+				observer: '_reselectDropdownItem'
 			},
 
 			sortOn: {
@@ -304,6 +305,12 @@
 				return false;
 			}
 			return sortOn.columnName === column.name;
+		},
+
+		_reselectDropdownItem() {
+			var i = this._sortOnSelectorSelected;
+			this._sortOnSelectorSelected = 0;
+			this._sortOnSelectorSelected = i;
 		},
 
 		/**
@@ -987,7 +994,7 @@
 			this.set('_sortOn', {columnName: column.sortOn, descending: descending});
 		},
 
-		_createSortOnObject: function (columnName, descending) {
+		_createSortOnObject(columnName, descending) {
 			this.set('_sortOn', {columnName: columnName, descending: descending});
 			this._selectSortSelectorItem(columnName);
 		},
