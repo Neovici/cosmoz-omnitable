@@ -227,7 +227,7 @@
 			<div class="footer">
 				<div class="footer-controls">
 					<div class="footer-control">
-						<paper-dropdown-menu no-animations vertical-align="bottom" horizontal-align="left" id="groupOnSelector" label="[[ _('Group on', t) ]]">
+						<paper-dropdown-menu vertical-align="bottom" horizontal-align="left" id="groupOnSelector" label="[[ _('Group on', t) ]]">
 							<paper-listbox class="dropdown-content menu" slot="dropdown-content" selected="{{ groupOn }}" attr-for-selected="data-group-on">
 								<paper-item data-group-on=""><i style="white-space: nowrap">[[ _('No grouping', t) ]]</i></paper-item>
 								<template is="dom-repeat" items="[[ columns ]]" as="column">
@@ -237,7 +237,7 @@
 						</paper-dropdown-menu>
 					</div>
 					<div class="footer-control">
-						<paper-dropdown-menu no-animations vertical-align="bottom" horizontal-align="right" id="sortOnSelectorMenu" label="[[_('Sort on', t)]]">
+						<paper-dropdown-menu vertical-align="bottom" horizontal-align="right" id="sortOnSelectorMenu" label="[[_('Sort on', t)]]">
 							<paper-listbox class="dropdown-content menu" slot="dropdown-content" id="sortOnSelector" on-iron-items-changed="_updateSelectedSortIndex" selected="{{ _sortOnSelectorSelected }}">
 								<paper-item on-tap="_onSortColumnActivate"><i style="white-space: nowrap;">[[ _('No sorting', t) ]]</i></paper-item>
 								<template is="dom-repeat" id="sortColumns" items="[[ columns ]]" as="column">
