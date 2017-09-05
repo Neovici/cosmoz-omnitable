@@ -69,7 +69,7 @@
 				value: false
 			},
 
-			_descendingText: {
+			descendingText: {
 				type: String,
 				computed: '_computeDescendingString(_sortOn)',
 				observer: '_reselectDropdownItem'

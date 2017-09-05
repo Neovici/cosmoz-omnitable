@@ -242,7 +242,7 @@
 								<paper-item on-tap="_sortItemTapped"><i style="white-space: nowrap;">[[ _('No sorting', t) ]]</i></paper-item>
 								<template is="dom-repeat" id="sortColumns" items="[[ columns ]]" as="column">
 									<paper-item on-tap="_sortItemTapped" hidden$="[[ !column.sortOn ]]" data-name$="[[ column.name ]]">
-										<span>[[ column.title ]]</span>&nbsp;<span hidden="[[ !_showSortDirection(column, _sortOn.*) ]]">[[ _descendingText ]]</span>
+										<span>[[ column.title ]]</span>&nbsp;<span hidden="[[ !_showSortDirection(column, _sortOn.*) ]]">[[ descendingText ]]</span>
 									</paper-item>
 								</template>
 							</paper-listbox>
