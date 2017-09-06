@@ -696,7 +696,7 @@
 			itemMapper = function (item, originalItemIndex) {
 				return {
 					index: originalItemIndex,
-					value: sortOnColumn.getComparableValue(item, sortOn.columnName)
+					value: sortOnColumn.getComparableValue(item, sortOnColumn.sortOn)
 				};
 			};
 			if (this._groupsCount > 0) {
@@ -990,8 +990,8 @@
 		 */
 		_sortItemTapped: function (event) {
 			var column = event.model ? event.model.column : undefined,
-				descending = this._sortOn && this._sortOn.columnName === column.sortOn ? !this._sortOn.descending : false;
-			this.set('_sortOn', {columnName: column.sortOn, descending: descending});
+				descending = this._sortOn && this._sortOn.columnName === column.name ? !this._sortOn.descending : false;
+			this.set('_sortOn', {columnName: column.name, descending: descending});
 		},
 
 		_createSortOnObject(columnName, descending) {
