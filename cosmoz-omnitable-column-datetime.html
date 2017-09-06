@@ -1,0 +1,88 @@
+<link rel="import" href="cosmoz-omnitable-column-behavior.html">
+
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+
+<link rel="import" href="../cosmoz-moment/cosmoz-moment.html">
+<link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
+
+<link rel="import" href="cosmoz-omnitable-column-date-behavior.html">
+
+<dom-module id="cosmoz-omnitable-column-datetime">
+	<template>
+		<template class="cell">
+			[[ renderDateValue(item, valuePath, userFormat, locale) ]]
+		</template>
+
+		<template class="edit-cell">
+			<paper-input no-label-float type="datetime-local" on-change="_dateValueChanged"
+				value="[[ renderDateValue(item, valuePath, userFormat, locale) ]]">
+			</paper-input>
+		</template>
+
+		<template class="header">
+			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _tooltip ]]">
+				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
+					<h3 style="margin: 0;">[[ title ]]</h3>
+					<paper-input type="datetime-local" min="[[ _formatISODate(_possibleDateRange.min) ]]" max="[[ _formatISODate(_latestAfter) ]]"
+						label="[[ _('From date', t) ]]" value="{{ _filterInput.start }}" step$="[[_filterStep]]">
+					</paper-input>
+					<paper-input type="datetime-local" min="[[ _formatISODate(_earliestBefore) ]]" max="[[ _formatISODate(_possibleDateRange.max) ]]"
+						label="[[ _('Until date', t) ]]" value="{{ _filterInput.end }}" step$="[[_filterStep]]">
+					</paper-input>
+				</div>
+			</paper-dropdown-menu>
+		</template>
+	</template>
+	<script>
+		Polymer({
+			is: 'cosmoz-omnitable-column-datetime',
+
+			properties: {
+				_filterStep: {
+					type: Number,
+					computed: '_computeStep(userFormat)'
+				},
+				/**
+				 * This is the format used to interact with the user, i.e. the format used
+				 * to render dates and to parse date entered by the user.
+				 * Should be a moment.js date format (http://momentjs.com/docs/#/displaying/format/)
+				 */
+				userFormat: {
+					type: String,
+					value: 'YYYY-MM-DD HH:mm:ss.SSS'
+				}
+			},
+
+			behaviors: [
+				Cosmoz.MomentBehavior,
+				Cosmoz.OmnitableColumnBehavior,
+				Cosmoz.TranslatableBehavior,
+				Cosmoz.DateColumnBehavior
+			],
+
+			/** ELEMENT LIFECYCLE */
+
+			/** ELEMENT BEHAVIOR */
+
+			_computeStep(userFormat) {
+				if (userFormat.match('S')) {
+					return 0.1;
+				}
+				return 1;
+			},
+
+			/** OVERRIDES */
+
+			/** cosmoz-omnitable-column-date-behavior */
+
+			_formatISODate(mom) {
+				if (!mom || !mom.isValid()) {
+					return;
+				}
+				return mom.format('YYYY-MM-DDTHH:mm:ss');
+			},
+		});
+
+	</script>
+</dom-module>
