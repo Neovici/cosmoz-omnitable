@@ -553,7 +553,7 @@
 
 			if (this.groupOn) {
 				visibleColumns = visibleColumns.filter(function (column) {
-					if (column.groupOn === this.groupOn) {
+					if (column.name === this.groupOn) {
 						this._setGroupOnColumn(column);
 						return false;
 					}
