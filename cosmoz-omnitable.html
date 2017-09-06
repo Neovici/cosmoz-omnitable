@@ -231,7 +231,7 @@
 							<paper-listbox class="dropdown-content menu" slot="dropdown-content" selected="{{ groupOn }}" attr-for-selected="data-group-on">
 								<paper-item data-group-on=""><i style="white-space: nowrap">[[ _('No grouping', t) ]]</i></paper-item>
 								<template is="dom-repeat" items="[[ columns ]]" as="column">
-									<paper-item data-group-on$="[[ column.groupOn ]]" hidden$="[[ !column.groupOn ]]">[[ column.title ]]</paper-item>
+									<paper-item data-group-on$="[[ column.name ]]" hidden$="[[ !column.groupOn ]]">[[ column.title ]]</paper-item>
 								</template>
 							</paper-listbox>
 						</paper-dropdown-menu>
