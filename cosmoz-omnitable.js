@@ -618,7 +618,7 @@
 				}
 
 				this.filteredItems.forEach(function (item, index) {
-					var groupOnValue = groupOnColumn.getComparableValue(item, groupOn);
+					var groupOnValue = groupOnColumn.getComparableValue(item, groupOnColumn.groupOn);
 
 					if (groupOnValue !== undefined) {
 						if (!itemStructure[groupOnValue]) {
