@@ -295,7 +295,7 @@
 		/**
 		 * Called when data is changed to setup up needs and check workers/filtering
 		 */
-		_dataChanged: function (change) {
+		_dataChanged: function () {
 
 			this._noData = !this.data || !Array.isArray(this.data) || this.data.length < 1;
 
@@ -304,7 +304,7 @@
 			this._newData();
 		},
 
-		_newData: function (data) {
+		_newData: function () {
 			if (this._webWorkerReady && this.columns) {
 				this._setColumnValues();
 				this._debounceFilterItems();
@@ -337,7 +337,7 @@
 			this.debounce('sortItems', this._sortFilteredGroupedItems);
 		},
 
-		_onColumnFilterChanged: function (event) {
+		_onColumnFilterChanged: function () {
 			this._debounceFilterItems();
 		},
 
@@ -389,7 +389,7 @@
 			event.stopPropagation();
 		},
 
-		onAllCheckboxChange: function (event, detail) {
+		onAllCheckboxChange: function (event) {
 
 			if (event.target === null) {
 				return;
@@ -422,7 +422,7 @@
 		},
 
 		// Handle selection/deselection of an item
-		_onItemCheckboxChange: function (event, detail) {
+		_onItemCheckboxChange: function (event) {
 			var
 				item = event.model.item,
 				selected = this.$.groupedList.isItemSelected(item);
@@ -474,7 +474,7 @@
 			}
 		},
 
-		toggleItem: function (event, detail) {
+		toggleItem: function (event) {
 			var item = event.model.item;
 			this.$.groupedList.toggleCollapse(item);
 		},
@@ -500,7 +500,7 @@
 				}
 
 				column.set('values', this.data
-					.map(function (item, index) {
+					.map(function (item) {
 						return this.get(column.valuePath, item);
 					}, this)
 					.filter(function (value, index, self) {
@@ -519,7 +519,7 @@
 			return this.columns.find(column => column[attribute] === attributeValue);
 		},
 
-		_groupOnChanged: function (newValue, oldValue) {
+		_groupOnChanged: function () {
 			if (this.columns) {
 				this._updateVisibleColumns();
 			}
@@ -577,7 +577,6 @@
 		},
 
 		_groupItems: function () {
-
 			if (!this.filteredItems || this.filteredItems.length === 0) {
 				this.filteredGroupedItems  = [];
 				this.sortedFilteredGroupedItems = [];
@@ -596,7 +595,7 @@
 					return;
 				}
 
-				this.filteredItems.forEach(function (item, index) {
+				this.filteredItems.forEach(function (item) {
 					var groupOnValue = groupOnColumn.getComparableValue(item, groupOnColumn.groupOn);
 
 					if (groupOnValue !== undefined) {
@@ -703,7 +702,7 @@
 								name: data.meta.groupName,
 								id: data.meta.groupId
 							};
-							items[data.meta.index].items = data.data.map(function (item, index) {
+							items[data.meta.index].items = data.data.map(function (item) {
 								return group.items[item.index];
 							});
 							if (results === numGroups) {
@@ -730,7 +729,7 @@
 						return;
 					}
 
-					this.set('sortedFilteredGroupedItems', data.data.map(function (item, index){
+					this.set('sortedFilteredGroupedItems', data.data.map(function (item){
 						return this.filteredGroupedItems[item.index];
 					}, this));
 					this._debounceAdjustColumns();
@@ -748,12 +747,12 @@
 		},
 
 		// TODO(pasleq): re-implement expand/collapse of single item
-		toggleExtraColumns: function (event, detail) {
+		toggleExtraColumns: function (event) {
 			var item = event.model.item;
 			this.$.groupedList.toggleCollapse(item);
 		},
 
-		_onResize: function (event) {
+		_onResize: function () {
 			this._debounceAdjustColumns();
 		},
 
@@ -945,7 +944,7 @@
 			return selected ?  'itemRow itemRow-selected' : 'itemRow';
 		},
 
-		_computeItemRowCellClasses: function (column, columnIndex) {
+		_computeItemRowCellClasses: function (column) {
 			var originalIndex = this.columns.indexOf(column);
 			return 'itemRow-cell'
 				+ (column.cellClass ? ' ' + column.cellClass + ' ' : '')
@@ -983,7 +982,7 @@
 			return str;
 		},
 
-		saveAsCsvAction: function (event) {
+		saveAsCsvAction: function () {
 			var separator = ';',
 				lf = '\n',
 				header = this.columns.map(function (column) {

@@ -245,7 +245,7 @@
 								attr-for-selected="data-name" 
 								selected="{{ sortOn }}">
 								<paper-item><span>[[ _('No sorting', t) ]]</span></paper-item>
-								<template is="dom-repeat" id="sortColumns" items="[[ columns ]]" as="column">
+								<template is="dom-repeat" items="[[ columns ]]" as="column">
 									<paper-item 
 										hidden$="[[ !column.sortOn ]]" 
 										data-name$="[[ column.name ]]" 
