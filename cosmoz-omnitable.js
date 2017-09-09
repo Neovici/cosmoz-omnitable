@@ -211,7 +211,7 @@
 					child.__index = index;
 					return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn;
 				}),
-				columnNames = {},
+				columnNames = columns.map(c => c.name),
 				valuePathNames;
 
 			if (Array.isArray(this.enabledColumns)) {
@@ -228,31 +228,33 @@
 				return;
 			}
 
-			// TODO: Un-listen from old columns ?
-
 			this.columns = columns;
 
+			// Check if column names are set and unique
+			this.columns.filter((column, i) => {
+				var name = column.name;
+				if (!name) {
+					console.error('The name attribute needs to be set on all columns! Missing on column', column.title, column);
+				}
+				return name && columnNames.indexOf(name) !== columnNames.lastIndexOf(name) && columnNames.indexOf(name) === i;
+			}).forEach(column => {
+				console.error('The name attribute needs to be unique among all columns! Not unique on column', column.title, column);
+			});
+
+			// TODO: Un-listen from old columns ?
 			this.columns.forEach(function (column) {
 				this.listen(column, 'filter-changed', '_onColumnFilterChanged');
 
-				// Check correct column setup
-				if (column.name && columnNames[column.name]) {
-					console.error('The name attribute needs to be unique among all columns! Not unique on column', column.name);
-				} else
-
 				if (!column.name){
-					console.error('The name attribute needs to be set on all columns! Missing on column', column.title);
 					// No name set; Try to set name attribute via valuePath
 					if (!valuePathNames) {
 						valuePathNames = this.columns.map(c => c.valuePath);
 					}
 					var hasUniqueValuePath = valuePathNames.filter(n => n === column.valuePath).length === 1;
-					if (hasUniqueValuePath && !columnNames[column.valuePath]) {
-						column.setAttribute('name', column.valuePath);
+					if (hasUniqueValuePath && !columnNames.indexOf(column.valuePath) === -1) {
+						column.name = column.valuePath;
 					}
 				}
-
-				columnNames[column.name] = true;
 			}, this);
 
 			this._updateVisibleColumns();
