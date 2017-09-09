@@ -69,14 +69,14 @@
 				value: false
 			},
 
-			descendingText: {
+			sortDirection: {
 				type: String,
-				computed: '_computeDescendingString(_sortOn)',
-				observer: '_reselectDropdownItem'
+				computed: '_computeSortDirection(descending)'
 			},
 
 			sortOn: {
-				type: String
+				type: String,
+				value: ''
 			},
 
 			/**
@@ -85,11 +85,6 @@
 			 * - columnName: item's value path to sort on
 			 * - descending: a boolean indicating of sort is done in descending order.
 			 */
-			_sortOn: {
-				type: Object,
-				value: null,
-				observer: '_debounceSortItems'
-			},
 
 			// Index of the selected item in the sortOn listbox
 			_sortOnSelectorSelected: {
@@ -188,8 +183,8 @@
 		},
 
 		observers: [
-			'_createSortOnObject(sortOn, descending)',
-			'_dataChanged(data.*)'
+			'_dataChanged(data.*)',
+			'_debounceSortItems(sortOn, descending)'
 		],
 
 		behaviors: [
@@ -293,28 +288,10 @@
 			this._isDetached = true;
 		},
 
-		_computeDescendingString(sortOn) {
-			if (!sortOn) {
-				return '';
-			}
-			var direction = sortOn.descending ? this._('Descending') : this._('Ascending');
+		_computeSortDirection(descending) {
+			var direction = descending ? this._('Descending') : this._('Ascending');
 			return `(${direction})`;
 		},
-
-		_showSortDirection(column, sortOnChange) {
-			var sortOn = sortOnChange.base;
-			if (!column || !sortOn) {
-				return false;
-			}
-			return sortOn.columnName === column.name;
-		},
-
-		_reselectDropdownItem() {
-			var i = this._sortOnSelectorSelected;
-			this._sortOnSelectorSelected = 0;
-			this._sortOnSelectorSelected = i;
-		},
-
 		/**
 		 * Called when data is changed to setup up needs and check workers/filtering
 		 */
@@ -681,15 +658,14 @@
 				return;
 			}
 
-			var sortOn = this._sortOn,
-				sortOnColumn = this._getColumn(this._sortOn ? this._sortOn.columnName : null),
+			var sortOnColumn = this._getColumn(this.sortOn),
 				items = [],
 				numGroups = this.filteredGroupedItems.length,
 				mappedItems,
 				results = 0,
 				itemMapper;
 
-			if (!sortOn || !sortOnColumn) {
+			if (!this.sortOn || !sortOnColumn) {
 				this.sortedFilteredGroupedItems = this.filteredGroupedItems;
 				this._debounceAdjustColumns();
 				return;
@@ -718,7 +694,7 @@
 								groupId: group.id,
 								index: index
 							},
-							reverse: sortOn.descending,
+							reverse: this.descending,
 							sortOn: 'value',
 							data: mappedItems
 						}, function (data) {
@@ -741,7 +717,7 @@
 				mappedItems = this.filteredGroupedItems.map(itemMapper, this);
 
 				this.$.sortWorker.process({
-					reverse: sortOn.descending,
+					reverse: this.descending,
 					sortOn: 'value',
 					data: mappedItems
 				}, function (data) {
@@ -990,19 +966,11 @@
 		/**
 		 * Called when a item from the sortOn dropdown is activated (tap)
 		 */
-		_sortItemTapped: function (event) {
-			var column = event.model ? event.model.column : undefined,
-				descending = this._sortOn && this._sortOn.columnName === column.name ? !this._sortOn.descending : false;
-			this.set('_sortOn', {columnName: column.name, descending: descending});
-		},
-
-		_createSortOnObject(columnName, descending) {
-			this.set('_sortOn', {columnName: columnName, descending: descending});
-			this._selectSortSelectorItem(columnName);
-		},
-
-		_selectSortSelectorItem(value, dataAttribute = 'name') {
-			this._sortOnSelectorSelected = this.$.sortOnSelector.items.findIndex(item => item.dataset[dataAttribute] === value);
+		_sortItemTapped(e) {
+			var column = e.model.column;
+			if (column.name === this.sortOn) {
+				this.descending = !this.descending;
+			}
 		},
 
 		_makeCsvField: function (str) {

@@ -237,12 +237,20 @@
 						</paper-dropdown-menu>
 					</div>
 					<div class="footer-control">
-						<paper-dropdown-menu vertical-align="bottom" horizontal-align="right" id="sortOnSelectorMenu" label="[[_('Sort on', t)]]">
-							<paper-listbox class="dropdown-content menu" slot="dropdown-content" id="sortOnSelector" selected="{{ _sortOnSelectorSelected }}">
-								<paper-item on-tap="_sortItemTapped"><i style="white-space: nowrap;">[[ _('No sorting', t) ]]</i></paper-item>
+						<paper-dropdown-menu vertical-align="bottom" horizontal-align="right" id="sortOnSelectorMenu" 
+							label="[[_('Sort on', t)]] [[sortDirection]]">
+							<paper-listbox id="sortOnSelector" 
+								slot="dropdown-content" 
+								class="dropdown-content menu"
+								attr-for-selected="data-name" 
+								selected="{{ sortOn }}">
+								<paper-item><span>[[ _('No sorting', t) ]]</span></paper-item>
 								<template is="dom-repeat" id="sortColumns" items="[[ columns ]]" as="column">
-									<paper-item on-tap="_sortItemTapped" hidden$="[[ !column.sortOn ]]" data-name$="[[ column.name ]]">
-										<span>[[ column.title ]]</span>&nbsp;<span hidden="[[ !_showSortDirection(column, _sortOn.*) ]]">[[ descendingText ]]</span>
+									<paper-item 
+										hidden$="[[ !column.sortOn ]]" 
+										data-name$="[[ column.name ]]" 
+										on-tap="_sortItemTapped">
+										<span>[[ column.title ]]</span>
 									</paper-item>
 								</template>
 							</paper-listbox>
