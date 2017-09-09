@@ -237,9 +237,9 @@
 						</paper-dropdown-menu>
 					</div>
 					<div class="footer-control">
-						<paper-dropdown-menu vertical-align="bottom" horizontal-align="right" id="sortOnSelectorMenu" 
+						<paper-dropdown-menu vertical-align="bottom" horizontal-align="right"
 							label="[[_('Sort on', t)]] [[sortDirection]]">
-							<paper-listbox id="sortOnSelector" 
+							<paper-listbox 
 								slot="dropdown-content" 
 								class="dropdown-content menu"
 								attr-for-selected="data-name" 
@@ -249,7 +249,7 @@
 									<paper-item 
 										hidden$="[[ !column.sortOn ]]" 
 										data-name$="[[ column.name ]]" 
-										on-tap="_sortItemTapped">
+										on-tap="_reverseSortDirection">
 										<span>[[ column.title ]]</span>
 									</paper-item>
 								</template>

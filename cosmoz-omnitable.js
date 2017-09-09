@@ -966,11 +966,13 @@
 		/**
 		 * Called when a item from the sortOn dropdown is activated (tap)
 		 */
-		_sortItemTapped(e) {
+		_reverseSortDirection(e) {
 			var column = e.model.column;
 			if (column.name === this.sortOn) {
 				this.descending = !this.descending;
+				return;
 			}
+			this.descending = false;
 		},
 
 		_makeCsvField: function (str) {
