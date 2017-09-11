@@ -18,10 +18,19 @@
 			},
 
 			/**
-			 * List of data to display
+			 * Array used to list items.
 			 */
 			data: {
 				type: Array
+			},
+
+			/**
+			 * True if data is a valid and not empty array.
+			 */
+			_dataIsValid: {
+				type: Boolean,
+				value: false,
+				computed: '_computeDataValidity(data)'
 			},
 
 			/**
@@ -53,7 +62,7 @@
 			 */
 			_showCheckboxes: {
 				type: Boolean,
-				computed: '_computeShowCheckboxes(_noData, hasActions)'
+				computed: '_computeShowCheckboxes(_dataIsValid, hasActions)'
 			},
 
 			/**
@@ -80,7 +89,7 @@
 			},
 
 			/**
-			 * The item's value path to group on
+			 * The column name to group on.
 			 */
 			groupOn: {
 				type: String,
@@ -89,11 +98,12 @@
 			},
 
 			/**
-			 * Column that matches the current `groupOn` value.
+			 * The column that matches the current `groupOn` value.
 			 */
 			groupOnColumn: {
 				type: Object,
 				notify: true,
+				observer: '_debounceGroupItems',
 				computed: '_computeGroupOnColumn(groupOn, columns)'
 			},
 
@@ -101,7 +111,8 @@
 			 * Items matching current set filter(s)
 			 */
 			filteredItems: {
-				type: Array
+				type: Array,
+				observer: '_debounceGroupItems'
 			},
 
 			/**
@@ -125,15 +136,6 @@
 			_previousWidth: {
 				type: Number,
 				value: 0
-			},
-
-			/**
-			 * When we don't have data.
-			 * Saved in its own property since `data` will be undefined at first and not trigger evaluation
-			 */
-			_noData: {
-				type: Boolean,
-				value: true
 			},
 
 			_groupsCount: {
@@ -162,16 +164,15 @@
 				notify: true
 			},
 
-			_tooStrictFilterInfo: {
+			_filterIsTooStrict: {
 				type: Boolean,
-				computed: '_computeTooStrictFilterInfo(_noData, sortedFilteredGroupedItems.length)'
+				computed: '_computeFilterIsTooStrict(_dataIsValid, sortedFilteredGroupedItems.length)'
 			}
 		},
 
 		observers: [
 			'_dataChanged(data.*)',
 			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
-			'_debounceGroupItems(filteredItems, groupOn)',
 			'_updateVisibleColumns(columns, groupOn)'
 		],
 
@@ -191,6 +192,14 @@
 
 		_computeGroupOnColumn(groupOn) {
 			return this._getColumn(groupOn);
+		},
+
+		_computeDataValidity(data) {
+			return data && Array.isArray(data) && data.length > 0;
+		},
+
+		_computeFilterIsTooStrict(dataIsValid, visibleItemsLength) {
+			return dataIsValid && visibleItemsLength < 1;
 		},
 
 		_updateColumns: function () {
@@ -217,7 +226,7 @@
 
 			// Check if column names are set and unique
 			columns
-				.filter((column, i) => {
+				.filter((column) => {
 					var name = column.name;
 					if (!name) {
 						console.error('The name attribute needs to be set on all columns! Missing on column', column.title, column);
@@ -288,20 +297,12 @@
 		/**
 		 * Called when data is changed to setup up needs and check workers/filtering
 		 */
-		_dataChanged: function () {
-
-			this._noData = !this.data || !Array.isArray(this.data) || this.data.length < 1;
-
-			// Since Polymer 2.0 removed key-based path and splice notifications,
-			// handle data changes by reset the array.
-			this._newData();
-		},
-
-		_newData: function () {
-			if (this._webWorkerReady && this.columns) {
-				this._setColumnValues();
-				this._debounceFilterItems();
+		_dataChanged() {
+			if (!this._webWorkerReady || !this.columns) {
+				return;
 			}
+			this._setColumnValues();
+			this._debounceFilterItems();
 		},
 
 		_onUpdateItemSize: function (event, detail) {
@@ -309,10 +310,6 @@
 				this.$.groupedList.updateSize(detail.item);
 			}
 			event.stopPropagation();
-		},
-
-		_computeTooStrictFilterInfo: function (noData, numVisibleItems) {
-			return !noData && numVisibleItems < 1;
 		},
 
 		_debounceFilterItems: function () {
@@ -509,7 +506,11 @@
 			if (!attributeValue) {
 				return;
 			}
-			return this.columns.find(column => column[attribute] === attributeValue);
+			var column = this.columns.find(column => column[attribute] === attributeValue);
+			if (!column) {
+				console.warn(`Cannot find column with ${attribute} ${attributeValue}`);
+			}
+			return column;
 		},
 
 		_updateVisibleColumns: function () {
@@ -565,69 +566,62 @@
 				return;
 			}
 
-			var groupOn = this.groupOn,
-				groupOnColumn = this.groupOnColumn,
+			var groupOnColumn = this.groupOnColumn,
 				groups = [],
 				itemStructure = {};
 
-			if (groupOn) {
-				if (!groupOnColumn) {
-					console.warn('Cannot find column with name "' + groupOn + '" to group on.');
-					return;
-				}
-
-				this.filteredItems.forEach(function (item) {
-					var groupOnValue = groupOnColumn.getComparableValue(item, groupOnColumn.groupOn);
-
-					if (groupOnValue !== undefined) {
-						if (!itemStructure[groupOnValue]) {
-							itemStructure[groupOnValue] = [];
-						}
-						itemStructure[groupOnValue].push(item);
-					}
-				}, this);
-
-				groups = Object.keys(itemStructure).map(function (key) {
-					return {
-						name: key,
-						id: key,
-						items: itemStructure[key]
-					};
-				});
-
-				groups.sort(function (a, b) {
-					var
-						v1 = groupOnColumn.getComparableValue(a.items[0], groupOn),
-						v2 = groupOnColumn.getComparableValue(b.items[0], groupOn);
-
-					if (typeof v1 === 'object' && typeof v2 === 'object') {
-						// HACK(pasleq): worst case, compare using values converted to string
-						v1 = v1.toString();
-						v2 = v2.toString();
-					}
-					if (typeof v1 === 'number' && typeof v2 === 'number') {
-						return v1 - v2;
-					}
-					if (typeof v1 === 'string' && typeof v2 === 'string') {
-						return v1 < v2 ? -1 : 1;
-					}
-					if (typeof v1 === 'boolean' && typeof v2 === 'boolean') {
-						if (v1 === v2) {
-							return 0;
-						}
-						return v1 ? -1 : 1;
-					}
-
-					return 0;
-				});
-
-				this._groupsCount = groups.length;
-
-			} else {
-				groups = this.filteredItems;
+			if (!groupOnColumn || !groupOnColumn.groupOn) {
+				this.filteredGroupedItems = this.filteredItems;
 				this._groupsCount = 0;
+				return;
 			}
 
+			this.filteredItems.forEach(function (item) {
+				var groupOnValue = groupOnColumn.getComparableValue(item, groupOnColumn.groupOn);
+
+				if (groupOnValue !== undefined) {
+					if (!itemStructure[groupOnValue]) {
+						itemStructure[groupOnValue] = [];
+					}
+					itemStructure[groupOnValue].push(item);
+				}
+			}, this);
+
+			groups = Object.keys(itemStructure).map(function (key) {
+				return {
+					name: key,
+					id: key,
+					items: itemStructure[key]
+				};
+			});
+
+			groups.sort(function (a, b) {
+				var
+					v1 = groupOnColumn.getComparableValue(a.items[0], groupOnColumn.groupOn),
+					v2 = groupOnColumn.getComparableValue(b.items[0], groupOnColumn.groupOn);
+
+				if (typeof v1 === 'object' && typeof v2 === 'object') {
+					// HACK(pasleq): worst case, compare using values converted to string
+					v1 = v1.toString();
+					v2 = v2.toString();
+				}
+				if (typeof v1 === 'number' && typeof v2 === 'number') {
+					return v1 - v2;
+				}
+				if (typeof v1 === 'string' && typeof v2 === 'string') {
+					return v1 < v2 ? -1 : 1;
+				}
+				if (typeof v1 === 'boolean' && typeof v2 === 'boolean') {
+					if (v1 === v2) {
+						return 0;
+					}
+					return v1 ? -1 : 1;
+				}
+
+				return 0;
+			});
+
+			this._groupsCount = groups.length;
 			this.filteredGroupedItems = groups;
 		},
 
@@ -721,8 +715,8 @@
 			return expanded ? 'expand-less' : 'expand-more';
 		},
 
-		_computeShowCheckboxes: function (noData, hasActions) {
-			return !noData && hasActions;
+		_computeShowCheckboxes: function (dataIsValid, hasActions) {
+			return dataIsValid && hasActions;
 		},
 
 		// TODO(pasleq): re-implement expand/collapse of single item

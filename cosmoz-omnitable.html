@@ -147,13 +147,13 @@
 		<div class="mainContainer">
 			<div class="header" id="header">
 				<div class="selectAllCheckbox" hidden$="[[ !_showCheckboxes ]]">
-					<paper-checkbox on-change="onAllCheckboxChange" hidden$="[[ _noData ]]">
+					<paper-checkbox on-change="onAllCheckboxChange" hidden$="[[ !_dataIsValid ]]">
 					</paper-checkbox>
 				</div>
 				<cosmoz-omnitable-header-row columns="[[ visibleColumns ]]"></cosmoz-omnitable-header-row>
 			</div>
 			<div class="tableContent" id="tableContent">
-				<template is="dom-if" if="[[ _noData ]]">
+				<template is="dom-if" if="[[ !_dataIsValid ]]">
 					<div class="tableContent-empty">
 						<iron-icon icon="icons:announcement"></iron-icon>
 						<div>
@@ -162,7 +162,7 @@
 						</div>
 					</div>
 				</template>
-				<template is="dom-if" if="[[ _tooStrictFilterInfo ]]">
+				<template is="dom-if" if="[[ _filterIsTooStrict ]]">
 					<div class="tableContent-empty">
 						<iron-icon icon="icons:announcement"></iron-icon>
 						<div>
