@@ -840,7 +840,6 @@
 		_getFoldIcon: function (expanded) {
 			return expanded ? 'expand-less' : 'expand-more';
 		},
-
 		/**
 		 * Called if an item from the sortOn dropdown gets tapped.
 		 * Reverses the descending value if the sortOn value did not change.
@@ -855,7 +854,6 @@
 			}
 			this.descending = false;
 		},
-
 		/**
 		 * Toggle folding of a group
 		 * @param  {Event} event event
@@ -876,7 +874,6 @@
 			var item = event.model.item;
 			this.$.groupedList.toggleCollapse(item);
 		},
-
 		/**
 		 * Turn an `action` event into a `run` event
 		 * @param  {Event} event  `action` event
@@ -930,10 +927,13 @@
 			}
 			return removed;
 		},
-
 		/**
 		 * Convenience method for setting a value to an item's path and notifying any
 		 * element bound to this item's path.
+		 * @param {Object} item The item.
+		 * @param {itemPath} itemPath The path of the item.
+		 * @param {String} value The new value of the item.
+		 * @returns {undefined}
 		 */
 		setItemValue: function (item, itemPath, value) {
 			var dataColl = Polymer.Collection.get(this.data),
