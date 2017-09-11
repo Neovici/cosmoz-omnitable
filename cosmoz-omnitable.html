@@ -147,7 +147,7 @@
 		<div class="mainContainer">
 			<div class="header" id="header">
 				<div class="selectAllCheckbox" hidden$="[[ !_showCheckboxes ]]">
-					<paper-checkbox on-change="onAllCheckboxChange" hidden$="[[ !_dataIsValid ]]">
+					<paper-checkbox on-change="_onAllCheckboxChange" hidden$="[[ !_dataIsValid ]]">
 					</paper-checkbox>
 				</div>
 				<cosmoz-omnitable-header-row columns="[[ visibleColumns ]]"></cosmoz-omnitable-header-row>
@@ -177,7 +177,7 @@
 						<cosmoz-grouped-list-template id="itemTemplate">
 							<template>
 								<div class="item-row-wrapper">
-									<div class$="[[ _computeItemRowClasses(selected) ]]">
+									<div class$="[[ _getItemRowClasses(selected) ]]">
 										<div class="selectItemCheckbox" hidden$="[[ !_showCheckboxes ]]">
 											<paper-checkbox checked="{{ selected }}" on-change="_onItemCheckboxChange"></paper-checkbox>
 										</div>
@@ -187,8 +187,8 @@
 											expanded="{{ expanded }}"
 											item="[[ item ]]">
 										</cosmoz-omnitable-item-row>
-										<div class="item-expander" hidden="[[ isEmpty(disabledColumns.length) ]]">
-											<paper-icon-button icon="[[ getFoldIcon(expanded) ]]" on-tap="toggleItem"></paper-icon-button>
+										<div class="item-expander" hidden="[[ _isEmpty(disabledColumns.length) ]]">
+											<paper-icon-button icon="[[ _getFoldIcon(expanded) ]]" on-tap="_toggleItem"></paper-icon-button>
 										</div>
 									</div>
 									<cosmoz-omnitable-item-expand
@@ -202,7 +202,7 @@
 						</cosmoz-grouped-list-template>
 						<cosmoz-grouped-list-template id="groupTemplate">
 							<template>
-								<div class$="[[ _computeGroupRowClasses(folded) ]]">
+								<div class$="[[ _getGroupRowClasses(folded) ]]">
 									<div class="selectGroupCheckbox" hidden$="[[ !_showCheckboxes ]]">
 										<paper-checkbox checked="{{ selected }}" on-change="_onGroupCheckboxChange"></paper-checkbox>
 									</div>
@@ -217,7 +217,7 @@
 										</cosmoz-omnitable-group-row>
 									</h3>
 									<div>[[ item.items.length ]]</div>
-									<paper-icon-button icon="[[ getFoldIcon(folded) ]]" on-tap="toggleGroup"></paper-icon-button>
+									<paper-icon-button icon="[[ _getFoldIcon(folded) ]]" on-tap="_toggleGroup"></paper-icon-button>
 								</div>
 							</template>
 						</cosmoz-grouped-list-template>
@@ -261,14 +261,14 @@
 					<span>[[ ngettext('{0} group', '{0} groups', _groupsCount, t) ]]</span>
 					<span>[[ ngettext('{0} row', '{0} rows', filteredItems.length, t) ]]</span>
 				</div>
-				<cosmoz-bottom-bar id="bottomBar" class="footer-actionBar" match-parent has-actions="{{ hasActions }}" on-action="onAction" active$="[[ !isEmpty(selectedItems.length) ]]">
+				<cosmoz-bottom-bar id="bottomBar" class="footer-actionBar" match-parent has-actions="{{ hasActions }}" on-action="_onAction" active$="[[ !_isEmpty(selectedItems.length) ]]">
 					<div slot="info">[[ ngettext('{0} selected item', '{0} selected items', selectedItems.length, t) ]]</div>
 					<slot name="actions" id="actions"></slot>
 					<!-- These slots are neened by cosmoz-bottom-bar
 						as it might change the slot of the actions to distribute them in the menu -->
 					<slot name="bottom-bar-toolbar"></slot>
 					<slot name="bottom-bar-menu"></slot>
-					<paper-button on-action="saveAsCsvAction">[[ _('Save as CSV', t) ]]</paper-button>
+					<paper-button on-action="_saveAsCsvAction">[[ _('Save as CSV', t) ]]</paper-button>
 				</cosmoz-bottom-bar>
 			</div>
 		</div>
