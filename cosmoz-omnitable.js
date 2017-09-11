@@ -80,26 +80,12 @@
 			},
 
 			/**
-			 * An object representing current sort of the table.
-			 * The object must have the following propreties:
-			 * - columnName: item's value path to sort on
-			 * - descending: a boolean indicating of sort is done in descending order.
-			 */
-
-			// Index of the selected item in the sortOn listbox
-			_sortOnSelectorSelected: {
-				type: Number,
-				value: 0
-			},
-
-			/**
 			 * The item's value path to group on
 			 */
 			groupOn: {
 				type: String,
 				notify: true,
-				value: '',
-				observer: '_groupOnChanged'
+				value: ''
 			},
 
 			/**
@@ -107,8 +93,8 @@
 			 */
 			groupOnColumn: {
 				type: Object,
-				readOnly: true,
-				notify: true
+				notify: true,
+				computed: '_computeGroupOnColumn(groupOn, columns)'
 			},
 
 			/**
@@ -184,7 +170,9 @@
 
 		observers: [
 			'_dataChanged(data.*)',
-			'_debounceSortItems(sortOn, descending)'
+			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
+			'_debounceGroupItems(filteredItems, groupOn)',
+			'_updateVisibleColumns(columns, groupOn)'
 		],
 
 		behaviors: [
@@ -200,6 +188,10 @@
 		_disabledColumnsIndexes: null,
 
 		_scalingUp: false,
+
+		_computeGroupOnColumn(groupOn) {
+			return this._getColumn(groupOn);
+		},
 
 		_updateColumns: function () {
 			var columns = this.getEffectiveChildren().filter(function (child, index) {
@@ -223,36 +215,37 @@
 				return;
 			}
 
-			this.columns = columns;
-
 			// Check if column names are set and unique
-			this.columns.filter((column, i) => {
-				var name = column.name;
-				if (!name) {
-					console.error('The name attribute needs to be set on all columns! Missing on column', column.title, column);
-				}
-				return name && columnNames.indexOf(name) !== columnNames.lastIndexOf(name) && columnNames.indexOf(name) === i;
-			}).forEach(column => {
-				console.error('The name attribute needs to be unique among all columns! Not unique on column', column.title, column);
-			});
+			columns
+				.filter((column, i) => {
+					var name = column.name;
+					if (!name) {
+						console.error('The name attribute needs to be set on all columns! Missing on column', column.title, column);
+						return;
+					}
+					return columnNames.indexOf(name) !== columnNames.lastIndexOf(name);
+				})
+				.forEach(column => {
+					console.error('The name attribute needs to be unique among all columns! Not unique on column', column.title, column);
+				});
 
 			// TODO: Un-listen from old columns ?
-			this.columns.forEach(function (column) {
+			columns.forEach(function (column) {
 				this.listen(column, 'filter-changed', '_onColumnFilterChanged');
 
 				if (!column.name){
 					// No name set; Try to set name attribute via valuePath
 					if (!valuePathNames) {
-						valuePathNames = this.columns.map(c => c.valuePath);
+						valuePathNames = columns.map(c => c.valuePath);
 					}
-					var hasUniqueValuePath = valuePathNames.filter(n => n === column.valuePath).length === 1;
-					if (hasUniqueValuePath && !columnNames.indexOf(column.valuePath) === -1) {
+					var hasUniqueValuePath = valuePathNames.indexOf(column.valuePath) === valuePathNames.lastIndexOf(column.valuePath);
+					if (hasUniqueValuePath && columnNames.indexOf(column.valuePath) === -1) {
 						column.name = column.valuePath;
 					}
 				}
 			}, this);
 
-			this._updateVisibleColumns();
+			this.columns = columns;
 
 			if (this._webWorkerReady && this.data) {
 				this._debounceFilterItems();
@@ -519,21 +512,12 @@
 			return this.columns.find(column => column[attribute] === attributeValue);
 		},
 
-		_groupOnChanged: function () {
-			if (this.columns) {
-				this._updateVisibleColumns();
-			}
-
-			this._debounceGroupItems();
-		},
-
 		_updateVisibleColumns: function () {
 			var visibleColumns = this.columns.slice();
 
 			if (this.groupOn) {
 				visibleColumns = visibleColumns.filter(function (column) {
 					if (column.name === this.groupOn) {
-						this._setGroupOnColumn(column);
 						return false;
 					}
 					return true;
@@ -565,9 +549,6 @@
 				} else {
 					this.filteredItems = this.data.slice();
 				}
-
-				this._debounceGroupItems();
-
 			} else {
 				this.filteredItems = [];
 				this.filteredGroupedItems  = [];
@@ -585,13 +566,13 @@
 			}
 
 			var groupOn = this.groupOn,
-				groupOnColumn = this._getColumn(this.groupOn),
+				groupOnColumn = this.groupOnColumn,
 				groups = [],
 				itemStructure = {};
 
 			if (groupOn) {
 				if (!groupOnColumn) {
-					console.warn('Cannot group on ' + groupOn + ' as there is no columm configured to group on this value path.');
+					console.warn('Cannot find column with name "' + groupOn + '" to group on.');
 					return;
 				}
 
@@ -648,8 +629,6 @@
 			}
 
 			this.filteredGroupedItems = groups;
-
-			this._debounceSortItems();
 		},
 
 		_sortFilteredGroupedItems: function () {
@@ -865,7 +844,6 @@
 		},
 
 		_canScaleUp: function (width) {
-
 			if (!this.disabledColumns || this.disabledColumns.length === 0) {
 				return false;
 			}
