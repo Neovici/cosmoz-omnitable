@@ -761,7 +761,8 @@
 
 			this._debounceAdjustColumns();
 		},
-		/** //TODO: Use cosmoz-behaviors
+		//TODO: Use cosmoz-behaviors
+		/**
 		 * Helper method for Polymer 1.0+ templates - check if variable
 		 * is undefined, null, empty Array list or empty String.
 		 * @param  {Object}  obj variable
