@@ -16,8 +16,8 @@
 		<template class="header">
 			<paper-autocomplete-chips
 				text="{{ query }}"
-				items="[[ values ]]"
-				placeholder="[[ title ]]"
+				source="[[ values ]]"
+				label="[[ title ]]"
 				selected-items="{{ filter }}">
 				<paper-spinner-lite style="width: 20px; height: 20px;" slot="suffix" active="[[ loading ]]" hidden="[[ !loading ]]"></paper-spinner-lite>
 			</paper-input-autocomplete-chips>
