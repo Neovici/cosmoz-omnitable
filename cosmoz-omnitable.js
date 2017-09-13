@@ -211,11 +211,12 @@
 
 			// TODO: Un-listen from old columns ?
 
-			this.columns = columns;
-
-			this.columns.forEach(function (column) {
+			columns.forEach(function (column) {
 				this.listen(column, 'filter-changed', '_onColumnFilterChanged');
+				this.listen(column, 'title-changed', '_onColumnTitleChanged');
 			}, this);
+
+			this.set('columns', columns);
 
 			this._updateVisibleColumns();
 
@@ -297,6 +298,22 @@
 
 		_onColumnFilterChanged: function (event) {
 			this._debounceFilterItems();
+		},
+
+		_onColumnTitleChanged: function (event, detail) {
+			var column = event.target,
+				columnIndex = this.columns.indexOf(column);
+
+			// re-notify column change to make dom-repeat re-render menu item title
+			this.notifyPath(['columns', columnIndex, 'title']);
+
+			// HACK: ensure paper-dropdown-menu updates current selected item label after translation change
+			// See https://github.com/PolymerElements/paper-dropdown-menu/issues/197
+			if (column === this.groupOnColumn) {
+				this.$.groupOnSelector._selectedItemChanged(this.$.groupOnSelector.selectedItem);
+			} else if (column === this.sortOnColumn) {
+				this.$.sortOnSelectorMenu._selectedItemChanged(this.$.sortOnSelectorMenu.selectedItem);
+			}
 		},
 
 		/**
