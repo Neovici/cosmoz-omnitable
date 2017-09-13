@@ -467,41 +467,40 @@
 
 			}, this);
 		},
-
-		/**
-		 * Returns the column corresponding to the current `groupOn` value
+		/*
+		 * Returns a column based on a name
 		 */
-		_getGroupOnColumn: function () {
-			var col;
+		_getColumn({ attributeValue, attribute = 'name', alternativeAttribute } = {}) {
+			var col,
+				altCol;
 
-			if (!this.groupOn) {
+			if (!attributeValue) {
 				return;
 			}
-			this.columns.some(function (column) {
-				if (column.groupOn === this.groupOn) {
+
+			this.columns.find(column => {
+				if (column[attribute] === attributeValue) {
 					col = column;
 					return true;
 				}
+				if (alternativeAttribute && column[alternativeAttribute] === attributeValue) {
+					altCol = column;
+				}
 			}, this);
-			return col;
+
+			if (!col && altCol) {
+				console.warn('Sorting/Grouping should be based on the unique name attribute rather than on the value-path.\n' +
+				'e.g. Create <my-col name="time" value-path="date"> and set sortOn="time" to sort on the time column!');
+			}
+
+			return col || altCol;
 		},
-
-		/**
-		 * Returns the column representing the current `sortOn` value
+		/*
+		 * Returns the value of an object attribute based on the first given valid attribute name.
+		 * _orAttr({name: 'Jon', age: 4}, 'firstName', 'lastName', 'name'); // returns Jon
 		 */
-		_getSortOnColumn: function () {
-			var col;
-
-			if (!this.sortOn || !this.sortOn.valuePath) {
-				return;
-			}
-			this.columns.some(function (column) {
-				if (column.sortOn === this.sortOn.valuePath) {
-					col = column;
-					return true;
-				}
-			}, this);
-			return col;
+		_orAttr(obj, ...args) {
+			return obj[args.find(a => obj[a])];
 		},
 
 		_groupOnChanged: function (newValue, oldValue) {
@@ -513,12 +512,14 @@
 		},
 
 		_updateVisibleColumns: function () {
-			var visibleColumns = this.columns.slice();
+			var visibleColumns = this.columns.slice(),
+				groupOnColumn;
 
 			if (this.groupOn) {
+				groupOnColumn = this._getColumn({ attributeValue: this.groupOn, alternativeAttribute: 'groupOn' });
 				visibleColumns = visibleColumns.filter(function (column) {
-					if (column.groupOn === this.groupOn) {
-						this._setGroupOnColumn(column);
+					if (column === groupOnColumn) {
+						this._setGroupOnColumn(groupOnColumn);
 						return false;
 					}
 					return true;
@@ -571,7 +572,7 @@
 			}
 
 			var groupOn = this.groupOn,
-				groupOnColumn = this._getGroupOnColumn(),
+				groupOnColumn = this._getColumn({ attributeValue: groupOn, alternativeAttribute: 'groupOn' }),
 				groups = [],
 				itemStructure = {};
 
@@ -582,7 +583,7 @@
 				}
 
 				this.filteredItems.forEach(function (item, index) {
-					var groupOnValue = groupOnColumn.getComparableValue(item, groupOn);
+					var groupOnValue = groupOnColumn.getComparableValue(item, groupOnColumn.groupOn);
 
 					if (groupOnValue !== undefined) {
 						if (!itemStructure[groupOnValue]) {
@@ -644,12 +645,17 @@
 			}
 
 			var sortOn = this.sortOn,
-				sortOnColumn = this._getSortOnColumn(),
+				sortOnColumn = sortOn ? sortOn.column : null,
 				items = [],
 				numGroups = this.filteredGroupedItems.length,
 				mappedItems,
 				results = 0,
 				itemMapper;
+
+			if (sortOn && !sortOnColumn) {
+				console.warn('Use sortOnColumn instead of sortOn to change the sorting and ensure validity!');
+				sortOnColumn = this._getColumn({ attributeValue: this.sortOn.valuePath, alternativeAttribute: 'sortOn' });
+			}
 
 			if (!sortOn || !sortOnColumn) {
 				this.sortedFilteredGroupedItems = this.filteredGroupedItems;
@@ -701,7 +707,6 @@
 			} else {
 				// No grouping
 				mappedItems = this.filteredGroupedItems.map(itemMapper, this);
-
 				this.$.sortWorker.process({
 					reverse: sortOn.descending,
 					sortOn: 'value',
@@ -892,7 +897,6 @@
 		},
 
 		_enableColumn: function () {
-
 			// Columns are disabled by priority, so we can re-enable them
 			var column = this.pop('disabledColumns'),
 				columnIndex = this._disabledColumnsIndexes.pop();
@@ -973,7 +977,6 @@
 			var
 				column = event.model ? event.model.column : undefined,
 				selected;
-
 			if (!column) {
 				this.sortOn = null;
 				this._sortOnSelectorSelected = 0;
@@ -982,17 +985,20 @@
 				if (!this.sortOn || !this.sortOn.valuePath) {
 					this.sortOn = {
 						valuePath: column.sortOn,
-						descending: false
+						descending: false,
+						column: column
 					};
 				} else if (this.sortOn.valuePath === column.sortOn) {
 					this.sortOn = {
 						valuePath: this.sortOn.valuePath,
-						descending: !this.sortOn.descending
+						descending: !this.sortOn.descending,
+						column: column
 					};
 				} else {
 					this.sortOn = {
 						valuePath: column.sortOn,
-						descending: false
+						descending: false,
+						column: column
 					};
 				}
 
@@ -1004,14 +1010,21 @@
 
 		// Select the right column if sort has been changed from outside.
 		_sortOnChanged: function (sortOnChange) {
-			var sortOn = sortOnChange.base;
+			var sortOn = sortOnChange.base,
+				column;
 
-			if (sortOn && !sortOn.valuePath) {
+			if (sortOn && !sortOn.column) {
+
+				column = this._getColumn({ attributeValue: sortOn.name || sortOn.valuePath || sortOn, alternativeAttribute: 'valuePath' });
+
+				if (!column) {
+					return;
+				}
 				this.sortOn = {
-					valuePath: sortOn,
-					descending: false
+					valuePath: column ? column.sortOn : null,
+					descending: sortOn.descending || false,
+					column: column
 				};
-				return;
 			}
 			if (!sortOn || !sortOn.valuePath) {
 				this._sortOnSelectorSelected = 0;
@@ -1031,9 +1044,9 @@
 			if (!this.sortOn || !this.sortOn.valuePath || !sortOnSelectorItems.length) {
 				newIndex = 0;
 			} else {
-				sortOnSelectorItems.some(function (element, i) {
+				sortOnSelectorItems.find((element, i) => {
 					var model = this.$.sortColumns.modelForElement(element);
-					if (model && model.column && model.column.sortOn === this.sortOn.valuePath) {
+					if (model && model.column && model.column === this.sortOn.column) {
 						newIndex = i;
 						return true;
 					}

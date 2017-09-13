@@ -23,7 +23,15 @@
 	}
 
 	function getRandomDate() {
-		return new Date(2015, getRandomInt(1, 12), getRandomInt(1, 28));
+		// return some equal dates to test grouping
+		var i = getRandomInt(0, 10);
+		if (i === 1) {
+			return new Date(2015, 3, 2, 14, 10, 299);
+		}
+		if (i === 2) {
+			return new Date(2015, 8, 12, 9, 12, 444);
+		}
+		return new Date(2015, getRandomInt(1, 12), getRandomInt(1, 28), getRandomInt(0, 23), getRandomInt(0, 59), getRandomInt(0, 999));
 	}
 
 	window.Cosmoz = window.Cosmoz || {};
