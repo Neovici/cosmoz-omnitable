@@ -404,7 +404,7 @@
 			var visibleColumns = this.columns.slice();
 
 			if (this.groupOn) {
-				visibleColumns = visibleColumns.filter(c => c.name === this.groupOn);
+				visibleColumns = visibleColumns.filter(c => c.name !== this.groupOn);
 			}
 
 			this.visibleColumns = visibleColumns;
