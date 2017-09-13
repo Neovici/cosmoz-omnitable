@@ -228,7 +228,7 @@
 				<div class="footer-controls">
 					<div class="footer-control">
 						<paper-dropdown-menu vertical-align="bottom" horizontal-align="left" id="groupOnSelector" label="[[ _('Group on', t) ]]">
-							<paper-listbox class="dropdown-content menu" slot="dropdown-content" selected="{{ groupOn }}" attr-for-selected="data-group-on">
+							<paper-listbox id="groupOnListbox" class="dropdown-content menu" slot="dropdown-content" selected="{{ groupOn }}" attr-for-selected="data-group-on">
 								<paper-item data-group-on=""><i style="white-space: nowrap">[[ _('No grouping', t) ]]</i></paper-item>
 								<template is="dom-repeat" items="[[ columns ]]" as="column">
 									<paper-item data-group-on$="[[ column.groupOn ]]" hidden$="[[ !column.groupOn ]]">[[ column.title ]]</paper-item>
