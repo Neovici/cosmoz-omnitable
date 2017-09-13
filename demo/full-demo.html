@@ -45,9 +45,11 @@
 				<h3>Cosmoz omnitable demo</h3>
 
 				<cosmoz-i18next
+					translations="[[ _getTranslations(locale) ]]"
 					interpolation-prefix="{"
-					interpolation-suffix="}">
-				</cosmoz-i18next>
+					interpolation-suffix="}"
+					key-separator="::"
+					ns-separator=":::"></cosmoz-i18next>
 				<cosmoz-moment locale="[[ locale ]]"></cosmoz-moment>
 
 				<div class="layout horizontal center">
@@ -59,7 +61,7 @@
 					</div>
 					<div class="action">
 						<paper-dropdown-menu label="Locale" no-animations>
-							<paper-listbox class="dropdown-content" selected="{{ locale }}" attr-for-selected="value">
+							<paper-listbox class="dropdown-content" slot="dropdown-content" selected="{{ locale }}" attr-for-selected="value">
 								<paper-item value="en">en</paper-item>
 								<paper-item value="fr">fr</paper-item>
 								<paper-item value="sv">sv</paper-item>
@@ -81,9 +83,9 @@
 					</cosmoz-omnitable-column-boolean>
 					<cosmoz-omnitable-column-number title="Value" value-path="value" sort-on="value" group-on="value" locale="[[ locale ]]">
 					</cosmoz-omnitable-column-number>
-					<cosmoz-omnitable-column-autocomplete title="Group" value-path="group" sort-on="group" group-on="group">
+					<cosmoz-omnitable-column-autocomplete title="[[ _('Group', t) ]]" value-path="group" sort-on="group" group-on="group">
 					</cosmoz-omnitable-column-autocomplete>
-					<cosmoz-omnitable-column-amount title="Amount" value-path="amount" sort-on="amount" group-on="amount">
+					<cosmoz-omnitable-column-amount title="[[ _('Amount', t) ]]" value-path="amount" sort-on="amount" group-on="amount">
 					</cosmoz-omnitable-column-amount>
 					<cosmoz-omnitable-column-date title="Date" value-path="date" sort-on="date" group-on="date">
 					</cosmoz-omnitable-column-date>
@@ -153,7 +155,7 @@
 			},
 			locale: {
 				type: String,
-				value: 'en'
+				value: 'sv'
 			},
 			customNameTemplate: {
 				type: Object
@@ -161,7 +163,8 @@
 		},
 
 		behaviors: [
-			Cosmoz.TableDemoBehavior
+			Cosmoz.TableDemoBehavior,
+			Cosmoz.TranslatableBehavior
 		],
 
 		ready: function () {
@@ -214,6 +217,45 @@
 			return new Array(numSelected).fill(undefined).map(function (none, i) {
 				return 'action ' + (i + 1);
 			});
+		},
+
+		_getTranslations: function (locale) {
+			if (locale === 'sv') {
+				return {
+					'Amount': 'Belopp',
+					'Group': 'Grupp',
+					'{0} group': '{0} grupp',
+					'{0} group_plural': '{0} grupper',
+					'{0} row': '{0} rad',
+					'{0} row_plural': '{0} rader',
+					'{0} selected item': '{0} valt objekt',
+					'{0} selected item_plural': '{0} valda objekt',
+					'Group on': 'Gruppera på',
+					'Sort on': 'Sortera på',
+					'No grouping': 'Ingen gruppering',
+					'No sorting': 'Ingen sortering'
+				};
+
+			} else if (locale === 'fr') {
+				return {
+					'Amount': 'Montant',
+					'Save as CSV': 'Eporter en CSV',
+					'Group': 'Groupe',
+					'{0} group': '{0} groupe',
+					'{0} group_plural': '{0} groupes',
+					'{0} row': '{0} ligne',
+					'{0} row_plural': '{0} lignes',
+					'{0} selected item': '{0} élément sélectionné',
+					'{0} selected item_plural': '{0} éléments sélectionnés',
+					'Group on': 'Grouper sur',
+					'Sort on': 'Trier sur',
+					'No grouping': 'Pas de groupement',
+					'No sorting': 'Pas de tri'
+				};
+			}
+
+			return {
+			};
 		}
 
 	});
