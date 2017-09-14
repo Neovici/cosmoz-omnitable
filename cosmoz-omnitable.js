@@ -172,8 +172,7 @@
 
 		observers: [
 			'_sortOnChanged(sortOn.*)',
-			'_dataChanged(data.*)',
-			'_translationsChanged(t)'
+			'_dataChanged(data.*)'
 		],
 
 		behaviors: [
@@ -192,10 +191,9 @@
 
 		_updateColumns: function () {
 			var columns = this.getEffectiveChildren().filter(function (child, index) {
-					child.__index = index;
-					return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn;
-				}),
-				boundObserveColumnChange = this._observeColumnChange.bind(this);
+				child.__index = index;
+				return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn;
+			});
 
 			if (Array.isArray(this.enabledColumns)) {
 				columns = columns.filter(function (column) {
@@ -216,8 +214,7 @@
 			this.columns = columns;
 
 			this.columns.forEach(function (column) {
-				var observer = new MutationObserver(boundObserveColumnChange);
-				observer.observe(column, { childList: false, characterData: false, subtree: false, attributes: true });
+				this.listen(column, 'title-changed', '_onColumnTitleChanged');
 				this.listen(column, 'filter-changed', '_onColumnFilterChanged');
 			}, this);
 
@@ -228,21 +225,6 @@
 			}
 		},
 
-		_observeColumnChange: function (mutations) {
-			mutations.forEach(function (mutation) {
-				var column = mutation.target,
-					index = this.columns.indexOf(column),
-					attributeName = mutation.attributeName;
-
-				if (index >= 0) {
-					this.notifyPath(['columns', index, attributeName]);
-				}
-
-				if (column === this.groupOnColumn) {
-					this.notifyPath(['groupOnColumn', attributeName]);
-				}
-			}, this);
-		},
 		created: function () {
 			/** WARNING: we do not support columns changes yet. */
 			// `isOmnitableColumn` is a property from cosmoz-omnitable-column-behavior
@@ -316,6 +298,18 @@
 
 		_onColumnFilterChanged: function (event) {
 			this._debounceFilterItems();
+		},
+
+		_onColumnTitleChanged: function (event) {
+			var column = event.target,
+				columnIndex = this.columns.indexOf(column);
+
+			// re-notify column change to make dom-repeat re-render menu item title
+			this.notifyPath(['columns', columnIndex, 'title']);
+
+			if (column === this.groupOnColumn) {
+				this.notifyPath(['groupOnColumn', 'title']);
+			}
 		},
 
 		/**
@@ -1095,20 +1089,8 @@
 			}));
 		},
 
-		// HACK: ensure paper-dropdown-menu updates current selected item label after translation change
-		// See https://github.com/PolymerElements/paper-dropdown-menu/issues/197
-		_translationsChanged: function () {
-			// HACK: debounce because translations change might be notified to this component before its columns.
-			this.debounce('refreshListboxes', this._refreshListboxes, 1);
-		},
-
-		_refreshListboxes: function () {
-			// A workaround for the paper-dropdow-menu issue could be to set on paper-listbox elements
-			// the `selected` property to `null` first and then to the previous selected value.
-			// However, this causes 2 changes of the groupOn property, causing 2 updates of the visible columns
-			// Using the private _selectedItemChanged prevent that, but is unsafe as this function could be removed.
-			this.$.groupOnSelector._selectedItemChanged(this.$.groupOnSelector.selectedItem);
-			this.$.sortOnSelectorMenu._selectedItemChanged(this.$.sortOnSelectorMenu.selectedItem);
-		},
+		_computeSortOnLabel: function (column, title, sortOnChange) {
+			return title + ' ' + this._getSortDirection(column, sortOnChange);
+		}
 	});
 }());
