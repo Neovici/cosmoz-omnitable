@@ -214,6 +214,7 @@
 			this.columns = columns;
 
 			this.columns.forEach(function (column) {
+				this.listen(column, 'title-changed', '_onColumnTitleChanged');
 				this.listen(column, 'filter-changed', '_onColumnFilterChanged');
 			}, this);
 
@@ -297,6 +298,18 @@
 
 		_onColumnFilterChanged: function (event) {
 			this._debounceFilterItems();
+		},
+
+		_onColumnTitleChanged: function (event) {
+			var column = event.target,
+				columnIndex = this.columns.indexOf(column);
+
+			// re-notify column change to make dom-repeat re-render menu item title
+			this.notifyPath(['columns', columnIndex, 'title']);
+
+			if (column === this.groupOnColumn) {
+				this.notifyPath(['groupOnColumn', 'title']);
+			}
 		},
 
 		/**
@@ -1074,7 +1087,10 @@
 			saveAs(new File(rows, this.csvFilename, {
 				type: 'text/csv;charset=utf-8'
 			}));
-		}
+		},
 
+		_computeSortOnLabel: function (column, title, sortOnChange) {
+			return title + ' ' + this._getSortDirection(column, sortOnChange);
+		}
 	});
 }());

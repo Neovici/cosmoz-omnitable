@@ -10,7 +10,8 @@
 		properties: {
 
 			title: {
-				type: String
+				type: String,
+				notify: true
 			},
 
 			valuePath: {
@@ -32,7 +33,7 @@
 			editable: {
 				type: Boolean
 			},
-	
+
 			/**
 			 * Values to filter this column will be managed outside of omnitable
 			 */
@@ -40,7 +41,7 @@
 				type: Boolean,
 				value: false
 			},
-	
+
 			filter: {
 				type: Object,
 				notify: true
