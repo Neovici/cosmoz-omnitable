@@ -32,11 +32,26 @@
 	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 
 	<link rel="import" href="../cosmoz-omnitable.html">
+	<link rel="import" href="../cosmoz-omnitable-columns.html">
+	<link rel="import" href="../demo/table-demo-behavior.html">
 </head>
 <body>
 	<test-fixture id="cosmoz-omnitable-fixture">
 		<template>
 			<cosmoz-omnitable></cosmoz-omnitable>
+		</template>
+	</test-fixture>
+
+	<test-fixture id="cosmoz-omnitable-column-setup">
+		<template>
+			<cosmoz-omnitable id="omnitable" class="flex" data="[[ data ]]" selection-enabled selected-items="{{ selectedItems }}">
+				<cosmoz-omnitable-column-date id="date1" name="date1" value-path="date">
+				</cosmoz-omnitable-column-date>
+				<cosmoz-omnitable-column-date id="date2" name="date2" value-path="dateJson">
+				</cosmoz-omnitable-column-date>
+				<cosmoz-omnitable-column-date name="date3" value-path="date">
+					</cosmoz-omnitable-column-date>
+			</cosmoz-omnitable>
 		</template>
 	</test-fixture>
 
@@ -46,12 +61,6 @@
 		'use strict';
 
 		suite('<cosmoz-omnitable>', function () {
-			var myElement;
-
-			setup(function () {
-				myElement = fixture('cosmoz-omnitable-fixture');
-			});
-
 			test('No console logs should exist', function () {
 				assert.equal(logStore.length, 0, 'Log messages: ' + logStore.join(' | '));
 			});
@@ -62,6 +71,85 @@
 
 			test('No console errors should exist', function () {
 				assert.equal(errorStore.length, 0, 'Error messages: ' + errorStore.join(' | '));
+			});
+
+		});
+
+		suite('cosmoz-omnitable-column-setup', function () {
+			var omnitable,
+				data;
+	
+			setup(function () {
+				omnitable = fixture('cosmoz-omnitable-column-setup');
+				data = Cosmoz.TableDemoBehavior.generateTableDemoData(10, 11, 25);
+				omnitable.data = data;
+				// Don't log the name not unique errors
+				stub('cosmoz-omnitable', {
+					_verifyColumnSetup: function () {
+						return true;
+					}
+				});
+			});
+	
+			test('Update Columns', function () {
+				var date1 = omnitable.querySelector('#date1'),
+					date2 = omnitable.querySelector('#date2');
+
+				/**
+				 * Not existing name attribute.
+				 * Test if name set via value-path.
+				 */
+				date1.name = 'date';
+				date1.valuePath = 'date';
+				date2.name = '';
+				date2.valuePath = 'dateJSON';
+				omnitable._updateColumns();
+	
+				expect(date2.name).to.be.equal(date2.valuePath);
+				expect(date1.name).not.to.be.equal(date2.name);
+
+				/**
+				 * Not existing name attribute. No unique value-path.
+				 * Test if name not set via value-path.
+				 */
+				date2.name = '';
+				date2.valuePath = 'date';
+				omnitable._updateColumns();
+
+				expect(date2.name).to.be.equal('');
+				expect(date1.name).not.to.be.equal(date2.name);
+			});
+
+			test('Retrieve Column', function () {
+				var date1 = omnitable.querySelector('#date1'),
+					date2 = omnitable.querySelector('#date2'),
+					column;
+
+				/**
+				 * Test retrieving a column via its name attribute.
+				 */
+				date1.name = 'date1';
+				date2.name = 'date2';
+				omnitable._updateColumns();
+	
+				column = omnitable._getColumn('date1');
+				expect(column).to.be.equal(date1);
+			});
+
+			test('Visible Columns', function () {
+				omnitable._updateColumns();
+				/**
+				 * Test if visible columns do not include the group on column.
+				 */
+				omnitable.groupOn = 'date2';
+				expect(omnitable.visibleColumns.length).to.be.equal(omnitable.columns.length - 1);
+				expect(omnitable.visibleColumns).not.include(omnitable.groupOnColumn);
+
+				/**
+				 * Test if all columns are visible if not grouped.
+				 */
+				omnitable.groupOn = '';
+				expect(omnitable.visibleColumns).to.be.deep.equal(omnitable.columns);
 			});
 		});
 	}());
