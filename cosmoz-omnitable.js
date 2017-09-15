@@ -255,6 +255,18 @@
 			this._debounceFilterItems();
 		},
 
+		_onColumnTitleChanged: function (event) {
+			var column = event.target,
+				columnIndex = this.columns.indexOf(column);
+
+			// re-notify column change to make dom-repeat re-render menu item title
+			this.notifyPath(['columns', columnIndex, 'title']);
+
+			if (column === this.groupOnColumn) {
+				this.notifyPath(['groupOnColumn', 'title']);
+			}
+		},
+
 		// Handle selection/deselection of a group
 		_onGroupCheckboxChange: function (event) {
 			var
@@ -338,6 +350,7 @@
 			// TODO: Un-listen from old columns ?
 			columns.forEach(function (column) {
 				this.listen(column, 'filter-changed', '_onColumnFilterChanged');
+				this.listen(column, 'title-changed', '_onColumnTitleChanged');
 
 				if (!column.name){
 					// No name set; Try to set name attribute via valuePath

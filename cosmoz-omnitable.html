@@ -27,7 +27,7 @@
 <link rel="import" href="cosmoz-omnitable-item-expand-line.html">
 <link rel="import" href="cosmoz-omnitable-group-row.html">
 <link rel="import" href="cosmoz-omnitable-styles.html">
-
+<link rel="import" href="cosmoz-omnitable-item.html">
 <link rel="import" href="cosmoz-omnitable-columns.html">
 
 
@@ -229,9 +229,9 @@
 					<div class="footer-control">
 						<paper-dropdown-menu vertical-align="bottom" horizontal-align="left" id="groupOnSelector" label="[[ _('Group on', t) ]]">
 							<paper-listbox class="dropdown-content menu" slot="dropdown-content" selected="{{ groupOn }}" attr-for-selected="data-group-on">
-								<paper-item data-group-on=""><i style="white-space: nowrap">[[ _('No grouping', t) ]]</i></paper-item>
+								<cosmoz-omnitable-item data-group-on="" style="font-style: italic" label="[[ _('No grouping', t) ]]"></cosmoz-omnitable-item>
 								<template is="dom-repeat" items="[[ columns ]]" as="column">
-									<paper-item data-group-on$="[[ column.name ]]" hidden$="[[ !column.groupOn ]]">[[ column.title ]]</paper-item>
+									<cosmoz-omnitable-item data-group-on$="[[ column.name ]]" hidden$="[[ !column.groupOn ]]" label="[[ column.title ]]"></cosmoz-omnitable-item>
 								</template>
 							</paper-listbox>
 						</paper-dropdown-menu>
@@ -239,19 +239,19 @@
 					<div class="footer-control">
 						<paper-dropdown-menu vertical-align="bottom" horizontal-align="right"
 							label="[[_('Sort on', t)]] [[sortDirection]]">
-							<paper-listbox 
-								slot="dropdown-content" 
+							<paper-listbox
+								slot="dropdown-content"
 								class="dropdown-content menu"
-								attr-for-selected="data-name" 
+								attr-for-selected="data-name"
 								selected="{{ sortOn }}">
-								<paper-item><span>[[ _('No sorting', t) ]]</span></paper-item>
+								<cosmoz-omnitable-item data-name="" label="[[ _('No sorting', t) ]]"></cosmoz-omnitable-item>
 								<template is="dom-repeat" items="[[ columns ]]" as="column">
-									<paper-item 
-										hidden$="[[ !column.sortOn ]]" 
-										data-name$="[[ column.name ]]" 
-										on-tap="_reverseSortDirection">
-										<span>[[ column.title ]]</span>
-									</paper-item>
+									<cosmoz-omnitable-item
+										hidden$="[[ !column.sortOn ]]"
+										data-name$="[[ column.name ]]"
+										on-tap="_reverseSortDirection"
+										label="[[ column.title ]]">
+									</cosmoz-omnitable-item>
 								</template>
 							</paper-listbox>
 						</paper-dropdown-menu>

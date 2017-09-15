@@ -1,0 +1,43 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../paper-item/paper-item-shared-styles.html"/>
+
+<dom-module id="cosmoz-omnitable-item">
+	<template>
+		<style include="paper-item-shared-styles"></style>
+		<style>
+		:host {
+			@apply --layout-horizontal;
+			@apply --layout-center;
+			@apply --paper-font-subhead;
+
+			@apply --paper-item;
+			white-space: nowrap;
+		}
+		</style>
+		<span>[[ label ]]</span>
+	</template>
+	<script>
+		Polymer({
+
+			is: 'cosmoz-omnitable-item',
+
+			properties: {
+				label: {
+					type: String,
+					observer: '_labelChanged'
+				}
+			},
+
+			// HACK: ensure paper-dropdown-menu updates current selected item label after translation change
+			// See https://github.com/PolymerElements/paper-dropdown-menu/issues/197
+			_labelChanged: function (newValue) {
+				if (this.classList.contains('iron-selected')) {
+					this.fire('iron-deselect', { item: this});
+					this.fire('iron-select', { item: this});
+				}
+			}
+		});
+
+	</script>
+</dom-module>
