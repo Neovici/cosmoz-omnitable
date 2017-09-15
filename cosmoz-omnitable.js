@@ -805,7 +805,7 @@
          */
 		_hiddenAttr(node) {
 			var v = node.getAttribute('hidden');
-			return (v ? v.toLowerCase() : v) === 'false' ? false : !!v;
+			return (v ? v.toLowerCase() : v) === 'false' ? false : v === '' ? true : !!v;
 		},
 
 		_onWebWorkerReady: function () {
