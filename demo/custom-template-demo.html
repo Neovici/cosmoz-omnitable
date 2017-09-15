@@ -61,7 +61,7 @@
 				</div>
 
 				<cosmoz-omnitable id="omnitable" class="flex" data="[[data]]" selection-enabled selected-items="{{selectedItems}}">
-					<cosmoz-omnitable-column title="Id" value-path="id" sort-on="id" group-on="id">
+					<cosmoz-omnitable-column title="Id" name="id" value-path="id" sort-on="id" group-on="id">
 						<template class="cell">
 							<span>
 								<span>[[_customFunction(item)]]</span>
@@ -70,10 +70,10 @@
 						</template>
 					</cosmoz-omnitable-column>
 
-					<cosmoz-omnitable-column title="Value" value-path="value" sort-on="value" group-on="value">
+					<cosmoz-omnitable-column title="Value" name="value" value-path="value" sort-on="value" group-on="value">
 					</cosmoz-omnitable-column>
 
-					<cosmoz-omnitable-column title="Amount" value-path="amount" sort-on="amount" group-on="amount"
+					<cosmoz-omnitable-column title="Amount" name="amount" value-path="amount" sort-on="amount" group-on="amount"
 						cell-template="[[customDataTemplate]]">
 					</cosmoz-omnitable-column>
 				</cosmoz-omnitable>

@@ -38,15 +38,15 @@ gulp.task('update', function () {
 							gitRun('git status --porcelain', resolvedPath, function (output) {
 								var needsStash = output.length > 0;
 								if (needsStash) {
-									gitRun('git stash', resolvedPath, function (output) {
-										gitRun('git pull', resolvedPath, function (output) {
-											gitRun('git stash pop', resolvedPath, function (output) {
+									gitRun('git stash', resolvedPath, function () {
+										gitRun('git pull', resolvedPath, function () {
+											gitRun('git stash pop', resolvedPath, function () {
 												console.log('stash pull stash done');
 											});
 										});
 									});
 								} else {
-									gitRun('git pull', resolvedPath, function (output) {
+									gitRun('git pull', resolvedPath, function () {
 										console.log('pull done');
 									});
 								}
