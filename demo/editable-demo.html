@@ -48,11 +48,11 @@
 				</div>
 
 				<cosmoz-omnitable id="omnitable" data="[[data]]" class="flex" selection-enabled selected-items="{{selectedItems}}">
-					<cosmoz-omnitable-column title="Id" value-path="id"></cosmoz-omnitable-column>
-					<cosmoz-omnitable-column-number title="Value" value-path="value" editable>
+					<cosmoz-omnitable-column title="Id" name="id" value-path="id"></cosmoz-omnitable-column>
+					<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" editable>
 					</cosmoz-omnitable-column-number>
 
-					<cosmoz-omnitable-column-boolean title="Boolean" value-path="bool"
+					<cosmoz-omnitable-column-boolean title="Boolean" name="bool" value-path="bool"
 						true-label="Oui" false-label="Non" editable></cosmoz-omnitable-column-boolean>
 
 					<cosmoz-omnitable-column-amount title="Amount" value-path="amount" editable></cosmoz-omnitable-column-amount>
@@ -61,7 +61,7 @@
 					<cosmoz-omnitable-column title="Sub-property" value-path="sub.subProp" editable></cosmoz-omnitable-column>
 					<cosmoz-omnitable-column title="Random String" value-path="randomString" editable></cosmoz-omnitable-column>
 					<!-- sample column that overrides edit-cell -->
-					<cosmoz-omnitable-column title="Name" editable>
+					<cosmoz-omnitable-column title="Name" name="name" editable>
 						<template class="edit-cell">
 							<paper-input no-label-float type="text" on-change="_itemNameChanged" value="[[item.name]]"></paper-input>
 						</template>

@@ -45,9 +45,11 @@
 				<h3>Cosmoz omnitable demo</h3>
 
 				<cosmoz-i18next
+					translations="[[ _getTranslations(locale) ]]"
 					interpolation-prefix="{"
-					interpolation-suffix="}">
-				</cosmoz-i18next>
+					interpolation-suffix="}"
+					key-separator="::"
+					ns-separator=":::"></cosmoz-i18next>
 				<cosmoz-moment locale="[[ locale ]]"></cosmoz-moment>
 
 				<div class="layout horizontal center">
@@ -59,7 +61,7 @@
 					</div>
 					<div class="action">
 						<paper-dropdown-menu label="Locale" no-animations>
-							<paper-listbox class="dropdown-content" selected="{{ locale }}" attr-for-selected="value">
+							<paper-listbox class="dropdown-content" slot="dropdown-content" selected="{{ locale }}" attr-for-selected="value">
 								<paper-item value="en">en</paper-item>
 								<paper-item value="fr">fr</paper-item>
 								<paper-item value="sv">sv</paper-item>
@@ -69,39 +71,39 @@
 				</div>
 
 				<cosmoz-omnitable id="omnitable" class="flex" data="[[ data ]]" selection-enabled selected-items="{{ selectedItems }}">
-					<cosmoz-omnitable-column-autocomplete title="Id" value-path="id" sort-on="id" group-on="id">
+					<cosmoz-omnitable-column-autocomplete title="Id" name="id" name="id" value-path="id" sort-on="id" group-on="id">
 						<template class="cell">
 							<span on-tap="onTap">
 								<a href="#!/purchase/suppliers/view?id=[[ item.id ]]">[[ item.id ]]</a>
 							</span>
 						</template>
 					</cosmoz-omnitable-column-autocomplete>
-					<cosmoz-omnitable-column-boolean title="Boolean" value-path="bool" sort-on="bool" group-on="bool"
+					<cosmoz-omnitable-column-boolean title="Boolean" name="bool" value-path="bool" sort-on="bool" group-on="bool"
 						true-label="Oui" false-label="Non">
 					</cosmoz-omnitable-column-boolean>
-					<cosmoz-omnitable-column-number title="Value" value-path="value" sort-on="value" group-on="value" locale="[[ locale ]]">
+					<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" sort-on="value" group-on="value" locale="[[ locale ]]">
 					</cosmoz-omnitable-column-number>
-					<cosmoz-omnitable-column-autocomplete title="Group" value-path="group" sort-on="group" group-on="group">
+					<cosmoz-omnitable-column-autocomplete title="[[ _('Group', t) ]]" name="group" value-path="group" sort-on="group" group-on="group">
 					</cosmoz-omnitable-column-autocomplete>
-					<cosmoz-omnitable-column-amount title="Amount" value-path="amount" sort-on="amount" group-on="amount">
+					<cosmoz-omnitable-column-amount title="[[ _('Amount', t) ]]" name="amount" value-path="amount" sort-on="amount" group-on="amount">
 					</cosmoz-omnitable-column-amount>
-					<cosmoz-omnitable-column-date title="Date" value-path="date" sort-on="date" group-on="date">
+					<cosmoz-omnitable-column-date title="Date" name="date" value-path="date" sort-on="date" group-on="date">
 					</cosmoz-omnitable-column-date>
-					<cosmoz-omnitable-column-date title="DateJSON" value-path="dateJSON" sort-on="dateJSON" group-on="dateJSON">
+					<cosmoz-omnitable-column-date title="DateJSON" name="datejson" value-path="dateJSON" sort-on="dateJSON" group-on="dateJSON">
 					</cosmoz-omnitable-column-date>
-					<cosmoz-omnitable-column-time title="Time" value-path="date" sort-on="date" group-on="date">
+					<cosmoz-omnitable-column-time title="Time" name="time" value-path="date" sort-on="date" group-on="date">
 					</cosmoz-omnitable-column-time>
-					<cosmoz-omnitable-column-list title="List" value-path="list">
+					<cosmoz-omnitable-column-list title="List" name="list" value-path="list">
 					</cosmoz-omnitable-column-list>
-					<cosmoz-omnitable-column title="Sub-property" value-path="sub.subProp" sort-on="sub.subProp" group-on="sub.subProp" flex="5">
+					<cosmoz-omnitable-column title="Sub-property" name="sub-property" value-path="sub.subProp" sort-on="sub.subProp" group-on="sub.subProp" flex="5">
 					</cosmoz-omnitable-column>
-					<cosmoz-omnitable-column title="Name" value-path="name" sort-on="name" group-on="name" flex="2">
+					<cosmoz-omnitable-column title="Name" name="name" value-path="name" sort-on="name" group-on="name" flex="2">
 						<template class="cell">
 							<a href="#!/purchase/suppliers/view?id=[[ item.id ]]">[[ item.name ]]</a>
 						</template>
 					</cosmoz-omnitable-column>
 					<cosmoz-omnitable-column title="Custom template"
-						value-path="name" sort-on="name" width="50px" flex="2"
+						name="custom-name" value-path="name" sort-on="name" width="50px" flex="2"
 						cell-template="[[ customNameTemplate ]]">
 					</cosmoz-omnitable-column>
 
@@ -155,7 +157,7 @@
 			},
 			locale: {
 				type: String,
-				value: 'en'
+				value: 'sv'
 			},
 			customNameTemplate: {
 				type: Object
@@ -163,7 +165,8 @@
 		},
 
 		behaviors: [
-			Cosmoz.TableDemoBehavior
+			Cosmoz.TableDemoBehavior,
+			Cosmoz.TranslatableBehavior
 		],
 
 		ready: function () {
@@ -216,6 +219,45 @@
 			return new Array(numSelected).fill(undefined).map(function (none, i) {
 				return 'action ' + (i + 1);
 			});
+		},
+
+		_getTranslations: function (locale) {
+			if (locale === 'sv') {
+				return {
+					'Amount': 'Belopp',
+					'Group': 'Grupp',
+					'{0} group': '{0} grupp',
+					'{0} group_plural': '{0} grupper',
+					'{0} row': '{0} rad',
+					'{0} row_plural': '{0} rader',
+					'{0} selected item': '{0} valt objekt',
+					'{0} selected item_plural': '{0} valda objekt',
+					'Group on': 'Gruppera på',
+					'Sort on': 'Sortera på',
+					'No grouping': 'Ingen gruppering',
+					'No sorting': 'Ingen sortering'
+				};
+
+			} else if (locale === 'fr') {
+				return {
+					'Amount': 'Montant',
+					'Save as CSV': 'Eporter en CSV',
+					'Group': 'Groupe',
+					'{0} group': '{0} groupe',
+					'{0} group_plural': '{0} groupes',
+					'{0} row': '{0} ligne',
+					'{0} row_plural': '{0} lignes',
+					'{0} selected item': '{0} élément sélectionné',
+					'{0} selected item_plural': '{0} éléments sélectionnés',
+					'Group on': 'Grouper sur',
+					'Sort on': 'Trier sur',
+					'No grouping': 'Pas de groupement',
+					'No sorting': 'Pas de tri'
+				};
+			}
+
+			return {
+			};
 		}
 
 	});

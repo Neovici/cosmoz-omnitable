@@ -47,11 +47,14 @@
 		_slotName: 'group-row',
 
 		_columnChanged: function (newColumn) {
+			if (!newColumn) {
+				return;
+			}
 			if (this.columns && this.columns.length > 0) {
 				this.splice('columns', 0, 1, newColumn);
-			} else {
-				this.columns =  [newColumn];
+				return;
 			}
+			this.columns =  [newColumn];
 		},
 
 		_getTemplateInstance: function (column) {

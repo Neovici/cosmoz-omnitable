@@ -18,10 +18,19 @@
 			},
 
 			/**
-			 * List of data to display
+			 * Array used to list items.
 			 */
 			data: {
 				type: Array
+			},
+
+			/**
+			 * True if data is a valid and not empty array.
+			 */
+			_dataIsValid: {
+				type: Boolean,
+				value: false,
+				computed: '_computeDataValidity(data)'
 			},
 
 			/**
@@ -53,7 +62,7 @@
 			 */
 			_showCheckboxes: {
 				type: Boolean,
-				computed: '_computeShowCheckboxes(_noData, hasActions)'
+				computed: '_computeShowCheckboxes(_dataIsValid, hasActions)'
 			},
 
 			/**
@@ -64,46 +73,46 @@
 				notify: true
 			},
 
-			/**
-			 * An object representing current sort of the table.
-			 * The object must have the following propreties:
-			 * - valuePath: item's value path to sort on
-			 * - descending: a boolean indicating of sort is done in descending order.
-			 */
+			descending: {
+				type: Boolean,
+				value: false
+			},
+
+			sortDirection: {
+				type: String,
+				computed: '_computeSortDirection(descending)'
+			},
+
 			sortOn: {
-				type: Object,
-				value: null
-			},
-
-			// Index of the selected item in the sortOn listbox
-			_sortOnSelectorSelected: {
-				type: Number
+				type: String,
+				value: ''
 			},
 
 			/**
-			 * The item's value path to group on
+			 * The column name to group on.
 			 */
 			groupOn: {
 				type: String,
 				notify: true,
-				value: '',
-				observer: '_groupOnChanged'
+				value: ''
 			},
 
 			/**
-			 * Column that matches the current `groupOn` value.
+			 * The column that matches the current `groupOn` value.
 			 */
 			groupOnColumn: {
 				type: Object,
-				readOnly: true,
-				notify: true
+				notify: true,
+				observer: '_debounceGroupItems',
+				computed: '_computeGroupOnColumn(groupOn, columns)'
 			},
 
 			/**
 			 * Items matching current set filter(s)
 			 */
 			filteredItems: {
-				type: Array
+				type: Array,
+				observer: '_debounceGroupItems'
 			},
 
 			/**
@@ -127,15 +136,6 @@
 			_previousWidth: {
 				type: Number,
 				value: 0
-			},
-
-			/**
-			 * When we don't have data.
-			 * Saved in its own property since `data` will be undefined at first and not trigger evaluation
-			 */
-			_noData: {
-				type: Boolean,
-				value: true
 			},
 
 			_groupsCount: {
@@ -164,15 +164,16 @@
 				notify: true
 			},
 
-			_tooStrictFilterInfo: {
+			_filterIsTooStrict: {
 				type: Boolean,
-				computed: '_computeTooStrictFilterInfo(_noData, sortedFilteredGroupedItems.length)'
+				computed: '_computeFilterIsTooStrict(_dataIsValid, sortedFilteredGroupedItems.length)'
 			}
 		},
 
 		observers: [
-			'_sortOnChanged(sortOn.*)',
-			'_dataChanged(data.*)'
+			'_dataChanged(data.*)',
+			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
+			'_updateVisibleColumns(columns, groupOn)'
 		],
 
 		behaviors: [
@@ -185,44 +186,7 @@
 			'update-item-size': '_onUpdateItemSize'
 		},
 
-		_disabledColumnsIndexes: null,
-
-		_scalingUp: false,
-
-		_updateColumns: function () {
-			var columns = this.getEffectiveChildren().filter(function (child, index) {
-				child.__index = index;
-				return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn;
-			});
-
-			if (Array.isArray(this.enabledColumns)) {
-				columns = columns.filter(function (column) {
-					return this.enabledColumns.indexOf(column.name) !== -1;
-				}, this);
-			} else {
-				columns = columns.filter(function (column) {
-					return !column.disabled;
-				});
-			}
-
-			if (!columns || columns.length === 0) {
-				return;
-			}
-
-			// TODO: Un-listen from old columns ?
-
-			this.columns = columns;
-
-			this.columns.forEach(function (column) {
-				this.listen(column, 'filter-changed', '_onColumnFilterChanged');
-			}, this);
-
-			this._updateVisibleColumns();
-
-			if (this._webWorkerReady && this.data) {
-				this._debounceFilterItems();
-			}
-		},
+		/** ELEMENT LIFECYCLE */
 
 		created: function () {
 			/** WARNING: we do not support columns changes yet. */
@@ -253,23 +217,31 @@
 			this._isDetached = true;
 		},
 
-		/**
-		 * Called when data is changed to setup up needs and check workers/filtering
-		 */
-		_dataChanged: function (change) {
+		/** ELEMENT BEHAVIOR */
 
-			this._noData = !this.data || !Array.isArray(this.data) || this.data.length < 1;
+		_disabledColumnsIndexes: null,
 
-			// Since Polymer 2.0 removed key-based path and splice notifications,
-			// handle data changes by reset the array.
-			this._newData();
+		_scalingUp: false,
+
+		_computeGroupOnColumn(groupOn) {
+			return this._getColumn(groupOn);
 		},
 
-		_newData: function (data) {
-			if (this._webWorkerReady && this.columns) {
-				this._setColumnValues();
-				this._debounceFilterItems();
-			}
+		_computeDataValidity(data) {
+			return data && Array.isArray(data) && data.length > 0;
+		},
+
+		_computeFilterIsTooStrict(dataIsValid, visibleItemsLength) {
+			return dataIsValid && visibleItemsLength < 1;
+		},
+
+		_computeSortDirection(descending) {
+			var direction = descending ? this._('Descending') : this._('Ascending');
+			return `(${direction})`;
+		},
+
+		_computeShowCheckboxes(dataIsValid, hasActions) {
+			return dataIsValid && hasActions;
 		},
 
 		_onUpdateItemSize: function (event, detail) {
@@ -279,88 +251,8 @@
 			event.stopPropagation();
 		},
 
-		_computeTooStrictFilterInfo: function (noData, numVisibleItems) {
-			return !noData && numVisibleItems < 1;
-		},
-
-		_debounceFilterItems: function () {
-			this.debounce('filterItems', this._filterItems);
-		},
-
-		_debounceGroupItems: function () {
-			this.debounce('groupItems', this._groupItems);
-		},
-
-		_debounceSortItems: function () {
-			this.debounce('sortItems', this._sortFilteredGroupedItems);
-		},
-
-		_onColumnFilterChanged: function (event) {
+		_onColumnFilterChanged: function () {
 			this._debounceFilterItems();
-		},
-
-		/**
-		 * Helper method to remove an item from `data`.
-		 * @param  {Object} item Item to remove
-		 * @return {Object} item removed
-		 */
-		removeItem: function (item) {
-			var removed = this.arrayDelete('data', item);
-			if (removed && removed.length) {
-				return removed[0];
-			}
-		},
-
-		/**
-		 * Remove multiple items from `data`
-		 * @param {Array} an array of items to remove
-		 * @return {Array} Array containing removed items
-		 */
-		removeItems: function (items) {
-			var i,
-				removedItems = [],
-				removed;
-
-			for (i = items.length - 1; i >= 0; i -= 1) {
-				removed = this.arrayDelete('data', items[i]);
-				if (removed) {
-					removedItems = removedItems.concat(removed);
-				}
-			}
-			return removed;
-		},
-
-		/**
-		 * Turn an `action` event into a `run` event
-		 * @param  {Event} event  `action` event
-		 * @param  {Object} detail `action` event details
-		 */
-		onAction: function (event, detail) {
-			detail.item.dispatchEvent(new window.CustomEvent('run', {
-				bubbles: true,
-				cancelable: true,
-				detail: {
-					omnitable: this,
-					items: this.selectedItems
-				}
-			}));
-			event.stopPropagation();
-		},
-
-		onAllCheckboxChange: function (event, detail) {
-
-			if (event.target === null) {
-				return;
-			}
-
-			var checked = event.target.checked;
-
-			if (checked) {
-				this.$.groupedList.selectAll();
-			} else {
-				this.$.groupedList.deselectAll();
-			}
-
 		},
 
 		// Handle selection/deselection of a group
@@ -380,7 +272,7 @@
 		},
 
 		// Handle selection/deselection of an item
-		_onItemCheckboxChange: function (event, detail) {
+		_onItemCheckboxChange: function (event) {
 			var
 				item = event.model.item,
 				selected = this.$.groupedList.isItemSelected(item);
@@ -395,52 +287,76 @@
 			event.stopPropagation();
 		},
 
-		/**
-		 * Convenience method for setting a value to an item's path and notifying any
-		 * element bound to this item's path.
-		 */
-		setItemValue: function (item, itemPath, value) {
-			var dataColl = Polymer.Collection.get(this.data),
-				key = dataColl.getKey(item);
-
-			this.set('data.' + key + '.' + itemPath, value);
+		_onResize: function () {
+			this._debounceAdjustColumns();
 		},
 
-		selectItem: function (item) {
-			this.$.groupedList.selectItem(item);
+		_dataChanged() {
+			if (!this._webWorkerReady || !this.columns) {
+				return;
+			}
+			this._setColumnValues();
+			this._debounceFilterItems();
 		},
 
-		deselectItem: function (item) {
-			this.$.groupedList.deselectItem(item);
-		},
+		_updateColumns: function () {
+			var columns = this.getEffectiveChildren().filter(function (child, index) {
+					child.__index = index;
+					return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn;
+				}),
+				columnNames = columns.map(c => c.name),
+				valuePathNames;
 
-		isItemSelected: function (item) {
-			this.$.groupedList.isItemSelected(item);
-		},
+			if (Array.isArray(this.enabledColumns)) {
+				columns = columns.filter(function (column) {
+					return this.enabledColumns.indexOf(column.name) !== -1;
+				}, this);
+			} else {
+				columns = columns.filter(function (column) {
+					return !column.disabled;
+				});
+			}
 
-		/**
-		 * Toggle folding of a group
-		 */
-		toggleGroup: function (event) {
-			var firstRow = this.$.groupedList.getFirstVisibleItemElement(),
-				folded = event.model.folded;
+			if (!columns || columns.length === 0) {
+				return;
+			}
 
-			this.$.groupedList.toggleFold(event.model);
+			// Check if column names are set and unique
+			columns
+				.filter((column) => {
+					var name = column.name;
+					if (!name) {
+						console.error('The name attribute needs to be set on all columns! Missing on column', column.title, column);
+						return;
+					}
+					return columnNames.indexOf(name) !== columnNames.lastIndexOf(name);
+				})
+				.forEach(column => {
+					console.error('The name attribute needs to be unique among all columns! Not unique on column', column.title, column);
+				});
 
-			if (!firstRow && folded) {
-				this._debounceAdjustColumns();
+			// TODO: Un-listen from old columns ?
+			columns.forEach(function (column) {
+				this.listen(column, 'filter-changed', '_onColumnFilterChanged');
+
+				if (!column.name){
+					// No name set; Try to set name attribute via valuePath
+					if (!valuePathNames) {
+						valuePathNames = columns.map(c => c.valuePath);
+					}
+					var hasUniqueValuePath = valuePathNames.indexOf(column.valuePath) === valuePathNames.lastIndexOf(column.valuePath);
+					if (hasUniqueValuePath && columnNames.indexOf(column.valuePath) === -1) {
+						column.name = column.valuePath;
+					}
+				}
+			}, this);
+
+			this.columns = columns;
+
+			if (this._webWorkerReady && this.data) {
+				this._debounceFilterItems();
 			}
 		},
-
-		toggleItem: function (event, detail) {
-			var item = event.model.item;
-			this.$.groupedList.toggleCollapse(item);
-		},
-
-		getFoldIcon: function (expanded) {
-			return expanded ? 'expand-less' : 'expand-more';
-		},
-
 		// TODO: provides a mean to avoid setting the values for a column
 		// TODO: should process (distinct, sort, min, max) the values at the column level depending on the column type
 		_setColumnValues: function () {
@@ -458,7 +374,7 @@
 				}
 
 				column.set('values', this.data
-					.map(function (item, index) {
+					.map(function (item) {
 						return this.get(column.valuePath, item);
 					}, this)
 					.filter(function (value, index, self) {
@@ -467,67 +383,37 @@
 
 			}, this);
 		},
-
-		/**
-		 * Returns the column corresponding to the current `groupOn` value
+		/*
+		 * Returns a column based on an attribute.
+		 * @param {String} attributeValue The value of the column attribute.
+		 * @param {String} attribute The attribute name of the column.
+		 * @returns {Object} The found column.
 		 */
-		_getGroupOnColumn: function () {
-			var col;
-
-			if (!this.groupOn) {
+		_getColumn(attributeValue, attribute = 'name') {
+			if (!attributeValue) {
 				return;
 			}
-			this.columns.some(function (column) {
-				if (column.groupOn === this.groupOn) {
-					col = column;
-					return true;
-				}
-			}, this);
-			return col;
-		},
-
-		/**
-		 * Returns the column representing the current `sortOn` value
-		 */
-		_getSortOnColumn: function () {
-			var col;
-
-			if (!this.sortOn || !this.sortOn.valuePath) {
-				return;
+			var column = this.columns.find(column => column[attribute] === attributeValue);
+			if (!column) {
+				console.warn(`Cannot find column with ${attribute} ${attributeValue}`);
 			}
-			this.columns.some(function (column) {
-				if (column.sortOn === this.sortOn.valuePath) {
-					col = column;
-					return true;
-				}
-			}, this);
-			return col;
-		},
-
-		_groupOnChanged: function (newValue, oldValue) {
-			if (this.columns) {
-				this._updateVisibleColumns();
-			}
-
-			this._debounceGroupItems();
+			return column;
 		},
 
 		_updateVisibleColumns: function () {
 			var visibleColumns = this.columns.slice();
 
 			if (this.groupOn) {
-				visibleColumns = visibleColumns.filter(function (column) {
-					if (column.groupOn === this.groupOn) {
-						this._setGroupOnColumn(column);
-						return false;
-					}
-					return true;
-				}, this);
+				visibleColumns = visibleColumns.filter(c => c.name !== this.groupOn);
 			}
 
 			this.visibleColumns = visibleColumns;
 			this.disabledColumns = [];
 			this._disabledColumnsIndexes = [];
+		},
+
+		_debounceFilterItems: function () {
+			this.debounce('filterItems', this._filterItems);
 		},
 
 		_filterItems: function () {
@@ -550,9 +436,6 @@
 				} else {
 					this.filteredItems = this.data.slice();
 				}
-
-				this._debounceGroupItems();
-
 			} else {
 				this.filteredItems = [];
 				this.filteredGroupedItems  = [];
@@ -561,8 +444,11 @@
 			}
 		},
 
-		_groupItems: function () {
+		_debounceGroupItems: function () {
+			this.debounce('groupItems', this._groupItems);
+		},
 
+		_groupItems: function () {
 			if (!this.filteredItems || this.filteredItems.length === 0) {
 				this.filteredGroupedItems  = [];
 				this.sortedFilteredGroupedItems = [];
@@ -570,72 +456,70 @@
 				return;
 			}
 
-			var groupOn = this.groupOn,
-				groupOnColumn = this._getGroupOnColumn(),
+			var groupOnColumn = this.groupOnColumn,
 				groups = [],
 				itemStructure = {};
 
-			if (groupOn) {
-				if (!groupOnColumn) {
-					console.warn('Cannot group on ' + groupOn + ' as there is no columm configured to group on this value path.');
-					return;
-				}
-
-				this.filteredItems.forEach(function (item, index) {
-					var groupOnValue = groupOnColumn.getComparableValue(item, groupOn);
-
-					if (groupOnValue !== undefined) {
-						if (!itemStructure[groupOnValue]) {
-							itemStructure[groupOnValue] = [];
-						}
-						itemStructure[groupOnValue].push(item);
-					}
-				}, this);
-
-				groups = Object.keys(itemStructure).map(function (key) {
-					return {
-						name: key,
-						id: key,
-						items: itemStructure[key]
-					};
-				});
-
-				groups.sort(function (a, b) {
-					var
-						v1 = groupOnColumn.getComparableValue(a.items[0], groupOn),
-						v2 = groupOnColumn.getComparableValue(b.items[0], groupOn);
-
-					if (typeof v1 === 'object' && typeof v2 === 'object') {
-						// HACK(pasleq): worst case, compare using values converted to string
-						v1 = v1.toString();
-						v2 = v2.toString();
-					}
-					if (typeof v1 === 'number' && typeof v2 === 'number') {
-						return v1 - v2;
-					}
-					if (typeof v1 === 'string' && typeof v2 === 'string') {
-						return v1 < v2 ? -1 : 1;
-					}
-					if (typeof v1 === 'boolean' && typeof v2 === 'boolean') {
-						if (v1 === v2) {
-							return 0;
-						}
-						return v1 ? -1 : 1;
-					}
-
-					return 0;
-				});
-
-				this._groupsCount = groups.length;
-
-			} else {
-				groups = this.filteredItems;
+			if (!groupOnColumn || !groupOnColumn.groupOn) {
+				this.filteredGroupedItems = this.filteredItems;
 				this._groupsCount = 0;
+				return;
 			}
 
-			this.filteredGroupedItems = groups;
+			this.filteredItems.forEach(function (item) {
+				var groupOnValue = groupOnColumn.getComparableValue(item, groupOnColumn.groupOn);
 
-			this._debounceSortItems();
+				if (groupOnValue !== undefined) {
+					if (!itemStructure[groupOnValue]) {
+						itemStructure[groupOnValue] = [];
+					}
+					itemStructure[groupOnValue].push(item);
+				}
+			}, this);
+
+			groups = Object.keys(itemStructure).map(function (key) {
+				return {
+					name: key,
+					id: key,
+					items: itemStructure[key]
+				};
+			});
+
+			groups.sort(function (a, b) {
+				var
+					v1 = groupOnColumn.getComparableValue(a.items[0], groupOnColumn.groupOn),
+					v2 = groupOnColumn.getComparableValue(b.items[0], groupOnColumn.groupOn);
+
+				if (typeof v1 === 'object' && typeof v2 === 'object') {
+					// HACK(pasleq): worst case, compare using values converted to string
+					v1 = v1.toString();
+					v2 = v2.toString();
+				}
+				if (typeof v1 === 'number' && typeof v2 === 'number') {
+					return v1 - v2;
+				}
+				if (typeof v1 === 'string' && typeof v2 === 'string') {
+					return v1 < v2 ? -1 : 1;
+				}
+				if (typeof v1 === 'boolean' && typeof v2 === 'boolean') {
+					if (v1 === v2) {
+						return 0;
+					}
+					return v1 ? -1 : 1;
+				}
+
+				return 0;
+			});
+
+			this._groupsCount = groups.length;
+			this.filteredGroupedItems = groups;
+		},
+
+		_debounceSortItems: function () {
+			if (!this.data || !this.data.length || !this._webWorkerReady || !this.columns) {
+				return;
+			}
+			this.debounce('sortItems', this._sortFilteredGroupedItems);
 		},
 
 		_sortFilteredGroupedItems: function () {
@@ -643,15 +527,14 @@
 				return;
 			}
 
-			var sortOn = this.sortOn,
-				sortOnColumn = this._getSortOnColumn(),
+			var sortOnColumn = this._getColumn(this.sortOn),
 				items = [],
 				numGroups = this.filteredGroupedItems.length,
 				mappedItems,
 				results = 0,
 				itemMapper;
 
-			if (!sortOn || !sortOnColumn) {
+			if (!this.sortOn || !sortOnColumn) {
 				this.sortedFilteredGroupedItems = this.filteredGroupedItems;
 				this._debounceAdjustColumns();
 				return;
@@ -660,7 +543,7 @@
 			itemMapper = function (item, originalItemIndex) {
 				return {
 					index: originalItemIndex,
-					value: sortOnColumn.getComparableValue(item, sortOn.valuePath)
+					value: sortOnColumn.getComparableValue(item, sortOnColumn.sortOn)
 				};
 			};
 			if (this._groupsCount > 0) {
@@ -680,7 +563,7 @@
 								groupId: group.id,
 								index: index
 							},
-							reverse: sortOn.descending,
+							reverse: this.descending,
 							sortOn: 'value',
 							data: mappedItems
 						}, function (data) {
@@ -689,7 +572,7 @@
 								name: data.meta.groupName,
 								id: data.meta.groupId
 							};
-							items[data.meta.index].items = data.data.map(function (item, index) {
+							items[data.meta.index].items = data.data.map(function (item) {
 								return group.items[item.index];
 							});
 							if (results === numGroups) {
@@ -703,7 +586,7 @@
 				mappedItems = this.filteredGroupedItems.map(itemMapper, this);
 
 				this.$.sortWorker.process({
-					reverse: sortOn.descending,
+					reverse: this.descending,
 					sortOn: 'value',
 					data: mappedItems
 				}, function (data) {
@@ -716,31 +599,18 @@
 						return;
 					}
 
-					this.set('sortedFilteredGroupedItems', data.data.map(function (item, index){
+					this.set('sortedFilteredGroupedItems', data.data.map(function (item){
 						return this.filteredGroupedItems[item.index];
 					}, this));
 					this._debounceAdjustColumns();
 				}.bind(this));
 			}
 		},
-
-		// TODO(pasleq): re-implement expand/collapse of single item
-		_computeIcon: function (item, expanded) {
-			return expanded ? 'expand-less' : 'expand-more';
-		},
-
-		_computeShowCheckboxes: function (noData, hasActions) {
-			return !noData && hasActions;
-		},
-
-		// TODO(pasleq): re-implement expand/collapse of single item
-		toggleExtraColumns: function (event, detail) {
-			var item = event.model.item;
-			this.$.groupedList.toggleCollapse(item);
-		},
-
-		_onResize: function (event) {
-			this._debounceAdjustColumns();
+		/**
+		 * True if the current list is visible.
+		 */
+		get _isVisible() {
+			return Boolean(this.offsetWidth || this.offsetHeight);
 		},
 
 		_debounceAdjustColumns: function () {
@@ -749,19 +619,11 @@
 			// which might look strange.
 			this.debounce('adjustColumns', this._adjustColumns, 16);
 		},
-
-		/**
-		 * True if the current list is visible.
-		 */
-		get _isVisible() {
-			return Boolean(this.offsetWidth || this.offsetHeight);
-		},
-
 		/**
 		 * Enable/disable columns to properly fit in the available space.
 		 * Adjust headers width according to cells width
-		 *
 		 * @memberOf element/cz-omnitable
+		 * @returns {Boolean} Return
 		 */
 		_adjustColumns: function () {
 			var firstRow,
@@ -852,7 +714,6 @@
 		},
 
 		_canScaleUp: function (width) {
-
 			if (!this.disabledColumns || this.disabledColumns.length === 0) {
 				return false;
 			}
@@ -892,7 +753,6 @@
 		},
 
 		_enableColumn: function () {
-
 			// Columns are disabled by priority, so we can re-enable them
 			var column = this.pop('disabledColumns'),
 				columnIndex = this._disabledColumnsIndexes.pop();
@@ -901,16 +761,15 @@
 
 			this._debounceAdjustColumns();
 		},
-
 		//TODO: Use cosmoz-behaviors
 		/**
 		 * Helper method for Polymer 1.0+ templates - check if variable
 		 * is undefined, null, empty Array list or empty String.
 		 * @param  {Object}  obj variable
 		 * @return {Boolean}  true if "empty", false otherwise
-		 * @memberOf element/cz-omnitable
+		 * ^memberOf element/cz-omnitable
 		 */
-		isEmpty: function (obj) {
+		_isEmpty: function (obj) {
 			if (obj === undefined || obj === null) {
 				return true;
 			}
@@ -927,121 +786,11 @@
 			return false;
 		},
 
-		_computeItemRowClasses: function (selected) {
-			return selected ?  'itemRow itemRow-selected' : 'itemRow';
-		},
-
-		_computeItemRowCellClasses: function (column, columnIndex) {
-			var originalIndex = this.columns.indexOf(column);
-			return 'itemRow-cell'
-				+ (column.cellClass ? ' ' + column.cellClass + ' ' : '')
-				+ ' cosmoz-omnitable-column-' + originalIndex;
-		},
-
-		_computeGroupRowClasses: function (folded) {
-			return folded ? 'groupRow groupRow-folded' : 'groupRow';
-		},
-
 		_onWebWorkerReady: function () {
 			this._webWorkerReady = true;
 			if (this.data && this.columns) {
 				this._setColumnValues();
 				this._debounceFilterItems();
-			}
-		},
-
-		_getSortDirection: function (column, sortOnChange) {
-			var
-				sortOn = sortOnChange.base,
-				direction = '';
-
-			if (!column) {
-				return;
-			}
-			if (sortOn && sortOn.valuePath === column.sortOn) {
-				direction = sortOn.descending ? this._('Descending') : this._('Ascending');
-				return '(' + direction + ')';
-			}
-
-			return direction;
-		},
-
-		/**
-		 * Called when a item from the sortOn dropdown is activated (tap)
-		 */
-		_onSortColumnActivate: function (event) {
-			var
-				column = event.model ? event.model.column : undefined,
-				selected;
-
-			if (!column) {
-				this.sortOn = null;
-				this._sortOnSelectorSelected = 0;
-			} else {
-				selected = this.$.sortOnSelector.selected;
-				if (!this.sortOn || !this.sortOn.valuePath) {
-					this.sortOn = {
-						valuePath: column.sortOn,
-						descending: false
-					};
-				} else if (this.sortOn.valuePath === column.sortOn) {
-					this.sortOn = {
-						valuePath: this.sortOn.valuePath,
-						descending: !this.sortOn.descending
-					};
-				} else {
-					this.sortOn = {
-						valuePath: column.sortOn,
-						descending: false
-					};
-				}
-
-				// Force dropdown menu to refresh `selectedItemLabel`
-				this._sortOnSelectorSelected = 0;
-				this._sortOnSelectorSelected = selected;
-			}
-		},
-
-		// Select the right column if sort has been changed from outside.
-		_sortOnChanged: function (sortOnChange) {
-			var sortOn = sortOnChange.base;
-
-			if (sortOn && !sortOn.valuePath) {
-				this.sortOn = {
-					valuePath: sortOn,
-					descending: false
-				};
-				return;
-			}
-			if (!sortOn || !sortOn.valuePath) {
-				this._sortOnSelectorSelected = 0;
-			}
-
-			this._updateSelectedSortIndex();
-
-			if (this.data && this.data.length && this._webWorkerReady && this.columns) {
-				this._debounceSortItems();
-			}
-		},
-
-		_updateSelectedSortIndex: function () {
-			var newIndex,
-				sortOnSelectorItems = this.$.sortOnSelector.items;
-
-			if (!this.sortOn || !this.sortOn.valuePath || !sortOnSelectorItems.length) {
-				newIndex = 0;
-			} else {
-				sortOnSelectorItems.some(function (element, i) {
-					var model = this.$.sortColumns.modelForElement(element);
-					if (model && model.column && model.column.sortOn === this.sortOn.valuePath) {
-						newIndex = i;
-						return true;
-					}
-				}, this);
-			}
-
-			if (newIndex !== this._sortOnSelectorSelected) {
-				this._sortOnSelectorSelected = newIndex;
 			}
 		},
 
@@ -1052,8 +801,11 @@
 			}
 			return str;
 		},
-
-		saveAsCsvAction: function (event) {
+		/**
+		 * Triggers a download of selected rows as a CSV file.
+		 * @returns {undefined}
+		 */
+		_saveAsCsvAction: function () {
 			var separator = ';',
 				lf = '\n',
 				header = this.columns.map(function (column) {
@@ -1074,7 +826,144 @@
 			saveAs(new File(rows, this.csvFilename, {
 				type: 'text/csv;charset=utf-8'
 			}));
-		}
+		},
 
+		/** view functions */
+
+		_getItemRowClasses: function (selected) {
+			return selected ?  'itemRow itemRow-selected' : 'itemRow';
+		},
+
+		_getGroupRowClasses: function (folded) {
+			return folded ? 'groupRow groupRow-folded' : 'groupRow';
+		},
+
+		_getFoldIcon: function (expanded) {
+			return expanded ? 'expand-less' : 'expand-more';
+		},
+		/**
+		 * Called if an item from the sortOn dropdown gets tapped.
+		 * Reverses the descending value if the sortOn value did not change.
+		 * @param {Event} e The event with the column model.
+		 * @returns {undefined}
+		 */
+		_reverseSortDirection(e) {
+			var column = e.model.column;
+			if (column.name === this.sortOn) {
+				this.descending = !this.descending;
+				return;
+			}
+			this.descending = false;
+		},
+		/**
+		 * Toggle folding of a group
+		 * @param  {Event} event event
+		 * @returns {undefined}
+		 */
+		_toggleGroup: function (event) {
+			var firstRow = this.$.groupedList.getFirstVisibleItemElement(),
+				folded = event.model.folded;
+
+			this.$.groupedList.toggleFold(event.model);
+
+			if (!firstRow && folded) {
+				this._debounceAdjustColumns();
+			}
+		},
+
+		_toggleItem: function (event) {
+			var item = event.model.item;
+			this.$.groupedList.toggleCollapse(item);
+		},
+		/**
+		 * Turn an `action` event into a `run` event
+		 * @param  {Event} event  `action` event
+		 * @param  {Object} detail `action` event details
+		 * @returns {undefined}
+		 */
+		_onAction: function (event, detail) {
+			detail.item.dispatchEvent(new window.CustomEvent('run', {
+				bubbles: true,
+				cancelable: true,
+				detail: {
+					omnitable: this,
+					items: this.selectedItems
+				}
+			}));
+			event.stopPropagation();
+		},
+
+		_onAllCheckboxChange: function (event) {
+			if (event.target === null) {
+				return;
+			}
+
+			var checked = event.target.checked;
+
+			if (checked) {
+				this.$.groupedList.selectAll();
+			} else {
+				this.$.groupedList.deselectAll();
+			}
+
+		},
+
+		/** PUBLIC */
+
+		/**
+		 * Remove multiple items from `data`
+		 * @param {Array} items Array of items to remove
+		 * @return {Array} Array containing removed items
+		 */
+		removeItems: function (items) {
+			var i,
+				removedItems = [],
+				removed;
+
+			for (i = items.length - 1; i >= 0; i -= 1) {
+				removed = this.arrayDelete('data', items[i]);
+				if (removed) {
+					removedItems = removedItems.concat(removed);
+				}
+			}
+			return removed;
+		},
+		/**
+		 * Helper method to remove an item from `data`.
+ 		 * @param  {Object} item Item to remove
+ 		 * @return {Object} item removed
+		 */
+		removeItem: function (item) {
+			var removed = this.arrayDelete('data', item);
+			if (removed && removed.length) {
+				return removed[0];
+			}
+		},
+		/**
+		 * Convenience method for setting a value to an item's path and notifying any
+		 * element bound to this item's path.
+		 * @param {Object} item The item.
+		 * @param {itemPath} itemPath The path of the item.
+		 * @param {String} value The new value of the item.
+		 * @returns {undefined}
+		 */
+		setItemValue: function (item, itemPath, value) {
+			var dataColl = Polymer.Collection.get(this.data),
+				key = dataColl.getKey(item);
+
+			this.set('data.' + key + '.' + itemPath, value);
+		},
+
+		selectItem: function (item) {
+			this.$.groupedList.selectItem(item);
+		},
+
+		deselectItem: function (item) {
+			this.$.groupedList.deselectItem(item);
+		},
+
+		isItemSelected: function (item) {
+			this.$.groupedList.isItemSelected(item);
+		}
 	});
 }());
