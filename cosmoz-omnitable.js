@@ -350,6 +350,7 @@
 			// TODO: Un-listen from old columns ?
 			columns.forEach(function (column) {
 				this.listen(column, 'filter-changed', '_onColumnFilterChanged');
+				this.listen(column, 'title-changed', '_onColumnTitleChanged');
 
 				if (!column.name){
 					// No name set; Try to set name attribute via valuePath
