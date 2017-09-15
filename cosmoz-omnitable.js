@@ -191,19 +191,19 @@
 		created: function () {
 			/** WARNING: we do not support columns changes yet. */
 			// `isOmnitableColumn` is a property from cosmoz-omnitable-column-behavior
-			this._columnObserver = Polymer.dom(this).observeNodes(function (info) {
+			this._columnObserver = Polymer.dom(this).observeNodes(info => {
 				var changedColumns = info.addedNodes
 					.concat(info.removedNodes)
 					.filter(function (child) {
-						return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn;
-					});
+						return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn && !this._hiddenAttr(child);
+					}, this);
 
 				if (changedColumns.length === 0) {
 					return;
 				}
 
 				this._updateColumns();
-			}.bind(this));
+			});
 		},
 
 		attached: function () {
@@ -255,18 +255,6 @@
 			this._debounceFilterItems();
 		},
 
-		_onColumnTitleChanged: function (event) {
-			var column = event.target,
-				columnIndex = this.columns.indexOf(column);
-
-			// re-notify column change to make dom-repeat re-render menu item title
-			this.notifyPath(['columns', columnIndex, 'title']);
-
-			if (column === this.groupOnColumn) {
-				this.notifyPath(['groupOnColumn', 'title']);
-			}
-		},
-
 		// Handle selection/deselection of a group
 		_onGroupCheckboxChange: function (event) {
 			var
@@ -312,9 +300,9 @@
 		},
 
 		_updateColumns: function () {
-			var columns = this.getEffectiveChildren().filter(function (child, index) {
+			var columns = this.getEffectiveChildren().filter((child, index) => {
 					child.__index = index;
-					return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn;
+					return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn && !this._hiddenAttr(child);
 				}),
 				columnNames = columns.map(c => c.name),
 				valuePathNames;
@@ -350,7 +338,6 @@
 			// TODO: Un-listen from old columns ?
 			columns.forEach(function (column) {
 				this.listen(column, 'filter-changed', '_onColumnFilterChanged');
-				this.listen(column, 'title-changed', '_onColumnTitleChanged');
 
 				if (!column.name){
 					// No name set; Try to set name attribute via valuePath
@@ -797,6 +784,15 @@
 				return true;
 			}
 			return false;
+		},
+        /**
+         * Helper method to get a node's hidden attribute as a boolean.
+         * @param {any} node The node.
+         * @returns {Boolean} True if node's hidden attribute is set `hidden` or `hidden="true"`.
+         */
+		_hiddenAttr(node) {
+			var v = node.getAttribute('hidden');
+			return (v ? v.toLowerCase() : v) === 'false' ? false : !!v;
 		},
 
 		_onWebWorkerReady: function () {
