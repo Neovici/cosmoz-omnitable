@@ -255,6 +255,18 @@
 			this._debounceFilterItems();
 		},
 
+		_onColumnTitleChanged: function (event) {
+			var column = event.target,
+				columnIndex = this.columns.indexOf(column);
+
+			// re-notify column change to make dom-repeat re-render menu item title
+			this.notifyPath(['columns', columnIndex, 'title']);
+
+			if (column === this.groupOnColumn) {
+				this.notifyPath(['groupOnColumn', 'title']);
+			}
+		},
+
 		// Handle selection/deselection of a group
 		_onGroupCheckboxChange: function (event) {
 			var
