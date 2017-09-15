@@ -929,6 +929,17 @@
 			return removed;
 		},
 		/**
+		 * Helper method to remove an item from `data`.
+ 		 * @param  {Object} item Item to remove
+ 		 * @return {Object} item removed
+		 */
+		removeItem: function (item) {
+			var removed = this.arrayDelete('data', item);
+			if (removed && removed.length) {
+				return removed[0];
+			}
+		},
+		/**
 		 * Convenience method for setting a value to an item's path and notifying any
 		 * element bound to this item's path.
 		 * @param {Object} item The item.
