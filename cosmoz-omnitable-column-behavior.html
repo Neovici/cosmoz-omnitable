@@ -11,7 +11,7 @@
 
 			title: {
 				type: String,
-				notify: true
+				observer: '_titleChanged'
 			},
 
 			valuePath: {
@@ -312,6 +312,10 @@
 				value = this.get(this.valuePath, item).toString().toLowerCase();
 
 			return filterArray.some(filter => value.indexOf(filter) >= 0);
+		},
+
+		_titleChanged: function () {
+			this.fire('cosmoz-column-title-changed', { column: this });
 		}
 
 	};
