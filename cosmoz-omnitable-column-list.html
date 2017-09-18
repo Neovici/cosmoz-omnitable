@@ -70,7 +70,7 @@
 						return array.indexOf(value) === index;
 					})
 					.sort()
-					.map(function (value) {
+					.map(value => {
 						return {
 							value: value,
 							label: this._getLabelForValue(value)
@@ -93,12 +93,13 @@
 				return value === filterString;
 			},
 
-			_applyMultiFilter: function (filterArray, item) {
-				var	listValue = this.get(this.valuePath, item);
+			_applyMultiFilter: function (filter, item) {
+				var	filterArray = filter.map(element => element.toString().toLowerCase()),
+					listValue = this.get(this.valuePath, item);
 
-				return listValue.some(function (val) {
-					return filterArray.indexOf(val.toString().toLowerCase()) >= 0;
-				});
+				return listValue.some(val =>
+					filterArray.indexOf(val.toString().toLowerCase()) >= 0
+				);
 			}
 		});
 	</script>
