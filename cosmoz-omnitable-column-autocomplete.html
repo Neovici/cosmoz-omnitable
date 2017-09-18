@@ -18,9 +18,11 @@
 				text="{{ query }}"
 				source="[[ values ]]"
 				label="[[ title ]]"
-				selected-items="{{ filter }}">
+				selected-items="{{ filter }}"
+				text-property="[[ textProperty ]]"
+				value-property="[[ valueProperty ]]">
 				<paper-spinner-lite style="width: 20px; height: 20px;" slot="suffix" active="[[ loading ]]" hidden="[[ !loading ]]"></paper-spinner-lite>
-			</paper-input-autocomplete-chips>
+			</paper-autocomplete-chips>
 		</template>
 	</template>
 
@@ -45,6 +47,16 @@
 				query: {
 					type: String,
 					notify: true
+				},
+
+				textProperty: {
+					type: String,
+					value: 'text'
+				},
+
+				valueProperty: {
+					type: String,
+					value: ''
 				}
 			},
 
