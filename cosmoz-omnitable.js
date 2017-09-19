@@ -73,6 +73,11 @@
 				notify: true
 			},
 
+			highlightedItems: {
+				type: Array,
+				notify: true
+			},
+
 			descending: {
 				type: Boolean,
 				value: false
@@ -297,6 +302,17 @@
 
 			event.preventDefault();
 			event.stopPropagation();
+		},
+
+		_itemRowTapped(event) {
+			var
+				item = event.model.item,
+				selected = this.$.groupedList.isItemHighlighted(item);
+			if (selected) {
+				this.$.groupedList.playDownItem(item);
+			} else {
+				this.$.groupedList.highlightItem(item);
+			}
 		},
 
 		_onResize: function () {
@@ -842,10 +858,6 @@
 		},
 
 		/** view functions */
-
-		_getItemRowClasses: function (selected) {
-			return selected ?  'itemRow itemRow-selected' : 'itemRow';
-		},
 
 		_getGroupRowClasses: function (folded) {
 			return folded ? 'groupRow groupRow-folded' : 'groupRow';

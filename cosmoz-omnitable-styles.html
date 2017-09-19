@@ -159,9 +159,14 @@
 				@apply --layout-center;
 			}
 
-			.itemRow.itemRow-selected {
-				background-color: #e1f8f9;
+			.itemRow[selected] {
+				background-color: rgb(195, 212, 248) !important;
 				@apply --cosmoz-omnitable-selected-row;
+			}
+
+			.itemRow[highlighted] {
+				background-color: rgba(195, 212, 248, 0.5);
+				@apply --cosmoz-omnitable-hightlighted-row;
 			}
 
 			.item-expander paper-icon-button {
