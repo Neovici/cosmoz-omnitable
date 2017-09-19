@@ -104,7 +104,7 @@
 
 				_fromMax: {
 					type: Object,
-					computed: '_getMinMax(_possibleDateRange.max, _filterInput.end, 0)'
+					computed: '_getMinMax(_toMax, _filterInput.end, 0)'
 				},
 
 				_fromMin: {
@@ -119,8 +119,9 @@
 
 				_toMin: {
 					type: Object,
-					computed: '_getMinMax(_possibleDateRange.min, _filterInput.start, 1)'
+					computed: '_getMinMax(_fromMin, _filterInput.start, 1)'
 				},
+
 				_tooltip: {
 					type: String,
 					computed: '_computeTooltip(title, _filterText)'
