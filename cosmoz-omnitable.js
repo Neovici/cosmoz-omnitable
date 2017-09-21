@@ -266,8 +266,6 @@
 			this._debounceFilterItems();
 		},
 
-<<<<<<< HEAD
-=======
 		_onColumnTitleChanged: function (event) {
 			var column = event.target,
 				columnIndex;
@@ -288,7 +286,6 @@
 			}
 		},
 
->>>>>>> upstream/master
 		// Handle selection/deselection of a group
 		_onGroupCheckboxChange: function (event) {
 			var
