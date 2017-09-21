@@ -11,7 +11,7 @@
 
 			title: {
 				type: String,
-				notify: true
+				observer: '_titleChanged'
 			},
 
 			valuePath: {
@@ -296,12 +296,10 @@
 			if (!Array.isArray(this.filter)) {
 				return this._applySingleFilter.bind(this, this.filter.toString().toLowerCase());
 			}
-			if (this.filter.length > 0) {
-				var filterArray = this.filter.map(function (element) {
-					return element.toString().toLowerCase();
-				});
-				return this._applyMultiFilter.bind(this, filterArray);
+			if (this.filter.length === 0) {
+				return;
 			}
+			return this._applyMultiFilter.bind(this, this.filter);
 		},
 
 		_applySingleFilter: function (filterString, item) {
@@ -309,12 +307,15 @@
 			return value.indexOf(filterString) >= 0;
 		},
 
-		_applyMultiFilter: function (filterArray, item) {
-			var	value = this.get(this.valuePath, item).toString().toLowerCase();
+		_applyMultiFilter: function (filter, item) {
+			var	filterArray = filter.map(element => element.toString().toLowerCase()),
+				value = this.get(this.valuePath, item).toString().toLowerCase();
 
-			return filterArray.some(function (filter) {
-				return value.indexOf(filter) >= 0;
-			});
+			return filterArray.some(filter => value.indexOf(filter) >= 0);
+		},
+
+		_titleChanged: function () {
+			this.fire('cosmoz-column-title-changed', { column: this });
 		}
 
 	};

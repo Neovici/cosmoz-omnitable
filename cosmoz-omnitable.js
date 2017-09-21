@@ -184,7 +184,8 @@
 
 		listeners: {
 			'iron-resize': '_onResize',
-			'update-item-size': '_onUpdateItemSize'
+			'update-item-size': '_onUpdateItemSize',
+			'cosmoz-column-title-changed': '_onColumnTitleChanged'
 		},
 
 		/** ELEMENT LIFECYCLE */
@@ -265,6 +266,29 @@
 			this._debounceFilterItems();
 		},
 
+<<<<<<< HEAD
+=======
+		_onColumnTitleChanged: function (event) {
+			var column = event.target,
+				columnIndex;
+
+			event.stopPropagation();
+
+			if (!this.columns) {
+				return;
+			}
+
+			columnIndex = this.columns.indexOf(column);
+
+			// re-notify column change to make dom-repeat re-render menu item title
+			this.notifyPath(['columns', columnIndex, 'title']);
+
+			if (column === this.groupOnColumn) {
+				this.notifyPath(['groupOnColumn', 'title']);
+			}
+		},
+
+>>>>>>> upstream/master
 		// Handle selection/deselection of a group
 		_onGroupCheckboxChange: function (event) {
 			var

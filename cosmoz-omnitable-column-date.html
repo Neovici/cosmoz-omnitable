@@ -22,10 +22,10 @@
 			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _tooltip ]]">
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
-					<paper-input type="date" min="[[ _formatISODate(_possibleDateRange.min) ]]" max="[[ _formatISODate(_latestAfter) ]]"
+					<paper-input type="date" min="[[ _formatISODate(_fromMin) ]]" max="[[ _formatISODate(_fromMax) ]]"
 						label="[[ _('From date', t) ]]" value="{{ _filterInput.start }}">
 					</paper-input>
-					<paper-input type="date" min="[[ _formatISODate(_earliestBefore) ]]" max="[[ _formatISODate(_possibleDateRange.max) ]]"
+					<paper-input type="date" min="[[ _formatISODate(_toMin) ]]" max="[[ _formatISODate(_toMax) ]]"
 						label="[[ _('Until date', t) ]]" value="{{ _filterInput.end }}">
 					</paper-input>
 				</div>
@@ -50,6 +50,20 @@
 				filter: {
 					type: Object,
 					computed: '_computeFilter(_filterInput.start, _filterInput.end)'
+				},
+
+				max: {
+					type: Date,
+					value() {
+						return new Date('2100-01-01');
+					}
+				},
+
+				min: {
+					type: Date,
+					value() {
+						return new Date('1970-01-01');
+					}
 				},
 				/**
 				 * This is the format used to interact with the user, i.e. the format used
@@ -88,15 +102,26 @@
 					computed: '_computePossibleDateRange(values.*)'
 				},
 
-				_latestAfter: {
+				_fromMax: {
 					type: Object,
-					computed: '_getMinMax(_possibleDateRange.max, _filterInput.end, 0)'
+					computed: '_getMinMax(_toMax, _filterInput.end, 0)'
 				},
 
-				_earliestBefore: {
+				_fromMin: {
 					type: Object,
-					computed: '_getMinMax(_possibleDateRange.min, _filterInput.start, 1)'
+					computed: '_getMinMax(_possibleDateRange.min, min, 0)'
 				},
+
+				_toMax: {
+					type: Object,
+					computed: '_getMinMax(_possibleDateRange.max, max, 1)'
+				},
+
+				_toMin: {
+					type: Object,
+					computed: '_getMinMax(_fromMin, _filterInput.start, 1)'
+				},
+
 				_tooltip: {
 					type: String,
 					computed: '_computeTooltip(title, _filterText)'
@@ -105,8 +130,7 @@
 
 			behaviors: [
 				Cosmoz.MomentBehavior,
-				Cosmoz.OmnitableColumnBehavior,
-				Cosmoz.TranslatableBehavior
+				Cosmoz.OmnitableColumnBehavior
 			],
 
 			_getMinMax: function (firstRaw, secondRaw, max) {
