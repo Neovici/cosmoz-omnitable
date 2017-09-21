@@ -27,6 +27,20 @@
 				computed: '_computeFilter(_filterInput.start, _filterInput.end)'
 			},
 
+			max: {
+				type: Date,
+				value() {
+					return new Date('2100-01-01');
+				}
+			},
+
+			min: {
+				type: Date,
+				value() {
+					return new Date('1970-01-01');
+				}
+			},
+
 			values: {
 				type: Array,
 				value() {
@@ -54,9 +68,24 @@
 				computed: '_computePossibleDateRange(values.*)'
 			},
 
-			_latestAfter: {
+			_fromMax: {
 				type: Object,
-				computed: '_getMinMax(_possibleDateRange.max, _filterInput.end, 0)'
+				computed: '_getMinMax(_toMax, _filterInput.end, 0)'
+			},
+
+			_fromMin: {
+				type: Object,
+				computed: '_getMinMax(_possibleDateRange.min, min, 0)'
+			},
+
+			_toMax: {
+				type: Object,
+				computed: '_getMinMax(_possibleDateRange.max, max, 1)'
+			},
+
+			_toMin: {
+				type: Object,
+				computed: '_getMinMax(_fromMin, _filterInput.start, 1)'
 			},
 
 			_earliestBefore: {
