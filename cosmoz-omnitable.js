@@ -80,7 +80,7 @@
 
 			sortDirection: {
 				type: String,
-				computed: '_computeSortDirection(descending)'
+				computed: '_computeSortDirection(descending, t)'
 			},
 
 			sortOn: {
