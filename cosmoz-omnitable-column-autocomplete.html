@@ -16,11 +16,13 @@
 		<template class="header">
 			<paper-autocomplete-chips
 				text="{{ query }}"
-				source="[[ values ]]"
+				source="[[ _unique(values, valueProperty) ]]"
 				label="[[ title ]]"
-				selected-items="{{ filter }}">
+				selected-items="{{ filter }}"
+				text-property="[[ textProperty ]]"
+				value-property="[[ valueProperty ]]">
 				<paper-spinner-lite style="width: 20px; height: 20px;" slot="suffix" active="[[ loading ]]" hidden="[[ !loading ]]"></paper-spinner-lite>
-			</paper-input-autocomplete-chips>
+			</paper-autocomplete-chips>
 		</template>
 	</template>
 
@@ -45,6 +47,16 @@
 				query: {
 					type: String,
 					notify: true
+				},
+
+				textProperty: {
+					type: String,
+					value: 'text'
+				},
+
+				valueProperty: {
+					type: String,
+					value: ''
 				}
 			},
 
@@ -57,9 +69,37 @@
 				return value === filterString;
 			},
 
-			_applyMultiFilter: function (filterArray, item) {
-				var	value = this.get(this.valuePath, item).toString().toLowerCase();
+			_applyMultiFilter(filter, item) {
+				var	filterArray = filter.map(element => {
+						var val = element;
+						if (this.valueProperty) {
+							val = element[this.valueProperty];
+						}
+						return val.toString().toLowerCase();
+					}),
+					value = this.get(this.valuePath, item);
+				if (this.valueProperty) {
+					value = value[this.valueProperty];
+				}
+				value = value.toString().toLowerCase();
 				return filterArray.indexOf(value) !== -1;
+			},
+
+			_unique(values, valueProperty) {
+				var used = [];
+				return values.filter((item, index, array) => {
+					if (array.indexOf(item) !== index) {
+						return false;
+					}
+					if (valueProperty) {
+						var value = item[valueProperty];
+						if (used.indexOf(value) !== -1) {
+							return false;
+						}
+						used.push(value);
+					}
+					return true;
+				});
 			}
 		});
 	</script>

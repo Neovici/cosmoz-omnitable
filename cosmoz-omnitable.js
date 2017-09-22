@@ -80,7 +80,7 @@
 
 			sortDirection: {
 				type: String,
-				computed: '_computeSortDirection(descending)'
+				computed: '_computeSortDirection(descending, t)'
 			},
 
 			sortOn: {
@@ -156,7 +156,9 @@
 			 */
 			visibleColumns: {
 				type: Array,
-				notify: true
+				notify: true,
+				computed: '_computeVisibleColumns(columns, groupOn)',
+				observer: '_visibleColumnsChanged'
 			},
 
 			disabledColumns: {
@@ -172,8 +174,7 @@
 
 		observers: [
 			'_dataChanged(data.*)',
-			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
-			'_updateVisibleColumns(columns, groupOn)'
+			'_debounceSortItems(sortOn, descending, filteredGroupedItems)'
 		],
 
 		behaviors: [
@@ -183,12 +184,8 @@
 
 		listeners: {
 			'iron-resize': '_onResize',
-			'update-item-size': '_onUpdateItemSize'
-		},
-
-		_onHiddenChanged() {
-			debugger;
-			this._updateColumns();
+			'update-item-size': '_onUpdateItemSize',
+			'cosmoz-column-title-changed': '_onColumnTitleChanged'
 		},
 
 		/** ELEMENT LIFECYCLE */
@@ -228,6 +225,10 @@
 
 		_scalingUp: false,
 
+		_computeVisibleColumns(columns, groupOn) {
+			return groupOn ? columns.filter(c => c.name !== this.groupOn) : columns.slice();
+		},
+
 		_computeGroupOnColumn(groupOn) {
 			return this._getColumn(groupOn);
 		},
@@ -249,6 +250,11 @@
 			return dataIsValid && hasActions;
 		},
 
+		_visibleColumnsChanged() {
+			this.disabledColumns = [];
+			this._disabledColumnsIndexes = [];
+		},
+
 		_onUpdateItemSize: function (event, detail) {
 			if (detail && detail.item) {
 				this.$.groupedList.updateSize(detail.item);
@@ -256,13 +262,17 @@
 			event.stopPropagation();
 		},
 
-		_onColumnFilterChanged: function () {
-			this._debounceFilterItems();
-		},
-
 		_onColumnTitleChanged: function (event) {
 			var column = event.target,
-				columnIndex = this.columns.indexOf(column);
+				columnIndex;
+
+			event.stopPropagation();
+
+			if (!this.columns) {
+				return;
+			}
+
+			columnIndex = this.columns.indexOf(column);
 
 			// re-notify column change to make dom-repeat re-render menu item title
 			this.notifyPath(['columns', columnIndex, 'title']);
@@ -338,25 +348,12 @@
 				return;
 			}
 
-			// Check if column names are set and unique
-			columns
-				.filter((column) => {
-					var name = column.name;
-					if (!name) {
-						console.error('The name attribute needs to be set on all columns! Missing on column', column.title, column);
-						return;
-					}
-					return columnNames.indexOf(name) !== columnNames.lastIndexOf(name);
-				})
-				.forEach(column => {
-					console.error('The name attribute needs to be unique among all columns! Not unique on column', column.title, column);
-				});
+			this._verifyColumnSetup(columns, columnNames);
 
 			// TODO: Un-listen from old columns ?
 			columns.forEach(function (column) {
 				this.listen(column, 'filter-changed', '_onColumnFilterChanged');
 				this.listen(column, 'title-changed', '_onColumnTitleChanged');
-				this.listen(column, 'hidden-changed', '_onHiddenChanged');
 
 				if (!column.name){
 					// No name set; Try to set name attribute via valuePath
@@ -375,6 +372,31 @@
 			if (this._webWorkerReady && this.data) {
 				this._debounceFilterItems();
 			}
+		},
+		/**
+		 * Checks if the column setup is valid and logs errors.
+		 * As a separate functions to make testing easier.
+		 * @param {any} columns The columns.
+		 * @param {any} columnNames The column names.
+		 * @returns {Boolean} True if setup is valid.
+		 */
+		_verifyColumnSetup(columns, columnNames = columns.map(c => c.name)) {
+			// Check if column names are set and unique
+			var columnsMissingNameAttribute = columns
+				.filter(column => {
+					var name = column.name;
+					if (!name) {
+						console.error('The name attribute needs to be set on all columns! Missing on column', column.title, column);
+						return;
+					}
+					return columnNames.indexOf(name) !== columnNames.lastIndexOf(name);
+				});
+
+			columnsMissingNameAttribute.forEach(column => {
+				console.error('The name attribute needs to be unique among all columns! Not unique on column', column.title, column);
+			});
+
+			return columnsMissingNameAttribute.length === 0;
 		},
 		// TODO: provides a mean to avoid setting the values for a column
 		// TODO: should process (distinct, sort, min, max) the values at the column level depending on the column type
@@ -417,18 +439,6 @@
 				console.warn(`Cannot find column with ${attribute} ${attributeValue}`);
 			}
 			return column;
-		},
-
-		_updateVisibleColumns: function () {
-			var visibleColumns = this.columns.slice();
-
-			if (this.groupOn) {
-				visibleColumns = visibleColumns.filter(c => c.name !== this.groupOn);
-			}
-
-			this.visibleColumns = visibleColumns;
-			this.disabledColumns = [];
-			this._disabledColumnsIndexes = [];
 		},
 
 		_debounceFilterItems: function () {
@@ -476,8 +486,7 @@
 			}
 
 			var groupOnColumn = this.groupOnColumn,
-				groups = [],
-				itemStructure = {};
+				groups;
 
 			if (!groupOnColumn || !groupOnColumn.groupOn) {
 				this.filteredGroupedItems = this.filteredItems;
@@ -485,24 +494,22 @@
 				return;
 			}
 
-			this.filteredItems.forEach(function (item) {
-				var groupOnValue = groupOnColumn.getComparableValue(item, groupOnColumn.groupOn);
+			groups = this.filteredItems.reduce((array, item) => {
+				var gval = groupOnColumn.getComparableValue(item, groupOnColumn.groupOn),
+					group;
 
-				if (groupOnValue !== undefined) {
-					if (!itemStructure[groupOnValue]) {
-						itemStructure[groupOnValue] = [];
-					}
-					itemStructure[groupOnValue].push(item);
+				if (gval === undefined) {
+					return array;
 				}
-			}, this);
 
-			groups = Object.keys(itemStructure).map(function (key) {
-				return {
-					name: key,
-					id: key,
-					items: itemStructure[key]
-				};
-			});
+				group = array.find(g => g.id === gval);
+				if (!group) {
+					group = { id: gval, name: gval, items: [] };
+					array.push(group);
+				}
+				group.items.push(item);
+				return array;
+			}, []);
 
 			groups.sort(function (a, b) {
 				var

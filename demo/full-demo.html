@@ -91,6 +91,8 @@
 					</cosmoz-omnitable-column-date>
 					<cosmoz-omnitable-column-date title="DateJSON" name="datejson" value-path="dateJSON" sort-on="dateJSON" group-on="dateJSON">
 					</cosmoz-omnitable-column-date>
+					<cosmoz-omnitable-column-datetime title="Datetime" name="datetime" value-path="date" sort-on="date" group-on="date">
+						</cosmoz-omnitable-column-datetime>
 					<cosmoz-omnitable-column-list title="List" name="list" value-path="list">
 					</cosmoz-omnitable-column-list>
 					<cosmoz-omnitable-column title="Sub-property" name="sub-property" value-path="sub.subProp" sort-on="sub.subProp" group-on="sub.subProp" flex="5">
@@ -222,6 +224,8 @@
 		_getTranslations: function (locale) {
 			if (locale === 'sv') {
 				return {
+					'Ascending': 'stigande',
+					'Descending': 'fallande',
 					'Amount': 'Belopp',
 					'Group': 'Grupp',
 					'{0} group': '{0} grupp',
@@ -238,6 +242,8 @@
 
 			} else if (locale === 'fr') {
 				return {
+					'Ascending': 'croissant',
+					'Descending': 'décroissant',
 					'Amount': 'Montant',
 					'Save as CSV': 'Eporter en CSV',
 					'Group': 'Groupe',
