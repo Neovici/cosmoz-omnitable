@@ -9,7 +9,8 @@
 		"CustomElements": false,
 		"HTMLImports": false,
 		"Polymer": false,
-		"WeakMap": false
+		"WeakMap": false,
+		"moment": false
 	},
 	"plugins": [
 		"html"
