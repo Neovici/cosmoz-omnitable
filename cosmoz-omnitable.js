@@ -290,14 +290,11 @@
 
 		// Handle selection/deselection of an item
 		_onItemCheckboxChange: function (event) {
-			var
-				item = event.model.item,
-				selected = this.$.groupedList.isItemSelected(item);
-
-			if (selected) {
-				this.$.groupedList.deselectItem(item);
+			var item = event.model.item;
+			if (this.isItemSelected(item)) {
+				this.deselectItem(item);
 			} else {
-				this.$.groupedList.selectItem(item);
+				this.selectItem(item);
 			}
 
 			event.preventDefault();
@@ -305,13 +302,12 @@
 		},
 
 		_itemRowTapped(event) {
-			var
-				item = event.model.item,
-				selected = this.$.groupedList.isItemHighlighted(item);
-			if (selected) {
-				this.$.groupedList.playDownItem(item);
+			var item = event.model.item;
+
+			if (this.isItemHighlighted(item)) {
+				this.playDownItem(item);
 			} else {
-				this.$.groupedList.highlightItem(item);
+				this.highlightItem(item);
 			}
 		},
 
@@ -988,7 +984,33 @@
 		},
 
 		isItemSelected: function (item) {
-			this.$.groupedList.isItemSelected(item);
-		}
+			return this.$.groupedList.isItemSelected(item);
+		},
+
+		isItemHighlighted(item) {
+			return this.$.groupedList.isItemHighlighted(item);
+		},
+
+		highlightItems(items) {
+			if (!items || !items.length > 0) {
+				return;
+			}
+			items.forEach(i => this.highlightItem(i));
+		},
+
+		highlightItem(item) {
+			this.$.groupedList.highlightItem(item);
+		},
+
+		playDownItems(items) {
+			if (!items || !items.length > 0) {
+				return;
+			}
+			items.forEach(i => this.playDownItem(i));
+		},
+
+		playDownItem(item) {
+			this.$.groupedList.playDownItem(item);
+		},
 	});
 }());
