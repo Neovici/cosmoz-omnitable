@@ -26,10 +26,10 @@
 			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _tooltip ]]">
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
-					<datetime-local min="[[ _formatISODate(_possibleDateRange.min) ]]" max="[[ _formatISODate(_latestAfter) ]]"
+					<datetime-local min="[[ _formatISODate(_fromMin) ]]" max="[[ _formatISODate(_fromMax) ]]"
 						date-label="[[ _('From date', t) ]]" time-label="[[ _('From time', t) ]]" value="{{ _filterInput.start }}" step$="[[_filterStep]]">
 					</datetime-local>
-					<datetime-local min="[[ _formatISODate(_earliestBefore) ]]" max="[[ _formatISODate(_possibleDateRange.max) ]]"
+					<datetime-local min="[[ _formatISODate(_toMin) ]]" max="[[ _formatISODate(_toMax) ]]"
 						value="{{ _filterInput.end }}" step$="[[_filterStep]]">
 					</datetime-local>
 				</div>
