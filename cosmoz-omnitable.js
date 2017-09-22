@@ -434,7 +434,7 @@
 		 * @returns {Object} The found column.
 		 */
 		_getColumn(attributeValue, attribute = 'name') {
-			if (!attributeValue) {
+			if (!attributeValue || !this.columns) {
 				return;
 			}
 			var column = this.columns.find(column => column[attribute] === attributeValue);
