@@ -71,7 +71,7 @@
 				</div>
 
 				<cosmoz-omnitable id="omnitable" class="flex" data="[[ data ]]" selection-enabled selected-items="{{ selectedItems }}">
-					<cosmoz-omnitable-column-autocomplete title="Id" name="id" name="id" value-path="id" sort-on="id" group-on="id">
+					<cosmoz-omnitable-column-autocomplete title="Id" name="id" name="id" value-path="id" sort-on="id" group-on="id" hidden>
 						<template class="cell">
 							<span on-tap="onTap">
 								<a href="#!/purchase/suppliers/view?id=[[ item.id ]]">[[ item.id ]]</a>
@@ -81,7 +81,7 @@
 					<cosmoz-omnitable-column-boolean hidden title="Boolean" name="bool" value-path="bool" sort-on="bool" group-on="bool"
 						true-label="Oui" false-label="Non">
 					</cosmoz-omnitable-column-boolean>
-					<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" sort-on="value" group-on="value" locale="[[ locale ]]">
+					<cosmoz-omnitable-column-number hidden title="Value" name="value" value-path="value" sort-on="value" group-on="value" locale="[[ locale ]]">
 					</cosmoz-omnitable-column-number>
 					<cosmoz-omnitable-column-autocomplete title="[[ _('Group', t) ]]" name="group" value-path="group" sort-on="group" group-on="group">
 					</cosmoz-omnitable-column-autocomplete>

@@ -186,6 +186,11 @@
 			'update-item-size': '_onUpdateItemSize'
 		},
 
+		_onHiddenChanged() {
+			debugger;
+			this._updateColumns();
+		},
+
 		/** ELEMENT LIFECYCLE */
 
 		created: function () {
@@ -195,7 +200,7 @@
 				var changedColumns = info.addedNodes
 					.concat(info.removedNodes)
 					.filter(function (child) {
-						return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn && !this._hiddenAttr(child);
+						return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn && !child.hidden;
 					}, this);
 
 				if (changedColumns.length === 0) {
@@ -314,7 +319,7 @@
 		_updateColumns: function () {
 			var columns = this.getEffectiveChildren().filter((child, index) => {
 					child.__index = index;
-					return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn && !this._hiddenAttr(child);
+					return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn && !child.hidden;
 				}),
 				columnNames = columns.map(c => c.name),
 				valuePathNames;
@@ -351,6 +356,7 @@
 			columns.forEach(function (column) {
 				this.listen(column, 'filter-changed', '_onColumnFilterChanged');
 				this.listen(column, 'title-changed', '_onColumnTitleChanged');
+				this.listen(column, 'hidden-changed', '_onHiddenChanged');
 
 				if (!column.name){
 					// No name set; Try to set name attribute via valuePath
@@ -797,15 +803,6 @@
 				return true;
 			}
 			return false;
-		},
-        /**
-         * Helper method to get a node's hidden attribute as a boolean.
-         * @param {any} node The node.
-         * @returns {Boolean} True if node's hidden attribute is set `hidden` or `hidden="true"`.
-         */
-		_hiddenAttr(node) {
-			var v = node.getAttribute('hidden');
-			return (v ? v.toLowerCase() : v) === 'false' ? false : v === '' ? true : !!v;
 		},
 
 		_onWebWorkerReady: function () {
