@@ -185,7 +185,8 @@
 		listeners: {
 			'iron-resize': '_onResize',
 			'update-item-size': '_onUpdateItemSize',
-			'cosmoz-column-title-changed': '_onColumnTitleChanged'
+			'cosmoz-column-title-changed': '_onColumnTitleChanged',
+			'cosmoz-column-hidden-changed': '_debounceUpdateColumns'
 		},
 
 		/** ELEMENT LIFECYCLE */
@@ -262,6 +263,10 @@
 			event.stopPropagation();
 		},
 
+		_onColumnFilterChanged: function () {
+			this._debounceFilterItems();
+		},
+
 		_onColumnTitleChanged: function (event) {
 			var column = event.target,
 				columnIndex;
@@ -324,6 +329,10 @@
 			}
 			this._setColumnValues();
 			this._debounceFilterItems();
+		},
+
+		_debounceUpdateColumns() {
+			this.debounce('updateColumns', this._updateColumns);
 		},
 
 		_updateColumns: function () {

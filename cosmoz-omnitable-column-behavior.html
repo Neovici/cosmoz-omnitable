@@ -150,6 +150,13 @@
 				observer: '_cellTemplateChanged'
 			},
 
+			hidden: {
+				type: Boolean,
+				notify: true,
+				reflectToAttribute: true,
+				observer: '_hiddenChanged'
+			},
+
 			_dataTemplatizer: {
 				type: Object,
 				value: null
@@ -316,6 +323,10 @@
 
 		_titleChanged: function () {
 			this.fire('cosmoz-column-title-changed', { column: this });
+		},
+
+		_hiddenChanged: function () {
+			this.fire('cosmoz-column-hidden-changed', { column: this });
 		}
 
 	};
