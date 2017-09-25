@@ -59,7 +59,7 @@
 				}
 			},
 
-			_computeAutocompleteItems: function (numValues) {
+			_computeAutocompleteItems: function () {
 				return this.values
 					.reduce(function (acc, val) {
 						return acc.concat(val);
@@ -81,7 +81,7 @@
 				return value.toString();
 			},
 
-			_computeFilter: function (change) {
+			_computeFilter: function () {
 				return this.autocompleteSelectedItems.map(function (item) {
 					return item.value;
 				});
