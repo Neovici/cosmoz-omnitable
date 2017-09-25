@@ -4,6 +4,7 @@
 <link rel="import" href="../paper-input/paper-input.html">
 
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
+<link rel="import" href="cosmoz-omnitable-column-date-behavior.html">
 
 <dom-module id="cosmoz-omnitable-column-time">
 	<template>
@@ -39,7 +40,8 @@
 			behaviors: [
 				Cosmoz.MomentBehavior,
 				Cosmoz.OmnitableColumnBehavior,
-				Cosmoz.TranslatableBehavior
+				Cosmoz.TranslatableBehavior,
+				Cosmoz.DateColumnBehavior
 			],
 
 			properties: {
@@ -55,31 +57,6 @@
 				_filterStep: {
 					type: String,
 					computed: '_computeStep(userFormat)'
-				},
-
-				_filterInput: {
-					type: Object,
-					value() {
-						return {
-							start: null,
-							end: null
-						};
-					}
-				},
-
-				filter: {
-					type: Object,
-					computed: '_computeFilter(_filterInput.start, _filterInput.end)'
-				},
-
-				_filterText: {
-					type: String,
-					computed: '_computeFilterText(locale, filter.*)'
-				},
-
-				_tooltip: {
-					type: String,
-					computed: '_computeTooltip(title, _filterText)'
 				},
 
 				_placeholderDate: {
@@ -108,37 +85,6 @@
 				return 'YYYY-MM-DD ' + userFormat;
 			},
 
-			_computeFilter(startTime, endTime) {
-				var startMoment = startTime ? moment(this._placeholderDate + ' ' + startTime) : null,
-					endMoment = endTime ? moment(this._placeholderDate + ' ' + endTime) : null;
-
-				return {
-					start: startMoment,
-					end: endMoment
-				};
-			},
-
-			_computeFilterText(locale, filterNotify) {
-				var filter = filterNotify.base,
-					text = [];
-				if (filter.start !== null) {
-					text.push(filter.start.locale(locale).format(this.userFormat));
-				}
-				text.push(' - ');
-				if (filter.end !== null) {
-					text.push(filter.end.locale(locale).format(this.userFormat));
-				}
-				return text.length > 1 ? text.join('') : null;
-			},
-
-			_computeTooltip(title, filterText) {
-				var ret = title;
-				if (filterText !== undefined && filterText !== null) {
-					ret += ': ' + filterText;
-				}
-				return ret;
-			},
-
 			_timeValueChanged(e) {
 				var
 					input = e.target,
@@ -152,6 +98,20 @@
 				} catch (err) {
 					input.errorMessage = 'Invalid date';
 				}
+			},
+
+			/** OVERRIDES */
+
+			/** cosmoz-omnitable-column-date-behavior */
+
+			_computeFilter(startTime, endTime) {
+				var startMoment = startTime ? moment(this._placeholderDate + ' ' + startTime) : null,
+					endMoment = endTime ? moment(this._placeholderDate + ' ' + endTime) : null;
+
+				return {
+					start: startMoment,
+					end: endMoment
+				};
 			},
 
 			_applySingleFilter(filter, item) {
@@ -169,8 +129,6 @@
 
 				return true;
 			},
-
-			/** OVERRIDES */
 
 			/** cosmoz-omnitable-column-behavior */
 
@@ -193,22 +151,7 @@
 					return '';
 				}
 				return moment(value).locale(locale).format(this.userFormat);
-			},
-
-			getString(item, valuePath) {
-				var value = this.get(valuePath || this.valuePath, item);
-				if (!value) {
-					return '';
-				}
-				return moment(value).format(this.userFormat);
-			},
-
-			getFilterFn() {
-				if (!this.filter) {
-					return;
-				}
-				return this._applySingleFilter.bind(this, this.filter);
-			},
+			}
 		});
 	</script>
 </dom-module>
