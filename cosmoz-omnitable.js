@@ -303,12 +303,7 @@
 
 		_itemRowTapped(event) {
 			var item = event.model.item;
-
-			if (this.isItemHighlighted(item)) {
-				this.playDownItem(item);
-			} else {
-				this.highlightItem(item);
-			}
+			this.highlight(item, this.isItemHighlighted(item));
 		},
 
 		_onResize: function () {
@@ -991,26 +986,16 @@
 			return this.$.groupedList.isItemHighlighted(item);
 		},
 
-		highlightItems(items) {
-			if (!items || !items.length > 0) {
+		highlight(i, reverse) {
+			if (!i) {
 				return;
 			}
-			items.forEach(i => this.highlightItem(i));
-		},
-
-		highlightItem(item) {
-			this.$.groupedList.highlightItem(item);
-		},
-
-		playDownItems(items) {
-			if (!items || !items.length > 0) {
+			var gl = this.$.groupedList;
+			if (Array.isArray(i)) {
+				i.forEach(item => gl.highlightItem(item, reverse));
 				return;
 			}
-			items.forEach(i => this.playDownItem(i));
-		},
-
-		playDownItem(item) {
-			this.$.groupedList.playDownItem(item);
-		},
+			gl.highlightItem(i, reverse);
+		}
 	});
 }());
