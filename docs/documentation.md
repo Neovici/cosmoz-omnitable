@@ -31,6 +31,7 @@ provide type specific functionalities.
 
 ```html
 <cosmoz-omnitable-column
+      name="name"
       title="Id"
       value-path="id">
 </cosmoz-omnitable-column>
@@ -71,7 +72,7 @@ It is possible to change this default template, by specifying another template i
 light dom, for example:
 
 ```html
-<cosmoz-omnitable-column title="Id" value-path="id">
+<cosmoz-omnitable-column name="name" title="Id" value-path="id">
    <template class="cell">
       <span><b>[[item.id]]</b></span>
    </template>
@@ -81,7 +82,7 @@ light dom, for example:
 It is also simple to add a link to a data cell:
 
 ```html
-<cosmoz-omnitable-column title="Id" value-path="id">
+<cosmoz-omnitable-column name="name" title="Id" value-path="id">
    <template class="cell">
       <span><a href="path/to/view?id=[[item.id]]&otherparam=[[item.otherProp]]">[[item.id]]</a></span>
    </template>
@@ -93,7 +94,7 @@ It is also possible to specify a cell template for a column using the `cell-temp
 attribute:
 
 ```html
-<cosmoz-omnitable-column title="Id" value-path="id" cell-template="[[myDataTemplate]]">
+<cosmoz-omnitable-column name="name" title="Id" value-path="id" cell-template="[[myDataTemplate]]">
 </cosmoz-omnitable-column>
 ```
 
@@ -107,6 +108,7 @@ this.myDataTemplate = Polymer.dom(...).querySelector(another template);
 
 ```html
 <cosmoz-omnitable-column
+      name="name"
       title="[[ _('Invoice number', t) ]]"
       value-path="invoiceNumber"
       sort-on="invoiceNumber"
@@ -140,6 +142,7 @@ correct comparison of types.
 
 ```html
 <cosmoz-omnitable-column
+      name="name"
 	value-path="foo.bar"
 	filter="{{filterValue}}"
 ```
@@ -180,6 +183,7 @@ data (see [Filtering](#filtering)).
 
 ```html
 <cosmoz-omnitable-column-number
+   name="name"
    title="Quantity"
    value-path="quantity"
    locale="{{locale}}"
@@ -233,6 +237,7 @@ won't work correctly.
 #### Usage
 ```html
 <cosmoz-omnitable-column-date
+   name="name"
    title="Date"
    value-path="date"
    parse-format="[[moment.ISO_8601]]"
@@ -254,6 +259,7 @@ to render dates and to parse date entered by the user (see filtering).
 
 ```html
 <cosmoz-omnitable-column-boolean
+   name="name"
    title="Status"
    value-path="approved"
    true-label="Approved"
