@@ -9,6 +9,8 @@
 		"MockInteractions": false,
 		"suite": false,
 		"test": false,
-		"WCT": false
+		"WCT": false,
+		"stub": false,
+		"expect": false
 	}
 }

@@ -37,6 +37,11 @@
 
 			properties: {
 
+				filter: {
+					type: Boolean,
+					value: null
+				},
+
 				trueLabel: {
 					type: String,
 					value: 'True'
@@ -94,7 +99,6 @@
 				}
 				this._filterChangedFromInput = true;
 				this.set('filter', b);
-
 			},
 
 			_filterChanged: function (filter) {
