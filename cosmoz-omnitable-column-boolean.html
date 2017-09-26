@@ -12,8 +12,7 @@
 
 		<template class="edit-cell">
 			<paper-dropdown-menu>
-				<paper-listbox class="dropdown-content" slot="dropdown-content" attr-for-selected="value" on-iron-select="_selectedChanged"
-					on-iron-activate="_activate"
+				<paper-listbox class="dropdown-content" slot="dropdown-content" attr-for-selected="value"
 					selected="[[ _computeSelected(item, valuePath) ]]">
 					<paper-item value="true">[[ trueLabel ]]</paper-item>
 					<paper-item value="false">[[ falseLabel ]]</paper-item>
@@ -87,14 +86,6 @@
 			 */
 			_getDefaultFlex: function () {
 				return '0';
-			},
-
-			_selectedChanged: function (event) {
-				//console.log('_selectedChanged', event);
-			},
-
-			_activate: function (event) {
-				//console.log('_activate', event);
 			},
 
 			_textFilterChanged: function (textFilter) {
