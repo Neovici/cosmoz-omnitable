@@ -18,7 +18,7 @@
 
 		<template class="edit-cell">
 			<datetime-local no-label-float type="datetime-local" on-change="_dateValueChanged"
-				value="[[ renderDateValue(item, valuePath, userFormat, locale) ]]">
+				value="[[ renderDateValue(item, valuePath) ]]">
 			</datetime-local>
 		</template>
 
@@ -29,7 +29,7 @@
 					<datetime-local min="[[ _formatISODate(_fromMin) ]]" max="[[ _formatISODate(_fromMax) ]]"
 						date-label="[[ _('From date', t) ]]" time-label="[[ _('From time', t) ]]" value="{{ _filterInput.start }}" step$="[[_filterStep]]">
 					</datetime-local>
-					<datetime-local min="[[ _formatISODate(_toMin) ]]" max="[[ _formatISODate(_toMax) ]]"
+					<datetime-local on-datetime-local-value-changed="_valueChanged" min="[[ _formatISODate(_toMin) ]]" max="[[ _formatISODate(_toMax) ]]"
 						value="{{ _filterInput.end }}" step$="[[_filterStep]]">
 					</datetime-local>
 				</div>
@@ -53,6 +53,11 @@
 				userFormat: {
 					type: String,
 					value: 'YYYY-MM-DD HH:mm:ss.SSS'
+				},
+
+				_inputFormat: {
+					type: String,
+					value: 'YYYY-MM-DDTHH:mm:ss.SSS'
 				}
 			},
 

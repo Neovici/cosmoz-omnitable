@@ -36,9 +36,31 @@
 					padding: 5px;
 					margin: 5px 5px 10px 5px;
 				}
+
+				.info {
+					position: fixed;
+					top: 0;
+					right: 12px;
+					height: 52px;
+					color: #066906;
+					background-color: #dad7d7;
+					padding: 6px 12px;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					opacity: 0;
+					box-shadow: 0px 5px 6px -3px rgba(0, 0, 0, 0.4);
+					transition: all 0.5s ease;
+				}
+
+				.info[active] {
+					opacity: 1;
+				}
 			</style>
 			<div class="layout vertical fit">
 				<h3>Cosmoz omnitable demo</h3>
+
+				<div id="info" class="info"><span>[[info]]</span></div>
 
 				<div class="layout horizontal center">
 					<button class="action" on-tap="changeData">Generate a new data set</button>
@@ -57,10 +79,11 @@
 
 					<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount" editable></cosmoz-omnitable-column-amount>
 					<cosmoz-omnitable-column-date title="Date" name="date" value-path="date" editable></cosmoz-omnitable-column-date>
+					<cosmoz-omnitable-column-datetime title="Datetime" name="datetime" value-path="date" editable></cosmoz-omnitable-column-datetime>					
 					<cosmoz-omnitable-column title="Sub-property" name="subproperty" value-path="sub.subProp" editable></cosmoz-omnitable-column>
 					<cosmoz-omnitable-column title="Random String" name="randomstring" value-path="randomString" editable></cosmoz-omnitable-column>
 					<!-- sample column that overrides edit-cell -->
-					<cosmoz-omnitable-column title="Name" name="name" editable>
+					<cosmoz-omnitable-column id="nameCol" title="Name" name="name" value-path="name" editable>
 						<template class="edit-cell">
 							<paper-input no-label-float type="text" on-change="_itemNameChanged" value="[[item.name]]"></paper-input>
 						</template>
@@ -85,14 +108,24 @@
 			data: {
 				type: Array
 			},
+
 			selectedItems: {
 				type: Array
+			},
+
+			info: {
+				type: String,
+				observer: '_infoChanged'
 			}
 		},
 
 		behaviors: [
 			Cosmoz.TableDemoBehavior
 		],
+
+		listeners: {
+			'column-item-changed': '_itemChanged'
+		},
 
 		ready: function () {
 			//this.changeData();
@@ -123,8 +156,22 @@
 		},
 
 		_itemNameChanged: function (event) {
-			var item = event.model.item;
+			var item = event.model.item,
+				oldValue = item.name;
 			this.$.omnitable.setItemValue(item, 'name', event.target.value);
+			this.$.nameCol._fireItemChangeEvent(item, 'name', oldValue);
+		},
+
+		_infoChanged() {
+			this.$.info.setAttribute('active', true);
+			this.async(() => {
+				this.$.info.removeAttribute('active');
+			}, 4000);
+		},
+
+		_itemChanged(e) {
+			var change = e.detail;
+			this.info = `Column ${e.target.name}: Item ${change.valuePath} changed from "${change.oldValue}" to "${change.value}"`;
 		}
 	});
 }());

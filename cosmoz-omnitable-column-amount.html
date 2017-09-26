@@ -232,6 +232,7 @@
 					currency: originalValue.currency
 				};
 				this.set(this.valuePath, newValue, item);
+				this._fireItemChangeEvent(item, this.valuePath, originalValue, this.renderAmount.bind(this));
 			},
 
 			getComparableValue: function (item, valuePath) {

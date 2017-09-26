@@ -284,9 +284,22 @@
 			var
 				input = event.target,
 				value = input.value,
-				item = event.model.item;
-
+				item = event.model.item,
+				oldValue = this.get(this.valuePath, item);
+	
 			this.set(this.valuePath, value, item);
+			this._fireItemChangeEvent(item, this.valuePath, oldValue);
+		},
+
+		_fireItemChangeEvent(item, valuePath, oldValue, formatFn) {
+			var value = this.get(valuePath, item),
+				change = {
+					item: item,
+					valuePath: this.valuePath,
+					value: formatFn ? formatFn(value) : value,
+					oldValue: formatFn ? formatFn(oldValue) : oldValue
+				};
+			this.fire('column-item-changed', change);
 		},
 
 		getFilterFn: function () {
