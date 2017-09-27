@@ -37,6 +37,9 @@ provide type specific functionalities.
 </cosmoz-omnitable-column>
 ```
 
+The `name` attribute is mandatory and must be distinct among all columns.
+It identifies the column when using the `group-on` and `sort-on` attributes for the whole table.
+
 The `value-path` attribute is a dot separated string like (`foo`
 or `foo.bar.baz`) representing the path to value of an item displayed by
 the column.
@@ -116,12 +119,12 @@ this.myDataTemplate = Polymer.dom(...).querySelector(another template);
 </cosmoz-omnitable-column>
 ```
 
-The `sort-on` and `group-on` attributes are paths, like `value-path`.
+The `sort-on` and `group-on` attributes accepts the values of the unique `name` attributes of each column.
 
 When these attributes are present on a column, `cosmoz-omnitable` adds this column
 to the dropdown lists used to change sorting and grouping of the data items.
 
-These paths represents item's value that will be used for sorting/grouping the data. They
+These values represents item's value that will be used for sorting/grouping the data. They
 might be different from `value-path`.
 
 In order to compare column values when sorting and grouping, `cosmoz-omnitable` uses the
