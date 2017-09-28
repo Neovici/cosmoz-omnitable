@@ -32,24 +32,49 @@
 	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 
 	<link rel="import" href="../cosmoz-omnitable.html">
+	<link rel="import" href="../cosmoz-omnitable-columns.html">
+	<link rel="import" href="../demo/table-demo-behavior.html">
 </head>
 <body>
 	<test-fixture id="cosmoz-omnitable-fixture">
 		<template>
-			<cosmoz-omnitable></cosmoz-omnitable>
+			<cosmoz-omnitable id="omnitable" class="flex" selection-enabled>
+				<cosmoz-omnitable-column-date id="date1" name="date1" value-path="date">
+				</cosmoz-omnitable-column-date>
+				<cosmoz-omnitable-column-date id="date2" name="date2" value-path="dateJson">
+				</cosmoz-omnitable-column-date>
+				<cosmoz-omnitable-column-date id="date3" name="date3" value-path="date">
+				</cosmoz-omnitable-column-date>
+			</cosmoz-omnitable>
+		</template>
+	</test-fixture>
+
+	<test-fixture id="cosmoz-omnitable-column-setup">
+		<template>
+			<cosmoz-omnitable id="omnitable" class="flex" selection-enabled>
+				<cosmoz-omnitable-column-date id="date1" name="date1" value-path="date">
+				</cosmoz-omnitable-column-date>
+				<cosmoz-omnitable-column-date id="date2" value-path="dateJson">
+				</cosmoz-omnitable-column-date>
+				<cosmoz-omnitable-column-date id="date3" value-path="date">
+				</cosmoz-omnitable-column-date>
+			</cosmoz-omnitable>
 		</template>
 	</test-fixture>
 
 	<script>
-	/*global logStore, errorStore, warnStore */
+	/*global sinon, logStore, errorStore, warnStore */
 	(function () {
 		'use strict';
 
-		suite('<cosmoz-omnitable>', function () {
-			var myElement;
-
+		suite('cosmoz-omnitable', function () {
+			var omnitable,
+				data;
+	
 			setup(function () {
-				myElement = fixture('cosmoz-omnitable-fixture');
+				omnitable = fixture('cosmoz-omnitable-fixture');
+				data = Cosmoz.TableDemoBehavior.generateTableDemoData(10, 11, 25);
+				omnitable.data = data;
 			});
 
 			test('No console logs should exist', function () {
@@ -62,6 +87,71 @@
 
 			test('No console errors should exist', function () {
 				assert.equal(errorStore.length, 0, 'Error messages: ' + errorStore.join(' | '));
+			});
+
+			test('Retrieve Column', function (done) {
+				var date1 = omnitable.querySelector('#date1'),
+					column;
+
+				/**
+				 * Test retrieving a column via its name attribute.
+				 */
+				Polymer.Base.async(() => {
+					column = omnitable._getColumn('date1');
+					expect(column).to.be.equal(date1);
+					done();
+				}, 200);
+			});
+
+			test('Visible Columns', function (done) {
+				Polymer.Base.async(() => {
+					/**
+					 * Test if visible columns do not include the group on column.
+					 */
+					omnitable.groupOn = 'date2';
+					expect(omnitable.visibleColumns.length).to.be.equal(omnitable.columns.length - 1);
+					expect(omnitable.visibleColumns).not.include(omnitable.groupOnColumn);
+					/**
+					 * Test if all columns are visible if not grouped.
+					 */
+					omnitable.groupOn = '';
+					expect(omnitable.visibleColumns).to.be.deep.equal(omnitable.columns);
+	
+					done();
+				}, 200);
+			});
+		});
+
+		suite('cosmoz-omnitable-column-without-name', function () {
+			var omnitable,
+				data,
+				consoleErrorStub;
+
+			setup(function () {
+				// We must stub console.error otherwise the test will fail
+				consoleErrorStub = sinon.stub(window.console, 'error');
+				omnitable = fixture('cosmoz-omnitable-column-setup');
+				data = Cosmoz.TableDemoBehavior.generateTableDemoData(10, 11, 25);
+				omnitable.data = data;
+			});
+
+			test('Un-named column get value-path as name if unique', function (done) {
+				var date2 = omnitable.querySelector('#date2'),
+					date3 = omnitable.querySelector('#date3');
+
+				// Async needed so that omnitable can process the data
+				Polymer.Base.async(() => {
+					sinon.assert.calledTwice(console.error);
+					expect(date2.name).to.be.equal(date2.valuePath);
+					// Test if only unique value-paths are taken as a fallback name attribute
+					expect(date3.name).to.be.an('undefined');
+					done();
+				}, 200);
+
+			});
+
+			teardown(function () {
+				consoleErrorStub.restore();
 			});
 		});
 	}());

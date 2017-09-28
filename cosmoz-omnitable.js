@@ -73,6 +73,11 @@
 				notify: true
 			},
 
+			highlightedItems: {
+				type: Array,
+				notify: true
+			},
+
 			descending: {
 				type: Boolean,
 				value: false
@@ -305,18 +310,20 @@
 
 		// Handle selection/deselection of an item
 		_onItemCheckboxChange: function (event) {
-			var
-				item = event.model.item,
-				selected = this.$.groupedList.isItemSelected(item);
-
-			if (selected) {
-				this.$.groupedList.deselectItem(item);
+			var item = event.model.item;
+			if (this.isItemSelected(item)) {
+				this.deselectItem(item);
 			} else {
-				this.$.groupedList.selectItem(item);
+				this.selectItem(item);
 			}
 
 			event.preventDefault();
 			event.stopPropagation();
+		},
+
+		_itemRowTapped(event) {
+			var item = event.model.item;
+			this.highlight(item, this.isItemHighlighted(item));
 		},
 
 		_onResize: function () {
@@ -439,7 +446,7 @@
 		 * @returns {Object} The found column.
 		 */
 		_getColumn(attributeValue, attribute = 'name') {
-			if (!attributeValue) {
+			if (!attributeValue || !this.columns) {
 				return;
 			}
 			var column = this.columns.find(column => column[attribute] === attributeValue);
@@ -864,10 +871,6 @@
 
 		/** view functions */
 
-		_getItemRowClasses: function (selected) {
-			return selected ?  'itemRow itemRow-selected' : 'itemRow';
-		},
-
 		_getGroupRowClasses: function (folded) {
 			return folded ? 'groupRow groupRow-folded' : 'groupRow';
 		},
@@ -997,7 +1000,23 @@
 		},
 
 		isItemSelected: function (item) {
-			this.$.groupedList.isItemSelected(item);
+			return this.$.groupedList.isItemSelected(item);
+		},
+
+		isItemHighlighted(item) {
+			return this.$.groupedList.isItemHighlighted(item);
+		},
+
+		highlight(i, reverse) {
+			if (!i) {
+				return;
+			}
+			var gl = this.$.groupedList;
+			if (Array.isArray(i)) {
+				i.forEach(item => gl.highlightItem(item, reverse));
+				return;
+			}
+			gl.highlightItem(i, reverse);
 		}
 	});
 }());

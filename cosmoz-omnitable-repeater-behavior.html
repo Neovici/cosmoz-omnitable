@@ -39,6 +39,8 @@
 		/**
 		 * Get a template instance for the specified column
 		 * Must be defined in implementors.
+		 * @param {Object} column - The column.
+		 * @return {Object} - The instance.
 		 */
 		_getTemplateInstance: function (column) {},
 
@@ -46,18 +48,26 @@
 		 * Detach and release the template instance associated with
 		 * the specified column and rendered in the specified element.
 		 * Must be defined in implementors.
+		 * @param {Object} instance - The instance.
+		 * @param {Object} column - The column.
+		 * @param {Object} element - The element.
+		 * @return {undefined}
 		 */
 		_detachTemplateInstance: function (instance, column, element) {},
 
 		/**
 		 * Configure a newly created repeated element
 		 * Must be defined in implementors.
+		 * @param {Object} element - The element.
+		 * @return {undefined}
 		 */
 		_configureElement: function (element) {},
 
 		/**
 		 * Configure a newly created cell template instance
 		 * Must be defined in implementors.
+		 * @param {Object} instance - The instance.
+		 * @return {undefined}
 		 */
 		_configureTemplateInstance: function (instance) {},
 
@@ -84,7 +94,9 @@
 		},
 
 		/**
-		 * Get the template instance rendered by the specified element
+		 * Get the template instance rendered by the specified element.
+		 * @param {Object} element - The element.
+		 * @return {Object} - The instance.
 		 */
 		getElementTemplateInstance: function (element) {
 			return element.__instance;
@@ -92,6 +104,8 @@
 
 		/**
 		 * Get the column that was used to rendered the specified element
+		 * @param {Object} element - The element.
+		 * @return {Object} - The column.
 		 */
 		getElementColumn: function (element) {
 			return element.__column;
@@ -163,15 +177,11 @@
 			}
 		},
 
-
-
 		_removeElements: function (start, removedColumns) {
 			var i,
-				column,
 				index,
 				element;
 			for (i = 0; i < removedColumns.length; i++) {
-				column = removedColumns[i];
 				index = start + i;
 				element = this._elements[index];
 				Polymer.dom(this).removeChild(element);

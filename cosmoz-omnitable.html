@@ -173,11 +173,11 @@
 				</template>
 				<div class="tableContent-scroller" id="scroller">
 					<cosmoz-grouped-list id="groupedList" data="{{ sortedFilteredGroupedItems }}"
-						selected-items="{{ selectedItems }}" display-empty-groups="[[ displayEmptyGroups ]]">
+						selected-items="{{ selectedItems }}" highlighted-items="{{ highlightedItems }}" display-empty-groups="[[ displayEmptyGroups ]]">
 						<cosmoz-grouped-list-template id="itemTemplate">
 							<template>
 								<div class="item-row-wrapper">
-									<div class$="[[ _getItemRowClasses(selected) ]]">
+									<div selected$="[[selected]]" class="itemRow" highlighted$="[[highlighted]]">
 										<div class="selectItemCheckbox" hidden$="[[ !_showCheckboxes ]]">
 											<paper-checkbox checked="{{ selected }}" on-change="_onItemCheckboxChange"></paper-checkbox>
 										</div>

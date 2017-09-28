@@ -1,0 +1,157 @@
+<link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="../cosmoz-moment/cosmoz-moment.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-input/paper-input.html">
+
+<link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
+<link rel="import" href="cosmoz-omnitable-column-date-behavior.html">
+
+<dom-module id="cosmoz-omnitable-column-time">
+	<template>
+		<template class="cell">
+			[[ getLocaleString(item, valuePath, userFormat, locale) ]]
+		</template>
+
+		<template class="edit-cell">
+			<paper-input no-label-float type="time" on-change="_timeValueChanged"
+				value="[[ getLocaleString(item, valuePath, userFormat, locale) ]]">
+			</paper-input>
+		</template>
+
+		<template class="header">
+			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _tooltip ]]">
+				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
+					<h3 style="margin: 0;">[[ title ]]</h3>
+					<paper-input
+						type="time" label="[[ _('From time', t) ]]" step="[[_filterStep]]" value="{{ _filterInput.start }}">
+					</paper-input>
+					<paper-input
+						type="time" label="[[ _('Until time', t) ]]" step="[[_filterStep]]" value="{{ _filterInput.end }}">
+					</paper-input>
+				</div>
+			</paper-dropdown-menu>
+		</template>
+		
+	</template>
+	<script>
+		Polymer({
+			is: 'cosmoz-omnitable-column-time',
+
+			behaviors: [
+				Cosmoz.MomentBehavior,
+				Cosmoz.OmnitableColumnBehavior,
+				Cosmoz.TranslatableBehavior,
+				Cosmoz.DateColumnBehavior
+			],
+
+			properties: {
+				userFormat: {
+					type: String,
+					value: 'HH:mm:ss.SSS'
+				},
+				/*
+				 * Specifies the value granularity of the time input's value in the filter.
+				 * 1 => full seconds
+				 * 0.1 => milliseconds
+				 */
+				_filterStep: {
+					type: String,
+					computed: '_computeStep(userFormat)'
+				},
+
+				_placeholderDate: {
+					type: String,
+					value: '1970-01-01'
+				},
+
+				_placeholderDateTimeFormat: {
+					type: String,
+					computed: '_computePlaceholderDateTimeFormat(userFormat)'
+				}
+			},
+
+			/** ELEMENT LIFECYCLE */
+
+			/** ELEMENT BEHAVIOR */
+
+			_computeStep(userFormat) {
+				if (userFormat.match('S')) {
+					return 0.1;
+				}
+				return 1;
+			},
+
+			_computePlaceholderDateTimeFormat(userFormat) {
+				return 'YYYY-MM-DD ' + userFormat;
+			},
+
+			_timeValueChanged(e) {
+				var
+					input = e.target,
+					timeString = input.value,
+					item = e.model.item,
+					oldDateMom = moment(item.date),
+					newDateMom = moment(oldDateMom.format('YYYY-MM-DD') + ` ${timeString} ` + oldDateMom.format('Z'));
+
+				try {
+					this.set(this.valuePath, newDateMom.toDate(), item);
+				} catch (err) {
+					input.errorMessage = 'Invalid date';
+				}
+			},
+
+			/** OVERRIDES */
+
+			/** cosmoz-omnitable-column-date-behavior */
+
+			_computeFilter(startTime, endTime) {
+				var startMoment = startTime ? moment(this._placeholderDate + ' ' + startTime) : null,
+					endMoment = endTime ? moment(this._placeholderDate + ' ' + endTime) : null;
+
+				return {
+					start: startMoment,
+					end: endMoment
+				};
+			},
+
+			_applySingleFilter(filter, item) {
+				var value = this.get(this.valuePath, item),
+					timeString = moment(value).format(this.userFormat),
+					mom = moment(this._placeholderDate + ' ' + timeString, this._placeholderDateTimeFormat);
+
+				if (filter.start && mom.isBefore(filter.start)) {
+					return false;
+				}
+
+				if (filter.end && mom.isAfter(filter.end)) {
+					return false;
+				}
+
+				return true;
+			},
+
+			/** cosmoz-omnitable-column-behavior */
+
+			getComparableValue(item, valuePath) {
+				var value = this.get(valuePath, item),
+					timeString = moment(value).format(this.userFormat),
+					mom = moment(this._placeholderDate + ' ' + timeString, this._placeholderDateTimeFormat),
+					compareValue = mom.unix(),
+					milliFormatMatch = this.userFormat.match('S+');
+
+				if (milliFormatMatch) {
+					compareValue = parseInt(mom.unix().toString() + mom.format(milliFormatMatch[0]), 10);
+				}
+				return compareValue;
+			},
+
+			getLocaleString(item, valuePath, userFormat, locale) {
+				var value = this.get(valuePath, item);
+				if (!value) {
+					return '';
+				}
+				return moment(value).locale(locale).format(this.userFormat);
+			}
+		});
+	</script>
+</dom-module>

@@ -23,7 +23,21 @@
 	}
 
 	function getRandomDate() {
-		return new Date(2015, getRandomInt(1, 12), getRandomInt(1, 28));
+		// return some equal dates to test grouping
+		var i = getRandomInt(0, 20);
+		if (i === 1) {
+			return new Date(2015, 3, 2, 14, 26, 10, 299);
+		}
+		if (i === 2) {
+			return new Date(2016, 4, 2, 10, 9, 10, 444);
+		}
+		if (i === 3) {
+			return new Date(2016, 4, 2, 10, 9, 10, 443);
+		}
+		if (i === 4) {
+			return new Date(2016, 4, 2, 10, 9, 10, 442);
+		}
+		return new Date(getRandomInt(2014, 2017), getRandomInt(1, 12), getRandomInt(1, 28), getRandomInt(0, 23), getRandomInt(0, 59), getRandomInt(0, 59), getRandomInt(0, 999));
 	}
 
 	window.Cosmoz = window.Cosmoz || {};
@@ -84,7 +98,6 @@
 					n += 1;
 				}
 			}
-			console.log('generated ' + n + ' data items');
 			return data;
 		}
 
