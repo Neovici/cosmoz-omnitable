@@ -31,7 +31,8 @@
 			 * If true, the column will be editable by using an input element for rendering.
 			 */
 			editable: {
-				type: Boolean
+				type: Boolean,
+				observer: '_editableChanged'
 			},
 
 			/**
@@ -99,7 +100,7 @@
 			width: {
 				type: String,
 				value: function () {
-					return this._getDefaultWidth();
+					return this._getDefaultWidth(this.editable);
 				}
 			},
 
@@ -231,8 +232,17 @@
 			}
 		},
 
+		_editableChanged(editable, oldEditable) {
+			if (this.width !== this._getDefaultWidth(oldEditable)) {
+				// width property has been changed from outside
+				return;
+			}
+			this.width = this._getDefaultWidth(editable);
+		},
+
 		/**
 		 * Override this in column elements if you need a different default width
+		 * @param {Boolean} editable - If column is editable.
 		 * @returns {String} Default width
 		 */
 		_getDefaultWidth: function () {
