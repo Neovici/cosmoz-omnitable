@@ -152,7 +152,6 @@
 
 			hidden: {
 				type: Boolean,
-				notify: true,
 				reflectToAttribute: true,
 				observer: '_hiddenChanged'
 			},
@@ -169,6 +168,10 @@
 		},
 
 		StyleModules: [],
+
+		observers: [
+			'__filterChanged(filter.*)'
+		],
 
 		ready: function () {
 			this._headerTemplatizer = this._createTemplatizer('template.header');
@@ -327,7 +330,11 @@
 
 		_hiddenChanged: function () {
 			this.fire('cosmoz-column-hidden-changed', { column: this });
-		}
+		},
+
+		__filterChanged: function () {
+			this.fire('cosmoz-column-filter-changed', { column: this });
+		},
 
 	};
 

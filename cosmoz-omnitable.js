@@ -191,7 +191,8 @@
 			'iron-resize': '_onResize',
 			'update-item-size': '_onUpdateItemSize',
 			'cosmoz-column-title-changed': '_onColumnTitleChanged',
-			'cosmoz-column-hidden-changed': '_debounceUpdateColumns'
+			'cosmoz-column-hidden-changed': '_debounceUpdateColumns',
+			'cosmoz-column-filter-changed': '_debounceFilterItems'
 		},
 
 		/** ELEMENT LIFECYCLE */
@@ -210,6 +211,7 @@
 					return;
 				}
 
+				// this._debounceUpdateColumns();
 				this._updateColumns();
 			});
 		},
@@ -266,10 +268,6 @@
 				this.$.groupedList.updateSize(detail.item);
 			}
 			event.stopPropagation();
-		},
-
-		_onColumnFilterChanged: function () {
-			this._debounceFilterItems();
 		},
 
 		_onColumnTitleChanged: function (event) {
@@ -366,10 +364,7 @@
 
 			this._verifyColumnSetup(columns, columnNames);
 
-			// TODO: Un-listen from old columns ?
 			columns.forEach(function (column) {
-				this.listen(column, 'filter-changed', '_onColumnFilterChanged');
-
 				if (!column.name){
 					// No name set; Try to set name attribute via valuePath
 					if (!valuePathNames) {
