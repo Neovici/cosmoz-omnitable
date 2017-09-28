@@ -37,7 +37,7 @@
 					margin: 5px 5px 10px 5px;
 				}
 
-				.info {
+				#info {
 					position: fixed;
 					top: 0;
 					right: 12px;
@@ -53,14 +53,14 @@
 					transition: all 0.5s ease;
 				}
 
-				.info[active] {
+				#info[active] {
 					opacity: 1;
 				}
 			</style>
 			<div class="layout vertical fit">
 				<h3>Cosmoz omnitable demo</h3>
 
-				<div id="info" class="info"><span>[[info]]</span></div>
+				<div id="info"><span>[[info]]</span></div>
 
 				<div class="layout horizontal center">
 					<button class="action" on-tap="changeData">Generate a new data set</button>
@@ -121,7 +121,8 @@
 		},
 
 		behaviors: [
-			Cosmoz.TableDemoBehavior
+			Cosmoz.TableDemoBehavior,
+			Cosmoz.TranslatableBehavior
 		],
 
 		listeners: {
