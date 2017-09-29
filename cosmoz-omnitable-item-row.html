@@ -77,9 +77,11 @@
 		},
 
 		_configureTemplateInstance: function (instance) {
-			instance.item = this.item;
-			instance.selected = this.selected;
-			instance.expanded = this.expanded;
+			if (instance.item === undefined && this.item !== undefined) {
+				instance.item = this.item;
+				instance.selected = this.selected;
+				instance.expanded = this.expanded;
+			}
 		},
 
 		_computeItemRowCellClasses: function (column) {
