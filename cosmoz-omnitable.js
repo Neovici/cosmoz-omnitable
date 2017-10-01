@@ -364,7 +364,7 @@
 			columns.forEach(column => {
 				this.listen(column, 'filter-changed', '_onColumnFilterChanged');
 
-				if (!column.name){
+				if (!column.name) {
 					// No name set; Try to set name attribute via valuePath
 					if (!valuePathNames) {
 						valuePathNames = columns.map(c => c.valuePath);
@@ -626,7 +626,7 @@
 						return;
 					}
 
-					this.set('sortedFilteredGroupedItems', data.data.map(function (item){
+					this.set('sortedFilteredGroupedItems', data.data.map(function (item) {
 						return this.filteredGroupedItems[item.index];
 					}, this));
 					this._debounceAdjustColumns();
