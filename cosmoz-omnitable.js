@@ -58,6 +58,14 @@
 			},
 
 			/**
+			 * Shows a loading overlay to indicate data will be updated
+			 */
+			loading: {
+				type: Boolean,
+				value: false
+			},
+
+			/**
 			 * Whether to show checkboxes to perform bottom-bar actions on
 			 */
 			_showCheckboxes: {
