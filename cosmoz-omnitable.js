@@ -363,8 +363,6 @@
 
 			// TODO: Un-listen from old columns ?
 			columns.forEach(column => {
-				this.listen(column, 'filter-changed', '_onColumnFilterChanged');
-
 				if (!column.name) {
 					// No name set; Try to set name attribute via valuePath
 					if (!valuePathNames) {
@@ -454,7 +452,7 @@
 		},
 
 		_filterItems: function () {
-			if (this.data && this.data.length) {
+			if (this.data && this.data.length && this.columns) {
 				// Call filtering code only on columns that has a filter
 				const filterFunctions = this.columns
 						.map(col => col.getFilterFn())
