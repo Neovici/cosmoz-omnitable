@@ -211,8 +211,7 @@
 					return;
 				}
 
-				// this._debounceUpdateColumns();
-				this._updateColumns();
+				this._debounceUpdateColumns();
 			});
 		},
 
