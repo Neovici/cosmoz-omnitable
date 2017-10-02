@@ -46,7 +46,7 @@
 			 */
 			enabledColumns: {
 				type: Array,
-				observer: '_updateColumns'
+				observer: '_debounceUpdateColumns'
 			},
 
 			/**
