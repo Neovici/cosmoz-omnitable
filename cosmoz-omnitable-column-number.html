@@ -8,7 +8,7 @@
 <dom-module id="cosmoz-omnitable-column-number">
 	<template>
 		<template class="cell">
-			<div class="omnitable-cell-number">[[ renderNumberValue(item, valuePath, locale) ]]</div>
+			<div class="omnitable-cell-number">[[ renderNumberValue(item, valuePath, locale, _toLocaleStringOptions) ]]</div>
 		</template>
 
 		<template class="edit-cell">
@@ -20,10 +20,10 @@
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
 					<paper-input type="number" label="[[ _('From', t) ]]" value="{{ _filterInput.min }}"
-						min="[[ _possibleNumberRange.min ]]" max="[[ _lowestMax ]]">
+						min="[[ _fromMin ]]" max="[[ _fromMax ]]">
 					</paper-input>
 					<paper-input type="number" label="[[ _('To', t) ]]" value="{{ _filterInput.max }}"
-						min="[[ _highestMin ]]" max="[[ _possibleNumberRange.max ]]">
+						min="[[ _toMin ]]" max="[[ _toMax ]]">
 					</paper-input>
 				</div>
 			</paper-dropdown-menu>
@@ -57,6 +57,20 @@
 					type: String,
 					value: null
 				},
+				max: {
+					type: Number
+				},
+				maximumFractionDigits: {
+					type: Number,
+					value: null
+				},
+				minimumFractionDigits: {
+					type: Number,
+					value: null // browser default 0 for numbers, currency-specific or 2 for currency
+				},
+				min: {
+					type: Number
+				},
 				values: {
 					type: Array,
 					value: function () {
@@ -80,17 +94,29 @@
 					type: Object,
 					computed: '_computePossibleNumberRange(values.*)'
 				},
-				_lowestMax: {
+				_fromMax: {
 					type: Object,
 					computed: '_getMinMax(_possibleNumberRange.max, filter.max, 0)'
 				},
-				_highestMin: {
+				_fromMin: {
+					type: Object,
+					computed: '_getMinMax(_possibleNumberRange.min, min, 0)'
+				},
+				_toMax: {
+					type: Object,
+					computed: '_getMinMax(_possibleNumberRange.max, max, 1)'
+				},
+				_toMin: {
 					type: Object,
 					computed: '_getMinMax(_possibleNumberRange.min, filter.min, 1)'
 				},
 				_tooltip: {
 					type: String,
 					computed: '_computeTooltip(title, _filterText)'
+				},
+				_toLocaleStringOptions: {
+					type: Object,
+					computed: '_computeToLocaleStringOptions(minimumFractionDigits, maximumFractionDigits)'
 				}
 			},
 
@@ -163,8 +189,8 @@
 			},
 
 			_setFilter: function () {
-				this._enforceLowestMax(this._filterInput.min, this._lowestMax);
-				this._enforceHighestMin(this._filterInput.max, this._highestMin);
+				this._enforceLowestMax(this._filterInput.min, this._fromMax);
+				this._enforceHighestMin(this._filterInput.max, this._toMin);
 				var newFilter = this._filterInput;
 				this.set('filter', {
 					min: newFilter.min !== null && newFilter.min !== '' ? Number(newFilter.min) : null,
@@ -208,9 +234,22 @@
 				return doMax ? second : first;
 			},
 
+			_computeToLocaleStringOptions(minimumFractionDigits, maximumFractionDigits) {
+				const options = {
+					localeMatcher: 'best fit' // chrome expects this when using custom options
+				};
+				if (minimumFractionDigits !== null) {
+					options.minimumFractionDigits = minimumFractionDigits;
+				}
+				if (maximumFractionDigits !== null) {
+					options.maximumFractionDigits = maximumFractionDigits;
+				}
+				return options;
+			},
+
 			_toLocaleString: function (num, locale) {
 				if (num !== undefined && num !== null && num.toLocaleString) {
-					return num.toLocaleString(locale || undefined);
+					return num.toLocaleString(locale || undefined, this._toLocaleStringOptions);
 				}
 				return num;
 			},
