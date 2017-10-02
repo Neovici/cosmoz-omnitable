@@ -66,9 +66,11 @@
 		},
 
 		_configureTemplateInstance: function (instance) {
-			instance.item = this.item;
-			instance.selected = this.selected;
-			instance.folded = this.folded;
+			if (instance.item === undefined && this.item !== undefined) {
+				instance.item = this.item;
+				instance.selected = this.selected;
+				instance.folded = this.folded;
+			}
 		},
 
 		_itemUpdated: function (itemChange) {

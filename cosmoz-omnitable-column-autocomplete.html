@@ -20,8 +20,9 @@
 				label="[[ title ]]"
 				selected-items="{{ filter }}"
 				text-property="[[ textProperty ]]"
-				value-property="[[ valueProperty ]]">
-				<paper-spinner-lite style="width: 20px; height: 20px;" slot="suffix" active="[[ loading ]]" hidden="[[ !loading ]]"></paper-spinner-lite>
+				value-property="[[ valueProperty ]]"
+				show-results-on-focus>
+				<paper-spinner-lite style="width: 20px; height: 20px;" suffix slot="suffix" active="[[ loading ]]" hidden="[[ !loading ]]"></paper-spinner-lite>
 			</paper-autocomplete-chips>
 		</template>
 	</template>

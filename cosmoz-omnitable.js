@@ -203,10 +203,9 @@
 			this._columnObserver = Polymer.dom(this).observeNodes(info => {
 				var changedColumns = info.addedNodes
 					.concat(info.removedNodes)
-					.filter(function (child) {
-						return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn && !child.hidden;
-					}, this);
-
+					.filter(child =>
+						child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn
+					);
 				if (changedColumns.length === 0) {
 					return;
 				}
@@ -340,21 +339,20 @@
 		},
 
 		_updateColumns: function () {
-			var columns = this.getEffectiveChildren().filter((child, index) => {
+			let columns = this.getEffectiveChildren().filter((child, index) => {
 					child.__index = index;
 					return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn && !child.hidden;
 				}),
-				columnNames = columns.map(c => c.name),
 				valuePathNames;
 
+			const columnNames = columns.map(c => c.name);
+
 			if (Array.isArray(this.enabledColumns)) {
-				columns = columns.filter(function (column) {
-					return this.enabledColumns.indexOf(column.name) !== -1;
-				}, this);
+				columns = columns.filter(column =>
+					this.enabledColumns.indexOf(column.name) !== -1
+				);
 			} else {
-				columns = columns.filter(function (column) {
-					return !column.disabled;
-				});
+				columns = columns.filter(column => !column.disabled);
 			}
 
 			if (!columns || columns.length === 0) {
@@ -363,18 +361,21 @@
 
 			this._verifyColumnSetup(columns, columnNames);
 
-			columns.forEach(function (column) {
-				if (!column.name){
+			// TODO: Un-listen from old columns ?
+			columns.forEach(column => {
+				this.listen(column, 'filter-changed', '_onColumnFilterChanged');
+
+				if (!column.name) {
 					// No name set; Try to set name attribute via valuePath
 					if (!valuePathNames) {
 						valuePathNames = columns.map(c => c.valuePath);
 					}
-					var hasUniqueValuePath = valuePathNames.indexOf(column.valuePath) === valuePathNames.lastIndexOf(column.valuePath);
+					const hasUniqueValuePath = valuePathNames.indexOf(column.valuePath) === valuePathNames.lastIndexOf(column.valuePath);
 					if (hasUniqueValuePath && columnNames.indexOf(column.valuePath) === -1) {
 						column.name = column.valuePath;
 					}
 				}
-			}, this);
+			});
 
 			this.columns = columns;
 
@@ -424,13 +425,11 @@
 				}
 
 				column.set('values', this.data
-					.map(function (item) {
-						return this.get(column.valuePath, item);
-					}, this)
-					.filter(function (value, index, self) {
-						return value !== undefined && value !== null && self.indexOf(value) === index;
-					}));
-
+					.map(item => this.get(column.valuePath, item))
+					.filter((value, index, self) =>
+						value !== undefined && value !== null && self.indexOf(value) === index
+					)
+				);
 			}, this);
 		},
 		/*
@@ -443,7 +442,7 @@
 			if (!attributeValue || !this.columns) {
 				return;
 			}
-			var column = this.columns.find(column => column[attribute] === attributeValue);
+			const column = this.columns.find(column => column[attribute] === attributeValue);
 			if (!column) {
 				console.warn(`Cannot find column with ${attribute} ${attributeValue}`);
 			}
@@ -457,20 +456,14 @@
 		_filterItems: function () {
 			if (this.data && this.data.length) {
 				// Call filtering code only on columns that has a filter
-				var filterFunctions = this.columns
-						.map(function (column) {
-							return column.getFilterFn();
-						})
-						.filter(function (fn) {
-							return fn !== undefined;
-						});
+				const filterFunctions = this.columns
+						.map(col => col.getFilterFn())
+						.filter(fn => fn !== undefined);
 
 				if (filterFunctions.length) {
-					this.filteredItems = this.data.filter(function (item) {
-						return filterFunctions.every(function (filterFn) {
-							return filterFn(item);
-						}, this);
-					}, this);
+					this.filteredItems = this.data.filter(item =>
+						filterFunctions.every(filterFn => filterFn(item))
+					);
 				} else {
 					this.filteredItems = this.data.slice();
 				}
@@ -634,7 +627,7 @@
 						return;
 					}
 
-					this.set('sortedFilteredGroupedItems', data.data.map(function (item){
+					this.set('sortedFilteredGroupedItems', data.data.map(function (item) {
 						return this.filteredGroupedItems[item.index];
 					}, this));
 					this._debounceAdjustColumns();
