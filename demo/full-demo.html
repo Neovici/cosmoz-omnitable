@@ -75,7 +75,7 @@
 				</div>
 
 				<cosmoz-omnitable loading="[[ loading ]]" id="omnitable" class="flex" data="[[ data ]]" selection-enabled selected-items="{{ selectedItems }}">
-					<cosmoz-omnitable-column-autocomplete title="Id" name="id" value-path="id" sort-on="id" group-on="id">
+					<cosmoz-omnitable-column-autocomplete cell-width="40px" flex="0" title="Id" name="id" value-path="id" sort-on="id" group-on="id">
 						<template class="cell">
 							<span on-tap="onTap">
 								<a href$="[[ _getItemLink(item) ]]">[[ item.id ]]</a>

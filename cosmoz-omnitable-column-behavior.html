@@ -107,14 +107,7 @@
 			 */
 			editCellWidth: {
 				type: String,
-				value: ''
-			},
-			/**
-			 * The computed width of the active template.
-			 */
-			width: {
-				type: String,
-				computed: '_computeTemplateWidth(editable, editCellWidth, cellWidth)'
+				value: '75px'
 			},
 
 			flex: {
@@ -171,13 +164,6 @@
 		ready: function () {
 			this._headerTemplatizer = this._createTemplatizer('template.header');
 			this._itemCells = [];
-		},
-
-		_computeTemplateWidth(editable, editCellWidth, cellWidth) {
-			if (editable) {
-				return editCellWidth ? editCellWidth : cellWidth;
-			}
-			return cellWidth;
 		},
 
 		_createTemplatizer: function (templateElementOrSelector) {
