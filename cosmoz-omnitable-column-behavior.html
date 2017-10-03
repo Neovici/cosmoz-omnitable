@@ -224,6 +224,10 @@
 			}
 
 			templatizer = document.createElement('cosmoz-omnitable-templatizer');
+
+			if (Polymer.Element) {
+				this.appendChild(templatizer);
+			}
 			templatizer.init(template, templateHost);
 			return templatizer;
 		},
