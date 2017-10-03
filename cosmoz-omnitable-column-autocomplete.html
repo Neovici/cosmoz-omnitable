@@ -61,6 +61,18 @@
 				}
 			},
 
+			getString(item, valuePath = this.valuePath) {
+				if (valuePath === undefined) {
+					console.error(this, 'has undefined valuePath', valuePath, 'for item', item);
+					return;
+				}
+				const itemValue = this.get(valuePath, item);
+				if (this.textProperty && typeof itemValue === 'object') {
+					return this.get(this.textProperty, itemValue);
+				}
+				return itemValue;
+			},
+
 			_getDefaultHeaderCellClass: function () {
 				return 'autocomplete-header-cell';
 			},
