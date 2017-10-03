@@ -95,13 +95,28 @@
 				value: true,
 				readOnly: true
 			},
-
-			width: {
-				type: String
+			/**
+			 * The with of the cell template.
+			 */
+			cellWidth: {
+				type: String,
+				value: '75px'
 			},
 
-			editableWidth: {
-				type: String
+			/**
+			 * The with of the edit-cell template.
+			 */
+			editCellWidth: {
+				type: String,
+				value: ''
+			},
+
+			/**
+			 * The computed with of the active template.
+			 */
+			width: {
+				type: String,
+				computed: '_computeTemplateWidth(editable, editCellWidth, cellWidth)'
 			},
 
 			flex: {
@@ -167,6 +182,13 @@
 		ready: function () {
 			this._headerTemplatizer = this._createTemplatizer('template.header');
 			this._itemCells = [];
+		},
+
+		_computeTemplateWidth(editable, editCellWidth, cellWidth) {
+			if (editable) {
+				return editCellWidth ? editCellWidth : cellWidth;
+			}
+			return cellWidth;
 		},
 
 		_createTemplatizer: function (templateElementOrSelector) {
