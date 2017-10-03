@@ -59,6 +59,11 @@
 
 				_textValue: {
 
+				},
+
+				width: {
+					type: String,
+					value: '60px'
 				}
 			},
 
@@ -75,11 +80,6 @@
 			_filterChangedFromInput: false,
 
 			_filterChangedFromAbove: false,
-
-			_getDefaultWidth: function () {
-				return '60px';
-			},
-
 			/**
 			 * No need to grow, as the values in a boolean column should have known fixed width
 			 * @returns {String} Default flex

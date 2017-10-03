@@ -53,6 +53,16 @@
 				userFormat: {
 					type: String,
 					value: 'YYYY-MM-DD HH:mm:ss.SSS'
+				},
+
+				editableWidth: {
+					type: String,
+					value: '300px'
+				},
+
+				width: {
+					type: String,
+					value: '180px'
 				}
 			},
 
@@ -84,11 +94,6 @@
 				}
 				return mom.format('YYYY-MM-DDTHH:mm:ss');
 			},
-
-			_getDefaultWidth(editable) {
-				return editable ? '300px' : '180px';
-			},
-
 		});
 
 	</script>

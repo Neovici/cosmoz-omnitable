@@ -91,6 +91,10 @@
 				_tooltip: {
 					type: String,
 					computed: '_computeTooltip(title, _filterText)'
+				},
+				width: {
+					type: String,
+					value: '30px'
 				}
 			},
 
@@ -170,10 +174,6 @@
 					min: newFilter.min !== null && newFilter.min !== '' ? Number(newFilter.min) : null,
 					max: newFilter.max !== null && newFilter.max !== '' ? Number(newFilter.max) : null
 				});
-			},
-
-			_getDefaultWidth: function () {
-				return '30px';
 			},
 
 			_getDefaultFlex: function () {

@@ -95,8 +95,11 @@
 			_tooltip: {
 				type: String,
 				computed: '_computeTooltip(title, _filterText)'
+			},
+			width: {
+				type: String,
+				value: '180px'
 			}
-	
 		},
 
 		_getMinMax(firstRaw, secondRaw, max) {
@@ -153,11 +156,6 @@
 			}
 			return mom.format('YYYY-MM-DD');
 		},
-
-		_getDefaultWidth() {
-			return '180px';
-		},
-
 		/**
 		 * No need to grow, as the values in a date column should have known fixed width
 		 * @returns {String} Default flex
