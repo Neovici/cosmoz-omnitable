@@ -13,6 +13,7 @@
 	<link rel="import" href="../../iron-icons/editor-icons.html">
 	<link rel="import" href="../../iron-icons/iron-icons.html">
 	<link rel="import" href="../../paper-button/paper-button.html">
+	<link rel="import" href="../../paper-toggle-button/paper-toggle-button.html">
 	<link rel="import" href="../../cosmoz-i18next/cosmoz-i18next.html">
 	<link rel="import" href="../../cosmoz-moment/cosmoz-moment.html">
 	<link rel="import" href="../../cosmoz-moment/cosmoz-moment.html">
@@ -33,6 +34,7 @@
 				:host {
 					display: block;
 					position: relative;
+					font-family: sans-serif;
 				}
 
 				.action {
@@ -68,13 +70,15 @@
 							</paper-listbox>
 						</paper-dropdown-menu>
 					</div>
+
+					<paper-toggle-button checked="{{ loading }}"> Loading</paper-toggle-button>
 				</div>
 
-				<cosmoz-omnitable id="omnitable" class="flex" data="[[ data ]]" selection-enabled selected-items="{{ selectedItems }}">
-					<cosmoz-omnitable-column-autocomplete title="Id" name="id" name="id" value-path="id" sort-on="id" group-on="id">
+				<cosmoz-omnitable loading="[[ loading ]]" id="omnitable" class="flex" data="[[ data ]]" selection-enabled selected-items="{{ selectedItems }}">
+					<cosmoz-omnitable-column-autocomplete title="Id" name="id" value-path="id" sort-on="id" group-on="id">
 						<template class="cell">
 							<span on-tap="onTap">
-								<a href="#!/purchase/suppliers/view?id=[[ item.id ]]">[[ item.id ]]</a>
+								<a href$="[[ _getItemLink(item) ]]">[[ item.id ]]</a>
 							</span>
 						</template>
 					</cosmoz-omnitable-column-autocomplete>
@@ -215,6 +219,10 @@
 
 		onTap: function (event) {
 			console.log('onTap', event);
+		},
+
+		_getItemLink: function (item) {
+			return '#!/purchase/suppliers/view?id=' + item.id;
 		},
 
 		_getRowItems: function (numSelected) {

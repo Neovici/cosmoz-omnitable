@@ -12,6 +12,7 @@
 <link rel="import" href="../paper-icon-button/paper-icon-button.html"/>
 <link rel="import" href="../paper-item/paper-item.html"/>
 <link rel="import" href="../paper-listbox/paper-listbox.html"/>
+<link rel="import" href="../paper-spinner/paper-spinner-lite.html">
 
 <link rel="import" href="../cosmoz-grouped-list/cosmoz-grouped-list.html"/>
 <link rel="import" href="../cosmoz-web-worker/cosmoz-web-worker.html"/>
@@ -168,6 +169,14 @@
 						<div>
 							<h3>[[ _('Filter too strict', t) ]]</h3>
 							<p>[[ _('No matches for selection', t) ]]</p>
+						</div>
+					</div>
+				</template>
+				<template is="dom-if" if="[[ loading ]]">
+					<div class="tableContent-empty overlay">
+						<paper-spinner-lite active="[[ loading ]]"></paper-spinner-lite>
+						<div>
+							<h3>[[ _('Data set is updating', t) ]]</h3>
 						</div>
 					</div>
 				</template>

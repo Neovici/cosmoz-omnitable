@@ -24,18 +24,18 @@
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 150px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
 					<paper-input type="number" label="[[ _('Min amount', t) ]]" title="[[ _('Minimum amount', t) ]]" on-change="_setMinValue"
-							min="[[ _possibleAmountRange.min.amount ]]" max="[[ _lowestMax.amount ]]">
-						<div suffix>[[ filter.min.currency ]]</div>
+							min="[[ _fromMin.amount ]]" max="[[ _fromMax.amount ]]">
+						<div slot="suffix" suffix>[[ filter.min.currency ]]</div>
 					</paper-input>
 					<paper-input type="number" label="[[ _('Max amount', t) ]]" title="[[ _('Maximum amount', t) ]]" on-change="_setMaxValue"
-							min="[[ _highestMin.amount ]]" max="[[ _possibleAmountRange.max.amount ]]">
-						<div suffix>[[ filter.max.currency ]]</div>
+							min="[[ _toMin.amount ]]" max="[[ _toMax.amount ]]">
+						<div slot="suffix" suffix>[[ filter.max.currency ]]</div>
 					</paper-input>
 				</div>
 			</paper-dropdown-menu>
 		</template>
 	</template>
-	<script>
+	<script type="text/javascript">
 		/*global accounting*/
 		Polymer({
 			is: 'cosmoz-omnitable-column-amount',
@@ -54,11 +54,24 @@
 				},
 				filter: {
 					type: Object,
-					value: function () {
+					notify: true,
+					value() {
 						return {
 							min: { currency: 'SEK' },
 							max: { currency: 'SEK' }
 						};
+					}
+				},
+				max: {
+					type: Object,
+					value() {
+						return {};
+					}
+				},
+				min: {
+					type: Object,
+					value() {
+						return {};
 					}
 				},
 				_filterText: {
@@ -69,13 +82,21 @@
 					type: Object,
 					computed: '_computePossibleAmountRange(values.*)'
 				},
-				_lowestMax: {
+				_fromMin: {
+					type: Object,
+					computed: '_getMinMax(_possibleAmountRange.min, min.*, 0)'
+				},
+				_fromMax: {
 					type: Object,
 					computed: '_getMinMax(_possibleAmountRange.max, filter.max.*, 0)'
 				},
-				_highestMin: {
+				_toMin: {
 					type: Object,
 					computed: '_getMinMax(_possibleAmountRange.min, filter.min.*, 1)'
+				},
+				_toMax: {
+					type: Object,
+					computed: '_getMinMax(_possibleAmountRange.max, max.*, 1)'
 				},
 				_tooltip: {
 					type: String,
@@ -146,10 +167,10 @@
 				return ret;
 			},
 
-			_getMinMax: function (first, secondNotify, max) {
-				var doMax = max === 1,
-					second = secondNotify.base,
-					ret;
+			_getMinMax(first, secondNotify, max) {
+				const doMax = max === 1,
+					second = secondNotify.base;
+				let ret;
 
 				// TODO: Use fx
 
@@ -163,17 +184,14 @@
 					ret = doMax ? second : first;
 				}
 				// shallow copy object to trigger observers
-				return {
-					currency: ret.currency,
-					amount: ret.amount
-				};
+				return Object.assign({}, ret);
 			},
 
 			_getNumberValue: function (value) {
 				if (value === null || value === undefined || value === '') {
 					return;
 				}
-				var number =  Number(value);
+				const number = Number(value);
 				if (Number.isNaN(number)) {
 					console.warn('Not a number', value);
 					return;
@@ -182,13 +200,19 @@
 			},
 
 			_setMinValue: function (event) {
-				var value = this._getNumberValue(event.target.value);
-				this.set('filter.min.amount', value);
+				const value = this._getNumberValue(event.target.value);
+				this.set('filter.min', {
+					amount: value,
+					currency: this.currency
+				});
 			},
 
 			_setMaxValue: function (event) {
-				var value = this._getNumberValue(event.target.value);
-				this.set('filter.max.amount', value);
+				const value = this._getNumberValue(event.target.value);
+				this.set('filter.max', {
+					amount: value,
+					currency: this.currency
+				});
 			},
 
 			renderNumberAmount: function (item) {
@@ -234,20 +258,20 @@
 				this.set(this.valuePath, newValue, item);
 			},
 
-			getComparableValue: function (item, valuePath) {
-				var value = this.get(valuePath, item);
+			getComparableValue(item, valuePath) {
+				const value = this.get(valuePath, item);
 				// TODO: fx
 				if (value !== undefined && value !== null && typeof value.amount === 'number') {
 					return value.amount;
 				}
 			},
 
-			getFilterFn: function () {
+			getFilterFn() {
 				return this._applySingleFilter.bind(this, this.filter);
 			},
 
-			_applySingleFilter: function (filter, item) {
-				var value = this.getComparableValue(item, this.valuePath),
+			_applySingleFilter(filter, item) {
+				const value = this.getComparableValue(item, this.valuePath),
 					minValue = this.getComparableValue(filter, 'min'),
 					maxValue = this.getComparableValue(filter, 'max');
 

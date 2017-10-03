@@ -40,8 +40,8 @@
 		"cosmoz-moment": "neovici/cosmoz-moment#master",
 		"import-filesaver": "JaySunSyn/import-filesaver",
 		"paper-autocomplete-chips": "neovici/paper-autocomplete-chips#master",
-    "paper-spinner": "^2.0.0",
-    "datetime-local": "JaySunSyn/datetime-local#polymer-1"
+		"paper-spinner": "^2.0.0",
+		"datetime-local": "JaySunSyn/datetime-local#polymer-1"
 	},
 	"devDependencies": {
 		"iron-component-page": "PolymerElements/iron-component-page#^2.0.0",
@@ -52,7 +52,8 @@
 		"marked-element": "^1.2.0",
 		"prism-element": "^1.2.0",
 		"cosmoz-viewinfo": "Neovici/cosmoz-viewinfo",
-		"iron-ajax": "polymerelements/iron-ajax#^2.0.0"
+		"iron-ajax": "polymerelements/iron-ajax#^2.0.0",
+		"paper-toggle-button": "^2.0.0"
 	},
 	"resolutions": {
 		"cosmoz-viewinfo": "master",
