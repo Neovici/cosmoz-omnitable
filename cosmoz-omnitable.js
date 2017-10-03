@@ -708,7 +708,7 @@
 				// reset headers width
 				headerRow = Polymer.dom(this.$.header).querySelector('cosmoz-omnitable-header-row');
 				headers = Polymer.dom(headerRow).children;
-				headers.forEach(function (header) {
+				Array.from(headers).forEach(function (header) {
 					header.style.minWidth = 'auto';
 					header.style.maxWidth = 'none';
 					header.style.width = 'auto';
@@ -730,7 +730,7 @@
 			cells = Polymer.dom(itemRow).children;
 
 			if (fits) {
-				fits = cells.every(function (cell) {
+				fits =  Array.from(cells).every(function (cell) {
 					return cell.__column.overflow || cell.scrollWidth <= cell.clientWidth;
 				});
 			}
@@ -756,7 +756,7 @@
 			var headerRow = Polymer.dom(this.$.header).querySelector('cosmoz-omnitable-header-row'),
 				headers = Polymer.dom(headerRow).children;
 
-			cells.forEach(function (cell, index) {
+			Array.from(cells).forEach(function (cell, index) {
 				var header = headers[index],
 					width;
 
