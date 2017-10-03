@@ -133,10 +133,7 @@
 			},
 
 			styleModule: {
-				type: String,
-				value: function () {
-					return this._getDefaultStyleModule();
-				}
+				type: String
 			},
 
 			/**
@@ -249,10 +246,6 @@
 		/**
 		 * Override this in column elements if you need a different default width
 		 */
-
-		_getDefaultStyleModule: function () {
-			return;
-		},
 
 		getString: function (item, valuePathArg) {
 			var valuePath = valuePathArg || this.valuePath;
