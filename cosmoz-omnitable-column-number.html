@@ -121,6 +121,14 @@
 				_toLocaleStringOptions: {
 					type: Object,
 					computed: '_computeToLocaleStringOptions(minimumFractionDigits, maximumFractionDigits)'
+				},
+				cellClass: {
+					type: String,
+					value: 'number-cell align-right'
+				},
+				headerCellClass: {
+					type: String,
+					value: 'number-header-cell'
 				}
 			},
 
@@ -200,18 +208,6 @@
 					min: newFilter.min !== null && newFilter.min !== '' ? Number(newFilter.min) : null,
 					max: newFilter.max !== null && newFilter.max !== '' ? Number(newFilter.max) : null
 				});
-			},
-
-			_getDefaultFlex: function () {
-				return '1';
-			},
-
-			_getDefaultCellClass: function () {
-				return 'number-cell align-right';
-			},
-
-			_getDefaultHeaderCellClass: function () {
-				return 'number-header-cell';
 			},
 
 			_getMinMax: function (first, second, max) {

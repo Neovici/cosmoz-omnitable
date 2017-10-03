@@ -99,6 +99,14 @@
 			cellWidth: {
 				type: String,
 				value: '180px'
+			},
+			/**
+			 * No need to grow, as the values in a date column should have known fixed width
+			 * @returns {String} Default flex
+			 */
+			flex: {
+				type: String,
+				value: '0'
 			}
 		},
 
@@ -155,13 +163,6 @@
 				return;
 			}
 			return mom.format('YYYY-MM-DD');
-		},
-		/**
-		 * No need to grow, as the values in a date column should have known fixed width
-		 * @returns {String} Default flex
-		 */
-		_getDefaultFlex() {
-			return '0';
 		},
 
 		_expandUserFormat(userFormat) {

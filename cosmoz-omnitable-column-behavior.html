@@ -119,23 +119,17 @@
 
 			flex: {
 				type: String,
-				value: function () {
-					return this._getDefaultFlex();
-				}
+				value: '1'
 			},
 
 			cellClass: {
 				type: String,
-				value: function () {
-					return this._getDefaultCellClass();
-				}
+				value: 'default-cell'
 			},
 
 			headerCellClass: {
 				type: String,
-				value: function () {
-					return this._getDefaultHeaderCellClass();
-				}
+				value: 'default-header-cell'
 			},
 
 			styleModule: {
@@ -255,18 +249,6 @@
 		/**
 		 * Override this in column elements if you need a different default width
 		 */
-
-		_getDefaultFlex: function () {
-			return '1';
-		},
-
-		_getDefaultCellClass: function () {
-			return 'default-cell';
-		},
-
-		_getDefaultHeaderCellClass: function () {
-			return 'default-header-cell';
-		},
 
 		_getDefaultStyleModule: function () {
 			return;

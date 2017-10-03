@@ -64,6 +64,15 @@
 				templatetemplateWidth: {
 					type: String,
 					value: '60px'
+				},
+
+				/**
+				 * No need to grow, as the values in a boolean column should have known fixed width
+				 * @returns {String} Default flex
+				 */
+				flex: {
+					type: String,
+					value: '0'
 				}
 			},
 
@@ -80,13 +89,6 @@
 			_filterChangedFromInput: false,
 
 			_filterChangedFromAbove: false,
-			/**
-			 * No need to grow, as the values in a boolean column should have known fixed width
-			 * @returns {String} Default flex
-			 */
-			_getDefaultFlex: function () {
-				return '0';
-			},
 
 			_textFilterChanged: function (textFilter) {
 				if (this._filterChangedFromAbove) {

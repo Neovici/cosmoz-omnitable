@@ -58,11 +58,12 @@
 				valueProperty: {
 					type: String,
 					value: ''
-				}
-			},
+				},
 
-			_getDefaultHeaderCellClass: function () {
-				return 'autocomplete-header-cell';
+				headerCellClass: {
+					type: String,
+					value: 'autocomplete-header-cell'
+				}
 			},
 
 			_applySingleFilter: function (filterString, item) {

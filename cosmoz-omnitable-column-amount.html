@@ -111,19 +111,15 @@
 				cellWidth: {
 					type: String,
 					value: '70px'
+				},
+				cellClass: {
+					type: String,
+					value: 'amount-cell align-right'
+				},
+				headerCellClass: {
+					type: String,
+					value: 'amount-header-cell'
 				}
-			},
-
-			_getDefaultFlex: function () {
-				return '1';
-			},
-
-			_getDefaultCellClass: function () {
-				return 'amount-cell align-right';
-			},
-
-			_getDefaultHeaderCellClass: function () {
-				return 'amount-header-cell';
 			},
 
 			_computeFilterText: function (filterNotify) {
