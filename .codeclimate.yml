@@ -19,6 +19,8 @@ engines:
 
   fixme:
     enabled: true
+    exclude_paths:
+      - "analysis.json"
 
 ratings:
   paths:
