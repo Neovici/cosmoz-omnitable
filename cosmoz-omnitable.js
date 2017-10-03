@@ -257,7 +257,9 @@
 		_scalingUp: false,
 
 		_computeVisibleColumns(columns, groupOn) {
-			return groupOn ? columns.filter(c => c.name !== this.groupOn) : columns.slice();
+			if (columns) {
+				return groupOn ? columns.filter(c => c.name !== this.groupOn) : columns.slice();
+			}
 		},
 
 		_computeDataValidity(data) {
