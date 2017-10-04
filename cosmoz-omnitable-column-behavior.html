@@ -150,6 +150,18 @@
 				observer: '_cellTemplateChanged'
 			},
 
+			/**
+			 * Index of this column in the list of displayed columns (excluding disabled/hidden columns).
+			 */
+			columnIndex: {
+				type: Number
+			},
+
+			preferredDropdownHorizontalAlign: {
+				type: String,
+				computed: '_computePreferredDropdownHorizontalAlign(columnIndex)'
+			},
+
 			_dataTemplatizer: {
 				type: Object,
 				value: null
@@ -253,6 +265,10 @@
 
 		_getDefaultStyleModule: function () {
 			return;
+		},
+
+		_computePreferredDropdownHorizontalAlign: function (columnIndex) {
+			return columnIndex === 0 ? 'left' : 'right';
 		},
 
 		getString: function (item, valuePathArg) {

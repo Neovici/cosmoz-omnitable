@@ -75,6 +75,10 @@
 				</div>
 
 				<cosmoz-omnitable loading="[[ loading ]]" id="omnitable" class="flex" data="[[ data ]]" selection-enabled selected-items="{{ selectedItems }}">
+
+					<cosmoz-omnitable-column-date title="Date" name="date" value-path="date" sort-on="date" group-on="date">
+					</cosmoz-omnitable-column-date>
+
 					<cosmoz-omnitable-column-autocomplete title="Id" name="id" value-path="id" sort-on="id" group-on="id">
 						<template class="cell">
 							<span on-tap="onTap">
@@ -85,20 +89,15 @@
 					<cosmoz-omnitable-column-boolean title="Boolean" name="bool" value-path="bool" sort-on="bool" group-on="bool"
 						true-label="Oui" false-label="Non">
 					</cosmoz-omnitable-column-boolean>
-					<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" sort-on="value" group-on="value" locale="[[ locale ]]">
-					</cosmoz-omnitable-column-number>
+
 					<cosmoz-omnitable-column-autocomplete title="[[ _('Group', t) ]]" name="group" value-path="group" sort-on="group" group-on="group">
 					</cosmoz-omnitable-column-autocomplete>
-					<cosmoz-omnitable-column-amount title="[[ _('Amount', t) ]]" name="amount" value-path="amount" sort-on="amount" group-on="amount">
-					</cosmoz-omnitable-column-amount>
-					<cosmoz-omnitable-column-date title="Date" name="date" value-path="date" sort-on="date" group-on="date">
-					</cosmoz-omnitable-column-date>
 					<cosmoz-omnitable-column-date title="DateJSON" name="datejson" value-path="dateJSON" sort-on="dateJSON" group-on="dateJSON">
 					</cosmoz-omnitable-column-date>
 					<cosmoz-omnitable-column-time title="Time" name="time" value-path="date" sort-on="date" group-on="date">
 					</cosmoz-omnitable-column-time>
 					<cosmoz-omnitable-column-datetime title="Datetime" name="datetime" value-path="date" sort-on="date" group-on="date">
-						</cosmoz-omnitable-column-datetime>
+					</cosmoz-omnitable-column-datetime>
 					<cosmoz-omnitable-column-list title="List" name="list" value-path="list">
 					</cosmoz-omnitable-column-list>
 					<cosmoz-omnitable-column title="Sub-property" name="sub-property" value-path="sub.subProp" sort-on="sub.subProp" group-on="sub.subProp" flex="5">
@@ -112,6 +111,13 @@
 						name="custom-name" value-path="name" sort-on="name" width="50px" flex="2"
 						cell-template="[[ customNameTemplate ]]">
 					</cosmoz-omnitable-column>
+					<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" sort-on="value" group-on="value" locale="[[ locale ]]">
+					</cosmoz-omnitable-column-number>
+
+					<cosmoz-omnitable-column-amount title="[[ _('Amount', t) ]]" name="amount" value-path="amount" sort-on="amount" group-on="amount">
+					</cosmoz-omnitable-column-amount>
+					<cosmoz-omnitable-column-datetime title="Datetime" name="datetime" value-path="date" sort-on="date" group-on="date">
+					</cosmoz-omnitable-column-datetime>
 
 					<template  is="dom-repeat" items="[[ _getRowItems(selectedItems.length) ]]">
 						<paper-button slot="actions">[[ item ]]</paper-button>
