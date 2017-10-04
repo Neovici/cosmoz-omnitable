@@ -8,11 +8,12 @@
 		</template>
 
 		<template class="edit-cell">
-			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]"></paper-input>
+			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]">
+			</paper-input>
 		</template>
 
 		<template class="header">
-			<paper-input label="[[ title ]]" value="{{ filter }}"></paper-input>
+			<paper-input label="[[ title ]]" value="{{ filter }}" focused="{{ headerFocused }}"></paper-input>
 		</template>
 
 	</template>

@@ -83,18 +83,20 @@
 			},
 
 			_applyMultiFilter(filter, item) {
-				var	filterArray = filter.map(element => {
-						var val = element;
-						if (this.valueProperty) {
-							val = element[this.valueProperty];
-						}
-						return val.toString().toLowerCase();
-					}),
-					value = this.get(this.valuePath, item);
+				const filterArray = filter.map(element => {
+					let val = element;
+					if (this.valueProperty) {
+						val = element[this.valueProperty];
+					}
+					return val.toString().toLowerCase();
+				});
+
+				let value = this.get(this.valuePath, item);
 				if (this.valueProperty) {
 					value = value[this.valueProperty];
 				}
 				value = value.toString().toLowerCase();
+		
 				return filterArray.indexOf(value) !== -1;
 			},
 
