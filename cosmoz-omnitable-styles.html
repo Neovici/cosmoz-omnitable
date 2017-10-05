@@ -52,6 +52,12 @@
 				color: #ccc;
 			}
 
+			.tableContent-empty.overlay {
+				background-color: rgba(255, 255, 255, 0.8);
+				color: #333;
+				z-index: 1;
+			}
+
 
 			.tableContent-empty iron-icon {
 				height: 96px;
@@ -61,10 +67,24 @@
 				margin-right: 24px;
 			}
 
+			.tableContent-empty.overlay paper-spinner-lite {
+				height: 48px;
+				min-height: 48px;
+				width: 48px;
+				min-width: 48px;
+				margin-right: 24px;
+				--paper-spinner-color: #333;
+				--paper-spinner-stroke-width: 6px;
+			}
+
 			.tableContent-empty > div {
 				@apply --layout-vertical;
 				@apply --layout-center-justified;
 				padding-bottom: 24px;
+			}
+
+			.tableContent-empty.overlay > div {
+				padding-bottom: 0;
 			}
 
 			.tableContent-empty p {

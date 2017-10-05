@@ -21,7 +21,8 @@
 		</template>
 
 		<template class="header">
-			<paper-dropdown-menu label="[[ title ]]">
+			<paper-dropdown-menu label="[[ title ]]"
+					horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
 				<paper-listbox class="dropdown-content" slot="dropdown-content" attr-for-selected="value" selected="{{ _textFilter }}">
 					<paper-item value=""></paper-item>
 					<paper-item value="true">[[ trueLabel ]]</paper-item>

@@ -52,7 +52,8 @@
 		"marked-element": "^1.2.0",
 		"prism-element": "^1.2.0",
 		"cosmoz-viewinfo": "Neovici/cosmoz-viewinfo",
-		"iron-ajax": "polymerelements/iron-ajax#^2.0.0"
+		"iron-ajax": "polymerelements/iron-ajax#^2.0.0",
+		"paper-toggle-button": "^2.0.0"
 	},
 	"resolutions": {
 		"cosmoz-viewinfo": "master",

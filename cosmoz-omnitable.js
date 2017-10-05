@@ -58,6 +58,14 @@
 			},
 
 			/**
+			 * Shows a loading overlay to indicate data will be updated
+			 */
+			loading: {
+				type: Boolean,
+				value: false
+			},
+
+			/**
 			 * Whether to show checkboxes to perform bottom-bar actions on
 			 */
 			_showCheckboxes: {
@@ -361,8 +369,7 @@
 
 			this._verifyColumnSetup(columns, columnNames);
 
-			// TODO: Un-listen from old columns ?
-			columns.forEach(column => {
+			columns.forEach((column, index) => {
 				if (!column.name) {
 					// No name set; Try to set name attribute via valuePath
 					if (!valuePathNames) {
@@ -373,6 +380,7 @@
 						column.name = column.valuePath;
 					}
 				}
+				column.columnIndex = index;
 			});
 
 			this.columns = columns;
