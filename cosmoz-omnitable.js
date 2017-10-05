@@ -369,7 +369,7 @@
 			this._verifyColumnSetup(columns, columnNames);
 
 			// TODO: Un-listen from old columns ?
-			columns.forEach(column => {
+			columns.forEach((column, index) => {
 				this.listen(column, 'filter-changed', '_onColumnFilterChanged');
 
 				if (!column.name) {
@@ -382,6 +382,7 @@
 						column.name = column.valuePath;
 					}
 				}
+				column.columnIndex = index;
 			});
 
 			this.columns = columns;
