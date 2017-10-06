@@ -160,6 +160,11 @@
 				observer: '_cellTemplateChanged'
 			},
 
+			hidden: {
+				type: Boolean,
+				reflectToAttribute: true,
+				observer: '_hiddenChanged'
+			},
 			/**
 			 * Index of this column in the list of displayed columns (excluding disabled/hidden columns).
 			 */
@@ -184,6 +189,10 @@
 		},
 
 		StyleModules: [],
+
+		observers: [
+			'__filterChanged(filter.*)'
+		],
 
 		ready: function () {
 			this._headerTemplatizer = this._createTemplatizer('template.header');
@@ -342,7 +351,15 @@
 
 		_titleChanged: function () {
 			this.fire('cosmoz-column-title-changed', { column: this });
-		}
+		},
+
+		_hiddenChanged: function () {
+			this.fire('cosmoz-column-hidden-changed', { column: this });
+		},
+
+		__filterChanged: function () {
+			this.fire('cosmoz-column-filter-changed', { column: this });
+		},
 
 	};
 

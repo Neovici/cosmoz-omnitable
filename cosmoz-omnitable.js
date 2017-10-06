@@ -46,7 +46,7 @@
 			 */
 			enabledColumns: {
 				type: Array,
-				observer: '_updateColumns'
+				observer: '_debounceUpdateColumns'
 			},
 
 			/**
@@ -198,7 +198,9 @@
 		listeners: {
 			'iron-resize': '_onResize',
 			'update-item-size': '_onUpdateItemSize',
-			'cosmoz-column-title-changed': '_onColumnTitleChanged'
+			'cosmoz-column-title-changed': '_onColumnTitleChanged',
+			'cosmoz-column-hidden-changed': '_debounceUpdateColumns',
+			'cosmoz-column-filter-changed': '_debounceFilterItems'
 		},
 
 		/** ELEMENT LIFECYCLE */
@@ -206,19 +208,18 @@
 		created: function () {
 			/** WARNING: we do not support columns changes yet. */
 			// `isOmnitableColumn` is a property from cosmoz-omnitable-column-behavior
-			this._columnObserver = Polymer.dom(this).observeNodes(function (info) {
+			this._columnObserver = Polymer.dom(this).observeNodes(info => {
 				var changedColumns = info.addedNodes
 					.concat(info.removedNodes)
 					.filter(child =>
 						child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn
 					);
-
 				if (changedColumns.length === 0) {
 					return;
 				}
 
-				this._updateColumns();
-			}.bind(this));
+				this._debounceUpdateColumns();
+			});
 		},
 
 		attached: function () {
@@ -273,10 +274,6 @@
 				this.$.groupedList.updateSize(detail.item);
 			}
 			event.stopPropagation();
-		},
-
-		_onColumnFilterChanged: function () {
-			this._debounceFilterItems();
 		},
 
 		_onColumnTitleChanged: function (event) {
@@ -345,10 +342,14 @@
 			this._debounceFilterItems();
 		},
 
+		_debounceUpdateColumns() {
+			this.debounce('updateColumns', this._updateColumns);
+		},
+
 		_updateColumns: function () {
 			let columns = this.getEffectiveChildren().filter((child, index) => {
 					child.__index = index;
-					return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn;
+					return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn && !child.hidden;
 				}),
 				valuePathNames;
 
@@ -368,10 +369,7 @@
 
 			this._verifyColumnSetup(columns, columnNames);
 
-			// TODO: Un-listen from old columns ?
 			columns.forEach((column, index) => {
-				this.listen(column, 'filter-changed', '_onColumnFilterChanged');
-
 				if (!column.name) {
 					// No name set; Try to set name attribute via valuePath
 					if (!valuePathNames) {
@@ -462,7 +460,7 @@
 		},
 
 		_filterItems: function () {
-			if (this.data && this.data.length) {
+			if (this.data && this.data.length && this.columns) {
 				// Call filtering code only on columns that has a filter
 				const filterFunctions = this.columns
 						.map(col => col.getFilterFn())
