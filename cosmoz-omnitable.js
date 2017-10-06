@@ -842,18 +842,16 @@
 		_saveAsCsvAction: function () {
 			var separator = ';',
 				lf = '\n',
-				header = this.columns.map(function (column) {
-					return this._makeCsvField(column.title);
-				}, this).join(separator) + lf,
-				rows = this.selectedItems.map(function (item) {
-					return this.columns.map(function (column) {
-						var cell = column.getString(item);
+				header = this.columns.map(col => this._makeCsvField(col.title)).join(separator) + lf,
+				rows = this.selectedItems.map(item => {
+					return this.columns.map(column => {
+						const cell = column.getString(item);
 						if (cell === undefined || cell === null) {
-							cell = '';
+							return '';
 						}
 						return this._makeCsvField(String(cell));
-					}, this).join(separator) + lf;
-				}, this);
+					}).join(separator) + lf;
+				});
 
 			rows.unshift(header);
 

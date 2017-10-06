@@ -290,13 +290,12 @@
 			return columnIndex === 0 ? 'left' : 'right';
 		},
 
-		getString: function (item, valuePathArg) {
-			var valuePath = valuePathArg || this.valuePath;
+		getString: function (item, valuePath = this.valuePath) {
 			if (valuePath === undefined) {
-				console.error(this, 'has undefined valuePath arg', valuePathArg, 'and valuePath setting', this.valuePath, 'for item', item);
+				console.error(this, 'has undefined valuePath arg', valuePath, 'for item', item);
 				return;
 			}
-			return this.get(valuePath || this.valuePath, item);
+			return this.get(valuePath, item);
 		},
 
 		valuePathChanged: function (newPath, oldPath) {
