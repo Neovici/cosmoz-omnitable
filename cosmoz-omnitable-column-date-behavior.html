@@ -95,8 +95,11 @@
 			_tooltip: {
 				type: String,
 				computed: '_computeTooltip(title, _filterText)'
+			},
+			_inputFormat: {
+				type: String,
+				value: 'YYYY-MM-DD'
 			}
-	
 		},
 
 		_getMinMax(firstRaw, secondRaw, max) {
@@ -195,9 +198,13 @@
 
 		_dateValueChanged(event) {
 			var
-				input = event.target,
+				input = event.currentTarget,
 				value = input.value,
 				item = event.model.item,
+				oldValue = this.get(this.valuePath, item),
+				formatFn = (value) => {
+					return moment(value).locale(this.locale).format(this.userFormat);
+				},
 				dateValue;
 
 			try {
@@ -206,7 +213,7 @@
 			} catch (err) {
 				input.errorMessage = 'Invalid date';
 			}
-
+			this._fireItemChangeEvent(item, this.valuePath, oldValue, formatFn.bind(this));
 		},
 
 		getComparableValue(item, valuePath) {
@@ -214,12 +221,12 @@
 			return moment(value).valueOf();
 		},
 
-		renderDateValue(item, valuePath, userFormat, locale) {
+		renderDateValue(item, valuePath) {
 			var value = this.get(valuePath, item);
 			if (!value) {
 				return;
 			}
-			return moment(value).locale(locale).format(userFormat);
+			return moment(value).format(this._inputFormat);
 		},
 
 		getString(item, valuePath) {
