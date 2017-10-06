@@ -66,6 +66,14 @@
 				}
 			},
 
+			getComparableValue: function (item, valuePath) {
+				var value = this.get(valuePath, item);
+				if (this.valueProperty && typeof value === 'object') {
+					return this.get(this.valueProperty, value);
+				}
+				return value;
+			},
+
 			getString(item, valuePath = this.valuePath) {
 				if (valuePath === undefined) {
 					console.error(this, 'has undefined valuePath', valuePath, 'for item', item);
@@ -97,7 +105,7 @@
 					value = value[this.valueProperty];
 				}
 				value = value.toString().toLowerCase();
-		
+
 				return filterArray.indexOf(value) !== -1;
 			},
 

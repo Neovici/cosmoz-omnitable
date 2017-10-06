@@ -255,6 +255,15 @@
 				return num;
 			},
 
+			getString: function (item, valuePath = this.valuePath) {
+				if (valuePath === undefined) {
+					console.error(this, 'has undefined valuePath', valuePath, 'for item', item);
+					return;
+				}
+				const value = this.get(valuePath, item);
+				return this._toLocaleString(value);
+			},
+
 			getFilterFn: function () {
 				if (this.filter && (typeof this.filter.min === 'number' || typeof this.filter.max === 'number')) {
 					return this._applySingleFilter.bind(this, this.filter);

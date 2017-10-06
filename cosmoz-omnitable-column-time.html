@@ -92,13 +92,17 @@
 					timeString = input.value,
 					item = e.model.item,
 					oldDateMom = moment(item.date),
-					newDateMom = moment(oldDateMom.format('YYYY-MM-DD') + ` ${timeString} ` + oldDateMom.format('Z'));
+					newDateMom = moment(oldDateMom.format('YYYY-MM-DD') + ` ${timeString} ` + oldDateMom.format('Z')),
+					formatFn = (value) => {
+						return moment(value).locale(this.locale).format(this.userFormat);
+					};
 
 				try {
 					this.set(this.valuePath, newDateMom.toDate(), item);
 				} catch (err) {
 					input.errorMessage = 'Invalid date';
 				}
+				this._fireItemChangeEvent(item, this.valuePath, oldDateMom.toDate(), formatFn.bind(this));
 			},
 
 			/** OVERRIDES */

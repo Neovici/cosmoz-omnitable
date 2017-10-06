@@ -12,8 +12,10 @@
 
 		<template class="edit-cell">
 			<paper-dropdown-menu>
-				<paper-listbox class="dropdown-content" slot="dropdown-content" attr-for-selected="value"
-					selected="[[ _computeSelected(item, valuePath) ]]">
+				<paper-listbox class="dropdown-content" slot="dropdown-content"
+					attr-for-selected="value"
+					fallback-selection="[[ _computeSelected(item, valuePath) ]]" 
+					on-selected-item-changed="_valueChanged">
 					<paper-item value="true">[[ trueLabel ]]</paper-item>
 					<paper-item value="false">[[ falseLabel ]]</paper-item>
 				</paper-listbox>
@@ -141,6 +143,24 @@
 				if (value !== undefined && value !== null) {
 					return value.toString();
 				}
+			},
+
+			/** OVERRIDES */
+
+			/** cosmoz-omnitable-column-behavior */
+
+			_valueChanged(e) {
+				var value = e.target.selected === 'true',
+					item = e.model.item,
+					oldValue = this.get(this.valuePath, item),
+					formatFn = (value) => {
+						return value ? this.trueLabel : this.falseLabel;
+					};
+				if (value === oldValue) {
+					return;
+				}
+				this.set(this.valuePath, value, item);
+				this._fireItemChangeEvent(item, this.valuePath, oldValue, formatFn.bind(this));
 			}
 
 		});
