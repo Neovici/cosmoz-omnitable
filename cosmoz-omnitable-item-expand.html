@@ -63,7 +63,8 @@
 		},
 
 		observers: [
-			'_updateSize(columns.length)'
+			'_updateSize(columns.length)',
+			'_itemUpdated(item.*)'
 		],
 
 		_elementType: 'cosmoz-omnitable-item-expand-line',
@@ -83,9 +84,11 @@
 		},
 
 		_configureTemplateInstance: function (instance) {
-			instance.item = this.item;
-			instance.selected = this.selected;
-			instance.expanded = this.expanded;
+			if (instance.item !== this.item && this.item !== undefined) {
+				instance.item = this.item;
+				instance.selected = this.selected;
+				instance.expanded = this.expanded;
+			}
 		},
 
 		_updateSize: function (columnsCount) {
