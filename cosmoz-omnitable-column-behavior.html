@@ -105,40 +105,38 @@
 				value: true,
 				readOnly: true
 			},
-
-			width: {
+			/**
+			 * The width of the cell template.
+			 */
+			cellWidth: {
 				type: String,
-				value: function () {
-					return this._getDefaultWidth();
-				}
+				value: '75px'
+			},
+			/**
+			 * The width of the edit-cell template.
+			 */
+			editCellWidth: {
+				type: String,
+				value: '75px'
 			},
 
 			flex: {
 				type: String,
-				value: function () {
-					return this._getDefaultFlex();
-				}
+				value: '1'
 			},
 
 			cellClass: {
 				type: String,
-				value: function () {
-					return this._getDefaultCellClass();
-				}
+				value: 'default-cell'
 			},
 
 			headerCellClass: {
 				type: String,
-				value: function () {
-					return this._getDefaultHeaderCellClass();
-				}
+				value: 'default-header-cell'
 			},
 
 			styleModule: {
-				type: String,
-				value: function () {
-					return this._getDefaultStyleModule();
-				}
+				type: String
 			},
 
 			/**
@@ -264,27 +262,7 @@
 
 		/**
 		 * Override this in column elements if you need a different default width
-		 * @returns {String} Default width
 		 */
-		_getDefaultWidth: function () {
-			return '75px';
-		},
-
-		_getDefaultFlex: function () {
-			return '1';
-		},
-
-		_getDefaultCellClass: function () {
-			return 'default-cell';
-		},
-
-		_getDefaultHeaderCellClass: function () {
-			return 'default-header-cell';
-		},
-
-		_getDefaultStyleModule: function () {
-			return;
-		},
 
 		_computePreferredDropdownHorizontalAlign: function (columnIndex) {
 			return columnIndex === 0 ? 'left' : 'right';

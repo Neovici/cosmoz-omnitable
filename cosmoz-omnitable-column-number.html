@@ -115,9 +115,25 @@
 					type: String,
 					computed: '_computeTooltip(title, _filterText)'
 				},
+				cellWidth: {
+					type: String,
+					value: '30px'
+				},
+				editCellWidth: {
+					type: String,
+					value: '30px'
+				},
 				_toLocaleStringOptions: {
 					type: Object,
 					computed: '_computeToLocaleStringOptions(minimumFractionDigits, maximumFractionDigits)'
+				},
+				cellClass: {
+					type: String,
+					value: 'number-cell align-right'
+				},
+				headerCellClass: {
+					type: String,
+					value: 'number-header-cell'
 				}
 			},
 
@@ -197,22 +213,6 @@
 					min: newFilter.min !== null && newFilter.min !== '' ? Number(newFilter.min) : null,
 					max: newFilter.max !== null && newFilter.max !== '' ? Number(newFilter.max) : null
 				});
-			},
-
-			_getDefaultWidth: function () {
-				return '30px';
-			},
-
-			_getDefaultFlex: function () {
-				return '1';
-			},
-
-			_getDefaultCellClass: function () {
-				return 'number-cell align-right';
-			},
-
-			_getDefaultHeaderCellClass: function () {
-				return 'number-header-cell';
 			},
 
 			_getMinMax: function (first, second, max) {

@@ -70,7 +70,7 @@
 		},
 
 		_configureElement: function (element, column) {
-			element.style.flexBasis = column.width;
+			element.style.flexBasis = column.editable ? column.editCellWidth : column.cellWidth;
 			element.style.flexGrow = column.flex;
 			element.setAttribute('title', this._getCellTitle(column, this.item));
 			element.setAttribute('class', this._computeItemRowCellClasses(column));

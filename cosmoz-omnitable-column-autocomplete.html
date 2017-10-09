@@ -58,6 +58,11 @@
 				valueProperty: {
 					type: String,
 					value: ''
+				},
+
+				headerCellClass: {
+					type: String,
+					value: 'autocomplete-header-cell'
 				}
 			},
 
@@ -79,10 +84,6 @@
 					return this.get(this.textProperty, itemValue);
 				}
 				return itemValue;
-			},
-
-			_getDefaultHeaderCellClass: function () {
-				return 'autocomplete-header-cell';
 			},
 
 			_applySingleFilter: function (filterString, item) {
