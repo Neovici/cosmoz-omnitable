@@ -42,9 +42,9 @@
 
 	window.Cosmoz = window.Cosmoz || {};
 
-	/** polymerBehavior **/
+	/** @polymerBehavior */
 	Cosmoz.TableDemoBehavior = {
-		generateTableDemoData: function (min, max, maxRandomString) {
+		generateTableDemoData(min, max, maxRandomString) {
 			var
 				data = [],
 				groupsCount = getRandomInt(min, max),
@@ -100,6 +100,5 @@
 			}
 			return data;
 		}
-
 	};
 </script>

@@ -45,6 +45,18 @@
 					readOnly: true,
 					value: true
 				},
+				cellClass: {
+					type: String,
+					value: 'number-cell align-right'
+				},
+				cellWidth: {
+					type: String,
+					value: '30px'
+				},
+				editCellWidth: {
+					type: String,
+					value: '30px'
+				},
 				filter: {
 					type: Object,
 					value: function () {
@@ -53,6 +65,10 @@
 							max: null
 						};
 					}
+				},
+				headerCellClass: {
+					type: String,
+					value: 'number-header-cell'
 				},
 				locale: {
 					type: String,
@@ -91,10 +107,6 @@
 					type: String,
 					computed: '_computeFilterText(locale, filter.*)'
 				},
-				_possibleNumberRange: {
-					type: Object,
-					computed: '_computePossibleNumberRange(values.*)'
-				},
 				_fromMax: {
 					type: Object,
 					computed: '_getMinMax(_possibleNumberRange.max, filter.max, 0)'
@@ -102,6 +114,10 @@
 				_fromMin: {
 					type: Object,
 					computed: '_getMinMax(_possibleNumberRange.min, min, 0)'
+				},
+				_possibleNumberRange: {
+					type: Object,
+					computed: '_computePossibleNumberRange(values.*)'
 				},
 				_toMax: {
 					type: Object,
@@ -115,25 +131,9 @@
 					type: String,
 					computed: '_computeTooltip(title, _filterText)'
 				},
-				cellWidth: {
-					type: String,
-					value: '30px'
-				},
-				editCellWidth: {
-					type: String,
-					value: '30px'
-				},
 				_toLocaleStringOptions: {
 					type: Object,
 					computed: '_computeToLocaleStringOptions(minimumFractionDigits, maximumFractionDigits)'
-				},
-				cellClass: {
-					type: String,
-					value: 'number-cell align-right'
-				},
-				headerCellClass: {
-					type: String,
-					value: 'number-header-cell'
 				}
 			},
 

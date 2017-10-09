@@ -87,7 +87,7 @@
 					<cosmoz-omnitable-column-boolean hidden title="Boolean" name="bool" value-path="bool" sort-on="bool" group-on="bool"
 						true-label="Oui" false-label="Non">
 					</cosmoz-omnitable-column-boolean>
-					<cosmoz-omnitable-column-autocomplete title="[[ _('Group', t) ]]" name="group" value-path="group" sort-on="group" group-on="group">
+					<cosmoz-omnitable-column-autocomplete title="[[ _('Group', t) ]]" name="group" value-path="group" flex="0" cell-width="125px">
 					</cosmoz-omnitable-column-autocomplete>
 					<cosmoz-omnitable-column-date title="DateJSON" name="datejson" value-path="dateJSON" sort-on="dateJSON" group-on="dateJSON">
 					</cosmoz-omnitable-column-date>
@@ -177,10 +177,6 @@
 			Cosmoz.TranslatableBehavior
 		],
 
-		ready: function () {
-			//this.changeData();
-		},
-
 		attached: function () {
 			var data = this.generateTableDemoData(10, 11, 25);
 			// Used to test filtering and sorting when a row has an undefined or null amount or number
@@ -188,9 +184,9 @@
 			data[1].value = undefined;
 			data[2].amount = null;
 			data[3].value = null;
-			this.async(function () {
+			this.async(() => {
 				this.data = data;
-			}.bind(this), 100);
+			}, 100);
 			this.customNameTemplate = Polymer.dom(this).querySelector('#customNameTemplate');
 
 		},
