@@ -37,7 +37,10 @@
 			"error",
 			"all"
 		],
-		"eqeqeq": "error",
+		"eqeqeq": [
+			"error",
+			"smart"
+		],
 		"guard-for-in": "error",
 		"indent": [
 			"error",

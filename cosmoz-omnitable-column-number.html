@@ -8,7 +8,7 @@
 <dom-module id="cosmoz-omnitable-column-number">
 	<template>
 		<template class="cell">
-			<div class="omnitable-cell-number">[[ renderNumberValue(item, valuePath, locale, _toLocaleStringOptions) ]]</div>
+			<div class="omnitable-cell-number">[[ renderNumberValue(item, valuePath, formatter) ]]</div>
 		</template>
 
 		<template class="edit-cell">
@@ -66,6 +66,10 @@
 						};
 					}
 				},
+				formatter: {
+					type: Object,
+					computed: '_computeFormatter(locale, _numberFormatOptions)'
+				},
 				headerCellClass: {
 					type: String,
 					value: 'number-header-cell'
@@ -115,6 +119,10 @@
 					type: Object,
 					computed: '_getMinMax(_possibleNumberRange.min, min, 0)'
 				},
+				_numberFormatOptions: {
+					type: Object,
+					computed: '_computeNumberFormatOptions(minimumFractionDigits, maximumFractionDigits)'
+				},
 				_possibleNumberRange: {
 					type: Object,
 					computed: '_computePossibleNumberRange(values.*)'
@@ -130,10 +138,6 @@
 				_tooltip: {
 					type: String,
 					computed: '_computeTooltip(title, _filterText)'
-				},
-				_toLocaleStringOptions: {
-					type: Object,
-					computed: '_computeToLocaleStringOptions(minimumFractionDigits, maximumFractionDigits)'
 				}
 			},
 
@@ -146,13 +150,17 @@
 					text = [];
 
 				if (typeof filter.min === 'number') {
-					text.push(this._toLocaleString(filter.min, locale));
+					text.push(this.formatter.format(filter.min));
 				}
 				text.push(' - ');
 				if (typeof filter.max === 'number') {
-					text.push(this._toLocaleString(filter.max, locale));
+					text.push(this.formatter.format(filter.max));
 				}
 				return text.length > 1 ? text.join('') : null;
+			},
+
+			_computeFormatter(locale, _numberFormatOptions) {
+				return new Intl.NumberFormat(locale || undefined, _numberFormatOptions);
 			},
 
 			_computePossibleNumberRange: function (change) {
@@ -177,7 +185,7 @@
 
 			_computeTooltip: function (title, filterText) {
 				var ret = title;
-				if (filterText !== undefined && filterText !== null) {
+				if (filterText != null) {
 					ret += ': ' + filterText;
 				}
 				return ret;
@@ -235,7 +243,7 @@
 				return doMax ? second : first;
 			},
 
-			_computeToLocaleStringOptions(minimumFractionDigits, maximumFractionDigits) {
+			_computeNumberFormatOptions(minimumFractionDigits, maximumFractionDigits) {
 				const options = {
 					localeMatcher: 'best fit' // chrome expects this when using custom options
 				};
@@ -248,20 +256,16 @@
 				return options;
 			},
 
-			_toLocaleString: function (num, locale) {
-				if (num !== undefined && num !== null && num.toLocaleString) {
-					return num.toLocaleString(locale || undefined, this._toLocaleStringOptions);
-				}
-				return num;
-			},
-
 			getString: function (item, valuePath = this.valuePath) {
 				if (valuePath === undefined) {
 					console.error(this, 'has undefined valuePath', valuePath, 'for item', item);
 					return;
 				}
 				const value = this.get(valuePath, item);
-				return this._toLocaleString(value);
+				if (value == null) {
+					return '';
+				}
+				return this.formatter.format(value);
 			},
 
 			getFilterFn: function () {
@@ -272,7 +276,7 @@
 
 			getComparableValue: function (item, valuePath) {
 				var value = this.get(valuePath, item);
-				if (value !== undefined && value !== null && typeof value === 'number') {
+				if (value != null && typeof value === 'number') {
 					return value;
 				}
 			},
@@ -293,9 +297,12 @@
 				return true;
 			},
 
-			renderNumberValue: function (item, valuePath, locale) {
-				var value = this.get(valuePath, item);
-				return this._toLocaleString(value, locale);
+			renderNumberValue: function (item, valuePath, formatter) {
+				const value = this.get(valuePath, item);
+				if (value == null) {
+					return;
+				}
+				return formatter.format(value);
 			}
 		});
 	</script>
