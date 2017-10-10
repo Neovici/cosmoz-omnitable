@@ -733,17 +733,17 @@
 
 			cells.forEach(function (cell, index) {
 				var header = headers[index],
-					cellWidth;
+					width;
 
 				// disabled column headers
 				if (header === undefined) {
 					return;
 				}
 
-				cellWidth = getComputedStyle(cell).getPropertyValue('width');
-				header.style.minWidth = cellWidth;
-				header.style.maxWidth = cellWidth === 'auto' ? 'none' : cellWidth;
-				header.style.width = cellWidth;
+				width = getComputedStyle(cell).getPropertyValue('width');
+				header.style.minWidth = width;
+				header.style.maxWidth = width === 'auto' ? 'none' : width;
+				header.style.width = width;
 			}, this);
 		},
 

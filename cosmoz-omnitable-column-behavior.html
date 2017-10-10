@@ -105,21 +105,26 @@
 				value: true,
 				readOnly: true
 			},
+
 			/**
-			 * The width of the cell template.
+			 * Base width of this column.
 			 */
-			cellWidth: {
-				type: String,
-				value: '75px'
-			},
-			/**
-			 * The width of the edit-cell template.
-			 */
-			editCellWidth: {
+			width: {
 				type: String,
 				value: '75px'
 			},
 
+			/**
+			 * Base width of this column when in edit mode.
+			 */
+			editWidth: {
+				type: String,
+				value: '75px'
+			},
+
+			/**
+			 * Width growing factor for this column.
+			 */
 			flex: {
 				type: String,
 				value: '1'
@@ -298,7 +303,7 @@
 				value = input.value,
 				item = event.model.item,
 				oldValue = this.get(this.valuePath, item);
-	
+
 			this.set(this.valuePath, value, item);
 			this._fireItemChangeEvent(item, this.valuePath, oldValue);
 		},
