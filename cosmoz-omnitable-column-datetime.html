@@ -98,7 +98,8 @@
 				if (!mom || !mom.isValid()) {
 					return;
 				}
-				return mom.format('YYYY-MM-DDTHH:mm:ss');
+				return this.formatter.format(mom);
+				//return mom.format('YYYY-MM-DDTHH:mm:ss');
 			},
 		});
 

@@ -5,15 +5,6 @@
 	Cosmoz.DateColumnBehavior = {
 		properties: {
 			/**
-			 * This is the format used to interact with the user, i.e. the format used
-			 * to render dates and to parse date entered by the user.
-			 * Should be a moment.js date format (http://momentjs.com/docs/#/displaying/format/)
-			 */
-			userFormat: {
-				type: String,
-				value: 'L'
-			},
-			/**
 			 * Ask for a list of values
 			 */
 			bindValues: {
@@ -116,11 +107,20 @@
 				type: String,
 				value: '0'
 			},
-
-			_inputFormat: {
+			formatter: {
+				type: Object,
+				computed: '_computeFormatter(locale)'
+			},
+			locale: {
 				type: String,
-				value: 'YYYY-MM-DD'
+				value: function () {
+					return navigator.language || navigator.userLanguage;
+				}
 			}
+		},
+
+		_computeFormatter(locale) {
+			return new Intl.DateTimeFormat(locale || undefined);
 		},
 
 		_getMinMax(firstRaw, secondRaw, max) {
@@ -231,19 +231,29 @@
 		},
 
 		renderDateValue(item, valuePath) {
-			var value = this.get(valuePath, item);
+			var value = this.get(valuePath, item),
+				month;
 			if (!value) {
 				return;
 			}
-			return moment(value).format(this._inputFormat);
+			if (value.length === 10) {
+				month = parseInt(value.substring(5, 7), 10) - 1;
+				value = Date.UTC(value.substring(0, 4), month, value.substring(8));
+			}
+			return this.formatter.format(value);
 		},
 
 		getString(item, valuePath) {
-			var value = this.get(valuePath || this.valuePath, item);
+			var value = this.get(valuePath || this.valuePath, item),
+				month;
 			if (!value) {
 				return '';
 			}
-			return moment(value).format(this.userFormat);
+			if (value.length === 10) {
+				month = parseInt(value.substring(5, 7), 10) - 1;
+				value = Date.UTC(value.substring(0, 4), month, value.substring(8));
+			}
+			return this.formatter.format(value);
 		},
 
 		getFilterFn() {
