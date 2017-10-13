@@ -13,12 +13,12 @@
 <dom-module id="cosmoz-omnitable-column-datetime">
 	<template>
 		<template class="cell">
-			[[ renderDateValue(item, valuePath, userFormat, locale) ]]
+			[[ getString(item, valuePath, formatter) ]]
 		</template>
 
 		<template class="edit-cell">
 			<datetime-local no-label-float type="datetime-local" on-change="_dateValueChanged"
-				value="[[ renderDateValue(item, valuePath) ]]">
+				value="[[ renderISODateValue(item, valuePath, locale) ]]">
 			</datetime-local>
 		</template>
 
@@ -98,8 +98,7 @@
 				if (!mom || !mom.isValid()) {
 					return;
 				}
-				return this.formatter.format(mom);
-				//return mom.format('YYYY-MM-DDTHH:mm:ss');
+				return mom.format('YYYY-MM-DDTHH:mm:ss');
 			},
 		});
 

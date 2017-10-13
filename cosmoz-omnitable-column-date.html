@@ -12,12 +12,12 @@
 <dom-module id="cosmoz-omnitable-column-date">
 	<template>
 		<template class="cell">
-			[[ renderDateValue(item, valuePath) ]]
+			[[ getString(item, valuePath, formatter) ]]
 		</template>
 
 		<template class="edit-cell">
 			<paper-input no-label-float type="date" on-change="_dateValueChanged"
-				value="[[ renderDateValue(item, valuePath) ]]">
+				value="[[ renderISODateValue(item, valuePath, locale) ]]">
 			</paper-input>
 		</template>
 
