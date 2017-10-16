@@ -182,12 +182,25 @@
 			_filterIsTooStrict: {
 				type: Boolean,
 				computed: '_computeFilterIsTooStrict(_dataIsValid, sortedFilteredGroupedItems.length)'
-			}
+			},
+
+			hashParam: {
+				type: String
+			},
+
+			_routeHashParams: {
+				type: Object,
+				notify: true
+			},
 		},
 
 		observers: [
 			'_dataChanged(data.*)',
-			'_debounceSortItems(sortOn, descending, filteredGroupedItems)'
+			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
+			'_routeHashParamsChanged(_routeHashParams.*, hashParam, data)',
+			'_paramForRouteChanged(_routeHashParams, hashParam, "groupOn", groupOn)',
+			'_paramForRouteChanged(_routeHashParams, hashParam, "sortOn", sortOn)',
+			'_paramForRouteChanged(_routeHashParams, hashParam, "descending", descending)'
 		],
 
 		behaviors: [
@@ -1008,6 +1021,38 @@
 				return;
 			}
 			gl.highlightItem(i, reverse);
+		},
+
+		_routeHashParamsChanged: function (changes, hashParam, data) {
+			if (! (changes === undefined || hashParam === undefined || data === undefined) && data.length && !this._paramForRouteChanging) {
+				this._routeHashParamsInitialized = true;
+				this._routeHashParamsUpdating = true;
+
+				['sortOn', 'groupOn', 'descending'].forEach(function (key) {
+					var path =  ['_routeHashParams', hashParam + '-' + key],
+						value = this.get(path);
+
+					if (value !== undefined && String(value) !== String(this.get(key))) {
+						this.set(key, value);
+						//console.log(changes, 'Route change path:', path, 'value:', value);
+					}
+				}, this);
+				this._routeHashParamsUpdating = false;
+			}
+		},
+		_paramForRouteChanged: function (changes, hashParam, key, value) {
+			if (! (changes === undefined || hashParam === undefined) && key && value !== undefined && !this._routeHashParamsUpdating && this._routeHashParamsInitialized) {
+				this._paramForRouteChanging = true;
+
+				var path = ['_routeHashParams', hashParam + '-' + key],
+					routeValue = this.get(path);
+
+				if (String(value) !== String(routeValue)) {
+					this.set(path, String(value));
+					//console.log(changes, 'Param change key:', key, 'value:', value);
+				}
+				this._paramForRouteChanging = false;
+			}
 		}
 	});
 }());
