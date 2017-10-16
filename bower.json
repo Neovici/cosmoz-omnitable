@@ -44,7 +44,8 @@
 		"cosmoz-page-router": "Neovici/cosmoz-page-router#master",
 		"paper-autocomplete-chips": "Neovici/paper-autocomplete-chips#master",
 		"import-filesaver": "JaySunSyn/import-filesaver",
-		"datetime-local": "JaySunSyn/datetime-local#polymer-1"
+		"datetime-local": "JaySunSyn/datetime-local#polymer-1",
+		"nullxlsx": "Neovici/nullxlsx#master"
 	},
 	"devDependencies": {
 		"paper-button": "PolymerElements/paper-button#1 - 2",
@@ -82,7 +83,8 @@
 				"cosmoz-page-router": "Neovici/cosmoz-page-router#master",
 				"paper-autocomplete-chips": "Neovici/paper-autocomplete-chips#master",
 				"import-filesaver": "JaySunSyn/import-filesaver",
-				"datetime-local": "JaySunSyn/datetime-local#polymer-1"
+				"datetime-local": "JaySunSyn/datetime-local#polymer-1",
+				"nullxlsx": "Neovici/nullxlsx#master"
 			},
 			"devDependencies": {
 				"paper-button": "PolymerElements/paper-button#^2.0.0",
