@@ -1050,7 +1050,7 @@
 				return;
 			}
 			Object.keys(changes.base).map(key => {
-				var matches = key.match(/^full\-filter\-\-([a-z0-9]+)$/),
+				var matches = key.match(/^full\-filter\-\-([a-z0-9\-]+)$/),
 					name = matches && matches[1],
 					hashValue,
 					column,
