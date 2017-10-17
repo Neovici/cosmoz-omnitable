@@ -3,6 +3,8 @@
 
 	'use strict';
 
+	const HASH_PARAMS = ['sortOn', 'groupOn', 'descending'];
+
 	Polymer({
 
 		is: 'cosmoz-omnitable',
@@ -197,10 +199,10 @@
 		observers: [
 			'_dataChanged(data.*)',
 			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
-			'_routeHashParamsChanged(_routeHashParams.*, hashParam, data)',
-			'_paramForRouteChanged(_routeHashParams, hashParam, "groupOn", groupOn)',
-			'_paramForRouteChanged(_routeHashParams, hashParam, "sortOn", sortOn)',
-			'_paramForRouteChanged(_routeHashParams, hashParam, "descending", descending)'
+			'_routeHashParamsChanged(_routeHashParams.*, hashParam)',
+			'_paramForRouteChanged( hashParam, "groupOn", groupOn)',
+			'_paramForRouteChanged( hashParam, "sortOn", sortOn)',
+			'_paramForRouteChanged( hashParam, "descending", descending)'
 		],
 
 		behaviors: [
@@ -1023,35 +1025,30 @@
 			gl.highlightItem(i, reverse);
 		},
 
-		_routeHashParamsChanged: function (changes, hashParam, data) {
-			if (! (changes === undefined || hashParam === undefined || data === undefined) && data.length && !this._paramForRouteChanging) {
-				this._routeHashParamsInitialized = true;
-				this._routeHashParamsUpdating = true;
+		_routeHashParamsChanged: function (changes, hashParam) {
+			if (changes && hashParam) {
+				HASH_PARAMS.forEach((key)=> {
+					var hashValue =  this.get(['_routeHashParams', hashParam + '-' + key]),
+						deserialized = this.deserialize(hashValue, this.properties[key].type);
 
-				['sortOn', 'groupOn', 'descending'].forEach(function (key) {
-					var path =  ['_routeHashParams', hashParam + '-' + key],
-						value = this.get(path);
-
-					if (value !== undefined && String(value) !== String(this.get(key))) {
-						this.set(key, value);
-						//console.log(changes, 'Route change path:', path, 'value:', value);
+					if (hashValue !== undefined && deserialized !== this.get(key)) {
+						this.set(key, deserialized);
+						//console.log('Route change changes:', changes, 'key', key, 'value:', hashValue, 'deserialized:', deserialized);
 					}
-				}, this);
-				this._routeHashParamsUpdating = false;
+				});
 			}
 		},
-		_paramForRouteChanged: function (changes, hashParam, key, value) {
-			if (! (changes === undefined || hashParam === undefined) && key && value !== undefined && !this._routeHashParamsUpdating && this._routeHashParamsInitialized) {
-				this._paramForRouteChanging = true;
+		_paramForRouteChanged: function (hashParam, key, value) {
+			if (hashParam  && this._routeHashParams) {
 
 				var path = ['_routeHashParams', hashParam + '-' + key],
-					routeValue = this.get(path);
+					hashValue = this.get(path),
+					serialized = this.serialize(value, this.properties[key].type);
 
-				if (String(value) !== String(routeValue)) {
-					this.set(path, String(value));
-					//console.log(changes, 'Param change key:', key, 'value:', value);
+				if (serialized !== hashValue) {
+					this.set(path, serialized === undefined ? null : serialized);
+					//console.log('Param change key:', key, 'value:', serialized);
 				}
-				this._paramForRouteChanging = false;
 			}
 		}
 	});
