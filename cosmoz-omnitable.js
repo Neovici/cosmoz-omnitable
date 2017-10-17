@@ -3,7 +3,7 @@
 
 	'use strict';
 
-	const HASH_PARAMS = ['sortOn', 'groupOn', 'descending'];
+	const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending'];
 
 	Polymer({
 
@@ -200,6 +200,7 @@
 			'_dataChanged(data.*)',
 			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
 			'_routeHashParamsChanged(_routeHashParams.*, hashParam)',
+			'_routeHashParamsForFiltersChanged(_routeHashParams.*, hashParam, columns)',
 			'_paramForRouteChanged( hashParam, "groupOn", groupOn)',
 			'_paramForRouteChanged( hashParam, "sortOn", sortOn)',
 			'_paramForRouteChanged( hashParam, "descending", descending)'
@@ -215,7 +216,7 @@
 			'update-item-size': '_onUpdateItemSize',
 			'cosmoz-column-title-changed': '_onColumnTitleChanged',
 			'cosmoz-column-hidden-changed': '_debounceUpdateColumns',
-			'cosmoz-column-filter-changed': '_debounceFilterItems'
+			'cosmoz-column-filter-changed': '_filterChanged',
 		},
 
 		/** ELEMENT LIFECYCLE */
@@ -468,6 +469,11 @@
 				console.warn(`Cannot find column with ${attribute} ${attributeValue}`);
 			}
 			return column;
+		},
+
+		_filterChanged: function (e, detail) {
+			this._debounceFilterItems();
+			this._filterForRouteChanged(detail.column);
 		},
 
 		_debounceFilterItems: function () {
@@ -1026,18 +1032,49 @@
 		},
 
 		_routeHashParamsChanged: function (changes, hashParam) {
-			if (changes && hashParam) {
-				HASH_PARAMS.forEach((key)=> {
-					var hashValue =  this.get(['_routeHashParams', hashParam + '-' + key]),
-						deserialized = this.deserialize(hashValue, this.properties[key].type);
-
-					if (hashValue !== undefined && deserialized !== this.get(key)) {
-						this.set(key, deserialized);
-						//console.log('Route change changes:', changes, 'key', key, 'value:', hashValue, 'deserialized:', deserialized);
-					}
-				});
+			if (!changes || !hashParam) {
+				return;
 			}
+			PROPERTY_HASH_PARAMS.forEach((key)=> {
+				var hashValue =  this.get(['_routeHashParams', hashParam + '-' + key]),
+					deserialized = this.deserialize(hashValue, this.properties[key].type);
+
+				if (hashValue !== undefined && deserialized !== this.get(key)) {
+					this.set(key, deserialized);
+				}
+			});
 		},
+
+		_routeHashParamsForFiltersChanged: function (changes, hashParam, columns) {
+			if (!changes || !hashParam || !(columns && columns.length)) {
+				return;
+			}
+			Object.keys(changes.base).map((key)=> {
+				var matches = key.match(/^full\-filter\-\-([a-z0-9]+)$/),
+					name = matches && matches[1],
+					hashValue,
+					column,
+					value;
+
+				if (!name) {
+					return;
+				}
+				column = this.columns.find((c) => c.name === name);
+
+				if (!column) {
+					return;
+				}
+
+				hashValue = changes.base[key];
+				value = this.serialize(column.filter, Object);
+
+				if (hashValue !== value) {
+					column.set('filter', this.deserialize(hashValue, Object));
+					console.log('route changed for filter', name);
+				}
+			});
+		},
+
 		_paramForRouteChanged: function (hashParam, key, value) {
 			if (hashParam  && this._routeHashParams) {
 
@@ -1047,8 +1084,22 @@
 
 				if (serialized !== hashValue) {
 					this.set(path, serialized === undefined ? null : serialized);
-					//console.log('Param change key:', key, 'value:', serialized);
 				}
+			}
+		},
+
+		_filterForRouteChanged: function (column) {
+			if (this.hashParam && this._routeHashParams && this.data && this.data.length > 0) {
+				var path = ['_routeHashParams', this.hashParam + '-filter--' + column.name],
+					hashValue = this.get(path),
+					value = column.filter,
+					serializedValue = this.serialize(value, Object);
+
+				if (serializedValue !== hashValue) {
+					this.set(path, serializedValue);
+					console.log(column.title, column.filter);
+				}
+
 			}
 		}
 	});
