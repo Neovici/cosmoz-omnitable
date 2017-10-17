@@ -5,15 +5,6 @@
 	Cosmoz.DateColumnBehavior = {
 		properties: {
 			/**
-			* This is the format used to interact with the user, i.e. the format used
-			* to render dates and to parse date entered by the user.
-			* Should be a moment.js date format (http://momentjs.com/docs/#/displaying/format/)
-			*/
-			userFormat: {
-				type: String,
-				value: 'L'
-			},
-			/**
 			 * Ask for a list of values
 			 */
 			bindValues: {
@@ -212,7 +203,7 @@
 			if (endDate && endDate !== null) {
 				text.push(formatter.format(this.getDate(endDate)));
 			}
-			return text.length > 0 ? text.join('') : null;
+			return text.length > 1 ? text.join('') : null;
 		},
 
 		_dateValueChanged(event) {
@@ -266,6 +257,22 @@
 				dateValue = new Date(dateValue);
 			} else {
 				return dateValue;
+			}
+			if (isNaN(dateValue)) {
+				return 'Invalid Date';
+			}
+			return dateValue;
+		},
+
+		getDate(value) {
+			var dateValue;
+			if (!value) {
+				return '';
+			}
+			if (!(value instanceof Date)) {
+				dateValue = new Date(value);
+			} else {
+				return value;
 			}
 			if (isNaN(dateValue)) {
 				return 'Invalid Date';
