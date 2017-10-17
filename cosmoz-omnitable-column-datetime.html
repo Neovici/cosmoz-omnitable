@@ -3,7 +3,6 @@
 <link rel="import" href="../datetime-local/datetime-local.html">
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 
-<link rel="import" href="../cosmoz-moment/cosmoz-moment.html">
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 
 <link rel="import" href="../datetime-local/datetime-local.html">
@@ -18,7 +17,7 @@
 
 		<template class="edit-cell">
 			<datetime-local no-label-float type="datetime-local" on-change="_dateValueChanged"
-				value="[[ renderISODateValue(item, valuePath, locale) ]]">
+				value="[[ renderISODateValue(item, valuePath) ]]">
 			</datetime-local>
 		</template>
 
@@ -46,15 +45,6 @@
 					type: Number,
 					computed: '_computeStep(userFormat)'
 				},
-				/**
-				 * This is the format used to interact with the user, i.e. the format used
-				 * to render dates and to parse date entered by the user.
-				 * Should be a moment.js date format (http://momentjs.com/docs/#/displaying/format/)
-				 */
-				userFormat: {
-					type: String,
-					value: 'YYYY-MM-DD HH:mm:ss.SSS'
-				},
 
 				width: {
 					type: String,
@@ -73,7 +63,6 @@
 			},
 
 			behaviors: [
-				Cosmoz.MomentBehavior,
 				Cosmoz.OmnitableColumnBehavior,
 				Cosmoz.TranslatableBehavior,
 				Cosmoz.DateColumnBehavior
@@ -81,7 +70,7 @@
 
 			/** ELEMENT LIFECYCLE */
 
-			/** ELEMENT BEHAVIOR */
+			/** ELEMENT BEHAVIOR*/
 
 			_computeStep(userFormat) {
 				if (userFormat.match('S')) {
@@ -92,14 +81,27 @@
 
 			/** OVERRIDES */
 
-			/** cosmoz-omnitable-column-date-behavior */
+			/** cosmoz-omnitable-column-date-behavior*/
 
 			_formatISODate(mom) {
-				if (!mom || !mom.isValid()) {
+				//if (!mom || !mom.isValid()) {
+				if (!mom) {
 					return;
 				}
-				return mom.format('YYYY-MM-DDTHH:mm:ss');
+				return this.formatter.format(mom);
 			},
+
+			/** OVERRIDES */
+
+			/** cosmoz-omnitable-column-date-behavior*/
+
+			renderISODateValue(item, valuePath) {
+				var value = this.get(valuePath, item);
+				if (!value) {
+					return;
+				}
+				return value.toISOString().slice(0, 19);
+			}
 		});
 
 	</script>

@@ -15,8 +15,6 @@
 	<link rel="import" href="../../paper-button/paper-button.html">
 	<link rel="import" href="../../paper-toggle-button/paper-toggle-button.html">
 	<link rel="import" href="../../cosmoz-i18next/cosmoz-i18next.html">
-	<link rel="import" href="../../cosmoz-moment/cosmoz-moment.html">
-	<link rel="import" href="../../cosmoz-moment/cosmoz-moment.html">
 	<link rel="import" href="../../cosmoz-viewinfo/cosmoz-viewinfo.html">
 	<link rel="import" href="../cosmoz-omnitable.html">
 
@@ -52,7 +50,6 @@
 					interpolation-suffix="}"
 					key-separator="::"
 					ns-separator=":::"></cosmoz-i18next>
-				<cosmoz-moment locale="[[ locale ]]"></cosmoz-moment>
 
 				<div class="layout horizontal center">
 					<button class="action" on-tap="changeData">Generate a new data set</button>
@@ -112,8 +109,6 @@
 					</cosmoz-omnitable-column-number>
 					<cosmoz-omnitable-column-amount title="[[ _('Amount', t) ]]" name="amount" value-path="amount" sort-on="amount" group-on="amount">
 					</cosmoz-omnitable-column-amount>
-					<cosmoz-omnitable-column-datetime title="Datetime" name="datetime" value-path="date" sort-on="date" group-on="date">
-					</cosmoz-omnitable-column-datetime>
 
 					<template  is="dom-repeat" items="[[ _getRowItems(selectedItems.length) ]]">
 						<paper-button slot="actions">[[ item ]]</paper-button>
@@ -165,7 +160,7 @@
 			},
 			locale: {
 				type: String,
-				value: 'sv'
+				value: null
 			},
 			customNameTemplate: {
 				type: Object

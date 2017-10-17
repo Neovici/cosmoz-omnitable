@@ -3,8 +3,6 @@
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 
-<link rel="import" href="../cosmoz-moment/cosmoz-moment.html">
-
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 
 <link rel="import" href="cosmoz-omnitable-column-date-behavior.html">
@@ -17,7 +15,7 @@
 
 		<template class="edit-cell">
 			<paper-input no-label-float type="date" on-change="_dateValueChanged"
-				value="[[ renderISODateValue(item, valuePath, locale) ]]">
+				value="[[ renderISODateValue(item, valuePath) ]]">
 			</paper-input>
 		</template>
 
@@ -42,7 +40,6 @@
 			is: 'cosmoz-omnitable-column-date',
 
 			behaviors: [
-				Cosmoz.MomentBehavior,
 				Cosmoz.OmnitableColumnBehavior,
 				Cosmoz.TranslatableBehavior,
 				Cosmoz.DateColumnBehavior

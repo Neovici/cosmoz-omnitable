@@ -5,15 +5,6 @@
 	Cosmoz.DateColumnBehavior = {
 		properties: {
 			/**
-			* This is the format used to interact with the user, i.e. the format used
-			* to render dates and to parse date entered by the user.
-			* Should be a moment.js date format (http://momentjs.com/docs/#/displaying/format/)
-			*/
-			userFormat: {
-				type: String,
-				value: 'L'
-			},
-			/**
 			 * Ask for a list of values
 			 */
 			bindValues: {
@@ -132,39 +123,49 @@
 
 		_getMinMax(firstRaw, secondRaw, max) {
 			var doMax = max === 1,
-				first = moment(firstRaw),
-				second = moment(secondRaw);
+				first = this.getDate(firstRaw),
+				second = this.getDate(secondRaw);
+			if (!first && !second) {
+				return null;
+			}
 
-			if (!first.isValid() && second.isValid()) {
+			if ((!first || first === 'Invalid Date') && second) {
 				return second;
 			}
 
-			if (!second.isValid() && first.isValid()) {
+			if ((!second || second === 'Invalid Date') && first) {
 				return first;
 			}
 
-			if (first.isAfter(second)) {
-				return doMax ? first : second;
+			if (first.getTime() < second.getTime()) {
+				return doMax ? second : first;
 			}
 
-			return doMax ? second : first;
+			return doMax ? first : second;
 		},
 
 		_computePossibleDateRange(change) {
-			var values = change.base;
+			var values = change.base,
+				test;
 			if (!values || !Array.isArray(values) || values.length < 1) {
 				return {
 					min: null,
 					max: null
 				};
 			}
+			if (!this.formatter) {
+				return {
+					min: null,
+					max: null
+				};
+			}
 			return values.reduce(function (acc, item) {
-				var mom = moment(item);
-				if (!acc.min || mom.isBefore(acc.min)) {
-					acc.min = mom;
+				var currRange = new Date(item);
+				if (!acc.min || currRange < acc.min) {
+					acc.min = currRange;
 				}
-				if (!acc.max || mom.isAfter(acc.max)) {
-					acc.max = mom;
+				if (!acc.max || currRange > acc.max) {
+					acc.max = currRange;
 				}
 				return acc;
 			}, {});
@@ -178,37 +179,31 @@
 			return ret;
 		},
 
-		_formatISODate(mom) {
-			if (!mom || !mom.isValid()) {
-				return;
-			}
-			return mom.format('YYYY-MM-DD');
-		},
-
-		_expandUserFormat(userFormat) {
-			return this.moment.localeData().longDateFormat(userFormat);
+		_formatISODate(filterValue) {
+			return new Date(filterValue);
 		},
 
 		_computeFilter(start, end) {
-			var startMoment = moment(start),
-				endMoment = moment(end);
 			return {
-				start: startMoment.isValid() ? startMoment : null,
-				end: endMoment.isValid() ? endMoment : null
+				start: start ? this.getDate(start) : null,
+				end: end ? this.getDate(end) : null,
 			};
 		},
 
-		_computeFilterText(locale, filterNotify) {
+		_computeFilterText(locale, filterNotify, formatter = this.formatter) {
 			var filter = filterNotify.base,
-				text = [];
-			if (filter.start !== null) {
-				text.push(this.formatter.format(filter.start.i));
+				text = [],
+				tempValue;
+			if (formatter && filter.start && filter.start !== null) {
+				tempValue = this.getDate(filter.start);
+				text.push(formatter.format(tempValue));
 			}
-			if (filter.end !== null) {
-				text.push(' - ');
-				text.push(this.formatter.format(filter.start.i));
+			text.push(' - ');
+			if (formatter && filter.end && filter.end !== null) {
+				tempValue = this.getDate(filter.end);
+				text.push(formatter.format(tempValue));
 			}
-			return text.length > 0 ? text.join('') : null;
+			return text.length > 1 ? text.join('') : null;
 		},
 
 		_dateValueChanged(event) {
@@ -231,11 +226,12 @@
 		},
 
 		getComparableValue(item, valuePath) {
-			var value = this.get(valuePath, item);
-			return moment(value).valueOf();
+			var value = this.get(valuePath, item),
+				numericValue = new Date(value);
+			return numericValue.getTime();
 		},
 
-		renderISODateValue(item, valuePath, locale) {
+		renderISODateValue(item, valuePath) {
 			var value = this.get(valuePath, item);
 			if (!value) {
 				return;
@@ -248,10 +244,29 @@
 			if (!value || !formatter) {
 				return '';
 			}
-			if (Object.prototype.toString.call(value) !== '[object Date]') {
+			if (!(value instanceof Date)) {
 				value = new Date(value);
 			}
+			if (isNaN(value)) {
+				return 'Invalid Date';
+			}
 			return formatter.format(value);
+		},
+
+		getDate(value) {
+			var dateValue;
+			if (!value) {
+				return '';
+			}
+			if (!(value instanceof Date)) {
+				dateValue = new Date(value);
+			} else {
+				return value;
+			}
+			if (isNaN(dateValue)) {
+				return 'Invalid Date';
+			}
+			return dateValue;
 		},
 
 		getFilterFn() {
@@ -263,16 +278,15 @@
 
 		_applySingleFilter(filter, item) {
 			var value = this.get(this.valuePath, item),
-				mom = moment(value);
+				dateToCheck = this.getDate(value);
 
-			if (filter.start && mom.isBefore(filter.start)) {
+			if (filter.start && dateToCheck < filter.start) {
 				return false;
 			}
 
-			if (filter.end && mom.isAfter(filter.end)) {
+			if (filter.end && dateToCheck > filter.end) {
 				return false;
 			}
-
 			return true;
 		}
 	};

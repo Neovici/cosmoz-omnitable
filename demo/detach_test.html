@@ -14,8 +14,6 @@
 	<link rel="import" href="../../iron-icons/iron-icons.html">
 	<link rel="import" href="../../paper-button/paper-button.html">
 	<link rel="import" href="../../cosmoz-i18next/cosmoz-i18next.html">
-	<link rel="import" href="../../cosmoz-moment/cosmoz-moment.html">
-	<link rel="import" href="../../cosmoz-moment/cosmoz-moment.html">
 	<link rel="import" href="../../cosmoz-viewinfo/cosmoz-viewinfo.html">
 	<link rel="import" href="../cosmoz-omnitable.html">
 
@@ -80,7 +78,6 @@
 					interpolation-prefix="{"
 					interpolation-suffix="}">
 				</cosmoz-i18next>
-				<cosmoz-moment locale="[[ locale ]]"></cosmoz-moment>
 
 				<div class="layout horizontal center">
 					<button class="action" on-tap="changeData">Generate a new data set</button>
@@ -191,7 +188,7 @@
 			},
 			locale: {
 				type: String,
-				value: 'en'
+				value: null
 			},
 			customNameTemplate: {
 				type: Object
