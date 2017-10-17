@@ -1035,7 +1035,7 @@
 			if (!changes || !hashParam) {
 				return;
 			}
-			PROPERTY_HASH_PARAMS.forEach((key)=> {
+			PROPERTY_HASH_PARAMS.forEach(key => {
 				var hashValue =  this.get(['_routeHashParams', hashParam + '-' + key]),
 					deserialized = this.deserialize(hashValue, this.properties[key].type);
 
@@ -1049,7 +1049,7 @@
 			if (!changes || !hashParam || !(columns && columns.length)) {
 				return;
 			}
-			Object.keys(changes.base).map((key)=> {
+			Object.keys(changes.base).map(key => {
 				var matches = key.match(/^full\-filter\-\-([a-z0-9]+)$/),
 					name = matches && matches[1],
 					hashValue,
@@ -1059,7 +1059,7 @@
 				if (!name) {
 					return;
 				}
-				column = this.columns.find((c) => c.name === name);
+				column = this.columns.find(c => c.name === name);
 
 				if (!column) {
 					return;

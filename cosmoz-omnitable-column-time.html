@@ -93,7 +93,7 @@
 					item = e.model.item,
 					oldDateMom = moment(item.date),
 					newDateMom = moment(oldDateMom.format('YYYY-MM-DD') + ` ${timeString} ` + oldDateMom.format('Z')),
-					formatFn = (value) => {
+					formatFn = value => {
 						return moment(value).locale(this.locale).format(this.userFormat);
 					};
 

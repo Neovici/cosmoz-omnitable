@@ -14,7 +14,7 @@
 			<paper-dropdown-menu>
 				<paper-listbox class="dropdown-content" slot="dropdown-content"
 					attr-for-selected="value"
-					fallback-selection="[[ _computeSelected(item, valuePath) ]]" 
+					fallback-selection="[[ _computeSelected(item, valuePath) ]]"
 					on-selected-item-changed="_valueChanged">
 					<paper-item value="true">[[ trueLabel ]]</paper-item>
 					<paper-item value="false">[[ falseLabel ]]</paper-item>
@@ -153,7 +153,7 @@
 				var value = e.target.selected === 'true',
 					item = e.model.item,
 					oldValue = this.get(this.valuePath, item),
-					formatFn = (value) => {
+					formatFn = value => {
 						return value ? this.trueLabel : this.falseLabel;
 					};
 				if (value === oldValue) {

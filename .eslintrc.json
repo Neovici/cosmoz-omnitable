@@ -21,6 +21,14 @@
 			"error",
 			"never"
 		],
+		"arrow-parens": [
+			"error",
+			"as-needed"
+		],
+		"arrow-spacing": [
+			"error",
+			{ "before": true, "after": true }
+		],
 		"brace-style": "error",
 		"camelcase": "error",
 		"comma-spacing": [
