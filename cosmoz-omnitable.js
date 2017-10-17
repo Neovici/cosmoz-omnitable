@@ -914,7 +914,7 @@
 						if (cell === undefined || cell === null) {
 							return '';
 						}
-						return String(cell);
+						return cell;
 					});
 				});
 
