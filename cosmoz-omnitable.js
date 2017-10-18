@@ -910,11 +910,11 @@
 			var	headers = this.columns.map(col => col.title),
 				data = this.selectedItems.map(item => {
 					return this.columns.map(column => {
-						const cell = column.getString(item);
-						if (cell === undefined || cell === null) {
+						var value = column.toXlsxValue(item);
+						if (value === undefined || value === null) {
 							return '';
 						}
-						return cell;
+						return value;
 					});
 				});
 

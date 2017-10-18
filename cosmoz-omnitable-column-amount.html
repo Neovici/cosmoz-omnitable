@@ -234,6 +234,14 @@
 					return this.renderAmount(value);
 				}
 			},
+			toXlsxValue: function () {
+				var value = Cosmoz.OmnitableColumnBehavior.toXlsxValue.apply(this, arguments);
+				if (!value) {
+					return '';
+				}
+
+				return this.renderAmount(value);
+			},
 
 			renderAmountValue: function (item, valuePath) {
 				var value = this.get(valuePath, item);
