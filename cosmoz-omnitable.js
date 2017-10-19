@@ -200,9 +200,7 @@
 			'_dataChanged(data.*)',
 			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
 			'_routeHashParamsChanged(_routeHashParams.*, hashParam, columns)',
-			'_paramForRouteChanged( hashParam, "groupOn", groupOn)',
-			'_paramForRouteChanged( hashParam, "sortOn", sortOn)',
-			'_paramForRouteChanged( hashParam, "descending", descending)'
+			'_paramsForRouteChanged( groupOn, sortOn, descending)'
 		],
 
 		behaviors: [
@@ -1036,7 +1034,7 @@
 			}
 
 			PROPERTY_HASH_PARAMS.forEach(key => {
-				let hashValue =  this.get(['_routeHashParams', hashParam + '-' + key]),
+				const hashValue =  this.get(['_routeHashParams', hashParam + '-' + key]),
 					deserialized = this.deserialize(hashValue, this.properties[key].type);
 
 				if (hashValue === undefined ||  deserialized === this.get(key)) {
@@ -1051,10 +1049,10 @@
 				routeParams = changes.base;
 
 			Object.keys(routeParams).forEach(key => {
-				let matches = key.match(rule),
+				const matches = key.match(rule),
 					name = matches && matches[1],
-					hashValue = routeParams[key],
-					column,
+					hashValue = routeParams[key];
+				let column,
 					value;
 
 				if (!name) {
@@ -1079,22 +1077,24 @@
 
 		},
 
-		_paramForRouteChanged: function (hashParam, key, value) {
-			if (!hashParam || !this._routeHashParams) {
+		_paramsForRouteChanged: function () {
+			if (!this.hashParam || !this._routeHashParams) {
 				return;
 			}
 
-			let path = ['_routeHashParams', hashParam + '-' + key],
-				hashValue = this.get(path),
-				serialized = this.serialize(value, this.properties[key].type);
+			PROPERTY_HASH_PARAMS.forEach(key => {
+				const path = ['_routeHashParams', this.hashParam + '-' + key],
+					hashValue =  this.get(path),
+					value = this.get(key),
+					serialized = this.serialize(value, this.properties[key].type);
 
-			if (serialized === hashValue) {
-				return;
-			}
+				if (serialized === hashValue || hashValue == null && value === '') {
+					return;
+				}
 
-			this.set(path, serialized === undefined ? null : serialized);
-			console.log('property changed', key, serialized === undefined ? null : serialized);
-
+				this.set(path, serialized === undefined ? null : serialized);
+				console.log('property changed', key, serialized === undefined ? null : serialized);
+			});
 		},
 
 		_filterForRouteChanged: function (column) {
@@ -1102,7 +1102,7 @@
 				return;
 			}
 
-			let path = ['_routeHashParams', this.hashParam + '-filter--' + column.name],
+			const path = ['_routeHashParams', this.hashParam + '-filter--' + column.name],
 				hashValue = this.get(path),
 				value = column.filter,
 				serializedValue = this.serialize(value, Object);
