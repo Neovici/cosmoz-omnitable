@@ -1097,7 +1097,7 @@
 		},
 
 		_filterForRouteChanged: function (column) {
-			if (!this.hashParam || !this._routeHashParams || !this.data || !this.data.length || !this.columns || !this.columns.length)  {
+			if (!this.hashParam || !this._routeHashParams || !this.data || !this.data.length)  {
 				return;
 			}
 
