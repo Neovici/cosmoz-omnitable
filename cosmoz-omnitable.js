@@ -1079,31 +1079,39 @@
 		},
 
 		_paramForRouteChanged: function (hashParam, key, value) {
-			if (hashParam  && this._routeHashParams) {
-
-				var path = ['_routeHashParams', hashParam + '-' + key],
-					hashValue = this.get(path),
-					serialized = this.serialize(value, this.properties[key].type);
-
-				if (serialized !== hashValue) {
-					this.set(path, serialized === undefined ? null : serialized);
-				}
+			if (!hashParam || !this._routeHashParams) {
+				return;
 			}
+
+			let path = ['_routeHashParams', hashParam + '-' + key],
+				hashValue = this.get(path),
+				serialized = this.serialize(value, this.properties[key].type);
+
+			if (serialized === hashValue) {
+				return;
+			}
+
+			this.set(path, serialized === undefined ? null : serialized);
+			console.log('property changed', key, serialized === undefined ? null : serialized);
+
 		},
 
 		_filterForRouteChanged: function (column) {
-			if (this.hashParam && this._routeHashParams && this.data && this.data.length > 0) {
-				var path = ['_routeHashParams', this.hashParam + '-filter--' + column.name],
-					hashValue = this.get(path),
-					value = column.filter,
-					serializedValue = this.serialize(value, Object);
-
-				if (serializedValue !== hashValue) {
-					this.set(path, serializedValue);
-					console.log(column.title, column.filter);
-				}
-
+			if (!this.hashParam || !this._routeHashParams || !this.data || !this.data.length || !this.columns || !this.columns.length)  {
+				return;
 			}
+
+			let path = ['_routeHashParams', this.hashParam + '-filter--' + column.name],
+				hashValue = this.get(path),
+				value = column.filter,
+				serializedValue = this.serialize(value, Object);
+
+			if (serializedValue === hashValue) {
+				return;
+			}
+
+			this.set(path, serializedValue);
+			console.log('filter changed', column.title, column.filter);
 		}
 	});
 }());
