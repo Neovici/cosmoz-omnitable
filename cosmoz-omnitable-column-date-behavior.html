@@ -122,18 +122,18 @@
 		},
 
 		_getMinMax(firstRaw, secondRaw, max) {
-			var doMax = max === 1,
+			const doMax = max === 1,
 				first = this.getDate(firstRaw),
 				second = this.getDate(secondRaw);
 			if (!first && !second) {
 				return null;
 			}
 
-			if ((!first || first === 'Invalid Date') && second) {
+			if (!this._isValidDate(first) && second) {
 				return second;
 			}
 
-			if ((!second || second === 'Invalid Date') && first) {
+			if (!this._isValidDate(second) && first) {
 				return first;
 			}
 
@@ -145,22 +145,18 @@
 		},
 
 		_computePossibleDateRange(change) {
-			var values = change.base,
-				test;
+			let values = change.base;
 			if (!values || !Array.isArray(values) || values.length < 1) {
 				return {
 					min: null,
 					max: null
 				};
 			}
-			if (!this.formatter) {
-				return {
-					min: null,
-					max: null
-				};
-			}
-			return values.reduce(function (acc, item) {
-				var currRange = new Date(item);
+			return values.reduce((acc, item) => {
+				const currRange = this.getDate(item);
+				if (!this._isValidDate(currRange)) {
+					return acc;
+				}
 				if (!acc.min || currRange < acc.min) {
 					acc.min = currRange;
 				}
@@ -172,15 +168,18 @@
 		},
 
 		_computeTooltip(title, filterText) {
-			var ret = title;
+			let ret = title;
 			if (filterText !== undefined && filterText !== null) {
 				ret += ': ' + filterText;
 			}
 			return ret;
 		},
-
+	
 		_formatISODate(filterValue) {
-			return new Date(filterValue);
+			if (!this._isValidDate(filterValue)) {
+				return '';
+			}
+			return filterValue.toISOString().slice(0, 10);
 		},
 
 		_computeFilter(start, end) {
@@ -191,33 +190,33 @@
 		},
 
 		_computeFilterText(locale, filterNotify, formatter = this.formatter) {
-			var filter = filterNotify.base,
-				text = [],
-				tempValue;
-			if (formatter && filter.start && filter.start !== null) {
-				tempValue = this.getDate(filter.start);
-				text.push(formatter.format(tempValue));
+			let text = [];
+			const startDate = filterNotify.base.start,
+				endDate = filterNotify.base.end;
+			if (!formatter) {
+				return null;
+			}
+			if (startDate && startDate !== null) {
+				text.push(formatter.format(this.getDate(startDate)));
 			}
 			text.push(' - ');
-			if (formatter && filter.end && filter.end !== null) {
-				tempValue = this.getDate(filter.end);
-				text.push(formatter.format(tempValue));
+			if (endDate && endDate !== null) {
+				text.push(formatter.format(this.getDate(endDate)));
 			}
 			return text.length > 1 ? text.join('') : null;
 		},
 
 		_dateValueChanged(event) {
-			var
+			const
 				input = event.currentTarget,
 				value = input.value,
 				item = event.model.item,
 				oldValue = this.get(this.valuePath, item),
 				formatFn = (value) => {
 					return this.formatter.format(value);
-				},
-				dateValue;
+				};
 			try {
-				dateValue = new Date(value);
+				let dateValue = new Date(value);
 				this.set(this.valuePath, dateValue, item);
 			} catch (err) {
 				input.errorMessage = 'Invalid date';
@@ -226,13 +225,15 @@
 		},
 
 		getComparableValue(item, valuePath) {
-			var value = this.get(valuePath, item),
-				numericValue = new Date(value);
+			const numericValue = this.getDate(this.get(valuePath, item));
+			if (!this._isValidDate(numericValue)) {
+				return null;
+			}
 			return numericValue.getTime();
 		},
 
 		renderISODateValue(item, valuePath) {
-			var value = this.get(valuePath, item);
+			const value = this.get(valuePath, item);
 			if (!value) {
 				return;
 			}
@@ -240,28 +241,22 @@
 		},
 
 		getString(item, valuePath, formatter = this.formatter) {
-			var value = this.get(valuePath || this.valuePath, item);
-			if (!value || !formatter) {
-				return '';
-			}
-			if (!(value instanceof Date)) {
-				value = new Date(value);
-			}
-			if (isNaN(value)) {
+			const value = this.getDate(this.get(valuePath || this.valuePath, item));
+			if (!this._isValidDate(value)) {
 				return 'Invalid Date';
 			}
 			return formatter.format(value);
 		},
-
+	
 		getDate(value) {
-			var dateValue;
-			if (!value) {
+			let dateValue = value;
+			if (!dateValue) {
 				return '';
 			}
-			if (!(value instanceof Date)) {
-				dateValue = new Date(value);
+			if (!(dateValue instanceof Date)) {
+				dateValue = new Date(dateValue);
 			} else {
-				return value;
+				return dateValue;
 			}
 			if (isNaN(dateValue)) {
 				return 'Invalid Date';
@@ -277,14 +272,20 @@
 		},
 
 		_applySingleFilter(filter, item) {
-			var value = this.get(this.valuePath, item),
-				dateToCheck = this.getDate(value);
+			const dateToCheck = this.getDate(this.get(this.valuePath, item));
 
 			if (filter.start && dateToCheck < filter.start) {
 				return false;
 			}
 
 			if (filter.end && dateToCheck > filter.end) {
+				return false;
+			}
+			return true;
+		},
+	
+		_isValidDate(value) {
+			if (!value || !value === null || value === 'Invalid Date') {
 				return false;
 			}
 			return true;

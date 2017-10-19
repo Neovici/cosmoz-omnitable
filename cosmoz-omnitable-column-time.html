@@ -8,12 +8,12 @@
 <dom-module id="cosmoz-omnitable-column-time">
 	<template>
 		<template class="cell">
-			[[ getLocaleString(item, valuePath, timeFormatter) ]]
+			[[ getLocaleString(item, valuePath, formatter) ]]
 		</template>
 
 		<template class="edit-cell">
 			<paper-input no-label-float type="time" on-change="_timeValueChanged"
-				value="[[ getLocaleString(item, valuePath, timeFormatter) ]]">
+				value="[[ getLocaleString(item, valuePath, formatter) ]]">
 			</paper-input>
 		</template>
 
@@ -23,10 +23,10 @@
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
 					<paper-input
-						type="time" label="[[ _('From time', t) ]]" step="[[_filterStep]]" value="{{ _filterInput.start }}">
+						type="time" label="[[ _('From time', t) ]]" step="[[filterStep]]" value="{{ _filterInput.start }}">
 					</paper-input>
 					<paper-input
-						type="time" label="[[ _('Until time', t) ]]" step="[[_filterStep]]" value="{{ _filterInput.end }}">
+						type="time" label="[[ _('Until time', t) ]]" step="[[filterStep]]" value="{{ _filterInput.end }}">
 					</paper-input>
 				</div>
 			</paper-dropdown-menu>
@@ -44,38 +44,14 @@
 			],
 
 			properties: {
-				userFormat: {
-					type: String,
-					value: 'YYYY-MM-DDTHH:mm:ss.SSS'
-				},
 				/*
 				 * Specifies the value granularity of the time input's value in the filter.
 				 * 1 => full seconds
 				 * 0.1 => milliseconds
 				 */
-				_filterStep: {
+				filterStep: {
 					type: String,
-					computed: '_computeStep(userFormat)'
-				},
-
-				_filterInput: {
-					type: Object,
-					value() {
-						return {
-							start: null,
-							end: null
-						};
-					}
-				},
-		
-				_filterText: {
-					type: String,
-					computed: '_computeFilterText(locale, filter.*)'
-				},
-
-				filter: {
-					type: Object,
-					computed: '_computeFilter(_filterInput.start, _filterInput.end)'
+					value: '1'
 				},
 
 				_placeholderDate: {
@@ -83,111 +59,32 @@
 					value: '1970-01-01'
 				},
 		
-				timeFormatter: {
+				formatter: {
 					type: Object,
-					computed: '_computeTimeFormatter(locale)'
-				},
-
-				_tooltip: {
-					type: String,
-					computed: '_computeTooltip(title, _filterText)'
+					computed: '_computeFormatter(locale)'
 				}
-			},
-
-			_computeTimeFormatter(locale) {
-				var timeFormatOption = {
-					hour: 'numeric',
-					minute: 'numeric',
-					second: 'numeric',
-					hour12: false
-				};
-				return new Intl.DateTimeFormat(locale || undefined, timeFormatOption);
-			},
-			/** ELEMENT LIFECYCLE */
-
-			/** ELEMENT BEHAVIOR */
-
-			_computeStep(userFormat) {
-				if (userFormat.match('S')) {
-					return 0.1;
-				}
-				return 1;
 			},
 		
-			/**OVERRIDES */
-
-			/** cosmoz-omnitable-column-date-behavior */
-
-			_computeFilterText(locale, filterNotify) {
-				var filter = filterNotify.base,
-					text = [];
-				if (filter.start && filter.start !== null) {
-					text.push(filter.start);
-				}
-				text.push(' - ');
-				if (filter.end && filter.end !== null) {
-					text.push(filter.end);
-				}
-				return text.length > 1 ? text.join('') : null;
-			},
 			_timeValueChanged(e) {
-				var
-					input = e.target,
+				const input = e.target,
 					timeString = input.value,
 					item = e.model.item,
-					oldDateMom = this.getDate(item.date),
-					newDateMom = oldDateMom.toISOString().slice(0, 10) + ` ${timeString} `,
+					oldTime = this.getDate(item.date),
+					newTime = oldTime.toISOString().slice(0, 10) + ` ${timeString} `,
 					formatFn = (value) => {
-						return this.getDate(value);
+						return value;
 					};
 				try {
-					this.set(this.valuePath, newDateMom, item);
+					this.set(this.valuePath, newTime, item);
 				} catch (err) {
 					input.errorMessage = 'Invalid date';
 				}
-				this._fireItemChangeEvent(item, this.valuePath, oldDateMom, formatFn.bind(this));
+				this._fireItemChangeEvent(item, this.valuePath, formatFn.bind(this));
 			},
 		
-			_computeTooltip(title, filterText) {
-				var ret = title;
-				if (filterText !== undefined && filterText !== null) {
-					ret += ': ' + filterText;
-				}
-				return ret;
-			},
-
-			_computeFilter(startTime, endTime) {
-				return {
-					start: startTime ? startTime : null,
-					end: endTime ? endTime : null,
-				};
-			},
-
-			_applySingleFilter(filter, item, timeFormatter = this.timeFormatter) {
-				var value = this.get(this.valuePath, item),
-					dateToCheck = this.getDate(value);
-
-				if (filter.start && timeFormatter.format(dateToCheck) < filter.start) {
-					return false;
-				}
-
-				if (filter.end && timeFormatter.format(dateToCheck) > filter.end) {
-					return false;
-				}
-				return true;
-			},
-
-			/** cosmoz-omnitable-column-behavior */
-
-			getComparableValue(item, valuePath) {
-				var value = this.get(valuePath, item),
-					numericValue = new Date(value);
-				return numericValue.getTime();
-			},
-		
-			getLocaleString(item, valuePath, timeFormatter = this.timeFormatter) {
-				var value = this.get(valuePath || this.valuePath, item);
-				if (!value || !timeFormatter) {
+			getLocaleString(item, valuePath, formatter = this.formatter) {
+				let value = this.get(valuePath || this.valuePath, item);
+				if (!value || !formatter) {
 					return '';
 				}
 				if (!(value instanceof Date)) {
@@ -196,8 +93,58 @@
 				if (isNaN(value)) {
 					return 'Invalid Date';
 				}
-				return timeFormatter.format(value);
-	},
+				return formatter.format(value);
+			},
+
+			/** OVERRIDES */
+
+			_computeFormatter(locale) {
+				const timeFormatOption = {
+					hour: 'numeric',
+					minute: 'numeric',
+					second: 'numeric'
+				};
+				return new Intl.DateTimeFormat(locale || undefined, timeFormatOption);
+			},
+		
+			_applySingleFilter(filter, item, formatter = this.formatter) {
+				const value = this.get(this.valuePath, item),
+					dateToCheck = this.getDate(value);
+
+				if (filter.start && formatter.format(dateToCheck) < filter.start) {
+					return false;
+				}
+
+				if (filter.end && formatter.format(dateToCheck) > filter.end) {
+					return false;
+				}
+				return true;
+			},
+		
+			_computeFilter(startTime, endTime) {
+				return {
+					start: startTime || null,
+					end: endTime || null
+				};
+			},
+		
+			_computeFilterText(locale, filterNotify, formatter = this.formatter) {
+				let text = [];
+				const startTime = filterNotify.base.start,
+					endTime = filterNotify.base.end;
+				if (!formatter) {
+					return null;
+				}
+				if (startTime && startTime !== null) {
+					text.push(startTime);
+				}
+				text.push(' - ');
+				if (endTime && endTime !== null) {
+					text.push(endTime);
+				}
+				return text.length > 1 ? text.join('') : null;
+			}
+
 		});
 	</script>
 </dom-module>

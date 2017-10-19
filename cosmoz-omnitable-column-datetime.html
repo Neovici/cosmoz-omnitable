@@ -1,13 +1,10 @@
 <link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-date-behavior.html">
 
 <link rel="import" href="../datetime-local/datetime-local.html">
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
-
-<link rel="import" href="../datetime-local/datetime-local.html">
-
-<link rel="import" href="cosmoz-omnitable-column-date-behavior.html">
 
 <dom-module id="cosmoz-omnitable-column-datetime">
 	<template>
@@ -27,10 +24,10 @@
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
 					<datetime-local min="[[ _formatISODate(_fromMin) ]]" max="[[ _formatISODate(_fromMax) ]]"
-						date-label="[[ _('From date', t) ]]" time-label="[[ _('From time', t) ]]" value="{{ _filterInput.start }}" step$="[[_filterStep]]">
+						date-label="[[ _('From date', t) ]]" time-label="[[ _('From time', t) ]]" value="{{ _filterInput.start }}" step$="[[filterStep]]">
 					</datetime-local>
 					<datetime-local on-datetime-local-value-changed="_valueChanged" min="[[ _formatISODate(_toMin) ]]" max="[[ _formatISODate(_toMax) ]]"
-						value="{{ _filterInput.end }}" step$="[[_filterStep]]">
+						value="{{ _filterInput.end }}" step$="[[filterStep]]">
 					</datetime-local>
 				</div>
 			</paper-dropdown-menu>
@@ -41,9 +38,23 @@
 			is: 'cosmoz-omnitable-column-datetime',
 
 			properties: {
-				_filterStep: {
+				filterStep: {
 					type: Number,
-					computed: '_computeStep(userFormat)'
+					value: 1
+				},
+		
+				max: {
+					type: Date,
+					value() {
+						return new Date(Date.UTC(2100, 11, 59, 59, 0, 0));
+					}
+				},
+
+				min: {
+					type: Date,
+					value() {
+						return new Date(Date.UTC(1970, 0, 0, 0, 0, 0));
+					}
 				},
 
 				width: {
@@ -55,10 +66,10 @@
 					type: String,
 					value: '320px'
 				},
-
-				_inputFormat: {
-					type: String,
-					value: 'YYYY-MM-DDTHH:mm:ss.SSS'
+		
+				formatter: {
+					type: Object,
+					computed: '_computeFormatter(locale)'
 				}
 			},
 
@@ -68,39 +79,49 @@
 				Cosmoz.DateColumnBehavior
 			],
 
-			/** ELEMENT LIFECYCLE */
-
-			/** ELEMENT BEHAVIOR*/
-
-			_computeStep(userFormat) {
-				if (userFormat.match('S')) {
-					return 0.1;
-				}
-				return 1;
-			},
-
 			/** OVERRIDES */
-
-			/** cosmoz-omnitable-column-date-behavior*/
-
-			_formatISODate(mom) {
-				//if (!mom || !mom.isValid()) {
-				if (!mom) {
-					return;
-				}
-				return this.formatter.format(mom);
+			_computeFormatter(locale) {
+				const timeFormatOption = {
+					year: 'numeric',
+					month: 'numeric',
+					day: 'numeric',
+					hour: 'numeric',
+					minute: 'numeric',
+					second: 'numeric'
+				};
+				return new Intl.DateTimeFormat(locale || undefined, timeFormatOption);
 			},
-
-			/** OVERRIDES */
-
-			/** cosmoz-omnitable-column-date-behavior*/
 
 			renderISODateValue(item, valuePath) {
-				var value = this.get(valuePath, item);
-				if (!value) {
+				const value = this.getDate(this.get(valuePath, item));
+				if (!this._isValidDate(value)) {
 					return;
 				}
 				return value.toISOString().slice(0, 19);
+			},
+		
+			_computeFilterText(locale, filterNotify, formatter = this.formatter) {
+				let text = [];
+				const startTime = filterNotify.base.start,
+					endTime = filterNotify.base.end;
+				if (!formatter) {
+					return null;
+				}
+				if (startTime && startTime !== null) {
+					text.push(this._formatISODate(startTime));
+				}
+				text.push(' - ');
+				if (endTime && endTime !== null) {
+					text.push(this._formatISODate(endTime));
+				}
+				return text.length > 1 ? text.join('') : null;
+			},
+
+			_formatISODate(filterValue) {
+				if (!this._isValidDate(filterValue)) {
+					return '';
+				}
+				return this.formatter.format(filterValue);
 			}
 		});
 
