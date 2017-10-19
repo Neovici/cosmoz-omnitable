@@ -199,8 +199,7 @@
 		observers: [
 			'_dataChanged(data.*)',
 			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
-			'_routeHashParamsChanged(_routeHashParams.*, hashParam)',
-			'_routeHashParamsForFiltersChanged(_routeHashParams.*, hashParam, columns)',
+			'_routeHashParamsChanged(_routeHashParams.*, hashParam, columns)',
 			'_paramForRouteChanged( hashParam, "groupOn", groupOn)',
 			'_paramForRouteChanged( hashParam, "sortOn", sortOn)',
 			'_paramForRouteChanged( hashParam, "descending", descending)'
@@ -1031,28 +1030,30 @@
 			gl.highlightItem(i, reverse);
 		},
 
-		_routeHashParamsChanged: function (changes, hashParam) {
-			if (!changes || !hashParam) {
+		_routeHashParamsChanged: function (changes, hashParam, columns) {
+			if (!changes || !hashParam || !columns || !columns.length) {
 				return;
 			}
+
 			PROPERTY_HASH_PARAMS.forEach(key => {
-				var hashValue =  this.get(['_routeHashParams', hashParam + '-' + key]),
+				let hashValue =  this.get(['_routeHashParams', hashParam + '-' + key]),
 					deserialized = this.deserialize(hashValue, this.properties[key].type);
 
-				if (hashValue !== undefined && deserialized !== this.get(key)) {
-					this.set(key, deserialized);
+				if (hashValue === undefined ||  deserialized === this.get(key)) {
+					return;
 				}
-			});
-		},
 
-		_routeHashParamsForFiltersChanged: function (changes, hashParam, columns) {
-			if (!changes || !hashParam || !(columns && columns.length)) {
-				return;
-			}
-			Object.keys(changes.base).map(key => {
-				var matches = key.match(/^full\-filter\-\-([a-z0-9\-]+)$/),
+				this.set(key, deserialized);
+				console.log('route changed for', key, deserialized);
+			});
+
+			let rule = new RegExp('^' + hashParam + '-filter\-\-([a-z0-9\-]+)$'),
+				routeParams = changes.base;
+
+			Object.keys(routeParams).forEach(key => {
+				let matches = key.match(rule),
 					name = matches && matches[1],
-					hashValue,
+					hashValue = routeParams[key],
 					column,
 					value;
 
@@ -1065,14 +1066,16 @@
 					return;
 				}
 
-				hashValue = changes.base[key];
 				value = this.serialize(column.filter, Object);
 
-				if (hashValue !== value) {
-					column.set('filter', this.deserialize(hashValue, Object));
-					console.log('route changed for filter', name);
+				if (hashValue === value) {
+					return;
 				}
+
+				column.set('filter', this.deserialize(hashValue, Object));
+				console.log('route changed for filter', name);
 			});
+
 		},
 
 		_paramForRouteChanged: function (hashParam, key, value) {
