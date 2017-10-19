@@ -1063,6 +1063,7 @@
 				column = this.columns.find(c => c.name === name);
 
 				if (!column) {
+					console.warn('column with name', name, 'for param', key, 'not found!');
 					return;
 				}
 
