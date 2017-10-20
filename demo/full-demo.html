@@ -179,6 +179,8 @@
 			data[1].value = undefined;
 			data[2].amount = null;
 			data[3].value = null;
+			// test filtering/sorting when item has undefined value in autocomplete column
+			data[0].group = undefined;
 			this.async(() => {
 				this.data = data;
 			}, 100);
