@@ -511,6 +511,8 @@
 				return;
 			}
 
+			this._updateRouteParam('groupOn');
+
 			var groupOnColumn = this.groupOnColumn,
 				groups;
 
@@ -519,8 +521,6 @@
 				this._groupsCount = 0;
 				return;
 			}
-
-			this._updateRouteParams('groupOn');
 
 			groups = this.filteredItems.reduce((array, item) => {
 				var gval = groupOnColumn.getComparableValue(item, groupOnColumn.groupOn),
@@ -588,14 +588,14 @@
 				results = 0,
 				itemMapper;
 
+			this._updateRouteParam('sortOn');
+			this._updateRouteParam('descending');
+
 			if (!this.sortOn || !sortOnColumn) {
 				this.sortedFilteredGroupedItems = this.filteredGroupedItems;
 				this._debounceAdjustColumns();
 				return;
 			}
-
-			this._updateRouteParams('sortOn');
-			this._updateRouteParams('descending');
 
 			itemMapper = function (item, originalItemIndex) {
 				return {
