@@ -1033,6 +1033,29 @@
 			gl.highlightItem(i, reverse);
 		},
 
+		_serializeFilter: function (obj) {
+			const type = {}.toString.call(obj).split(' ')[1].slice(0, -1).toLowerCase();
+			let value = obj;
+
+			if (type === 'array' && !value.length) {
+				value =  null;
+			} else if (type === 'object') {
+				value =  Object.keys(obj).filter(k => obj[k] != null)
+					.reduce((acc = {}, k) => (acc[k] = obj[k]) && acc, undefined) || null;
+			}
+			return this.serialize(value);
+		},
+
+		_deserializeFilter: function (obj, type = Object) {
+			if (type === Object && obj == null) {
+				return {};
+			}
+			if (type === Array && obj == null) {
+				return [];
+			}
+			return this.deserialize(obj, type);
+		},
+
 		_routeHashParamsChanged: function (changes, hashParam, columns) {
 			if (!changes || !hashParam || !columns || !columns.length) {
 				return;
@@ -1047,37 +1070,28 @@
 				}
 
 				this.set(key, deserialized);
-				console.log('route changed for', key, deserialized);
 			});
 
 			let rule = new RegExp('^' + hashParam + '-filter\-\-([a-z0-9\-]+)$'),
 				routeParams = changes.base;
 
 			Object.keys(routeParams).forEach(key => {
-				const matches = key.match(rule),
+				const hashValue = routeParams[key],
+					matches = key.match(rule),
 					name = matches && matches[1],
-					hashValue = routeParams[key];
-				let column,
-					value;
-
-				if (!name) {
-					return;
-				}
-				column = this.columns.find(c => c.name === name);
+					column = name && columns.find(c => c.name === name);
 
 				if (!column) {
 					console.warn('column with name', name, 'for param', key, 'not found!');
 					return;
 				}
 
-				value = this.serialize(column.filter, Object);
+				let filter = column.filter;
 
-				if (hashValue === value) {
+				if (hashValue === this._serializeFilter(filter)) {
 					return;
 				}
-
-				column.set('filter', this.deserialize(hashValue, Object));
-				console.log('route changed for filter', name);
+				column.set('filter', this._deserializeFilter(hashValue, filter && filter.constructor || undefined));
 			});
 
 		},
@@ -1097,7 +1111,6 @@
 			}
 
 			this.set(path, serialized === undefined ? null : serialized);
-			console.log('property changed', key, serialized === undefined ? null : serialized);
 		},
 
 		_filterForRouteChanged: function (column) {
@@ -1107,15 +1120,13 @@
 
 			const path = ['_routeHashParams', this.hashParam + '-filter--' + column.name],
 				hashValue = this.get(path),
-				value = column.filter,
-				serializedValue = this.serialize(value, Object);
+				serialized = this._serializeFilter(column.filter);
 
-			if (serializedValue === hashValue) {
+			if (serialized === hashValue) {
 				return;
 			}
 
-			this.set(path, serializedValue);
-			console.log('filter changed', column.title, column.filter);
+			this.set(path, serialized === undefined ? null : serialized);
 		}
 	});
 }());
