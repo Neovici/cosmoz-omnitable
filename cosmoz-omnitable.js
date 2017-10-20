@@ -103,6 +103,11 @@
 				value: ''
 			},
 
+			sortOnColumn: {
+				type: Object,
+				computed: '_getColumn(sortOn, "name", columns)'
+			},
+
 			/**
 			 * The column name to group on.
 			 */
@@ -119,7 +124,7 @@
 				type: Object,
 				notify: true,
 				observer: '_debounceGroupItems',
-				computed: '_computeGroupOnColumn(groupOn, columns)'
+				computed: '_getColumn(groupOn, "name", columns)'
 			},
 
 			/**
@@ -199,8 +204,7 @@
 		observers: [
 			'_dataChanged(data.*)',
 			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
-			'_routeHashParamsChanged(_routeHashParams.*, hashParam, columns)',
-			'_paramsForRouteChanged( groupOn, sortOn, descending)'
+			'_routeHashParamsChanged(_routeHashParams.*, hashParam, columns)'
 		],
 
 		behaviors: [
@@ -254,10 +258,6 @@
 
 		_computeVisibleColumns(columns, groupOn) {
 			return groupOn ? columns.filter(c => c.name !== this.groupOn) : columns.slice();
-		},
-
-		_computeGroupOnColumn(groupOn) {
-			return this._getColumn(groupOn);
 		},
 
 		_computeDataValidity(data) {
@@ -457,11 +457,11 @@
 		 * @param {String} attribute The attribute name of the column.
 		 * @returns {Object} The found column.
 		 */
-		_getColumn(attributeValue, attribute = 'name') {
-			if (!attributeValue || !this.columns) {
+		_getColumn(attributeValue, attribute = 'name', columns = this.columns) {
+			if (!attributeValue || !columns) {
 				return;
 			}
-			const column = this.columns.find(column => column[attribute] === attributeValue);
+			const column = columns.find(column => column[attribute] === attributeValue);
 			if (!column) {
 				console.warn(`Cannot find column with ${attribute} ${attributeValue}`);
 			}
@@ -519,6 +519,8 @@
 				this._groupsCount = 0;
 				return;
 			}
+
+			this._updateRouteParams('groupOn');
 
 			groups = this.filteredItems.reduce((array, item) => {
 				var gval = groupOnColumn.getComparableValue(item, groupOnColumn.groupOn),
@@ -579,7 +581,7 @@
 				return;
 			}
 
-			var sortOnColumn = this._getColumn(this.sortOn),
+			var sortOnColumn = this.sortOnColumn,
 				items = [],
 				numGroups = this.filteredGroupedItems.length,
 				mappedItems,
@@ -591,6 +593,9 @@
 				this._debounceAdjustColumns();
 				return;
 			}
+
+			this._updateRouteParams('sortOn');
+			this._updateRouteParams('descending');
 
 			itemMapper = function (item, originalItemIndex) {
 				return {
@@ -1077,24 +1082,22 @@
 
 		},
 
-		_paramsForRouteChanged: function () {
+		_updateRouteParam: function (key) {
 			if (!this.hashParam || !this._routeHashParams) {
 				return;
 			}
 
-			PROPERTY_HASH_PARAMS.forEach(key => {
-				const path = ['_routeHashParams', this.hashParam + '-' + key],
-					hashValue =  this.get(path),
-					value = this.get(key),
-					serialized = this.serialize(value, this.properties[key].type);
+			const path = ['_routeHashParams', this.hashParam + '-' + key],
+				hashValue =  this.get(path),
+				value = this.get(key),
+				serialized = this.serialize(value, this.properties[key].type);
 
-				if (serialized === hashValue || hashValue == null && value === '') {
-					return;
-				}
+			if (serialized === hashValue || hashValue == null && value === '') {
+				return;
+			}
 
-				this.set(path, serialized === undefined ? null : serialized);
-				console.log('property changed', key, serialized === undefined ? null : serialized);
-			});
+			this.set(path, serialized === undefined ? null : serialized);
+			console.log('property changed', key, serialized === undefined ? null : serialized);
 		},
 
 		_filterForRouteChanged: function (column) {
