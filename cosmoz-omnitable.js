@@ -1089,7 +1089,9 @@
 					column = name && columns.find(c => c.name === name);
 
 				if (!column) {
-					console.warn('column with name', name, 'for param', key, 'not found!');
+					if (name) {
+						console.warn('column with name', name, 'for param', key, 'not found!');
+					}
 					return;
 				}
 
