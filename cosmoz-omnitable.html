@@ -18,6 +18,7 @@
 <link rel="import" href="../cosmoz-web-worker/cosmoz-web-worker.html"/>
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 <link rel="import" href="../cosmoz-bottom-bar/cosmoz-bottom-bar.html"/>
+<link rel="import" href="../cosmoz-page-router/cosmoz-page-location.html">
 
 <link rel="import" href="../import-filesaver/import-filesaver.html"/>
 
@@ -42,6 +43,8 @@
 <dom-module id="cosmoz-omnitable">
 	<template>
 		<style include="cosmoz-omnitable-styles iron-flex"></style>
+
+		<cosmoz-page-location id="location" route-hash-params="{{ _routeHashParams }}"></cosmoz-page-location>
 
 		<cosmoz-web-worker id="sortWorker" on-cosmoz-web-worker-ready="_onWebWorkerReady">
 			<script type="text/worker">

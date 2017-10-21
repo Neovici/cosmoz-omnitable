@@ -211,7 +211,7 @@
 				value = input.value,
 				item = event.model.item,
 				oldValue = this.get(this.valuePath, item),
-				formatFn = (value) => {
+				formatFn = value => {
 					return moment(value).locale(this.locale).format(this.userFormat);
 				},
 				dateValue;
