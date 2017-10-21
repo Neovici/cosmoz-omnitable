@@ -1040,8 +1040,15 @@
 			if (type === 'array' && !value.length) {
 				value =  null;
 			} else if (type === 'object') {
-				value =  Object.keys(obj).filter(k => obj[k] != null)
-					.reduce((acc = {}, k) => (acc[k] = obj[k]) && acc, undefined) || null;
+				const keys = Object.keys(obj).filter(k => obj[k] != null);
+				if (keys.length > 0) {
+					value = keys.reduce((acc, k) => {
+						acc[k] = obj[k];
+						return acc;
+					}, {});
+				} else {
+					value =  null;
+				}
 			}
 			return this.serialize(value);
 		},
