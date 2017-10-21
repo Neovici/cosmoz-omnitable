@@ -50,6 +50,7 @@
 		"paper-button": "PolymerElements/paper-button#^2.0.0",
 		"iron-icons": "PolymerElements/iron-icons#^2.0.0",
 		"web-component-tester": "^4.2.1",
+		"iron-test-helpers": "PolymerElements/iron-test-helpers#^1.0.0",
 		"marked-element": "^1.2.0",
 		"prism-element": "^1.2.0",
 		"cosmoz-viewinfo": "Neovici/cosmoz-viewinfo",
