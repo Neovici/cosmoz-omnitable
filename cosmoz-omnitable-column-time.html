@@ -8,12 +8,12 @@
 <dom-module id="cosmoz-omnitable-column-time">
 	<template>
 		<template class="cell">
-			[[ getLocaleString(item, valuePath, formatter) ]]
+			[[ getTimeString(item, valuePath, formatter) ]]
 		</template>
 
 		<template class="edit-cell">
 			<paper-input no-label-float type="time" on-change="_timeValueChanged"
-				value="[[ getLocaleString(item, valuePath, formatter) ]]">
+				value="[[ getTimeString(item, valuePath, formatter) ]]">
 			</paper-input>
 		</template>
 
@@ -64,60 +64,97 @@
 					computed: '_computeFormatter(locale)'
 				}
 			},
+
+			_fixedDate: '1970-01-01',
 		
 			_timeValueChanged(e) {
 				const input = e.target,
 					timeString = input.value,
 					item = e.model.item,
 					oldTime = this.getDate(item.date),
-					newTime = oldTime.toISOString().slice(0, 10) + ` ${timeString} `,
+					newTime = this.getDate(oldTime.toISOString().slice(0, 10) + ` ${timeString} `),
 					formatFn = (value) => {
 						return value;
 					};
-				try {
+				if (!this._isValidDate(newTime)) {
 					this.set(this.valuePath, newTime, item);
-				} catch (err) {
-					input.errorMessage = 'Invalid date';
 				}
-				this._fireItemChangeEvent(item, this.valuePath, formatFn.bind(this));
-			},
-		
-			getLocaleString(item, valuePath, formatter = this.formatter) {
-				let value = this.get(valuePath || this.valuePath, item);
-				if (!value || !formatter) {
-					return '';
-				}
-				if (!(value instanceof Date)) {
-					value = new Date(value);
-				}
-				if (isNaN(value)) {
-					return 'Invalid Date';
-				}
-				return formatter.format(value);
+				this._fireItemChangeEvent(item, this.valuePath, oldTime, formatFn.bind(this));
 			},
 
-			/** OVERRIDES */
+			getComparableValue(item, valuePath) {
+				const time = this.getTime(this.get(valuePath, item)),
+					date = new Date(this._fixedDate + 'T' + time);
+				if (!this._isValidDate(date)) {			
+					return null;
+				}	
+				return date.getTime();
+			},
+
+			getTimeString(item, valuePath = this.valuePath, formatter = this.formatter) {
+				const value = this.getDate(this.get(valuePath, item));
+				if (!this._isValidDate(value)) {
+					return 'Invalid Date';
+				}
+				return value.toISOString().slice(11, 19);;
+			},
+
+			// OVERRIDES
 
 			_computeFormatter(locale) {
 				const timeFormatOption = {
 					hour: 'numeric',
 					minute: 'numeric',
-					second: 'numeric'
+					second: 'numeric',
+					timeZone: 'UTC'
 				};
 				return new Intl.DateTimeFormat(locale || undefined, timeFormatOption);
 			},
+
+			getTime(input) {
+				if (this._isValidDate(input)) {
+					return input.toISOString().slice(11, 19);
+				}
+				return input;
+			},
 		
 			_applySingleFilter(filter, item, formatter = this.formatter) {
+				if (!filter || (!filter.start && !filter.end)) {
+					return true;
+				}
 				const value = this.get(this.valuePath, item),
-					dateToCheck = this.getDate(value);
-
-				if (filter.start && formatter.format(dateToCheck) < filter.start) {
+					dateToCheck = new Date(this._fixedDate + 'T' + this.getTime(value));
+					
+					startTime = new Date(this._fixedDate + 'T' + filter.start);
+					endTime = new Date(this._fixedDate + 'T' + filter.end);
+				
+				if (!this._isValidDate(dateToCheck)) {
+					console.warn('Invalid value for time', value, this);
 					return false;
 				}
 
-				if (filter.end && formatter.format(dateToCheck) > filter.end) {
-					return false;
+				if (filter.start) {
+					let startTime = new Date(this._fixedDate + 'T' + filter.start);
+					if (!this._isValidDate(startTime)) {
+						console.warn('WTF?!');
+						return true;
+					}
+					if (dateToCheck.getTime() < startTime.getTime()) {
+						return false;
+					}
 				}
+
+				if (filter.end) {
+					let startTime = new Date(this._fixedDate + 'T' + filter.end);
+					if (!this._isValidDate(endTime)) {
+						console.warn('WTF?!');
+						return true;
+					}
+					if (dateToCheck.getTime() > endTime.getTime()) {
+						return false;
+					}
+				}
+
 				return true;
 			},
 		
@@ -135,6 +172,7 @@
 				if (!formatter) {
 					return null;
 				}
+
 				if (startTime && startTime !== null) {
 					text.push(startTime);
 				}

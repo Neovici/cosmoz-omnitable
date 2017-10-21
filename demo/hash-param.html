@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>cosmoz-omnitable hash-param demo</title>
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+	<link rel="import" href="../../cosmoz-page-router/cosmoz-page-router.html">
+	<link rel="import" href="../../cosmoz-page-router/cosmoz-page-route.html">
+
+	<style is="custom-style" include="iron-flex iron-flex-alignment iron-positioning"></style>
+
+</head>
+<body unresolved class="fullbleed">
+	<cosmoz-page-router class="fit" id="appRouter" mode="hash" url-prefix="/">
+		<cosmoz-page-route path="/" import="helpers/hash-param-template.html" template-id="home"></cosmoz-page-route>
+	</cosmoz-page-router>
+</body></html>

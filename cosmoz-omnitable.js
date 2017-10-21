@@ -3,6 +3,8 @@
 
 	'use strict';
 
+	const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending'];
+
 	Polymer({
 
 		is: 'cosmoz-omnitable',
@@ -101,6 +103,11 @@
 				value: ''
 			},
 
+			sortOnColumn: {
+				type: Object,
+				computed: '_getColumn(sortOn, "name", columns)'
+			},
+
 			/**
 			 * The column name to group on.
 			 */
@@ -117,7 +124,7 @@
 				type: Object,
 				notify: true,
 				observer: '_debounceGroupItems',
-				computed: '_computeGroupOnColumn(groupOn, columns)'
+				computed: '_getColumn(groupOn, "name", columns)'
 			},
 
 			/**
@@ -182,12 +189,22 @@
 			_filterIsTooStrict: {
 				type: Boolean,
 				computed: '_computeFilterIsTooStrict(_dataIsValid, sortedFilteredGroupedItems.length)'
-			}
+			},
+
+			hashParam: {
+				type: String
+			},
+
+			_routeHashParams: {
+				type: Object,
+				notify: true
+			},
 		},
 
 		observers: [
 			'_dataChanged(data.*)',
-			'_debounceSortItems(sortOn, descending, filteredGroupedItems)'
+			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
+			'_routeHashParamsChanged(_routeHashParams.*, hashParam, columns)'
 		],
 
 		behaviors: [
@@ -200,7 +217,7 @@
 			'update-item-size': '_onUpdateItemSize',
 			'cosmoz-column-title-changed': '_onColumnTitleChanged',
 			'cosmoz-column-hidden-changed': '_debounceUpdateColumns',
-			'cosmoz-column-filter-changed': '_debounceFilterItems'
+			'cosmoz-column-filter-changed': '_filterChanged',
 		},
 
 		/** ELEMENT LIFECYCLE */
@@ -241,10 +258,6 @@
 
 		_computeVisibleColumns(columns, groupOn) {
 			return groupOn ? columns.filter(c => c.name !== this.groupOn) : columns.slice();
-		},
-
-		_computeGroupOnColumn(groupOn) {
-			return this._getColumn(groupOn);
 		},
 
 		_computeDataValidity(data) {
@@ -444,15 +457,20 @@
 		 * @param {String} attribute The attribute name of the column.
 		 * @returns {Object} The found column.
 		 */
-		_getColumn(attributeValue, attribute = 'name') {
-			if (!attributeValue || !this.columns) {
+		_getColumn(attributeValue, attribute = 'name', columns = this.columns) {
+			if (!attributeValue || !columns) {
 				return;
 			}
-			const column = this.columns.find(column => column[attribute] === attributeValue);
+			const column = columns.find(column => column[attribute] === attributeValue);
 			if (!column) {
 				console.warn(`Cannot find column with ${attribute} ${attributeValue}`);
 			}
 			return column;
+		},
+
+		_filterChanged: function (e, detail) {
+			this._debounceFilterItems();
+			this._filterForRouteChanged(detail.column);
 		},
 
 		_debounceFilterItems: function () {
@@ -492,6 +510,8 @@
 				this._groupsCount = 0;
 				return;
 			}
+
+			this._updateRouteParam('groupOn');
 
 			var groupOnColumn = this.groupOnColumn,
 				groups;
@@ -561,12 +581,15 @@
 				return;
 			}
 
-			var sortOnColumn = this._getColumn(this.sortOn),
+			var sortOnColumn = this.sortOnColumn,
 				items = [],
 				numGroups = this.filteredGroupedItems.length,
 				mappedItems,
 				results = 0,
 				itemMapper;
+
+			this._updateRouteParam('sortOn');
+			this._updateRouteParam('descending');
 
 			if (!this.sortOn || !sortOnColumn) {
 				this.sortedFilteredGroupedItems = this.filteredGroupedItems;
@@ -1008,6 +1031,111 @@
 				return;
 			}
 			gl.highlightItem(i, reverse);
+		},
+
+		_serializeFilter: function (obj) {
+			const type = {}.toString.call(obj).split(' ')[1].slice(0, -1).toLowerCase();
+			let value = obj;
+
+			if (type === 'array' && !value.length) {
+				value =  null;
+			} else if (type === 'object') {
+				const keys = Object.keys(obj).filter(k => obj[k] != null);
+				if (keys.length > 0) {
+					value = keys.reduce((acc, k) => {
+						acc[k] = obj[k];
+						return acc;
+					}, {});
+				} else {
+					value =  null;
+				}
+			}
+			return this.serialize(value);
+		},
+
+		_deserializeFilter: function (obj, type = Object) {
+			if (type === Object && obj == null) {
+				return {};
+			}
+			if (type === Array && obj == null) {
+				return [];
+			}
+			return this.deserialize(obj, type);
+		},
+
+		_routeHashParamsChanged: function (changes, hashParam, columns) {
+			if (!changes || !hashParam || !columns || !columns.length) {
+				return;
+			}
+
+			PROPERTY_HASH_PARAMS.forEach(key => {
+				const hashValue =  this.get(['_routeHashParams', hashParam + '-' + key]),
+					deserialized = this.deserialize(hashValue, this.properties[key].type);
+
+				if (hashValue === undefined ||  deserialized === this.get(key)) {
+					return;
+				}
+
+				this.set(key, deserialized);
+			});
+
+			let rule = new RegExp('^' + hashParam + '-filter\-\-([a-z0-9\-]+)$'),
+				routeParams = changes.base;
+
+			Object.keys(routeParams).forEach(key => {
+				const hashValue = routeParams[key],
+					matches = key.match(rule),
+					name = matches && matches[1],
+					column = name && columns.find(c => c.name === name);
+
+				if (!column) {
+					if (name) {
+						console.warn('column with name', name, 'for param', key, 'not found!');
+					}
+					return;
+				}
+
+				let filter = column.filter;
+
+				if (hashValue === this._serializeFilter(filter)) {
+					return;
+				}
+				column.set('filter', this._deserializeFilter(hashValue, filter && filter.constructor || undefined));
+			});
+
+		},
+
+		_updateRouteParam: function (key) {
+			if (!this.hashParam || !this._routeHashParams) {
+				return;
+			}
+
+			const path = ['_routeHashParams', this.hashParam + '-' + key],
+				hashValue =  this.get(path),
+				value = this.get(key),
+				serialized = this.serialize(value, this.properties[key].type);
+
+			if (serialized === hashValue || hashValue == null && value === '') {
+				return;
+			}
+
+			this.set(path, serialized === undefined ? null : serialized);
+		},
+
+		_filterForRouteChanged: function (column) {
+			if (!this.hashParam || !this._routeHashParams || !this.data || !this.data.length)  {
+				return;
+			}
+
+			const path = ['_routeHashParams', this.hashParam + '-filter--' + column.name],
+				hashValue = this.get(path),
+				serialized = this._serializeFilter(column.filter);
+
+			if (serialized === hashValue) {
+				return;
+			}
+
+			this.set(path, serialized === undefined ? null : serialized);
 		}
 	});
 }());

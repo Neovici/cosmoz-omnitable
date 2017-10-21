@@ -1,0 +1,17 @@
+<link rel="import" href="x-page.html">
+<template id="home" is="dom-bind">
+	<x-page class="fit" style="height: 100%; width: 100%;" hash-param="full">
+		<template id="customNameTemplate">
+			<span style="background: red;" on-tap="onTap">[[ item.name ]]</span>
+		</template>
+	</x-page>
+</template>
+<script>
+	(function () {
+		'use strict';
+
+		Cosmoz.TemplateView['home'] = {
+
+		};
+	}());
+</script>
