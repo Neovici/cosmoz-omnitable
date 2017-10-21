@@ -116,6 +116,9 @@
 			},
 
 			_unique(values, valueProperty) {
+				if (!values) {
+					return;
+				}
 				var used = [];
 				return values.filter((item, index, array) => {
 					if (array.indexOf(item) !== index) {

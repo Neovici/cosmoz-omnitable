@@ -70,7 +70,7 @@
 				instance = this._reusableTemplateInstances.pop();
 			} else {
 				this._ensureTemplatized();
-				instance = this.stamp({});
+				instance = this.stamp(Polymer.Element ? null : {});
 			}
 
 			this._templateInstancesInUse.push(instance);
