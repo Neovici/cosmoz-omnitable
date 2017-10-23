@@ -2,6 +2,7 @@
 engines:
   eslint:
     enabled: true
+    channel: "eslint-4"
     checks:
       complexity:
         enabled: false
@@ -19,6 +20,8 @@ engines:
 
   fixme:
     enabled: true
+    exclude_paths:
+      - "analysis.json"
 
 ratings:
   paths:
