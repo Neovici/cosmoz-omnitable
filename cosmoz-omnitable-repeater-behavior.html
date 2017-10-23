@@ -168,7 +168,7 @@
 
 				// HACK(plequang): repeated element should have style scoped to cosmoz-omnitable, not to the column element.
 				// This is how it works with native shadow DOM but not with shady.
-				if (!Polymer.Settings.useNativeShadow) {
+				if (!Polymer.Settings.useNativeShadow && Polymer.StyleTransformer) {
 					Polymer.StyleTransformer.dom(element, column.is, false, true);
 					Polymer.StyleTransformer.dom(element, 'cosmoz-omnitable', false, false);
 				}
