@@ -163,6 +163,7 @@
 				element.setAttribute('slot', this._slotName);
 
 				Polymer.dom(element).appendChild(instance.root);
+
 				if (i < this._elements.length) {
 					parent.insertBefore(element, this._elements[i]);
 				} else {

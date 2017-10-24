@@ -2,6 +2,7 @@
 <script>
 (function () {
 	'use strict';
+	const IS_V2 = Polymer.flush != null;
 
 	Polymer({
 
@@ -71,35 +72,23 @@
 			var instance;
 
 			if (this._reusableTemplateInstances.length > 0) {
-				instance = this._reusableTemplateInstances.pop();
+				instance = this._detachInstance(this._reusableTemplateInstances.pop());
 			} else {
 				this._ensureTemplatized();
-				instance = this.stamp();
+				instance = this.stamp(IS_V2 ? null : {});
 			}
 
 			this._templateInstancesInUse.push(instance);
+			instance.__detached__ = false;
 			return instance;
 		},
 
-		detachInstance: function (instance, parentElement) {
-			var children,
-				i,
-				root;
-
-			for (i = 0; i < this._templateInstancesInUse.length ; i += 1) {
+		detachInstance: function (instance) {
+			for (let i = 0; i < this._templateInstancesInUse.length ; i += 1) {
 				if (this._templateInstancesInUse[i] === instance) {
 					this._templateInstancesInUse.splice(i, 1);
 					this._reusableTemplateInstances.push(instance);
-
-					children = Polymer.dom(parentElement).childNodes;
-					root = Polymer.dom(instance.root);
-					if (children) {
-						for (i = 0; i < children.length; i++) {
-							root.appendChild(children[i]);
-						}
-					}
-
-					return;
+					this._detachInstance(instance);
 				}
 			}
 		},
@@ -118,6 +107,26 @@
 		releaseInstances: function () {
 			this._reusableTemplateInstances = this._templateInstancesInUse;
 			this._templateInstancesInUse = [];
+		},
+
+		_detachInstance(instance) {
+			let i;
+			if (instance.__detached__) {
+				return instance;
+			}
+			if (IS_V2) {
+				for (i = 0; i < instance.children.length; i++) {
+					let el = instance.children[i];
+					instance.root.appendChild(el);
+				}
+			} else if (!instance.isPlaceholder) {
+				for (i = 0; i < instance._children.length; i++) {
+					var el = instance._children[i];
+					Polymer.dom(instance.root).appendChild(el);
+				}
+			}
+			instance.__detached__ = true;
+			return instance;
 		}
 
 	});
