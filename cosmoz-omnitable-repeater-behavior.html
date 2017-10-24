@@ -6,6 +6,8 @@
 
 	window.Cosmoz = window.Cosmoz || {};
 
+	const IS_V2 = Polymer.flush != null;
+
 	/**
 	 * @polymerBehavior
 	 */
@@ -159,6 +161,7 @@
 				this._configureElement(element, column);
 				this._configureTemplateInstance(instance);
 				element.setAttribute('slot', this._slotName);
+
 				Polymer.dom(element).appendChild(instance.root);
 				if (i < this._elements.length) {
 					parent.insertBefore(element, this._elements[i]);
@@ -189,6 +192,34 @@
 			}
 			this._elements.splice(start, removedColumns.length);
 		},
+
+		_forwardProperty: function (instance, name, value, flush = false) {
+			if (IS_V2) {
+				instance._setPendingProperty(name, value);
+			} else {
+				instance[name] = value;
+			}
+			if (flush) {
+				this._forwardPropertiesFlush(instance);
+			}
+		},
+
+		_forwardNotifyPath: function (instance, path, value, isPathNotification = false, flush = false) {
+			if (IS_V2) {
+				instance._setPendingPropertyOrPath(path, value, false, isPathNotification);
+			} else {
+				instance.notifyPath(path, value, isPathNotification);
+			}
+			if (flush) {
+				this._forwardPropertiesFlush(instance);
+			}
+		},
+
+		_forwardPropertiesFlush: function (instance) {
+			if (instance._flushProperties) {
+				instance._flushProperties(true);
+			}
+		}
 	};
 }());
 </script>

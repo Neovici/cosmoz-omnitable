@@ -44,23 +44,27 @@
 		},
 
 		_forwardParentProp: function (prop, value) {
-			//console.log('_forwardParentProp', prop, value);
-			this._templateInstancesInUse.forEach(function (template) {
-				template[prop] = value;
-			});
-			this._reusableTemplateInstances.forEach(function (template) {
-				template[prop] = value;
-			});
+			const set =  instance => {
+				instance[prop] = value;
+			};
+			this._templateInstancesInUse.forEach(set);
+			this._reusableTemplateInstances.forEach(set);
 		},
 
 		_forwardParentPath: function (path, value) {
-			//console.log('_forwardParentPath', path, value);
-			this._templateInstancesInUse.forEach(function (template) {
-				template.notifyPath(path, value, true);
-			});
-			this._reusableTemplateInstances.forEach(function (template) {
-				template.notifyPath(path, value, true);
-			});
+			const notify = instance => {
+				instance.notifyPath(path, value, true);
+			};
+			this._templateInstancesInUse.forEach(notify);
+			this._reusableTemplateInstances.forEach(notify);
+		},
+
+		_forwardHostPropV2: function (prop, value) {
+			const forward =  instance => {
+				instance.forwardHostProp(prop, value);
+			};
+			this._templateInstancesInUse.forEach(forward);
+			this._reusableTemplateInstances.forEach(forward);
 		},
 
 		getInstance: function () {
@@ -70,7 +74,7 @@
 				instance = this._reusableTemplateInstances.pop();
 			} else {
 				this._ensureTemplatized();
-				instance = this.stamp({});
+				instance = this.stamp();
 			}
 
 			this._templateInstancesInUse.push(instance);

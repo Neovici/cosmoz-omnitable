@@ -1,4 +1,4 @@
-	/*global require*/
+/*global require*/
 'use strict';
 
 // Include Gulp & tools we'll use
