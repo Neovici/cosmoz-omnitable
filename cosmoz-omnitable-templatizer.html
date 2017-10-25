@@ -72,7 +72,7 @@
 			var instance;
 
 			if (this._reusableTemplateInstances.length > 0) {
-				instance = this._detachInstance(this._reusableTemplateInstances.pop());
+				instance = this._performInstanceDetach(this._reusableTemplateInstances.pop());
 			} else {
 				this._ensureTemplatized();
 				instance = this.stamp(IS_V2 ? null : {});
@@ -84,24 +84,17 @@
 		},
 
 		detachInstance: function (instance) {
-			for (let i = 0; i < this._templateInstancesInUse.length ; i += 1) {
-				if (this._templateInstancesInUse[i] === instance) {
-					this._templateInstancesInUse.splice(i, 1);
-					this._reusableTemplateInstances.push(instance);
-					this._detachInstance(instance);
-				}
-			}
+			this.releaseInstance(instance);
+			this._performInstanceDetach(instance);
 		},
 
 		releaseInstance: function (instance) {
-			var i = 0;
-			for (i = 0; i < this._templateInstancesInUse.length ; i += 1) {
-				if (this._templateInstancesInUse[i] === instance) {
-					this._templateInstancesInUse.splice(i, 1);
-					this._reusableTemplateInstances.push(instance);
-					return;
-				}
+			const index  = this._templateInstancesInUse.indexOf(instance);
+			if (index < 0) {
+				return;
 			}
+			this._templateInstancesInUse.splice(index, 1);
+			this._reusableTemplateInstances.push(instance);
 		},
 
 		releaseInstances: function () {
@@ -109,22 +102,19 @@
 			this._templateInstancesInUse = [];
 		},
 
-		_detachInstance(instance) {
-			let i;
+		_performInstanceDetach(instance) {
 			if (instance.__detached__) {
 				return instance;
 			}
-			if (IS_V2) {
-				for (i = 0; i < instance.children.length; i++) {
-					let el = instance.children[i];
-					instance.root.appendChild(el);
-				}
-			} else if (!instance.isPlaceholder) {
-				for (i = 0; i < instance._children.length; i++) {
-					var el = instance._children[i];
-					Polymer.dom(instance.root).appendChild(el);
+
+			const children = IS_V2 ? instance.children : instance._children;
+
+			if (IS_V2 || !instance.isPlaceholder) {
+				for (let i = 0; i < children.length; i++) {
+					Polymer.dom(instance.root).appendChild(children[i]);
 				}
 			}
+
 			instance.__detached__ = true;
 			return instance;
 		}
