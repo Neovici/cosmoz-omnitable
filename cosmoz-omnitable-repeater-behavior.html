@@ -6,6 +6,8 @@
 
 	window.Cosmoz = window.Cosmoz || {};
 
+	const IS_V2 = Polymer.flush != null;
+
 	/**
 	 * @polymerBehavior
 	 */
@@ -159,7 +161,9 @@
 				this._configureElement(element, column);
 				this._configureTemplateInstance(instance);
 				element.setAttribute('slot', this._slotName);
+
 				Polymer.dom(element).appendChild(instance.root);
+
 				if (i < this._elements.length) {
 					parent.insertBefore(element, this._elements[i]);
 				} else {
@@ -168,7 +172,7 @@
 
 				// HACK(plequang): repeated element should have style scoped to cosmoz-omnitable, not to the column element.
 				// This is how it works with native shadow DOM but not with shady.
-				if (!Polymer.Settings.useNativeShadow) {
+				if (!Polymer.Settings.useNativeShadow && Polymer.StyleTransformer) {
 					Polymer.StyleTransformer.dom(element, column.is, false, true);
 					Polymer.StyleTransformer.dom(element, 'cosmoz-omnitable', false, false);
 				}
@@ -181,14 +185,45 @@
 			var i,
 				index,
 				element;
+
 			for (i = 0; i < removedColumns.length; i++) {
 				index = start + i;
 				element = this._elements[index];
-				Polymer.dom(this).removeChild(element);
+
 				this._detachTemplateInstance(element.__instance, element.__column, element);
+				Polymer.dom(this).removeChild(element);
+
 			}
 			this._elements.splice(start, removedColumns.length);
 		},
+
+		_forwardProperty: function (instance, name, value, flush = false) {
+			if (IS_V2) {
+				instance._setPendingProperty(name, value);
+			} else {
+				instance[name] = value;
+			}
+			if (flush) {
+				this._forwardPropertiesFlush(instance);
+			}
+		},
+
+		_forwardNotifyPath: function (instance, path, value, isPathNotification = false, flush = false) {
+			if (IS_V2) {
+				instance._setPendingPropertyOrPath(path, value, false, isPathNotification);
+			} else {
+				instance.notifyPath(path, value, isPathNotification);
+			}
+			if (flush) {
+				this._forwardPropertiesFlush(instance);
+			}
+		},
+
+		_forwardPropertiesFlush: function (instance) {
+			if (instance._flushProperties) {
+				instance._flushProperties(true);
+			}
+		}
 	};
 }());
 </script>

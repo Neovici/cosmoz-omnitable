@@ -171,6 +171,9 @@
 			},
 
 			_getMinMax(first, secondNotify, max) {
+				if (first === undefined || secondNotify === undefined) {
+					return;
+				}
 				const doMax = max === 1,
 					second = secondNotify.base;
 				let ret;

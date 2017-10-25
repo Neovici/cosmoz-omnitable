@@ -101,7 +101,7 @@
 				this._expanded = !this._expanded;
 				event.stopPropagation();
 				event.preventDefault();
-				this.notifyResize();
+				this.fire('iron-resize');
 			}
 		});
 	</script>

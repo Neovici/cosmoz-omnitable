@@ -257,6 +257,9 @@
 		_scalingUp: false,
 
 		_computeVisibleColumns(columns, groupOn) {
+			if (!columns) {
+				return;
+			}
 			return groupOn ? columns.filter(c => c.name !== this.groupOn) : columns.slice();
 		},
 
@@ -481,8 +484,8 @@
 			if (this.data && this.data.length && this.columns) {
 				// Call filtering code only on columns that has a filter
 				const filterFunctions = this.columns
-						.map(col => col.getFilterFn())
-						.filter(fn => fn !== undefined);
+					.map(col => col.getFilterFn())
+					.filter(fn => fn !== undefined);
 
 				if (filterFunctions.length) {
 					this.filteredItems = this.data.filter(item =>
@@ -705,7 +708,7 @@
 			if (!hasVisibleData || !firstRow && this.$.groupedList.hasRenderedData) {
 				// reset headers width
 				headerRow = Polymer.dom(this.$.header).querySelector('cosmoz-omnitable-header-row');
-				headers = Polymer.dom(headerRow).children;
+				headers = Array.from(Polymer.dom(headerRow).children);
 				headers.forEach(function (header) {
 					header.style.minWidth = 'auto';
 					header.style.maxWidth = 'none';
@@ -725,7 +728,7 @@
 			fits = scroller.scrollWidth <= scroller.clientWidth;
 			currentWidth = this.$.tableContent.clientWidth;
 			itemRow = Polymer.dom(firstRow).querySelector('cosmoz-omnitable-item-row');
-			cells = Polymer.dom(itemRow).children;
+			cells = Array.from(Polymer.dom(itemRow).children);
 
 			if (fits) {
 				fits = cells.every(function (cell) {
@@ -752,7 +755,7 @@
 
 		_adjustHeadersWidth: function (cells) {
 			var headerRow = Polymer.dom(this.$.header).querySelector('cosmoz-omnitable-header-row'),
-				headers = Polymer.dom(headerRow).children;
+				headers = Array.from(Polymer.dom(headerRow).children);
 
 			cells.forEach(function (cell, index) {
 				var header = headers[index],
@@ -1079,7 +1082,7 @@
 				this.set(key, deserialized);
 			});
 
-			let rule = new RegExp('^' + hashParam + '-filter\-\-([a-z0-9\-]+)$'),
+			let rule = new RegExp('^' + hashParam + '-filter--([a-z0-9-]+)$'),
 				routeParams = changes.base;
 
 			Object.keys(routeParams).forEach(key => {

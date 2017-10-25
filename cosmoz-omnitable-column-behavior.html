@@ -5,6 +5,8 @@
 
 	Cosmoz.OmnitableColumnStyleModules = [];
 
+	const IS_V2 = Polymer.flush != null;
+
 	/** @polymerBehavior */
 	Cosmoz.OmnitableColumnBehavior = {
 		properties: {
@@ -224,6 +226,9 @@
 			}
 
 			templatizer = document.createElement('cosmoz-omnitable-templatizer');
+			if (IS_V2) {
+				this.appendChild(templatizer);
+			}
 			templatizer.init(template, templateHost);
 			return templatizer;
 		},

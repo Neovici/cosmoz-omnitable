@@ -78,9 +78,10 @@
 
 		_configureTemplateInstance: function (instance) {
 			if (instance.item !== this.item && this.item !== undefined) {
-				instance.item = this.item;
-				instance.selected = this.selected;
-				instance.expanded = this.expanded;
+				this._forwardProperty(instance, 'item', this.item);
+				this._forwardProperty(instance, 'selected', this.selected);
+				this._forwardProperty(instance, 'expanded', this.expanded);
+				this._forwardPropertiesFlush(instance);
 			}
 		},
 
@@ -94,25 +95,25 @@
 		_itemUpdated: function (itemChange) {
 			if (itemChange.path === 'item') {
 				this.elements.forEach(function (element) {
-					this.getElementTemplateInstance(element).item = itemChange.value;
+					this._forwardProperty(this.getElementTemplateInstance(element), 'item', itemChange.value, true);
 					element.setAttribute('title', this._getCellTitle(this.getElementColumn(element), this.item));
 				}, this);
 			} else {
 				this.elements.forEach(function (element) {
-					this.getElementTemplateInstance(element).notifyPath(itemChange.path, itemChange.value);
+					this._forwardNotifyPath(this.getElementTemplateInstance(element), itemChange.path, itemChange.value, true, true);
 				}, this);
 			}
 		},
 
 		_selectedChanged: function (selected) {
-			this.templateInstances.forEach(function (instance) {
-				instance.selected = selected;
+			this.templateInstances.forEach(instance => {
+				this._forwardProperty(instance, 'selected', selected, true);
 			});
 		},
 
 		_expandedChanged: function (expanded) {
-			this.templateInstances.forEach(function (instance) {
-				instance.expanded = expanded;
+			this.templateInstances.forEach(instance => {
+				this._forwardProperty(instance, 'expanded', expanded, true);
 			});
 		},
 

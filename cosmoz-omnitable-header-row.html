@@ -50,6 +50,10 @@
 			this.toggleClass('header-cell', true, element);
 			element.setAttribute('title', column.title);
 		},
+
+		_configureTemplateInstance: function (instance) {
+			this._forwardPropertiesFlush(instance);
+		}
 	});
 }());
 </script>
