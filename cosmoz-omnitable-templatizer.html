@@ -2,6 +2,7 @@
 <script>
 (function () {
 	'use strict';
+	const IS_V2 = Polymer.flush != null;
 
 	Polymer({
 
@@ -44,76 +45,76 @@
 		},
 
 		_forwardParentProp: function (prop, value) {
-			//console.log('_forwardParentProp', prop, value);
-			this._templateInstancesInUse.forEach(function (template) {
-				template[prop] = value;
-			});
-			this._reusableTemplateInstances.forEach(function (template) {
-				template[prop] = value;
-			});
+			const set =  instance => {
+				instance[prop] = value;
+			};
+			this._templateInstancesInUse.forEach(set);
+			this._reusableTemplateInstances.forEach(set);
 		},
 
 		_forwardParentPath: function (path, value) {
-			//console.log('_forwardParentPath', path, value);
-			this._templateInstancesInUse.forEach(function (template) {
-				template.notifyPath(path, value, true);
-			});
-			this._reusableTemplateInstances.forEach(function (template) {
-				template.notifyPath(path, value, true);
-			});
+			const notify = instance => {
+				instance.notifyPath(path, value, true);
+			};
+			this._templateInstancesInUse.forEach(notify);
+			this._reusableTemplateInstances.forEach(notify);
+		},
+
+		_forwardHostPropV2: function (prop, value) {
+			const forward =  instance => {
+				instance.forwardHostProp(prop, value);
+			};
+			this._templateInstancesInUse.forEach(forward);
+			this._reusableTemplateInstances.forEach(forward);
 		},
 
 		getInstance: function () {
 			var instance;
 
 			if (this._reusableTemplateInstances.length > 0) {
-				instance = this._reusableTemplateInstances.pop();
+				instance = this._performInstanceDetach(this._reusableTemplateInstances.pop());
 			} else {
 				this._ensureTemplatized();
-				instance = this.stamp({});
+				instance = this.stamp(IS_V2 ? null : {});
 			}
 
 			this._templateInstancesInUse.push(instance);
+			instance.__detached__ = false;
 			return instance;
 		},
 
-		detachInstance: function (instance, parentElement) {
-			var children,
-				i,
-				root;
-
-			for (i = 0; i < this._templateInstancesInUse.length ; i += 1) {
-				if (this._templateInstancesInUse[i] === instance) {
-					this._templateInstancesInUse.splice(i, 1);
-					this._reusableTemplateInstances.push(instance);
-
-					children = Polymer.dom(parentElement).childNodes;
-					root = Polymer.dom(instance.root);
-					if (children) {
-						for (i = 0; i < children.length; i++) {
-							root.appendChild(children[i]);
-						}
-					}
-
-					return;
-				}
-			}
+		detachInstance: function (instance) {
+			this.releaseInstance(instance);
+			this._performInstanceDetach(instance);
 		},
 
 		releaseInstance: function (instance) {
-			var i = 0;
-			for (i = 0; i < this._templateInstancesInUse.length ; i += 1) {
-				if (this._templateInstancesInUse[i] === instance) {
-					this._templateInstancesInUse.splice(i, 1);
-					this._reusableTemplateInstances.push(instance);
-					return;
-				}
+			const index  = this._templateInstancesInUse.indexOf(instance);
+			if (index < 0) {
+				return;
 			}
+			this._templateInstancesInUse.splice(index, 1);
+			this._reusableTemplateInstances.push(instance);
 		},
 
 		releaseInstances: function () {
 			this._reusableTemplateInstances = this._templateInstancesInUse;
 			this._templateInstancesInUse = [];
+		},
+
+		_performInstanceDetach(instance) {
+			if (instance.__detached__) {
+				return instance;
+			}
+
+			const children = IS_V2 ? instance.children : instance._children;
+
+			for (let i = 0; i < children.length; i++) {
+				Polymer.dom(instance.root).appendChild(children[i]);
+			}
+
+			instance.__detached__ = true;
+			return instance;
 		}
 
 	});

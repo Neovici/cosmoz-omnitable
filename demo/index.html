@@ -3,26 +3,38 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>cosmoz-omnitable demos</title>
 
-	<title>Cosmoz Omnitable Demos</title>
-	<style>
-		a {
-			display: block;
-		}
-	</style>
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+	<link rel="import" href="../../paper-styles/demo-pages.html">
+
+	<custom-style>
+		<style>
+			a {
+				display: block;
+				margin-bottom: 10px;
+			}
+			li {
+				list-style: none;
+			}
+		</style>
+	</custom-style>
 </head>
-<body>
-	<div>
-		<h4>Cosmoz Omnitable demos</h4>
+<body unresolved>
+	<div class="horizontal-section-container">
 		<div>
-			<a href="full-demo.html">full-demo</a>
-			<a href="styling.html">Styling</a>
-			<a href="editable-demo.html">editable-demo</a>
-			<a href="filter-demo.html">filter-demo</a>
-			<a href="sort-demo.html">sort-demo</a>
-			<a href="group-on-demo.html">group-on-demo</a>
-			<a href="ajax-demo.html">ajax-demo</a>
-			<a href="hash-param.html#/#full-sortOn=id&amp;full-descending=false">hash-param demo</a>
+			<h4>cosmoz-omnitable demos</h4>
+			<ul class="horizontal-section">
+				<li><a href="full-demo.html">Full Demo</a></li>
+				<li><a href="styling.html">Styling</a></li>
+				<li><a href="editable-demo.html">Editable Demo</a></li>
+				<li><a href="filter-demo.html">Filter Demo</a></li>
+				<li><a href="sort-demo.html">Sort Demo</a></li>
+				<li><a href="group-on-demo.html">Group Demo</a></li>
+				<li><a href="ajax-demo.html">Ajax demo</a></li>
+				<li><a href="hash-param.html#/#full-sortOn=id&amp;full-descending=false">hash-param demo</a></li>
+			</ul>
 		</div>
 	</div>
 </body>

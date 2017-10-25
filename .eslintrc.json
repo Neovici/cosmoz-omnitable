@@ -12,6 +12,9 @@
 		"WeakMap": false,
 		"moment": false
 	},
+	"parserOptions": {
+		"ecmaVersion": 6
+	},
 	"plugins": [
 		"html"
 	],
