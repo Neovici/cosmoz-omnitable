@@ -109,10 +109,8 @@
 
 			const children = IS_V2 ? instance.children : instance._children;
 
-			if (IS_V2 || !instance.isPlaceholder) {
-				for (let i = 0; i < children.length; i++) {
-					Polymer.dom(instance.root).appendChild(children[i]);
-				}
+			for (let i = 0; i < children.length; i++) {
+				Polymer.dom(instance.root).appendChild(children[i]);
 			}
 
 			instance.__detached__ = true;
