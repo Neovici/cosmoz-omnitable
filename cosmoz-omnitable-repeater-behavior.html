@@ -185,11 +185,14 @@
 			var i,
 				index,
 				element;
+
 			for (i = 0; i < removedColumns.length; i++) {
 				index = start + i;
 				element = this._elements[index];
-				Polymer.dom(this).removeChild(element);
+
 				this._detachTemplateInstance(element.__instance, element.__column, element);
+				Polymer.dom(this).removeChild(element);
+
 			}
 			this._elements.splice(start, removedColumns.length);
 		},
