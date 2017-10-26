@@ -236,9 +236,7 @@
 			'cosmoz-column-filter-changed': '_filterChanged',
 		},
 
-		/** ELEMENT LIFECYCLE */
-
-		created: function () {
+		attached: function () {
 			/** WARNING: we do not support columns changes yet. */
 			// `isOmnitableColumn` is a property from cosmoz-omnitable-column-behavior
 			this._columnObserver = Polymer.dom(this).observeNodes(info => {
@@ -247,20 +245,22 @@
 					.filter(child =>
 						child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn
 					);
+
 				if (changedColumns.length === 0) {
 					return;
 				}
 
 				this._debounceUpdateColumns();
 			});
-		},
 
-		attached: function () {
 			this.$.groupedList.scrollTarget = this.$.scroller;
 			this._isDetached = false;
 		},
 
 		detached: function () {
+			if (this._columnObserver) {
+				Polymer.dom(this).unobserveNodes(this._columnObserver);
+			}
 			// Just in case we get detached before a planned debouncer has not run yet.
 			this.cancelDebouncer('adjustColumns');
 			this._isDetached = true;
