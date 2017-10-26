@@ -254,7 +254,6 @@
 			});
 
 			this.$.groupedList.scrollTarget = this.$.scroller;
-			this._isDetached = false;
 		},
 
 		detached: function () {
@@ -266,7 +265,6 @@
 			this.cancelDebouncer('updateColumns');
 			this.cancelDebouncer('filterItems');
 			this.cancelDebouncer('sortItems');
-			this._isDetached = true;
 		},
 
 		/** ELEMENT BEHAVIOR */
@@ -674,7 +672,7 @@
 					// We should definitively not call _debounceAdjustColumns,
 					// as this will result in a reference to this omnitable being kept
 					// in Polymer debouncers list.
-					if (this._isDetached) {
+					if (!this.isAttached) {
 						return;
 					}
 
@@ -717,7 +715,7 @@
 				headers;
 
 			// Safety check, but should never happen
-			if (this._isDetached || !this._isVisible) {
+			if (!this.isAttached || !this._isVisible) {
 				return;
 			}
 
