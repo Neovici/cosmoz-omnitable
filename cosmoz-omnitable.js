@@ -263,6 +263,9 @@
 			}
 			// Just in case we get detached before a planned debouncer has not run yet.
 			this.cancelDebouncer('adjustColumns');
+			this.cancelDebouncer('updateColumns');
+			this.cancelDebouncer('filterItems');
+			this.cancelDebouncer('sortItems');
 			this._isDetached = true;
 		},
 
