@@ -1081,8 +1081,7 @@
 
 				this.set(key, deserialized);
 			});
-
-			let rule = new RegExp('^' + hashParam + '-filter--([a-z0-9-]+)$'),
+			let rule = new RegExp('^' + hashParam + '-filter--([A-Za-z0-9-_]+)$'),
 				routeParams = changes.base;
 
 			Object.keys(routeParams).forEach(key => {
