@@ -124,16 +124,19 @@
 		_getMinMax(firstRaw, secondRaw, max) {
 			const doMax = max === 1,
 				first = this.getDate(firstRaw),
-				second = this.getDate(secondRaw);
-			if (!first && !second) {
+				second = this.getDate(secondRaw),
+				firstValid = this._isValidDate(first),
+				secondValid = this._isValidDate(second);
+
+			if (!firstValid && !secondValid) {
 				return null;
 			}
-
-			if (!this._isValidDate(first) && second) {
+			
+			if (!firstValid && secondValid) {
 				return second;
 			}
 
-			if (!this._isValidDate(second) && first) {
+			if (firstValid && !secondValid) {
 				return first;
 			}
 
@@ -145,26 +148,25 @@
 		},
 
 		_computePossibleDateRange(change) {
-			let values = change.base;
+			const values = change.base;
 			if (!values || !Array.isArray(values) || values.length < 1) {
 				return {
 					min: null,
 					max: null
 				};
 			}
-			return values.reduce((acc, item) => {
-				const currRange = this.getDate(item);
-				if (!this._isValidDate(currRange)) {
+
+			values.map(item => this.getDate(item))
+				.filter(item => this._isValidDate(item))
+				.reduce((acc, item) => {
+					if (!acc.min || item < acc.min) {
+						acc.min = item;
+					}
+					if (!acc.max || item > acc.max) {
+						acc.max = item;
+					}
 					return acc;
-				}
-				if (!acc.min || currRange < acc.min) {
-					acc.min = currRange;
-				}
-				if (!acc.max || currRange > acc.max) {
-					acc.max = currRange;
-				}
-				return acc;
-			}, {});
+				}, {});
 		},
 
 		_computeTooltip(title, filterText) {
@@ -190,22 +192,22 @@
 		},
 
 		_computeFilterText(locale, filterNotify, formatter = this.formatter) {
-			let text = [];
 			const startDate = filterNotify.base.start,
-				endDate = filterNotify.base.end;
+				endDate = filterNotify.base.end,
+				text = [];
 			if (!formatter) {
 				return null;
 			}
-			if (startDate && startDate !== null) {
-				text.push(formatter.format(this.getDate(startDate)));
+			if (this._isValidDate(startDate)) {
+				text.push(formatter.format(startDate));
 			}
 			text.push(' - ');
-			if (endDate && endDate !== null) {
-				text.push(formatter.format(this.getDate(endDate)));
+			if (this._isValidDate(endDate)) {
+				text.push(formatter.format(endDate));
 			}
 			return text.length > 1 ? text.join('') : null;
 		},
-
+		
 		_dateValueChanged(event) {
 			const
 				input = event.currentTarget,
@@ -215,12 +217,10 @@
 				formatFn = (value) => {
 					return this.formatter.format(value);
 				};
-			try {
-				let dateValue = new Date(value);
-				this.set(this.valuePath, dateValue, item);
-			} catch (err) {
-				input.errorMessage = 'Invalid date';
-			}
+				let dateValue = this.getDate(value);
+				if (!this._isValidDate(dateValue)) {
+					this.set(this.valuePath, dateValue, item);
+				}
 			this._fireItemChangeEvent(item, this.valuePath, oldValue, formatFn.bind(this));
 		},
 
@@ -234,34 +234,27 @@
 
 		renderISODateValue(item, valuePath) {
 			const value = this.get(valuePath, item);
-			if (!value) {
+			if (!this._isValidDate(value)) {
 				return;
 			}
 			return value.toISOString().slice(0, 10);
 		},
 
-		getString(item, valuePath, formatter = this.formatter) {
-			const value = this.getDate(this.get(valuePath || this.valuePath, item));
+		getString(item, valuePath = this.valuePath, formatter = this.formatter) {
+			const value = this.getDate(this.get(valuePath, item));
 			if (!this._isValidDate(value)) {
 				return 'Invalid Date';
 			}
 			return formatter.format(value);
 		},
-	
 		getDate(value) {
-			let dateValue = value;
-			if (!dateValue) {
-				return '';
+			if (!value) {
+				return null;
 			}
-			if (!(dateValue instanceof Date)) {
-				dateValue = new Date(dateValue);
-			} else {
-				return dateValue;
+			if (!(value instanceof Date)) {
+				return new Date(value);
 			}
-			if (isNaN(dateValue)) {
-				return 'Invalid Date';
-			}
-			return dateValue;
+			return value;
 		},
 
 		getDate(value) {
@@ -301,7 +294,14 @@
 		},
 	
 		_isValidDate(value) {
-			if (!value || !value === null || value === 'Invalid Date') {
+			if (!value) {
+				return false;
+			}
+			let dateValue = value;
+			if (!(dateValue instanceof Date)) {
+				dateValue = new Date(dateValue);
+			}
+			if (isNaN(dateValue)) {
 				return false;
 			}
 			return true;

@@ -14,7 +14,7 @@
 
 		<template class="edit-cell">
 			<datetime-local no-label-float type="datetime-local" on-change="_dateValueChanged"
-				value="[[ renderISODateValue(item, valuePath) ]]">
+				value="[[ renderISODateTimeValue(item, valuePath) ]]">
 			</datetime-local>
 		</template>
 
@@ -23,10 +23,10 @@
 					horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
-					<datetime-local min="[[ _formatISODate(_fromMin) ]]" max="[[ _formatISODate(_fromMax) ]]"
+					<datetime-local min="[[ _getISODate(_fromMin) ]]" max="[[ _getISODate(_fromMax) ]]"
 						date-label="[[ _('From date', t) ]]" time-label="[[ _('From time', t) ]]" value="{{ _filterInput.start }}" step$="[[filterStep]]">
 					</datetime-local>
-					<datetime-local on-datetime-local-value-changed="_valueChanged" min="[[ _formatISODate(_toMin) ]]" max="[[ _formatISODate(_toMax) ]]"
+					<datetime-local on-datetime-local-value-changed="_valueChanged" min="[[ _getISODate(_toMin) ]]" max="[[ _getISODate(_toMax) ]]"
 						value="{{ _filterInput.end }}" step$="[[filterStep]]">
 					</datetime-local>
 				</div>
@@ -46,14 +46,14 @@
 				max: {
 					type: Date,
 					value() {
-						return new Date(Date.UTC(2100, 11, 59, 59, 0, 0));
+						return new Date(Date.UTC(2100, 11, 31, 20, 59, 999));
 					}
 				},
 
 				min: {
 					type: Date,
 					value() {
-						return new Date(Date.UTC(1970, 0, 0, 0, 0, 0));
+						return new Date(Date.UTC(1970, 0, 1, 0, 0, 0));
 					}
 				},
 
@@ -79,25 +79,27 @@
 				Cosmoz.DateColumnBehavior
 			],
 
-			/** OVERRIDES */
+			renderISODateTimeValue(item, valuePath) {
+				const value = this.getDate(this.get(valuePath, item));
+				return this._getISODate(value);
+			},
+			_getISODate(filterValue) {
+				if (!this._isValidDate(filterValue)) {
+					return '';
+				}
+				return filterValue.toISOString().slice(0, 16);
+			},
+
+			// OVERRIDES
 			_computeFormatter(locale) {
 				const timeFormatOption = {
 					year: 'numeric',
 					month: 'numeric',
 					day: 'numeric',
 					hour: 'numeric',
-					minute: 'numeric',
-					second: 'numeric'
+					minute: 'numeric'
 				};
 				return new Intl.DateTimeFormat(locale || undefined, timeFormatOption);
-			},
-
-			renderISODateValue(item, valuePath) {
-				const value = this.getDate(this.get(valuePath, item));
-				if (!this._isValidDate(value)) {
-					return;
-				}
-				return value.toISOString().slice(0, 19);
 			},
 		
 			_computeFilterText(locale, filterNotify, formatter = this.formatter) {
@@ -107,21 +109,14 @@
 				if (!formatter) {
 					return null;
 				}
-				if (startTime && startTime !== null) {
-					text.push(this._formatISODate(startTime));
+				if (this._isValidDate(startTime)) {
+					text.push(this.formatter.format(startTime));
 				}
 				text.push(' - ');
-				if (endTime && endTime !== null) {
-					text.push(this._formatISODate(endTime));
+				if (this._isValidDate(endTime)) {
+					text.push(this.formatter.format(endTime));
 				}
 				return text.length > 1 ? text.join('') : null;
-			},
-
-			_formatISODate(filterValue) {
-				if (!this._isValidDate(filterValue)) {
-					return '';
-				}
-				return this.formatter.format(filterValue);
 			}
 		});
 
