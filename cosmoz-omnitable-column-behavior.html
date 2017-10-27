@@ -286,6 +286,13 @@
 			return this.get(valuePath, item);
 		},
 
+		toXlsxValue: function (item, valuePath = this.valuePath) {
+			if (!valuePath) {
+				return '';
+			}
+			return this.get(valuePath, item);
+		},
+
 		valuePathChanged: function (newPath, oldPath) {
 			if (newPath === undefined || newPath === null) {
 				return;
@@ -359,7 +366,7 @@
 
 		__filterChanged: function () {
 			this.fire('cosmoz-column-filter-changed', { column: this });
-		},
+		}
 
 	};
 
