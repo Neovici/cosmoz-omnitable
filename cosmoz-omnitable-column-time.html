@@ -93,9 +93,7 @@
 					item = e.model.item,
 					oldTime = this.getDate(item.date),
 					newTime = this.getDate(oldTime.toISOString().slice(0, 10) + ` ${timeString} `),
-					formatFn = (value) => {
-						return value;
-					};
+					formatFn = value => value;
 				if (!this._isValidDate(newTime)) {
 					this.set(this.valuePath, newTime, item);
 				}
@@ -105,18 +103,18 @@
 			getComparableValue(item, valuePath) {
 				const time = this.getTime(this.get(valuePath, item)),
 					date = new Date(this._fixedDate + 'T' + time);
-				if (!this._isValidDate(date)) {			
+				if (!this._isValidDate(date)) {
 					return null;
-				}	
+				}
 				return date.getTime();
 			},
 
-			getTimeString(item, valuePath = this.valuePath, formatter = this.formatter) {
+			getTimeString(item, valuePath = this.valuePath) {
 				const value = this.getDate(this.get(valuePath, item));
 				if (!this._isValidDate(value)) {
 					return 'Invalid Date';
 				}
-				return value.toISOString().slice(11, 19);;
+				return value.toISOString().slice(11, 19);
 			},
 
 			// OVERRIDES
@@ -138,16 +136,13 @@
 				return input;
 			},
 		
-			_applySingleFilter(filter, item, formatter = this.formatter) {
-				if (!filter || (!filter.start && !filter.end)) {
+			_applySingleFilter(filter, item) {
+				if (!filter || !filter.start && !filter.end) {
 					return true;
 				}
 				const value = this.get(this.valuePath, item),
 					dateToCheck = new Date(this._fixedDate + 'T' + this.getTime(value));
-					
-					startTime = new Date(this._fixedDate + 'T' + filter.start);
-					endTime = new Date(this._fixedDate + 'T' + filter.end);
-				
+
 				if (!this._isValidDate(dateToCheck)) {
 					console.warn('Invalid value for time', value, this);
 					return false;
@@ -165,7 +160,7 @@
 				}
 
 				if (filter.end) {
-					let startTime = new Date(this._fixedDate + 'T' + filter.end);
+					let endTime = new Date(this._fixedDate + 'T' + filter.end);
 					if (!this._isValidDate(endTime)) {
 						console.warn('WTF?!');
 						return true;

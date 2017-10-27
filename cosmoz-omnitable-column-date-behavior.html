@@ -131,7 +131,7 @@
 			if (!firstValid && !secondValid) {
 				return null;
 			}
-			
+
 			if (!firstValid && secondValid) {
 				return second;
 			}
@@ -207,20 +207,18 @@
 			}
 			return text.length > 1 ? text.join('') : null;
 		},
-		
+
 		_dateValueChanged(event) {
 			const
 				input = event.currentTarget,
 				value = input.value,
 				item = event.model.item,
 				oldValue = this.get(this.valuePath, item),
-				formatFn = (value) => {
-					return this.formatter.format(value);
-				};
-				let dateValue = this.getDate(value);
-				if (!this._isValidDate(dateValue)) {
-					this.set(this.valuePath, dateValue, item);
-				}
+				formatFn = value => this.formatter.format(value);
+			let dateValue = this.getDate(value);
+			if (!this._isValidDate(dateValue)) {
+				this.set(this.valuePath, dateValue, item);
+			}
 			this._fireItemChangeEvent(item, this.valuePath, oldValue, formatFn.bind(this));
 		},
 
@@ -255,22 +253,6 @@
 				return new Date(value);
 			}
 			return value;
-		},
-
-		getDate(value) {
-			var dateValue;
-			if (!value) {
-				return '';
-			}
-			if (!(value instanceof Date)) {
-				dateValue = new Date(value);
-			} else {
-				return value;
-			}
-			if (isNaN(dateValue)) {
-				return 'Invalid Date';
-			}
-			return dateValue;
 		},
 
 		getFilterFn() {
