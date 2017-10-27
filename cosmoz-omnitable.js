@@ -1,4 +1,4 @@
-/*global Cosmoz, Polymer, window, saveAs */
+/*global Cosmoz, Polymer, window, saveAs, NullXlsx */
 (function () {
 
 	'use strict';
@@ -17,6 +17,22 @@
 			csvFilename: {
 				type: String,
 				value: 'omnitable.csv'
+			},
+
+			/**
+			 * Filename when saving as XLSX
+			 */
+			xlsxFilename: {
+				type: String,
+				value: 'omnitable.xlsx'
+			},
+
+			/**
+			 * Sheet name when saving as XLSX
+			 */
+			xlsxSheetname: {
+				type: String,
+				value: 'Omnitable'
 			},
 
 			/**
@@ -886,6 +902,40 @@
 			}));
 		},
 
+		/**
+		 * Makes the data ready to be exported as XLSX.
+		 * @returns {Array} data Array of prepared rows.
+		 */
+		_prepareXlsxData: function () {
+			var	headers = this.columns.map(col => col.title),
+				data = this.selectedItems.map(item => {
+					return this.columns.map(column => {
+						var value = column.toXlsxValue(item);
+						if (value === undefined || value === null) {
+							return '';
+						}
+						return value;
+					});
+				});
+
+			data.unshift(headers);
+			return data;
+		},
+
+		/**
+		 * Triggers a download of selected rows as a XLSX file.
+		 * @param {Object} data The prepared rows to be saved as file with default value this._prepareXlsxData().
+		 * @returns {undefined}
+		 */
+		_saveAsXlsxAction: function () {
+			var data = this._prepareXlsxData(),
+				xlsx = new NullXlsx(this.xlsxFilename).addSheetFromData(data, this.xlsxSheetname).generate();
+
+			saveAs(new File([xlsx], this.xlsxFilename,
+				{ type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}
+			));
+		},
+
 		/** view functions */
 
 		_getGroupRowClasses: function (folded) {
@@ -1081,8 +1131,7 @@
 
 				this.set(key, deserialized);
 			});
-
-			let rule = new RegExp('^' + hashParam + '-filter--([a-z0-9-]+)$'),
+			let rule = new RegExp('^' + hashParam + '-filter--([A-Za-z0-9-_]+)$'),
 				routeParams = changes.base;
 
 			Object.keys(routeParams).forEach(key => {

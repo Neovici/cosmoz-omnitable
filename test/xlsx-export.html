@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+	<title>XLSX Export</title>
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+	<script src="../../web-component-tester/browser.js"></script>
+	<script src="../../test-fixture/test-fixture-mocha.js"></script>
+
+	<link rel="import" href="../../test-fixture/test-fixture.html">
+	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
+
+	<link rel="import" href="../cosmoz-omnitable.html">
+	<link rel="import" href="../cosmoz-omnitable-columns.html">
+	<link rel="import" href="../demo/table-demo-behavior.html">
+</head>
+<body>
+	<test-fixture id="xlsx-export-fixture">
+		<template>
+			<cosmoz-omnitable id="omnitable" class="flex" selection-enabled xlsx-filename="Test.xlsx">
+				<cosmoz-omnitable-column-autocomplete id="id" name="id" title="ID" value-path="id">
+				</cosmoz-omnitable-column-autocomplete>
+				<cosmoz-omnitable-column id="first-name" name="first-name" title="First Name" value-path="first-name">
+				</cosmoz-omnitable-column>
+				<cosmoz-omnitable-column-amount id="amount" name="amount" title="Amount" value-path="amount">
+				</cosmoz-omnitable-column-amount>
+				<cosmoz-omnitable-column-date id="date" name="date" title="Date" value-path="date">
+				</cosmoz-omnitable-column-date>
+			</cosmoz-omnitable>
+		</template>
+	</test-fixture>
+
+	<script>
+	/*global sinon chai flush */
+	(function () {
+		'use strict';
+
+		sinon.assert.expose(chai.assert, { prefix: '' });
+
+		suite('xlsx-export-omnitable', function () {
+			var omnitable,
+				data = [
+					{ id: 0, 'first-name': 'Carl', amount: 12.4, date: new Date(2017, 7 - 1, 10) },
+					{ id: 1, 'first-name': 'Mia', amount: 678, date: new Date() }
+				];
+
+			//this.timeout(9e20);
+			setup(function (done) {
+				omnitable = fixture('xlsx-export-fixture');
+				omnitable.data = data ;
+
+				flush(function () {
+					Polymer.Base.async(done, 90);
+				});
+			});
+
+			test('it instantiates a cosmoz-omnitable element', function (done) {
+				assert.equal(omnitable.is, 'cosmoz-omnitable');
+				done();
+			});
+
+			test('it is loading the name of first id column', function (done) {
+				var id = omnitable.querySelector('#id');
+				assert.isDefined(id);
+				assert.equal(id.getString(), 'id');
+				done();
+			});
+
+			test('it prepares selected items', function (done) {
+				// select two items
+				omnitable.selectItem(data[0]);
+				omnitable.selectItem(data[1]);
+				// prepare selected items, verify data
+				var xlsx = omnitable._prepareXlsxData(),
+					headers = xlsx[0];
+				assert.equal(headers[0], omnitable.columns[0].title);
+				assert.equal(headers.length, omnitable.columns.length);
+				done();
+			});
+
+			test('is exporting as xlsx file', function (done) {
+				var spyXlsx = sinon.spy(omnitable, '_saveAsXlsxAction'),
+					stubSaveAs = sinon.stub(window, 'saveAs'),
+					args;
+				omnitable.selectItem(data[0]);
+				omnitable.selectItem(data[1]);
+
+				// click on Export as XLSX paper-button
+				MockInteractions.tap(omnitable.$.bottomBar.$.toolbar.queryAllEffectiveChildren('paper-button')[1]);
+				assert.calledOnce(spyXlsx);
+				assert.calledOnce(stubSaveAs);
+
+				args =  stubSaveAs.lastCall.args;
+				// verify params of SaveAs; name and type of file to be created
+
+				assert.equal(args[0].name, 'Test.xlsx');
+				assert.equal(args[0].type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+				spyXlsx.restore();
+				stubSaveAs.restore();
+				done();
+			});
+		});
+	}());
+
+	</script>
+</body>
+</html>
