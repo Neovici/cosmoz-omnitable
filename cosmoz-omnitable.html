@@ -155,7 +155,7 @@
 					<paper-checkbox on-change="_onAllCheckboxChange" hidden$="[[ !_dataIsValid ]]">
 					</paper-checkbox>
 				</div>
-				<cosmoz-omnitable-header-row columns="[[ visibleColumns ]]"></cosmoz-omnitable-header-row>
+				<cosmoz-omnitable-header-row columns="[[ visibleColumns ]]" group-on-column="[[ groupOnColumn ]]"></cosmoz-omnitable-header-row>
 			</div>
 			<div class="tableContent" id="tableContent">
 				<template is="dom-if" if="[[ !_dataIsValid ]]">
@@ -198,7 +198,8 @@
 											columns="[[ visibleColumns ]]"
 											selected="{{ selected }}"
 											expanded="{{ expanded }}"
-											item="[[ item ]]">
+											item="[[ item ]]"
+											group-on-column="[[ groupOnColumn ]]">
 										</cosmoz-omnitable-item-row>
 										<div class="item-expander" hidden="[[ _isEmpty(disabledColumns.length) ]]">
 											<paper-icon-button icon="[[ _getFoldIcon(expanded) ]]" on-tap="_toggleItem"></paper-icon-button>
@@ -208,7 +209,8 @@
 										columns="[[ disabledColumns ]]"
 										item="[[item]]"
 										selected="{{ selected }}"
-										expanded="{{ expanded }}">
+										expanded="{{ expanded }}"
+										group-on-column="[[ groupOnColumn ]]">
 									</cosmoz-omnitable-item-expand>
 								</div>
 							</template>
@@ -226,7 +228,8 @@
 											column="[[ groupOnColumn ]]"
 											item="[[ item.items.0 ]]"
 											selected="[[ selected ]]"
-											folded="[[ folded ]]">
+											folded="[[ folded ]]"
+											group-on-column="[[ groupOnColumn ]]">
 										</cosmoz-omnitable-group-row>
 									</h3>
 									<div>[[ item.items.length ]]</div>

@@ -193,7 +193,6 @@
 			visibleColumns: {
 				type: Array,
 				notify: true,
-				computed: '_computeVisibleColumns(columns, groupOn)',
 				observer: '_visibleColumnsChanged'
 			},
 
@@ -272,14 +271,6 @@
 		_disabledColumnsIndexes: null,
 
 		_scalingUp: false,
-
-		_computeVisibleColumns(columns, groupOn) {
-			if (!columns) {
-				return;
-			}
-			return groupOn ? columns.filter(c => c.name !== this.groupOn) : columns.slice();
-		},
-
 		_computeDataValidity(data) {
 			return data && Array.isArray(data) && data.length > 0;
 		},
@@ -380,6 +371,10 @@
 		},
 
 		_updateColumns: function () {
+			if (!this.isAttached) {
+				return;
+			}
+
 			let columns = this.getEffectiveChildren().filter((child, index) => {
 					child.__index = index;
 					return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn && !child.hidden;
@@ -417,6 +412,7 @@
 			});
 
 			this.columns = columns;
+			this.visibleColumns = columns.slice();
 
 			if (this._webWorkerReady && this.data) {
 				this._debounceFilterItems();

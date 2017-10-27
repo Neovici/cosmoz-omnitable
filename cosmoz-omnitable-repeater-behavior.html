@@ -16,6 +16,10 @@
 			columns: {
 				type: Array
 			},
+			groupOnColumn: {
+				type: Object,
+				observer: '_groupOnColumnChanged'
+			}
 		},
 
 		observers: [
@@ -195,6 +199,24 @@
 
 			}
 			this._elements.splice(start, removedColumns.length);
+		},
+
+		_groupOnColumnChanged: function (column, previousColumn) {
+			if (!this._elements || !this._elements.length) {
+				return;
+			}
+			if (previousColumn) {
+				let previousElement = this._elements.find(e => e.__column === previousColumn);
+				if (previousElement) {
+					previousElement.removeAttribute('hidden');
+				}
+			}
+			if (column) {
+				let element = this._elements.find(e => e.__column === column);
+				if (element) {
+					element.setAttribute('hidden', '');
+				}
+			}
 		},
 
 		_forwardProperty: function (instance, name, value, flush = false) {
