@@ -52,6 +52,7 @@
 					readOnly: true,
 					value: true
 				},
+
 				filter: {
 					type: Object,
 					notify: true,
@@ -62,6 +63,7 @@
 						};
 					}
 				},
+
 				max: {
 					type: Object,
 					value() {
@@ -194,7 +196,7 @@
 			},
 
 			_getNumberValue: function (value) {
-				if (value === null || value === undefined || value === '') {
+				if (value == null || value === '') {
 					return;
 				}
 				const number = Number(value);
@@ -276,12 +278,19 @@
 			getComparableValue(item, valuePath) {
 				const value = this.get(valuePath, item);
 				// TODO: fx
-				if (value !== undefined && value !== null && typeof value.amount === 'number') {
-					return value.amount;
+				if (value == null || value.amount == null) {
+					return;
 				}
+				return this._getNumberValue(value.amount);
 			},
 
 			getFilterFn() {
+				const min = this.getComparableValue(this.filter, 'min'),
+					max = this.getComparableValue(this.filter, 'max');
+
+				if (min == null && max == null) {
+					return;
+				}
 				return this._applySingleFilter.bind(this, this.filter);
 			},
 
