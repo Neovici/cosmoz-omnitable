@@ -57,9 +57,16 @@
 
 				filter: {
 					type: Array,
-					computed: '_computeFilter(autocompleteSelectedItems.length)'
-				}
+					notify: true,
+					value: function () {
+						return [];
+					}
+				},
 			},
+
+			observers: [
+				'_autocompleteSelectedItemsChanged(autocompleteSelectedItems.length)'
+			],
 
 			_computeAutocompleteItems: function () {
 				return this.values
@@ -79,10 +86,6 @@
 				return value.toString();
 			},
 
-			_computeFilter: function () {
-				return this.autocompleteSelectedItems.map(item => item.value);
-			},
-
 			_applySingleFilter: function (filterString, item) {
 				const value = this.get(this.valuePath, item).toString().toLowerCase();
 				return value === filterString;
@@ -95,6 +98,10 @@
 				return listValue.some(val =>
 					filterArray.indexOf(val.toString().toLowerCase()) >= 0
 				);
+			},
+
+			_autocompleteSelectedItemsChanged: function () {
+				this.filter = this.autocompleteSelectedItems.map(item => item.value);
 			}
 		});
 	</script>
