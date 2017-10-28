@@ -347,6 +347,8 @@
 		resetFilter: function () {
 			const reset = this.get('properties.filter.value');
 			if (reset === undefined) {
+				// Until date| columns are fixed we must trigger a notification for grouping to happen
+				this.__filterChanged();
 				return;
 			}
 			if (typeof reset !== 'function') {
