@@ -485,6 +485,9 @@
 		},
 
 		_filterChanged: function (e, detail) {
+			if (!this.columns || !this.columns.length || this.columns.indexOf(detail.column) < 0) {
+				return;
+			}
 			this._debounceFilterItems();
 			this._filterForRouteChanged(detail.column);
 		},
