@@ -63,7 +63,7 @@
 			hash-param="[[ hashParam ]]">
 				<cosmoz-omnitable-column-date title="Date" name="date" value-path="date" sort-on="date" group-on="date">
 				</cosmoz-omnitable-column-date>
-				<cosmoz-omnitable-column-autocomplete width="40px" title="Id" name="id" value-path="id" sort-on="id" group-on="id">
+				<cosmoz-omnitable-column-autocomplete flex="0" width="40px" title="Id" name="id" value-path="id" sort-on="id" group-on="id">
 					<template class="cell">
 						<span on-tap="onTap">
 							<a href$="[[ _getItemLink(item) ]]">[[ item.id ]]</a>
@@ -74,6 +74,9 @@
 					true-label="Oui" false-label="Non">
 				</cosmoz-omnitable-column-boolean>
 				<cosmoz-omnitable-column-autocomplete title="[[ _('Group', t) ]]" name="group" value-path="group" flex="0" width="125px">
+				</cosmoz-omnitable-column-autocomplete>
+				<cosmoz-omnitable-column-autocomplete title="[[ _('Object', t) ]]" name="object" value-path="object" value-property="value" text-property="label"
+					flex="0" width="125px" overflow>
 				</cosmoz-omnitable-column-autocomplete>
 				<cosmoz-omnitable-column-date title="DateJSON" name="datejson" value-path="dateJSON" sort-on="dateJSON" group-on="dateJSON">
 				</cosmoz-omnitable-column-date>

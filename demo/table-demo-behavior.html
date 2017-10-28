@@ -79,6 +79,10 @@
 						name: group + ' item ' + j,
 						value: getRandomInt(0, 10000),
 						bool: getRandomInt(0, 100) > 50,
+						object: {
+							value: getRandomInt(0, 10000),
+							label: 'Random string ' + getRandomInt(1, maxRandomString)
+						},
 						sub: {
 							subProp: descriptions[n % descriptions.length]
 						},
