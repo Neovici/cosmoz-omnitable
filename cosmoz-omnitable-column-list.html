@@ -63,20 +63,16 @@
 
 			_computeAutocompleteItems: function () {
 				return this.values
-					.reduce(function (acc, val) {
-						return acc.concat(val);
-					}, [])
-					.filter(function (value, index, array) {
-						// Make the item list unique
-						return array.indexOf(value) === index;
-					})
+					.reduce((acc, val) => acc.concat(val), [])
+					// Make the item list unique
+					.filter((value, index, array) => array.indexOf(value) === index)
 					.sort()
 					.map(value => {
 						return {
 							value: value,
 							label: this._getLabelForValue(value)
 						};
-					}, this);
+					});
 			},
 
 			_getLabelForValue: function (value) {
@@ -84,18 +80,16 @@
 			},
 
 			_computeFilter: function () {
-				return this.autocompleteSelectedItems.map(function (item) {
-					return item.value;
-				});
+				return this.autocompleteSelectedItems.map(item => item.value);
 			},
 
 			_applySingleFilter: function (filterString, item) {
-				var value = this.get(this.valuePath, item).toString().toLowerCase();
+				const value = this.get(this.valuePath, item).toString().toLowerCase();
 				return value === filterString;
 			},
 
 			_applyMultiFilter: function (filter, item) {
-				var	filterArray = filter.map(element => element.toString().toLowerCase()),
+				const filterArray = filter.map(element => element.toString().toLowerCase()),
 					listValue = this.get(this.valuePath, item);
 
 				return listValue.some(val =>
