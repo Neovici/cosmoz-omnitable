@@ -66,12 +66,8 @@
 				}
 			},
 
-			getComparableValue: function (item, valuePath) {
-				var value = this.get(valuePath, item);
-				if (this.valueProperty && typeof value === 'object') {
-					return this.get(this.valueProperty, value);
-				}
-				return value;
+			getComparableValue: function (item, valuePath = this.valuePath) {
+				return this.getString(item, valuePath);
 			},
 
 			getString(item, valuePath = this.valuePath) {
@@ -79,9 +75,10 @@
 					console.error(this, 'has undefined valuePath', valuePath, 'for item', item);
 					return;
 				}
-				const itemValue = this.get(valuePath, item);
-				if (this.textProperty && typeof itemValue === 'object') {
-					return this.get(this.textProperty, itemValue);
+				const itemValue = this.get(valuePath, item),
+					textProp = this.textProperty;
+				if (textProp && typeof itemValue === 'object') {
+					return this.get(textProp, itemValue);
 				}
 				return itemValue;
 			},
@@ -116,16 +113,16 @@
 			},
 
 			_unique(values, valueProperty) {
-				if (!values) {
+				if (!Array.isArray(values)) {
 					return;
 				}
-				var used = [];
+				const used = [];
 				return values.filter((item, index, array) => {
 					if (array.indexOf(item) !== index) {
 						return false;
 					}
 					if (valueProperty) {
-						var value = item[valueProperty];
+						var value = this.get(valueProperty, item);
 						if (used.indexOf(value) !== -1) {
 							return false;
 						}
