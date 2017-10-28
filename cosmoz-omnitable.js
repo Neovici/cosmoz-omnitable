@@ -139,7 +139,7 @@
 			groupOnColumn: {
 				type: Object,
 				notify: true,
-				observer: '_debounceGroupItems',
+				observer: '_groupOnColumnChanged',
 				computed: '_getColumn(groupOn, "name", columns)'
 			},
 
@@ -515,6 +515,14 @@
 				this.filteredGroupedItems  = [];
 				this.sortedFilteredGroupedItems = [];
 				this._groupsCount = 0;
+			}
+		},
+
+		_groupOnColumnChanged: function (column) {
+			if (column && column.filter) {
+				column.resetFilter();
+			} else {
+				this.debounce('groupItems', this._groupItems);
 			}
 		},
 
