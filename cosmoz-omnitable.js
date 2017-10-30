@@ -231,7 +231,6 @@
 			'iron-resize': '_onResize',
 			'update-item-size': '_onUpdateItemSize',
 			'cosmoz-column-title-changed': '_onColumnTitleChanged',
-			'cosmoz-column-hidden-changed': '_debounceUpdateColumns',
 			'cosmoz-column-filter-changed': '_filterChanged',
 		},
 
@@ -251,14 +250,15 @@
 
 				this._debounceUpdateColumns();
 			});
-
 			this.$.groupedList.scrollTarget = this.$.scroller;
+			this.listen(this,  'cosmoz-column-hidden-changed', '_debounceUpdateColumns');
 		},
 
 		detached: function () {
 			if (this._columnObserver) {
 				Polymer.dom(this).unobserveNodes(this._columnObserver);
 			}
+			this.unlisten(this, 'cosmoz-column-hidden-changed', '_debounceUpdateColumns');
 			// Just in case we get detached before a planned debouncer has not run yet.
 			this.cancelDebouncer('adjustColumns');
 			this.cancelDebouncer('updateColumns');
@@ -1155,12 +1155,20 @@
 					return;
 				}
 
-				let filter = column.filter;
+				let filter = column.filter,
+					deserialized;
 
 				if (hashValue === this._serializeFilter(filter)) {
 					return;
 				}
-				column.set('filter', this._deserializeFilter(hashValue, filter && filter.constructor || undefined));
+
+				deserialized = this._deserializeFilter(hashValue, filter && filter.constructor || undefined);
+
+				if (deserialized === null) {
+					return;
+				}
+
+				column.set('filter', deserialized);
 			});
 
 		},

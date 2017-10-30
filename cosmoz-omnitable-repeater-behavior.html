@@ -206,13 +206,13 @@
 				return;
 			}
 			if (previousColumn) {
-				let previousElement = this._elements.find(e => e.__column === previousColumn);
+				const previousElement = this._elements.find(e => e.__column === previousColumn);
 				if (previousElement) {
 					previousElement.removeAttribute('hidden');
 				}
 			}
 			if (column) {
-				let element = this._elements.find(e => e.__column === column);
+				const element = this._elements.find(e => e.__column === column);
 				if (element) {
 					element.setAttribute('hidden', '');
 				}

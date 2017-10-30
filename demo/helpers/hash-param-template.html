@@ -1,11 +1,13 @@
 <link rel="import" href="x-page.html">
-<template id="home" is="dom-bind">
-	<x-page class="fit" style="height: 100%; width: 100%;" hash-param="full">
-		<template id="customNameTemplate">
-			<span style="background: red;" on-tap="onTap">[[ item.name ]]</span>
-		</template>
-	</x-page>
-</template>
+<dom-bind id="home">
+	<template is="dom-bind">
+		<x-page class="fit" style="height: 100%; width: 100%;" hash-param="full">
+			<template id="customNameTemplate">
+				<span style="background: red;" on-tap="onTap">[[ item.name ]]</span>
+			</template>
+		</x-page>
+	</template>
+</dom-bind>
 <script>
 	(function () {
 		'use strict';
