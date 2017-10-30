@@ -17,7 +17,7 @@
 	<link rel="import" href="../demo/table-demo-behavior.html">
 </head>
 <body>
-	<test-fixture id="cosmoz-omnitable-fixture">
+	<test-fixture id="basic">
 		<template>
 			<cosmoz-omnitable id="omnitable" class="flex" selection-enabled>
 				<cosmoz-omnitable-column-date id="date1" name="date1" value-path="date">
@@ -30,7 +30,7 @@
 		</template>
 	</test-fixture>
 
-	<test-fixture id="cosmoz-omnitable-column-setup">
+	<test-fixture id="column-setup">
 		<template>
 			<cosmoz-omnitable id="omnitable" class="flex" selection-enabled>
 				<cosmoz-omnitable-column-date id="date1" name="date1" value-path="date">
@@ -47,50 +47,41 @@
 	(function () {
 		'use strict';
 
-		suite('cosmoz-omnitable', function () {
+		suite('basic', function () {
 			var omnitable,
 				data;
 
 			setup(function () {
-				omnitable = fixture('cosmoz-omnitable-fixture');
+				omnitable = fixture('basic');
 				data = Cosmoz.TableDemoBehavior.generateTableDemoData(10, 11, 25);
 				omnitable.data = data;
 			});
 
-			test('Retrieve Column', function (done) {
-				var date1 = omnitable.querySelector('#date1'),
-					column;
-
-				/**
-				 * Test retrieving a column via its name attribute.
-				 */
-				Polymer.Base.async(() => {
-					column = omnitable._getColumn('date1');
-					expect(column).to.be.equal(date1);
+			test('it retrieves column by name', function (done) {
+				var date = omnitable.querySelector('#date1');
+				Polymer.Base.async(function () {
+					assert.equal(date, omnitable._getColumn('date1'));
 					done();
-				}, 200);
+				}, 60);
+
 			});
 
-			test('Visible Columns', function (done) {
-				Polymer.Base.async(() => {
-					/**
-					 * Test if visible columns do not include the group on column.
-					 */
+			test('it updates visibleColumns', function (done) {
+				Polymer.Base.async(function () {
+					assert.deepEqual(omnitable.visibleColumns, omnitable.columns);
+
 					omnitable.groupOn = 'date2';
-					expect(omnitable.visibleColumns.length).to.be.equal(omnitable.columns.length - 1);
-					expect(omnitable.visibleColumns).not.include(omnitable.groupOnColumn);
-					/**
-					 * Test if all columns are visible if not grouped.
-					 */
+					assert.deepEqual(omnitable.visibleColumns, omnitable.columns);
+
 					omnitable.groupOn = '';
-					expect(omnitable.visibleColumns).to.be.deep.equal(omnitable.columns);
+					assert.deepEqual(omnitable.visibleColumns, omnitable.columns);
 
 					done();
-				}, 200);
+				}, 60);
 			});
 		});
 
-		suite('cosmoz-omnitable-column-without-name', function () {
+		suite('it logs unnamed column', function () {
 			var omnitable,
 				data,
 				consoleErrorStub;
@@ -98,7 +89,7 @@
 			setup(function () {
 				// We must stub console.error otherwise the test will fail
 				consoleErrorStub = sinon.stub(window.console, 'error');
-				omnitable = fixture('cosmoz-omnitable-column-setup');
+				omnitable = fixture('column-setup');
 				data = Cosmoz.TableDemoBehavior.generateTableDemoData(10, 11, 25);
 				omnitable.data = data;
 			});
@@ -108,7 +99,7 @@
 					date3 = omnitable.querySelector('#date3');
 
 				// Async needed so that omnitable can process the data
-				Polymer.Base.async(() => {
+				Polymer.Base.async(function () {
 					sinon.assert.calledTwice(console.error);
 					expect(date2.name).to.be.equal(date2.valuePath);
 					// Test if only unique value-paths are taken as a fallback name attribute
