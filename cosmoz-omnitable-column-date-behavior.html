@@ -51,7 +51,7 @@
 
 			_filterText: {
 				type: String,
-				computed: '_computeFilterText(locale, filter.*)'
+				computed: '_computeFilterText(filter.*)'
 			},
 
 			_possibleDateRange: {
@@ -156,7 +156,7 @@
 				};
 			}
 
-			values.map(item => this.getDate(item))
+			return values.map(item => this.getDate(item))
 				.filter(item => this._isValidDate(item))
 				.reduce((acc, item) => {
 					if (!acc.min || item < acc.min) {
@@ -191,13 +191,13 @@
 			};
 		},
 
-		_computeFilterText(locale, filterNotify, formatter = this.formatter) {
+		_computeFilterText(filterNotify, formatter = this.formatter) {
+			if (!filterNotify) {
+				return null;
+			}
 			const startDate = filterNotify.base.start,
 				endDate = filterNotify.base.end,
 				text = [];
-			if (!formatter) {
-				return null;
-			}
 			if (this._isValidDate(startDate)) {
 				text.push(formatter.format(startDate));
 			}
@@ -214,9 +214,9 @@
 				value = input.value,
 				item = event.model.item,
 				oldValue = this.get(this.valuePath, item),
-				formatFn = value => this.formatter.format(value);
-			let dateValue = this.getDate(value);
-			if (!this._isValidDate(dateValue)) {
+				formatFn = value => this.formatter.format(value),
+				dateValue = this.getDate(value);
+			if (this._isValidDate(dateValue)) {
 				this.set(this.valuePath, dateValue, item);
 			}
 			this._fireItemChangeEvent(item, this.valuePath, oldValue, formatFn.bind(this));

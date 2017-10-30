@@ -8,12 +8,12 @@
 <dom-module id="cosmoz-omnitable-column-time">
 	<template>
 		<template class="cell">
-			[[ getTimeString(item, valuePath, formatter) ]]
+			[[ getString(item, valuePath, formatter) ]]
 		</template>
 
 		<template class="edit-cell">
 			<paper-input no-label-float type="time" on-change="_timeValueChanged"
-				value="[[ getTimeString(item, valuePath, formatter) ]]">
+				value="[[ getString(item, valuePath, formatter) ]]">
 			</paper-input>
 		</template>
 
@@ -63,22 +63,7 @@
 						};
 					}
 				},
-		
-				_filterText: {
-					type: String,
-					computed: '_computeFilterText(locale, filter.*)'
-				},
 
-				filter: {
-					type: Object,
-					computed: '_computeFilter(_filterInput.start, _filterInput.end)'
-				},
-
-				_placeholderDate: {
-					type: String,
-					value: '1970-01-01'
-				},
-		
 				formatter: {
 					type: Object,
 					computed: '_computeFormatter(locale)'
@@ -94,7 +79,7 @@
 					oldTime = this.getDate(item.date),
 					newTime = this.getDate(oldTime.toISOString().slice(0, 10) + ` ${timeString} `),
 					formatFn = value => value;
-				if (!this._isValidDate(newTime)) {
+				if (this._isValidDate(newTime)) {
 					this.set(this.valuePath, newTime, item);
 				}
 				this._fireItemChangeEvent(item, this.valuePath, oldTime, formatFn.bind(this));
@@ -109,12 +94,8 @@
 				return date.getTime();
 			},
 
-			getTimeString(item, valuePath = this.valuePath) {
-				const value = this.getDate(this.get(valuePath, item));
-				if (!this._isValidDate(value)) {
-					return 'Invalid Date';
-				}
-				return value.toISOString().slice(11, 19);
+			getString(item, valuePath = this.valuePath) {
+				return this.getTime(this.get(valuePath, item));
 			},
 
 			// OVERRIDES
@@ -149,7 +130,7 @@
 				}
 
 				if (filter.start) {
-					let startTime = new Date(this._fixedDate + 'T' + filter.start);
+					const startTime = new Date(this._fixedDate + 'T' + filter.start);
 					if (!this._isValidDate(startTime)) {
 						console.warn('WTF?!');
 						return true;
@@ -160,7 +141,7 @@
 				}
 
 				if (filter.end) {
-					let endTime = new Date(this._fixedDate + 'T' + filter.end);
+					const endTime = new Date(this._fixedDate + 'T' + filter.end);
 					if (!this._isValidDate(endTime)) {
 						console.warn('WTF?!');
 						return true;
@@ -180,20 +161,20 @@
 				};
 			},
 		
-			_computeFilterText(locale, filterNotify, formatter = this.formatter) {
-				let text = [];
-				const startTime = filterNotify.base.start,
-					endTime = filterNotify.base.end;
-				if (!formatter) {
+			_computeFilterText(filterNotify, formatter = this.formatter) {
+				if (!filterNotify) {
 					return null;
 				}
+				const text = [],
+					startTime = new Date(this._fixedDate + 'T' + filterNotify.base.start),
+					endTime = new Date(this._fixedDate + 'T' + filterNotify.base.end);
 
-				if (startTime && startTime !== null) {
-					text.push(startTime);
+				if (this._isValidDate(startTime)) {
+					text.push(formatter.format(startTime));
 				}
 				text.push(' - ');
-				if (endTime && endTime !== null) {
-					text.push(endTime);
+				if (this._isValidDate(endTime)) {
+					text.push(formatter.format(endTime));
 				}
 				return text.length > 1 ? text.join('') : null;
 			}

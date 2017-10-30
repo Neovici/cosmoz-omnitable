@@ -100,23 +100,6 @@
 					minute: 'numeric'
 				};
 				return new Intl.DateTimeFormat(locale || undefined, timeFormatOption);
-			},
-		
-			_computeFilterText(locale, filterNotify, formatter = this.formatter) {
-				let text = [];
-				const startTime = filterNotify.base.start,
-					endTime = filterNotify.base.end;
-				if (!formatter) {
-					return null;
-				}
-				if (this._isValidDate(startTime)) {
-					text.push(this.formatter.format(startTime));
-				}
-				text.push(' - ');
-				if (this._isValidDate(endTime)) {
-					text.push(this.formatter.format(endTime));
-				}
-				return text.length > 1 ? text.join('') : null;
 			}
 		});
 
