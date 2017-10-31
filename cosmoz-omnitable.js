@@ -139,7 +139,7 @@
 			groupOnColumn: {
 				type: Object,
 				notify: true,
-				observer: '_debounceGroupItems',
+				observer: '_groupOnColumnChanged',
 				computed: '_getColumn(groupOn, "name", columns)'
 			},
 
@@ -193,7 +193,6 @@
 			visibleColumns: {
 				type: Array,
 				notify: true,
-				computed: '_computeVisibleColumns(columns, groupOn)',
 				observer: '_visibleColumnsChanged'
 			},
 
@@ -232,13 +231,10 @@
 			'iron-resize': '_onResize',
 			'update-item-size': '_onUpdateItemSize',
 			'cosmoz-column-title-changed': '_onColumnTitleChanged',
-			'cosmoz-column-hidden-changed': '_debounceUpdateColumns',
 			'cosmoz-column-filter-changed': '_filterChanged',
 		},
 
-		/** ELEMENT LIFECYCLE */
-
-		created: function () {
+		attached: function () {
 			/** WARNING: we do not support columns changes yet. */
 			// `isOmnitableColumn` is a property from cosmoz-omnitable-column-behavior
 			this._columnObserver = Polymer.dom(this).observeNodes(info => {
@@ -247,23 +243,27 @@
 					.filter(child =>
 						child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn
 					);
+
 				if (changedColumns.length === 0) {
 					return;
 				}
 
 				this._debounceUpdateColumns();
 			});
-		},
-
-		attached: function () {
 			this.$.groupedList.scrollTarget = this.$.scroller;
-			this._isDetached = false;
+			this.listen(this,  'cosmoz-column-hidden-changed', '_debounceUpdateColumns');
 		},
 
 		detached: function () {
+			if (this._columnObserver) {
+				Polymer.dom(this).unobserveNodes(this._columnObserver);
+			}
+			this.unlisten(this, 'cosmoz-column-hidden-changed', '_debounceUpdateColumns');
 			// Just in case we get detached before a planned debouncer has not run yet.
 			this.cancelDebouncer('adjustColumns');
-			this._isDetached = true;
+			this.cancelDebouncer('updateColumns');
+			this.cancelDebouncer('filterItems');
+			this.cancelDebouncer('sortItems');
 		},
 
 		/** ELEMENT BEHAVIOR */
@@ -271,14 +271,6 @@
 		_disabledColumnsIndexes: null,
 
 		_scalingUp: false,
-
-		_computeVisibleColumns(columns, groupOn) {
-			if (!columns) {
-				return;
-			}
-			return groupOn ? columns.filter(c => c.name !== this.groupOn) : columns.slice();
-		},
-
 		_computeDataValidity(data) {
 			return data && Array.isArray(data) && data.length > 0;
 		},
@@ -379,6 +371,10 @@
 		},
 
 		_updateColumns: function () {
+			if (!this.isAttached) {
+				return;
+			}
+
 			let columns = this.getEffectiveChildren().filter((child, index) => {
 					child.__index = index;
 					return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn && !child.hidden;
@@ -416,6 +412,7 @@
 			});
 
 			this.columns = columns;
+			this.visibleColumns = columns.slice();
 
 			if (this._webWorkerReady && this.data) {
 				this._debounceFilterItems();
@@ -488,6 +485,9 @@
 		},
 
 		_filterChanged: function (e, detail) {
+			if (!this.columns || !this.columns.length || this.columns.indexOf(detail.column) < 0) {
+				return;
+			}
 			this._debounceFilterItems();
 			this._filterForRouteChanged(detail.column);
 		},
@@ -515,6 +515,14 @@
 				this.filteredGroupedItems  = [];
 				this.sortedFilteredGroupedItems = [];
 				this._groupsCount = 0;
+			}
+		},
+
+		_groupOnColumnChanged: function (column) {
+			if (column && column.filter) {
+				column.resetFilter();
+			} else {
+				this.debounce('groupItems', this._groupItems);
 			}
 		},
 
@@ -671,7 +679,7 @@
 					// We should definitively not call _debounceAdjustColumns,
 					// as this will result in a reference to this omnitable being kept
 					// in Polymer debouncers list.
-					if (this._isDetached) {
+					if (!this.isAttached) {
 						return;
 					}
 
@@ -714,7 +722,7 @@
 				headers;
 
 			// Safety check, but should never happen
-			if (this._isDetached || !this._isVisible) {
+			if (!this.isAttached || !this._isVisible) {
 				return;
 			}
 
@@ -1147,12 +1155,20 @@
 					return;
 				}
 
-				let filter = column.filter;
+				let filter = column.filter,
+					deserialized;
 
 				if (hashValue === this._serializeFilter(filter)) {
 					return;
 				}
-				column.set('filter', this._deserializeFilter(hashValue, filter && filter.constructor || undefined));
+
+				deserialized = this._deserializeFilter(hashValue, filter && filter.constructor || undefined);
+
+				if (deserialized === null) {
+					return;
+				}
+
+				column.set('filter', deserialized);
 			});
 
 		},

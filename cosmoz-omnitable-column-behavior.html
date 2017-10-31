@@ -344,6 +344,20 @@
 			return this._applyMultiFilter.bind(this, this.filter);
 		},
 
+		resetFilter: function () {
+			const reset = this.get('properties.filter.value');
+			if (reset === undefined) {
+				// Until date| columns are fixed we must trigger a notification for grouping to happen
+				this.__filterChanged();
+				return;
+			}
+			if (typeof reset !== 'function') {
+				this.filter = reset;
+				return;
+			}
+			this.filter = reset();
+		},
+
 		_applySingleFilter: function (filterString, item) {
 			var value = this.get(this.valuePath, item).toString().toLowerCase();
 			return value.indexOf(filterString) >= 0;

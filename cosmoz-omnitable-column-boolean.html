@@ -42,6 +42,7 @@
 
 				filter: {
 					type: Boolean,
+					notify: true,
 					value: null
 				},
 
@@ -119,7 +120,6 @@
 					this._textFilter = null;
 				}
 
-
 			},
 
 			getString: function (item, valuePath) {
@@ -128,7 +128,7 @@
 			},
 
 			getFilterFn: function () {
-				if (typeof this.filter === 'boolean') {
+				if (this.filter != null) {
 					return this._applySingleFilter.bind(this);
 				}
 			},
@@ -140,7 +140,7 @@
 
 			_computeSelected: function (item, valuePath) {
 				var value = this.get(valuePath, item);
-				if (value !== undefined && value !== null) {
+				if (value != null) {
 					return value.toString();
 				}
 			},

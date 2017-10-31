@@ -22,11 +22,13 @@
 
 	<link rel="import" href="table-demo-behavior.html">
 
-	<style is="custom-style" include="iron-flex iron-flex-alignment iron-positioning">
-		body {
-			font-family: sans-serif;
-		}
-	</style>
+	<custom-style>
+		<style is="custom-style" include="iron-flex iron-flex-alignment iron-positioning">
+			body {
+				font-family: sans-serif;
+			}
+		</style>
+	</custom-style>
 
 </head>
 <body class="fullbleed">
@@ -48,7 +50,7 @@
 				</cosmoz-omnitable-column-autocomplete>
 				<cosmoz-omnitable-column-boolean title="Is active" name="isactive" value-path="isActive" true-label="Oui" false-label="Non">
 				</cosmoz-omnitable-column-boolean>
-				<cosmoz-omnitable-column-autocomplete external-values 
+				<cosmoz-omnitable-column-autocomplete external-values
 					loading="[[ eyeColorSearching ]]"
 					filter="{{ eyeColorFilter }}"
 					query="{{ eyeColorQuery }}"
@@ -72,7 +74,7 @@
 			</cosmoz-omnitable>
 		</div>
 	</template>
-			
+
 	<script type="text/javascript">
 /*global window */
 (function () {
