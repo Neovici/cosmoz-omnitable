@@ -19,6 +19,9 @@
 				text-overflow: ellipsis;
 			}
 
+			:host > ::slotted([hidden]),:host [hidden] {
+				display: none !important;
+			}
 		</style>
 		<slot name="item-cell"></slot>
 	</template>
