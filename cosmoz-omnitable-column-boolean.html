@@ -43,7 +43,9 @@
 				filter: {
 					type: Boolean,
 					notify: true,
-					value: null
+					value: function () {
+						return this._getDefaultFilter();
+					}
 				},
 
 				trueLabel: {

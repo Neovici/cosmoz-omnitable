@@ -53,17 +53,6 @@
 					value: true
 				},
 
-				filter: {
-					type: Object,
-					notify: true,
-					value() {
-						return {
-							min: { currency: 'SEK' },
-							max: { currency: 'SEK' }
-						};
-					}
-				},
-
 				max: {
 					type: Object,
 					value() {
@@ -308,6 +297,13 @@
 				}
 
 				return true;
+			},
+
+			_getDefaultFilter: function () {
+				return {
+					min: { currency: 'SEK' },
+					max: { currency: 'SEK' }
+				};
 			}
 		});
 

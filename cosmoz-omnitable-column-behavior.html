@@ -46,7 +46,10 @@
 
 			filter: {
 				type: Object,
-				notify: true
+				notify: true,
+				value: function () {
+					return this._getDefaultFilter();
+				}
 			},
 
 			/**
@@ -345,17 +348,24 @@
 		},
 
 		resetFilter: function () {
-			const reset = this.get('properties.filter.value');
-			if (reset === undefined) {
-				// Until date| columns are fixed we must trigger a notification for grouping to happen
-				this.__filterChanged();
-				return;
+			this.filter = this._getDefaultFilter();
+		},
+
+		_getDefaultFilter: function () {
+			const type = this.get('properties.filter.type'),
+				value = this.get('filter');
+
+			if (type === Object && value != null && value.constructor === String) {
+				return null;
 			}
-			if (typeof reset !== 'function') {
-				this.filter = reset;
-				return;
+
+			if (type === Array) {
+				return [];
 			}
-			this.filter = reset();
+
+			if (type === Boolean) {
+				return null;
+			}
 		},
 
 		_applySingleFilter: function (filterString, item) {
