@@ -51,7 +51,7 @@
 
 			_filterText: {
 				type: String,
-				computed: '_computeFilterText(filter.*)'
+				computed: '_computeFilterText(filter.*, formatter)'
 			},
 
 			_possibleDateRange: {
@@ -216,9 +216,10 @@
 				oldValue = this.get(this.valuePath, item),
 				formatFn = value => this.formatter.format(value),
 				dateValue = this.getDate(value);
-			if (this._isValidDate(dateValue)) {
-				this.set(this.valuePath, dateValue, item);
+			if (!this._isValidDate(dateValue)) {
+				return;
 			}
+			this.set(this.valuePath, dateValue, item);
 			this._fireItemChangeEvent(item, this.valuePath, oldValue, formatFn.bind(this));
 		},
 
@@ -231,7 +232,7 @@
 		},
 
 		renderISODateValue(item, valuePath) {
-			const value = this.get(valuePath, item);
+			const value = this.getDate(this.get(valuePath, item));
 			if (!this._isValidDate(value)) {
 				return;
 			}
@@ -255,21 +256,18 @@
 			return value;
 		},
 
-		getFilterFn() {
-			if (!this.filter) {
+		getFilterFn(filter = this.filter) {
+			if (!filter) {
 				return;
 			}
-			return this._applySingleFilter.bind(this, this.filter);
+			return this._applySingleFilter.bind(this, filter);
 		},
-
 		_applySingleFilter(filter, item) {
 			const dateToCheck = this.getDate(this.get(this.valuePath, item));
-
-			if (filter.start && dateToCheck < filter.start) {
+			if (filter.start && (!this._isValidDate(dateToCheck) || dateToCheck < filter.start)) {
 				return false;
 			}
-
-			if (filter.end && dateToCheck > filter.end) {
+			if (filter.end && (!this._isValidDate(dateToCheck) || dateToCheck > filter.end)) {
 				return false;
 			}
 			return true;

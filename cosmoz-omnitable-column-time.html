@@ -79,9 +79,10 @@
 					oldTime = this.getDate(item.date),
 					newTime = this.getDate(oldTime.toISOString().slice(0, 10) + ` ${timeString} `),
 					formatFn = value => value;
-				if (this._isValidDate(newTime)) {
-					this.set(this.valuePath, newTime, item);
+				if (!this._isValidDate(newTime)) {
+					return;
 				}
+				this.set(this.valuePath, newTime, item);
 				this._fireItemChangeEvent(item, this.valuePath, oldTime, formatFn.bind(this));
 			},
 
