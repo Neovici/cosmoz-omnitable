@@ -124,6 +124,11 @@
 				computed: '_getColumn(sortOn, "name", columns)'
 			},
 
+			groupOnDescending: {
+				type: Boolean,
+				value: false,
+				observer: '_debounceGroupItems'
+			},
 			/**
 			 * The column name to group on.
 			 */
@@ -592,6 +597,10 @@
 				return 0;
 			});
 
+			if (this.groupOnDescending) {
+				groups.reverse();
+			}
+
 			this._groupsCount = groups.length;
 			this.filteredGroupedItems = groups;
 		},
@@ -966,6 +975,15 @@
 				return;
 			}
 			this.descending = false;
+		},
+
+		_reverseGroupOnDirection(e) {
+			var column = e.model.column;
+			if (column.name === this.groupOn) {
+				this.groupOnDescending = !this.groupOnDescending;
+				return;
+			}
+			this.groupOnDescending = false;
 		},
 		/**
 		 * Toggle folding of a group
