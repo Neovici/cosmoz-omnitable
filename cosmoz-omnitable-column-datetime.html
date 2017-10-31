@@ -1,24 +1,20 @@
 <link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-date-behavior.html">
 
 <link rel="import" href="../datetime-local/datetime-local.html">
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 
-<link rel="import" href="../cosmoz-moment/cosmoz-moment.html">
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
-
-<link rel="import" href="../datetime-local/datetime-local.html">
-
-<link rel="import" href="cosmoz-omnitable-column-date-behavior.html">
 
 <dom-module id="cosmoz-omnitable-column-datetime">
 	<template>
 		<template class="cell">
-			[[ renderDateValue(item, valuePath, userFormat, locale) ]]
+			[[ getString(item, valuePath, formatter) ]]
 		</template>
 
 		<template class="edit-cell">
 			<datetime-local no-label-float type="datetime-local" on-change="_dateValueChanged"
-				value="[[ renderDateValue(item, valuePath) ]]">
+				value="[[ renderISODateTimeValue(item, valuePath) ]]">
 			</datetime-local>
 		</template>
 
@@ -27,11 +23,11 @@
 					horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
-					<datetime-local min="[[ _formatISODate(_fromMin) ]]" max="[[ _formatISODate(_fromMax) ]]"
-						date-label="[[ _('From date', t) ]]" time-label="[[ _('From time', t) ]]" value="{{ _filterInput.start }}" step$="[[_filterStep]]">
+					<datetime-local min="[[ _getISODate(_fromMin) ]]" max="[[ _getISODate(_fromMax) ]]"
+						date-label="[[ _('From date', t) ]]" time-label="[[ _('From time', t) ]]" value="{{ _filterInput.start }}" step$="[[filterStep]]">
 					</datetime-local>
-					<datetime-local on-datetime-local-value-changed="_valueChanged" min="[[ _formatISODate(_toMin) ]]" max="[[ _formatISODate(_toMax) ]]"
-						value="{{ _filterInput.end }}" step$="[[_filterStep]]">
+					<datetime-local on-datetime-local-value-changed="_valueChanged" min="[[ _getISODate(_toMin) ]]" max="[[ _getISODate(_toMax) ]]"
+						value="{{ _filterInput.end }}" step$="[[filterStep]]">
 					</datetime-local>
 				</div>
 			</paper-dropdown-menu>
@@ -42,18 +38,23 @@
 			is: 'cosmoz-omnitable-column-datetime',
 
 			properties: {
-				_filterStep: {
+				filterStep: {
 					type: Number,
-					computed: '_computeStep(userFormat)'
+					value: 1
 				},
-				/**
-				 * This is the format used to interact with the user, i.e. the format used
-				 * to render dates and to parse date entered by the user.
-				 * Should be a moment.js date format (http://momentjs.com/docs/#/displaying/format/)
-				 */
-				userFormat: {
-					type: String,
-					value: 'YYYY-MM-DD HH:mm:ss.SSS'
+		
+				max: {
+					type: Date,
+					value() {
+						return new Date(Date.UTC(2100, 11, 31, 20, 59, 999));
+					}
+				},
+
+				min: {
+					type: Date,
+					value() {
+						return new Date(Date.UTC(1970, 0, 1, 0, 0, 0));
+					}
 				},
 
 				width: {
@@ -65,41 +66,41 @@
 					type: String,
 					value: '320px'
 				},
-
-				_inputFormat: {
-					type: String,
-					value: 'YYYY-MM-DDTHH:mm:ss.SSS'
+		
+				formatter: {
+					type: Object,
+					computed: '_computeFormatter(locale)'
 				}
 			},
 
 			behaviors: [
-				Cosmoz.MomentBehavior,
 				Cosmoz.OmnitableColumnBehavior,
 				Cosmoz.TranslatableBehavior,
 				Cosmoz.DateColumnBehavior
 			],
 
-			/** ELEMENT LIFECYCLE */
-
-			/** ELEMENT BEHAVIOR */
-
-			_computeStep(userFormat) {
-				if (userFormat.match('S')) {
-					return 0.1;
+			renderISODateTimeValue(item, valuePath) {
+				const value = this.getDate(this.get(valuePath, item));
+				return this._getISODate(value);
+			},
+			_getISODate(filterValue) {
+				if (!this._isValidDate(filterValue)) {
+					return '';
 				}
-				return 1;
+				return filterValue.toISOString().slice(0, 16);
 			},
 
-			/** OVERRIDES */
-
-			/** cosmoz-omnitable-column-date-behavior */
-
-			_formatISODate(mom) {
-				if (!mom || !mom.isValid()) {
-					return;
-				}
-				return mom.format('YYYY-MM-DDTHH:mm:ss');
-			},
+			// OVERRIDES
+			_computeFormatter(locale) {
+				const timeFormatOption = {
+					year: 'numeric',
+					month: 'numeric',
+					day: 'numeric',
+					hour: 'numeric',
+					minute: 'numeric'
+				};
+				return new Intl.DateTimeFormat(locale || undefined, timeFormatOption);
+			}
 		});
 
 	</script>
