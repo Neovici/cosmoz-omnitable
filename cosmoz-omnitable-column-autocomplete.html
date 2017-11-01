@@ -85,10 +85,20 @@
 				}
 				const itemValue = this.get(valuePath, item),
 					textProp = this.textProperty;
+				if (Array.isArray(itemValue)) {
+					return itemValue.join(', ');
+				}
 				if (textProp && typeof itemValue === 'object') {
 					return this.get(textProp, itemValue);
 				}
 				return itemValue;
+			},
+
+			toXlsxValue: function (item, valuePath = this.valuePath) {
+				if (!valuePath) {
+					return '';
+				}
+				return this.getString(item, valuePath);
 			},
 
 			_applySingleFilter: function (filterString, item) {
