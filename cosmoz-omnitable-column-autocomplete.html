@@ -84,9 +84,11 @@
 					return;
 				}
 				const itemValue = this.get(valuePath, item),
-					type = {}.toString.call(itemValue).split(' ')[1].slice(0, -1).toLowerCase(),
 					textProp = this.textProperty;
-				if (textProp && type === 'object') {
+				if (Array.isArray(itemValue)) {
+					return itemValue.join(', ');
+				}
+				if (textProp && typeof itemValue === 'object') {
 					return this.get(textProp, itemValue);
 				}
 				return itemValue;
