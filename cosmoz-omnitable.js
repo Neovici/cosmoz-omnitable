@@ -109,11 +109,6 @@
 				value: false
 			},
 
-			sortDirection: {
-				type: String,
-				computed: '_computeSortDirection(descending, t)'
-			},
-
 			sortOn: {
 				type: String,
 				value: ''
