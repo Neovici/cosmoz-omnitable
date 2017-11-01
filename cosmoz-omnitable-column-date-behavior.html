@@ -233,6 +233,9 @@
 
 		getString(item, valuePath = this.valuePath, formatter = this.formatter) {
 			const value = this.getDate(this.get(valuePath, item));
+			if (value === null) {
+				return '';
+			}
 			if (!this._isValidDate(value)) {
 				return 'Invalid Date';
 			}
