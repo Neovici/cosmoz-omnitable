@@ -964,8 +964,8 @@
 		 * @returns {undefined}
 		 */
 		_reverseSortDirection(e) {
-			var column = e.model.column,
-				data = e.target.dataset,
+			const column = e.model.column,
+				data = Polymer.dom(e).localTarget.dataset,
 				isGroup = data.groupOn != null,
 				compareTo = isGroup ? this.groupOnColumn : this.sortOnColumn,
 				property = isGroup ? 'groupOnDescending' : 'descending';
