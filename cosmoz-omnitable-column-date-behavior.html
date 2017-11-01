@@ -111,6 +111,10 @@
 				value: null
 			}
 		},
+		observers: [
+			'_filterChanged(filter.*)',
+			'_filterInputChanged(_filterInput.start, _filterInput.end)',
+		],
 
 		_computeFormatter(locale) {
 			return new Intl.DateTimeFormat(locale || undefined);
@@ -171,19 +175,12 @@
 			}
 			return ret;
 		},
-	
+
 		_formatISODate(filterValue) {
 			if (!this._isValidDate(filterValue)) {
 				return '';
 			}
 			return filterValue.toISOString().slice(0, 10);
-		},
-
-		_computeFilter(start, end) {
-			return {
-				start: start ? this.getDate(start) : null,
-				end: end ? this.getDate(end) : null,
-			};
 		},
 
 		_computeFilterText(filterNotify, formatter = this.formatter) {
@@ -252,7 +249,7 @@
 		},
 
 		getFilterFn(filter = this.filter) {
-			if (!filter) {
+			if (!filter || filter.start == null  && filter.end == null) {
 				return;
 			}
 			return this._applySingleFilter.bind(this, filter);
@@ -288,5 +285,57 @@
 				end: null,
 			};
 		},
+
+		_toISOString: function (date) {
+			if (!(date instanceof Date)) {
+				return null;
+			}
+			const pad = number => number < 10 ? '0' + number : number;
+			return date.getFullYear() +
+				'-' + pad(date.getMonth() + 1) +
+				'-' + pad(date.getDate()) +
+				'T' + pad(date.getHours()) +
+				':' + pad(date.getMinutes()) +
+				':' + pad(date.getSeconds()) +
+				'.' + (date.getMilliseconds() / 1000).toFixed(3).slice(2, 5);
+		},
+
+		_toStringValue(value) {
+			if (!value || !this._isValidDate(value)) {
+				return '';
+			}
+			return this._toISOString(this.getDate(value)).slice(0, 10);
+		},
+
+		_filterChanged: function (change) {
+			const input = this._filterInput,
+				filter = change.base,
+				start = filter.start,
+				end = filter.end;
+
+			if (!input || this._toStringValue(start) === this._toStringValue(input.start) && this._toStringValue(end) === this._toStringValue(input.end)) {
+				return;
+			}
+
+			this._updatingInput = true;
+			this._filterInput = {
+				start: this._toStringValue(start),
+				end: this._toStringValue(end),
+			};
+			this._updatingInput = false;
+		},
+
+		_filterInputChanged: function (start, end) {
+			const filter = this.filter;
+			if (!filter || this._updatingInput || this._toStringValue(start) === this._toStringValue(filter.start) && this._toStringValue(end) === this._toStringValue(filter.end)) {
+				return;
+			}
+
+			this.filter = {
+				start: this.getDate(start),
+				end: this.getDate(end),
+			};
+		}
+
 	};
 </script>
