@@ -967,7 +967,7 @@
 		 * @param {Event} e The event with the column model.
 		 * @returns {undefined}
 		 */
-		_reverseSortDirection(e) {
+		_applySortingDirection(e) {
 			const column = e.model.column,
 				data = Polymer.dom(e).localTarget.dataset,
 				isGroup = data.groupOn != null,
