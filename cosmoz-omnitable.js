@@ -527,6 +527,9 @@
 		},
 
 		_debounceGroupItems: function () {
+			if (!this.isAttached || !this.filteredItems || this.filteredItems.length < 1) {
+				return;
+			}
 			this.debounce('groupItems', this._groupItems);
 		},
 
