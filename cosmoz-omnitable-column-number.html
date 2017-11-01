@@ -59,16 +59,6 @@
 					type: String,
 					value: '30px'
 				},
-
-				filter: {
-					type: Object,
-					value: function () {
-						return {
-							min: null,
-							max: null
-						};
-					}
-				},
 				formatter: {
 					type: Object,
 					computed: '_computeFormatter(locale, _numberFormatOptions)'
@@ -306,6 +296,13 @@
 					return;
 				}
 				return formatter.format(value);
+			},
+
+			_getDefaultFilter: function () {
+				return {
+					min: null,
+					max: null
+				};
 			}
 		});
 	</script>

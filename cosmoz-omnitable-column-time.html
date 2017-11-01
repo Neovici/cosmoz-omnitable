@@ -54,16 +54,6 @@
 					value: '1'
 				},
 
-				_filterInput: {
-					type: Object,
-					value() {
-						return {
-							start: null,
-							end: null
-						};
-					}
-				},
-
 				formatter: {
 					type: Object,
 					computed: '_computeFormatter(locale)'
@@ -71,7 +61,7 @@
 			},
 
 			_fixedDate: '1970-01-01',
-		
+
 			_timeValueChanged(e) {
 				const input = e.target,
 					timeString = input.value,
@@ -117,7 +107,7 @@
 				}
 				return input;
 			},
-		
+
 			_applySingleFilter(filter, item) {
 				if (!filter || !filter.start && !filter.end) {
 					return true;
@@ -154,14 +144,30 @@
 
 				return true;
 			},
-		
-			_computeFilter(startTime, endTime) {
-				return {
-					start: startTime || null,
-					end: endTime || null
-				};
+
+			_filterChanged: function (change) {
+				const input = this._filterInput,
+					filter = change.base,
+					start = filter.start,
+					end = filter.end;
+
+				if (!input || start === input.start && end === input.end) {
+					return;
+				}
+
+				this._updatingInput = true;
+				this._filterInput = { start, end};
+				this._updatingInput = false;
 			},
-		
+
+			_filterInputChanged: function (start, end) {
+				const filter = this.filter;
+				if (!filter || this._updatingInput || start === filter.start && end  === filter.end) {
+					return;
+				}
+				this.filter = { start, end};
+			},
+
 			_computeFilterText(filterNotify, formatter = this.formatter) {
 				if (!filterNotify) {
 					return null;

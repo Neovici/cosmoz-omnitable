@@ -58,8 +58,8 @@
 				filter: {
 					type: Array,
 					notify: true,
-					value: function () {
-						return [];
+					value() {
+						return this._getDefaultFilter();
 					}
 				},
 			},
