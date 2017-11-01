@@ -3,7 +3,7 @@
 
 	'use strict';
 
-	const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending'];
+	const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending', 'groupOnDescending'];
 
 	Polymer({
 
@@ -621,6 +621,7 @@
 
 			this._updateRouteParam('sortOn');
 			this._updateRouteParam('descending');
+			this._updateRouteParam('groupOnDescending');
 
 			if (!this.sortOn || !sortOnColumn) {
 				this.sortedFilteredGroupedItems = this.filteredGroupedItems;
