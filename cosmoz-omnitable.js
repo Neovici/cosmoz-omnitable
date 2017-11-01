@@ -964,21 +964,17 @@
 		 * @returns {undefined}
 		 */
 		_reverseSortDirection(e) {
-			var column = e.model.column;
-			if (column.name === this.sortOn) {
-				this.descending = !this.descending;
-				return;
-			}
-			this.descending = false;
-		},
+			var column = e.model.column,
+				data = e.target.dataset,
+				isGroup = data.groupOn != null,
+				compareTo = isGroup ? this.groupOnColumn : this.sortOnColumn,
+				property = isGroup ? 'groupOnDescending' : 'descending';
 
-		_reverseGroupOnDirection(e) {
-			var column = e.model.column;
-			if (column.name === this.groupOn) {
-				this.groupOnDescending = !this.groupOnDescending;
+			if (column === compareTo) {
+				this.set(property, !this.get(property));
 				return;
 			}
-			this.groupOnDescending = false;
+			this.set(property, false);
 		},
 		/**
 		 * Toggle folding of a group

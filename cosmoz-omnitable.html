@@ -252,7 +252,7 @@
 										data-group-on$="[[ column.name ]]"
 										hidden$="[[ !column.groupOn ]]"
 										label="[[ column.title ]]"
-										on-tap="_reverseGroupOnDirection">
+										on-tap="_reverseSortDirection">
 									</cosmoz-omnitable-item>
 								</template>
 							</paper-listbox>
@@ -271,8 +271,8 @@
 									<cosmoz-omnitable-item
 										hidden$="[[ !column.sortOn ]]"
 										data-name$="[[ column.name ]]"
-										on-tap="_reverseSortDirection"
-										label="[[ column.title ]]">
+										label="[[ column.title ]]"
+										on-tap="_reverseSortDirection">
 									</cosmoz-omnitable-item>
 								</template>
 							</paper-listbox>
