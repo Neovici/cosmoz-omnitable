@@ -1165,6 +1165,7 @@
 				deserialized = this._deserializeFilter(hashValue, filter && filter.constructor || undefined);
 
 				if (deserialized === null) {
+					column.resetFilter();
 					return;
 				}
 
@@ -1191,7 +1192,7 @@
 		},
 
 		_filterForRouteChanged: function (column) {
-			if (!this.hashParam || !this._routeHashParams || !this.data || !this.data.length)  {
+			if (!this.hashParam || !this._routeHashParams || !this.data)  {
 				return;
 			}
 
