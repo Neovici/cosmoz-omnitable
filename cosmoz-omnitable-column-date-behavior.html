@@ -13,11 +13,6 @@
 				value: true
 			},
 
-			filter: {
-				type: Object,
-				computed: '_computeFilter(_filterInput.start, _filterInput.end)'
-			},
-
 			max: {
 				type: Date,
 				value() {
@@ -272,7 +267,7 @@
 			}
 			return true;
 		},
-	
+
 		_isValidDate(value) {
 			if (!value) {
 				return false;
@@ -285,6 +280,13 @@
 				return false;
 			}
 			return true;
-		}
+		},
+
+		_getDefaultFilter: function () {
+			return {
+				start: null,
+				end: null,
+			};
+		},
 	};
 </script>

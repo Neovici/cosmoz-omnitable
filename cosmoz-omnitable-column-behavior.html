@@ -47,7 +47,7 @@
 			filter: {
 				type: Object,
 				notify: true,
-				value: function () {
+				value() {
 					return this._getDefaultFilter();
 				}
 			},
@@ -352,20 +352,12 @@
 		},
 
 		_getDefaultFilter: function () {
-			const type = this.get('properties.filter.type'),
-				value = this.get('filter');
-
-			if (type === Object && value != null && value.constructor === String) {
-				return null;
-			}
+			const type = this.get('properties.filter.type');
 
 			if (type === Array) {
 				return [];
 			}
-
-			if (type === Boolean) {
-				return null;
-			}
+			return null;
 		},
 
 		_applySingleFilter: function (filterString, item) {
