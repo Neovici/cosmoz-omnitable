@@ -187,8 +187,8 @@
 			if (!filterNotify) {
 				return null;
 			}
-			const startDate = filterNotify.base.start,
-				endDate = filterNotify.base.end,
+			const startDate = this.getDate(filterNotify.base.start),
+				endDate = this.getDate(filterNotify.base.end),
 				text = [];
 			if (this._isValidDate(startDate)) {
 				text.push(formatter.format(startDate));
