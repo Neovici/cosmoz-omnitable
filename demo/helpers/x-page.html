@@ -8,8 +8,6 @@
 <link rel="import" href="../../../paper-button/paper-button.html">
 <link rel="import" href="../../../paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../../../cosmoz-i18next/cosmoz-i18next.html">
-<link rel="import" href="../../../cosmoz-moment/cosmoz-moment.html">
-<link rel="import" href="../../../cosmoz-moment/cosmoz-moment.html">
 <link rel="import" href="../../../cosmoz-viewinfo/cosmoz-viewinfo.html">
 <link rel="import" href="../../cosmoz-omnitable.html">
 <link rel="import" href="../table-demo-behavior.html">
@@ -38,7 +36,6 @@
 				interpolation-suffix="}"
 				key-separator="::"
 				ns-separator=":::"></cosmoz-i18next>
-			<cosmoz-moment locale="[[ locale ]]"></cosmoz-moment>
 
 			<div class="layout horizontal center">
 				<button class="action" on-tap="changeData">Generate a new data set</button>
@@ -79,11 +76,11 @@
 				<cosmoz-omnitable-column-autocomplete title="[[ _('Object', t) ]]" name="object" value-path="object" value-property="value" text-property="label"
 					flex="0" width="125px" overflow>
 				</cosmoz-omnitable-column-autocomplete>
-				<cosmoz-omnitable-column-date title="DateJSON" name="datejson" value-path="dateJSON" sort-on="dateJSON" group-on="dateJSON">
+				<cosmoz-omnitable-column-date title="DateJSON" name="datejson" value-path="dateJSON" sort-on="dateJSON" group-on="dateJSON" locale="{{ locale }}">
 				</cosmoz-omnitable-column-date>
-				<cosmoz-omnitable-column-time title="Time" name="time" value-path="date" sort-on="date" group-on="date">
+				<cosmoz-omnitable-column-time title="Time" name="time" value-path="date" sort-on="date" group-on="date" locale="{{ locale }}">
 				</cosmoz-omnitable-column-time>
-				<cosmoz-omnitable-column-datetime title="Datetime" name="datetime" value-path="date" sort-on="date" group-on="date">
+				<cosmoz-omnitable-column-datetime title="Datetime" name="datetime" value-path="date" sort-on="date" group-on="date" locale="{{ locale }}">
 				</cosmoz-omnitable-column-datetime>
 				<cosmoz-omnitable-column-list title="List" name="list" value-path="list">
 				</cosmoz-omnitable-column-list>
