@@ -16,6 +16,7 @@
 			columns: {
 				type: Array
 			},
+
 			groupOnColumn: {
 				type: Object,
 				observer: '_groupOnColumnChanged'
@@ -162,6 +163,13 @@
 				instance = this._getTemplateInstance(column);
 				element.__instance = instance;
 				element.__column = column;
+
+				if (column === this.groupOnColumn) {
+					element.setAttribute('hidden', '');
+				} else if (element.hasAttribute('hidden')) {
+					element.removeAttribute('hidden', '');
+				}
+
 				this._configureElement(element, column);
 				this._configureTemplateInstance(instance);
 				element.setAttribute('slot', this._slotName);
@@ -193,6 +201,10 @@
 			for (i = 0; i < removedColumns.length; i++) {
 				index = start + i;
 				element = this._elements[index];
+
+				if (element.hasAttribute('hidden')) {
+					element.removeAttribute('hidden');
+				}
 
 				this._detachTemplateInstance(element.__instance, element.__column, element);
 				Polymer.dom(this).removeChild(element);
