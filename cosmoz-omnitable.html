@@ -242,18 +242,24 @@
 			<div class="footer">
 				<div class="footer-controls">
 					<div class="footer-control">
-						<paper-dropdown-menu vertical-align="bottom" horizontal-align="left" id="groupOnSelector" label="[[ _('Group on', t) ]]">
+						<paper-dropdown-menu vertical-align="bottom" horizontal-align="left" id="groupOnSelector"
+							label="[[ _('Group on', t) ]] [[ _computeSortDirection(groupOnDescending, t) ]]">
 							<paper-listbox class="dropdown-content menu" slot="dropdown-content" selected="{{ groupOn }}" attr-for-selected="data-group-on">
 								<cosmoz-omnitable-item data-group-on="" style="font-style: italic" label="[[ _('No grouping', t) ]]"></cosmoz-omnitable-item>
 								<template is="dom-repeat" items="[[ columns ]]" as="column">
-									<cosmoz-omnitable-item data-group-on$="[[ column.name ]]" hidden$="[[ !column.groupOn ]]" label="[[ column.title ]]"></cosmoz-omnitable-item>
+									<cosmoz-omnitable-item
+										data-group-on$="[[ column.name ]]"
+										hidden$="[[ !column.groupOn ]]"
+										label="[[ column.title ]]"
+										on-tap="_applySortingDirection">
+									</cosmoz-omnitable-item>
 								</template>
 							</paper-listbox>
 						</paper-dropdown-menu>
 					</div>
 					<div class="footer-control">
 						<paper-dropdown-menu vertical-align="bottom" horizontal-align="right"
-							label="[[_('Sort on', t)]] [[sortDirection]]">
+							label="[[_('Sort on', t)]] [[ _computeSortDirection(descending, t) ]]">
 							<paper-listbox
 								slot="dropdown-content"
 								class="dropdown-content menu"
@@ -264,8 +270,8 @@
 									<cosmoz-omnitable-item
 										hidden$="[[ !column.sortOn ]]"
 										data-name$="[[ column.name ]]"
-										on-tap="_reverseSortDirection"
-										label="[[ column.title ]]">
+										label="[[ column.title ]]"
+										on-tap="_applySortingDirection">
 									</cosmoz-omnitable-item>
 								</template>
 							</paper-listbox>

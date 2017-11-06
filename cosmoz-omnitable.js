@@ -3,7 +3,7 @@
 
 	'use strict';
 
-	const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending'];
+	const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending', 'groupOnDescending'];
 
 	Polymer({
 
@@ -109,11 +109,6 @@
 				value: false
 			},
 
-			sortDirection: {
-				type: String,
-				computed: '_computeSortDirection(descending, t)'
-			},
-
 			sortOn: {
 				type: String,
 				value: ''
@@ -124,6 +119,11 @@
 				computed: '_getColumn(sortOn, "name", columns)'
 			},
 
+			groupOnDescending: {
+				type: Boolean,
+				value: false,
+				observer: '_debounceGroupItems'
+			},
 			/**
 			 * The column name to group on.
 			 */
@@ -527,6 +527,9 @@
 		},
 
 		_debounceGroupItems: function () {
+			if (!this.isAttached || !this.filteredItems || this.filteredItems.length < 1) {
+				return;
+			}
 			this.debounce('groupItems', this._groupItems);
 		},
 
@@ -592,6 +595,10 @@
 				return 0;
 			});
 
+			if (this.groupOnDescending) {
+				groups.reverse();
+			}
+
 			this._groupsCount = groups.length;
 			this.filteredGroupedItems = groups;
 		},
@@ -617,6 +624,7 @@
 
 			this._updateRouteParam('sortOn');
 			this._updateRouteParam('descending');
+			this._updateRouteParam('groupOnDescending');
 
 			if (!this.sortOn || !sortOnColumn) {
 				this.sortedFilteredGroupedItems = this.filteredGroupedItems;
@@ -959,13 +967,18 @@
 		 * @param {Event} e The event with the column model.
 		 * @returns {undefined}
 		 */
-		_reverseSortDirection(e) {
-			var column = e.model.column;
-			if (column.name === this.sortOn) {
-				this.descending = !this.descending;
+		_applySortingDirection(e) {
+			const column = e.model.column,
+				data = Polymer.dom(e).localTarget.dataset,
+				isGroup = data.groupOn != null,
+				compareTo = isGroup ? this.groupOnColumn : this.sortOnColumn,
+				property = isGroup ? 'groupOnDescending' : 'descending';
+
+			if (column === compareTo) {
+				this.set(property, !this.get(property));
 				return;
 			}
-			this.descending = false;
+			this.set(property, false);
 		},
 		/**
 		 * Toggle folding of a group
