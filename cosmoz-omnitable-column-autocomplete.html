@@ -102,7 +102,7 @@
 			},
 
 			_applySingleFilter: function (filterString, item) {
-				var value = this.get(this.valuePath, item).toString().toLowerCase();
+				const value = this.get(this.valuePath, item).toString().toLowerCase();
 				return value === filterString;
 			},
 
@@ -140,7 +140,7 @@
 						return false;
 					}
 					if (valueProperty) {
-						var value = this.get(valueProperty, item);
+						let value = this.get(valueProperty, item);
 						if (used.indexOf(value) !== -1) {
 							return false;
 						}

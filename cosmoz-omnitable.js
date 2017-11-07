@@ -238,7 +238,7 @@
 			/** WARNING: we do not support columns changes yet. */
 			// `isOmnitableColumn` is a property from cosmoz-omnitable-column-behavior
 			this._columnObserver = Polymer.dom(this).observeNodes(info => {
-				var changedColumns = info.addedNodes
+				const changedColumns = info.addedNodes
 					.concat(info.removedNodes)
 					.filter(child =>
 						child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn
@@ -306,7 +306,7 @@
 
 			event.stopPropagation();
 
-			if (!this.columns) {
+			if (!Array.isArray(this.columns)) {
 				return;
 			}
 
@@ -359,7 +359,7 @@
 		},
 
 		_dataChanged() {
-			if (!this._webWorkerReady || !this.columns) {
+			if (!Array.isArray(this.columns)) {
 				return;
 			}
 			this._setColumnValues();
@@ -414,7 +414,7 @@
 			this.columns = columns;
 			this.visibleColumns = columns.slice();
 
-			if (this._webWorkerReady && this.data) {
+			if (Array.isArray(this.data)) {
 				this._debounceFilterItems();
 			}
 		},
@@ -446,10 +446,10 @@
 		// TODO: provides a mean to avoid setting the values for a column
 		// TODO: should process (distinct, sort, min, max) the values at the column level depending on the column type
 		_setColumnValues: function () {
-			if (!this.data || !Array.isArray(this.data) || this.data.length < 1) {
+			if (!Array.isArray(this.data) || this.data.length < 1) {
 				return;
 			}
-			this.columns.forEach(function (column) {
+			this.columns.forEach(column => {
 				if (!column.bindValues || column.externalValues) {
 					return;
 				}
@@ -462,10 +462,10 @@
 				column.set('values', this.data
 					.map(item => this.get(column.valuePath, item))
 					.filter((value, index, self) =>
-						value !== undefined && value !== null && self.indexOf(value) === index
+						value != null && self.indexOf(value) === index
 					)
 				);
-			}, this);
+			});
 		},
 		/*
 		 * Returns a column based on an attribute.
@@ -485,7 +485,7 @@
 		},
 
 		_filterChanged: function (e, detail) {
-			if (!this.columns || !this.columns.length || this.columns.indexOf(detail.column) < 0) {
+			if (!Array.isArray(this.columns) || this.columns.length < 1 || this.columns.indexOf(detail.column) < 0) {
 				return;
 			}
 			this._debounceFilterItems();
@@ -497,7 +497,7 @@
 		},
 
 		_filterItems: function () {
-			if (this.data && this.data.length && this.columns) {
+			if (Array.isArray(this.data) && this.data.length > 0 && Array.isArray(this.columns)) {
 				// Call filtering code only on columns that has a filter
 				const filterFunctions = this.columns
 					.map(col => col.getFilterFn())
@@ -604,10 +604,48 @@
 		},
 
 		_debounceSortItems: function () {
-			if (!this.data || !this.data.length || !this._webWorkerReady || !this.columns) {
+			if (!Array.isArray(this.data) || this.data.length < 1 || !Array.isArray(this.columns)) {
 				return;
 			}
 			this.debounce('sortItems', this._sortFilteredGroupedItems);
+		},
+
+		/**
+		 * Sorting method, can be overridden
+		*/
+		sorter(a, b) {
+			const v1 = this.sortOnColumn.getComparableValue(a, this.sortOnColumn.sortOn),
+				v2 = this.sortOnColumn.getComparableValue(b, this.sortOnColumn.sortOn);
+
+			if (v1 === v2) {
+				return 0;
+			}
+
+			if (v1 === undefined) {
+				return -1;
+			}
+
+			if (v2 === undefined) {
+				return 1;
+			}
+
+			if (typeof v1 === 'number' && typeof v2 === 'number') {
+				return v1 - v2;
+			}
+
+			if (typeof v1 === 'string' && typeof v2 === 'string') {
+				return v1 < v2 ? -1 : 1;
+			}
+
+			if (typeof v1 === 'boolean' && typeof v2 === 'boolean') {
+				if (v1 === v2) {
+					return 0;
+				}
+				return v1 ? -1 : 1;
+			}
+
+			console.warn('unsupported sort', typeof v1, v1, typeof v2, v2);
+			return 0;
 		},
 
 		_sortFilteredGroupedItems: function () {
@@ -615,88 +653,45 @@
 				return;
 			}
 
-			var sortOnColumn = this.sortOnColumn,
-				items = [],
-				numGroups = this.filteredGroupedItems.length,
-				mappedItems,
-				results = 0,
-				itemMapper;
-
 			this._updateRouteParam('sortOn');
 			this._updateRouteParam('descending');
 			this._updateRouteParam('groupOnDescending');
 
-			if (!this.sortOn || !sortOnColumn) {
+			if (!this.sortOn || !this.sortOnColumn) {
 				this.sortedFilteredGroupedItems = this.filteredGroupedItems;
 				this._debounceAdjustColumns();
 				return;
 			}
 
-			itemMapper = function (item, originalItemIndex) {
-				return {
-					index: originalItemIndex,
-					value: sortOnColumn.getComparableValue(item, sortOnColumn.sortOn)
-				};
-			};
+			const sorter = this.sorter.bind(this);
+
 			if (this._groupsCount > 0) {
-				this.filteredGroupedItems
-					.filter(function (group) {
-						return group.items && group.items.map;
-					})
-					.forEach(function (group, index) {
-						// create a reduced version of the items array to transfer to the worker
-						// with item index and property to sort on
-						mappedItems = group.items.map(itemMapper, this);
-
-						// Sort the reduced version of the array
-						this.$.sortWorker.process({
-							meta: {
-								groupName: group.name,
-								groupId: group.id,
-								index: index
-							},
-							reverse: this.descending,
-							sortOn: 'value',
-							data: mappedItems
-						}, function (data) {
-							results += 1;
-							items[data.meta.index] = {
-								name: data.meta.groupName,
-								id: data.meta.groupId
-							};
-							items[data.meta.index].items = data.data.map(function (item) {
-								return group.items[item.index];
-							});
-							if (results === numGroups) {
-								this.set('sortedFilteredGroupedItems', items);
-								this._debounceAdjustColumns();
-							}
-						}.bind(this));
-					}, this);
-			} else {
-				// No grouping
-				mappedItems = this.filteredGroupedItems.map(itemMapper, this);
-
-				this.$.sortWorker.process({
-					reverse: this.descending,
-					sortOn: 'value',
-					data: mappedItems
-				}, function (data) {
-					// If this omnitable was detached while the web worker was working,
-					// we can't do anything with the sort result.
-					// We should definitively not call _debounceAdjustColumns,
-					// as this will result in a reference to this omnitable being kept
-					// in Polymer debouncers list.
-					if (!this.isAttached) {
-						return;
-					}
-
-					this.set('sortedFilteredGroupedItems', data.data.map(function (item) {
-						return this.filteredGroupedItems[item.index];
-					}, this));
-					this._debounceAdjustColumns();
-				}.bind(this));
+				this.set('sortedFilteredGroupedItems', this.filteredGroupedItems
+					.filter(group => Array.isArray(group.items))
+					.map(group => {
+						group.items.sort(sorter);
+						if (this.descending) {
+							group.items.reverse();
+						}
+						return {
+							name: group.name,
+							id: group.id,
+							items: group.items
+						};
+					}));
+				this._debounceAdjustColumns();
+				return;
 			}
+
+
+			// No grouping
+			this.filteredGroupedItems.sort(sorter);
+			if (this.descending) {
+				this.filteredGroupedItems.reverse();
+			}
+
+			this.set('sortedFilteredGroupedItems', this.filteredGroupedItems.slice());
+			this._debounceAdjustColumns();
 		},
 		/**
 		 * True if the current list is visible.
@@ -718,34 +713,26 @@
 		 * @returns {Boolean} Return
 		 */
 		_adjustColumns: function () {
-			var firstRow,
-				fits,
-				cells,
-				currentWidth,
-				scroller,
-				itemRow,
-				hasVisibleData,
-				visibleData,
-				headerRow,
-				headers;
 
 			// Safety check, but should never happen
 			if (!this.isAttached || !this._isVisible) {
 				return;
 			}
 
-			visibleData = this.sortedFilteredGroupedItems;
-			hasVisibleData = visibleData && Array.isArray(visibleData) && visibleData.length > 0;
-			firstRow = this.$.groupedList.getFirstVisibleItemElement();
+			const firstRow = this.$.groupedList.getFirstVisibleItemElement(),
+				visibleData = this.sortedFilteredGroupedItems,
+				hasVisibleData = visibleData && Array.isArray(visibleData) && visibleData.length > 0;
+
 			if (!hasVisibleData || !firstRow && this.$.groupedList.hasRenderedData) {
 				// reset headers width
-				headerRow = Polymer.dom(this.$.header).querySelector('cosmoz-omnitable-header-row');
-				headers = Array.from(Polymer.dom(headerRow).children);
-				headers.forEach(function (header) {
-					header.style.minWidth = 'auto';
-					header.style.maxWidth = 'none';
-					header.style.width = 'auto';
-				});
+				const headerRow = Polymer.dom(this.$.header).querySelector('cosmoz-omnitable-header-row');
+				Array
+					.from(Polymer.dom(headerRow).children)
+					.forEach(header => {
+						header.style.minWidth = 'auto';
+						header.style.maxWidth = 'none';
+						header.style.width = 'auto';
+					});
 				return;
 			}
 
@@ -756,16 +743,17 @@
 				return;
 			}
 
-			scroller = this.$.scroller;
-			fits = scroller.scrollWidth <= scroller.clientWidth;
-			currentWidth = this.$.tableContent.clientWidth;
-			itemRow = Polymer.dom(firstRow).querySelector('cosmoz-omnitable-item-row');
-			cells = Array.from(Polymer.dom(itemRow).children);
+			var scroller = this.$.scroller,
+				currentWidth = this.$.tableContent.clientWidth,
+				itemRow = Polymer.dom(firstRow).querySelector('cosmoz-omnitable-item-row'),
+				cells = Array.from(Polymer.dom(itemRow).children);
+
+			let fits = scroller.scrollWidth <= scroller.clientWidth;
 
 			if (fits) {
-				fits = cells.every(function (cell) {
-					return cell.__column.overflow || cell.scrollWidth <= cell.clientWidth;
-				});
+				fits = cells.every(cell =>
+					cell.__column.overflow || cell.scrollWidth <= cell.clientWidth
+				);
 			}
 
 			if (fits) {
@@ -785,24 +773,23 @@
 			this._adjustHeadersWidth(cells);
 		},
 
-		_adjustHeadersWidth: function (cells) {
-			var headerRow = Polymer.dom(this.$.header).querySelector('cosmoz-omnitable-header-row'),
+		_adjustHeadersWidth(cells) {
+			const headerRow = Polymer.dom(this.$.header).querySelector('cosmoz-omnitable-header-row'),
 				headers = Array.from(Polymer.dom(headerRow).children);
 
-			cells.forEach(function (cell, index) {
-				var header = headers[index],
-					width;
+			cells.forEach((cell, index) => {
+				const header = headers[index];
 
 				// disabled column headers
 				if (header === undefined) {
 					return;
 				}
 
-				width = getComputedStyle(cell).getPropertyValue('width');
+				let width = getComputedStyle(cell).getPropertyValue('width');
 				header.style.minWidth = width;
 				header.style.maxWidth = width === 'auto' ? 'none' : width;
 				header.style.width = width;
-			}, this);
+			});
 		},
 
 		_canScaleUp: function (width) {
@@ -876,14 +863,6 @@
 				return true;
 			}
 			return false;
-		},
-
-		_onWebWorkerReady: function () {
-			this._webWorkerReady = true;
-			if (this.data && this.columns) {
-				this._setColumnValues();
-				this._debounceFilterItems();
-			}
 		},
 
 		_makeCsvField: function (str) {
@@ -1205,7 +1184,7 @@
 		},
 
 		_filterForRouteChanged: function (column) {
-			if (!this.hashParam || !this._routeHashParams || !this.data)  {
+			if (!this.hashParam || !this._routeHashParams || !Array.isArray(this.data)) {
 				return;
 			}
 
