@@ -238,15 +238,16 @@
 			/** WARNING: we do not support columns changes yet. */
 			// `isOmnitableColumn` is a property from cosmoz-omnitable-column-behavior
 			this._columnObserver = Polymer.dom(this).observeNodes(info => {
-				const changedColumns = info.addedNodes
-					.concat(info.removedNodes)
-					.filter(child =>
-						child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn
-					);
+				const colFilter = child => child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn,
+					addedColumns = info.addedNodes.filter(colFilter),
+					removedColumns = info.removedNodes.filter(colFilter),
+					changedColumns = addedColumns.concat(removedColumns);
 
 				if (changedColumns.length === 0) {
 					return;
 				}
+
+				this._setColumnValues(addedColumns);
 
 				this._debounceUpdateColumns();
 			});
@@ -445,11 +446,11 @@
 		},
 		// TODO: provides a mean to avoid setting the values for a column
 		// TODO: should process (distinct, sort, min, max) the values at the column level depending on the column type
-		_setColumnValues: function () {
-			if (!Array.isArray(this.data) || this.data.length < 1) {
+		_setColumnValues: function (columns = this.columns) {
+			if (!Array.isArray(this.data) || this.data.length < 1 || !Array.isArray(columns) || columns.length < 1) {
 				return;
 			}
-			this.columns.forEach(column => {
+			columns.forEach(column => {
 				if (!column.bindValues || column.externalValues) {
 					return;
 				}
