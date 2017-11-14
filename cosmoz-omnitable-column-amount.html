@@ -241,7 +241,7 @@
 
 			getString: function (item, valuePath, _formatters = this._formatters) {
 				var value = this.get(valuePath || this.valuePath, item);
-				if (value) {
+				if (value && _formatters) {
 					return _formatters[value.currency].format(value.amount);
 				}
 			},
