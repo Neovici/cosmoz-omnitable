@@ -2,13 +2,12 @@
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 
-<link rel="import" href="../cosmoz-behaviors/cosmoz-moneyhelper-behavior.html">
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 
 <dom-module id="cosmoz-omnitable-column-amount">
 	<template>
 		<template class="cell">
-			<span>[[ getString(item, valuePath) ]]</span>
+			<span>[[ getString(item, valuePath, _formatters) ]]</span>
 		</template>
 
 		<template class="edit-cell">
@@ -42,7 +41,6 @@
 
 			behaviors: [
 				Cosmoz.OmnitableColumnBehavior,
-				Cosmoz.MoneyHelperBehavior,
 				Cosmoz.TranslatableBehavior
 			],
 
@@ -67,11 +65,15 @@
 				},
 				_filterText: {
 					type: String,
-					computed: '_computeFilterText(filter.*)'
+					computed: '_computeFilterText(filter.*, _formatters)'
 				},
 				_possibleAmountRange: {
 					type: Object,
 					computed: '_computePossibleAmountRange(values.*)'
+				},
+				_formatters: {
+					type: Object,
+					computed: '_computePossibleFormatters(locale, values.*)'
 				},
 				_fromMin: {
 					type: Object,
@@ -119,18 +121,40 @@
 					value: 'amount-header-cell'
 				}
 			},
-
-			_computeFilterText: function (filterNotify) {
+		
+			_computeFilterText: function (filterNotify, _formatters = this._formatters) {
 				var filter = filterNotify.base,
 					text = [];
+				if (!_formatters) {
+					return '';
+				}
 				if (typeof filter.min.amount === 'number') {
-					text.push(this.renderAmount(filter.min));
+					text.push(_formatters[filter.min.currency].format(filter.min.amount));
 				}
 				text.push(' - ');
 				if (typeof filter.max.amount === 'number') {
-					text.push(this.renderAmount(filter.max));
+					text.push(_formatters[filter.max.currency].format(filter.max.amount));
 				}
 				return text.length > 1 ? text.join('') : null;
+			},
+
+			_computePossibleFormatters: function (locale, change) {
+				const values = change.base;
+				if (!values || !Array.isArray(values) || values.length < 1) {
+					return;
+				}
+				return values
+					// extract currencies
+					.map(value => value.currency)
+					// unique currencies
+					.filter((currency, index, array) => currency != null && array.indexOf(currency) === index)
+					.reduce((all, currency) =>
+						Object.assign(all, {
+							[currency]: new Intl.NumberFormat(locale || undefined, {
+								style: 'currency',
+								currency
+							})
+						}), {});
 			},
 
 			_computePossibleAmountRange: function (change) {
@@ -198,18 +222,14 @@
 
 			_setMinValue: function (event) {
 				const value = this._getNumberValue(event.target.value);
-				this.set('filter.min', {
-					amount: value,
-					currency: this.currency
-				});
+				this.set('filter.min.amount', value);
+				//this.set('filter.min.currency', 'SEK');
 			},
 
 			_setMaxValue: function (event) {
 				const value = this._getNumberValue(event.target.value);
-				this.set('filter.max', {
-					amount: value,
-					currency: this.currency
-				});
+				this.set('filter.max.amount', value);
+				//this.set('filter.max.currency', 'SEK');
 			},
 
 			renderNumberAmount: function (item) {
@@ -219,10 +239,10 @@
 				return accounting.formatNumber(item.amount, item.currency);
 			},
 
-			getString: function (item, valuePath) {
+			getString: function (item, valuePath, _formatters = this._formatters) {
 				var value = this.get(valuePath || this.valuePath, item);
 				if (value) {
-					return this.renderAmount(value);
+					return _formatters[value.currency].format(value.amount);
 				}
 			},
 			toXlsxValue: function () {
@@ -231,7 +251,7 @@
 					return '';
 				}
 
-				return this.renderAmount(value);
+				return this._formatters[value.currency].format(value);
 			},
 
 			renderAmountValue: function (item, valuePath) {
@@ -246,7 +266,7 @@
 				return value && value.currency;
 			},
 
-			_amountValueChanged: function (event) {
+			_amountValueChanged: function (event, _formatters = this._formatters) {
 				var
 					input = event.target,
 					value = input.value,
@@ -261,7 +281,7 @@
 					currency: originalValue.currency
 				};
 				this.set(this.valuePath, newValue, item);
-				this._fireItemChangeEvent(item, this.valuePath, originalValue, this.renderAmount.bind(this));
+				this._fireItemChangeEvent(item, this.valuePath, originalValue, _formatters[value.currency].format.bind(this));
 			},
 
 			getComparableValue(item, valuePath) {

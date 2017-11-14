@@ -193,7 +193,7 @@ data (see [Filtering](#filtering)).
 ```
 
 This column can be used to render
-[Number](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Number) values.
+[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number) values.
 
 The `locale` properties can be used to render the value with a language sensitive representation, using
 [Number.toLocaleString](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString)
@@ -223,7 +223,7 @@ the following prototype:
 
 ```js
 {
-   amount: Numer,
+   amount: Number,
    currency: String
 }
 ```
