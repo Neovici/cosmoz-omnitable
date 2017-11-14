@@ -214,12 +214,20 @@
 				type: Object,
 				notify: true
 			},
+
+			/**
+			 * True when all items are selected.
+			 */
+			_allSelected: {
+				type: Boolean
+			}
 		},
 
 		observers: [
 			'_dataChanged(data.*)',
 			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
-			'_routeHashParamsChanged(_routeHashParams.*, hashParam, columns)'
+			'_routeHashParamsChanged(_routeHashParams.*, hashParam, columns)',
+			' _selectedItemsChanged(selectedItems.*)'
 		],
 
 		behaviors: [
@@ -998,19 +1006,23 @@
 			event.stopPropagation();
 		},
 
+		_selectedItemsChanged: function (change) {
+			if (change.path === 'selectedItems' || change.path === 'selectedItems.splices') {
+				this._allSelected = this.data && change.base.length === this.data.length;
+			}
+		},
+
 		_onAllCheckboxChange: function (event) {
 			if (event.target === null) {
 				return;
 			}
 
 			var checked = event.target.checked;
-
 			if (checked) {
 				this.$.groupedList.selectAll();
 			} else {
 				this.$.groupedList.deselectAll();
 			}
-
 		},
 
 		/** PUBLIC */
