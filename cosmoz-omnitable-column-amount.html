@@ -241,13 +241,13 @@
 
 			getString: function (item, valuePath, _formatters = this._formatters) {
 				var value = this.get(valuePath || this.valuePath, item);
-				if (value && _formatters) {
+				if (value && _formatters && _formatters[value.currency]) {
 					return _formatters[value.currency].format(value.amount);
 				}
 			},
-			toXlsxValue: function () {
+			toXlsxValue: function ( _formatters = this._formatters) {
 				var value = Cosmoz.OmnitableColumnBehavior.toXlsxValue.apply(this, arguments);
-				if (!value) {
+				if (!value || !_formatters || !_formatters[value.currency]) {
 					return '';
 				}
 
