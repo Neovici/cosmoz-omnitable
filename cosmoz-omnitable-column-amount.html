@@ -245,7 +245,7 @@
 					return _formatters[value.currency].format(value.amount);
 				}
 			},
-			toXlsxValue: function ( _formatters = this._formatters) {
+			toXlsxValue: function (_formatters = this._formatters) {
 				var value = Cosmoz.OmnitableColumnBehavior.toXlsxValue.apply(this, arguments);
 				if (!value || !_formatters || !_formatters[value.currency]) {
 					return '';
