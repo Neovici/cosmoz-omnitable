@@ -520,6 +520,7 @@
 		},
 
 		_groupOnColumnChanged: function (column) {
+			this._updateRouteParam('groupOn');
 			if (column && column.filter) {
 				column.resetFilter();
 			} else {
@@ -541,8 +542,6 @@
 				this._groupsCount = 0;
 				return;
 			}
-
-			this._updateRouteParam('groupOn');
 
 			var groupOnColumn = this.groupOnColumn,
 				groups;
