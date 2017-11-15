@@ -69,11 +69,11 @@
 				},
 				_possibleAmountRange: {
 					type: Object,
-					computed: '_computePossibleAmountRange(values.*)'
+					computed: '_computePossibleAmountRange(values)'
 				},
 				_formatters: {
 					type: Object,
-					computed: '_computePossibleFormatters(locale, values.*)'
+					computed: '_computePossibleFormatters(locale, values)'
 				},
 				_fromMin: {
 					type: Object,
@@ -119,27 +119,27 @@
 				headerCellClass: {
 					type: String,
 					value: 'amount-header-cell'
+				},
+				defaultCurrency: {
+					type: String,
+					value: 'SEK'
 				}
 			},
 		
-			_computeFilterText: function (filterNotify, _formatters = this._formatters) {
-				var filter = filterNotify.base,
+			_computeFilterText: function (filterNotify) {
+				const filter = filterNotify.base,
 					text = [];
-				if (!_formatters) {
-					return '';
-				}
 				if (typeof filter.min.amount === 'number') {
-					text.push(_formatters[filter.min.currency].format(filter.min.amount));
+					text.push(this.renderAmount(filter.min));
 				}
 				text.push(' - ');
 				if (typeof filter.max.amount === 'number') {
-					text.push(_formatters[filter.max.currency].format(filter.max.amount));
+					text.push(this.renderAmount(filter.max));
 				}
 				return text.length > 1 ? text.join('') : null;
 			},
 
-			_computePossibleFormatters: function (locale, change) {
-				const values = change.base;
+			_computePossibleFormatters: function (locale, values) {
 				if (!values || !Array.isArray(values) || values.length < 1) {
 					return;
 				}
@@ -157,8 +157,7 @@
 						}), {});
 			},
 
-			_computePossibleAmountRange: function (change) {
-				var values = change.base;
+			_computePossibleAmountRange: function (values) {
 				if (!values || !Array.isArray(values) || values.length < 1) {
 					return {
 						min: { amount: null },
@@ -178,7 +177,7 @@
 			},
 
 			_computeTooltip: function (title, filterText) {
-				var ret = title;
+				const ret = title;
 				if (filterText !== undefined && filterText !== null) {
 					ret += ': ' + filterText;
 				}
@@ -222,14 +221,18 @@
 
 			_setMinValue: function (event) {
 				const value = this._getNumberValue(event.target.value);
-				this.set('filter.min.amount', value);
-				//this.set('filter.min.currency', 'SEK');
+				this.set('filter.min', {
+					amount: value,
+					currency: this.defaultCurrency
+				});
 			},
 
 			_setMaxValue: function (event) {
 				const value = this._getNumberValue(event.target.value);
-				this.set('filter.max.amount', value);
-				//this.set('filter.max.currency', 'SEK');
+				this.set('filter.max', {
+					amount: value,
+					currency: this.defaultCurrency
+				});
 			},
 
 			renderNumberAmount: function (item) {
@@ -239,49 +242,48 @@
 				return accounting.formatNumber(item.amount, item.currency);
 			},
 
-			getString: function (item, valuePath, _formatters = this._formatters) {
-				var value = this.get(valuePath || this.valuePath, item);
+			getString: function (item, valuePath) {
+				const value = this.get(valuePath || this.valuePath, item);
+				return this.renderAmount(value);
+			},
+			toXlsxValue: function () {
+				const value = Cosmoz.OmnitableColumnBehavior.toXlsxValue.apply(this, arguments);
+				return this.renderAmount(value);
+			},
+
+			renderAmount: function (value, _formatters = this._formatters) {
 				if (value && _formatters && _formatters[value.currency]) {
 					return _formatters[value.currency].format(value.amount);
 				}
-			},
-			toXlsxValue: function (_formatters = this._formatters) {
-				var value = Cosmoz.OmnitableColumnBehavior.toXlsxValue.apply(this, arguments);
-				if (!value || !_formatters || !_formatters[value.currency]) {
-					return '';
-				}
-
-				return this._formatters[value.currency].format(value);
+				return '';
 			},
 
 			renderAmountValue: function (item, valuePath) {
-				var value = this.get(valuePath, item);
+				const value = this.get(valuePath, item);
 				if (value) {
 					return value.amount;
 				}
 			},
 
 			_getCurrency: function (item, valuePath) {
-				var value = this.get(valuePath, item);
+				const value = this.get(valuePath, item);
 				return value && value.currency;
 			},
 
-			_amountValueChanged: function (event, _formatters = this._formatters) {
-				var
+			_amountValueChanged: function (event) {
+				const
 					input = event.target,
 					value = input.value,
 					item = event.model.item,
-					amountValue,
-					originalValue = this.get(this.valuePath, item),
-					newValue;
+					originalValue = this.get(this.valuePath, item);
 
-				amountValue = Number(value);
-				newValue = {
-					amount: amountValue,
-					currency: originalValue.currency
-				};
+				let amountValue = Number(value),
+					newValue = {
+						amount: amountValue,
+						currency: originalValue.currency
+					};
 				this.set(this.valuePath, newValue, item);
-				this._fireItemChangeEvent(item, this.valuePath, originalValue, _formatters[value.currency].format.bind(this));
+				this._fireItemChangeEvent(item, this.valuePath, originalValue);
 			},
 
 			getComparableValue(item, valuePath) {
@@ -321,8 +323,8 @@
 
 			_getDefaultFilter: function () {
 				return {
-					min: { currency: 'SEK' },
-					max: { currency: 'SEK' }
+					min: { currency: this.defaultCurrency },
+					max: { currency: this.defaultCurrency }
 				};
 			}
 		});
