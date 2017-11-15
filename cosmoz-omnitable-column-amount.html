@@ -177,7 +177,7 @@
 			},
 
 			_computeTooltip: function (title, filterText) {
-				const ret = title;
+				let ret = title;
 				if (filterText !== undefined && filterText !== null) {
 					ret += ': ' + filterText;
 				}
