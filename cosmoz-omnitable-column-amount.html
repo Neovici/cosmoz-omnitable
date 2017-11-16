@@ -158,7 +158,7 @@
 			},
 
 			_computePossibleAmountRange: function (values) {
-				if (!values || !Array.isArray(values) || values.length < 1) {
+				if (!Array.isArray(values) || values.length < 1) {
 					return {
 						min: { amount: null },
 						max: { amount: null }
@@ -283,7 +283,7 @@
 						currency: originalValue.currency
 					};
 				this.set(this.valuePath, newValue, item);
-				this._fireItemChangeEvent(item, this.valuePath, originalValue);
+				this._fireItemChangeEvent(item, this.valuePath, originalValue, this.renderAmount.bind(this));
 			},
 
 			getComparableValue(item, valuePath) {
