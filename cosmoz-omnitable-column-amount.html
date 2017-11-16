@@ -151,14 +151,19 @@
 					// extract currencies
 					.map(value => value.currency)
 					// unique currencies
-					.filter((currency, index, array) => currency != null && array.indexOf(currency) === index)
+					.filter((currency, index, array) => currency != null && currency !== this.defaultCurrency && array.indexOf(currency) === index)
 					.reduce((all, currency) =>
 						Object.assign(all, {
 							[currency]: new Intl.NumberFormat(locale || undefined, {
 								style: 'currency',
 								currency
 							})
-						}), {});
+						}), {
+						[this.defaultCurrency]: new Intl.NumberFormat(locale || undefined, {
+							style: 'currency',
+							currency: this.defaultCurrency
+						})
+					});
 			},
 
 			_computePossibleAmountRange: function (values) {
@@ -237,13 +242,6 @@
 					amount: value,
 					currency: this.defaultCurrency
 				});
-			},
-
-			renderNumberAmount: function (item) {
-				if (!item) {
-					return;
-				}
-				return accounting.formatNumber(item.amount, item.currency);
 			},
 
 			getString: function (item, valuePath) {
