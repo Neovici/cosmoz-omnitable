@@ -62,6 +62,12 @@
 					'Himenaeos',
 					'maximus diam purus at mauris'
 				],
+				currencies = [
+					'SEK',
+					'USD',
+					'EUR',
+					'AUD'
+				],
 				listValue,
 				listValueCount;
 
@@ -94,7 +100,7 @@
 						dateJSON: getRandomDateJSON(),
 						amount: {
 							amount: getRandomInt(10, 100),
-							currency: 'SEK'
+							currency: currencies[n % currencies.length]
 						},
 						group: group,
 						list: listValue
