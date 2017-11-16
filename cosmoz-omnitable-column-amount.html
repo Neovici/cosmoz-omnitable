@@ -123,6 +123,10 @@
 				defaultCurrency: {
 					type: String,
 					value: 'SEK'
+				},
+				locale: {
+					type: String,
+					value: null
 				}
 			},
 		
@@ -140,7 +144,7 @@
 			},
 
 			_computePossibleFormatters: function (locale, values) {
-				if (!values || !Array.isArray(values) || values.length < 1) {
+				if (!Array.isArray(values) || values.length < 1) {
 					return;
 				}
 				return values
