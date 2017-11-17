@@ -1,29 +1,15 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../paper-dialog/paper-dialog.html">
 <link rel="import" href="../cosmoz-dialog/cosmoz-dialog-behavior.html">
-
 <dom-module id="cosmoz-omnitable-filter-dialog">
     <template>
+            <style include="paper-dialog-shared-styles"></style>
         <style>
-            paper-dialog {
-                height: 90vh;
-                width: 90vw;
+            :host {
+                padding: 12px;
             }
         </style>
-        <paper-dialog id="dialog" opened>
-            <h2>Dialog Title</h2>
-            <div id="filters">
-                <div id="filter">
-
-                </div>
-            </div>
-
-        </paper-dialog>
-
-        <template id="t" preserve-content>
-                <div>Yo</div>
-            </template>
-        
+            <h2>Filter</h2>
+            <div id="filters"></div>
     </template>
     <script>
     (() => {
@@ -32,7 +18,7 @@
     		is: 'cosmoz-omnitable-filter-dialog',
     
     		behaviors: [
-    			Cosmoz.DialogBehavior
+    			Polymer.PaperDialogBehavior,
     		],
 
     		properties: {
@@ -60,7 +46,9 @@
     				if (!instance) {
     					return;
     				}
-    				instance._flushProperties(true);
+    				if (instance._flushProperties) {
+    					instance._flushProperties(true);
+    				}
     				Polymer.dom(this.$.filters).appendChild(instance.root);
     			});
     		}

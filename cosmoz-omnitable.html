@@ -18,6 +18,7 @@
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 <link rel="import" href="../cosmoz-bottom-bar/cosmoz-bottom-bar.html"/>
 <link rel="import" href="../cosmoz-page-router/cosmoz-page-location.html">
+<link rel="import" href="../cosmoz-dialog/cosmoz-dialog.html">
 
 <link rel="import" href="../import-filesaver/import-filesaver.html"/>
 <link rel="import" href="../nullxlsx/dist/import-nullxlsx.html"/>
@@ -53,7 +54,15 @@
 					<paper-checkbox checked$="{{ _allSelected }}" on-change="_onAllCheckboxChange" hidden$="[[ !_dataIsValid ]]">
 					</paper-checkbox>
 				</div>
-				<cosmoz-omnitable-header-row columns="[[ visibleColumns ]]" group-on-column="[[ groupOnColumn ]]"></cosmoz-omnitable-header-row>
+				<cosmoz-omnitable-header-row columns="[[ visibleColumns ]]" group-on-column="[[ groupOnColumn ]]">
+					<div slot="suffix" class="align-right" hidden$="[[allVisible]]">
+						<paper-icon-button
+							class="filter"
+							icon="icons:filter-list"
+							on-click="_openFilterDialog">
+						</paper-icon-button>
+					</div>
+				</cosmoz-omnitable-header-row>
 			</div>
 			<div class="tableContent" id="tableContent">
 				<template is="dom-if" if="[[ !_dataIsValid ]]">
@@ -196,7 +205,13 @@
 		<div id="columns">
 			<slot></slot>
 		</div>
-		<cosmoz-omnitable-filter-dialog columns="[[disabledColumns]]"></cosmoz-omnitable-filter-dialog>
+		
+		<cosmoz-omnitable-filter-dialog
+			id="filterDialog"
+			columns="[[disabledColumns]]" 
+			with-backdrop>
+		</cosmoz-omnitable-filter-dialog>
+		
 	</template>
 	<script type="text/javascript" src="cosmoz-omnitable.js"></script>
 </dom-module>

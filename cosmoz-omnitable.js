@@ -220,6 +220,13 @@
 			 */
 			_allSelected: {
 				type: Boolean
+			},
+			/**
+			 * True when all columns are visible.
+			 */
+			allVisible: {
+				type: Boolean,
+				computed: '_computeAllVisible(visibleColumns.*, columns)'
 			}
 		},
 
@@ -295,6 +302,14 @@
 
 		_computeShowCheckboxes(dataIsValid, hasActions) {
 			return dataIsValid && hasActions;
+		},
+
+		_computeAllVisible(visibleColumnsChange, columns) {
+			const visibleColumns = visibleColumnsChange.base;
+			if (!visibleColumns || !columns) {
+				return;
+			}
+			return visibleColumns.length === columns.length;
 		},
 
 		_visibleColumnsChanged() {
@@ -617,10 +632,13 @@
 			}
 			this.debounce('sortItems', this._sortFilteredGroupedItems);
 		},
-
 		/**
-		 * Sorting method, can be overridden
-		*/
+		 * Sorting method, can be overridden.
+		 *
+		 * @param {any} a Compare value
+		 * @param {any} b Compare value
+		 * @returns {Number} 0, 1, -1
+		 */
 		sorter(a, b) {
 			const v1 = this.sortOnColumn.getComparableValue(a, this.sortOnColumn.sortOn),
 				v2 = this.sortOnColumn.getComparableValue(b, this.sortOnColumn.sortOn);
@@ -1209,6 +1227,10 @@
 			}
 
 			this.set(path, serialized === undefined ? null : serialized);
+		},
+
+		_openFilterDialog() {
+			this.$$('#filterDialog').open();
 		}
 	});
 }());
