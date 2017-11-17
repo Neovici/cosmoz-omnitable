@@ -31,6 +31,7 @@
 <link rel="import" href="cosmoz-omnitable-styles.html">
 <link rel="import" href="cosmoz-omnitable-item.html">
 <link rel="import" href="cosmoz-omnitable-columns.html">
+<link rel="import" href="cosmoz-omnitable-filter-dialog.html">
 
 
 <!--
@@ -195,7 +196,7 @@
 		<div id="columns">
 			<slot></slot>
 		</div>
-
+		<cosmoz-omnitable-filter-dialog columns="[[disabledColumns]]"></cosmoz-omnitable-filter-dialog>
 	</template>
 	<script type="text/javascript" src="cosmoz-omnitable.js"></script>
 </dom-module>

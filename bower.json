@@ -40,6 +40,7 @@
 		"cosmoz-bottom-bar": "neovici/cosmoz-bottom-bar#master",
 		"cosmoz-behaviors": "neovici/cosmoz-behaviors#master",
 		"cosmoz-page-router": "Neovici/cosmoz-page-router#master",
+		"cosmoz-dialog": "Neovici/cosmoz-dialog#master",
 		"paper-autocomplete-chips": "Neovici/paper-autocomplete-chips#master",
 		"import-filesaver": "JaySunSyn/import-filesaver",
 		"datetime-local": "JaySunSyn/datetime-local#polymer-1",

@@ -1,0 +1,70 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../cosmoz-dialog/cosmoz-dialog-behavior.html">
+
+<dom-module id="cosmoz-omnitable-filter-dialog">
+    <template>
+        <style>
+            paper-dialog {
+                height: 90vh;
+                width: 90vw;
+            }
+        </style>
+        <paper-dialog id="dialog" opened>
+            <h2>Dialog Title</h2>
+            <div id="filters">
+                <div id="filter">
+
+                </div>
+            </div>
+
+        </paper-dialog>
+
+        <template id="t" preserve-content>
+                <div>Yo</div>
+            </template>
+        
+    </template>
+    <script>
+    (() => {
+    	'use strict';
+    	Polymer({
+    		is: 'cosmoz-omnitable-filter-dialog',
+    
+    		behaviors: [
+    			Cosmoz.DialogBehavior
+    		],
+
+    		properties: {
+    			columns: {
+    				type: Array
+    			}
+    		},
+
+    		observers: [
+    			'_columnsChanged(columns.*)'
+    		],
+
+    		_columnsChanged(columnsChange) {
+    			const columns = columnsChange.base,
+    				filters = this.$.filters;
+
+    			if (!columns) {
+    				return;
+    			}
+    
+    			filters.innerHTML = '';
+    
+    			columns.forEach(c => {
+    				const instance = c.headerTemplatizer.getInstance();
+    				if (!instance) {
+    					return;
+    				}
+    				instance._flushProperties(true);
+    				Polymer.dom(this.$.filters).appendChild(instance.root);
+    			});
+    		}
+    	});
+    })();
+    </script>
+</dom-module>
