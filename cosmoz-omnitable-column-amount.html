@@ -35,6 +35,7 @@
 		</template>
 	</template>
 	<script type="text/javascript">
+		/*global accounting*/
 		Polymer({
 			is: 'cosmoz-omnitable-column-amount',
 
@@ -158,11 +159,11 @@
 								currency
 							})
 						}), {
-							[this.defaultCurrency]: new Intl.NumberFormat(locale || undefined, {
-								style: 'currency',
-								currency: this.defaultCurrency
-							})
-						});
+						[this.defaultCurrency]: new Intl.NumberFormat(locale || undefined, {
+							style: 'currency',
+							currency: this.defaultCurrency
+						})
+					});
 			},
 
 			_computePossibleAmountRange: function (values) {
