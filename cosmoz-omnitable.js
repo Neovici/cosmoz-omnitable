@@ -804,7 +804,7 @@
 			const headerRow = Polymer.dom(this.$.header).querySelector('cosmoz-omnitable-header-row'),
 				headers = Array.from(Polymer.dom(headerRow).children)
 					.filter(h => {
-						return h.getAttribute('slot') !== 'suffix';
+						return h.getAttribute('slot') === 'header-cell';
 					});
 
 			cells.forEach((cell, index) => {
