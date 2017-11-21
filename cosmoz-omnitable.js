@@ -632,6 +632,7 @@
 			}
 			this.debounce('sortItems', this._sortFilteredGroupedItems);
 		},
+
 		/**
 		 * Sorting method, can be overridden.
 		 *
