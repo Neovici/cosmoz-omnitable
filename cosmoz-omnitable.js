@@ -801,7 +801,10 @@
 
 		_adjustHeadersWidth(cells) {
 			const headerRow = Polymer.dom(this.$.header).querySelector('cosmoz-omnitable-header-row'),
-				headers = Array.from(Polymer.dom(headerRow).children);
+				headers = Array.from(Polymer.dom(headerRow).children)
+					.filter(h => {
+						return h.getAttribute('slot') !== 'suffix';
+					});
 
 			cells.forEach((cell, index) => {
 				const header = headers[index];
