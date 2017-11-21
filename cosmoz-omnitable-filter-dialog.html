@@ -1,25 +1,22 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../cosmoz-dialog/cosmoz-dialog-behavior.html">
 <dom-module id="cosmoz-omnitable-filter-dialog">
     <template>
-            <style include="paper-dialog-shared-styles"></style>
         <style>
-            :host {
-                padding: 12px;
-            }
-        </style>
-            <h2>Filter</h2>
-            <div id="filters"></div>
+			.container {
+				padding: 12px;
+			}
+		</style>
+		<div class="container">
+			<h2>Filter</h2>
+			<div id="filters"></div>
+		</div>
+            
     </template>
     <script>
     (() => {
     	'use strict';
     	Polymer({
     		is: 'cosmoz-omnitable-filter-dialog',
-    
-    		behaviors: [
-    			Polymer.PaperDialogBehavior,
-    		],
 
     		properties: {
     			columns: {

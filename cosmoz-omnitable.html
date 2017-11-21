@@ -205,12 +205,15 @@
 		<div id="columns">
 			<slot></slot>
 		</div>
-		
-		<cosmoz-omnitable-filter-dialog
-			id="filterDialog"
-			columns="[[disabledColumns]]" 
-			with-backdrop>
-		</cosmoz-omnitable-filter-dialog>
+
+		<cosmoz-dialog with-backdrop id="filterDialog">
+			<template>
+				<cosmoz-omnitable-filter-dialog
+					columns="[[disabledColumns]]" 
+					with-backdrop>
+				</cosmoz-omnitable-filter-dialog>
+			</template>
+		</cosmoz-dialog>
 		
 	</template>
 	<script type="text/javascript" src="cosmoz-omnitable.js"></script>
