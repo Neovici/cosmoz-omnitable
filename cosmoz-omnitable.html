@@ -32,7 +32,7 @@
 <link rel="import" href="cosmoz-omnitable-styles.html">
 <link rel="import" href="cosmoz-omnitable-item.html">
 <link rel="import" href="cosmoz-omnitable-columns.html">
-<link rel="import" href="cosmoz-omnitable-filter-dialog.html">
+<link rel="import" href="cosmoz-omnitable-headers-dialog.html">
 
 
 <!--
@@ -55,7 +55,7 @@
 					</paper-checkbox>
 				</div>
 				<cosmoz-omnitable-header-row columns="[[ visibleColumns ]]" group-on-column="[[ groupOnColumn ]]">
-					<div slot="suffix" class="align-right" hidden$="[[allVisible]]">
+					<div slot="suffix" class="align-right" hidden$="[[allColumnsVisible]]">
 						<paper-icon-button
 							class="filter"
 							icon="icons:filter-list"
@@ -208,10 +208,11 @@
 
 		<cosmoz-dialog with-backdrop id="filterDialog">
 			<template>
-				<cosmoz-omnitable-filter-dialog
+				<cosmoz-omnitable-headers-dialog
+					title="[[_('Filter', t)]]"
 					columns="[[disabledColumns]]" 
 					with-backdrop>
-				</cosmoz-omnitable-filter-dialog>
+				</cosmoz-omnitable-headers-dialog>
 			</template>
 		</cosmoz-dialog>
 		

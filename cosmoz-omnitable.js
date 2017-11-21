@@ -222,11 +222,11 @@
 				type: Boolean
 			},
 			/**
-			 * True when all columns are visible.
+			 * True if all columns are visible.
 			 */
-			allVisible: {
+			allColumnsVisible: {
 				type: Boolean,
-				computed: '_computeAllVisible(visibleColumns.*, columns)'
+				computed: '_computeColumnsAllVisible(visibleColumns.*, columns)'
 			}
 		},
 
@@ -304,7 +304,7 @@
 			return dataIsValid && hasActions;
 		},
 
-		_computeAllVisible(visibleColumnsChange, columns) {
+		_computeColumnsAllVisible(visibleColumnsChange, columns) {
 			const visibleColumns = visibleColumnsChange.base;
 			if (!visibleColumns || !columns) {
 				return;

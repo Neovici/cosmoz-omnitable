@@ -1,0 +1,81 @@
+<link rel="import" href="../polymer/polymer.html">
+<!--
+`cosmoz-omnitable-headers-dialog` is an element for displaying omnitable column headers in a separate dialog.
+
+    <cosmoz-dialog>
+		<template>
+			<cosmoz-omnitable-headers-dialog
+				columns="[[disabledColumns]]">
+			</cosmoz-omnitable-headers-dialog>
+		</template>
+	</cosmoz-dialog>
+
+In the above example, the `<cosmoz-omnitable-headers-dialog>` element is wrapped
+with a `cosmoz-dialog` element which enables it to be displayed as a dialog.
+
+@group Cosmoz Elements
+@element cosmoz-omnitable-headers-dialog
+@demo demo/index.html
+-->
+<dom-module id="cosmoz-omnitable-headers-dialog">
+	<template>
+		<style>
+			.container {
+				padding: 12px;
+			}
+		</style>
+		<div class="container">
+			<h2>[[title]]</h2>
+			<div id="headers"></div>
+		</div>
+	</template>
+	<script>
+	(() => {
+		'use strict';
+		Polymer({
+			is: 'cosmoz-omnitable-headers-dialog',
+
+			properties: {
+				/**
+				 * The omnitable columns of which the headers should be displayed.
+				*/
+				columns: {
+					type: Array
+				},
+				/**
+				 * The title displayed in the dialog.
+				*/
+				title: {
+					type: String
+				}
+			},
+
+			observers: [
+				'_columnsChanged(columns.*)'
+			],
+
+			_columnsChanged(columnsChange) {
+				const columns = columnsChange.base,
+					headers = this.$.headers;
+
+				if (!columns) {
+					return;
+				}
+
+				headers.innerHTML = '';
+
+				columns.forEach(c => {
+					const instance = c.headerTemplatizer.getInstance();
+					if (!instance) {
+						return;
+					}
+					if (instance._flushProperties) {
+						instance._flushProperties(true);
+					}
+					Polymer.dom(this.$.headers).appendChild(instance.root);
+				});
+			}
+		});
+})();
+	</script>
+</dom-module>
