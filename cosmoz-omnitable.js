@@ -1133,7 +1133,6 @@
 			if (value === undefined ||  deserialized === this.get(key)) {
 				return;
 			}
-			console.log('updating property from hash', key, value);
 			this.set(key, deserialized);
 		},
 
@@ -1162,7 +1161,6 @@
 				column.resetFilter();
 				return;
 			}
-			console.log('updating filter from hash', key, value);
 			column.set('filter', deserialized);
 		},
 
@@ -1184,8 +1182,8 @@
 				this._routeHashFilterChanged(match[1], value);
 			}
 		},
+
 		_routeHashChanged: function (changes, hashParam, columns) {
-			console.log('changed', changes.path, changes.value);
 			if (!changes || !hashParam || !columns || !columns.length) {
 				return;
 			}
@@ -1216,7 +1214,6 @@
 				return;
 			}
 
-			console.log('updating route param', key, serialized);
 			this.set(path, serialized === undefined ? null : serialized);
 		},
 
