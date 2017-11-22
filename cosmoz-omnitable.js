@@ -1141,14 +1141,10 @@
 		},
 
 		_routeHashFilterChanged(key, value) {
-			const name = key,
-				columns = this.columns,
-				column = name && columns.find(c => c.name === name);
+			const column = this.columns.find(c => c.name === key);
 
 			if (!column) {
-				if (name) {
-					console.warn('column with name', name, 'for param', key, 'not found!');
-				}
+				console.warn('column with name', name, 'for param', key, 'not found!');
 				return;
 			}
 
@@ -1174,21 +1170,18 @@
 			return new RegExp('^' + hashParam + '-(.+?)(?=(?:--|$))(?:-{2})?([A-Za-z0-9-_]+)?$');
 		},
 		_routeHashKeyChanged: function (key, value) {
-			const rule = new RegExp('^' + this.hashParam + '-(.+?)(?=(?:--|$))(?:-{2})?([A-Za-z0-9-_]+)?$');
-			let match = key && key.match(rule);
+			const match = key.match(this._routeHashKeyRule);
 
 			if (!Array.isArray(match)) {
 				return;
 			}
 
-			match = match.slice(1);
-
-			if (match[1] == null && PROPERTY_HASH_PARAMS.indexOf(match[0]) > -1) {
-				this._routeHashPropertyChanged(match[0], value);
+			if (match[2] == null && PROPERTY_HASH_PARAMS.indexOf(match[1]) > -1) {
+				this._routeHashPropertyChanged(match[1], value);
 				return;
 			}
-			if (match[1] !== null && match[0] === 'filter') {
-				this._routeHashFilterChanged(match[1], value);
+			if (match[2] !== null && match[1] === 'filter') {
+				this._routeHashFilterChanged(match[2], value);
 			}
 		},
 
