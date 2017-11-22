@@ -104,7 +104,7 @@
 			_autocompleteSelectedItemsChanged: function () {
 				const filter = this.filter,
 					items = this.autocompleteSelectedItems;
-				if (Array.isArray(filter) && items.every((item, i) => item.value === filter[i])) {
+				if (Array.isArray(filter) && items.length === this.filter.length &&  items.every((item, i) => item.value === filter[i])) {
 					return;
 				}
 				this.filter = this.autocompleteSelectedItems.map(item => item.value);
@@ -112,7 +112,7 @@
 
 			_filterChanged(filter, autoItems) {
 				const items = this.autocompleteSelectedItems;
-				if (!Array.isArray(autoItems) || Array.isArray(items) && filter.every((f, i) => items[i] && f === items[i].value)) {
+				if (!Array.isArray(autoItems) || Array.isArray(items) && items.length === this.filter.length && filter.every((f, i) => items[i] && f === items[i].value)) {
 					return;
 				}
 				this.autocompleteSelectedItems = this.filter.map(f => {
