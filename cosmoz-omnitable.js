@@ -214,6 +214,10 @@
 				type: Object,
 				notify: true
 			},
+			_routeHashKeyRule: {
+				type: RegExp,
+				computed: '_computeRouteHashKeyRule(hashParam)'
+			},
 
 			/**
 			 * True when all items are selected.
@@ -1163,7 +1167,12 @@
 			}
 			column.set('filter', deserialized);
 		},
-
+		_computeRouteHashKeyRule(hashParam) {
+			if (!hashParam) {
+				return;
+			}
+			return new RegExp('^' + hashParam + '-(.+?)(?=(?:--|$))(?:-{2})?([A-Za-z0-9-_]+)?$');
+		},
 		_routeHashKeyChanged: function (key, value) {
 			const rule = new RegExp('^' + this.hashParam + '-(.+?)(?=(?:--|$))(?:-{2})?([A-Za-z0-9-_]+)?$');
 			let match = key && key.match(rule);
