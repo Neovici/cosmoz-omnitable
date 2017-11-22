@@ -624,6 +624,9 @@
 
 		/**
 		 * Sorting method, can be overridden
+		 * @param {*} a First compare value
+		 * @param {*} b Second compare value
+		 * @returns {void}
 		*/
 		sorter(a, b) {
 			const v1 = this.sortOnColumn.getComparableValue(a, this.sortOnColumn.sortOn),
