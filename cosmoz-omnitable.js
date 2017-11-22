@@ -1196,10 +1196,12 @@
 				key = path && path.split('.')[1];
 
 			if (key) {
+				//If key is set we have a sub property change
 				this._routeHashKeyChanged(key, changes.value);
 				return;
 			}
 
+			//If the full object has changed update _routeHashKeyChanged for each property
 			Object.keys(changes.base).forEach(key => {
 				this._routeHashKeyChanged(key, changes.base[key]);
 			});
