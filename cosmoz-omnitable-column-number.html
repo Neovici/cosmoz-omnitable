@@ -132,7 +132,8 @@
 			},
 
 			observers: [
-				'_debounceSetFilter(_filterInput.*)'
+				'_debounceSetFilter(_filterInput.*)',
+				'_filterChanged(filter.*)'
 			],
 
 			_computeFilterText: function (locale, filterNotify) {
@@ -185,6 +186,41 @@
 				this.debounce('setFilter', this._setFilter, 600);
 			},
 
+			toNumber(value, limit, limitFunc) {
+				if (value == null || value ===  '' || isNaN(value)) {
+					return null;
+				}
+				const number = Number(value);
+				if (limit == null || limitFunc == null) {
+					return number;
+				}
+				return limitFunc(value, limit);
+			},
+
+			_setFilter: function () {
+				const input = this._filterInput,
+					min = this.toNumber(input.min, this.toNumber(this._fromMax), Math.min),
+					max = this.toNumber(input.max, this.toNumber(this._toMin), Math.max),
+					filter = this.filter;
+
+				if (min === filter.min && max === filter.max) {
+					return;
+				}
+				this.set('filter', { min, max });
+			},
+
+			_filterChanged(change) {
+				const input = this._filterInput,
+					filter = change.base,
+					min = this.toNumber(filter.min, this.toNumber(this._fromMax), Math.min),
+					max = this.toNumber(filter.max, this.toNumber(this._toMin), Math.max);
+
+				if (!input || min === this.toNumber(input.min) && max === this.toNumber(input.max)) {
+					return;
+				}
+				this.set('_filterInput', { min, max });
+				this.cancelDebouncer('setFilter');
+			},
 
 			_getMinMax: function (first, second, max) {
 				var doMax = max === 1;
