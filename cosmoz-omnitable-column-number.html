@@ -93,24 +93,9 @@
 				},
 				_filterInput: {
 					type: Object,
-					value: function () {
-						return {
-							min: null,
-							max: null
-						};
+					value() {
+						return this._getDefaultFilter();
 					}
-				},
-				_filterText: {
-					type: String,
-					computed: '_computeFilterText(locale, filter.*)'
-				},
-				_fromMax: {
-					type: Object,
-					computed: '_getMinMax(_possibleNumberRange.max, filter.max, 0)'
-				},
-				_fromMin: {
-					type: Object,
-					computed: '_getMinMax(_possibleNumberRange.min, min, 0)'
 				},
 				_numberFormatOptions: {
 					type: Object,
@@ -120,13 +105,25 @@
 					type: Object,
 					computed: '_computePossibleNumberRange(values.*)'
 				},
-				_toMax: {
+				_fromMin: {
 					type: Object,
-					computed: '_getMinMax(_possibleNumberRange.max, max, 1)'
+					computed: '_getMinMax(_possibleNumberRange.min, min, 0)'
+				},
+				_fromMax: {
+					type: Object,
+					computed: '_getMinMax(_possibleNumberRange.max, filter.max, 0)'
 				},
 				_toMin: {
 					type: Object,
 					computed: '_getMinMax(_possibleNumberRange.min, filter.min, 1)'
+				},
+				_toMax: {
+					type: Object,
+					computed: '_getMinMax(_possibleNumberRange.max, max, 1)'
+				},
+				_filterText: {
+					type: String,
+					computed: '_computeFilterText(locale, filter.*)'
 				},
 				_tooltip: {
 					type: String,
