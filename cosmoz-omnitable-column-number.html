@@ -185,33 +185,6 @@
 				this.debounce('setFilter', this._setFilter, 600);
 			},
 
-			_enforceLowestMax: function (minRangeValue, minRangeMax) {
-				if (minRangeValue === null || minRangeMax === null || minRangeValue === '' || minRangeMax === '') {
-					return;
-				}
-				if (minRangeValue > minRangeMax) {
-					this.set('_filterInput.min', minRangeMax);
-				}
-			},
-
-			_enforceHighestMin: function (maxRangeValue, maxRangeMin) {
-				if (maxRangeValue === null || maxRangeMin === null || maxRangeValue === '' || maxRangeMin === '') {
-					return;
-				}
-				if (maxRangeValue < maxRangeMin) {
-					this.set('_filterInput.max', maxRangeMin);
-				}
-			},
-
-			_setFilter: function () {
-				this._enforceLowestMax(this._filterInput.min, this._fromMax);
-				this._enforceHighestMin(this._filterInput.max, this._toMin);
-				var newFilter = this._filterInput;
-				this.set('filter', {
-					min: newFilter.min !== null && newFilter.min !== '' ? Number(newFilter.min) : null,
-					max: newFilter.max !== null && newFilter.max !== '' ? Number(newFilter.max) : null
-				});
-			},
 
 			_getMinMax: function (first, second, max) {
 				var doMax = max === 1;
