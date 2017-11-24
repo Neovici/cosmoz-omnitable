@@ -51,14 +51,13 @@
 			}
 			const number = Number(value);
 			if (Number.isNaN(number)) {
-				console.warn('Not a number', value);
 				return;
 			}
 			return number;
 		},
 		toLimitedNumber(value, limit, limitFunc) {
 			const number = this.toNumber(value);
-			if (value == null) {
+			if (number == null) {
 				return;
 			}
 			if (limit == null || limitFunc == null) {
@@ -66,6 +65,7 @@
 			}
 			return limitFunc(number, limit);
 		},
+
 		limitNumbers(func = Math.min, ...numbers) {
 			if (!numbers.length) {
 				return;
@@ -155,7 +155,7 @@
 				lMax = this.toLimitedNumber(input.max, this.toNumber(limit.toMin), Math.max);
 
 			if (lMin !== min || lMax !== max) {
-				this.set('filter', { min: lMin, max: lMax });
+				this.set('_filterInput', { min: lMin, max: lMax });
 				this.flushDebouncer('_updateFilter');
 				return;
 			}
