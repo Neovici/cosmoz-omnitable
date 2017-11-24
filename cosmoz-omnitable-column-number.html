@@ -1,4 +1,5 @@
 <link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-range-behavior.html">
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../paper-input/paper-input.html">
@@ -20,10 +21,10 @@
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
 					<paper-input type="number" label="[[ _('From', t) ]]" value="{{ _filterInput.min }}"
-						min="[[ _fromMin ]]" max="[[ _fromMax ]]">
+						min="[[ _limit.fromMin ]]" max="[[ _limit.fromMax ]]">
 					</paper-input>
 					<paper-input type="number" label="[[ _('To', t) ]]" value="{{ _filterInput.max }}"
-						min="[[ _toMin ]]" max="[[ _toMax ]]">
+						min="[[ _limit.toMin ]]" max="[[ _limit.toMax ]]">
 					</paper-input>
 				</div>
 			</paper-dropdown-menu>
@@ -35,26 +36,19 @@
 
 			behaviors: [
 				Cosmoz.OmnitableColumnBehavior,
-				Cosmoz.TranslatableBehavior
+				Cosmoz.TranslatableBehavior,
+				Cosmoz.RangeColumnBehavior
 			],
 
 			properties: {
-				bindValues: {
-					type: Boolean,
-					readOnly: true,
-					value: true
-				},
-
 				cellClass: {
 					type: String,
 					value: 'number-cell align-right'
 				},
-
 				width: {
 					type: String,
 					value: '30px'
 				},
-
 				editWidth: {
 					type: String,
 					value: '30px'
@@ -71,9 +65,6 @@
 					type: String,
 					value: null
 				},
-				max: {
-					type: Number
-				},
 				maximumFractionDigits: {
 					type: Number,
 					value: null
@@ -82,44 +73,9 @@
 					type: Number,
 					value: null // browser default 0 for numbers, currency-specific or 2 for currency
 				},
-				min: {
-					type: Number
-				},
-				values: {
-					type: Array,
-					value: function () {
-						return [];
-					}
-				},
-				_filterInput: {
-					type: Object,
-					value() {
-						return this._getDefaultFilter();
-					}
-				},
 				_numberFormatOptions: {
 					type: Object,
 					computed: '_computeNumberFormatOptions(minimumFractionDigits, maximumFractionDigits)'
-				},
-				_possibleNumberRange: {
-					type: Object,
-					computed: '_computePossibleNumberRange(values.*)'
-				},
-				_fromMin: {
-					type: Object,
-					computed: '_getMinMax(_possibleNumberRange.min, min, 0)'
-				},
-				_fromMax: {
-					type: Object,
-					computed: '_getMinMax(_possibleNumberRange.max, filter.max, 0)'
-				},
-				_toMin: {
-					type: Object,
-					computed: '_getMinMax(_possibleNumberRange.min, filter.min, 1)'
-				},
-				_toMax: {
-					type: Object,
-					computed: '_getMinMax(_possibleNumberRange.max, max, 1)'
 				},
 				_filterText: {
 					type: String,
@@ -130,12 +86,9 @@
 					computed: '_computeTooltip(title, _filterText)'
 				}
 			},
-
-			observers: [
-				'_debounceSetFilter(_filterInput.*)',
-				'_filterChanged(filter.*)'
-			],
-
+			_computeFormatter(locale, _numberFormatOptions) {
+				return new Intl.NumberFormat(locale || undefined, _numberFormatOptions);
+			},
 			_computeFilterText: function (locale, filterNotify) {
 				var filter = filterNotify.base,
 					text = [];
@@ -148,98 +101,6 @@
 					text.push(this.formatter.format(filter.max));
 				}
 				return text.length > 1 ? text.join('') : null;
-			},
-
-			_computeFormatter(locale, _numberFormatOptions) {
-				return new Intl.NumberFormat(locale || undefined, _numberFormatOptions);
-			},
-
-			_computePossibleNumberRange: function (change) {
-				var values = change.base;
-				if (!values || !Array.isArray(values) || values.length < 1) {
-					return {
-						min: null,
-						max: null
-					};
-				}
-				return values.reduce(function (acc, item) {
-					// TODO: Use fx
-					if (!acc.max || item > acc.max) {
-						acc.max = item;
-					}
-					if (!acc.min || item < acc.min) {
-						acc.min = item;
-					}
-					return acc;
-				}, {});
-			},
-
-			_computeTooltip: function (title, filterText) {
-				var ret = title;
-				if (filterText != null) {
-					ret += ': ' + filterText;
-				}
-				return ret;
-			},
-
-			_debounceSetFilter: function () {
-				this.debounce('setFilter', this._setFilter, 600);
-			},
-
-			toNumber(value, limit, limitFunc) {
-				if (value == null || value ===  '' || isNaN(value)) {
-					return null;
-				}
-				const number = Number(value);
-				if (limit == null || limitFunc == null) {
-					return number;
-				}
-				return limitFunc(value, limit);
-			},
-
-			_setFilter: function () {
-				const input = this._filterInput,
-					min = this.toNumber(input.min, this.toNumber(this._fromMax), Math.min),
-					max = this.toNumber(input.max, this.toNumber(this._toMin), Math.max),
-					filter = this.filter;
-
-				if (min === filter.min && max === filter.max) {
-					return;
-				}
-				this.set('filter', { min, max });
-			},
-
-			_filterChanged(change) {
-				const input = this._filterInput,
-					filter = change.base,
-					min = this.toNumber(filter.min, this.toNumber(this._fromMax), Math.min),
-					max = this.toNumber(filter.max, this.toNumber(this._toMin), Math.max);
-
-				if (!input || min === this.toNumber(input.min) && max === this.toNumber(input.max)) {
-					return;
-				}
-				this.set('_filterInput', { min, max });
-				this.cancelDebouncer('setFilter');
-			},
-
-			_getMinMax: function (first, second, max) {
-				var doMax = max === 1;
-
-				// TODO: Use fx
-
-				if (first === null && second !== null) {
-					return second;
-				}
-
-				if (second === null && first !== null) {
-					return first;
-				}
-
-				if (first > second) {
-					return doMax ? first : second;
-				}
-
-				return doMax ? second : first;
 			},
 
 			_computeNumberFormatOptions(minimumFractionDigits, maximumFractionDigits) {
@@ -267,34 +128,6 @@
 				return this.formatter.format(value);
 			},
 
-			getFilterFn: function () {
-				if (this.filter && (typeof this.filter.min === 'number' || typeof this.filter.max === 'number')) {
-					return this._applySingleFilter.bind(this, this.filter);
-				}
-			},
-
-			getComparableValue: function (item, valuePath) {
-				var value = this.get(valuePath, item);
-				if (value != null && typeof value === 'number') {
-					return value;
-				}
-			},
-
-			_applySingleFilter: function (filter, item) {
-				var value = this.getComparableValue(item, this.valuePath),
-					minValue = this.getComparableValue(filter, 'min'),
-					maxValue = this.getComparableValue(filter, 'max');
-
-				if (value < minValue) {
-					return false;
-				}
-
-				if (value > maxValue) {
-					return false;
-				}
-
-				return true;
-			},
 
 			renderNumberValue: function (item, valuePath, formatter) {
 				const value = this.get(valuePath, item);

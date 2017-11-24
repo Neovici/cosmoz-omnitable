@@ -1,0 +1,183 @@
+<script>
+	window.Cosmoz = window.Cosmoz || {};
+
+	/** @polymerBehavior */
+	Cosmoz.RangeColumnBehavior = {
+		properties: {
+			bindValues: {
+				type: Boolean,
+				readOnly: true,
+				value: true
+			},
+
+			values: {
+				type: Array,
+				value: function () {
+					return [];
+				}
+			},
+
+			_filterInput: {
+				type: Object,
+				value() {
+					return { min: null, max: null };
+				}
+			},
+
+			_range: {
+				type: Object,
+				computed: '_computeRange(values.*)'
+			},
+
+			_limit: {
+				type: Object,
+				computed: '_computeLimit(_range, filter.*)'
+			},
+
+			_tooltip: {
+				type: String,
+				computed: '_computeTooltip(title, _filterText)'
+			},
+		},
+
+		observers: [
+			'_filterInputChanged(_filterInput.*)',
+			'_filterChanged(filter.*)'
+		],
+
+		toNumber(value) {
+			if (value == null || value === '') {
+				return;
+			}
+			const number = Number(value);
+			if (Number.isNaN(number)) {
+				console.warn('Not a number', value);
+				return;
+			}
+			return number;
+		},
+
+		limitNumbers(func = Math.min, ...numbers) {
+			if (!numbers.length) {
+				return;
+			}
+			const validNumbers = numbers.map(n => this.toNumber(n)).filter(n => n != null);
+			if (!validNumbers.length) {
+				return;
+			}
+			return func.apply(null, validNumbers);
+		},
+
+		getComparableValue: function (item, valuePath) {
+			return this.toNumber(valuePath != null ? this.get(valuePath, item) : item);
+		},
+
+		_computeRange: function (change) {
+			const values = change.base;
+
+			if (!Array.isArray(values) || values.length < 1) {
+				return {
+					min: null,
+					max: null
+				};
+			}
+			return values.reduce((acc, item) => {
+				acc.max = this.limitNumbers(Math.max, acc.max, this.getComparableValue(item));
+				acc.min = this.limitNumbers(Math.min, acc.min, this.getComparableValue(item));
+				return acc;
+			}, {});
+		},
+
+		_computeLimit(range, filterChange) {
+			const filter = filterChange.base;
+			return {
+				fromMin: range.min,
+				fromMax: this.limitNumbers(Math.min, range.max, this.getComparableValue(filter, 'max')),
+				toMin: this.limitNumbers(Math.max, range.min, this.getComparableValue(filter, 'min')),
+				toMax: range.max
+			};
+		},
+
+		getFilterFn() {
+			const min = this.getComparableValue(this.filter, 'min'),
+				max = this.getComparableValue(this.filter, 'max');
+
+			if (min == null && max == null) {
+				return;
+			}
+			return this._applySingleFilter.bind(this, this.filter);
+		},
+
+		_applySingleFilter: function (filter, item) {
+			var value = this.getComparableValue(item, this.valuePath),
+				minValue = this.getComparableValue(filter, 'min'),
+				maxValue = this.getComparableValue(filter, 'max');
+
+			if (value < minValue) {
+				return false;
+			}
+
+			if (value > maxValue) {
+				return false;
+			}
+
+			return true;
+		},
+
+		_computeTooltip: function (title, text) {
+			if (text == null) {
+				return title;
+			}
+			return `${title}: ${text}`;
+		},
+
+
+		_filterInputChanged: function (change) {
+			console.log('path', change.path);
+			const input = change.base,
+				limit = this._limit,
+				iMin = this.toNumber(input.min),
+				iMax = this.toNumber(input.max),
+				lMin = this.limitNumbers(Math.min, iMin, limit.fromMax),
+				lMax = this.limitNumbers(Math.max, iMax, limit.toMin);
+
+			if (iMin !== lMin || iMax !== lMax) {
+				this.set('_filterInput', { min: lMin, max: lMax });
+				return;
+			}
+
+			this.debounce('_updateFilter', this._updateFilter, 600);
+		},
+
+		_updateFilter: function () {
+			const input = this._filterInput,
+				min = this.toNumber(input.min),
+				max = this.toNumber(input.max),
+				filter = this.filter;
+
+			if (min === this.getComparableValue(filter, 'min') && max === this.getComparableValue(filter, 'max')) {
+				return;
+			}
+
+			this._updateFilterFromInput(min, max);
+
+		},
+
+		_updateFilterFromInput(min, max) {
+			this.set('filter', { min, max });
+		},
+
+		_filterChanged(change) {
+			const input = this._filterInput,
+				filter = change.base,
+				min = this.getComparableValue(filter, 'min'),
+				max = this.getComparableValue(filter, 'max');
+
+			if (!input || min === this.toNumber(input.min) && max === this.toNumber(input.max)) {
+				return;
+			}
+			this.set('_filterInput', { min, max });
+			this.cancelDebouncer('_updateFilter');
+		},
+	};
+</script>
