@@ -24,7 +24,18 @@
 
 			behaviors: [
 				Cosmoz.OmnitableColumnBehavior
-			]
+			],
+			_serializeFilter: function (filter = this.filter) {
+				return filter || null;
+			},
+
+			_deserializeFilter: function (obj) {
+				return obj || null;
+			},
+
+			resetFilter: function () {
+				this.filter = null;
+			}
 		});
 
 	</script>
