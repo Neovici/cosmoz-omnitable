@@ -46,18 +46,6 @@
 			],
 
 			properties: {
-				max: {
-					type: Object,
-					value() {
-						return {};
-					}
-				},
-				min: {
-					type: Object,
-					value() {
-						return {};
-					}
-				},
 				_filterText: {
 					type: String,
 					computed: '_computeFilterText(filter.*, _formatters)'
@@ -98,12 +86,14 @@
 
 			_computeFilterText: function (filterNotify) {
 				const filter = filterNotify.base,
+					min = this.getComparableValue(filter, 'min'),
+					max = this.getComparableValue(filter, 'max'),
 					text = [];
-				if (typeof filter.min.amount === 'number') {
+				if (min != null) {
 					text.push(this.renderAmount(filter.min));
 				}
 				text.push(' - ');
-				if (typeof filter.max.amount === 'number') {
+				if (max != null) {
 					text.push(this.renderAmount(filter.max));
 				}
 				return text.length > 1 ? text.join('') : null;
@@ -132,18 +122,6 @@
 					});
 			},
 
-			_getNumberValue: function (value) {
-				if (value == null || value === '') {
-					return;
-				}
-				const number = Number(value);
-				if (Number.isNaN(number)) {
-					console.warn('Not a number', value);
-					return;
-				}
-				return number;
-			},
-
 			getString: function (item, valuePath) {
 				const value = this.get(valuePath || this.valuePath, item);
 				return this.renderAmount(value);
@@ -155,10 +133,15 @@
 			},
 
 			renderAmount: function (value, _formatters = this._formatters) {
-				if (value && _formatters && _formatters[value.currency]) {
-					return _formatters[value.currency].format(value.amount);
+				if (!value || !_formatters) {
+					return '';
 				}
-				return '';
+				const formatter = _formatters[value.currency];
+				if (!formatter) {
+					console.warn('formatter not found');
+					return '';
+				}
+				return formatter.format(value.amount);
 			},
 
 			renderAmountValue: function (item, valuePath) {
@@ -199,16 +182,31 @@
 			},
 
 			_updateFilterFromInput(min, max) {
-				let filter = Object.assign({}, this.filter);
-				filter.min.amount = min;
-				filter.max.amount = max;
-				this.set('filter', filter);
+				const filter = this.filter;
+				this.set('filter', {
+					min: {amount: min, currency: filter.min.currency || this.defaultCurrency},
+					max: {amount: max, currency: filter.max.currency || this.defaultCurrency}
+				});
 			},
 
 			_getDefaultFilter: function () {
 				return {
 					min: { currency: this.defaultCurrency },
 					max: { currency: this.defaultCurrency }
+				};
+			},
+			_deserializeFilter: function (obj) {
+				if (obj == null || obj  === '') {
+					return null;
+				}
+				const matches = obj.match(/^([-0-9.]+)?~([-0-9.]+)?/i);
+
+				if (!Array.isArray(matches)) {
+					return null;
+				}
+				return {
+					min: {amount: matches[1], currency: this.filter.min.currency || this.defaultCurrency},
+					max: {amount: matches[2], currency: this.filter.max.currency || this.defaultCurrency}
 				};
 			}
 		});
