@@ -382,7 +382,39 @@
 
 		__filterChanged: function () {
 			this.fire('cosmoz-column-filter-changed', { column: this });
-		}
+		},
+
+		_serializeFilter: function (obj = this.filter) {
+			const type = {}.toString.call(obj).split(' ')[1].slice(0, -1).toLowerCase();
+			let value = obj;
+
+			if (type === 'array' && !value.length) {
+				value =  null;
+			} else if (type === 'object') {
+				const keys = Object.keys(obj).filter(k => obj[k] != null);
+				if (keys.length > 0) {
+					value = keys.reduce((acc, k) => {
+						acc[k] = obj[k];
+						return acc;
+					}, {});
+				} else {
+					value =  null;
+				}
+			}
+			return this.serialize(value);
+		},
+
+		_deserializeFilter: function (obj) {
+			const type = this.filter && this.filter.constructor || Object;
+
+			if (type === Object && obj == null) {
+				return {};
+			}
+			if (type === Array && obj == null) {
+				return [];
+			}
+			return this.deserialize(obj, type);
+		},
 
 	};
 
