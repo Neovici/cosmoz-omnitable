@@ -1,0 +1,271 @@
+<script>
+	window.Cosmoz = window.Cosmoz || {};
+
+	/** @polymerBehavior */
+	Cosmoz.RangeColumnBehavior = {
+		properties: {
+			bindValues: {
+				type: Boolean,
+				readOnly: true,
+				value: true
+			},
+
+			values: {
+				type: Array,
+				value: function () {
+					return [];
+				}
+			},
+
+			min: {
+				type: Number,
+				value: null
+			},
+
+			max: {
+				type: Number,
+				value: null
+			},
+
+			_filterInput: {
+				type: Object,
+				value() {
+					return { min: null, max: null };
+				}
+			},
+
+			_range: {
+				type: Object,
+				computed: '_computeRange(values.*)'
+			},
+
+			_limit: {
+				type: Object,
+				computed: '_computeLimit(_range, _filterInput.*, min, max)'
+			},
+
+			locale: {
+				type: String,
+				value: null
+			},
+
+			_tooltip: {
+				type: String,
+				computed: '_computeTooltip(title, _filterText)'
+			},
+		},
+
+		observers: [
+			'_filterInputChanged(_filterInput.*)',
+			'_filterChanged(filter.*)'
+		],
+
+		/**
+		 * Converts a value to number optionaly limiting it.
+		 *
+		 * @param  {Number|*} value  The value to convert to number
+		 * @param  {Number|*} limit  The value used to limit the number
+		 * @param  {type} limitFunc  The function used to limit the number (Math.min|Math.max)
+		 * @returns {Number|void}    Value converted to Number or void
+		 */
+		toNumber(value, limit, limitFunc) {
+			if (value == null || value === '') {
+				return;
+			}
+			const number = typeof value === 'number' ? value : Number(value);
+			if (Number.isNaN(number)) {
+				return;
+			}
+			if (limitFunc == null || limit == null) {
+				return number;
+			}
+			let lNumber = this.toNumber(limit);
+			if (lNumber == null) {
+				return number;
+			}
+			return limitFunc(number, lNumber);
+		},
+
+
+		getComparableValue(item, valuePath) {
+			let value = item;
+			if (valuePath != null) {
+				value = this.get(valuePath, item);
+			}
+			return this.toNumber(value);
+		},
+
+		toXlsxValue: function (item, valuePath = this.valuePath) {
+			const value = this.getComparableValue(item, valuePath);
+			if (value == null) {
+				return '';
+			}
+			return value;
+		},
+
+		getString(item, valuePath = this.valuePath) {
+			if (valuePath === undefined) {
+				console.error(this, 'has undefined valuePath', valuePath, 'for item', item);
+				return;
+			}
+			const value = this.get(valuePath, item);
+			if (value == null) {
+				return '';
+			}
+			return this.renderNumber(value);
+		},
+
+		renderNumber() {
+			//overrideable
+		},
+
+		_computeRange(change) {
+			const values = change.base,
+				numbers = Array.isArray(values) && values.length && values.map(i => this.getComparableValue(i)).filter(n => n != null);
+
+			if (!numbers || numbers.length < 1) {
+				return {
+					min: null,
+					max: null
+				};
+			}
+			return {
+				min: Math.min.apply(null, numbers),
+				max: Math.max.apply(null, numbers)
+			};
+		},
+
+		_computeLimit(range, inputChange, min, max) {
+			const input = inputChange.base,
+				nMin = this.toNumber(min),
+				nMax = this.toNumber(max);
+			return {
+				fromMin: nMin != null ? this.toNumber(min) : this.toNumber(range.min),
+				fromMax: this.toNumber(range.max, input.max, Math.min),
+				toMin: this.toNumber(range.min, input.min, Math.max),
+				toMax: nMax != null ? this.toNumber(max) : this.toNumber(range.min)
+			};
+		},
+
+		getFilterFn() {
+			const min = this.getComparableValue(this.filter, 'min'),
+				max = this.getComparableValue(this.filter, 'max');
+
+			if (min == null && max == null) {
+				return;
+			}
+			return this._applySingleFilter.bind(this, this.filter);
+		},
+
+		_applySingleFilter: function (filter, item) {
+			var value = this.getComparableValue(item, this.valuePath),
+				minValue = this.getComparableValue(filter, 'min'),
+				maxValue = this.getComparableValue(filter, 'max');
+
+			if (value < minValue) {
+				return false;
+			}
+
+			if (value > maxValue) {
+				return false;
+			}
+
+			return true;
+		},
+
+		_computeFilterText(filterChange) {
+			var filter = filterChange.base,
+				min = this.getComparableValue(filter, 'min'),
+				max = this.getComparableValue(filter, 'max'),
+				text = [];
+
+			if (min != null) {
+				text.push(this.renderNumber(filter.min));
+			}
+			text.push(' - ');
+			if (max != null) {
+				text.push(this.renderNumber(filter.max));
+			}
+			return text.length > 1 ? text.join('') : null;
+
+		},
+
+		_computeTooltip(title, text) {
+			if (text == null) {
+				return title;
+			}
+			return `${title}: ${text}`;
+		},
+
+
+		_filterInputChanged() {
+			this.debounce('_updateFilter', this._updateFilter, 600);
+		},
+
+		_updateFilter() {
+			const input = this._filterInput,
+				filter = this.filter,
+				limit = this._limit,
+				min = this.toNumber(input.min),
+				max = this.toNumber(input.max),
+				lMin = this.toNumber(input.min, limit.fromMax, Math.min),
+				lMax = this.toNumber(input.max, limit.toMin, Math.max);
+
+			if (lMin !== min || lMax !== max) {
+				this.set('_filterInput', { min: lMin, max: lMax });
+				this.flushDebouncer('_updateFilter');
+				return;
+			}
+
+			if (min === this.getComparableValue(filter, 'min') && max === this.getComparableValue(filter, 'max')) {
+				return;
+			}
+
+			this._updateFilterFromInput(min, max);
+
+		},
+
+		_updateFilterFromInput(min, max) {
+			this.set('filter', { min, max });
+		},
+
+		_filterChanged(change) {
+			const input = this._filterInput,
+				filter = change.base,
+				min = this.getComparableValue(filter, 'min'),
+				max = this.getComparableValue(filter, 'max');
+
+			if (!input || min === this.toNumber(input.min) && max === this.toNumber(input.max)) {
+				return;
+			}
+			this.set('_filterInput', { min, max });
+			this.cancelDebouncer('_updateFilter');
+		},
+
+		_serializeFilter(filter = this.filter) {
+			const min = this.getComparableValue(filter, 'min'),
+				max = this.getComparableValue(filter, 'max');
+
+			if (min == null && max == null) {
+				return this.serialize(null);
+			}
+			return (min == null ? '' : min) + '~' + (max == null ? '' : max);
+		},
+
+		_deserializeFilter(obj) {
+			if (obj == null || obj  === '') {
+				return null;
+			}
+			const matches = obj.match(/^([-0-9.]+)?~([-0-9.]+)?/i);
+
+			if (!Array.isArray(matches)) {
+				return null;
+			}
+
+			return {
+				min: this.toNumber(matches[1]),
+				max: this.toNumber(matches[2])
+			};
+		},
+	};
+</script>
