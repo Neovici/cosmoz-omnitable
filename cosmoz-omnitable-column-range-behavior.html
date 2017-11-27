@@ -41,7 +41,10 @@
 
 			_limit: {
 				type: Object,
-				computed: '_computeLimit(_range, _filterInput.*, min, max)'
+				computed: '_computeLimit(_range, _filterInput.*, min, max)',
+				value() {
+					return {};
+				}
 			},
 
 			locale: {
