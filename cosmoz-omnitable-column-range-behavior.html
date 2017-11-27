@@ -17,6 +17,16 @@
 				}
 			},
 
+			min: {
+				type: Number,
+				value: null
+			},
+
+			max: {
+				type: Number,
+				value: null
+			},
+
 			_filterInput: {
 				type: Object,
 				value() {
@@ -31,7 +41,7 @@
 
 			_limit: {
 				type: Object,
-				computed: '_computeLimit(_range, _filterInput.*)'
+				computed: '_computeLimit(_range, _filterInput.*, min, max)'
 			},
 
 			_tooltip: {
@@ -49,12 +59,16 @@
 			if (value == null || value === '') {
 				return;
 			}
+			if (typeof value === 'number') {
+				return value;
+			}
 			const number = Number(value);
 			if (Number.isNaN(number)) {
 				return;
 			}
 			return number;
 		},
+
 		toLimitedNumber(value, limit, limitFunc) {
 			const number = this.toNumber(value);
 			if (number == null) {
@@ -66,44 +80,39 @@
 			return limitFunc(number, limit);
 		},
 
-		limitNumbers(func = Math.min, ...numbers) {
-			if (!numbers.length) {
-				return;
-			}
-			const validNumbers = numbers.map(n => this.toNumber(n)).filter(n => n != null);
-			if (!validNumbers.length) {
-				return;
-			}
-			return func.apply(null, validNumbers);
-		},
-
 		getComparableValue(item, valuePath) {
-			return this.toNumber(valuePath != null ? this.get(valuePath, item) : item);
+			let value = item;
+			if (valuePath != null) {
+				value = this.get(valuePath, item);
+			}
+			return this.toNumber(value);
 		},
 
 		_computeRange(change) {
-			const values = change.base;
+			const values = change.base,
+				numbers = Array.isArray(values) && values.length && values.map(i => this.getComparableValue(i)).filter(n => n != null);
 
-			if (!Array.isArray(values) || values.length < 1) {
+			if (!numbers || numbers.length < 1) {
 				return {
 					min: null,
 					max: null
 				};
 			}
-			return values.reduce((acc, item) => {
-				acc.max = this.limitNumbers(Math.max, acc.max, this.getComparableValue(item));
-				acc.min = this.limitNumbers(Math.min, acc.min, this.getComparableValue(item));
-				return acc;
-			}, {});
+			return {
+				min: Math.min.apply(null, numbers),
+				max: Math.max.apply(null, numbers)
+			};
 		},
 
-		_computeLimit(range, inputChange) {
-			const input = inputChange.base;
+		_computeLimit(range, inputChange, min, max) {
+			const input = inputChange.base,
+				nMin = this.toNumber(min),
+				nMax = this.toNumber(max);
 			return {
-				fromMin: range.min,
-				fromMax: this.limitNumbers(Math.min, range.max, this.toNumber(input.max)),
-				toMin: this.limitNumbers(Math.max, range.min, this.toNumber(input.min)),
-				toMax: range.max
+				fromMin: nMin != null ? this.toNumber(min) : this.toNumber(range.min),
+				fromMax: this.toLimitedNumber(range.max, this.toLimitedNumber(input.max), Math.min),
+				toMin: this.toLimitedNumber(range.min, this.toNumber(input.min), Math.max),
+				toMax: nMax != null ? this.toNumber(max) : this.toNumber(range.min)
 			};
 		},
 
