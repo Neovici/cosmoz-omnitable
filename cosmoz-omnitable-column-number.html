@@ -8,11 +8,11 @@
 <dom-module id="cosmoz-omnitable-column-number">
 	<template>
 		<template class="cell">
-			<div class="omnitable-cell-number">[[ renderNumberValue(item, valuePath, formatter) ]]</div>
+			<div class="omnitable-cell-number">[[ getString(item, valuePath, formatter) ]]</div>
 		</template>
 
 		<template class="edit-cell">
-			<paper-input no-label-float type="number" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]"></paper-input>
+			<paper-input no-label-float type="number" on-change="_valueChanged" value="[[ getString(item, valuePath, formatter) ]]"></paper-input>
 		</template>
 
 		<template class="header">
@@ -65,37 +65,17 @@
 					type: Number,
 					value: null // browser default 0 for numbers, currency-specific or 2 for currency
 				},
-				_numberFormatOptions: {
-					type: Object,
-					computed: '_computeNumberFormatOptions(minimumFractionDigits, maximumFractionDigits)'
-				},
 				formatter: {
 					type: Object,
-					computed: '_computeFormatter(locale, _numberFormatOptions)'
+					computed: '_computeFormatter(locale, minimumFractionDigits, maximumFractionDigits)'
 				},
 				_filterText: {
 					type: String,
-					computed: '_computeFilterText(locale, filter.*)'
+					computed: '_computeFilterText(filter.*, formatter)'
 				}
-			},
-			_computeFormatter(locale, _numberFormatOptions) {
-				return new Intl.NumberFormat(locale || undefined, _numberFormatOptions);
-			},
-			_computeFilterText(locale, filterNotify) {
-				var filter = filterNotify.base,
-					text = [];
-
-				if (typeof filter.min === 'number') {
-					text.push(this.formatter.format(filter.min));
-				}
-				text.push(' - ');
-				if (typeof filter.max === 'number') {
-					text.push(this.formatter.format(filter.max));
-				}
-				return text.length > 1 ? text.join('') : null;
 			},
 
-			_computeNumberFormatOptions(minimumFractionDigits, maximumFractionDigits) {
+			_computeFormatter(locale, minimumFractionDigits, maximumFractionDigits) {
 				const options = {
 					localeMatcher: 'best fit' // chrome expects this when using custom options
 				};
@@ -105,27 +85,15 @@
 				if (maximumFractionDigits !== null) {
 					options.maximumFractionDigits = maximumFractionDigits;
 				}
-				return options;
+				return new Intl.NumberFormat(locale || undefined, options);
 			},
 
-			getString(item, valuePath = this.valuePath) {
-				if (valuePath === undefined) {
-					console.error(this, 'has undefined valuePath', valuePath, 'for item', item);
+			renderNumber(value, formatter = this.formatter) {
+				const number = this.toNumber(value);
+				if (number == null) {
 					return;
 				}
-				const value = this.get(valuePath, item);
-				if (value == null) {
-					return '';
-				}
-				return this.formatter.format(value);
-			},
-
-			renderNumberValue(item, valuePath, formatter) {
-				const value = this.get(valuePath, item);
-				if (value == null) {
-					return;
-				}
-				return formatter.format(value);
+				return formatter.format(number);
 			},
 
 			_getDefaultFilter() {

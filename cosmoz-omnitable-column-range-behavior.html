@@ -94,6 +94,22 @@
 			return this.toNumber(value);
 		},
 
+		getString(item, valuePath = this.valuePath) {
+			if (valuePath === undefined) {
+				console.error(this, 'has undefined valuePath', valuePath, 'for item', item);
+				return;
+			}
+			const value = this.get(valuePath, item);
+			if (value == null) {
+				return;
+			}
+			return this.renderNumber(value);
+		},
+
+		renderNumber() {
+			//overrideable
+		},
+
 		_computeRange(change) {
 			const values = change.base,
 				numbers = Array.isArray(values) && values.length && values.map(i => this.getComparableValue(i)).filter(n => n != null);
@@ -146,6 +162,23 @@
 			}
 
 			return true;
+		},
+
+		_computeFilterText(filterChange) {
+			var filter = filterChange.base,
+				min = this.getComparableValue(filter, 'min'),
+				max = this.getComparableValue(filter, 'max'),
+				text = [];
+
+			if (min != null) {
+				text.push(this.renderNumber(filter.min));
+			}
+			text.push(' - ');
+			if (max != null) {
+				text.push(this.renderNumber(filter.max));
+			}
+			return text.length > 1 ? text.join('') : null;
+
 		},
 
 		_computeTooltip(title, text) {

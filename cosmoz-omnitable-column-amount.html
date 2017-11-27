@@ -13,8 +13,8 @@
 
 		<template class="edit-cell">
 			<paper-input no-label-float type="number" on-change="_amountValueChanged"
-				value="[[ renderAmountValue(item, valuePath) ]]">
-				<div suffix>[[ _getCurrency(item, valuePath) ]]</div>
+				value="[[ getString(item, valuePath, _formatters) ]]">
+				<div suffix>[[ getCurrency(item, valuePath) ]]</div>
 			</paper-input>
 		</template>
 
@@ -46,6 +46,10 @@
 			],
 
 			properties: {
+				defaultCurrency: {
+					type: String,
+					value: 'SEK'
+				},
 				width: {
 					type: String,
 					value: '70px'
@@ -63,37 +67,15 @@
 					type: String,
 					value: 'amount-header-cell'
 				},
-				defaultCurrency: {
-					type: String,
-					value: 'SEK'
-				},
-
 				_filterText: {
 					type: String,
 					computed: '_computeFilterText(filter.*, _formatters)'
 				},
-
 				_formatters: {
 					type: Object,
 					computed: '_computePossibleFormatters(locale, values)'
 				},
 			},
-
-			_computeFilterText(filterNotify) {
-				const filter = filterNotify.base,
-					min = this.getComparableValue(filter, 'min'),
-					max = this.getComparableValue(filter, 'max'),
-					text = [];
-				if (min != null) {
-					text.push(this.renderAmount(filter.min));
-				}
-				text.push(' - ');
-				if (max != null) {
-					text.push(this.renderAmount(filter.max));
-				}
-				return text.length > 1 ? text.join('') : null;
-			},
-
 			_computePossibleFormatters: function (locale, values) {
 				if (!Array.isArray(values) || values.length < 1) {
 					return;
@@ -117,17 +99,26 @@
 					});
 			},
 
-			getString(item, valuePath) {
-				const value = this.get(valuePath || this.valuePath, item);
-				return this.renderAmount(value);
-			},
-
 			toXlsxValue() {
 				const value = Cosmoz.OmnitableColumnBehavior.toXlsxValue.apply(this, arguments);
-				return this.renderAmount(value);
+				return this.renderNumber(value);
 			},
 
-			renderAmount(value, _formatters = this._formatters) {
+			getComparableValue(item, valuePath) {
+				const value = valuePath != null ? this.get(valuePath, item) : item;
+				// TODO: fx
+				if (value == null || value.amount == null) {
+					return;
+				}
+				return this.toNumber(value.amount);
+			},
+
+			getCurrency(item, valuePath) {
+				const value = this.get(valuePath, item);
+				return value && value.currency;
+			},
+
+			renderNumber(value, _formatters = this._formatters) {
 				if (!value || !_formatters) {
 					return '';
 				}
@@ -137,18 +128,6 @@
 					return '';
 				}
 				return formatter.format(value.amount);
-			},
-
-			renderAmountValue(item, valuePath) {
-				const value = this.get(valuePath, item);
-				if (value) {
-					return value.amount;
-				}
-			},
-
-			_getCurrency(item, valuePath) {
-				const value = this.get(valuePath, item);
-				return value && value.currency;
 			},
 
 			_amountValueChanged(event) {
@@ -164,16 +143,7 @@
 						currency: originalValue.currency
 					};
 				this.set(this.valuePath, newValue, item);
-				this._fireItemChangeEvent(item, this.valuePath, originalValue, this.renderAmount.bind(this));
-			},
-
-			getComparableValue(item, valuePath) {
-				const value = valuePath != null ? this.get(valuePath, item) : item;
-				// TODO: fx
-				if (value == null || value.amount == null) {
-					return;
-				}
-				return this.toNumber(value.amount);
+				this._fireItemChangeEvent(item, this.valuePath, originalValue, this.renderNumber.bind(this));
 			},
 
 			_updateFilterFromInput(min, max) {
