@@ -86,12 +86,21 @@
 			return limitFunc(number, lNumber);
 		},
 
+
 		getComparableValue(item, valuePath) {
 			let value = item;
 			if (valuePath != null) {
 				value = this.get(valuePath, item);
 			}
 			return this.toNumber(value);
+		},
+
+		toXlsxValue: function (item, valuePath = this.valuePath) {
+			const value = this.getComparableValue(item, valuePath);
+			if (value == null) {
+				return '';
+			}
+			return value;
 		},
 
 		getString(item, valuePath = this.valuePath) {
@@ -101,7 +110,7 @@
 			}
 			const value = this.get(valuePath, item);
 			if (value == null) {
-				return;
+				return '';
 			}
 			return this.renderNumber(value);
 		},

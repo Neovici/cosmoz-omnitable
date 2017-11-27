@@ -99,9 +99,8 @@
 					});
 			},
 
-			toXlsxValue() {
-				const value = Cosmoz.OmnitableColumnBehavior.toXlsxValue.apply(this, arguments);
-				return this.renderNumber(value);
+			toXlsxValue(item, valuePath = this.valuePath) {
+				return this.getString(item, valuePath);
 			},
 
 			getComparableValue(item, valuePath) {
