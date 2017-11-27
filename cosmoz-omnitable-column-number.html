@@ -22,7 +22,7 @@
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
 					<paper-input type="number" label="[[ _('From', t) ]]" value="{{ _filterInput.min }}"
-						min="[[  _limit.fromMin ]]" max="[[ _limit.fromMax ]]">
+						min="[[ _limit.fromMin ]]" max="[[ _limit.fromMax ]]">
 						<iron-icon style="cursor: pointer;" hidden$="[[ !_filterInput.min.length ]]"
 							suffix slot="suffix" icon="clear" on-click="_clearInput"></iron-icon>
 					</paper-input>
@@ -77,6 +77,13 @@
 				_filterText: {
 					type: String,
 					computed: '_computeFilterText(filter.*, formatter)'
+				}
+			},
+
+			_clearInput(event) {
+				const input = event.path.find(el => el.is === 'paper-input');
+				if (input) {
+					input.value = null;
 				}
 			},
 
