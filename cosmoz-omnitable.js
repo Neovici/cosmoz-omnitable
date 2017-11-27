@@ -541,7 +541,7 @@
 		},
 
 		_debounceGroupItems: function () {
-			if (!this.isAttached || !this.filteredItems || this.filteredItems.length < 1) {
+			if (!this.isAttached || !this.filteredItems) {
 				return;
 			}
 			this.debounce('groupItems', this._groupItems);
