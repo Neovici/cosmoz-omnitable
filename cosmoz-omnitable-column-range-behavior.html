@@ -55,29 +55,30 @@
 			'_filterChanged(filter.*)'
 		],
 
-		toNumber(value) {
+		/**
+		 * Converts a value to number optionaly limiting it.
+		 *
+		 * @param  {Number|*} value  The value to convert to number
+		 * @param  {Number|*} limit  The value used to limit the number
+		 * @param  {type} limitFunc  The function used to limit the number (Math.min|Math.max)
+		 * @returns {Number|void}    Value converted to Number or void
+		 */
+		toNumber(value, limit, limitFunc) {
 			if (value == null || value === '') {
 				return;
 			}
-			if (typeof value === 'number') {
-				return value;
-			}
-			const number = Number(value);
+			const number = typeof value === 'number' ? value : Number(value);
 			if (Number.isNaN(number)) {
 				return;
 			}
-			return number;
-		},
-
-		toLimitedNumber(value, limit, limitFunc) {
-			const number = this.toNumber(value);
-			if (number == null) {
-				return;
-			}
-			if (limit == null || limitFunc == null) {
+			if (limitFunc == null || limit == null) {
 				return number;
 			}
-			return limitFunc(number, limit);
+			let lNumber = this.toNumber(limit);
+			if (lNumber == null) {
+				return number;
+			}
+			return limitFunc(number, lNumber);
 		},
 
 		getComparableValue(item, valuePath) {
@@ -110,8 +111,8 @@
 				nMax = this.toNumber(max);
 			return {
 				fromMin: nMin != null ? this.toNumber(min) : this.toNumber(range.min),
-				fromMax: this.toLimitedNumber(range.max, this.toLimitedNumber(input.max), Math.min),
-				toMin: this.toLimitedNumber(range.min, this.toNumber(input.min), Math.max),
+				fromMax: this.toNumber(range.max, input.max, Math.min),
+				toMin: this.toNumber(range.min, input.min, Math.max),
 				toMax: nMax != null ? this.toNumber(max) : this.toNumber(range.min)
 			};
 		},
@@ -160,8 +161,8 @@
 				limit = this._limit,
 				min = this.toNumber(input.min),
 				max = this.toNumber(input.max),
-				lMin = this.toLimitedNumber(input.min, this.toNumber(limit.fromMax), Math.min),
-				lMax = this.toLimitedNumber(input.max, this.toNumber(limit.toMin), Math.max);
+				lMin = this.toNumber(input.min, limit.fromMax, Math.min),
+				lMax = this.toNumber(input.max, limit.toMin, Math.max);
 
 			if (lMin !== min || lMax !== max) {
 				this.set('_filterInput', { min: lMin, max: lMax });

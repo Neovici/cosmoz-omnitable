@@ -53,10 +53,6 @@
 					type: String,
 					value: '30px'
 				},
-				formatter: {
-					type: Object,
-					computed: '_computeFormatter(locale, _numberFormatOptions)'
-				},
 				headerCellClass: {
 					type: String,
 					value: 'number-header-cell'
@@ -77,13 +73,13 @@
 					type: Object,
 					computed: '_computeNumberFormatOptions(minimumFractionDigits, maximumFractionDigits)'
 				},
+				formatter: {
+					type: Object,
+					computed: '_computeFormatter(locale, _numberFormatOptions)'
+				},
 				_filterText: {
 					type: String,
 					computed: '_computeFilterText(locale, filter.*)'
-				},
-				_tooltip: {
-					type: String,
-					computed: '_computeTooltip(title, _filterText)'
 				}
 			},
 			_computeFormatter(locale, _numberFormatOptions) {

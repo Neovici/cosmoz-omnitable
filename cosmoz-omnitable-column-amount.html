@@ -46,21 +46,10 @@
 			],
 
 			properties: {
-				_filterText: {
-					type: String,
-					computed: '_computeFilterText(filter.*, _formatters)'
-				},
-
-				_formatters: {
-					type: Object,
-					computed: '_computePossibleFormatters(locale, values)'
-				},
-
 				width: {
 					type: String,
 					value: '70px'
 				},
-
 				editWidth: {
 					type: String,
 					value: '70px'
@@ -81,7 +70,16 @@
 				locale: {
 					type: String,
 					value: null
-				}
+				},
+				_filterText: {
+					type: String,
+					computed: '_computeFilterText(filter.*, _formatters)'
+				},
+
+				_formatters: {
+					type: Object,
+					computed: '_computePossibleFormatters(locale, values)'
+				},
 			},
 
 			_computeFilterText(filterNotify) {
