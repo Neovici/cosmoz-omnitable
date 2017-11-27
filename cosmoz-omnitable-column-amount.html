@@ -13,7 +13,7 @@
 
 		<template class="edit-cell">
 			<paper-input no-label-float type="number" on-change="_amountValueChanged"
-				value="[[ getString(item, valuePath, _formatters) ]]">
+				value="[[ getComparableValue(item, valuePath) ]]">
 				<div suffix>[[ getCurrency(item, valuePath) ]]</div>
 			</paper-input>
 		</template>
