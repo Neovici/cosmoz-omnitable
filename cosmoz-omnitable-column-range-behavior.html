@@ -44,6 +44,11 @@
 				computed: '_computeLimit(_range, _filterInput.*, min, max)'
 			},
 
+			locale: {
+				type: String,
+				value: null
+			},
+
 			_tooltip: {
 				type: String,
 				computed: '_computeTooltip(title, _filterText)'
