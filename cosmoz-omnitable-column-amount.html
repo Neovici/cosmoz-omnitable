@@ -84,7 +84,7 @@
 				}
 			},
 
-			_computeFilterText: function (filterNotify) {
+			_computeFilterText(filterNotify) {
 				const filter = filterNotify.base,
 					min = this.getComparableValue(filter, 'min'),
 					max = this.getComparableValue(filter, 'max'),
@@ -122,17 +122,17 @@
 					});
 			},
 
-			getString: function (item, valuePath) {
+			getString(item, valuePath) {
 				const value = this.get(valuePath || this.valuePath, item);
 				return this.renderAmount(value);
 			},
 
-			toXlsxValue: function () {
+			toXlsxValue() {
 				const value = Cosmoz.OmnitableColumnBehavior.toXlsxValue.apply(this, arguments);
 				return this.renderAmount(value);
 			},
 
-			renderAmount: function (value, _formatters = this._formatters) {
+			renderAmount(value, _formatters = this._formatters) {
 				if (!value || !_formatters) {
 					return '';
 				}
@@ -144,19 +144,19 @@
 				return formatter.format(value.amount);
 			},
 
-			renderAmountValue: function (item, valuePath) {
+			renderAmountValue(item, valuePath) {
 				const value = this.get(valuePath, item);
 				if (value) {
 					return value.amount;
 				}
 			},
 
-			_getCurrency: function (item, valuePath) {
+			_getCurrency(item, valuePath) {
 				const value = this.get(valuePath, item);
 				return value && value.currency;
 			},
 
-			_amountValueChanged: function (event) {
+			_amountValueChanged(event) {
 				const
 					input = event.target,
 					value = input.value,
@@ -189,13 +189,13 @@
 				});
 			},
 
-			_getDefaultFilter: function () {
+			_getDefaultFilter() {
 				return {
 					min: { currency: this.defaultCurrency },
 					max: { currency: this.defaultCurrency }
 				};
 			},
-			_deserializeFilter: function (obj) {
+			_deserializeFilter(obj) {
 				if (obj == null || obj  === '') {
 					return null;
 				}

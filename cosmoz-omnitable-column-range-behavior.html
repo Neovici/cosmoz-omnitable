@@ -77,11 +77,11 @@
 			return func.apply(null, validNumbers);
 		},
 
-		getComparableValue: function (item, valuePath) {
+		getComparableValue(item, valuePath) {
 			return this.toNumber(valuePath != null ? this.get(valuePath, item) : item);
 		},
 
-		_computeRange: function (change) {
+		_computeRange(change) {
 			const values = change.base;
 
 			if (!Array.isArray(values) || values.length < 1) {
@@ -133,7 +133,7 @@
 			return true;
 		},
 
-		_computeTooltip: function (title, text) {
+		_computeTooltip(title, text) {
 			if (text == null) {
 				return title;
 			}
@@ -141,11 +141,11 @@
 		},
 
 
-		_filterInputChanged: function () {
+		_filterInputChanged() {
 			this.debounce('_updateFilter', this._updateFilter, 600);
 		},
 
-		_updateFilter: function () {
+		_updateFilter() {
 			const input = this._filterInput,
 				filter = this.filter,
 				limit = this._limit,
@@ -185,7 +185,7 @@
 			this.cancelDebouncer('_updateFilter');
 		},
 
-		_serializeFilter: function (filter = this.filter) {
+		_serializeFilter(filter = this.filter) {
 			const min = this.getComparableValue(filter, 'min'),
 				max = this.getComparableValue(filter, 'max');
 
@@ -195,7 +195,7 @@
 			return (min == null ? '' : min) + '~' + (max == null ? '' : max);
 		},
 
-		_deserializeFilter: function (obj) {
+		_deserializeFilter(obj) {
 			if (obj == null || obj  === '') {
 				return null;
 			}

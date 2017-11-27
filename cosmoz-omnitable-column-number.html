@@ -89,7 +89,7 @@
 			_computeFormatter(locale, _numberFormatOptions) {
 				return new Intl.NumberFormat(locale || undefined, _numberFormatOptions);
 			},
-			_computeFilterText: function (locale, filterNotify) {
+			_computeFilterText(locale, filterNotify) {
 				var filter = filterNotify.base,
 					text = [];
 
@@ -116,7 +116,7 @@
 				return options;
 			},
 
-			getString: function (item, valuePath = this.valuePath) {
+			getString(item, valuePath = this.valuePath) {
 				if (valuePath === undefined) {
 					console.error(this, 'has undefined valuePath', valuePath, 'for item', item);
 					return;
@@ -128,8 +128,7 @@
 				return this.formatter.format(value);
 			},
 
-
-			renderNumberValue: function (item, valuePath, formatter) {
+			renderNumberValue(item, valuePath, formatter) {
 				const value = this.get(valuePath, item);
 				if (value == null) {
 					return;
@@ -137,7 +136,7 @@
 				return formatter.format(value);
 			},
 
-			_getDefaultFilter: function () {
+			_getDefaultFilter() {
 				return {
 					min: null,
 					max: null
