@@ -541,7 +541,7 @@
 		},
 
 		_debounceGroupItems: function () {
-			if (!this.isAttached || !this.filteredItems || this.filteredItems.length < 1) {
+			if (!this.isAttached || !this.filteredItems) {
 				return;
 			}
 			this.debounce('groupItems', this._groupItems);
@@ -1105,36 +1105,6 @@
 			gl.highlightItem(i, reverse);
 		},
 
-		_serializeFilter: function (obj) {
-			const type = {}.toString.call(obj).split(' ')[1].slice(0, -1).toLowerCase();
-			let value = obj;
-
-			if (type === 'array' && !value.length) {
-				value =  null;
-			} else if (type === 'object') {
-				const keys = Object.keys(obj).filter(k => obj[k] != null);
-				if (keys.length > 0) {
-					value = keys.reduce((acc, k) => {
-						acc[k] = obj[k];
-						return acc;
-					}, {});
-				} else {
-					value =  null;
-				}
-			}
-			return this.serialize(value);
-		},
-
-		_deserializeFilter: function (obj, type = Object) {
-			if (type === Object && obj == null) {
-				return {};
-			}
-			if (type === Array && obj == null) {
-				return [];
-			}
-			return this.deserialize(obj, type);
-		},
-
 		_routeHashPropertyChanged: function (key, value) {
 			const deserialized = this.deserialize(value, this.properties[key].type);
 			if (value === undefined ||  deserialized === this.get(key)) {
@@ -1151,14 +1121,11 @@
 				return;
 			}
 
-			let filter = column.filter,
-				deserialized;
-
-			if (value === this._serializeFilter(filter)) {
+			if (value === column._serializeFilter()) {
 				return;
 			}
 
-			deserialized = this._deserializeFilter(value, filter && filter.constructor || undefined);
+			let deserialized = column._deserializeFilter(value);
 
 			if (deserialized === null) {
 				column.resetFilter();
@@ -1231,7 +1198,7 @@
 
 			const path = ['_routeHash', this.hashParam + '-filter--' + column.name],
 				hashValue = this.get(path),
-				serialized = this._serializeFilter(column.filter);
+				serialized = column._serializeFilter();
 
 			if (serialized === hashValue) {
 				return;

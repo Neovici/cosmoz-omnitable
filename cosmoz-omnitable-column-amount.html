@@ -1,4 +1,5 @@
 <link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-range-behavior.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 
@@ -12,8 +13,8 @@
 
 		<template class="edit-cell">
 			<paper-input no-label-float type="number" on-change="_amountValueChanged"
-				value="[[ renderAmountValue(item, valuePath) ]]">
-				<div suffix>[[ _getCurrency(item, valuePath) ]]</div>
+				value="[[ getComparableValue(item, valuePath) ]]">
+				<div suffix>[[ getCurrency(item, valuePath) ]]</div>
 			</paper-input>
 		</template>
 
@@ -22,12 +23,12 @@
 					horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 150px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
-					<paper-input type="number" label="[[ _('Min amount', t) ]]" title="[[ _('Minimum amount', t) ]]" on-change="_setMinValue"
-							min="[[ _fromMin.amount ]]" max="[[ _fromMax.amount ]]">
+					<paper-input type="number" label="[[ _('Min amount', t) ]]" title="[[ _('Minimum amount', t) ]]" value="{{ _filterInput.min }}"
+							min="[[ _limit.fromMin ]]" max="[[ _limit.fromMax ]]">
 						<div slot="suffix" suffix>[[ filter.min.currency ]]</div>
 					</paper-input>
-					<paper-input type="number" label="[[ _('Max amount', t) ]]" title="[[ _('Maximum amount', t) ]]" on-change="_setMaxValue"
-							min="[[ _toMin.amount ]]" max="[[ _toMax.amount ]]">
+					<paper-input type="number" label="[[ _('Max amount', t) ]]" title="[[ _('Maximum amount', t) ]]" value="{{ _filterInput.max }}"
+							min="[[ _limit.toMin ]]" max="[[ _limit.toMax ]]">
 						<div slot="suffix" suffix>[[ filter.max.currency ]]</div>
 					</paper-input>
 				</div>
@@ -35,78 +36,24 @@
 		</template>
 	</template>
 	<script type="text/javascript">
-		/*global accounting*/
 		Polymer({
 			is: 'cosmoz-omnitable-column-amount',
 
 			behaviors: [
 				Cosmoz.OmnitableColumnBehavior,
-				Cosmoz.TranslatableBehavior
+				Cosmoz.TranslatableBehavior,
+				Cosmoz.RangeColumnBehavior
 			],
 
 			properties: {
-				bindValues: {
-					type: Boolean,
-					readOnly: true,
-					value: true
-				},
-
-				max: {
-					type: Object,
-					value() {
-						return {};
-					}
-				},
-				min: {
-					type: Object,
-					value() {
-						return {};
-					}
-				},
-				_filterText: {
+				defaultCurrency: {
 					type: String,
-					computed: '_computeFilterText(filter.*, _formatters)'
+					value: 'SEK'
 				},
-				_possibleAmountRange: {
-					type: Object,
-					computed: '_computePossibleAmountRange(values)'
-				},
-				_formatters: {
-					type: Object,
-					computed: '_computePossibleFormatters(locale, values)'
-				},
-				_fromMin: {
-					type: Object,
-					computed: '_getMinMax(_possibleAmountRange.min, min.*, 0)'
-				},
-				_fromMax: {
-					type: Object,
-					computed: '_getMinMax(_possibleAmountRange.max, filter.max.*, 0)'
-				},
-				_toMin: {
-					type: Object,
-					computed: '_getMinMax(_possibleAmountRange.min, filter.min.*, 1)'
-				},
-				_toMax: {
-					type: Object,
-					computed: '_getMinMax(_possibleAmountRange.max, max.*, 1)'
-				},
-				_tooltip: {
-					type: String,
-					computed: '_computeTooltip(title, _filterText)'
-				},
-				values: {
-					type: Array,
-					value: function () {
-						return [];
-					}
-				},
-
 				width: {
 					type: String,
 					value: '70px'
 				},
-
 				editWidth: {
 					type: String,
 					value: '70px'
@@ -120,29 +67,15 @@
 					type: String,
 					value: 'amount-header-cell'
 				},
-				defaultCurrency: {
+				_filterText: {
 					type: String,
-					value: 'SEK'
+					computed: '_computeFilterText(filter.*, _formatters)'
 				},
-				locale: {
-					type: String,
-					value: null
-				}
+				_formatters: {
+					type: Object,
+					computed: '_computePossibleFormatters(locale, values)'
+				},
 			},
-		
-			_computeFilterText: function (filterNotify) {
-				const filter = filterNotify.base,
-					text = [];
-				if (typeof filter.min.amount === 'number') {
-					text.push(this.renderAmount(filter.min));
-				}
-				text.push(' - ');
-				if (typeof filter.max.amount === 'number') {
-					text.push(this.renderAmount(filter.max));
-				}
-				return text.length > 1 ? text.join('') : null;
-			},
-
 			_computePossibleFormatters: function (locale, values) {
 				if (!Array.isArray(values) || values.length < 1) {
 					return;
@@ -166,113 +99,37 @@
 					});
 			},
 
-			_computePossibleAmountRange: function (values) {
-				if (!Array.isArray(values) || values.length < 1) {
-					return {
-						min: { amount: null },
-						max: { amount: null }
-					};
-				}
-				return values.reduce(function (acc, item) {
-					// TODO: Use fx
-					if (!acc.max || item.amount > acc.max.amount) {
-						acc.max = item;
-					}
-					if (!acc.min || item.amount < acc.min.amount) {
-						acc.min = item;
-					}
-					return acc;
-				}, {});
+			toXlsxValue(item, valuePath = this.valuePath) {
+				return this.getString(item, valuePath);
 			},
 
-			_computeTooltip: function (title, filterText) {
-				let ret = title;
-				if (filterText !== undefined && filterText !== null) {
-					ret += ': ' + filterText;
-				}
-				return ret;
-			},
-
-			_getMinMax(first, secondNotify, max) {
-				if (first === undefined || secondNotify === undefined) {
+			getComparableValue(item, valuePath) {
+				const value = valuePath != null ? this.get(valuePath, item) : item;
+				// TODO: fx
+				if (value == null || value.amount == null) {
 					return;
 				}
-				const doMax = max === 1,
-					second = secondNotify.base;
-				let ret;
-
-				// TODO: Use fx
-
-				if (!first.amount && second.amount) {
-					ret = second;
-				} else if (!second.amount && first.amount) {
-					ret = first;
-				} else if (first.amount > second.amount) {
-					ret = doMax ? first : second;
-				} else {
-					ret = doMax ? second : first;
-				}
-				// shallow copy object to trigger observers
-				return Object.assign({}, ret);
+				return this.toNumber(value.amount);
 			},
 
-			_getNumberValue: function (value) {
-				if (value == null || value === '') {
-					return;
-				}
-				const number = Number(value);
-				if (Number.isNaN(number)) {
-					console.warn('Not a number', value);
-					return;
-				}
-				return number;
-			},
-
-			_setMinValue: function (event) {
-				const value = this._getNumberValue(event.target.value);
-				this.set('filter.min', {
-					amount: value,
-					currency: this.defaultCurrency
-				});
-			},
-
-			_setMaxValue: function (event) {
-				const value = this._getNumberValue(event.target.value);
-				this.set('filter.max', {
-					amount: value,
-					currency: this.defaultCurrency
-				});
-			},
-
-			getString: function (item, valuePath) {
-				const value = this.get(valuePath || this.valuePath, item);
-				return this.renderAmount(value);
-			},
-			toXlsxValue: function () {
-				const value = Cosmoz.OmnitableColumnBehavior.toXlsxValue.apply(this, arguments);
-				return this.renderAmount(value);
-			},
-
-			renderAmount: function (value, _formatters = this._formatters) {
-				if (value && _formatters && _formatters[value.currency]) {
-					return _formatters[value.currency].format(value.amount);
-				}
-				return '';
-			},
-
-			renderAmountValue: function (item, valuePath) {
-				const value = this.get(valuePath, item);
-				if (value) {
-					return value.amount;
-				}
-			},
-
-			_getCurrency: function (item, valuePath) {
+			getCurrency(item, valuePath) {
 				const value = this.get(valuePath, item);
 				return value && value.currency;
 			},
 
-			_amountValueChanged: function (event) {
+			renderNumber(value, _formatters = this._formatters) {
+				if (!value || !_formatters) {
+					return '';
+				}
+				const formatter = _formatters[value.currency];
+				if (!formatter) {
+					console.warn('formatter not found');
+					return '';
+				}
+				return formatter.format(value.amount);
+			},
+
+			_amountValueChanged(event) {
 				const
 					input = event.target,
 					value = input.value,
@@ -285,48 +142,35 @@
 						currency: originalValue.currency
 					};
 				this.set(this.valuePath, newValue, item);
-				this._fireItemChangeEvent(item, this.valuePath, originalValue, this.renderAmount.bind(this));
+				this._fireItemChangeEvent(item, this.valuePath, originalValue, this.renderNumber.bind(this));
 			},
 
-			getComparableValue(item, valuePath) {
-				const value = this.get(valuePath, item);
-				// TODO: fx
-				if (value == null || value.amount == null) {
-					return;
-				}
-				return this._getNumberValue(value.amount);
+			_updateFilterFromInput(min, max) {
+				const filter = this.filter;
+				this.set('filter', {
+					min: {amount: min, currency: filter.min.currency || this.defaultCurrency},
+					max: {amount: max, currency: filter.max.currency || this.defaultCurrency}
+				});
 			},
 
-			getFilterFn() {
-				const min = this.getComparableValue(this.filter, 'min'),
-					max = this.getComparableValue(this.filter, 'max');
-
-				if (min == null && max == null) {
-					return;
-				}
-				return this._applySingleFilter.bind(this, this.filter);
-			},
-
-			_applySingleFilter(filter, item) {
-				const value = this.getComparableValue(item, this.valuePath),
-					minValue = this.getComparableValue(filter, 'min'),
-					maxValue = this.getComparableValue(filter, 'max');
-
-				if (value < minValue) {
-					return false;
-				}
-
-				if (value > maxValue) {
-					return false;
-				}
-
-				return true;
-			},
-
-			_getDefaultFilter: function () {
+			_getDefaultFilter() {
 				return {
 					min: { currency: this.defaultCurrency },
 					max: { currency: this.defaultCurrency }
+				};
+			},
+			_deserializeFilter(obj) {
+				if (obj == null || obj  === '') {
+					return null;
+				}
+				const matches = obj.match(/^([-0-9.]+)?~([-0-9.]+)?/i);
+
+				if (!Array.isArray(matches)) {
+					return null;
+				}
+				return {
+					min: {amount: matches[1], currency: this.filter.min.currency || this.defaultCurrency},
+					max: {amount: matches[2], currency: this.filter.max.currency || this.defaultCurrency}
 				};
 			}
 		});
