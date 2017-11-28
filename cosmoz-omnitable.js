@@ -287,6 +287,7 @@
 		_disabledColumnsIndexes: null,
 
 		_scalingUp: false,
+
 		_computeDataValidity(data) {
 			return data && Array.isArray(data) && data.length > 0;
 		},
@@ -392,6 +393,10 @@
 
 		_debounceUpdateColumns() {
 			this.debounce('updateColumns', this._updateColumns);
+		},
+
+		_closeFilterDialog() {
+			this.$.filterDialog.close();
 		},
 
 		_updateColumns: function () {

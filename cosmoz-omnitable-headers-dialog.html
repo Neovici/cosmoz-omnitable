@@ -1,4 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+
 <!--
 `cosmoz-omnitable-headers-dialog` is an element for displaying omnitable column headers in a separate dialog.
 
@@ -20,10 +23,23 @@ with a `cosmoz-dialog` element which enables it to be displayed as a dialog.
 <dom-module id="cosmoz-omnitable-headers-dialog">
 	<template>
 		<style>
+			:host {
+				width: 100%;
+			}
 			.container {
 				padding: 12px;
 			}
+
+			.close-btn {
+				position: fixed;
+				right: 12px;
+				top: 12px;
+				color: #fff;
+			}
 		</style>
+		
+		<paper-icon-button class="close-btn" icon="close" on-tap="close"></paper-icon-button>
+		
 		<div class="container">
 			<h2>[[title]]</h2>
 			<div id="headers"></div>
@@ -53,6 +69,10 @@ with a `cosmoz-dialog` element which enables it to be displayed as a dialog.
 			observers: [
 				'_columnsChanged(columns.*)'
 			],
+
+			close() {
+				this.fire('close');
+			},
 
 			_columnsChanged(columnsChange) {
 				const columns = columnsChange.base,
