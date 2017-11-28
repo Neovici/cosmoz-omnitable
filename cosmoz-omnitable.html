@@ -210,8 +210,8 @@
 			<template>
 				<cosmoz-omnitable-headers-dialog
 					title="[[_('Filter', t)]]"
-					columns="[[disabledColumns]]"
-					on-close="_closeFilterDialog"
+					columns="[[_filterDialogColumns]]"
+					on-close-tapped="_closeFilterDialog"
 					with-backdrop>
 				</cosmoz-omnitable-headers-dialog>
 			</template>

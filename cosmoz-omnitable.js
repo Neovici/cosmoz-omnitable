@@ -221,12 +221,18 @@
 			_allSelected: {
 				type: Boolean
 			},
+
+			_filterDialogColumns: {
+				type: Array,
+				notify: true,
+				computed: '_computeFilterDialogColumns(disabledColumns.*, groupOnColumn.*)'
+			},
 			/**
 			 * True if all columns are visible.
 			 */
 			allColumnsVisible: {
 				type: Boolean,
-				computed: '_computeColumnsAllVisible(visibleColumns.*, columns)'
+				computed: '_computeColumnsAllVisible(visibleColumns.*, groupOnColumn.*, columns)'
 			}
 		},
 
@@ -288,6 +294,16 @@
 
 		_scalingUp: false,
 
+		_computeFilterDialogColumns(disabledColumnsChange, groupOnColumnChange) {
+			const groupOnColumn = groupOnColumnChange.base,
+				disabledColumns = disabledColumnsChange.base;
+
+			if (!disabledColumns || !groupOnColumn) {
+				return disabledColumns || groupOnColumn;
+			}
+			return disabledColumns.concat(groupOnColumn);
+		},
+
 		_computeDataValidity(data) {
 			return data && Array.isArray(data) && data.length > 0;
 		},
@@ -305,7 +321,10 @@
 			return dataIsValid && hasActions;
 		},
 
-		_computeColumnsAllVisible(visibleColumnsChange, columns) {
+		_computeColumnsAllVisible(visibleColumnsChange, groupOnColumnChange, columns) {
+			if (groupOnColumnChange.base) {
+				return false;
+			}
 			const visibleColumns = visibleColumnsChange.base;
 			if (!visibleColumns || !columns) {
 				return;
