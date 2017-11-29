@@ -49,20 +49,21 @@
 		<cosmoz-page-location id="location" route-hash-params="{{ _routeHashParams }}"></cosmoz-page-location>
 
 		<div class="mainContainer">
+			<div class="layout horizontal center">
 			<div class="header" id="header">
 				<div class="selectAllCheckbox" hidden$="[[ !_showCheckboxes ]]">
 					<paper-checkbox checked$="{{ _allSelected }}" on-change="_onAllCheckboxChange" hidden$="[[ !_dataIsValid ]]">
 					</paper-checkbox>
 				</div>
 				<cosmoz-omnitable-header-row columns="[[ visibleColumns ]]" group-on-column="[[ groupOnColumn ]]">
-					<div slot="suffix" class="align-right" hidden$="[[allColumnsVisible]]">
-						<paper-icon-button
-							class="filter"
-							icon="icons:filter-list"
-							on-click="_openFilterDialog">
-						</paper-icon-button>
-					</div>
 				</cosmoz-omnitable-header-row>
+			</div>
+			<div class="flex"></div>
+			<paper-icon-button
+				class="filter"
+				icon="icons:filter-list"
+				on-click="_openFilterDialog">
+			</paper-icon-button>
 			</div>
 			<div class="tableContent" id="tableContent">
 				<template is="dom-if" if="[[ !_dataIsValid ]]">
