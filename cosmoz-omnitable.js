@@ -224,8 +224,7 @@
 
 			_filterDialogColumns: {
 				type: Array,
-				notify: true,
-				computed: '_computeFilterDialogColumns(disabledColumns.*, groupOnColumn.*)'
+				notify: true
 			},
 			/**
 			 * True if all columns are visible.
@@ -240,7 +239,8 @@
 			'_dataChanged(data.*)',
 			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
 			'_routeHashParamsChanged(_routeHashParams.*, hashParam, columns)',
-			' _selectedItemsChanged(selectedItems.*)'
+			'_selectedItemsChanged(selectedItems.*)',
+			'_setFilterDialogColumns(disabledColumns.*, groupOnColumn.*)'
 		],
 
 		behaviors: [
@@ -294,14 +294,44 @@
 
 		_scalingUp: false,
 
-		_computeFilterDialogColumns(disabledColumnsChange, groupOnColumnChange) {
+		_setFilterDialogColumns(disabledColumnsChange, groupOnColumnChange) {
 			const groupOnColumn = groupOnColumnChange.base,
-				disabledColumns = disabledColumnsChange.base;
+				disabledColumns = disabledColumnsChange.base,
+				// Having PAPER-AUTOCOMPLETE-CHIPS at the top of the dialog
+				// avoids display issues if the dialog gets too high and the "listbox" of the element
+				// doesn't get displayed properly beacause of overflow:scroll of the dialog container.
+				prios = [['PAPER-AUTOCOMPLETE-CHIPS'], ['PAPER-DROPDOWN-MENU']],
+				sortFn = (a, b) =>  {
+					const elA = a.headerTemplatizer.getInstance().root.children[0],
+						elB = b.headerTemplatizer.getInstance().root.children[0];
+
+					for (const prio of prios) {
+						if (prio.indexOf(elA.nodeName) > -1 && prio.indexOf(elB.nodeName) > -1) {
+							if (a.title === b.title) {
+								return 0;
+							}
+							return a.title > b.title ? 1 : -1;
+						}
+
+						if (prio.indexOf(elA.nodeName) > -1) {
+							return -1;
+						}
+
+						if (prio.indexOf(elB.nodeName) > -1) {
+							return 1;
+						}
+					}
+				};
+
+			// Otherwise change doesn't notify `cosmoz-omnitable-repeater-behavior`
+			// Todo: figure out a nicer way.
+			this._filterDialogColumns = [];
 
 			if (!disabledColumns || !groupOnColumn) {
-				return disabledColumns || groupOnColumn;
+				this.set('_filterDialogColumns', (disabledColumns || groupOnColumn).sort(sortFn));
+				return;
 			}
-			return disabledColumns.concat(groupOnColumn);
+			this.set('_filterDialogColumns', disabledColumns.concat(groupOnColumn).sort(sortFn));
 		},
 
 		_computeDataValidity(data) {
@@ -826,10 +856,7 @@
 
 		_adjustHeadersWidth(cells) {
 			const headerRow = Polymer.dom(this.$.header).querySelector('cosmoz-omnitable-header-row'),
-				headers = Array.from(Polymer.dom(headerRow).children)
-					.filter(h => {
-						return h.getAttribute('slot') === 'header-cell';
-					});
+				headers = Array.from(Polymer.dom(headerRow).children);
 
 			cells.forEach((cell, index) => {
 				const header = headers[index];

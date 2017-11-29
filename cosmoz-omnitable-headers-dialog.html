@@ -40,12 +40,18 @@ with a `cosmoz-dialog` element which enables it to be displayed as a dialog.
 				top: 12px;
 				color: #fff;
 			}
+
+			.title {
+				font-size: 1.5em;
+    			font-weight: 600;
+				@apply --cosmoz-omnitable-headers-dialog-title;
+			}
 		</style>
 
 		<paper-icon-button class="close-btn" icon="close" on-tap="_close"></paper-icon-button>
 		
 		<div class="container">
-			<h2>[[title]]</h2>
+			<div class="title">[[title]]</div>
 			<slot name="header-cell"></slot>
 		</div>
 	</template>
