@@ -294,44 +294,45 @@
 
 		_scalingUp: false,
 
-		_setFilterDialogColumns(disabledColumnsChange, groupOnColumnChange) {
-			const groupOnColumn = groupOnColumnChange.base,
-				disabledColumns = disabledColumnsChange.base,
+		_sortFilterDialogColumns(a, b) {
+			const elA = a.headerTemplatizer.getInstance().root.children[0],
+				elB = b.headerTemplatizer.getInstance().root.children[0],
 				// Having PAPER-AUTOCOMPLETE-CHIPS at the top of the dialog
 				// avoids display issues if the dialog gets too high and the "listbox" of the element
 				// doesn't get displayed properly beacause of overflow:scroll of the dialog container.
-				prios = [['PAPER-AUTOCOMPLETE-CHIPS'], ['PAPER-DROPDOWN-MENU']],
-				sortFn = (a, b) =>  {
-					const elA = a.headerTemplatizer.getInstance().root.children[0],
-						elB = b.headerTemplatizer.getInstance().root.children[0];
+				prios = [['PAPER-AUTOCOMPLETE-CHIPS'], ['PAPER-DROPDOWN-MENU']];
 
-					for (const prio of prios) {
-						if (prio.indexOf(elA.nodeName) > -1 && prio.indexOf(elB.nodeName) > -1) {
-							if (a.title === b.title) {
-								return 0;
-							}
-							return a.title > b.title ? 1 : -1;
-						}
-
-						if (prio.indexOf(elA.nodeName) > -1) {
-							return -1;
-						}
-
-						if (prio.indexOf(elB.nodeName) > -1) {
-							return 1;
-						}
+			for (const prio of prios) {
+				if (prio.indexOf(elA.nodeName) > -1 && prio.indexOf(elB.nodeName) > -1) {
+					if (a.title === b.title) {
+						return 0;
 					}
-				};
+					return a.title > b.title ? 1 : -1;
+				}
+
+				if (prio.indexOf(elA.nodeName) > -1) {
+					return -1;
+				}
+
+				if (prio.indexOf(elB.nodeName) > -1) {
+					return 1;
+				}
+			}
+		},
+
+		_setFilterDialogColumns(disabledColumnsChange, groupOnColumnChange) {
+			const groupOnColumn = groupOnColumnChange.base,
+				disabledColumns = disabledColumnsChange.base;
 
 			// Otherwise change doesn't notify `cosmoz-omnitable-repeater-behavior`
 			// Todo: figure out a nicer way.
 			this._filterDialogColumns = [];
 
 			if (!disabledColumns || !groupOnColumn) {
-				this.set('_filterDialogColumns', (disabledColumns || groupOnColumn).sort(sortFn));
+				this.set('_filterDialogColumns', (disabledColumns || groupOnColumn).sort(this._sortFilterDialogColumns));
 				return;
 			}
-			this.set('_filterDialogColumns', disabledColumns.concat(groupOnColumn).sort(sortFn));
+			this.set('_filterDialogColumns', disabledColumns.concat(groupOnColumn).sort(this._sortFilterDialogColumns));
 		},
 
 		_computeDataValidity(data) {
