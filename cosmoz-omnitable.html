@@ -210,12 +210,14 @@
 
 		<cosmoz-dialog with-backdrop id="filterDialog">
 			<template>
+				<h2>[[_('Filter', t)]]</h2>
 				<cosmoz-omnitable-headers-dialog
-					title="[[_('Filter', t)]]"
 					columns="[[_filterDialogColumns]]"
-					on-close-tapped="_closeFilterDialog"
 					with-backdrop>
 				</cosmoz-omnitable-headers-dialog>
+				<div class="buttons">
+					<paper-button dialog-dismiss>[[_("Close")]]</paper-button>
+				</div>
 			</template>
 		</cosmoz-dialog>
 		

@@ -27,31 +27,16 @@ with a `cosmoz-dialog` element which enables it to be displayed as a dialog.
 	<template>
 		<style>
 			:host {
-				width: 100%;
+				display: block;
 			}
 			.container {
 				padding: 12px;
 				max-height: calc(100vh - 60px);
 				overflow: auto;
 			}
-			.close-btn {
-				position: fixed;
-				right: 12px;
-				top: 12px;
-				color: #fff;
-			}
-
-			.title {
-				font-size: 1.5em;
-    			font-weight: 600;
-				@apply --cosmoz-omnitable-headers-dialog-title;
-			}
 		</style>
-
-		<paper-icon-button class="close-btn" icon="close" on-tap="_close"></paper-icon-button>
 		
-		<div class="container">
-			<div class="title">[[title]]</div>
+		<div class="container layout vertical">
 			<slot name="header-cell"></slot>
 		</div>
 	</template>
@@ -64,15 +49,6 @@ with a `cosmoz-dialog` element which enables it to be displayed as a dialog.
 			behaviors: [
 				Cosmoz.OmnitableRepeaterBehavior
 			],
-
-			properties: {
-				/**
-				 * The title displayed in the dialog.
-				*/
-				title: {
-					type: String
-				}
-			},
 
 			_elementType: 'div',
 

@@ -231,7 +231,7 @@
 			 */
 			allColumnsVisible: {
 				type: Boolean,
-				computed: '_computeColumnsAllVisible(visibleColumns.*, groupOnColumn.*, columns)'
+				computed: '_computeColumnsAllVisible(visibleColumns.*, groupOn, columns)'
 			}
 		},
 
@@ -240,7 +240,7 @@
 			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
 			'_routeHashParamsChanged(_routeHashParams.*, hashParam, columns)',
 			'_selectedItemsChanged(selectedItems.*)',
-			'_setFilterDialogColumns(disabledColumns.*, groupOnColumn.*)'
+			'_setFilterDialogColumns(disabledColumns.*, groupOn)'
 		],
 
 		behaviors: [
@@ -320,10 +320,13 @@
 			}
 		},
 
-		_setFilterDialogColumns(disabledColumnsChange, groupOnColumnChange) {
-			const groupOnColumn = groupOnColumnChange.base,
+		_setFilterDialogColumns(disabledColumnsChange) {
+			const groupOnColumn = this.groupOnColumn,
 				disabledColumns = disabledColumnsChange.base;
 
+			if (!disabledColumns && !groupOnColumn) {
+				return;
+			}
 			// Otherwise change doesn't notify `cosmoz-omnitable-repeater-behavior`
 			// Todo: figure out a nicer way.
 			this._filterDialogColumns = [];
@@ -352,8 +355,8 @@
 			return dataIsValid && hasActions;
 		},
 
-		_computeColumnsAllVisible(visibleColumnsChange, groupOnColumnChange, columns) {
-			if (groupOnColumnChange.base) {
+		_computeColumnsAllVisible(visibleColumnsChange, groupOn, columns) {
+			if (groupOn) {
 				return false;
 			}
 			const visibleColumns = visibleColumnsChange.base;
@@ -443,10 +446,6 @@
 
 		_debounceUpdateColumns() {
 			this.debounce('updateColumns', this._updateColumns);
-		},
-
-		_closeFilterDialog() {
-			this.$.filterDialog.close();
 		},
 
 		_updateColumns: function () {
