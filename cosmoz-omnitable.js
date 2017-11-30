@@ -210,9 +210,13 @@
 				type: String
 			},
 
-			_routeHashParams: {
+			_routeHash: {
 				type: Object,
 				notify: true
+			},
+			_routeHashKeyRule: {
+				type: RegExp,
+				computed: '_computeRouteHashKeyRule(hashParam)'
 			},
 
 			/**
@@ -238,8 +242,8 @@
 		observers: [
 			'_dataChanged(data.*)',
 			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
-			'_routeHashParamsChanged(_routeHashParams.*, hashParam, columns)',
-			'_selectedItemsChanged(selectedItems.*)',
+			'_routeHashChanged(_routeHash.*, hashParam, columns)',
+			' _selectedItemsChanged(selectedItems.*)',
 			'_setFilterDialogColumns(disabledColumns.*, groupOn)'
 		],
 
@@ -607,7 +611,7 @@
 		},
 
 		_debounceGroupItems: function () {
-			if (!this.isAttached || !this.filteredItems || this.filteredItems.length < 1) {
+			if (!this.isAttached || !this.filteredItems) {
 				return;
 			}
 			this.debounce('groupItems', this._groupItems);
@@ -689,12 +693,11 @@
 		},
 
 		/**
-		 * Sorting method, can be overridden.
-		 *
-		 * @param {any} a Compare value
-		 * @param {any} b Compare value
-		 * @returns {Number} 0, 1, -1
-		 */
+		 * Sorting method, can be overridden
+		 * @param {*} a First compare value
+		 * @param {*} b Second compare value
+		 * @returns {void}
+		*/
 		sorter(a, b) {
 			const v1 = this.sortOnColumn.getComparableValue(a, this.sortOnColumn.sortOn),
 				v2 = this.sortOnColumn.getComparableValue(b, this.sortOnColumn.sortOn);
@@ -1172,92 +1175,81 @@
 			gl.highlightItem(i, reverse);
 		},
 
-		_serializeFilter: function (obj) {
-			const type = {}.toString.call(obj).split(' ')[1].slice(0, -1).toLowerCase();
-			let value = obj;
-
-			if (type === 'array' && !value.length) {
-				value =  null;
-			} else if (type === 'object') {
-				const keys = Object.keys(obj).filter(k => obj[k] != null);
-				if (keys.length > 0) {
-					value = keys.reduce((acc, k) => {
-						acc[k] = obj[k];
-						return acc;
-					}, {});
-				} else {
-					value =  null;
-				}
+		_routeHashPropertyChanged: function (key, value) {
+			const deserialized = this.deserialize(value, this.properties[key].type);
+			if (value === undefined ||  deserialized === this.get(key)) {
+				return;
 			}
-			return this.serialize(value);
+			this.set(key, deserialized);
 		},
 
-		_deserializeFilter: function (obj, type = Object) {
-			if (type === Object && obj == null) {
-				return {};
+		_routeHashFilterChanged(key, value) {
+			const column = this.columns.find(c => c.name === key);
+
+			if (!column) {
+				console.warn('column with name', name, 'for param', key, 'not found!');
+				return;
 			}
-			if (type === Array && obj == null) {
-				return [];
+
+			if (value === column._serializeFilter()) {
+				return;
 			}
-			return this.deserialize(obj, type);
+
+			let deserialized = column._deserializeFilter(value);
+
+			if (deserialized === null) {
+				column.resetFilter();
+				return;
+			}
+			column.set('filter', deserialized);
+		},
+		_computeRouteHashKeyRule(hashParam) {
+			if (!hashParam) {
+				return;
+			}
+			return new RegExp('^' + hashParam + '-(.+?)(?=(?:--|$))(?:-{2})?([A-Za-z0-9-_]+)?$');
+		},
+		_routeHashKeyChanged: function (key, value) {
+			const match = key.match(this._routeHashKeyRule);
+
+			if (!Array.isArray(match)) {
+				return;
+			}
+
+			if (match[2] == null && PROPERTY_HASH_PARAMS.indexOf(match[1]) > -1) {
+				this._routeHashPropertyChanged(match[1], value);
+				return;
+			}
+			if (match[2] !== null && match[1] === 'filter') {
+				this._routeHashFilterChanged(match[2], value);
+			}
 		},
 
-		_routeHashParamsChanged: function (changes, hashParam, columns) {
+		_routeHashChanged: function (changes, hashParam, columns) {
 			if (!changes || !hashParam || !columns || !columns.length) {
 				return;
 			}
+			const path = changes.path,
+				key = path && path.split('.')[1];
 
-			PROPERTY_HASH_PARAMS.forEach(key => {
-				const hashValue =  this.get(['_routeHashParams', hashParam + '-' + key]),
-					deserialized = this.deserialize(hashValue, this.properties[key].type);
-
-				if (hashValue === undefined ||  deserialized === this.get(key)) {
-					return;
-				}
-
-				this.set(key, deserialized);
-			});
-			let rule = new RegExp('^' + hashParam + '-filter--([A-Za-z0-9-_]+)$'),
-				routeParams = changes.base;
-
-			Object.keys(routeParams).forEach(key => {
-				const hashValue = routeParams[key],
-					matches = key.match(rule),
-					name = matches && matches[1],
-					column = name && columns.find(c => c.name === name);
-
-				if (!column) {
-					if (name) {
-						console.warn('column with name', name, 'for param', key, 'not found!');
-					}
-					return;
-				}
-
-				let filter = column.filter,
-					deserialized;
-
-				if (hashValue === this._serializeFilter(filter)) {
-					return;
-				}
-
-				deserialized = this._deserializeFilter(hashValue, filter && filter.constructor || undefined);
-
-				if (deserialized === null) {
-					column.resetFilter();
-					return;
-				}
-
-				column.set('filter', deserialized);
-			});
-
-		},
-
-		_updateRouteParam: function (key) {
-			if (!this.hashParam || !this._routeHashParams) {
+			if (key) {
+				//If key is set we have a sub property change
+				this._routeHashKeyChanged(key, changes.value);
 				return;
 			}
 
-			const path = ['_routeHashParams', this.hashParam + '-' + key],
+			//If the full object has changed update _routeHashKeyChanged for each property
+			Object.keys(changes.base).forEach(key => {
+				this._routeHashKeyChanged(key, changes.base[key]);
+			});
+		},
+
+		_updateRouteParam: function (key) {
+			if (!this.hashParam || !this._routeHash) {
+				return;
+			}
+
+			const path = ['_routeHash', this.hashParam + '-' + key],
 				hashValue =  this.get(path),
 				value = this.get(key),
 				serialized = this.serialize(value, this.properties[key].type);
@@ -1270,13 +1262,13 @@
 		},
 
 		_filterForRouteChanged: function (column) {
-			if (!this.hashParam || !this._routeHashParams || !Array.isArray(this.data)) {
+			if (!this.hashParam || !this._routeHash || !Array.isArray(this.data)) {
 				return;
 			}
 
-			const path = ['_routeHashParams', this.hashParam + '-filter--' + column.name],
+			const path = ['_routeHash', this.hashParam + '-filter--' + column.name],
 				hashValue = this.get(path),
-				serialized = this._serializeFilter(column.filter);
+				serialized = column._serializeFilter();
 
 			if (serialized === hashValue) {
 				return;
