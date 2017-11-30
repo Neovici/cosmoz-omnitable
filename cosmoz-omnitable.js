@@ -324,12 +324,13 @@
 			const groupOnColumn = this.groupOnColumn,
 				disabledColumns = disabledColumnsChange.base;
 
-			if (!disabledColumns && !groupOnColumn) {
-				return;
-			}
 			// Otherwise change doesn't notify `cosmoz-omnitable-repeater-behavior`
 			// Todo: figure out a nicer way.
 			this._filterDialogColumns = [];
+
+			if (!disabledColumns && !groupOnColumn) {
+				return;
+			}
 
 			if (!disabledColumns || !groupOnColumn) {
 				this.set('_filterDialogColumns', (disabledColumns || groupOnColumn).sort(this._sortFilterDialogColumns));
