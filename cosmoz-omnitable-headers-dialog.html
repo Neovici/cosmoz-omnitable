@@ -1,8 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
 
-<link rel="import" href="../paper-icon-button/paper-icon-button.html">
-
-<link rel="import" href="../paper-autocomplete/paper-autocomplete.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html"/>
 
 <link rel="import" href="cosmoz-omnitable-repeater-behavior.html">
 <!--
@@ -25,13 +23,13 @@ with a `cosmoz-dialog` element which enables it to be displayed as a dialog.
 -->
 <dom-module id="cosmoz-omnitable-headers-dialog">
 	<template>
-		<style>
+		<style include="iron-flex">
 			:host {
 				display: block;
 			}
 			.container {
 				padding: 12px;
-				max-height: calc(100vh - 60px);
+				max-height: calc(100vh - 200px);
 				overflow: auto;
 			}
 		</style>
