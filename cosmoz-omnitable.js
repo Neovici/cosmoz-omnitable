@@ -243,7 +243,7 @@
 			'_dataChanged(data.*)',
 			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
 			'_routeHashChanged(_routeHash.*, hashParam, columns)',
-			' _selectedItemsChanged(selectedItems.*)',
+			'_selectedItemsChanged(selectedItems.*)',
 			'_setFilterDialogColumns(disabledColumns.*, groupOn)'
 		],
 
