@@ -338,7 +338,33 @@
 				start: this.getDate(start),
 				end: this.getDate(end),
 			};
-		}
+		},
 
+		_serializeFilter(filter = this.filter) {
+			const start = filter.start,
+				end = filter.end;
+
+			if (start == null && end == null) {
+				return this.serialize(null);
+			}
+
+			return this._toStringValue(start) + '~' + this._toStringValue(end);
+		},
+
+		_deserializeFilter(obj) {
+			if (obj == null || obj  === '') {
+				return null;
+			}
+			const matches = obj.match(/^([^~]+)?~([^~]+)?/i);
+
+			if (!Array.isArray(matches)) {
+				return null;
+			}
+
+			return {
+				start: new Date(matches[1]),
+				end: new Date(matches[2])
+			};
+		}
 	};
 </script>
