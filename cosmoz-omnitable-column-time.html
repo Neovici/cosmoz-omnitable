@@ -184,8 +184,33 @@
 					text.push(formatter.format(endTime));
 				}
 				return text.length > 1 ? text.join('') : null;
-			}
+			},
 
+			_serializeFilter(filter = this.filter) {
+				const start = filter.start,
+					end = filter.end;
+
+				if (start == null && end == null) {
+					return this.serialize(null);
+				}
+				return (start == null ? '' : start) + '~' + (end == null ? '' : end);
+			},
+
+			_deserializeFilter(obj) {
+				if (obj == null || obj  === '') {
+					return null;
+				}
+				const matches = obj.match(/^([^~]+)?~([^~]+)?/i);
+
+				if (!Array.isArray(matches)) {
+					return null;
+				}
+
+				return {
+					start: matches[1] || null,
+					end: matches[2] || null
+				};
+			}
 		});
 	</script>
 </dom-module>
