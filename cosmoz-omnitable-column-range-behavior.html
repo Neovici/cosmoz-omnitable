@@ -115,10 +115,10 @@
 			if (value == null) {
 				return '';
 			}
-			return this.renderNumber(value);
+			return this.renderValue(value);
 		},
 
-		renderNumber() {
+		renderValue() {
 			//overrideable
 		},
 
@@ -183,11 +183,11 @@
 				text = [];
 
 			if (min != null) {
-				text.push(this.renderNumber(filter.min));
+				text.push(this.renderValue(filter.min));
 			}
 			text.push(' - ');
 			if (max != null) {
-				text.push(this.renderNumber(filter.max));
+				text.push(this.renderValue(filter.max));
 			}
 			return text.length > 1 ? text.join('') : null;
 

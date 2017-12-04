@@ -88,7 +88,7 @@
 				return new Intl.NumberFormat(locale || undefined, options);
 			},
 
-			renderNumber(value, formatter = this.formatter) {
+			renderValue(value, formatter = this.formatter) {
 				const number = this.toNumber(value);
 				if (number == null) {
 					return;

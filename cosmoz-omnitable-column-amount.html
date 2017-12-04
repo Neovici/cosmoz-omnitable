@@ -117,7 +117,7 @@
 				return value && value.currency;
 			},
 
-			renderNumber(value, _formatters = this._formatters) {
+			renderValue(value, _formatters = this._formatters) {
 				if (!value || !_formatters) {
 					return '';
 				}
@@ -142,7 +142,7 @@
 						currency: originalValue.currency
 					};
 				this.set(this.valuePath, newValue, item);
-				this._fireItemChangeEvent(item, this.valuePath, originalValue, this.renderNumber.bind(this));
+				this._fireItemChangeEvent(item, this.valuePath, originalValue, this.renderValue.bind(this));
 			},
 
 			_updateFilterFromInput(min, max) {
