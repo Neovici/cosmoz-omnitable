@@ -277,13 +277,13 @@
 		},
 
 		_serializeFilter(filter = this.filter) {
-			const min = this.getComparableValue(filter, 'min'),
-				max = this.getComparableValue(filter, 'max');
+			const min = this.toValue(filter.min),
+				max = this.toValue(filter.max);
 
 			if (min == null && max == null) {
 				return;
 			}
-			return (min == null ? '' : this._toInputString(filter.min)) + '~' + (max == null ? '' : this._toInputString(filter.max));
+			return  this._toHashString(min) + '~' + this._toHashString(max);
 		},
 
 		_deserializeFilter(obj) {
@@ -297,9 +297,21 @@
 			}
 
 			return {
-				min: this._fromInputString(matches[1]),
-				max: this._fromInputString(matches[2])
+				min: this._fromHashString(matches[1]),
+				max: this._fromHashString(matches[2])
 			};
+		},
+
+		_toHashString(value) {
+			let string = this._toInputString(value);
+			if (string == null) {
+				return '';
+			}
+			return string;
+		},
+
+		_fromHashString(value) {
+			return this._fromInputString(value);
 		}
 	};
 </script>
