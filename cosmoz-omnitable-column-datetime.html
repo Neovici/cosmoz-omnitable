@@ -81,7 +81,7 @@
 				if (date == null) {
 					return;
 				}
-				return this._toLocalISOString(date).slice(0, 16);
+				return this._toLocalISOString(date).slice(0, 19);
 			},
 
 			_toHashString(value) {
@@ -90,14 +90,15 @@
 					return '';
 				}
 				//Use utc in hash
-				return date.toISOString().slice(0, 16);
+				return date.toISOString().slice(0, 19).replace(/:/g, '.');
 			},
+
 			_fromHashString(value) {
 				if (value == null || value === '') {
 					return;
 				}
 				//Parse utc from hash string
-				return this.toValue(value + 'Z');
+				return this.toValue(value.replace(/\./g, ':') + 'Z');
 			},
 
 			// OVERRIDES
