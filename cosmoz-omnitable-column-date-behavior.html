@@ -109,70 +109,17 @@
 			return this._toLocalISOString(date).slice(0, 10);
 		},
 
-		_formatISODate(filterValue) {
-			if (!this._isValidDate(filterValue)) {
-				return '';
-			}
-			return filterValue.toISOString().slice(0, 10);
-		},
-
 		_dateValueChanged(event) {
-			const
-				input = event.currentTarget,
+			const input = event.currentTarget,
 				value = input.value,
 				item = event.model.item,
 				oldValue = this.get(this.valuePath, item),
-				formatFn = value => this.formatter.format(value),
-				dateValue = this.getDate(value);
-			if (!this._isValidDate(dateValue)) {
+				date = this._fromInputString(value);
+			if (date == null) {
 				return;
 			}
-			this.set(this.valuePath, dateValue, item);
-			this._fireItemChangeEvent(item, this.valuePath, oldValue, formatFn.bind(this));
-		},
-
-		renderISODateValue(item, valuePath) {
-			const value = this.getDate(this.get(valuePath, item));
-			if (!this._isValidDate(value)) {
-				return;
-			}
-			return value.toISOString().slice(0, 10);
-		},
-
-		getDate(value) {
-			if (!value) {
-				return null;
-			}
-			if (!(value instanceof Date)) {
-				return new Date(value);
-			}
-			return value;
-		},
-
-
-		// _applySingleFilter(filter, item) {
-		// 	const dateToCheck = this.getDate(this.get(this.valuePath, item));
-		// 	if (filter.start && (!this._isValidDate(dateToCheck) || dateToCheck < filter.start)) {
-		// 		return false;
-		// 	}
-		// 	if (filter.end && (!this._isValidDate(dateToCheck) || dateToCheck > filter.end)) {
-		// 		return false;
-		// 	}
-		// 	return true;
-		// },
-
-		_isValidDate(value) {
-			if (!value) {
-				return false;
-			}
-			let dateValue = value;
-			if (!(dateValue instanceof Date)) {
-				dateValue = new Date(dateValue);
-			}
-			if (isNaN(dateValue)) {
-				return false;
-			}
-			return true;
+			this.set(this.valuePath, date, item);
+			this._fireItemChangeEvent(item, this.valuePath, oldValue, this.renderValue.bind(this));
 		},
 
 		_toLocalISOString: function (date) {
@@ -188,6 +135,44 @@
 				':' + pad(date.getSeconds()) +
 				'.' + (date.getMilliseconds() / 1000).toFixed(3).slice(2, 5);
 		}
+
+		// getDate(value) {
+		// 	if (!value) {
+		// 		return null;
+		// 	}
+		// 	if (!(value instanceof Date)) {
+		// 		return new Date(value);
+		// 	}
+		// 	return value;
+		// },
+
+
+		// _applySingleFilter(filter, item) {
+		// 	const dateToCheck = this.getDate(this.get(this.valuePath, item));
+		// 	if (filter.start && (!this._isValidDate(dateToCheck) || dateToCheck < filter.start)) {
+		// 		return false;
+		// 	}
+		// 	if (filter.end && (!this._isValidDate(dateToCheck) || dateToCheck > filter.end)) {
+		// 		return false;
+		// 	}
+		// 	return true;
+		// },
+
+		// _isValidDate(value) {
+		// 	if (!value) {
+		// 		return false;
+		// 	}
+		// 	let dateValue = value;
+		// 	if (!(dateValue instanceof Date)) {
+		// 		dateValue = new Date(dateValue);
+		// 	}
+		// 	if (isNaN(dateValue)) {
+		// 		return false;
+		// 	}
+		// 	return true;
+		// },
+
+
 	};
 	Cosmoz.DateColumnBehavior = [Cosmoz.RangeColumnBehavior, Cosmoz.DateColumnBehaviorImpl];
 </script>

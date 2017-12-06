@@ -27,6 +27,11 @@
 				value: null
 			},
 
+			locale: {
+				type: String,
+				value: null
+			},
+
 			_filterInput: {
 				type: Object,
 				value() {
@@ -45,11 +50,6 @@
 				value() {
 					return {};
 				}
-			},
-
-			locale: {
-				type: String,
-				value: null
 			},
 
 			_tooltip: {
@@ -123,15 +123,16 @@
 			}
 			return this.renderValue(value);
 		},
+		renderValue() {
+			//overrideable
+		},
 
 		getInputString(item, valuePath = this.valuePath) {
 			const value = this.toValue(this.get(valuePath, item));
 			return this._toInputString(value);
 		},
 
-		renderValue() {
-			//overrideable
-		},
+
 
 		_computeRange(change) {
 			const values = change.base,
@@ -189,16 +190,16 @@
 
 		_computeFilterText(filterChange) {
 			var filter = filterChange.base,
-				min = this.getComparableValue(filter, 'min'),
-				max = this.getComparableValue(filter, 'max'),
+				min = this.toValue(filter.min),
+				max = this.toValue(filter.max),
 				text = [];
 
 			if (min != null) {
-				text.push(this.renderValue(filter.min));
+				text.push(this.renderValue(min));
 			}
 			text.push(' - ');
 			if (max != null) {
-				text.push(this.renderValue(filter.max));
+				text.push(this.renderValue(max));
 			}
 			return text.length > 1 ? text.join('') : null;
 
@@ -290,7 +291,7 @@
 			if (obj == null || obj  === '') {
 				return null;
 			}
-			const matches = obj.match(/^([-0-9.]+)?~([-0-9.]+)?/i);
+			const matches = obj.match(/^([^~]+)?~([^~]+)?/i);
 
 			if (!Array.isArray(matches)) {
 				return null;
