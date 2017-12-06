@@ -135,44 +135,7 @@
 				':' + pad(date.getSeconds()) +
 				'.' + (date.getMilliseconds() / 1000).toFixed(3).slice(2, 5);
 		}
-
-		// getDate(value) {
-		// 	if (!value) {
-		// 		return null;
-		// 	}
-		// 	if (!(value instanceof Date)) {
-		// 		return new Date(value);
-		// 	}
-		// 	return value;
-		// },
-
-
-		// _applySingleFilter(filter, item) {
-		// 	const dateToCheck = this.getDate(this.get(this.valuePath, item));
-		// 	if (filter.start && (!this._isValidDate(dateToCheck) || dateToCheck < filter.start)) {
-		// 		return false;
-		// 	}
-		// 	if (filter.end && (!this._isValidDate(dateToCheck) || dateToCheck > filter.end)) {
-		// 		return false;
-		// 	}
-		// 	return true;
-		// },
-
-		// _isValidDate(value) {
-		// 	if (!value) {
-		// 		return false;
-		// 	}
-		// 	let dateValue = value;
-		// 	if (!(dateValue instanceof Date)) {
-		// 		dateValue = new Date(dateValue);
-		// 	}
-		// 	if (isNaN(dateValue)) {
-		// 		return false;
-		// 	}
-		// 	return true;
-		// },
-
-
 	};
+	/** @polymerBehavior */
 	Cosmoz.DateColumnBehavior = [Cosmoz.RangeColumnBehavior, Cosmoz.DateColumnBehaviorImpl];
 </script>
