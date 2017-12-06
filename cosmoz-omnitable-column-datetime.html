@@ -96,6 +96,7 @@
 				if (value == null || value === '') {
 					return;
 				}
+				//Parse utc from hash string
 				return this.toValue(value + 'Z');
 			},
 
