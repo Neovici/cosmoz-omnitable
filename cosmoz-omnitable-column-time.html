@@ -86,15 +86,19 @@
 				return this.toValue(value + 'Z');
 			},
 
-			getComparableValue() {
-				let time = Cosmoz.DateColumnBehaviorImpl.getComparableValue.apply(this, arguments);
-				if (time == null) {
+			getComparableValue(item, valuePath) {
+				if (item == null) {
 					return;
 				}
-				//Limit to days
-				time = time % (24 * 60 * 60 * 1000);
-				//Reset milliseconds
-				return time - time % 1000;
+				let value = this._toInputString(valuePath == null ? item : this.get(valuePath, item));
+				if (value == null) {
+					return;
+				}
+				value = this.toValue(this._fixedDate + 'T' + value);
+				if (value == null) {
+					return;
+				}
+				return this.toNumber(value.getTime());
 			},
 
 			_timeValueChanged(e) {
