@@ -132,8 +132,6 @@
 			return this._toInputString(value);
 		},
 
-
-
 		_computeRange(change) {
 			const values = change.base,
 				comparableValues = Array.isArray(values) && values.length && values.map(i => this.getComparableValue(i)).filter(n => n != null);
@@ -151,6 +149,9 @@
 		},
 
 		_computeLimit(range, inputChange, min, max) {
+			if (!range) {
+				return;
+			}
 			const input = inputChange.base,
 				nMin = this.toValue(min),
 				nMax = this.toValue(max);
@@ -202,7 +203,6 @@
 				text.push(this.renderValue(max));
 			}
 			return text.length > 1 ? text.join('') : null;
-
 		},
 
 		_computeTooltip(title, text) {
@@ -215,6 +215,7 @@
 		_fromInputString(value) {
 			return this.toValue(value);
 		},
+
 		_toInputString(value) {
 			return this.toValue(value);
 		},
