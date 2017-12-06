@@ -76,15 +76,6 @@
 				this._fireItemChangeEvent(item, this.valuePath, oldTime, formatFn.bind(this));
 			},
 
-			getComparableValue(item, valuePath) {
-				const time = this.getTime(this.get(valuePath, item)),
-					date = new Date(this._fixedDate + 'T' + time);
-				if (!this._isValidDate(date)) {
-					return null;
-				}
-				return date.getTime();
-			},
-
 			getString(item, valuePath = this.valuePath) {
 				return this.getTime(this.get(valuePath, item));
 			},
@@ -144,46 +135,46 @@
 				return true;
 			},
 
-			_filterChanged: function (change) {
-				const input = this._filterInput,
-					filter = change.base,
-					start = filter.start,
-					end = filter.end;
+			// _filterChanged: function (change) {
+			// 	const input = this._filterInput,
+			// 		filter = change.base,
+			// 		start = filter.start,
+			// 		end = filter.end;
+	//
+			// 	if (!input || start === input.start && end === input.end) {
+			// 		return;
+			// 	}
+	//
+			// 	this._updatingInput = true;
+			// 	this._filterInput = { start, end};
+			// 	this._updatingInput = false;
+			// },
+	//
+			// _filterInputChanged: function (start, end) {
+			// 	const filter = this.filter;
+			// 	if (!filter || this._updatingInput || start === filter.start && end  === filter.end) {
+			// 		return;
+			// 	}
+			// 	this.filter = { start, end};
+			// },
 
-				if (!input || start === input.start && end === input.end) {
-					return;
-				}
-
-				this._updatingInput = true;
-				this._filterInput = { start, end};
-				this._updatingInput = false;
-			},
-
-			_filterInputChanged: function (start, end) {
-				const filter = this.filter;
-				if (!filter || this._updatingInput || start === filter.start && end  === filter.end) {
-					return;
-				}
-				this.filter = { start, end};
-			},
-
-			_computeFilterText(filterNotify, formatter = this.formatter) {
-				if (!filterNotify) {
-					return null;
-				}
-				const text = [],
-					startTime = new Date(this._fixedDate + 'T' + filterNotify.base.start),
-					endTime = new Date(this._fixedDate + 'T' + filterNotify.base.end);
-
-				if (this._isValidDate(startTime)) {
-					text.push(formatter.format(startTime));
-				}
-				text.push(' - ');
-				if (this._isValidDate(endTime)) {
-					text.push(formatter.format(endTime));
-				}
-				return text.length > 1 ? text.join('') : null;
-			},
+			// _computeFilterText(filterNotify, formatter = this.formatter) {
+			// 	if (!filterNotify) {
+			// 		return null;
+			// 	}
+			// 	const text = [],
+			// 		startTime = new Date(this._fixedDate + 'T' + filterNotify.base.start),
+			// 		endTime = new Date(this._fixedDate + 'T' + filterNotify.base.end);
+	//
+			// 	if (this._isValidDate(startTime)) {
+			// 		text.push(formatter.format(startTime));
+			// 	}
+			// 	text.push(' - ');
+			// 	if (this._isValidDate(endTime)) {
+			// 		text.push(formatter.format(endTime));
+			// 	}
+			// 	return text.length > 1 ? text.join('') : null;
+			// },
 
 			_serializeFilter(filter = this.filter) {
 				const start = filter.start,

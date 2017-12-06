@@ -24,11 +24,11 @@
 					horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
-					<paper-input type="date" min="[[ _formatISODate(_fromMin) ]]" max="[[ _formatISODate(_fromMax) ]]"
-						label="[[ _('From date', t) ]]" value="{{ _filterInput.start }}">
+					<paper-input type="date" min="[[ _toInputString(_limit.fromMin) ]]" max="[[ _toInputString(_limit.fromMax) ]]"
+						label="[[ _('From date', t) ]]" value="{{ _filterInput.min }}">
 					</paper-input>
-					<paper-input type="date" min="[[ _formatISODate(_toMin) ]]" max="[[ _formatISODate(_toMax) ]]"
-						label="[[ _('Until date', t) ]]" value="{{ _filterInput.end }}">
+					<paper-input type="date" min="[[ _toInputString(_limit.toMin) ]]" max="[[ _toInputString(_limit.toMax) ]]"
+						label="[[ _('Until date', t) ]]" value="{{ _filterInput.max }}">
 					</paper-input>
 				</div>
 			</paper-dropdown-menu>

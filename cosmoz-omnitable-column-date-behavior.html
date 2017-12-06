@@ -1,18 +1,10 @@
+<link rel="import" href="cosmoz-omnitable-column-range-behavior.html">
 <script>
 	window.Cosmoz = window.Cosmoz || {};
 
 	/** @polymerBehavior */
-	Cosmoz.DateColumnBehavior = {
+	Cosmoz.DateColumnBehaviorImpl = {
 		properties: {
-			/**
-			 * Ask for a list of values
-			 */
-			bindValues: {
-				type: Boolean,
-				readOnly: true,
-				value: true
-			},
-
 			max: {
 				type: Date,
 				value() {
@@ -27,61 +19,9 @@
 				}
 			},
 
-			values: {
-				type: Array,
-				value() {
-					return [];
-				}
-			},
-
-			_filterInput: {
-				type: Object,
-				value() {
-					return {
-						start: null,
-						end: null
-					};
-				}
-			},
-
 			_filterText: {
 				type: String,
 				computed: '_computeFilterText(filter.*, formatter)'
-			},
-
-			_possibleDateRange: {
-				type: Object,
-				computed: '_computePossibleDateRange(values.*)'
-			},
-
-			_fromMax: {
-				type: Object,
-				computed: '_getMinMax(_toMax, _filterInput.end, 0)'
-			},
-
-			_fromMin: {
-				type: Object,
-				computed: '_getMinMax(_possibleDateRange.min, min, 0)'
-			},
-
-			_toMax: {
-				type: Object,
-				computed: '_getMinMax(_possibleDateRange.max, max, 1)'
-			},
-
-			_toMin: {
-				type: Object,
-				computed: '_getMinMax(_fromMin, _filterInput.start, 1)'
-			},
-
-			_earliestBefore: {
-				type: Object,
-				computed: '_getMinMax(_possibleDateRange.min, _filterInput.start, 1)'
-			},
-
-			_tooltip: {
-				type: String,
-				computed: '_computeTooltip(title, _filterText)'
 			},
 
 			width: {
@@ -105,75 +45,68 @@
 			formatter: {
 				type: Object,
 				computed: '_computeFormatter(locale)'
-			},
-			locale: {
-				type: String,
-				value: null
 			}
 		},
-		observers: [
-			'_filterChanged(filter.*)',
-			'_filterInputChanged(_filterInput.start, _filterInput.end)',
-		],
+
+		toDate(value, limit, limitFunc) {
+			if (value == null || value === '') {
+				return;
+			}
+			const date = value instanceof Date ? value : new Date(value);
+			if (Number.isNaN(date.getTime())) {
+				return null;
+			}
+			if (limitFunc == null || limit == null) {
+				return date;
+			}
+			let lDate = this.toDate(limit);
+			if (lDate == null) {
+				return date;
+			}
+			return limitFunc(date, lDate);
+		},
+
+		toValue() {
+			return this.toDate.apply(this, arguments);
+		},
+
+		getComparableValue() {
+			const value = Cosmoz.RangeColumnBehavior.getComparableValue.apply(this, arguments);
+			if (value == null) {
+				return;
+			}
+			return this.toNumber(value.getTime());
+		},
+
+		getString(item, valuePath = this.valuePath, formatter = this.formatter) {
+			const value = this.toValue(this.get(valuePath, item));
+			if (value === undefined) {
+				return '';
+			}
+			if (value === null) {
+				return 'Invalid Date';
+			}
+			return this.renderValue(value, formatter);
+		},
+
+		renderValue(value, formatter = this.formatter) {
+			const date = this.toValue(value);
+			if (date == null) {
+				return;
+			}
+			return formatter.format(date);
+		},
 
 		_computeFormatter(locale) {
 			return new Intl.DateTimeFormat(locale || undefined);
 		},
 
-		_getMinMax(firstRaw, secondRaw, max) {
-			const doMax = max === 1,
-				first = this.getDate(firstRaw),
-				second = this.getDate(secondRaw),
-				firstValid = this._isValidDate(first),
-				secondValid = this._isValidDate(second);
-
-			if (!firstValid && !secondValid) {
-				return null;
+		_toInputString(value) {
+			const date = this.toValue(value);
+			if (date == null) {
+				return;
 			}
-
-			if (!firstValid && secondValid) {
-				return second;
-			}
-
-			if (firstValid && !secondValid) {
-				return first;
-			}
-
-			if (first.getTime() < second.getTime()) {
-				return doMax ? second : first;
-			}
-
-			return doMax ? first : second;
-		},
-
-		_computePossibleDateRange(change) {
-			const values = change.base;
-			if (!values || !Array.isArray(values) || values.length < 1) {
-				return {
-					min: null,
-					max: null
-				};
-			}
-
-			return values.map(item => this.getDate(item))
-				.filter(item => this._isValidDate(item))
-				.reduce((acc, item) => {
-					if (!acc.min || item < acc.min) {
-						acc.min = item;
-					}
-					if (!acc.max || item > acc.max) {
-						acc.max = item;
-					}
-					return acc;
-				}, {});
-		},
-
-		_computeTooltip(title, filterText) {
-			let ret = title;
-			if (filterText !== undefined && filterText !== null) {
-				ret += ': ' + filterText;
-			}
-			return ret;
+			return this._toLocalISOString(date).slice(0, 10);
 		},
 
 		_formatISODate(filterValue) {
@@ -181,23 +114,6 @@
 				return '';
 			}
 			return filterValue.toISOString().slice(0, 10);
-		},
-
-		_computeFilterText(filterNotify, formatter = this.formatter) {
-			if (!filterNotify) {
-				return null;
-			}
-			const startDate = this.getDate(filterNotify.base.start),
-				endDate = this.getDate(filterNotify.base.end),
-				text = [];
-			if (this._isValidDate(startDate)) {
-				text.push(formatter.format(startDate));
-			}
-			text.push(' - ');
-			if (this._isValidDate(endDate)) {
-				text.push(formatter.format(endDate));
-			}
-			return text.length > 1 ? text.join('') : null;
 		},
 
 		_dateValueChanged(event) {
@@ -215,14 +131,6 @@
 			this._fireItemChangeEvent(item, this.valuePath, oldValue, formatFn.bind(this));
 		},
 
-		getComparableValue(item, valuePath) {
-			const numericValue = this.getDate(this.get(valuePath, item));
-			if (!this._isValidDate(numericValue)) {
-				return null;
-			}
-			return numericValue.getTime();
-		},
-
 		renderISODateValue(item, valuePath) {
 			const value = this.getDate(this.get(valuePath, item));
 			if (!this._isValidDate(value)) {
@@ -231,16 +139,6 @@
 			return value.toISOString().slice(0, 10);
 		},
 
-		getString(item, valuePath = this.valuePath, formatter = this.formatter) {
-			const value = this.getDate(this.get(valuePath, item));
-			if (value === null) {
-				return '';
-			}
-			if (!this._isValidDate(value)) {
-				return 'Invalid Date';
-			}
-			return formatter.format(value);
-		},
 		getDate(value) {
 			if (!value) {
 				return null;
@@ -251,22 +149,17 @@
 			return value;
 		},
 
-		getFilterFn(filter = this.filter) {
-			if (!filter || filter.start == null  && filter.end == null) {
-				return;
-			}
-			return this._applySingleFilter.bind(this, filter);
-		},
-		_applySingleFilter(filter, item) {
-			const dateToCheck = this.getDate(this.get(this.valuePath, item));
-			if (filter.start && (!this._isValidDate(dateToCheck) || dateToCheck < filter.start)) {
-				return false;
-			}
-			if (filter.end && (!this._isValidDate(dateToCheck) || dateToCheck > filter.end)) {
-				return false;
-			}
-			return true;
-		},
+
+		// _applySingleFilter(filter, item) {
+		// 	const dateToCheck = this.getDate(this.get(this.valuePath, item));
+		// 	if (filter.start && (!this._isValidDate(dateToCheck) || dateToCheck < filter.start)) {
+		// 		return false;
+		// 	}
+		// 	if (filter.end && (!this._isValidDate(dateToCheck) || dateToCheck > filter.end)) {
+		// 		return false;
+		// 	}
+		// 	return true;
+		// },
 
 		_isValidDate(value) {
 			if (!value) {
@@ -282,14 +175,7 @@
 			return true;
 		},
 
-		_getDefaultFilter: function () {
-			return {
-				start: null,
-				end: null,
-			};
-		},
-
-		_toISOString: function (date) {
+		_toLocalISOString: function (date) {
 			if (!(date instanceof Date)) {
 				return null;
 			}
@@ -301,70 +187,7 @@
 				':' + pad(date.getMinutes()) +
 				':' + pad(date.getSeconds()) +
 				'.' + (date.getMilliseconds() / 1000).toFixed(3).slice(2, 5);
-		},
-
-		_toStringValue(value) {
-			if (!value || !this._isValidDate(value)) {
-				return '';
-			}
-			return this._toISOString(this.getDate(value)).slice(0, 10);
-		},
-
-		_filterChanged: function (change) {
-			const input = this._filterInput,
-				filter = change.base,
-				start = filter.start,
-				end = filter.end;
-
-			if (!input || this._toStringValue(start) === this._toStringValue(input.start) && this._toStringValue(end) === this._toStringValue(input.end)) {
-				return;
-			}
-
-			this._updatingInput = true;
-			this._filterInput = {
-				start: this._toStringValue(start),
-				end: this._toStringValue(end),
-			};
-			this._updatingInput = false;
-		},
-
-		_filterInputChanged: function (start, end) {
-			const filter = this.filter;
-			if (!filter || this._updatingInput || this._toStringValue(start) === this._toStringValue(filter.start) && this._toStringValue(end) === this._toStringValue(filter.end)) {
-				return;
-			}
-
-			this.filter = {
-				start: this.getDate(start),
-				end: this.getDate(end),
-			};
-		},
-
-		_serializeFilter(filter = this.filter) {
-			const start = filter.start,
-				end = filter.end;
-
-			if (start == null && end == null) {
-				return this.serialize(null);
-			}
-
-			return this._toStringValue(start) + '~' + this._toStringValue(end);
-		},
-
-		_deserializeFilter(obj) {
-			if (obj == null || obj  === '') {
-				return null;
-			}
-			const matches = obj.match(/^([^~]+)?~([^~]+)?/i);
-
-			if (!Array.isArray(matches)) {
-				return null;
-			}
-
-			return {
-				start: new Date(matches[1]),
-				end: new Date(matches[2])
-			};
 		}
 	};
+	Cosmoz.DateColumnBehavior = [Cosmoz.RangeColumnBehavior, Cosmoz.DateColumnBehaviorImpl];
 </script>
