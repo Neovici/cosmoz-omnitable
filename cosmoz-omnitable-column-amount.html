@@ -13,7 +13,7 @@
 
 		<template class="edit-cell">
 			<paper-input no-label-float type="number" on-change="_amountValueChanged"
-				value="[[ getComparableValue(item, valuePath) ]]">
+				value="[[ getInputString(item, valuePath) ]]">
 				<div suffix>[[ getCurrency(item, valuePath) ]]</div>
 			</paper-input>
 		</template>
@@ -24,11 +24,11 @@
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 150px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
 					<paper-input type="number" label="[[ _('Min amount', t) ]]" title="[[ _('Minimum amount', t) ]]" value="{{ _filterInput.min }}"
-							min="[[ _limit.fromMin ]]" max="[[ _limit.fromMax ]]">
+							min="[[ _toInputString(_limit.fromMin) ]]" max="[[ _toInputString(_limit.fromMax) ]]">
 						<div slot="suffix" suffix>[[ filter.min.currency ]]</div>
 					</paper-input>
 					<paper-input type="number" label="[[ _('Max amount', t) ]]" title="[[ _('Maximum amount', t) ]]" value="{{ _filterInput.max }}"
-						min="[[ _limit.toMin ]]" max="[[ _limit.toMax ]]">
+						min="[[ _toInputString(_limit.toMin) ]]" max="[[ _toInputString(_limit.toMax) ]]">
 						<div slot="suffix" suffix>[[ filter.max.currency ]]</div>
 					</paper-input>
 				</div>
@@ -184,9 +184,9 @@
 			},
 
 			_toInputString(value) {
-				const amount = this.toValue(value);
+				let amount = this.toValue(value);
 				if (amount == null) {
-					return;
+					return null;
 				}
 				return this.toNumber(amount.amount);
 			},

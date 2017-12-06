@@ -124,6 +124,11 @@
 			return this.renderValue(value);
 		},
 
+		getInputString(item, valuePath = this.valuePath) {
+			const value = this.toValue(this.get(valuePath, item));
+			return this._toInputString(value);
+		},
+
 		renderValue() {
 			//overrideable
 		},
@@ -149,10 +154,10 @@
 				nMin = this.toValue(min),
 				nMax = this.toValue(max);
 			return {
-				fromMin: nMin != null ? this.toValue(min) : this.toValue(range.min),
+				fromMin: nMin != null ? nMin : this.toValue(range.min),
 				fromMax: this.toValue(range.max, input.max, Math.min),
 				toMin: this.toValue(range.min, input.min, Math.max),
-				toMax: nMax != null ? this.toValue(max) : this.toValue(range.min)
+				toMax: nMax != null ? nMax : this.toValue(range.max)
 			};
 		},
 
