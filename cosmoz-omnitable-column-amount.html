@@ -186,7 +186,7 @@
 			_toInputString(value) {
 				let amount = this.toValue(value);
 				if (amount == null) {
-					return null;
+					return null; //Need null to clear input
 				}
 				return this.toNumber(amount.amount);
 			},

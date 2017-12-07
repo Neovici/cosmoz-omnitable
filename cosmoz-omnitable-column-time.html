@@ -65,7 +65,7 @@
 			_toInputString(value) {
 				const date = this.toValue(value);
 				if (date == null) {
-					return;
+					return null;
 				}
 				return this._toLocalISOString(date).slice(11, 19);
 			},
