@@ -34,13 +34,19 @@
 					</paper-input>
 				</div>
 			</paper-dropdown-menu>
+			<iron-icon style="cursor: pointer;" icon="clear" class="header-clear-filter" on-tap="resetFilter" hidden="[[ !hasFilter(filter.*) ]]"></iron-icon>
 		</template>
 	</template>
 	<script>
 		/*global Cosmoz */
 		Polymer({
 			is: 'cosmoz-omnitable-column-date',
-
+			properties: {
+				headerCellClass: {
+					type: String,
+					value: 'date-header-cell'
+				}
+			},
 			behaviors: [
 				Cosmoz.OmnitableColumnBehavior,
 				Cosmoz.TranslatableBehavior,
