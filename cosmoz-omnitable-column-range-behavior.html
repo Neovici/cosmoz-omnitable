@@ -290,6 +290,15 @@
 			this.cancelDebouncer('_limitInput');
 		},
 
+		hasFilter() {
+			const filter = this.filter,
+				isSet = Cosmoz.OmnitableColumnBehavior.hasFilter.apply(this, arguments);
+			if (!isSet) {
+				return false;
+			}
+			return this.toValue(filter.min) != null || this.toValue(filter.max) != null;
+		},
+
 		_serializeFilter(filter = this.filter) {
 			const min = this.toValue(filter.min),
 				max = this.toValue(filter.max);
