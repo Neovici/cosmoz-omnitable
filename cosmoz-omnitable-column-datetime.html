@@ -33,6 +33,7 @@
 					</datetime-local>
 				</div>
 			</paper-dropdown-menu>
+			<iron-icon style="cursor: pointer;" icon="clear" class="header-clear-filter" on-tap="resetFilter" hidden="[[ !hasFilter(filter.*) ]]"></iron-icon>
 		</template>
 	</template>
 	<script>
@@ -68,6 +69,10 @@
 					type: String,
 					value: '320px'
 				},
+				headerCellClass: {
+					type: String,
+					value: 'datetime-header-cell'
+				}
 			},
 
 			behaviors: [
