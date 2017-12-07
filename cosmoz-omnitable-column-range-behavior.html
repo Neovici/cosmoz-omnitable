@@ -227,12 +227,15 @@
 			};
 		},
 
-		_filterInputChanged() {
+		_filterInputChanged(change) {
+			const path = change.path.split('.')[1];
+			this.__inputChangePath = path || null;
 			this.debounce('_limitInput', this._limitInput, 600);
 		},
 
 		_limitInput() {
 			const input = this._filterInput,
+				path = this.__inputChangePath,
 				limit = this._limit,
 				min = this._fromInputString(input.min),
 				max = this._fromInputString(input.max),
@@ -243,9 +246,14 @@
 				&& this.getComparableValue(lMax) === this.getComparableValue(max)) {
 				return this._updateFilter();
 			}
-			this.set('_filterInput', { min: this._toInputString(lMin), max: this._toInputString(lMax) });
+			this.__inputChangePath = null;
+			this.set('_filterInput', {
+				min: !path || path === 'min' ? this._toInputString(lMin) : min,
+				max: !path || path === 'max' ? this._toInputString(lMax) : max
+			});
 			this.flushDebouncer('_limitInput');
 		},
+
 		_updateFilter() {
 			const input = this._filterInput,
 				filter = this.filter,
