@@ -14,7 +14,7 @@
 
 		<template class="edit-cell">
 			<datetime-local no-label-float type="datetime-local" on-change="_dateValueChanged"
-				value="[[ renderISODateTimeValue(item, valuePath) ]]">
+				value="[[ getInputString(item, valuePath) ]]">
 			</datetime-local>
 		</template>
 
@@ -23,11 +23,13 @@
 					horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
-					<datetime-local min="[[ _getISODate(_fromMin) ]]" max="[[ _getISODate(_fromMax) ]]"
-						date-label="[[ _('From date', t) ]]" time-label="[[ _('From time', t) ]]" value="{{ _filterInput.start }}" step$="[[filterStep]]">
+					<datetime-local date-label="[[ _('From date', t) ]]" time-label="[[ _('From time', t) ]]"
+						min="[[ _toInputString(_limit.fromMin) ]]" max="[[ _toInputString(_limit.fromMax) ]]"
+						value="{{ _filterInput.min }}" step$="[[ filterStep ]]">
 					</datetime-local>
-					<datetime-local on-datetime-local-value-changed="_valueChanged" min="[[ _getISODate(_toMin) ]]" max="[[ _getISODate(_toMax) ]]"
-						value="{{ _filterInput.end }}" step$="[[filterStep]]">
+					<datetime-local date-label="[[ _('To date', t) ]]" time-label="[[ _('To time', t) ]]"
+						min="[[ _toInputString(_limit.toMin) ]]" max="[[ _toInputString(_limit.toMax) ]]"
+						value="{{ _filterInput.max }}" step$="[[ filterStep ]]">
 					</datetime-local>
 				</div>
 			</paper-dropdown-menu>
@@ -66,11 +68,6 @@
 					type: String,
 					value: '320px'
 				},
-
-				formatter: {
-					type: Object,
-					computed: '_computeFormatter(locale)'
-				}
 			},
 
 			behaviors: [
@@ -79,15 +76,29 @@
 				Cosmoz.DateColumnBehavior
 			],
 
-			renderISODateTimeValue(item, valuePath) {
-				const value = this.getDate(this.get(valuePath, item));
-				return this._getISODate(value);
+			_toInputString(value) {
+				const date = this.toValue(value);
+				if (date == null) {
+					return;
+				}
+				return this._toLocalISOString(date).slice(0, 19);
 			},
-			_getISODate(filterValue) {
-				if (!this._isValidDate(filterValue)) {
+
+			_toHashString(value) {
+				const date = this.toValue(value);
+				if (date == null) {
 					return '';
 				}
-				return filterValue.toISOString().slice(0, 16);
+				//Use utc in hash
+				return date.toISOString().slice(0, 19).replace(/:/g, '.');
+			},
+
+			_fromHashString(value) {
+				if (value == null || value === '') {
+					return;
+				}
+				//Parse utc from hash string
+				return this.toValue(value.replace(/\./g, ':') + 'Z');
 			},
 
 			// OVERRIDES
@@ -100,12 +111,6 @@
 					minute: 'numeric'
 				};
 				return new Intl.DateTimeFormat(locale || undefined, timeFormatOption);
-			},
-			_toStringValue(value) {
-				if (!value || !this._isValidDate(value)) {
-					return '';
-				}
-				return this._toISOString(this.getDate(value)).slice(0, 16);
 			},
 		});
 

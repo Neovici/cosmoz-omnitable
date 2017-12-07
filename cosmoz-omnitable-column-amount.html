@@ -13,7 +13,7 @@
 
 		<template class="edit-cell">
 			<paper-input no-label-float type="number" on-change="_amountValueChanged"
-				value="[[ getComparableValue(item, valuePath) ]]">
+				value="[[ getInputString(item, valuePath) ]]">
 				<div suffix>[[ getCurrency(item, valuePath) ]]</div>
 			</paper-input>
 		</template>
@@ -24,11 +24,11 @@
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 150px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
 					<paper-input type="number" label="[[ _('Min amount', t) ]]" title="[[ _('Minimum amount', t) ]]" value="{{ _filterInput.min }}"
-							min="[[ _limit.fromMin ]]" max="[[ _limit.fromMax ]]">
+							min="[[ _toInputString(_limit.fromMin) ]]" max="[[ _toInputString(_limit.fromMax) ]]">
 						<div slot="suffix" suffix>[[ filter.min.currency ]]</div>
 					</paper-input>
 					<paper-input type="number" label="[[ _('Max amount', t) ]]" title="[[ _('Maximum amount', t) ]]" value="{{ _filterInput.max }}"
-							min="[[ _limit.toMin ]]" max="[[ _limit.toMax ]]">
+						min="[[ _toInputString(_limit.toMin) ]]" max="[[ _toInputString(_limit.toMax) ]]">
 						<div slot="suffix" suffix>[[ filter.max.currency ]]</div>
 					</paper-input>
 				</div>
@@ -99,14 +99,51 @@
 					});
 			},
 
+			/**
+			 * Converts a value to an amount object optionaly limiting it.
+			 *
+			 * @param  {Object|*} value  The value to convert to number
+			 * @param  {Object|*} limit  The value used to limit the number
+			 * @param  {Function} limitFunc  The function used to limit the number (Math.min|Math.max)
+			 * @returns {Object|void}    Value converted to Number or void
+			 */
+			toAmount(value, limit, limitFunc) {
+				if (value == null || value === '') {
+					return;
+				}
+				const number = this.toNumber(typeof value === 'object' ? value.amount : value);
+				if (Number.isNaN(number)) {
+					return;
+				}
+				let amount = {
+						currency: value.currency || this.defaultCurrency,
+						amount: number
+					},
+					lAmount;
+
+				if (limitFunc == null || limit == null) {
+					return amount;
+				}
+				lAmount = this.toAmount(limit);
+				if (lAmount == null) {
+					return amount;
+				}
+				return Object.assign(amount, {
+					amount: this.toNumber(amount.amount, lAmount.amount, limitFunc)
+				});
+			},
+
+			toValue() {
+				return this.toAmount.apply(this, arguments);
+			},
+
 			toXlsxValue(item, valuePath = this.valuePath) {
 				return this.getString(item, valuePath);
 			},
 
 			getComparableValue(item, valuePath) {
-				const value = valuePath != null ? this.get(valuePath, item) : item;
-				// TODO: fx
-				if (value == null || value.amount == null) {
+				const value = Cosmoz.RangeColumnBehavior.getComparableValue.call(this, item, valuePath);
+				if (value == null) {
 					return;
 				}
 				return this.toNumber(value.amount);
@@ -117,7 +154,7 @@
 				return value && value.currency;
 			},
 
-			renderNumber(value, _formatters = this._formatters) {
+			renderValue(value, _formatters = this._formatters) {
 				if (!value || !_formatters) {
 					return '';
 				}
@@ -141,38 +178,18 @@
 						amount: amountValue,
 						currency: originalValue.currency
 					};
+
 				this.set(this.valuePath, newValue, item);
-				this._fireItemChangeEvent(item, this.valuePath, originalValue, this.renderNumber.bind(this));
+				this._fireItemChangeEvent(item, this.valuePath, originalValue, this.renderValue.bind(this));
 			},
 
-			_updateFilterFromInput(min, max) {
-				const filter = this.filter;
-				this.set('filter', {
-					min: {amount: min, currency: filter.min.currency || this.defaultCurrency},
-					max: {amount: max, currency: filter.max.currency || this.defaultCurrency}
-				});
-			},
-
-			_getDefaultFilter() {
-				return {
-					min: { currency: this.defaultCurrency },
-					max: { currency: this.defaultCurrency }
-				};
-			},
-			_deserializeFilter(obj) {
-				if (obj == null || obj  === '') {
-					return null;
+			_toInputString(value) {
+				let amount = this.toValue(value);
+				if (amount == null) {
+					return null; //Need null to clear input
 				}
-				const matches = obj.match(/^([-0-9.]+)?~([-0-9.]+)?/i);
-
-				if (!Array.isArray(matches)) {
-					return null;
-				}
-				return {
-					min: {amount: matches[1], currency: this.filter.min.currency || this.defaultCurrency},
-					max: {amount: matches[2], currency: this.filter.max.currency || this.defaultCurrency}
-				};
-			}
+				return this.toNumber(amount.amount);
+			},
 		});
 
 	</script>
