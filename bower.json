@@ -82,7 +82,8 @@
 				"paper-autocomplete-chips": "Neovici/paper-autocomplete-chips#master",
 				"import-filesaver": "JaySunSyn/import-filesaver",
 				"datetime-local": "JaySunSyn/datetime-local#polymer-1",
-				"nullxlsx": "Neovici/nullxlsx#master"
+        "nullxlsx": "Neovici/nullxlsx#master",
+        "paper-dialog-scrollable": "^2.1.0"
 			},
 			"devDependencies": {
 				"paper-button": "PolymerElements/paper-button#^2.0.0",

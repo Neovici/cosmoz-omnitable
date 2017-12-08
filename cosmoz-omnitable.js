@@ -862,7 +862,7 @@
 			const headerRow = Polymer.dom(this.$.header).querySelector('cosmoz-omnitable-header-row'),
 				headers = Array.from(Polymer.dom(headerRow).children);
 
-			cells.forEach((cell, index) => {
+			cells.forEach((cell, index, array) => {
 				const header = headers[index];
 
 				// disabled column headers
@@ -871,6 +871,11 @@
 				}
 
 				let width = getComputedStyle(cell).getPropertyValue('width');
+
+				if (!this.allColumnsVisible && index === array.length - 1) {
+					// Make room for the filter button
+					width = `${parseInt(width, 10) - 40}px`;
+				}
 				header.style.minWidth = width;
 				header.style.maxWidth = width === 'auto' ? 'none' : width;
 				header.style.width = width;
