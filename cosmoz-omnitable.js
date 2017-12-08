@@ -533,7 +533,7 @@
 
 		_groupOnColumnChanged: function (column) {
 			this._updateRouteParam('groupOn');
-			if (column && column.filter) {
+			if (column && column.hasFilter()) {
 				column.resetFilter();
 			} else {
 				this.debounce('groupItems', this._groupItems);
@@ -1121,6 +1121,9 @@
 				return;
 			}
 
+			if (column === this.groupOnColumn) {
+				return;
+			}
 			if (value === column._serializeFilter()) {
 				return;
 			}
