@@ -601,13 +601,9 @@
 			}
 		},
 
-		_groupOnColumnChanged: function (column) {
+		_groupOnColumnChanged: function () {
 			this._updateRouteParam('groupOn');
-			if (column && column.filter) {
-				column.resetFilter();
-			} else {
-				this.debounce('groupItems', this._groupItems);
-			}
+			this.debounce('groupItems', this._groupItems);
 		},
 
 		_debounceGroupItems: function () {
