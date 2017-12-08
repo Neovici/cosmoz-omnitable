@@ -30,7 +30,8 @@
 					</paper-input>
 				</div>
 			</paper-dropdown-menu>
-			<iron-icon style="cursor: pointer;" icon="clear" class="header-clear-filter" on-tap="resetFilter" hidden="[[ !hasFilter(filter.*) ]]"></iron-icon>
+			<iron-icon icon="clear" class="header-clear-filter"
+				on-tap="resetFilter" visible$="[[ hasFilter(filter.*) ]]"></iron-icon>
 		</template>
 
 	</template>
