@@ -189,8 +189,8 @@
 			return true;
 		},
 
-		_computeFilterText(filterChange) {
-			var filter = filterChange.base,
+		_computeFilterText(change) {
+			const filter = change.base,
 				min = this.toValue(filter.min),
 				max = this.toValue(filter.max),
 				text = [];
@@ -300,6 +300,9 @@
 		},
 
 		_serializeFilter(filter = this.filter) {
+			if (filter == null) {
+				return;
+			}
 			const min = this.toValue(filter.min),
 				max = this.toValue(filter.max);
 
