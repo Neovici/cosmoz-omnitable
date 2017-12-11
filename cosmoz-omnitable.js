@@ -211,8 +211,8 @@
 			},
 
 			_routeHash: {
-				type: Object,
-				notify: true
+				type: Object
+
 			},
 			_routeHashKeyRule: {
 				type: RegExp,
@@ -230,7 +230,6 @@
 		observers: [
 			'_dataChanged(data.*)',
 			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
-			'_routeHashChanged(_routeHash.*, hashParam, columns)',
 			' _selectedItemsChanged(selectedItems.*)'
 		],
 
@@ -427,6 +426,8 @@
 			this.columns = columns;
 			this.visibleColumns = columns.slice();
 
+			this._updateParamsFromHash();
+
 			if (Array.isArray(this.data)) {
 				this._debounceFilterItems();
 			}
@@ -532,7 +533,6 @@
 		},
 
 		_groupOnColumnChanged: function (column) {
-			this._updateRouteParam('groupOn');
 			if (column && column.hasFilter()) {
 				column.resetFilter();
 			} else {
@@ -548,6 +548,8 @@
 		},
 
 		_groupItems: function () {
+			this._updateRouteParam('groupOn');
+
 			if (!this.filteredItems || this.filteredItems.length === 0) {
 				this.filteredGroupedItems  = [];
 				this.sortedFilteredGroupedItems = [];
@@ -1107,7 +1109,7 @@
 
 		_routeHashPropertyChanged: function (key, value) {
 			const deserialized = this.deserialize(value, this.properties[key].type);
-			if (value === undefined ||  deserialized === this.get(key)) {
+			if (deserialized === this.get(key)) {
 				return;
 			}
 			this.set(key, deserialized);
@@ -1158,22 +1160,13 @@
 			}
 		},
 
-		_routeHashChanged: function (changes, hashParam, columns) {
-			if (!changes || !hashParam || !columns || !columns.length) {
+		_updateParamsFromHash: function () {
+			if (!this.hashParam || !this._routeHash) {
 				return;
 			}
-			const path = changes.path,
-				key = path && path.split('.')[1];
-
-			if (key) {
-				//If key is set we have a sub property change
-				this._routeHashKeyChanged(key, changes.value);
-				return;
-			}
-
-			//If the full object has changed update _routeHashKeyChanged for each property
-			Object.keys(changes.base).forEach(key => {
-				this._routeHashKeyChanged(key, changes.base[key]);
+			const hash = this._routeHash;
+			Object.keys(hash).forEach(key => {
+				this._routeHashKeyChanged(key, hash[key]);
 			});
 		},
 
@@ -1187,10 +1180,9 @@
 				value = this.get(key),
 				serialized = this.serialize(value, this.properties[key].type);
 
-			if (serialized === hashValue || hashValue == null && value === '') {
+			if (serialized === hashValue) {
 				return;
 			}
-
 			this.set(path, serialized === undefined ? null : serialized);
 		},
 
