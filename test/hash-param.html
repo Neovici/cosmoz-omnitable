@@ -37,56 +37,66 @@
 		</test-fixture>
 
 		<script>
-			suite('basic', function () {
-				var omnitable,
-					data = [
-						{ id: 0, group: 'group0', name: 'Item 0' },
-						{ id: 1, group: 'group0', name: 'Item 1' },
-						{ id: 2, group: 'group1', name: 'Item 2' },
-						{ id: 3, group: 'group1', name: 'Item 3' }
-					],
-					location = window.location;
-
-				this.timeout(9e2000);
-
-				setup(function (done) {
+		(function () {
+			let omnitable;
+			const data = [
+					{ id: 0, group: 'group0', name: 'Item 0' },
+					{ id: 1, group: 'group0', name: 'Item 1' },
+					{ id: 2, group: 'group1', name: 'Item 2' },
+					{ id: 3, group: 'group1', name: 'Item 3' }
+				],
+				location = window.location,
+				instantiate = function (done) {
 					omnitable = fixture('basic');
 					omnitable.data = data;
 					Polymer.Base.async(done, 30);
-				});
+				};
 
+			suite('basic-read', function () {
 				test('updates sortOn from url hash', function (done) {
 					location.hash = '#/#test-sortOn=id';
-					assert.equal(omnitable.sortOn, 'id');
-					assert.isFalse(omnitable.descending);
-					location.hash = '';
-					done();
+					instantiate(function () {
+						assert.equal(omnitable.sortOn, 'id');
+						assert.isFalse(omnitable.descending);
+						location.hash = '';
+						done();
+					});
 				});
 
 				test('updates groupOn from url hash', function (done) {
 					location.hash = '#/#test-groupOn=group';
-					assert.equal(omnitable.groupOn, 'group');
-					assert.isFalse(omnitable.descending);
-					location.hash = '';
-					done();
+					instantiate(function () {
+						assert.equal(omnitable.groupOn, 'group');
+						assert.isFalse(omnitable.descending);
+						location.hash = '';
+						done();
+					});
 				});
 
 				test('updates groupOn, sortOn and descending from url hash', function (done) {
 					location.hash = '#/#test-groupOn=id&test-sortOn=name&test-descending';
-					assert.equal(omnitable.groupOn, 'id');
-					assert.equal(omnitable.sortOn, 'name');
-					assert.isTrue(omnitable.descending);
-					location.hash = '';
-					done();
+					instantiate(function () {
+						assert.equal(omnitable.groupOn, 'id');
+						assert.equal(omnitable.sortOn, 'name');
+						assert.isTrue(omnitable.descending);
+						location.hash = '';
+						done();
+					});
 				});
 
 				test('updates filter from url hash', function (done) {
 					location.hash = '#/#test-filter--id=["1"]';
-					assert.isArray(omnitable.columns[0].filter);
-					assert.lengthOf(omnitable.columns[0].filter, 1);
-					assert.include(omnitable.columns[0].filter, '1');
-					done();
+					instantiate(function () {
+						assert.isArray(omnitable.columns[0].filter);
+						assert.lengthOf(omnitable.columns[0].filter, 1);
+						assert.include(omnitable.columns[0].filter, '1');
+						done();
+					});
 				});
+			});
+
+			suite('basic-write', function () {
+				setup(instantiate);
 
 				test('updates _routeHash from sortOn', function (done) {
 					omnitable.sortOn = 'name';
@@ -128,7 +138,7 @@
 				});
 
 			});
-
+		})();
 		</script>
 	</body>
 </html>
