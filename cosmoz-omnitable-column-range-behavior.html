@@ -190,6 +190,9 @@
 		},
 
 		_computeFilterText(change) {
+			if (change.base == null) {
+				return null;
+			}
 			const filter = change.base,
 				min = this.toValue(filter.min),
 				max = this.toValue(filter.max),
