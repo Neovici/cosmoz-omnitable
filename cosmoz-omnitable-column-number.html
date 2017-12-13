@@ -134,13 +134,6 @@
 				}
 			},
 
-			_clearInput(event) {
-				const input = event.path.find(el => el.is === 'paper-input');
-				if (input) {
-					input.value = null;
-				}
-			},
-
 			_computeFormatter(locale, minimumFractionDigits, maximumFractionDigits) {
 				const options = {
 					localeMatcher: 'best fit' // chrome expects this when using custom options
@@ -160,6 +153,11 @@
 					return;
 				}
 				return formatter.format(number);
+			},
+			
+			attached: function () {
+				// this._addDates();
+				console.log('japp');
 			},
 		});
 	</script>
