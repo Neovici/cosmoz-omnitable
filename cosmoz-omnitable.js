@@ -190,6 +190,7 @@
 			visible: {
 				type: Boolean,
 				notify: true,
+				readOnly: true,
 				value: false
 			},
 
@@ -736,7 +737,7 @@
 				return;
 			}
 
-			this.visible = this.offsetParent != null;
+			this._setVisible(this.offsetParent != null);
 
 			if (!this.visible) {
 				return;
