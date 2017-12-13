@@ -187,6 +187,12 @@
 				notify: true
 			},
 
+			visible: {
+				type: Boolean,
+				notify: true,
+				value: false
+			},
+
 			/**
 			 * List of <b>visible</b> columns.
 			 */
@@ -366,7 +372,7 @@
 			this.highlight(item, this.isItemHighlighted(item));
 		},
 
-		_onResize: function () {
+		_onResize() {
 			this._debounceAdjustColumns();
 		},
 
@@ -710,12 +716,6 @@
 			this.set('sortedFilteredGroupedItems', this.filteredGroupedItems.slice());
 			this._debounceAdjustColumns();
 		},
-		/**
-		 * True if the current list is visible.
-		 */
-		get _isVisible() {
-			return Boolean(this.offsetWidth || this.offsetHeight);
-		},
 
 		_debounceAdjustColumns: function () {
 			// 16ms 'magic' number copied from iron-list
@@ -729,16 +729,22 @@
 		 * @memberOf element/cz-omnitable
 		 * @returns {Boolean} Return
 		 */
-		_adjustColumns: function () {
+		_adjustColumns() {
 
 			// Safety check, but should never happen
-			if (!this.isAttached || !this._isVisible) {
+			if (!this.isAttached) {
+				return;
+			}
+
+			this.visible = this.offsetParent != null;
+
+			if (!this.visible) {
 				return;
 			}
 
 			const firstRow = this.$.groupedList.getFirstVisibleItemElement(),
 				visibleData = this.sortedFilteredGroupedItems,
-				hasVisibleData = visibleData && Array.isArray(visibleData) && visibleData.length > 0;
+				hasVisibleData = Array.isArray(visibleData) && visibleData.length > 0;
 
 			if (!hasVisibleData || !firstRow && this.$.groupedList.hasRenderedData) {
 				// reset headers width
