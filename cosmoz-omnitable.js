@@ -235,7 +235,7 @@
 			 */
 			allColumnsVisible: {
 				type: Boolean,
-				computed: '_computeColumnsAllVisible(visibleColumns.*, groupOn, columns)'
+				computed: '_computeColumnsAllVisible(visibleColumns.*, columns)'
 			}
 		},
 
@@ -244,7 +244,7 @@
 			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
 			'_routeHashChanged(_routeHash.*, hashParam, columns)',
 			'_selectedItemsChanged(selectedItems.*)',
-			'_setFilterDialogColumns(disabledColumns.*, groupOn)'
+			'_setFilterDialogColumns(disabledColumns.*)'
 		],
 
 		behaviors: [
@@ -301,9 +301,6 @@
 		_sortFilterDialogColumns(a, b) {
 			const elA = a.headerTemplatizer.getInstance().root.children[0],
 				elB = b.headerTemplatizer.getInstance().root.children[0],
-				// Having PAPER-AUTOCOMPLETE-CHIPS at the top of the dialog
-				// avoids display issues if the dialog gets too high and the "listbox" of the element
-				// doesn't get displayed properly beacause of overflow:scroll of the dialog container.
 				prios = [['PAPER-AUTOCOMPLETE-CHIPS'], ['PAPER-DROPDOWN-MENU']];
 
 			for (const prio of prios) {
@@ -325,22 +322,17 @@
 		},
 
 		_setFilterDialogColumns(disabledColumnsChange) {
-			const groupOnColumn = this.groupOnColumn,
-				disabledColumns = disabledColumnsChange.base;
+			const disabledColumns = disabledColumnsChange.base;
 
 			// Otherwise change doesn't notify `cosmoz-omnitable-repeater-behavior`
 			// Todo: figure out a nicer way.
 			this._filterDialogColumns = [];
 
-			if (!disabledColumns && !groupOnColumn) {
+			if (!disabledColumns) {
 				return;
 			}
 
-			if (!disabledColumns || !groupOnColumn) {
-				this.set('_filterDialogColumns', (disabledColumns || groupOnColumn).sort(this._sortFilterDialogColumns));
-				return;
-			}
-			this.set('_filterDialogColumns', disabledColumns.concat(groupOnColumn).sort(this._sortFilterDialogColumns));
+			this.set('_filterDialogColumns', disabledColumns.sort(this._sortFilterDialogColumns));
 		},
 
 		_computeDataValidity(data) {
@@ -360,10 +352,7 @@
 			return dataIsValid && hasActions;
 		},
 
-		_computeColumnsAllVisible(visibleColumnsChange, groupOn, columns) {
-			if (groupOn) {
-				return false;
-			}
+		_computeColumnsAllVisible(visibleColumnsChange, columns) {
 			const visibleColumns = visibleColumnsChange.base;
 			if (!visibleColumns || !columns) {
 				return;
@@ -601,8 +590,13 @@
 			}
 		},
 
-		_groupOnColumnChanged: function () {
+		_groupOnColumnChanged: function (column) {
 			this._updateRouteParam('groupOn');
+			if (column && column.filter) {
+				column.resetFilter();
+			} else {
+				this.debounce('groupItems', this._groupItems);
+			}
 			this.debounce('groupItems', this._groupItems);
 		},
 
@@ -858,7 +852,7 @@
 			const headerRow = Polymer.dom(this.$.header).querySelector('cosmoz-omnitable-header-row'),
 				headers = Array.from(Polymer.dom(headerRow).children);
 
-			cells.forEach((cell, index, array) => {
+			cells.forEach((cell, index) => {
 				const header = headers[index];
 
 				// disabled column headers
@@ -867,11 +861,6 @@
 				}
 
 				let width = getComputedStyle(cell).getPropertyValue('width');
-
-				if (!this.allColumnsVisible && index === array.length - 1) {
-					// Make room for the filter button
-					width = `${parseInt(width, 10) - 40}px`;
-				}
 				header.style.minWidth = width;
 				header.style.maxWidth = width === 'auto' ? 'none' : width;
 				header.style.width = width;
