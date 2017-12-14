@@ -37,98 +37,140 @@
 		</test-fixture>
 
 		<script>
-			suite('basic', function () {
-				var omnitable,
-					data = [
-						{ id: 0, group: 'group0', name: 'Item 0' },
-						{ id: 1, group: 'group0', name: 'Item 1' },
-						{ id: 2, group: 'group1', name: 'Item 2' },
-						{ id: 3, group: 'group1', name: 'Item 3' }
-					],
-					location = window.location;
-
-				this.timeout(9e2000);
-
-				setup(function (done) {
+		(function () {
+			let omnitable;
+			const data = [
+					{ id: 0, group: 'group0', name: 'Item 0' },
+					{ id: 1, group: 'group0', name: 'Item 1' },
+					{ id: 2, group: 'group1', name: 'Item 2' },
+					{ id: 3, group: 'group1', name: 'Item 3' }
+				],
+				location = window.location,
+				instantiate = function (done) {
 					omnitable = fixture('basic');
 					omnitable.data = data;
 					Polymer.Base.async(done, 30);
-				});
+				};
 
-				test('updates sortOn from url hash', function (done) {
-					location.hash = '#/#test-sortOn=id';
-					assert.equal(omnitable.sortOn, 'id');
-					assert.isFalse(omnitable.descending);
+			suite('basic-read', function () {
+				teardown(function (done) {
 					location.hash = '';
 					done();
+				});
+				test('updates sortOn from url hash', function (done) {
+					location.hash = '#/#test-sortOn=id';
+					instantiate(function () {
+						assert.equal(omnitable.sortOn, 'id');
+						assert.isFalse(omnitable.descending);
+						done();
+					});
 				});
 
 				test('updates groupOn from url hash', function (done) {
 					location.hash = '#/#test-groupOn=group';
-					assert.equal(omnitable.groupOn, 'group');
-					assert.isFalse(omnitable.descending);
-					location.hash = '';
-					done();
+					instantiate(function () {
+						assert.equal(omnitable.groupOn, 'group');
+						assert.isFalse(omnitable.descending);
+						done();
+					});
 				});
 
 				test('updates groupOn, sortOn and descending from url hash', function (done) {
 					location.hash = '#/#test-groupOn=id&test-sortOn=name&test-descending';
-					assert.equal(omnitable.groupOn, 'id');
-					assert.equal(omnitable.sortOn, 'name');
-					assert.isTrue(omnitable.descending);
-					location.hash = '';
-					done();
+					instantiate(function () {
+						assert.equal(omnitable.groupOn, 'id');
+						assert.equal(omnitable.sortOn, 'name');
+						assert.isTrue(omnitable.descending);
+						done();
+					});
 				});
 
 				test('updates filter from url hash', function (done) {
 					location.hash = '#/#test-filter--id=["1"]';
-					assert.isArray(omnitable.columns[0].filter);
-					assert.lengthOf(omnitable.columns[0].filter, 1);
-					assert.include(omnitable.columns[0].filter, '1');
+					instantiate(function () {
+						assert.isArray(omnitable.columns[0].filter);
+						assert.lengthOf(omnitable.columns[0].filter, 1);
+						assert.include(omnitable.columns[0].filter, '1');
+						done();
+					});
+				});
+			});
+
+			suite('basic-write', function () {
+				setup(instantiate);
+				teardown(function (done) {
+					location.hash = '';
 					done();
+				});
+				test('updates _routeHash with defaults', function (done) {
+					const hash =  omnitable._routeHash;
+					Polymer.Base.async(function () {
+						assert.equal(hash['test-sortOn'], '');
+						assert.equal(hash['test-groupOn'], '');
+						assert.isUndefined(hash['test-descending']);
+						done();
+					}, 30);
+
 				});
 
 				test('updates _routeHash from sortOn', function (done) {
+					const hash =  omnitable._routeHash;
 					omnitable.sortOn = 'name';
 					Polymer.Base.async(function () {
-						assert.equal(omnitable._routeHash['test-sortOn'], 'name');
-						location.hash = '';
-						done();
+						assert.equal(hash['test-sortOn'], 'name');
+						omnitable.sortOn = '';
+						Polymer.Base.async(function () {
+							assert.equal(hash['test-sortOn'], '');
+							done();
+						}, 30);
 					}, 30);
 
 				});
 
 				test('updates _routeHash from groupOn', function (done) {
+					const hash =  omnitable._routeHash;
 					omnitable.groupOn = 'name';
 					Polymer.Base.async(function () {
-						assert.equal(omnitable._routeHash['test-groupOn'], 'name');
-						location.hash = '';
-						done();
+						assert.equal(hash['test-groupOn'], 'name');
+						omnitable.groupOn = '';
+						Polymer.Base.async(function () {
+							assert.equal(hash['test-groupOn'], '');
+							done();
+						});
 					}, 30);
 
 				});
 
 				test('updates _routeHash from descending', function (done) {
-					assert.isUndefined(omnitable._routeHash['test-descending']);
+					const hash = omnitable._routeHash;
+					assert.isUndefined(hash['test-descending']);
 					omnitable.descending = true;
 					Polymer.Base.async(function () {
-						assert.equal(omnitable._routeHash['test-descending'], '');
-						location.hash = '';
-						done();
+						assert.equal(hash['test-descending'], '');
+						omnitable.descending = false;
+						Polymer.Base.async(function () {
+							assert.isNull(hash['test-descending']);
+							done();
+						}, 30);
 					}, 30);
 				});
 
 				test('updates _routeHash from filter', function (done) {
-					var column = omnitable.columns[0];
+					const column = omnitable.columns[0],
+						hash = omnitable._routeHash;
 					column.filter = [0, 1];
 					Polymer.Base.async(function () {
-						assert.equal(omnitable._routeHash['test-filter--id'], '[0,1]');
-						done();
+						assert.equal(hash['test-filter--id'], '[0,1]');
+						column.resetFilter();
+						Polymer.Base.async(function () {
+							assert.equal(hash['test-filter--id'], null);
+							done();
+						}, 30);
 					}, 30);
 				});
 
 			});
-
+		})();
 		</script>
 	</body>
 </html>

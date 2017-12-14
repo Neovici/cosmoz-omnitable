@@ -187,6 +187,13 @@
 				notify: true
 			},
 
+			visible: {
+				type: Boolean,
+				notify: true,
+				readOnly: true,
+				value: false
+			},
+
 			/**
 			 * List of <b>visible</b> columns.
 			 */
@@ -211,8 +218,8 @@
 			},
 
 			_routeHash: {
-				type: Object,
-				notify: true
+				type: Object
+
 			},
 			_routeHashKeyRule: {
 				type: RegExp,
@@ -242,7 +249,6 @@
 		observers: [
 			'_dataChanged(data.*)',
 			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
-			'_routeHashChanged(_routeHash.*, hashParam, columns)',
 			'_selectedItemsChanged(selectedItems.*)',
 			'_setFilterDialogColumns(disabledColumns.*)'
 		],
@@ -426,7 +432,7 @@
 			this.highlight(item, this.isItemHighlighted(item));
 		},
 
-		_onResize: function () {
+		_onResize() {
 			this._debounceAdjustColumns();
 		},
 
@@ -485,6 +491,8 @@
 
 			this.columns = columns;
 			this.visibleColumns = columns.slice();
+
+			this._updateParamsFromHash();
 
 			if (Array.isArray(this.data)) {
 				this._debounceFilterItems();
@@ -591,8 +599,7 @@
 		},
 
 		_groupOnColumnChanged: function (column) {
-			this._updateRouteParam('groupOn');
-			if (column && column.filter) {
+			if (column && column.hasFilter()) {
 				column.resetFilter();
 			} else {
 				this.debounce('groupItems', this._groupItems);
@@ -608,6 +615,8 @@
 		},
 
 		_groupItems: function () {
+			this._updateRouteParam('groupOn');
+
 			if (!this.filteredItems || this.filteredItems.length === 0) {
 				this.filteredGroupedItems  = [];
 				this.sortedFilteredGroupedItems = [];
@@ -768,12 +777,6 @@
 			this.set('sortedFilteredGroupedItems', this.filteredGroupedItems.slice());
 			this._debounceAdjustColumns();
 		},
-		/**
-		 * True if the current list is visible.
-		 */
-		get _isVisible() {
-			return Boolean(this.offsetWidth || this.offsetHeight);
-		},
 
 		_debounceAdjustColumns: function () {
 			// 16ms 'magic' number copied from iron-list
@@ -787,16 +790,22 @@
 		 * @memberOf element/cz-omnitable
 		 * @returns {Boolean} Return
 		 */
-		_adjustColumns: function () {
+		_adjustColumns() {
 
 			// Safety check, but should never happen
-			if (!this.isAttached || !this._isVisible) {
+			if (!this.isAttached) {
+				return;
+			}
+
+			this._setVisible(this.offsetParent != null);
+
+			if (!this.visible) {
 				return;
 			}
 
 			const firstRow = this.$.groupedList.getFirstVisibleItemElement(),
 				visibleData = this.sortedFilteredGroupedItems,
-				hasVisibleData = visibleData && Array.isArray(visibleData) && visibleData.length > 0;
+				hasVisibleData = Array.isArray(visibleData) && visibleData.length > 0;
 
 			if (!hasVisibleData || !firstRow && this.$.groupedList.hasRenderedData) {
 				// reset headers width
@@ -1167,7 +1176,7 @@
 
 		_routeHashPropertyChanged: function (key, value) {
 			const deserialized = this.deserialize(value, this.properties[key].type);
-			if (value === undefined ||  deserialized === this.get(key)) {
+			if (deserialized === this.get(key)) {
 				return;
 			}
 			this.set(key, deserialized);
@@ -1181,6 +1190,9 @@
 				return;
 			}
 
+			if (column === this.groupOnColumn) {
+				return;
+			}
 			if (value === column._serializeFilter()) {
 				return;
 			}
@@ -1215,22 +1227,13 @@
 			}
 		},
 
-		_routeHashChanged: function (changes, hashParam, columns) {
-			if (!changes || !hashParam || !columns || !columns.length) {
+		_updateParamsFromHash: function () {
+			if (!this.hashParam || !this._routeHash) {
 				return;
 			}
-			const path = changes.path,
-				key = path && path.split('.')[1];
-
-			if (key) {
-				//If key is set we have a sub property change
-				this._routeHashKeyChanged(key, changes.value);
-				return;
-			}
-
-			//If the full object has changed update _routeHashKeyChanged for each property
-			Object.keys(changes.base).forEach(key => {
-				this._routeHashKeyChanged(key, changes.base[key]);
+			const hash = this._routeHash;
+			Object.keys(hash).forEach(key => {
+				this._routeHashKeyChanged(key, hash[key]);
 			});
 		},
 
@@ -1244,10 +1247,9 @@
 				value = this.get(key),
 				serialized = this.serialize(value, this.properties[key].type);
 
-			if (serialized === hashValue || hashValue == null && value === '') {
+			if (serialized === hashValue) {
 				return;
 			}
-
 			this.set(path, serialized === undefined ? null : serialized);
 		},
 

@@ -351,6 +351,24 @@
 			this.filter = this._getDefaultFilter();
 		},
 
+		/**
+		 * Returns whether `filter` is set to a usable value.
+		 *
+		 * @returns {Boolean}  True if filter is set
+		 */
+		hasFilter() {
+			const filter = this.filter,
+				isArray = Array.isArray(filter);
+
+			if (filter == null || filter === ''
+				|| isArray && filter.length === 0
+				|| typeof filter === 'object' && !isArray && Object.keys(filter).filter(k => filter[k] != null).length === 0
+			) {
+				return false;
+			}
+			return true;
+		},
+
 		_getDefaultFilter: function () {
 			const type = this.get('properties.filter.type');
 

@@ -13,7 +13,7 @@
 
 		<template class="edit-cell">
 			<paper-input no-label-float type="time" on-change="_timeValueChanged"
-				value="[[ getString(item, valuePath, formatter) ]]">
+				value="[[ getInputString(item, valuePath) ]]">
 			</paper-input>
 		</template>
 
@@ -23,13 +23,15 @@
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
 					<paper-input
-						type="time" label="[[ _('From time', t) ]]" step="[[filterStep]]" value="{{ _filterInput.start }}">
+						type="time" label="[[ _('From time', t) ]]" step="[[ filterStep ]]" value="{{ _filterInput.min }}">
 					</paper-input>
 					<paper-input
-						type="time" label="[[ _('Until time', t) ]]" step="[[filterStep]]" value="{{ _filterInput.end }}">
+						type="time" label="[[ _('Until time', t) ]]" step="[[ filterStep ]]" value="{{ _filterInput.max }}">
 					</paper-input>
 				</div>
 			</paper-dropdown-menu>
+			<iron-icon icon="clear" class="header-clear-filter"
+				on-tap="resetFilter" visible$="[[ hasFilter(filter.*) ]]"></iron-icon>
 		</template>
 
 	</template>
@@ -54,40 +56,72 @@
 					value: '1'
 				},
 
-				formatter: {
-					type: Object,
-					computed: '_computeFormatter(locale)'
+				headerCellClass: {
+					type: String,
+					value: 'time-header-cell'
 				}
 			},
 
 			_fixedDate: '1970-01-01',
 
+			toDate(value, limit, limitFunc) {
+				const date = typeof value === 'string' && value.length > 3 &&  value.length <= 9 ? this._fixedDate + 'T' + value : value;
+				return Cosmoz.DateColumnBehaviorImpl.toDate.call(this, date, limit, limitFunc);
+			},
+
+			_toInputString(value) {
+				const date = this.toValue(value);
+				if (date == null) {
+					return null;
+				}
+				return this._toLocalISOString(date).slice(11, 19);
+			},
+
+			_toHashString(value) {
+				const date = this.toValue(value);
+				if (date == null) {
+					return '';
+				}
+				//Use utc in hash
+				return date.toISOString().slice(11, 19).replace(/:/g, '.');
+			},
+			_fromHashString(value) {
+				if (value == null || value === '') {
+					return;
+				}
+				//Parse utc from hash string
+				return this.toValue(value.replace(/\./g, ':') + 'Z');
+			},
+
+			getComparableValue(item, valuePath) {
+				if (item == null) {
+					return;
+				}
+				let value = this._toInputString(valuePath == null ? item : this.get(valuePath, item));
+				if (value == null) {
+					return;
+				}
+				value = this.toValue(this._fixedDate + 'T' + value);
+				if (value == null) {
+					return;
+				}
+				return this.toNumber(value.getTime());
+			},
+
 			_timeValueChanged(e) {
 				const input = e.target,
 					timeString = input.value,
 					item = e.model.item,
-					oldTime = this.getDate(item.date),
-					newTime = this.getDate(oldTime.toISOString().slice(0, 10) + ` ${timeString} `),
+					oldTime = this.toDate(item.date),
+					newTime = this.toDate(oldTime != null ? oldTime.toISOString().slice(0, 10) + 'T' + timeString : timeString),
 					formatFn = value => value;
-				if (!this._isValidDate(newTime)) {
+				if (newTime != null) {
 					return;
 				}
 				this.set(this.valuePath, newTime, item);
 				this._fireItemChangeEvent(item, this.valuePath, oldTime, formatFn.bind(this));
 			},
 
-			getComparableValue(item, valuePath) {
-				const time = this.getTime(this.get(valuePath, item)),
-					date = new Date(this._fixedDate + 'T' + time);
-				if (!this._isValidDate(date)) {
-					return null;
-				}
-				return date.getTime();
-			},
-
-			getString(item, valuePath = this.valuePath) {
-				return this.getTime(this.get(valuePath, item));
-			},
 
 			// OVERRIDES
 
@@ -95,97 +129,10 @@
 				const timeFormatOption = {
 					hour: 'numeric',
 					minute: 'numeric',
-					second: 'numeric',
-					timeZone: 'UTC'
+					second: 'numeric'
 				};
 				return new Intl.DateTimeFormat(locale || undefined, timeFormatOption);
-			},
-
-			getTime(input) {
-				if (this._isValidDate(input)) {
-					return input.toISOString().slice(11, 19);
-				}
-				return input;
-			},
-
-			_applySingleFilter(filter, item) {
-				if (!filter || !filter.start && !filter.end) {
-					return true;
-				}
-				const value = this.get(this.valuePath, item),
-					dateToCheck = new Date(this._fixedDate + 'T' + this.getTime(value));
-
-				if (!this._isValidDate(dateToCheck)) {
-					console.warn('Invalid value for time', value, this);
-					return false;
-				}
-
-				if (filter.start) {
-					const startTime = new Date(this._fixedDate + 'T' + filter.start);
-					if (!this._isValidDate(startTime)) {
-						console.warn('WTF?!');
-						return true;
-					}
-					if (dateToCheck.getTime() < startTime.getTime()) {
-						return false;
-					}
-				}
-
-				if (filter.end) {
-					const endTime = new Date(this._fixedDate + 'T' + filter.end);
-					if (!this._isValidDate(endTime)) {
-						console.warn('WTF?!');
-						return true;
-					}
-					if (dateToCheck.getTime() > endTime.getTime()) {
-						return false;
-					}
-				}
-
-				return true;
-			},
-
-			_filterChanged: function (change) {
-				const input = this._filterInput,
-					filter = change.base,
-					start = filter.start,
-					end = filter.end;
-
-				if (!input || start === input.start && end === input.end) {
-					return;
-				}
-
-				this._updatingInput = true;
-				this._filterInput = { start, end};
-				this._updatingInput = false;
-			},
-
-			_filterInputChanged: function (start, end) {
-				const filter = this.filter;
-				if (!filter || this._updatingInput || start === filter.start && end  === filter.end) {
-					return;
-				}
-				this.filter = { start, end};
-			},
-
-			_computeFilterText(filterNotify, formatter = this.formatter) {
-				if (!filterNotify) {
-					return null;
-				}
-				const text = [],
-					startTime = new Date(this._fixedDate + 'T' + filterNotify.base.start),
-					endTime = new Date(this._fixedDate + 'T' + filterNotify.base.end);
-
-				if (this._isValidDate(startTime)) {
-					text.push(formatter.format(startTime));
-				}
-				text.push(' - ');
-				if (this._isValidDate(endTime)) {
-					text.push(formatter.format(endTime));
-				}
-				return text.length > 1 ? text.join('') : null;
 			}
-
 		});
 	</script>
 </dom-module>

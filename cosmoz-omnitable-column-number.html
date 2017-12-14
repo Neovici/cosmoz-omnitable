@@ -12,7 +12,7 @@
 		</template>
 
 		<template class="edit-cell">
-			<paper-input no-label-float type="number" on-change="_valueChanged" value="[[ getComparableValue(item, valuePath) ]]"></paper-input>
+			<paper-input no-label-float type="number" on-change="_valueChanged" value="[[ getInputString(item, valuePath) ]]"></paper-input>
 		</template>
 
 		<template class="header">
@@ -21,13 +21,15 @@
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
 					<paper-input type="number" label="[[ _('From', t) ]]" value="{{ _filterInput.min }}"
-						min="[[ _limit.fromMin ]]" max="[[ _limit.fromMax ]]">
+						min="[[ _toInputString(_limit.fromMin) ]]" max="[[ _toInputString(_limit.fromMax) ]]">
 					</paper-input>
 					<paper-input type="number" label="[[ _('To', t) ]]" value="{{ _filterInput.max }}"
-						min="[[ _limit.toMin ]]" max="[[ _limit.toMax ]]">
+						min="[[ _toInputString(_limit.toMin) ]]" max="[[ _toInputString(_limit.toMax) ]]">
 					</paper-input>
 				</div>
 			</paper-dropdown-menu>
+			<iron-icon icon="clear" class="header-clear-filter"
+				on-tap="resetFilter" visible$="[[ hasFilter(filter.*) ]]"></iron-icon>
 		</template>
 	</template>
 	<script>
@@ -88,20 +90,13 @@
 				return new Intl.NumberFormat(locale || undefined, options);
 			},
 
-			renderNumber(value, formatter = this.formatter) {
+			renderValue(value, formatter = this.formatter) {
 				const number = this.toNumber(value);
 				if (number == null) {
 					return;
 				}
 				return formatter.format(number);
 			},
-
-			_getDefaultFilter() {
-				return {
-					min: null,
-					max: null
-				};
-			}
 		});
 	</script>
 </dom-module>

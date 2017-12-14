@@ -15,7 +15,7 @@
 
 		<template class="edit-cell">
 			<paper-input no-label-float type="date" on-change="_dateValueChanged"
-				value="[[ renderISODateValue(item, valuePath) ]]">
+				value="[[ getInputString(item, valuePath) ]]">
 			</paper-input>
 		</template>
 
@@ -24,21 +24,30 @@
 					horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
-					<paper-input type="date" min="[[ _formatISODate(_fromMin) ]]" max="[[ _formatISODate(_fromMax) ]]"
-						label="[[ _('From date', t) ]]" value="{{ _filterInput.start }}">
+					<paper-input type="date" label="[[ _('From date', t) ]]"
+						min="[[ _toInputString(_limit.fromMin) ]]" max="[[ _toInputString(_limit.fromMax) ]]"
+						value="{{ _filterInput.min }}">
 					</paper-input>
-					<paper-input type="date" min="[[ _formatISODate(_toMin) ]]" max="[[ _formatISODate(_toMax) ]]"
-						label="[[ _('Until date', t) ]]" value="{{ _filterInput.end }}">
+					<paper-input type="date" label="[[ _('Until date', t) ]]"
+						min="[[ _toInputString(_limit.toMin) ]]" max="[[ _toInputString(_limit.toMax) ]]"
+						value="{{ _filterInput.max }}">
 					</paper-input>
 				</div>
 			</paper-dropdown-menu>
+			<iron-icon icon="clear" class="header-clear-filter"
+				on-tap="resetFilter" visible$="[[ hasFilter(filter.*) ]]"></iron-icon>
 		</template>
 	</template>
 	<script>
 		/*global Cosmoz */
 		Polymer({
 			is: 'cosmoz-omnitable-column-date',
-
+			properties: {
+				headerCellClass: {
+					type: String,
+					value: 'date-header-cell'
+				}
+			},
 			behaviors: [
 				Cosmoz.OmnitableColumnBehavior,
 				Cosmoz.TranslatableBehavior,
