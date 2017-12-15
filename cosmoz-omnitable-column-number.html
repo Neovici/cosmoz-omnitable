@@ -120,17 +120,10 @@
 				}
 			},
 
-			_clearInput(event) {
-				const input = event.path.find(el => el.is === 'paper-input');
-				if (input) {
-					input.value = null;
-				}
-			},
-
 			_hideClearInputIcon(val) {
 				if (val) {
 					return false;
-				} 
+				}
 				return true;
 			},
 
@@ -155,18 +148,6 @@
 				return formatter.format(number);
 			},
 			
-			attached: function () {
-				// this._addDates();
-				if (this._filterInput.min) {
-					console.log('has min');
-				}
-
-				if (this._filterInput.max) {
-					console.log('has max');
-				}
-
-			},
-
 		});
 	</script>
 </dom-module>
