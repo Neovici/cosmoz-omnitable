@@ -17,18 +17,19 @@
 		</template>
 
 		<template class="header">
+
 			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _tooltip ]]"
 					horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
 					<paper-input type="number" label="[[ _('From', t) ]]" value="{{ _filterInput.min }}"
 						min="[[ _limit.fromMin ]]" max="[[ _limit.fromMax ]]">
-						<iron-icon style="cursor: pointer;" hidden$="[[ !_filterInput.min.length ]]"
+						<iron-icon hidden$="[[ _hideClearMinButton ]]"
 							suffix slot="suffix" icon="clear" on-click="_clearInput"></iron-icon>
 					</paper-input>
 					<paper-input type="number" label="[[ _('To', t) ]]" value="{{ _filterInput.max }}"
-						min="[[ _toMin ]]" max="[[ _toMax ]]">
-						<iron-icon style="cursor: pointer;" hidden$="[[ !_filterInput.max.length ]]"
+						min="[[ _limit.toMin ]]" max="[[ _limit.toMax ]]">
+						<iron-icon hidden$="{{ _hideClearMaxButton }}"
 							suffix slot="suffix" icon="clear" on-click="_clearInput"></iron-icon>
 					</paper-input>
 				</div>
@@ -37,6 +38,7 @@
 				on-tap="resetFilter" visible$="[[ hasFilter(filter.*) ]]"></iron-icon>
 		</template>
 	</template>
+
 	<script>
 		Polymer({
 			is: 'cosmoz-omnitable-column-number',
@@ -80,39 +82,23 @@
 					type: String,
 					computed: '_computeFilterText(locale, filter.*)'
 				},
-				_fromMax: {
-					type: Object,
-					computed: '_getMinMax(_possibleNumberRange.max, filter.max, 0)'
-				},
-				_fromMin: {
-					type: Object,
-					computed: '_getMinMax(_possibleNumberRange.min, min, 0)'
-				},
-				_numberFormatOptions: {
-					type: Object,
-					computed: '_computeNumberFormatOptions(minimumFractionDigits, maximumFractionDigits)'
-				},
-				_possibleNumberRange: {
-					type: Object,
-					computed: '_computePossibleNumberRange(values.*)'
-				},
-				_toMax: {
-					type: Object,
-					computed: '_getMinMax(_possibleNumberRange.max, max, 1)'
-				},
-				_toMin: {
-					type: Object,
-					computed: '_getMinMax(_possibleNumberRange.min, filter.min, 1)'
-				},
 				_tooltip: {
 					type: String,
 					computed: '_computeTooltip(title, _filterText)'
+				},
+				_hideClearMinButton: {
+					type: Object,
+					computed: '_hideClearInputIcon(filter.min)'
+				},
+				_hideClearMaxButton: {
+					type: Object,
+					computed: '_hideClearInputIcon(filter.max)'
 				}
 			},
 
-			observers: [
-				'_debounceSetFilter(_filterInput.*)'
-			],
+			//observers: [
+			//	'_debounceSetFilter(_filterInput.*)'
+			//],
 
 			_clearInput(event) {
 				const input = event.path.find(el => el.is === 'paper-input');
@@ -132,6 +118,20 @@
 				if (typeof filter.max === 'number') {
 					text.push(this.formatter.format(filter.max));
 				}
+			},
+
+			_clearInput(event) {
+				const input = event.path.find(el => el.is === 'paper-input');
+				if (input) {
+					input.value = null;
+				}
+			},
+
+			_hideClearInputIcon(val) {
+				if (val) {
+					return false;
+				} 
+				return true;
 			},
 
 			_computeFormatter(locale, minimumFractionDigits, maximumFractionDigits) {
@@ -157,8 +157,16 @@
 			
 			attached: function () {
 				// this._addDates();
-				console.log('japp');
+				if (this._filterInput.min) {
+					console.log('has min');
+				}
+
+				if (this._filterInput.max) {
+					console.log('has max');
+				}
+
 			},
+
 		});
 	</script>
 </dom-module>
