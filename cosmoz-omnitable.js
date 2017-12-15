@@ -191,7 +191,8 @@
 				type: Boolean,
 				notify: true,
 				readOnly: true,
-				value: false
+				value: false,
+				observer: 'visibleChanged'
 			},
 
 			/**
@@ -252,7 +253,7 @@
 			'cosmoz-column-filter-changed': '_filterChanged',
 		},
 
-		attached: function () {
+		attached() {
 			/** WARNING: we do not support columns changes yet. */
 			// `isOmnitableColumn` is a property from cosmoz-omnitable-column-behavior
 			this._columnObserver = Polymer.dom(this).observeNodes(info => {
@@ -267,7 +268,7 @@
 
 				this._setColumnValues(addedColumns);
 
-				this._debounceUpdateColumns();
+				this._updateColumns();
 			});
 			this.$.groupedList.scrollTarget = this.$.scroller;
 			this.listen(this,  'cosmoz-column-hidden-changed', '_debounceUpdateColumns');
@@ -289,7 +290,6 @@
 
 		_disabledColumnsIndexes: null,
 
-		_scalingUp: false,
 		_computeDataValidity(data) {
 			return data && Array.isArray(data) && data.length > 0;
 		},
@@ -305,6 +305,12 @@
 
 		_computeShowCheckboxes(dataIsValid, hasActions) {
 			return dataIsValid && hasActions;
+		},
+
+		visibleChanged(turnedVisible) {
+			if (turnedVisible && !Array.isArray(this.columns)) {
+				this._debounceUpdateColumns();
+			}
 		},
 
 		_visibleColumnsChanged() {
@@ -374,6 +380,7 @@
 		},
 
 		_onResize() {
+			this._setVisible(this.offsetParent != null);
 			this._debounceAdjustColumns();
 		},
 
@@ -389,8 +396,14 @@
 			this.debounce('updateColumns', this._updateColumns);
 		},
 
-		_updateColumns: function () {
+		_updateColumns() {
 			if (!this.isAttached) {
+				return;
+			}
+
+			this._setVisible(this.offsetParent != null);
+
+			if (!this.visible) {
 				return;
 			}
 
@@ -733,13 +746,7 @@
 		_adjustColumns() {
 
 			// Safety check, but should never happen
-			if (!this.isAttached) {
-				return;
-			}
-
-			this._setVisible(this.offsetParent != null);
-
-			if (!this.visible) {
+			if (!this.isAttached || !this.visible) {
 				return;
 			}
 
