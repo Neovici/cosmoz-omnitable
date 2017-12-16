@@ -1,4 +1,5 @@
 <link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="../iron-icon/iron-icon.html"/>
 <link rel="import" href="../paper-input/paper-input.html"/>
 
 <dom-module id="cosmoz-omnitable-column">
@@ -13,7 +14,9 @@
 		</template>
 
 		<template class="header">
-			<paper-input label="[[ title ]]" value="{{ filter }}" focused="{{ headerFocused }}"></paper-input>
+			<paper-input label="[[ title ]]" value="{{ filter }}" focused="{{ headerFocused }}">
+				<iron-icon icon="clear" suffix slot="suffix" hidden$="[[ !filter.length ]]" style="cursor: pointer;" on-click="resetFilter"></iron-icon>
+			</paper-input>
 		</template>
 
 	</template>
@@ -25,15 +28,16 @@
 			behaviors: [
 				Cosmoz.OmnitableColumnBehavior
 			],
-			_serializeFilter: function (filter = this.filter) {
+
+			_serializeFilter(filter = this.filter) {
 				return filter || null;
 			},
 
-			_deserializeFilter: function (obj) {
+			_deserializeFilter(obj) {
 				return obj || null;
 			},
 
-			resetFilter: function () {
+			resetFilter() {
 				this.filter = null;
 			}
 		});
