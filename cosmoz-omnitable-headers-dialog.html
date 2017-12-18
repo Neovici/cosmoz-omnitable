@@ -51,6 +51,33 @@ with a `cosmoz-dialog` element which enables it to be displayed as a dialog.
 
 			_slotName: 'header-cell',
 
+			attached() {
+				this._observer = Polymer.dom(this).observeNodes(this._onNodesChange);
+			},
+
+			_onNodesChange() {
+				const accs = Polymer.dom(this).querySelectorAll('paper-autocomplete-chips');
+	
+				setTimeout(() => {
+					accs.forEach(acc => {
+						const width = `${acc.offsetWidth}px`,
+							position = 'fixed';
+	
+						if (Polymer.Element) {
+							acc.updateStyles({
+								'--paper-autocomplete-chips-suggestions-position': position,
+								'--paper-autocomplete-chips-suggestions-width': width
+							});
+							return;
+						}
+						acc.customStyle['--paper-autocomplete-chips-suggestions-position'] = position;
+						acc.customStyle['--paper-autocomplete-chips-suggestions-width'] = width;
+						acc.updateStyles();
+					});
+				});
+	
+			},
+
 			_getTemplateInstance(column) {
 				return column.headerTemplatizer.getInstance();
 			},
