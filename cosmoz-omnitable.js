@@ -304,29 +304,6 @@
 
 		_scalingUp: false,
 
-		_sortFilterDialogColumns(a, b) {
-			const elA = a.headerTemplatizer.getInstance().root.children[0],
-				elB = b.headerTemplatizer.getInstance().root.children[0],
-				prios = [['PAPER-AUTOCOMPLETE-CHIPS'], ['PAPER-DROPDOWN-MENU']];
-
-			for (const prio of prios) {
-				if (prio.indexOf(elA.nodeName) > -1 && prio.indexOf(elB.nodeName) > -1) {
-					if (a.title === b.title) {
-						return 0;
-					}
-					return a.title > b.title ? 1 : -1;
-				}
-
-				if (prio.indexOf(elA.nodeName) > -1) {
-					return -1;
-				}
-
-				if (prio.indexOf(elB.nodeName) > -1) {
-					return 1;
-				}
-			}
-		},
-
 		_setFilterDialogColumns(disabledColumnsChange) {
 			const disabledColumns = disabledColumnsChange.base;
 
@@ -338,7 +315,7 @@
 				return;
 			}
 
-			this.set('_filterDialogColumns', disabledColumns.sort(this._sortFilterDialogColumns));
+			this.set('_filterDialogColumns', disabledColumns);
 		},
 
 		_computeDataValidity(data) {
