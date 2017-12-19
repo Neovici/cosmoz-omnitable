@@ -295,6 +295,28 @@
 				border-color: #b7b6c8;
 				cursor: not-allowed;
 			}
+
+			#dropdownExtra paper-button {
+				display: flex;
+				@apply --layout-center;
+				@apply --layout-horizontal;
+				position: relative;
+				@apply --cosmoz-bottom-bar-menu-item;
+			}
+
+			#dropdownExtra {
+				padding: 0;
+			}
+
+			#listboxSizer {
+				max-height: 0;
+				padding: 0 !important;
+			}
+
+			#dropdownExtraButton {
+				color: var(--cosmoz-bottom-bar-menubutton-color, var(--light-primary-color));
+				background-color: var(--cosmoz-bottom-bar-menubutton-background-color, var(--dark-primary-color));
+			}
 		</style>
 	</template>
 </dom-module>

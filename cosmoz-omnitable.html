@@ -179,15 +179,36 @@
 					<span>[[ ngettext('{0} group', '{0} groups', _groupsCount, t) ]]</span>
 					<span>[[ ngettext('{0} row', '{0} rows', filteredItems.length, t) ]]</span>
 				</div>
-				<cosmoz-bottom-bar id="bottomBar" class="footer-actionBar" match-parent has-actions="{{ hasActions }}" on-action="_onAction" active$="[[ !_isEmpty(selectedItems.length) ]]">
+				<cosmoz-bottom-bar id="bottomBar" class="footer-actionBar" match-parent has-actions="{{ hasActions }}" on-action="_onAction" active$="[[ !_isEmpty(selectedItems.length) ]]" computed-bar-height="{{ computedBarHeight }}">
 					<div slot="info">[[ ngettext('{0} selected item', '{0} selected items', selectedItems.length, t) ]]</div>
 					<slot name="actions" id="actions"></slot>
 					<!-- These slots are neened by cosmoz-bottom-bar
 						as it might change the slot of the actions to distribute them in the menu -->
 					<slot name="bottom-bar-toolbar"></slot>
 					<slot name="bottom-bar-menu"></slot>
-					<paper-button on-action="_saveAsCsvAction">[[ _('Save as CSV', t) ]]</paper-button>
-					<paper-button on-action="_saveAsXlsxAction">[[ _('Save as XLSX', t) ]]</paper-button>
+					<paper-menu-button
+						id="extraMenu"
+						slot="extra"
+						no-animations
+						vertical-offset="[[ computedBarHeight ]]"
+						vertical-align="bottom"
+						horizontal-align="right">
+						<paper-icon-button id="dropdownExtraButton"
+							class="dropdown-trigger"
+							slot="dropdown-trigger"
+							icon="file-download"
+							toggles
+							raised>
+						</paper-icon-button>
+						<paper-listbox id="dropdownExtra"
+							class="dropdown-content"
+							slot="dropdown-content">
+							<span id="listboxSizer"></span>
+							<paper-button on-action="_saveAsCsvAction">[[ _('Save as CSV', t) ]]</paper-button>
+							<paper-button on-action="_saveAsXlsxAction">[[ _('Save as XLSX', t) ]]</paper-button>
+						</paper-listbox>
+					</paper-menu-button>
+
 				</cosmoz-bottom-bar>
 			</div>
 		</div>
