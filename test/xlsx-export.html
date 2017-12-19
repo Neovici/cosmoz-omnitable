@@ -88,7 +88,7 @@
 				omnitable.selectItem(data[1]);
 
 				// click on Export as XLSX paper-button
-				MockInteractions.tap(omnitable.$.bottomBar.$.toolbar.queryAllEffectiveChildren('paper-button')[1]);
+				MockInteractions.tap(omnitable.$.dropdownExtra.queryAllEffectiveChildren('paper-button')[1]);
 				assert.calledOnce(spyXlsx);
 				assert.calledOnce(stubSaveAs);
 
