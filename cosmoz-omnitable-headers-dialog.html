@@ -61,17 +61,21 @@ with a `cosmoz-dialog` element which enables it to be displayed as a dialog.
 				setTimeout(() => {
 					accs.forEach(acc => {
 						const width = `${acc.offsetWidth}px`,
-							position = 'fixed';
+							position = 'fixed',
+							minWidth = '0';
 	
 						if (Polymer.Element) {
 							acc.updateStyles({
 								'--paper-autocomplete-chips-suggestions-position': position,
-								'--paper-autocomplete-chips-suggestions-width': width
+								'--paper-autocomplete-chips-suggestions-width': width,
+								'--paper-autocomplete-chips-suggestions-min-width': minWidth
+
 							});
 							return;
 						}
 						acc.customStyle['--paper-autocomplete-chips-suggestions-position'] = position;
 						acc.customStyle['--paper-autocomplete-chips-suggestions-width'] = width;
+						acc.customStyle['--paper-autocomplete-chips-suggestions-min-width'] = minWidth;
 						acc.updateStyles();
 					});
 				});
