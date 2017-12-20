@@ -311,11 +311,11 @@
 			// Todo: figure out a nicer way.
 			this._filterDialogColumns = [];
 
-			if (!disabledColumns) {
-				return;
-			}
-
 			this.set('_filterDialogColumns', disabledColumns);
+
+			if (!disabledColumns || disabledColumns.length < 1) {
+				this.$.filterDialog.close();
+			}
 		},
 
 		_computeDataValidity(data) {
