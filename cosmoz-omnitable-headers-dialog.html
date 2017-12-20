@@ -24,17 +24,17 @@ with a `cosmoz-dialog` element which enables it to be displayed as a dialog.
 -->
 <dom-module id="cosmoz-omnitable-headers-dialog">
 	<template>
-		<style include="iron-flex">
+		<style include="cosmoz-omnitable-styles iron-flex">
 			:host {
 				display: block;
 			}
-			.container {
+			#container {
 				padding: 12px;
 				max-height: calc(100vh - 200px);
 			}
 		</style>
 		
-		<div class="container layout vertical">
+		<div id="container" class="layout vertical">
 			<slot name="header-cell"></slot>
 		</div>
 	</template>
@@ -58,6 +58,8 @@ with a `cosmoz-dialog` element which enables it to be displayed as a dialog.
 			},
 
 			_onResize() {
+				this.scopeSubtree(this.$.container);
+	
 				const accs = Polymer.dom(this).querySelectorAll('paper-autocomplete-chips');
 
 				setTimeout(() => {
