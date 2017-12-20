@@ -1,6 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 
 <link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html"/>
+<link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
 
 <link rel="import" href="cosmoz-omnitable-repeater-behavior.html">
 <!--
@@ -44,18 +45,19 @@ with a `cosmoz-dialog` element which enables it to be displayed as a dialog.
 			is: 'cosmoz-omnitable-headers-dialog',
 
 			behaviors: [
-				Cosmoz.OmnitableRepeaterBehavior
+				Cosmoz.OmnitableRepeaterBehavior,
+				Polymer.IronResizableBehavior
 			],
 
 			_elementType: 'div',
 
 			_slotName: 'header-cell',
 
-			attached() {
-				this._observer = Polymer.dom(this).observeNodes(this._onNodesChange);
+			listeners: {
+				'iron-resize': '_onResize'
 			},
 
-			_onNodesChange() {
+			_onResize() {
 				const accs = Polymer.dom(this).querySelectorAll('paper-autocomplete-chips');
 
 				setTimeout(() => {
