@@ -1,9 +1,13 @@
-<link rel="import" href="cosmoz-omnitable-column-behavior.html">
-<link rel="import" href="cosmoz-omnitable-column-range-behavior.html">
-<link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+
+<link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
+
+<link rel="import" href="ui-helpers/cosmoz-clear-button.html">
+<link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-range-behavior.html">
 
 <dom-module id="cosmoz-omnitable-column-number">
 	<template>
@@ -28,8 +32,7 @@
 					</paper-input>
 				</div>
 			</paper-dropdown-menu>
-			<iron-icon icon="clear" class="header-clear-filter"
-				on-tap="resetFilter" visible$="[[ hasFilter(filter.*) ]]"></iron-icon>
+			<cosmoz-clear-button on-tap="resetFilter" hidden$="[[ !hasFilter(filter.*) ]]"></cosmoz-clear-button>
 		</template>
 	</template>
 	<script>

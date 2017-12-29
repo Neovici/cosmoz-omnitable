@@ -5,6 +5,8 @@
 
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 
+<link rel="import" href="ui-helpers/cosmoz-clear-button.html">
+
 <dom-module id="cosmoz-omnitable-column-amount">
 	<template>
 		<template class="cell">
@@ -33,8 +35,7 @@
 					</paper-input>
 				</div>
 			</paper-dropdown-menu>
-			<iron-icon icon="clear" class="header-clear-filter"
-				on-tap="resetFilter" visible$="[[ hasFilter(filter.*) ]]"></iron-icon>
+			<cosmoz-clear-button on-tap="resetFilter" hidden$="[[ !hasFilter(filter.*) ]]"></cosmoz-clear-button>
 		</template>
 	</template>
 	<script type="text/javascript">
