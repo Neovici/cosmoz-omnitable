@@ -28,13 +28,14 @@ with a `cosmoz-dialog` element which enables it to be displayed as a dialog.
 			:host {
 				display: block;
 			}
-			#container {
+
+			.container {
 				padding: 12px;
 				max-height: calc(100vh - 200px);
 			}
 		</style>
 		
-		<div id="container" class="layout vertical">
+		<div class="container layout vertical">
 			<slot name="header-cell"></slot>
 		</div>
 	</template>
@@ -58,11 +59,9 @@ with a `cosmoz-dialog` element which enables it to be displayed as a dialog.
 			},
 
 			_onResize() {
-				this.scopeSubtree(this.$.container);
-	
 				const accs = Polymer.dom(this).querySelectorAll('paper-autocomplete-chips');
 
-				setTimeout(() => {
+				Polymer.dom.addDebouncer(this.debounce('suggestionWith', () => {
 					accs.forEach(acc => {
 						acc.updateStyles({
 							'--paper-autocomplete-chips-suggestions-position': 'fixed',
@@ -70,7 +69,7 @@ with a `cosmoz-dialog` element which enables it to be displayed as a dialog.
 							'--paper-autocomplete-chips-suggestions-min-width': '0'
 						});
 					});
-				});
+				}));
 			},
 
 			_getTemplateInstance(column) {
@@ -85,6 +84,6 @@ with a `cosmoz-dialog` element which enables it to be displayed as a dialog.
 				this._forwardPropertiesFlush(instance);
 			}
 		});
-})();
+	})();
 	</script>
 </dom-module>
