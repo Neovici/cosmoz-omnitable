@@ -268,7 +268,7 @@
 
 				this._setColumnValues(addedColumns);
 
-				this._updateColumns();
+				this._debounceUpdateColumns();
 			});
 			this.$.groupedList.scrollTarget = this.$.scroller;
 			this.listen(this,  'cosmoz-column-hidden-changed', '_debounceUpdateColumns');
@@ -393,7 +393,7 @@
 		},
 
 		_debounceUpdateColumns() {
-			this.debounce('updateColumns', this._updateColumns);
+			this.debounce('updateColumns', this._updateColumns, 1);
 		},
 
 		_updateColumns() {
