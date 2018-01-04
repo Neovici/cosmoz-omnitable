@@ -326,8 +326,8 @@
 			}
 
 			return {
-				min: this._fromHashString(matches[1]),
-				max: this._fromHashString(matches[2])
+				min: this._fromHashString(matches[1], 'min'),
+				max: this._fromHashString(matches[2], 'max')
 			};
 		},
 
