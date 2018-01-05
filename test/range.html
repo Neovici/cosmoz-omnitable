@@ -1,0 +1,304 @@
+<!doctype html>
+<html>
+<head>
+	<title>cosmoz-omnitable range tests for number and amount</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+	<script src="../../web-component-tester/browser.js"></script>
+	<script src="../../test-fixture/test-fixture-mocha.js"></script>
+
+	<link rel="import" href="../../test-fixture/test-fixture.html">
+	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
+
+	<link rel="import" href="../cosmoz-omnitable.html">
+	<link rel="import" href="../cosmoz-omnitable-columns.html">
+	<link rel="import" href="../demo/table-demo-behavior.html">
+</head>
+<body>
+	<test-fixture id="range">
+		<template>
+			<cosmoz-omnitable id="omnitable" class="flex">
+				<cosmoz-omnitable-column-number title="Age" name="age" value-path="age">
+				</cosmoz-omnitable-column-number>
+				<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount">
+				</cosmoz-omnitable-column-amount>
+			</cosmoz-omnitable>
+		</template>
+	</test-fixture>
+
+	<script>
+	/*global sinon chai flush */
+	(function () {
+		'use strict';
+		const data = [
+			{
+				age: 17,
+				amount: { amount: '12.4', currency: 'USD' },
+			},
+			{
+				amount: { amount: 2 }
+			},
+			{
+				age: -11,
+				amount: { amount: 678, currency: 'AUD' }
+			},
+			{
+				age: 9,
+				amount: { amount: -8, currency: 'EUR' }
+			},
+			{
+				age: 5,
+				amount: { amount: '3450', currency: 'DKK' }
+			},
+		];
+
+		sinon.assert.expose(chai.assert, { prefix: '' });
+
+		suite('number', function () {
+			let omnitable,
+				column;
+
+			setup(function (done) {
+				omnitable = fixture('range');
+				omnitable.data = data;
+				Polymer.Base.async(function () {
+					column = omnitable.columns[0];
+					done();
+				}, 90);
+			});
+
+			test('instantiates a cosmoz-omnitable-column-number', function (done) {
+				assert.equal(column.is, 'cosmoz-omnitable-column-number');
+				done();
+			});
+
+			test('toNumber convers a value to Number', function (done) {
+				assert.isUndefined(column.toNumber());
+				assert.equal(column.toNumber(-7.5), -7.5);
+				assert.equal(column.toNumber('-7.5'), -7.5);
+				assert.equal(column.toNumber(123e-5), 0.00123);
+				assert.isNotNumber(column.toNumber('some string not number'));
+				done();
+			});
+
+			test('toNumber limits parameters', function (done) {
+				assert.equal(column.toNumber('-2.0014', 4), -2.0014);
+				assert.equal(column.toNumber(3, 2, Math.min), 2);
+				assert.equal(column.toNumber('23.3', '-10.5443', Math.min), -10.5443);
+				assert.equal(column.toNumber(3, '2.0014', Math.min), 2.0014);
+				assert.equal(column.toNumber(3, 2.0014, Math.max), 3);
+				done();
+			});
+
+			test('computes range from values', function (done) {
+				assert.isObject(column._range);
+				assert.equal(column._range.min, -11);
+				assert.equal(column._range.max, 17);
+				done();
+			});
+
+			test('returns the value of an item', function (done) {
+				assert.equal(column.getComparableValue({age: '13'}, 'age'), 13);
+				assert.equal(column.getComparableValue(13), 13);
+				assert.equal(column.getComparableValue(data[1], 'age'), null);
+				assert.equal(column.getComparableValue(data[2], 'age'), -11);
+				done();
+			});
+
+			test('changing filter updates _filterInput', function (done) {
+				assert.isNull(column.filter.min);
+				assert.isNull(column.filter.max);
+				column.filter = {
+					min: 3,
+					max: 200
+				};
+				assert.equal(column._filterInput.min, 3);
+				assert.equal(column._filterInput.max, 200);
+				done();
+			});
+
+			test('changing _filterInput updates filter', function (done) {
+				assert.isNull(column._filterInput.min);
+				assert.isNull(column._filterInput.max);
+				column._filterInput = {
+					min: -10,
+					max: 15
+				};
+				Polymer.Base.async(function () {
+					assert.equal(column.filter.min, -10);
+					assert.equal(column.filter.max, 15);
+					done();
+				}, 650);
+			});
+
+			test('changing only _filterInput min updates filter min', function (done) {
+				column._filterInput.min = -21;
+				Polymer.Base.async(function () {
+					assert.equal(column.filter.min, -21);
+					done();
+				}, 700);
+			});
+
+			test('changing out of range _filterInput limits _filterInput', function (done) {
+				assert.isNull(column._filterInput.min);
+				assert.isNull(column._filterInput.max);
+
+				column._filterInput =  {min: -11, max: 17 };
+
+				Polymer.Base.async(function () {
+					assert.equal(column._filterInput.min, -11);
+					assert.equal(column._filterInput.max, 17);
+					assert.equal(column.filter.min, -11);
+					assert.equal(column.filter.max, 17);
+
+					column._filterInput.min = 20;
+
+					Polymer.Base.async(function () {
+						assert.equal(column.filter.min, -11);
+						done();
+					});
+
+				}, 650);
+			});
+
+		});
+
+		suite('amount', function () {
+			let omnitable,
+				column;
+
+			setup(function (done) {
+				omnitable = fixture('range');
+				omnitable.data = data;
+				Polymer.Base.async(function () {
+					column = omnitable.columns[1];
+					done();
+				}, 120);
+			});
+
+			test('instantiates a cosmoz-omnitable-column-amount', function (done) {
+				assert.equal(column.is, 'cosmoz-omnitable-column-amount');
+				done();
+			});
+
+			test('toAmount returns a valid amount', function (done) {
+				assert.isUndefined(column.toAmount());
+				assert.isNull(column.toAmount('123'));
+				assert.isNull(column.toAmount({amount: 123}));
+				assert.isNull(column.toAmount({amount: '123'}));
+				assert.isNull(column.toAmount({currency: 'USD'}));
+
+				assert.isObject(column.toAmount({amount: 75, currency: 'SEK'}));
+				assert.deepEqual(column.toAmount({amount: 123, currency: 'AUD'}), {amount: 123, currency: 'AUD'});
+				assert.deepEqual(column.toAmount({amount: '2300', currency: 'USD'}), {amount: 2300, currency: 'USD'});
+				assert.deepEqual(column.toAmount({amount: 99, currency: 'SEK'}), {amount: 99, currency: 'SEK'});
+				done();
+			});
+
+			test('toAmount limits parameters value', function (done) {
+				assert.equal(column.toAmount({amount: '-2.0014', currency: 'SEK'}, 4).amount, -2.0014);
+				assert.equal(column.toAmount({amount: 3, currency: 'EUR'}, {amount: 2, currency: 'EUR'}, Math.min).amount, 2);
+				assert.equal(column.toAmount({amount: '23.3', currency: 'AUD'}, {amount: '-10.5443', currency: 'AUD'}, Math.min).amount, -10.5443);
+				assert.equal(column.toAmount({amount: 15.3, currency: 'DKK'}, {amount: '2.0014', currency: 'DKK'}, Math.min).amount, 2.0014);
+				assert.equal(column.toAmount({amount: 1592, currency: 'SEK'}, {amount: 2.0014, currency: 'SEK'}, Math.max).amount, 1592);
+				done();
+			});
+
+			test('returns comparable value', function (done) {
+				assert.equal(column.getComparableValue(data[3], 'amount'), -8);
+				assert.equal(column.getComparableValue(data[4], 'amount'), 3450);
+				assert.equal(column.getComparableValue({amount: '13', currency: 'EUR'}), 13);
+				assert.isUndefined(column.getComparableValue({}));
+				assert.isUndefined(column.getComparableValue([]));
+				done();
+			});
+
+			test('amount renders symbol and value', function (done) {
+				assert.equal(column.renderValue(null), '');
+				assert.equal(column.renderValue({}), '');
+				assert.equal(column.renderValue([]), '');
+				assert.equal(column.renderValue({amount: '12.4', currency: 'USD'}), '$12.40');
+				assert.equal(column.renderValue({amount: 534 }), '');
+				assert.equal(column.renderValue({amount: -897, currency: 'EUR'}), '-€897.00');
+				done();
+			});
+
+			test('getString returns valid amount or Invalid value', function (done) {
+				assert.equal(column.getString({amountPath: null}, 'amountPath'), '');
+				assert.equal(column.getString({amountPath: {}}, 'amountPath'), 'Invalid value');
+				assert.equal(column.getString({amountPath: []}, 'amountPath'), 'Invalid value');
+				assert.equal(column.getString(data[0]), '$12.40');
+				assert.equal(column.getString({amountPath: {amount: 2036 }}, 'amountPath'), 'Invalid value', 'Expected missing currency to be treated as invalid.');
+				assert.equal(column.getString({amountPath: {amount: 372, currency: 'EUR'}}, 'amountPath'), '€372.00');
+				done();
+			});
+
+			test('computes array of formaters', function (done) {
+				assert.deepEqual(Object.keys(column._formatters), ['SEK', 'USD', 'AUD', 'EUR', 'DKK']);
+				done();
+			});
+
+			test('changing filter updates _filterInput', function (done) {
+				assert.isNull(column.filter.min);
+				assert.isNull(column.filter.max);
+				column.filter = {
+					min: {amount: 225, currency: 'EUR'},
+					max: {amount: 457, currency: 'EUR'}
+				};
+				assert.equal(column._filterInput.min, 225);
+				assert.equal(column._filterInput.max, 457);
+				done();
+			});
+
+			test('changing _filterInput updates filter', function (done) {
+				assert.isNull(column._filterInput.min);
+				assert.isNull(column._filterInput.max);
+				column._filterInput = {
+					min: 1,
+					max: 15
+				};
+				Polymer.Base.async(function () {
+					assert.equal(column.filter.min.amount, 1);
+					assert.equal(column.filter.max.amount, 15);
+					done();
+				}, 650);
+			});
+
+			test('changing only _filterInput min updates filter min', function (done) {
+				column._filterInput.min = -2317;
+				Polymer.Base.async(function () {
+					assert.equal(column.filter.min.amount, -2317);
+					done();
+				}, 650);
+			});
+
+			test('changing out of range _filterInput limits _filterInput', function (done) {
+				assert.isNull(column._filterInput.min);
+				assert.isNull(column._filterInput.max);
+
+				column._filterInput =  {min: 7, max: 77};
+
+				Polymer.Base.async(function () {
+					assert.equal(column._filterInput.min, 7);
+					assert.equal(column._filterInput.max, 77);
+					assert.equal(column.filter.min.amount, 7);
+					assert.equal(column.filter.max.amount, 77);
+
+					column._filterInput.min = 9992;
+
+					Polymer.Base.async(function () {
+						assert.equal(column.filter.min.amount, 7);
+						done();
+					});
+
+				}, 650);
+			});
+
+		});
+	}());
+
+	</script>
+</body>
+</html>
