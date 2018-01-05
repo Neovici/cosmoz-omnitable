@@ -42,7 +42,7 @@
 		"cosmoz-page-router": "Neovici/cosmoz-page-router#master",
 		"paper-autocomplete-chips": "Neovici/paper-autocomplete-chips#master",
 		"import-filesaver": "JaySunSyn/import-filesaver",
-		"datetime-local": "JaySunSyn/datetime-local#polymer-1",
+		"cosmoz-datetime-input": "Neovici/cosmoz-datetime-input#master",
 		"nullxlsx": "Neovici/nullxlsx#master"
 	},
 	"devDependencies": {
@@ -80,7 +80,7 @@
 				"cosmoz-page-router": "Neovici/cosmoz-page-router#master",
 				"paper-autocomplete-chips": "Neovici/paper-autocomplete-chips#master",
 				"import-filesaver": "JaySunSyn/import-filesaver",
-				"datetime-local": "JaySunSyn/datetime-local#polymer-1",
+				"cosmoz-datetime-input": "Neovici/cosmoz-datetime-input#master",
 				"nullxlsx": "Neovici/nullxlsx#master"
 			},
 			"devDependencies": {
