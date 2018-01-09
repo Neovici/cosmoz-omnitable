@@ -174,12 +174,14 @@
 			}
 			const input = inputChange.base,
 				nMin = this.toValue(min),
-				nMax = this.toValue(max);
+				nMax = this.toValue(max),
+				aMin = nMin != null ? nMin : this.toValue(range.min),
+				aMax = nMax != null ? nMax : this.toValue(range.max);
 			return {
-				fromMin: nMin != null ? nMin : this.toValue(range.min),
-				fromMax: this.toValue(range.max, this._fromInputString(input.max, 'max'), Math.min),
-				toMin: this.toValue(range.min, this._fromInputString(input.min, 'min'), Math.max),
-				toMax: nMax != null ? nMax : this.toValue(range.max)
+				fromMin: aMin,
+				fromMax: this.toValue(aMax, this._fromInputString(input.max, 'max'), Math.min),
+				toMin: this.toValue(aMin, this._fromInputString(input.min, 'min'), Math.max),
+				toMax: aMax
 			};
 		},
 
