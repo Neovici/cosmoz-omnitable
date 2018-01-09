@@ -58,11 +58,11 @@
 		},
 
 		_getTemplateInstance: function (column) {
-			return column.dataTemplatizer.getInstance();
+			return column.groupTemplatizer.getInstance();
 		},
 
 		_detachTemplateInstance: function (instance, column, element) {
-			column.dataTemplatizer.detachInstance(instance, element);
+			column.groupTemplatizer.detachInstance(instance, element);
 		},
 
 		_configureTemplateInstance: function (instance) {

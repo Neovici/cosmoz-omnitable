@@ -245,7 +245,9 @@
 					templateHost = root.host;
 				}
 			}
-
+			if (template == null) {
+				return null;
+			}
 			templatizer = document.createElement('cosmoz-omnitable-templatizer');
 			if (IS_V2) {
 				this.appendChild(templatizer);
@@ -272,6 +274,17 @@
 				this._dataTemplatizer = this._createTemplatizer(selector);
 			}
 			return this._dataTemplatizer;
+		},
+
+		get groupTemplatizer() {
+			if (!this._groupTemplatizer) {
+				let templatizer = this._createTemplatizer('template.group');
+				if (templatizer == null) {
+					templatizer = this.dataTemplatizer;
+				}
+				this._groupTemplatizer = templatizer;
+			}
+			return this._groupTemplatizer;
 		},
 
 		get headerTemplatizer() {
