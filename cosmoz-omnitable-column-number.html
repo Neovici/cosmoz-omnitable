@@ -19,6 +19,11 @@
 			<paper-input no-label-float type="number" on-change="_valueChanged" value="[[ getInputString(item, valuePath) ]]"></paper-input>
 		</template>
 
+		<template class="group">
+			<div class="omnitable-cell-number">[[ getString(item.items.0, valuePath, formatter) ]]</div>
+		</template>
+
+
 		<template class="header">
 			<cosmoz-clear-button on-click="resetFilter" visible="[[ hasFilter(filter.*) ]]"></cosmoz-clear-button>
 			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _tooltip ]]"

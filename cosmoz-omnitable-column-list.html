@@ -14,6 +14,12 @@
 			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]"></paper-input>
 		</template>
 
+		<template class="group">
+			<cosmoz-omnitable-column-list-data items="[[ get(valuePath, item.items.0) ]]">
+			</cosmoz-omnitable-column-list-data>
+		</template>
+
+
 		<template class="header">
 			<paper-autocomplete-chips
 				source="[[ autocompleteItems ]]"

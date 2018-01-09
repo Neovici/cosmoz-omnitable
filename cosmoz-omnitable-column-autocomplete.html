@@ -13,6 +13,10 @@
 			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]"></paper-input>
 		</template>
 
+		<template class="group">
+			<span class="default-column">[[ getString(item.items.0, valuePath) ]]</span>
+		</template>
+
 		<template class="header">
 			<paper-autocomplete-chips
 				text="{{ query }}"

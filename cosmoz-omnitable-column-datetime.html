@@ -19,6 +19,10 @@
 			</cosmoz-datetime-input>
 		</template>
 
+		<template class="group">
+			[[ getString(item.items.0, valuePath, formatter) ]]
+		</template>
+
 		<template class="header">
 			<cosmoz-clear-button on-click="resetFilter" visible="[[ hasFilter(filter.*) ]]"></cosmoz-clear-button>
 			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _tooltip ]]"

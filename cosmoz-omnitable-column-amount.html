@@ -19,6 +19,10 @@
 			</paper-input>
 		</template>
 
+		<template class="group">
+			<span>[[ getString(item.items.0, valuePath, _formatters) ]]</span>
+		</template>
+
 		<template class="header">
 			<cosmoz-clear-button on-click="resetFilter" visible="[[ hasFilter(filter.*) ]]"></cosmoz-clear-button>
 			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _tooltip ]]"

@@ -14,6 +14,10 @@
 			</paper-input>
 		</template>
 
+		<template class="group">
+			<span class="default-column">[[ getString(item.items.0, valuePath) ]]</span>
+		</template>
+
 		<template class="header">
 			<paper-input label="[[ title ]]" value="{{ filter }}" focused="{{ headerFocused }}">
 				<cosmoz-clear-button suffix slot="suffix" visible="[[ hasFilter(filter.*) ]]" light on-click="resetFilter"></cosmoz-clear-button>

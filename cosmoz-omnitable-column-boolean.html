@@ -22,6 +22,10 @@
 			</paper-dropdown-menu>
 		</template>
 
+		<template class="group">
+			[[ getString(item.items.0, valuePath) ]]
+		</template>
+
 		<template class="header">
 			<paper-dropdown-menu label="[[ title ]]"
 					horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
