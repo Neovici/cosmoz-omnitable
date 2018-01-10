@@ -51,10 +51,14 @@
 			var omnitable,
 				data;
 
-			setup(function () {
+			setup(function (done) {
 				omnitable = fixture('basic');
 				data = Cosmoz.TableDemoBehavior.generateTableDemoData(10, 11, 25);
 				omnitable.data = data;
+				omnitable.addEventListener('visible-columns-changed', function () {
+					Polymer.Base.async(done, 30);
+				});
+				omnitable.notifyResize();
 			});
 
 			test('it retrieves column by name', function (done) {
