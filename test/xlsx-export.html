@@ -43,7 +43,12 @@
 			var omnitable,
 				data = [
 					{ id: 0, 'first-name': 'Carl', amount: 12.4, date: new Date(2017, 7 - 1, 10) },
-					{ id: 1, 'first-name': 'Mia', amount: 678, date: new Date() }
+					{ id: 1, 'first-name': 'Mia', amount: 678, date: new Date() },
+					{ id: 2, 'first-name': 'Selena', amount: 2300, date: new Date(Date.UTC(2017, 11, 1, 3, 23, 16))},
+					{ id: 3, 'first-name': 'Teo', amount: 7000, date: new Date(Date.UTC(2016, 0, 13, 10, 41, 58))},
+					{ id: 4, 'first-name': 'Klark', amount: 23019, date: new Date(Date.UTC(2029, 7, 30, 1, 27, 13)) },
+					{ id: 5, 'first-name': 'Lenotika', amount: 9304, date: new Date(Date.UTC(2013, 9, 13, 5, 7, 29)) },
+					{ id: 6, 'first-name': 'Manil', amount: 28420, date: new Date(Date.UTC(2018, 10, 3, 24, 1, 14)) }
 				];
 
 			//this.timeout(9e20);
@@ -92,11 +97,35 @@
 				assert.calledOnce(spyXlsx);
 				assert.calledOnce(stubSaveAs);
 
-				args =  stubSaveAs.lastCall.args;
+				args =  stubSaveAs.lastCall.args[0];
 				// verify params of SaveAs; name and type of file to be created
 
-				assert.equal(args[0].name, 'Test.xlsx');
-				assert.equal(args[0].type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+				assert.equal(args.name, 'Test.xlsx');
+				assert.equal(args.type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+				spyXlsx.restore();
+				stubSaveAs.restore();
+				done();
+			});
+
+			test('click twice creates two files', function (done) {
+				let spyXlsx = sinon.spy(omnitable, '_saveAsXlsxAction'),
+					stubSaveAs = sinon.stub(window, 'saveAs'),
+					args;
+				for (let i = 0; i < data.length; i++) {
+					omnitable.selectItem(data[i]);
+				}
+				const button = omnitable.$.dropdownExtra.queryAllEffectiveChildren('paper-button')[1];
+
+				MockInteractions.tap(button);
+				MockInteractions.tap(button);
+				assert.calledTwice(spyXlsx);
+				assert.calledTwice(stubSaveAs);
+
+				args =  stubSaveAs.lastCall.args[0];
+
+				assert.equal(args.name, 'Test.xlsx');
+				assert.equal(args.type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 
 				spyXlsx.restore();
 				stubSaveAs.restore();

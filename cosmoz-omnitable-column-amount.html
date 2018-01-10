@@ -105,8 +105,8 @@
 			/**
 			 * Converts a value to an amount object optionaly limiting it.
 			 *
-			 * @param  {Object|*} value  The value to convert to number
-			 * @param  {Object|*} limit  The value used to limit the number
+			 * @param  {Object} value  The value to convert to number
+			 * @param  {Object} limit  The value used to limit the number
 			 * @param  {Function} limitFunc  The function used to limit the number (Math.min|Math.max)
 			 * @returns {Object|void}    Value converted to Number or void
 			 */
@@ -114,15 +114,21 @@
 				if (value == null || value === '') {
 					return;
 				}
-				const number = this.toNumber(typeof value === 'object' ? value.amount : value);
-				if (Number.isNaN(number)) {
-					return;
+
+				if (typeof value !== 'object' || value.currency == null || value.currency === '') {
+					return null;
+				}
+
+				const number = this.toNumber(value.amount);
+				if (number == null || Number.isNaN(number)) {
+					return null;
 				}
 				let amount = {
-						currency: value.currency || this.defaultCurrency,
+						currency: value.currency,
 						amount: number
 					},
-					lAmount;
+					lAmount,
+					lNumber;
 
 				if (limitFunc == null || limit == null) {
 					return amount;
@@ -131,9 +137,9 @@
 				if (lAmount == null) {
 					return amount;
 				}
-				return Object.assign(amount, {
-					amount: this.toNumber(amount.amount, lAmount.amount, limitFunc)
-				});
+
+				lNumber = this.toNumber(amount.amount, lAmount.amount, limitFunc);
+				return lNumber === number ? amount : lAmount;
 			},
 
 			toValue() {
@@ -144,6 +150,13 @@
 				return this.getString(item, valuePath);
 			},
 
+			/**
+			 *   Get the comparable value of an item.
+			 *
+			 * @param  {Object} item       Item to be processed
+			 * @param  {String} valuePath  Property path
+			 * @returns {Number|void}      Valid value or void
+			 */
 			getComparableValue(item, valuePath) {
 				const value = Cosmoz.RangeColumnBehavior.getComparableValue.call(this, item, valuePath);
 				if (value == null) {
@@ -151,19 +164,37 @@
 				}
 				return this.toNumber(value.amount);
 			},
+			getString(item, valuePath = this.valuePath) {
+				const value = this.toValue(this.get(valuePath, item));
+				if (value === undefined) {
+					return '';
+				}
+				if (value === null) {
+					return 'Invalid value';
+				}
+				return this.renderValue(value);
+			},
 
 			getCurrency(item, valuePath) {
 				const value = this.get(valuePath, item);
 				return value && value.currency;
 			},
 
+			/**
+			 * Converts an amount to symbol and value to be rendered.
+			 *
+			 * @param  {Object} value Amount to be formated
+			 * @param  {Object} _formatters = this._formatters All possible formatters.
+			 * @returns {String} Formated value or empty string.
+			 */
 			renderValue(value, _formatters = this._formatters) {
-				if (!value || !_formatters) {
+				const amount = this.toAmount(value);
+				if (amount == null) {
 					return '';
 				}
-				const formatter = _formatters[value.currency];
+				let formatter = _formatters[amount.currency];
 				if (!formatter) {
-					console.warn('formatter not found');
+					console.warn('formatter not found', value);
 					return '';
 				}
 				return formatter.format(value.amount);
@@ -193,6 +224,38 @@
 				}
 				return this.toNumber(amount.amount);
 			},
+
+			_fromInputString(value, property) {
+				const number = this.toNumber(value);
+				if (number == null) {
+					return;
+				}
+				return this.toValue({
+					amount: number,
+					currency: property && this.get(['filter', property, 'currency']) || this.defaultCurrency
+				});
+			},
+
+			_toHashString(value) {
+				if (!value) {
+					return '';
+				}
+				return value.amount + value.currency;
+			},
+
+			_fromHashString(value) {
+				if (value == null || value === '') {
+					return;
+				}
+				const params = value.match(/^(-?[\d]+)([\D]+?)$/i);
+				if (!Array.isArray(params) || params.length < 0) {
+					return null;
+				}
+				return {
+					amount: params[1],
+					currency: params[2]
+				};
+			}
 		});
 
 	</script>

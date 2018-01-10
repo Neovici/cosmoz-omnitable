@@ -64,6 +64,14 @@
 
 			_fixedDate: '1970-01-01',
 
+			/**
+			 * Converts time to date optionaly limiting it.
+			 *
+			 * @param  {Date|Number} value   Date or Timestamp ( miliseconds since property _fixedDate ) to be converted
+			 * @param  {Date|Number} limit   Optional value to limit the date.
+			 * @param  {Function} limitFunc  Function used to limit the date (Math.min|Math.max)
+			 * @returns {Date|void}          Value converted to date optionaly limitated
+			 */
 			toDate(value, limit, limitFunc) {
 				const date = typeof value === 'string' && value.length > 3 &&  value.length <= 9 ? this._fixedDate + 'T' + value : value;
 				return Cosmoz.DateColumnBehaviorImpl.toDate.call(this, date, limit, limitFunc);
@@ -85,6 +93,7 @@
 				//Use utc in hash
 				return date.toISOString().slice(11, 19).replace(/:/g, '.');
 			},
+
 			_fromHashString(value) {
 				if (value == null || value === '') {
 					return;
@@ -93,6 +102,13 @@
 				return this.toValue(value.replace(/\./g, ':') + 'Z');
 			},
 
+			/**
+			 *   Get the comparable value of an item.
+			 *
+			 * @param  {Object} item       Item to be processed
+			 * @param  {String} valuePath  Property path
+			 * @returns {Number|void}      Valid value or void
+			 */
 			getComparableValue(item, valuePath) {
 				if (item == null) {
 					return;

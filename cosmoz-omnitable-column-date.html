@@ -52,7 +52,21 @@
 				Cosmoz.OmnitableColumnBehavior,
 				Cosmoz.TranslatableBehavior,
 				Cosmoz.DateColumnBehavior
-			]
+			],
+
+			_fromInputString(value, property) {
+				const date = this.toDate(value);
+				if (date == null) {
+					return;
+				}
+				if (property === 'min') {
+					date.setHours(0, 0, 0, 0);
+				}
+				if (property === 'max') {
+					date.setHours(23, 59, 59);
+				}
+				return date;
+			}
 		});
 
 	</script>
