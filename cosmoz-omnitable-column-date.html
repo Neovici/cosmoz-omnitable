@@ -21,6 +21,7 @@
 		</template>
 
 		<template class="header">
+			<cosmoz-clear-button on-click="resetFilter" hidden$="[[ !hasFilter(filter.*) ]]"></cosmoz-clear-button>
 			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _tooltip ]]"
 					horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
@@ -35,7 +36,6 @@
 					</paper-input>
 				</div>
 			</paper-dropdown-menu>
-			<cosmoz-clear-button on-click="resetFilter" hidden$="[[ !hasFilter(filter.*) ]]"></cosmoz-clear-button>
 		</template>
 	</template>
 	<script>
