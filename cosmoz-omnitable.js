@@ -393,7 +393,7 @@
 		},
 
 		_debounceUpdateColumns() {
-			this.debounce('updateColumns', this._updateColumns, 1);
+			this.debounce('updateColumns', this._updateColumns, 10);
 		},
 
 		_updateColumns() {
