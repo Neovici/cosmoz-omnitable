@@ -88,6 +88,19 @@
 				localDate.setHours(0, 0, 0, 0);
 				return localDate;
 			}
+			},
+
+			_filterInputChanged(change) {
+				const path = change.path.split('.')[1],
+					value = path && change.value;
+
+				if(value && value.match(/^0+/)){
+					this.cancelDebouncer('_limitInput');
+					return;
+				}
+				Cosmoz.RangeColumnBehavior._filterInputChanged.call(this, change);
+			},
+
 		});
 
 	</script>
