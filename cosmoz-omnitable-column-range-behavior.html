@@ -177,6 +177,7 @@
 				nMax = this.toValue(max),
 				aMin = nMin != null ? nMin : this.toValue(range.min),
 				aMax = nMax != null ? nMax : this.toValue(range.max);
+
 			return {
 				fromMin: aMin,
 				fromMax: this.toValue(aMax, this._fromInputString(input.max, 'max'), Math.min),
@@ -271,22 +272,27 @@
 		_limitInput() {
 			const input = this._filterInput,
 				path = this.__inputChangePath,
-				limit = this._limit,
-				min = this._fromInputString(input.min, 'min'),
-				max = this._fromInputString(input.max, 'max'),
-				lMin = this.toValue(min, limit.fromMax, Math.min),
-				lMax = this.toValue(max, limit.toMin, Math.max);
+				limit = this._limit;
 
-			if (this.getComparableValue(lMin) === this.getComparableValue(min)
-				&& this.getComparableValue(lMax) === this.getComparableValue(max)) {
-				return this._updateFilter();
+			if (path != null) {
+				const value = this._fromInputString(this.get(path, input), path);
+				this.__inputChangePath = null;
+				if (value != null) {
+					const cPath = path === 'min' ? 'from': 'to',
+						limited = this.toValue(
+							this.get(cPath + 'Max', limit),
+							this.toValue(value, this.get(cPath + 'Min', limit), Math.max),
+							Math.min
+						);
+
+					if (this.getComparableValue(value) !== this.getComparableValue(limited)) {
+						this.set('_filterInput.' + path, this._toInputString(limited, path));
+						this.cancelDebouncer('_limitInput');
+					}
+				}
 			}
-			this.__inputChangePath = null;
-			this.set('_filterInput', {
-				min: this._toInputString(!path || path === 'min' ? lMin : min),
-				max: this._toInputString(!path || path === 'max' ? lMax : max)
-			});
-			this.flushDebouncer('_limitInput');
+
+			this._updateFilter();
 		},
 
 		_updateFilter() {
