@@ -63,10 +63,13 @@
 			setup(function (done) {
 				omnitable = fixture('range');
 				omnitable.data = data;
-				Polymer.Base.async(function () {
-					column = omnitable.columns[0];
-					done();
-				}, 90);
+				omnitable.addEventListener('visible-columns-changed', function () {
+					Polymer.Base.async(function () {
+						column = omnitable.columns[0];
+						done();
+					}, 30);
+				});
+				omnitable.notifyResize();
 			});
 
 			test('instantiates a cosmoz-omnitable-column-number', function (done) {
@@ -172,10 +175,13 @@
 			setup(function (done) {
 				omnitable = fixture('range');
 				omnitable.data = data;
-				Polymer.Base.async(function () {
-					column = omnitable.columns[1];
-					done();
-				}, 120);
+				omnitable.addEventListener('visible-columns-changed', function () {
+					Polymer.Base.async(function () {
+						column = omnitable.columns[1];
+						done();
+					}, 30);
+				});
+				omnitable.notifyResize();
 			});
 
 			test('instantiates a cosmoz-omnitable-column-amount', function (done) {
