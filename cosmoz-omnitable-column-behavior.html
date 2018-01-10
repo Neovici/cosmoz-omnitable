@@ -207,6 +207,11 @@
 				value: null
 			},
 
+			_groupTemplatizer: {
+				type: Object,
+				value: null
+			},
+
 			_headerTemplatizer: {
 				type: Object,
 				value: null
@@ -276,6 +281,10 @@
 			return this._dataTemplatizer;
 		},
 
+		/**
+		 * The Group Templatizer when group template exists for the column or default
+		 * @return {Object}  Returns existing or new Group Templatizer, by default when no group template exists returns dataTemplatizer
+		 */
 		get groupTemplatizer() {
 			if (!this._groupTemplatizer) {
 				let templatizer = this._createTemplatizer('template.group');
