@@ -133,7 +133,7 @@
 					assert.equal(column.filter.min, -10);
 					assert.equal(column.filter.max, 15);
 					done();
-				}, 650);
+				}, 750);
 			});
 
 			test('changing only _filterInput min updates filter min', function (done) {
@@ -141,7 +141,7 @@
 				Polymer.Base.async(function () {
 					assert.equal(column.filter.min, -21);
 					done();
-				}, 700);
+				}, 750);
 			});
 
 			test('changing out of range _filterInput limits _filterInput', function (done) {
@@ -163,7 +163,7 @@
 						done();
 					});
 
-				}, 650);
+				}, 750);
 			});
 
 		});
@@ -269,7 +269,7 @@
 					assert.equal(column.filter.min.amount, 1);
 					assert.equal(column.filter.max.amount, 15);
 					done();
-				}, 650);
+				}, 750);
 			});
 
 			test('changing only _filterInput min updates filter min', function (done) {
@@ -277,7 +277,7 @@
 				Polymer.Base.async(function () {
 					assert.equal(column.filter.min.amount, -2317);
 					done();
-				}, 650);
+				}, 750);
 			});
 
 			test('changing out of range _filterInput limits _filterInput', function (done) {
@@ -299,7 +299,7 @@
 						done();
 					});
 
-				}, 650);
+				}, 750);
 			});
 
 		});
