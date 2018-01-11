@@ -5,6 +5,7 @@
 
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 
+<link rel="import" href="ui-helpers/cosmoz-clear-button.html">
 <link rel="import" href="cosmoz-omnitable-column-date-behavior.html">
 
 <dom-module id="cosmoz-omnitable-column-date">
@@ -20,6 +21,7 @@
 		</template>
 
 		<template class="header">
+			<cosmoz-clear-button on-click="resetFilter" hidden$="[[ !hasFilter(filter.*) ]]"></cosmoz-clear-button>
 			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _tooltip ]]"
 					horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
@@ -34,8 +36,6 @@
 					</paper-input>
 				</div>
 			</paper-dropdown-menu>
-			<iron-icon icon="clear" class="header-clear-filter"
-				on-tap="resetFilter" visible$="[[ hasFilter(filter.*) ]]"></iron-icon>
 		</template>
 	</template>
 	<script>
@@ -52,7 +52,21 @@
 				Cosmoz.OmnitableColumnBehavior,
 				Cosmoz.TranslatableBehavior,
 				Cosmoz.DateColumnBehavior
-			]
+			],
+
+			_fromInputString(value, property) {
+				const date = this.toDate(value);
+				if (date == null) {
+					return;
+				}
+				if (property === 'min') {
+					date.setHours(0, 0, 0, 0);
+				}
+				if (property === 'max') {
+					date.setHours(23, 59, 59);
+				}
+				return date;
+			}
 		});
 
 	</script>

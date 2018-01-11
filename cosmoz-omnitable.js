@@ -191,7 +191,8 @@
 				type: Boolean,
 				notify: true,
 				readOnly: true,
-				value: false
+				value: false,
+				observer: 'visibleChanged'
 			},
 
 			/**
@@ -265,7 +266,7 @@
 			'cosmoz-column-filter-changed': '_filterChanged',
 		},
 
-		attached: function () {
+		attached() {
 			/** WARNING: we do not support columns changes yet. */
 			// `isOmnitableColumn` is a property from cosmoz-omnitable-column-behavior
 			this._columnObserver = Polymer.dom(this).observeNodes(info => {
@@ -343,6 +344,12 @@
 			return visibleColumns.length === columns.length;
 		},
 
+		visibleChanged(turnedVisible) {
+			if (turnedVisible && !Array.isArray(this.columns)) {
+				this._debounceUpdateColumns();
+			}
+		},
+
 		_visibleColumnsChanged() {
 			this.disabledColumns = [];
 			this._disabledColumnsIndexes = [];
@@ -410,6 +417,7 @@
 		},
 
 		_onResize() {
+			this._setVisible(this.offsetParent != null);
 			this._debounceAdjustColumns();
 		},
 
@@ -422,11 +430,17 @@
 		},
 
 		_debounceUpdateColumns() {
-			this.debounce('updateColumns', this._updateColumns);
+			this.debounce('updateColumns', this._updateColumns, 10);
 		},
 
-		_updateColumns: function () {
+		_updateColumns() {
 			if (!this.isAttached) {
+				return;
+			}
+
+			this._setVisible(this.offsetParent != null);
+
+			if (!this.visible) {
 				return;
 			}
 
@@ -770,13 +784,7 @@
 		_adjustColumns() {
 
 			// Safety check, but should never happen
-			if (!this.isAttached) {
-				return;
-			}
-
-			this._setVisible(this.offsetParent != null);
-
-			if (!this.visible) {
+			if (!this.isAttached || !this.visible) {
 				return;
 			}
 

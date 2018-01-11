@@ -4,6 +4,7 @@
 <link rel="import" href="../datetime-local/datetime-local.html">
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 
+<link rel="import" href="ui-helpers/cosmoz-clear-button.html">
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 
 <dom-module id="cosmoz-omnitable-column-datetime">
@@ -19,6 +20,7 @@
 		</template>
 
 		<template class="header">
+			<cosmoz-clear-button on-click="resetFilter" hidden$="[[ !hasFilter(filter.*) ]]"></cosmoz-clear-button>
 			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _tooltip ]]"
 					horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
@@ -33,8 +35,6 @@
 					</datetime-local>
 				</div>
 			</paper-dropdown-menu>
-			<iron-icon icon="clear" class="header-clear-filter"
-				on-tap="resetFilter" visible$="[[ hasFilter(filter.*) ]]"></iron-icon>
 		</template>
 	</template>
 	<script>
@@ -45,20 +45,6 @@
 				filterStep: {
 					type: Number,
 					value: 1
-				},
-
-				max: {
-					type: Date,
-					value() {
-						return new Date(Date.UTC(2100, 11, 31, 20, 59, 999));
-					}
-				},
-
-				min: {
-					type: Date,
-					value() {
-						return new Date(Date.UTC(1970, 0, 1, 0, 0, 0));
-					}
 				},
 
 				width: {

@@ -52,30 +52,6 @@
 			.number-header-cell {
 				position: relative;
 			}
-			.header-clear-filter {
-				margin: 2px 4px;
-				color: #cdcdcd;
-				background-color: #a6a6a6;
-				border-radius: 500px;
-				cursor: pointer;
-				min-width: 16px;
-				width: 16px !important;
-				min-height: 16px;
-				height: 16px;
-				position: absolute;
-				top: 8px;
-				right: 2px;
-				padding: 2px;
-				box-sizing: border-box;
-				transition: background-color 0.25s, color 0.25s;
-			}
-			.header-clear-filter:not([visible]){
-				display: none !important;
-			}
-			.header-clear-filter:hover {
-				background-color: #b0b0b0;
-				color: #dfdfdf;
-			}
 
 			.tableContent {
 				overflow-y: auto;
@@ -301,6 +277,28 @@
 				color: #b7b6c8;
 				border-color: #b7b6c8;
 				cursor: not-allowed;
+			}
+
+			#dropdownExtra paper-button {
+				display: flex;
+				@apply --layout-center;
+				@apply --layout-horizontal;
+				position: relative;
+				@apply --cosmoz-bottom-bar-menu-item;
+			}
+
+			#dropdownExtra {
+				padding: 0;
+			}
+
+			#listboxSizer {
+				max-height: 0;
+				padding: 0 !important;
+			}
+
+			#dropdownExtraButton {
+				color: var(--cosmoz-bottom-bar-menubutton-color, var(--light-primary-color));
+				background-color: var(--cosmoz-bottom-bar-menubutton-background-color, var(--dark-primary-color));
 			}
 		</style>
 	</template>
