@@ -27,6 +27,7 @@ with a `cosmoz-dialog` element which enables it to be displayed as a dialog.
 		<style include="cosmoz-omnitable-styles iron-flex">
 			:host {
 				display: block;
+				overflow: visible;
 			}
 
 			.container {
@@ -59,10 +60,23 @@ with a `cosmoz-dialog` element which enables it to be displayed as a dialog.
 			},
 
 			_onResize() {
-				const accs = Polymer.dom(this).querySelectorAll('paper-autocomplete-chips');
+				this._sizeSuggestionWrapper();
+			},
 
+			_sizeSuggestionWrapper() {
+				const accs = Polymer.dom(this).querySelectorAll('paper-autocomplete-chips');
+	
 				Polymer.dom.addDebouncer(this.debounce('suggestionWith', () => {
 					accs.forEach(acc => {
+						if (acc.offsetWidth === 0) {
+							// Reset initial styles
+							acc.updateStyles({
+								'--paper-autocomplete-chips-suggestions-position': 'absolute',
+								'--paper-autocomplete-chips-suggestions-width': 'auto',
+								'--paper-autocomplete-chips-suggestions-min-width': '100%'
+							});
+							return;
+						}
 						acc.updateStyles({
 							'--paper-autocomplete-chips-suggestions-position': 'fixed',
 							'--paper-autocomplete-chips-suggestions-width': `${acc.offsetWidth}px`,
