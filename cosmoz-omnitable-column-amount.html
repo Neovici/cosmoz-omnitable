@@ -189,10 +189,10 @@
 			 */
 			renderValue(value, _formatters = this._formatters) {
 				const amount = this.toAmount(value);
-				if (amount == null) {
+				if (amount == null || _formatters == null) {
 					return '';
 				}
-				let formatter = _formatters[amount.currency];
+				const formatter = _formatters[amount.currency];
 				if (!formatter) {
 					console.warn('formatter not found', value);
 					return '';
