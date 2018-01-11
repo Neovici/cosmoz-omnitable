@@ -77,10 +77,14 @@
 			setup(function (done) {
 				omnitable = fixture('range');
 				omnitable.data = data;
-				Polymer.Base.async(function () {
-					column = omnitable.columns[2];
-					done();
-				}, 90);
+
+				omnitable.addEventListener('visible-columns-changed', function () {
+					Polymer.Base.async(function () {
+						column = omnitable.columns[2];
+						done();
+					}, 30);
+				});
+				omnitable.notifyResize();
 			});
 
 			test('instantiates a cosmoz-omnitable-column-date', function (done) {
@@ -208,10 +212,14 @@
 			setup(function (done) {
 				omnitable = fixture('range');
 				omnitable.data = data;
-				Polymer.Base.async(function () {
-					column = omnitable.columns[3];
-					done();
-				}, 90);
+
+				omnitable.addEventListener('visible-columns-changed', function () {
+					Polymer.Base.async(function () {
+						column = omnitable.columns[3];
+						done();
+					}, 30);
+				});
+				omnitable.notifyResize();
 			});
 
 			test('_toInputString converts datetime to local string', function (done) {
@@ -270,10 +278,13 @@
 			setup(function (done) {
 				omnitable = fixture('range');
 				omnitable.data = data;
-				Polymer.Base.async(function () {
-					column = omnitable.columns[4];
-					done();
-				}, 90);
+				omnitable.addEventListener('visible-columns-changed', function () {
+					Polymer.Base.async(function () {
+						column = omnitable.columns[4];
+						done();
+					}, 30);
+				});
+				omnitable.notifyResize();
 			});
 
 			test('instantiates a cosmoz-omnitable-column-time', function (done) {
