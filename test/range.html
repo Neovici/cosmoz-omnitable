@@ -129,43 +129,43 @@
 					min: -10,
 					max: 15
 				};
-				Polymer.Base.async(function () {
+				column.addEventListener('filter-changed', function () {
 					assert.equal(column.filter.min, -10);
 					assert.equal(column.filter.max, 15);
 					done();
-				}, 750);
+				});
 			});
 
 			test('changing only _filterInput min updates filter min', function (done) {
 				column._filterInput.min = -21;
-				Polymer.Base.async(function () {
+				column.addEventListener('filter-changed', function () {
 					assert.equal(column.filter.min, -21);
 					done();
-				}, 750);
+				});
 			});
 
 			test('changing out of range _filterInput limits _filterInput', function (done) {
 				assert.isNull(column._filterInput.min);
 				assert.isNull(column._filterInput.max);
 
-				column._filterInput =  {min: -11, max: 17 };
-
-				Polymer.Base.async(function () {
+				let handler;
+				column.addEventListener('filter-changed', handler = function () {
 					assert.equal(column._filterInput.min, -11);
 					assert.equal(column._filterInput.max, 17);
 					assert.equal(column.filter.min, -11);
 					assert.equal(column.filter.max, 17);
 
-					column._filterInput.min = 20;
-
 					Polymer.Base.async(function () {
-						assert.equal(column.filter.min, -11);
-						done();
+						column.removeEventListener('filter-changed', handler);
+						column.addEventListener('filter-changed', function () {
+							assert.equal(column.filter.min, 17);
+							done();
+						});
+						column.set('_filterInput.min', 20);
 					});
-
-				}, 750);
+				});
+				column._filterInput =  {min: -11, max: 17 };
 			});
-
 		});
 
 		suite('amount', function () {
@@ -265,41 +265,42 @@
 					min: 1,
 					max: 15
 				};
-				Polymer.Base.async(function () {
+				column.addEventListener('filter-changed', function () {
 					assert.equal(column.filter.min.amount, 1);
 					assert.equal(column.filter.max.amount, 15);
 					done();
-				}, 750);
+				});
 			});
 
 			test('changing only _filterInput min updates filter min', function (done) {
 				column._filterInput.min = -2317;
-				Polymer.Base.async(function () {
+				column.addEventListener('filter-changed', function () {
 					assert.equal(column.filter.min.amount, -2317);
 					done();
-				}, 750);
+				});
 			});
 
 			test('changing out of range _filterInput limits _filterInput', function (done) {
 				assert.isNull(column._filterInput.min);
 				assert.isNull(column._filterInput.max);
 
-				column._filterInput =  {min: 7, max: 77};
-
-				Polymer.Base.async(function () {
+				let handler;
+				column.addEventListener('filter-changed', handler = function () {
 					assert.equal(column._filterInput.min, 7);
 					assert.equal(column._filterInput.max, 77);
 					assert.equal(column.filter.min.amount, 7);
 					assert.equal(column.filter.max.amount, 77);
 
-					column._filterInput.min = 9992;
-
 					Polymer.Base.async(function () {
-						assert.equal(column.filter.min.amount, 7);
-						done();
+						column.removeEventListener('filter-changed', handler);
+						column.addEventListener('filter-changed', function () {
+							assert.equal(column.filter.min.amount, 77);
+							done();
+						});
+						column.set('_filterInput.min', 9992);
 					});
-
-				}, 750);
+				});
+				column._filterInput =  {min: 7, max: 77};
 			});
 
 		});

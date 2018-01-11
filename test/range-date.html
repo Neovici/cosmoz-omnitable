@@ -263,7 +263,7 @@
 			});
 
 			test('changing only _filterInput min updates filter min', function (done) {
-				column._filterInput.min = '2014-06-24T11:33:30';
+				column.set('_filterInput.min', '2014-06-24T11:33:30');
 				column.addEventListener('filter-changed', function () {
 					assert.equal(column.filter.min.getTime(), new Date('2014-06-24T11:33:30').getTime());
 					done();
