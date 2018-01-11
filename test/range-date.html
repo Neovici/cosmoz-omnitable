@@ -162,33 +162,33 @@
 					min: '2015-03-18',
 					max: '2023-03-21'
 				};
-				Polymer.Base.async(function () {
+				column.addEventListener('filter-changed', function () {
 					assert.equal(column.filter.min.getTime(), new Date('2015-03-18T00:00:00').getTime());
 					assert.equal(column.filter.max.getTime(), new Date('2023-03-21T23:59:59').getTime(), 'Expecting max date included');
 					done();
-				}, 750);
+				});
 			});
 
 			test('changing only _filterInput min updates filter min', function (done) {
 				column._filterInput.min = '2015-08-27';
-				Polymer.Base.async(function () {
+				column.addEventListener('filter-changed', function () {
 					assert.equal(column.filter.min.getTime(), new Date('2015-08-27T00:00:00').getTime());
 					done();
-				}, 750);
+				});
 			});
+
 			test('filtering on specific date with datetime source', function (done) {
 				// date: '2017-12-22T23:00:00Z'
 
 				assert.equal(column.getComparableValue(data[5], column.valuePath), new Date('2017-12-22T23:00:00Z').getTime());
-
 				column._filterInput.min = '2017-12-22';
 				column._filterInput.max = '2017-12-23';
-				Polymer.Base.async(function () {
+				column.addEventListener('filter-changed', function () {
 					let fn = column.getFilterFn();
 					assert.isTrue(fn(data[5]));
 
 					done();
-				}, 750);
+				});
 			});
 
 			test('filtering on specific date with datetime source same day test', function (done) {
@@ -196,12 +196,12 @@
 
 				column._filterInput.min = '2017-12-23';
 				column._filterInput.max = '2017-12-23';
-				Polymer.Base.async(function () {
+				column.addEventListener('filter-changed', function () {
 					let fn = column.getFilterFn();
 					assert.isTrue(fn(data[5]));
 
 					done();
-				}, 750);
+				});
 			});
 		});
 
@@ -255,19 +255,19 @@
 					min: '1970-01-02T02:00:00',
 					max: '1999-06-24T11:33:30'
 				};
-				Polymer.Base.async(function () {
+				column.addEventListener('filter-changed', function () {
 					assert.equal(column.filter.min.getTime(), 86400000);
 					assert.equal(column.filter.max.getTime(), new Date(99, 5, 24, 11, 33, 30, 0).getTime());
 					done();
-				}, 750);
+				});
 			});
 
 			test('changing only _filterInput min updates filter min', function (done) {
 				column._filterInput.min = '2014-06-24T11:33:30';
-				Polymer.Base.async(function () {
+				column.addEventListener('filter-changed', function () {
 					assert.equal(column.filter.min.getTime(), new Date('2014-06-24T11:33:30').getTime());
 					done();
-				}, 750);
+				});
 			});
 		});
 
@@ -361,19 +361,19 @@
 					min: '04:30:00',
 					max: '17:34:56'
 				};
-				Polymer.Base.async(function () {
+				column.addEventListener('filter-changed', function () {
 					assert.equal(column.filter.min.getTime(), new Date(Date.UTC(1970, 0, 1, 2, 30)).getTime());
 					assert.equal(column.filter.max.getTime(), new Date(Date.UTC(1970, 0, 1, 15, 34, 56)).getTime());
 					done();
-				}, 750);
+				});
 			});
 
 			test('changing only _filterInput min updates filter min', function (done) {
 				column._filterInput.min = '04:21:10';
-				Polymer.Base.async(function () {
+				column.addEventListener('filter-changed', function () {
 					assert.equal(column.filter.min.getTime(), new Date(Date.UTC(1970, 0, 1, 2, 21, 10)).getTime());
 					done();
-				}, 750);
+				});
 			});
 
 		});
