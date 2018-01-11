@@ -10,6 +10,10 @@
                 z-index: +1;
             }
 
+			:host:not([visible]){
+				display: none !important;
+			}
+
             iron-icon {
                 top: 10px;
                 margin: 2px 7px;
@@ -34,9 +38,16 @@
         </style>
         <iron-icon icon="clear"></iron-icon>
     </template>
-    <script type="text/javascript">
-        Polymer({
-        	is: 'cosmoz-clear-button'
-        });
-    </script>
+	<script type="text/javascript">
+		Polymer({
+			is: 'cosmoz-clear-button',
+			properties: {
+				visible: {
+					type: Boolean,
+					value: false,
+					reflectToAttribute: true
+				}
+			}
+		});
+	</script>
 </dom-module>
