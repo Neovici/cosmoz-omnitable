@@ -116,7 +116,7 @@
 		},
 
 		toXlsxValue: function (item, valuePath = this.valuePath) {
-			const value = this.getString(item, valuePath);
+			const value = this.getComparableValue(item, valuePath);
 			if (value == null) {
 				return '';
 			}
