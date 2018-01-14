@@ -1,7 +1,7 @@
 <link rel="import" href="cosmoz-omnitable-column-behavior.html">
 <link rel="import" href="cosmoz-omnitable-column-date-behavior.html">
 
-<link rel="import" href="../datetime-local/datetime-local.html">
+<link rel="import" href="../cosmoz-datetime-input/cosmoz-datetime-input.html">
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 
 <link rel="import" href="ui-helpers/cosmoz-clear-button.html">
@@ -14,9 +14,9 @@
 		</template>
 
 		<template class="edit-cell">
-			<datetime-local no-label-float type="datetime-local" on-change="_dateValueChanged"
+			<cosmoz-datetime-input no-label-float type="cosmoz-datetime-input" on-change="_dateValueChanged"
 				value="[[ getInputString(item, valuePath) ]]">
-			</datetime-local>
+			</cosmoz-datetime-input>
 		</template>
 
 		<template class="header">
@@ -25,14 +25,14 @@
 					horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
-					<datetime-local date-label="[[ _('From date', t) ]]" time-label="[[ _('From time', t) ]]"
+					<cosmoz-datetime-input date-label="[[ _('From date', t) ]]" time-label="[[ _('From time', t) ]]"
 						min="[[ _toInputString(_limit.fromMin) ]]" max="[[ _toInputString(_limit.fromMax) ]]"
 						value="{{ _filterInput.min }}" step$="[[ filterStep ]]">
-					</datetime-local>
-					<datetime-local date-label="[[ _('To date', t) ]]" time-label="[[ _('To time', t) ]]"
+					</cosmoz-datetime-input>
+					<cosmoz-datetime-input date-label="[[ _('To date', t) ]]" time-label="[[ _('To time', t) ]]"
 						min="[[ _toInputString(_limit.toMin) ]]" max="[[ _toInputString(_limit.toMax) ]]"
 						value="{{ _filterInput.max }}" step$="[[ filterStep ]]">
-					</datetime-local>
+					</cosmoz-datetime-input>
 				</div>
 			</paper-dropdown-menu>
 		</template>
