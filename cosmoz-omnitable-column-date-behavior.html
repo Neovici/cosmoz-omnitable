@@ -7,16 +7,12 @@
 		properties: {
 			max: {
 				type: Date,
-				value() {
-					return new Date('2100-01-01');
-				}
+				value: null
 			},
 
 			min: {
 				type: Date,
-				value() {
-					return new Date('1970-01-01');
-				}
+				value: null
 			},
 
 			_filterText: {
@@ -48,6 +44,14 @@
 			}
 		},
 
+		/**
+		 * Converts an value to date optionaly limiting it.
+		 *
+		 * @param  {Date|String} value   Value to convert to date
+		 * @param  {Date|String} limit   Value used to limit the date
+		 * @param  {Function} limitFunc  Function used to limit the date (Math.min|Math.max)
+		 * @returns {Date|void} Value converted to date optionaly limitated
+		 */
 		toDate(value, limit, limitFunc) {
 			if (value == null || value === '') {
 				return;
@@ -63,13 +67,21 @@
 			if (lDate == null) {
 				return date;
 			}
-			return limitFunc(date, lDate);
+			var comparableDate = this.getComparableValue(date),
+				comparableLDate = this.getComparableValue(lDate),
+				limitedValue = limitFunc(comparableDate, comparableLDate);
+			return limitedValue === comparableDate ? date : lDate;
 		},
 
 		toValue() {
 			return this.toDate.apply(this, arguments);
 		},
 
+		/**
+		 * Get comparable number from date
+		 *
+		 * @returns {Number|void} Valid value or void
+		 */
 		getComparableValue() {
 			const value = Cosmoz.RangeColumnBehavior.getComparableValue.apply(this, arguments);
 			if (value == null) {
@@ -78,6 +90,15 @@
 			return this.toNumber(value.getTime());
 		},
 
+
+		/**
+		 * Get date of item as string
+		 *
+		 * @param  {Object} item                       Item to be processed
+		 * @param  {String} valuePath = this.valuePath Property path
+		 * @param  {Object} formatter = this.formatter Property formatter
+		 * @returns {String}                           Date rendered as string or 'Invalid Date'
+		 */
 		getString(item, valuePath = this.valuePath, formatter = this.formatter) {
 			const value = this.toValue(this.get(valuePath, item));
 			if (value === undefined) {

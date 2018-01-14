@@ -1,0 +1,53 @@
+<link rel="import" href="../../iron-icon/iron-icon.html">
+<link rel="import" href="../../iron-icons/iron-icons.html">
+
+<dom-module id="cosmoz-clear-button">
+    <template>
+        <style is="custom-style">
+            :host {
+                position: absolute;
+                right: 0;
+                z-index: +1;
+            }
+
+			:host:not([visible]){
+				display: none !important;
+			}
+
+            iron-icon {
+                top: 10px;
+                margin: 2px 7px;
+                color: #cdcdcd;
+                background-color: #a6a6a6;
+                border-radius: 500px;
+                cursor: pointer;
+                min-width: 16px;
+                width: 16px !important;
+                min-height: 16px;
+                height: 16px;
+                padding: 2px;
+                box-sizing: border-box;
+                transition: background-color 0.25s, color 0.25s;
+                float: right;
+            }
+
+			iron-icon:hover {
+				background-color: #b0b0b0;
+				color: #dfdfdf;
+			}
+        </style>
+        <iron-icon icon="clear"></iron-icon>
+    </template>
+	<script type="text/javascript">
+		Polymer({
+			is: 'cosmoz-clear-button',
+			properties: {
+				visible: {
+					type: Boolean,
+					value: false,
+					reflectToAttribute: true
+				}
+			}
+		});
+	</script>
+</dom-module>
