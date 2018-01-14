@@ -379,8 +379,11 @@
 		},
 
 		_applySingleFilter: function (filterString, item) {
-			var value = this.get(this.valuePath, item).toString().toLowerCase();
-			return value.indexOf(filterString) >= 0;
+			const value = this.get(this.valuePath, item);
+			if (value == null) {
+				return false;
+			}
+			return value.toString().toLowerCase().indexOf(filterString) > -1;
 		},
 
 		_applyMultiFilter: function (filter, item) {
