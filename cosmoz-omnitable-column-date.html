@@ -72,9 +72,13 @@
 				if (!valuePath) {
 					return '';
 				}
-				const date = new Date(this.toValue(this.get(valuePath, item)).getTime());
-				date.setHours(0, 0, 0, 0);
-				return date;
+				const date = this.toValue(this.get(valuePath, item));
+				if (!date) {
+					return '';
+				}
+				const localDate = this.toValue(this._toLocalISOString(date));
+				localDate.setHours(0, 0, 0, 0);
+				return localDate;
 			}
 		});
 
