@@ -93,6 +93,13 @@
 				return this.toValue(value.replace(/\./g, ':') + 'Z');
 			},
 
+			toXlsxValue: function (item, valuePath = this.valuePath) {
+				if (!valuePath) {
+					return '';
+				}
+				return this.get(valuePath, item);
+			},
+
 			// OVERRIDES
 			_computeFormatter(locale) {
 				const timeFormatOption = {
