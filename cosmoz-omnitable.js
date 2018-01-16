@@ -251,7 +251,11 @@
 			'_dataChanged(data.*)',
 			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
 			'_selectedItemsChanged(selectedItems.*)',
-			'_setFilterDialogColumns(disabledColumns.*)'
+			'_setFilterDialogColumns(disabledColumns.*)',
+			// groupOn can trigger a column to get visible or hidden depending on it's size
+			// and the size of the groupOnColumn which gets hidden in the header. That's why
+			// we call _debounceUpdateColumns if groupOn changes.
+			'_debounceUpdateColumns(groupOn)'
 		],
 
 		behaviors: [
@@ -307,14 +311,14 @@
 
 		_setFilterDialogColumns(disabledColumnsChange) {
 			const disabledColumns = disabledColumnsChange.base;
-
+			const filterDialogColumns = disabledColumns.filter(c => c !== this.groupOnColumn);
 			// Otherwise change doesn't notify `cosmoz-omnitable-repeater-behavior`
 			// Todo: figure out a nicer way.
 			this._filterDialogColumns = [];
 
-			this.set('_filterDialogColumns', disabledColumns);
+			this.set('_filterDialogColumns', filterDialogColumns);
 
-			if (!disabledColumns || disabledColumns.length < 1) {
+			if (!filterDialogColumns || filterDialogColumns.length < 1) {
 				this.$.filterDialog.close();
 			}
 		},
