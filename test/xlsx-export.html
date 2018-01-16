@@ -31,6 +31,22 @@
 			</cosmoz-omnitable>
 		</template>
 	</test-fixture>
+	<test-fixture id="toXlsx-range-fixture">
+		<template>
+			<cosmoz-omnitable id="omnitable" class="flex" selection-enabled xlsx-filename="ToXlsx.xlsx">
+				<cosmoz-omnitable-column-number name="number" title="number" value-path="number">
+				</cosmoz-omnitable-column-number>
+				<cosmoz-omnitable-column-amount name="amount" title="Amount" value-path="amount">
+				</cosmoz-omnitable-column-amount>
+				<cosmoz-omnitable-column-date name="date" title="Date" value-path="date">
+				</cosmoz-omnitable-column-date>
+				<cosmoz-omnitable-column-time name="time" title="Time" value-path="time">
+				</cosmoz-omnitable-column-time>
+				<cosmoz-omnitable-column-datetime name="datetime" title="DateTime" value-path="datetime">
+				</cosmoz-omnitable-column-datetime>
+			</cosmoz-omnitable>
+		</template>
+	</test-fixture>
 
 	<script>
 	/*global sinon chai flush */
@@ -51,10 +67,9 @@
 					{ id: 6, 'first-name': 'Manil', amount: 28420, date: new Date(Date.UTC(2018, 10, 3, 24, 1, 14)) }
 				];
 
-			//this.timeout(9e20);
 			setup(function (done) {
 				omnitable = fixture('xlsx-export-fixture');
-				omnitable.data = data ;
+				omnitable.data = data;
 
 				flush(function () {
 					Polymer.Base.async(done, 90);
@@ -131,6 +146,113 @@
 				stubSaveAs.restore();
 				done();
 			});
+		});
+
+		suite('toXlsx range tests', function () {
+			var omnitable,
+				xlsx;
+			const data = [
+					{ number: 432,
+						amount: { currency: 'GBP', amount: 2781 },
+						date: new Date(Date.UTC(2020, 2, 14)),
+						time: new Date(Date.UTC(2020, 2, 14, 11, 48, 13)),
+						datetime: new Date(Date.UTC(2020, 2, 14, 11, 48, 13))
+					},
+					{ number: 7001,
+						amount: { currency: 'EUR', amount: 845 },
+						date: new Date(2029, 7, 30),
+						time: new Date(Date.UTC(2029, 7, 30, 1, 27, 13)),
+						datetime: new Date(Date.UTC(2029, 7, 30, 1, 27, 13))
+					},
+					{ number: 2405,
+						amount: { currency: 'USD', amount: 107 },
+						date: new Date(Date.UTC(2018, 4, 25, 2, 31, 29)),
+						time: new Date(Date.UTC(2018, 4, 25, 2, 31, 29)),
+						datetime: new Date(Date.UTC(2018, 4, 25, 2, 31, 29))
+					},
+					{ number: 108,
+						amount: { currency: 'BRL', amount: 4406 },
+						date: new Date(Date.UTC(2017, 0, 2, 7, 25, 11)),
+						time: new Date(Date.UTC(2017, 0, 2, 7, 25, 11)),
+						datetime: new Date(Date.UTC(2017, 0, 2, 7, 25, 11))
+					},
+					{ number: 857,
+						amount: { currency: 'RON', amount: 341 },
+						date: new Date(Date.UTC(2016, 1, 27, 17, 30, 51)),
+						time: new Date(Date.UTC(2016, 1, 27, 17, 30, 51)),
+						datetime: new Date(Date.UTC(2016, 1, 27, 17, 30, 51))
+					},
+					{ number: 73,
+						amount: { currency: 'DKK', amount: 11 },
+						date: new Date(Date.UTC(2013, 9, 13, 5, 7, 29)),
+						time: new Date(Date.UTC(2013, 9, 13, 5, 7, 29)),
+						datetime: new Date(Date.UTC(2013, 9, 13, 5, 7, 29))
+					}
+					// new Date(Date.UTC(2018, 10, 3, 24, 1, 14))
+					// new Date(Date.UTC(2012, 10, 12, 7, 22, 46))
+					// new Date(Date.UTC(2024, 2, 14, 4, 25, 52))
+					// new Date(Date.UTC(2018, 4, 17, 9, 27, 48))
+					// new Date(Date.UTC(2031, 6, 18, 9, 2, 19))
+					// new Date(Date.UTC(2029, 11, 13, 23, 59, 59))
+				],
+				getRandomInt = function (min, max) {
+					return Math.floor(Math.random() * (max - min + 1)) + min;
+				},
+				getRandomDate = function () {
+					return new Date(getRandomInt(2014, 2024), getRandomInt(1, 12), getRandomInt(1, 28), getRandomInt(0, 23), getRandomInt(0, 59), getRandomInt(0, 59), getRandomInt(0, 999));
+				};
+
+			console.log('random date: ', getRandomDate());
+
+			setup(function (done) {
+				omnitable = fixture('toXlsx-range-fixture');
+				omnitable.data = data;
+
+				flush(function () {
+					Polymer.Base.async(function () {
+						// select items
+						for (let i = 0; i < data.length; i++) {
+							omnitable.selectItem(data[i]);
+						}
+						// prepare xlsx data
+						xlsx = omnitable._prepareXlsxData();
+						done();
+					}, 90);
+				});
+			});
+
+			test('prepares number values', function (done) {
+				const numbers = xlsx.map(row => row[0]),
+					values = ['numbers', 432, 7001, 2405, 108, 857, 73];
+
+				for (let i = 1; i <= data.length; i++) {
+					assert.equal(numbers[i], values[i]);
+				}
+				done();
+			});
+
+			test('prepares amount values', function (done) {
+				const amounts = xlsx.map(row => row[1]);
+
+				assert.equal(amounts[1], '£2,781.00');  // currency: 'GBP', amount: 2781
+				assert.equal(amounts[2], '€845.00');    // currency: 'EUR', amount: 845
+				assert.equal(amounts[3], '$107.00');    // currency: 'USD', amount: 107
+				assert.equal(amounts[4], 'R$4,406.00');  // currency: 'BRL', amount: 4406
+				assert.equal(amounts[5], 'RON341.00');  // currency: 'RON', amount: 341 	// 'lei341.00'
+				assert.equal(amounts[6], 'DKK11.00'); 	// currency: 'DKK', amount: 11 		// 'kr11.00'
+				done();
+			});
+
+			test('prepares date values', function (done) {
+				const dates = xlsx.map(row => row[2]);
+
+				assert.equal(new Date(dates[1]).getTime(), new Date(2020, 2, 14).getTime());
+				assert.equal(new Date(dates[2]).getTime(), new Date(2029, 7, 30).getTime());
+				assert.equal(new Date(dates[3]).getTime(), new Date(2018, 4, 25).getTime());
+
+				done();
+			});
+
 		});
 	}());
 
