@@ -196,21 +196,28 @@
 					},
 					{ number: 0,
 						amount: { currency: 'AED', amount: 765432 },
-						date: 'Thu Mar 7 2009 06:25:52 GMT+0200 (EET)',
+						date: 'Thu Mar 7 2009 06:25:52 GMT+0200 (EET)', // Bucharest, Romania
 						time: 'Thu Mar 7 2009 06:25:52 GMT+0200 (EET)',
 						datetime: 'Thu Mar 7 2009 06:25:52 GMT+0200 (EET)'
 					},
 					{ number: 59,
-						amount: { currency: 'USD', amount: -101 },
+						amount: { currency: 'AUD', amount: -101 },
 						date: '2012-10-12T07:22:46Z',
 						time: '2012-10-12T07:22:46Z',
 						datetime: '2012-10-12T07:22:46Z'
-					}
-
-					// new Date(Date.UTC(2012, 10, 12, 7, 22, 46))
-					// new Date(Date.UTC(2018, 4, 17, 9, 27, 48))
-					// new Date(Date.UTC(2031, 6, 18, 9, 2, 19))
-					// new Date(Date.UTC(2029, 11, 13, 23, 59, 59))
+					},
+					{ number: -340,
+						amount: { currency: 'CAD', amount: -4321 },
+						date: 'Tue Jan 16 2018 05:47:40 UTC -8', // Vancouver Canada
+						time: 'Tue Jan 16 2018 05:47:40 UTC -8',
+						datetime: 'Tue Jan 16 2018 05:47:40 UTC -8'
+					},
+					{ number: -22,
+						amount: { currency: 'EUR', amount: -22 },
+						date: 'Tue Jan 16 2018 14:06:29 UTC +1', // Lisbon, Portugal (Lisboa)
+						time: 'Tue Jan 16 2018 14:06:29 UTC +1',
+						datetime: 'Tue Jan 16 2018 14:06:29 UTC +1'
+					},
 				],
 				getRandomInt = function (min, max) {
 					return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -240,7 +247,7 @@
 
 			test('prepares number values', function (done) {
 				const numbers = xlsx.map(row => row[0]),
-					values = ['numbers', 432, 7001, 2405, 108, 857, 73, 5774, 0, 59];
+					values = ['numbers', 432, 7001, 2405, 108, 857, 73, 5774, 0, 59, -340, -22];
 
 				for (let i = 1; i <= data.length; i++) {
 					assert.equal(numbers[i], values[i]);
@@ -259,7 +266,9 @@
 				assert.equal(amounts[6], 'DKK11.00'); 	// currency: 'DKK', amount: 11 		// 'kr11.00'
 				assert.equal(amounts[7], '€932.00');    // currency: 'EUR', amount: 932
 				assert.equal(amounts[8], 'AED765,432.00'); //currency: 'AED', amount: 765432
-				assert.equal(amounts[9], '-$101.00'); // currency: 'USD', amount: -101
+				assert.equal(amounts[9], '-A$101.00');   // currency: 'AUD', amount: -101
+				assert.equal(amounts[10], '-CA$4,321.00'); //currency: 'CAD', amount: -4321
+				assert.equal(amounts[11], '-€22.00'); 	 //currency: 'EUR', amount: -22
 				done();
 			});
 
@@ -275,6 +284,8 @@
 				assert.equal(new Date(dates[7]).getTime(), new Date(2024, 2, 14).getTime());
 				assert.equal(new Date(dates[8]).getTime(), new Date(2009, 2, 7).getTime());
 				assert.equal(new Date(dates[9]).getTime(), new Date(2012, 9, 12).getTime());
+				assert.equal(new Date(dates[10]).getTime(), new Date(2018, 0, 16).getTime());
+				assert.equal(new Date(dates[11]).getTime(), new Date(2018, 0, 16).getTime());
 				done();
 			});
 
@@ -289,7 +300,9 @@
 				assert.equal(times[6], '8:07:29 AM'); // +3h
 				assert.equal(times[7], '1:05:07 PM'); // +2h
 				assert.equal(times[8], '6:25:52 AM'); // +2h
-				assert.equal(times[9], '10:22:46 AM');// +3h
+				assert.equal(times[9], '10:22:46 AM'); // +3h
+				assert.equal(times[10], '3:47:40 PM'); // -8h
+				assert.equal(times[11], '3:06:29 PM'); // +1h
 				done();
 			});
 
@@ -305,6 +318,8 @@
 				assert.equal(new Date(datetimes[7]).getTime(), new Date(Date.UTC(2024, 2, 14, 11, 5, 7)).getTime());
 				assert.equal(new Date(datetimes[8]).getTime(), new Date(Date.UTC(2009, 2, 7, 4, 25, 52)).getTime());
 				assert.equal(new Date(datetimes[9]).getTime(), new Date(Date.UTC(2012, 9, 12, 7, 22, 46)).getTime());
+				assert.equal(new Date(datetimes[10]).getTime(), new Date(Date.UTC(2018, 0, 16, 13, 47, 40)).getTime());
+				assert.equal(new Date(datetimes[11]).getTime(), new Date(Date.UTC(2018, 0, 16, 13, 6, 29)).getTime());
 				done();
 			});
 
