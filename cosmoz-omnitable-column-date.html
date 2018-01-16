@@ -66,6 +66,19 @@
 					date.setHours(23, 59, 59);
 				}
 				return date;
+			},
+
+			toXlsxValue: function (item, valuePath = this.valuePath) {
+				if (!valuePath) {
+					return '';
+				}
+				const date = this.toValue(this.get(valuePath, item));
+				if (!date) {
+					return '';
+				}
+				const localDate = this.toValue(this._toLocalISOString(date));
+				localDate.setHours(0, 0, 0, 0);
+				return localDate;
 			}
 		});
 
