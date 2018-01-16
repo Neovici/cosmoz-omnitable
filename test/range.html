@@ -125,31 +125,30 @@
 			test('changing _filterInput updates filter', function (done) {
 				assert.isNull(column._filterInput.min);
 				assert.isNull(column._filterInput.max);
-				column._filterInput = {
-					min: -10,
-					max: 15
-				};
 				column.addEventListener('filter-changed', function () {
 					assert.equal(column.filter.min, -10);
 					assert.equal(column.filter.max, 15);
 					done();
 				});
+				column._filterInput = {
+					min: -10,
+					max: 15
+				};
 			});
 
 			test('changing only _filterInput min updates filter min', function (done) {
-				column._filterInput.min = -21;
 				column.addEventListener('filter-changed', function () {
 					assert.equal(column.filter.min, -21);
 					done();
 				});
+				column.set('_filterInput.min', -21);
 			});
 
 			test('changing out of range _filterInput limits _filterInput', function (done) {
 				assert.isNull(column._filterInput.min);
 				assert.isNull(column._filterInput.max);
 
-				let handler;
-				column.addEventListener('filter-changed', handler = function () {
+				column.addEventListener('filter-changed', function handler() {
 					assert.equal(column._filterInput.min, -11);
 					assert.equal(column._filterInput.max, 17);
 					assert.equal(column.filter.min, -11);
@@ -164,7 +163,7 @@
 						column.set('_filterInput.min', 20);
 					});
 				});
-				column._filterInput =  {min: -11, max: 17 };
+				column._filterInput =  {min: -11, max: 17};
 			});
 		});
 
@@ -261,31 +260,30 @@
 			test('changing _filterInput updates filter', function (done) {
 				assert.isNull(column._filterInput.min);
 				assert.isNull(column._filterInput.max);
-				column._filterInput = {
-					min: 1,
-					max: 15
-				};
 				column.addEventListener('filter-changed', function () {
 					assert.equal(column.filter.min.amount, 1);
 					assert.equal(column.filter.max.amount, 15);
 					done();
 				});
+				column._filterInput = {
+					min: 1,
+					max: 15
+				};
 			});
 
 			test('changing only _filterInput min updates filter min', function (done) {
-				column._filterInput.min = -2317;
 				column.addEventListener('filter-changed', function () {
 					assert.equal(column.filter.min.amount, -2317);
 					done();
 				});
+				column.set('_filterInput.min', -2317);
 			});
 
 			test('changing out of range _filterInput limits _filterInput', function (done) {
 				assert.isNull(column._filterInput.min);
 				assert.isNull(column._filterInput.max);
 
-				let handler;
-				column.addEventListener('filter-changed', handler = function () {
+				column.addEventListener('filter-changed', function handler() {
 					assert.equal(column._filterInput.min, 7);
 					assert.equal(column._filterInput.max, 77);
 					assert.equal(column.filter.min.amount, 7);
