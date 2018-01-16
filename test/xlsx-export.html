@@ -187,10 +187,22 @@
 						date: new Date(Date.UTC(2013, 9, 13, 5, 7, 29)),
 						time: new Date(Date.UTC(2013, 9, 13, 5, 7, 29)),
 						datetime: new Date(Date.UTC(2013, 9, 13, 5, 7, 29))
+					},
+					{ number: 5774,
+						amount: { currency: 'EUR', amount: 932 },
+						date: '2024-03-14T13:05:07',
+						time: '2024-03-14T13:05:07',
+						datetime: '2024-03-14T13:05:07'
+					},
+					{ number: 0,
+						amount: { currency: 'AED', amount: 765432 },
+						date: 'Thu Mar 7 2009 06:25:52 GMT+0200 (EET)',
+						time: 'Thu Mar 7 2009 06:25:52 GMT+0200 (EET)',
+						datetime: 'Thu Mar 7 2009 06:25:52 GMT+0200 (EET)'
 					}
+
 					// new Date(Date.UTC(2018, 10, 3, 24, 1, 14))
 					// new Date(Date.UTC(2012, 10, 12, 7, 22, 46))
-					// new Date(Date.UTC(2024, 2, 14, 4, 25, 52))
 					// new Date(Date.UTC(2018, 4, 17, 9, 27, 48))
 					// new Date(Date.UTC(2031, 6, 18, 9, 2, 19))
 					// new Date(Date.UTC(2029, 11, 13, 23, 59, 59))
@@ -223,7 +235,7 @@
 
 			test('prepares number values', function (done) {
 				const numbers = xlsx.map(row => row[0]),
-					values = ['numbers', 432, 7001, 2405, 108, 857, 73];
+					values = ['numbers', 432, 7001, 2405, 108, 857, 73, 5774, 0];
 
 				for (let i = 1; i <= data.length; i++) {
 					assert.equal(numbers[i], values[i]);
@@ -240,6 +252,7 @@
 				assert.equal(amounts[4], 'R$4,406.00');  // currency: 'BRL', amount: 4406
 				assert.equal(amounts[5], 'RON341.00');  // currency: 'RON', amount: 341 	// 'lei341.00'
 				assert.equal(amounts[6], 'DKK11.00'); 	// currency: 'DKK', amount: 11 		// 'kr11.00'
+				assert.equal(amounts[7], '€932.00');    // currency: 'EUR', amount: 932
 				done();
 			});
 
@@ -249,7 +262,25 @@
 				assert.equal(new Date(dates[1]).getTime(), new Date(2020, 2, 14).getTime());
 				assert.equal(new Date(dates[2]).getTime(), new Date(2029, 7, 30).getTime());
 				assert.equal(new Date(dates[3]).getTime(), new Date(2018, 4, 25).getTime());
+				assert.equal(new Date(dates[4]).getTime(), new Date(2017, 0, 2).getTime());
+				assert.equal(new Date(dates[5]).getTime(), new Date(2016, 1, 27).getTime());
+				assert.equal(new Date(dates[6]).getTime(), new Date(2013, 9, 13).getTime());
+				assert.equal(new Date(dates[7]).getTime(), new Date(2024, 2, 14).getTime());
+				assert.equal(new Date(dates[8]).getTime(), new Date(2009, 2, 7).getTime());
+				done();
+			});
 
+			test('prepares time values', function (done) {
+				const times = xlsx.map(row => row[3]);
+
+				assert.equal(times[1], '1:48:13 PM'); // +2h
+				assert.equal(times[2], '4:27:13 AM'); // +3h Daylight Saving Time
+				assert.equal(times[3], '5:31:29 AM'); // +3h
+				assert.equal(times[4], '9:25:11 AM'); // +2h
+				assert.equal(times[5], '7:30:51 PM'); // +2h
+				assert.equal(times[6], '8:07:29 AM'); // +3h
+				assert.equal(times[7], '1:05:07 PM'); // +2h
+				assert.equal(times[8], '6:25:52 AM'); // +3h
 				done();
 			});
 
