@@ -49,9 +49,11 @@
 				instantiate = function (done) {
 					omnitable = fixture('basic');
 					omnitable.data = data;
-					omnitable.addEventListener('visible-columns-changed', function () {
+					const asyncDone = () => {
 						Polymer.Base.async(done, 30);
-					});
+						omnitable.removeEventListener('visible-columns-changed', asyncDone);
+					};
+					omnitable.addEventListener('visible-columns-changed', asyncDone);
 					omnitable.notifyResize();
 				};
 
