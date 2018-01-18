@@ -278,7 +278,7 @@
 				const value = this._fromInputString(this.get(path, input), path);
 				this.__inputChangePath = null;
 				if (value != null) {
-					const cPath = path === 'min' ? 'from': 'to',
+					const cPath = path === 'min' ? 'from' : 'to',
 						limited = this.toValue(
 							this.get(cPath + 'Max', limit),
 							this.toValue(value, this.get(cPath + 'Min', limit), Math.max),

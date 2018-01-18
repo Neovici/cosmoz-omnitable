@@ -164,7 +164,7 @@
 
 			test('changing only _filterInput min updates filter min', function (done) {
 				column.addEventListener('filter-changed', function () {
-					assert.equal(column.filter.min, -21);
+					assert.equal(column.filter.min, -11);
 					done();
 				});
 				column.set('_filterInput.min', -21);
@@ -310,7 +310,7 @@
 
 			test('changing only _filterInput min updates filter min', function (done) {
 				column.addEventListener('filter-changed', function () {
-					assert.equal(column.filter.min.amount, -2317);
+					assert.equal(column.filter.min.amount, -8);
 					done();
 				});
 				column.set('_filterInput.min', -2317);
