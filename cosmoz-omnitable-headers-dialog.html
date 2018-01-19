@@ -64,10 +64,11 @@ with a `cosmoz-dialog` element which enables it to be displayed as a dialog.
 			},
 
 			_sizeSuggestionWrapper() {
-				const accs = Polymer.dom(this).querySelectorAll('paper-autocomplete-chips');
+				const autoCompleteChips = Polymer.dom(this).querySelectorAll('paper-autocomplete-chips');
+				const autoCompletes = Polymer.dom(this).querySelectorAll('paper-autocomplete');
 	
 				Polymer.dom.addDebouncer(this.debounce('suggestionWith', () => {
-					accs.forEach(acc => {
+					autoCompleteChips.forEach(acc => {
 						if (acc.offsetWidth === 0) {
 							// Reset initial styles
 							acc.updateStyles({
@@ -81,6 +82,19 @@ with a `cosmoz-dialog` element which enables it to be displayed as a dialog.
 							'--paper-autocomplete-chips-suggestions-position': 'fixed',
 							'--paper-autocomplete-chips-suggestions-width': `${acc.offsetWidth}px`,
 							'--paper-autocomplete-chips-suggestions-min-width': '0'
+						});
+					});
+
+					autoCompletes.forEach(ac => {
+						if (ac.offsetWidth === 0) {
+							// Reset initial styles
+							ac.updateStyles({
+								'--paper-autocomplete-suggestions-wrapper': 'position:absolute; width:auto; min-width:100%'
+							});
+							return;
+						}
+						ac.updateStyles({
+							'--paper-autocomplete-suggestions-wrapper': `position:fixed; width:${ac.offsetWidth}px; min-width:0`
 						});
 					});
 				}));
