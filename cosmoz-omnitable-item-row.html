@@ -75,6 +75,7 @@
 
 		_configureElement: function (element, column) {
 			element.style.flexBasis = column.editable ? column.editWidth : column.width;
+			element.style.minWidth = column.editable ? column.editMinWidth : column.minWidth;
 			element.style.flexGrow = column.flex;
 			element.setAttribute('title', this._getCellTitle(column, this.item));
 			element.setAttribute('class', this._computeItemRowCellClasses(column));
