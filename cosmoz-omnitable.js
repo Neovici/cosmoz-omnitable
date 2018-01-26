@@ -443,6 +443,10 @@
 				column.columnIndex = index;
 			});
 
+			if (!Array.isArray(this.columns) || this.columns.length === 0) {
+				this._setColumnValues(columns);
+			}
+
 			this.columns = columns;
 			this.visibleColumns = columns.slice();
 
