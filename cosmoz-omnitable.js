@@ -106,12 +106,14 @@
 
 			descending: {
 				type: Boolean,
-				value: false
+				value: false,
+				notify: true
 			},
 
 			sortOn: {
 				type: String,
-				value: ''
+				value: '',
+				notify: true
 			},
 
 			sortOnColumn: {
