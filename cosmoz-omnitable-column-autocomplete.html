@@ -119,25 +119,26 @@
 			_applyMultiFilter(filter, item) {
 				// check if the item does not have a value for the filtered property
 				let value = this.get(this.valuePath, item);
-				if (value === undefined || value === null) {
+				if (value == null) {
 					return false;
 				}
-
-				const filterArray = filter.map(element => {
-					let val = element;
-					if (this.valueProperty) {
-						val = element[this.valueProperty];
-					}
-					return val.toString().toLowerCase();
-				});
-
-
 				if (this.valueProperty) {
 					value = value[this.valueProperty];
 				}
+				if (value == null) {
+					return false;
+				}
 				value = value.toString().toLowerCase();
 
-				return filterArray.indexOf(value) !== -1;
+				return filter
+					.map(element => {
+						let val = element;
+						if (this.valueProperty) {
+							val = element[this.valueProperty];
+						}
+						return val.toString().toLowerCase();
+					})
+					.indexOf(value) !== -1;
 			},
 
 			_unique(values, valueProperty) {
