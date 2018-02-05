@@ -1,10 +1,8 @@
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
-
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
-
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
-
+<link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="ui-helpers/cosmoz-clear-button.html">
 <link rel="import" href="cosmoz-omnitable-column-behavior.html">
 <link rel="import" href="cosmoz-omnitable-column-range-behavior.html">
@@ -27,9 +25,15 @@
 					<h3 style="margin: 0;">[[ title ]]</h3>
 					<paper-input type="number" label="[[ _('From', t) ]]" value="{{ _filterInput.min }}"
 						min="[[ _toInputString(_limit.fromMin) ]]" max="[[ _toInputString(_limit.fromMax) ]]">
+						<iron-icon style="cursor: pointer;" hidden$="[[ !_filterInput.min.length ]]"
+							suffix slot="suffix" icon="clear" on-click="_clearInput">
+						</iron-icon>	
 					</paper-input>
 					<paper-input type="number" label="[[ _('To', t) ]]" value="{{ _filterInput.max }}"
 						min="[[ _toInputString(_limit.toMin) ]]" max="[[ _toInputString(_limit.toMax) ]]">
+						<iron-icon style="cursor: pointer;" hidden$="[[ !_filterInput.max.length ]]"
+							suffix slot="suffix" icon="clear" on-click="_clearInput">
+						</iron-icon>
 					</paper-input>
 				</div>
 			</paper-dropdown-menu>
@@ -77,6 +81,13 @@
 				_filterText: {
 					type: String,
 					computed: '_computeFilterText(filter.*, formatter)'
+				}
+			},
+
+			_clearInput(event) {
+				const input = event.path.find(el => el.is === 'paper-input');
+				if (input) {
+					input.value = null;
 				}
 			},
 
