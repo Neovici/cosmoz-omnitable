@@ -20,6 +20,23 @@
 				display: none;
 			}
 
+			#header paper-input iron-icon {
+ 				cursor: pointer;
+ 				float: left;
+ 				position: absolute;
+ 				right: 16px;
+ 				height: 16px;
+ 				display:none;
+ 			}
+ 
+ 			#header paper-input[focused] iron-icon {
+ 				display:block;
+ 			}
+ 
+ 			#header paper-input:hover iron-icon {
+ 				display:block;				
+ 			}
+
 			.header {
 				@apply --layout-relative;
 				@apply --layout-horizontal;
