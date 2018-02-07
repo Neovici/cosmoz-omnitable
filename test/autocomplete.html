@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+	<title>Autocomplete tests</title>
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+	<script src="../../web-component-tester/browser.js"></script>
+	<script src="../../test-fixture/test-fixture-mocha.js"></script>
+
+	<link rel="import" href="../../test-fixture/test-fixture.html">
+	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
+
+	<link rel="import" href="../cosmoz-omnitable.html">
+	<link rel="import" href="../cosmoz-omnitable-columns.html">
+	<link rel="import" href="../demo/table-demo-behavior.html">
+</head>
+<body>
+	<test-fixture id="default">
+		<template>
+			<cosmoz-omnitable id="omnitable" class="flex" selection-enabled>
+				<cosmoz-omnitable-column-autocomplete name="elementName" title="name" value-path="element" text-property="name" value-property="id">
+				</cosmoz-omnitable-column-autocomplete>
+			</cosmoz-omnitable>
+		</template>
+	</test-fixture>
+	<script>
+	/*global sinon chai flush */
+	(function () {
+		'use strict';
+
+		sinon.assert.expose(chai.assert, { prefix: '' });
+
+		suite('basic', function () {
+			var omnitable,
+				data = [
+					{ element: { id: 'a', name: 'aa' } },
+					{ element: { id: 'b', name: 'bb' } },
+					{ element: { id: 'c', name: 'cc' } },
+					{ element: { id: 'd', name: 'dd' } },
+					{ element: { id: 'e', name: 'ee' } },
+					{ element: { id: 'f', name: 'ff' } },
+					{ element: { id: 'g', name: 'gg' } }
+				];
+
+			setup(function (done) {
+				omnitable = fixture('default');
+				omnitable.data = data;
+
+				flush(function () {
+					Polymer.Base.async(done, 90);
+				});
+			});
+
+			test('serialize and deserialize one filter', function (done) {
+				assert.equal(omnitable.is, 'cosmoz-omnitable');
+				const column = omnitable.columns[0];
+				column.filter = [{ id: 'c', name: 'cc' }];
+
+				const serialized = column._serializeFilter(column.filter);
+				assert.equal(serialized, 'c', 'Expected valueProperty to be serialized');
+
+				const deserialized = column._deserializeFilter(serialized);
+				assert.deepEqual(deserialized[0], { id: 'c', name: 'cc' });
+				done();
+			});
+
+			test('serialize and deserialize two filters', function (done) {
+				assert.equal(omnitable.is, 'cosmoz-omnitable');
+				const column = omnitable.columns[0];
+				column.filter = [{ id: 'b', name: 'bb' }, { id: 'g', name: 'gg' }];
+
+				const serialized = column._serializeFilter(column.filter);
+				assert.equal(serialized, 'b~g', 'Expected valueProperty to be serialized');
+
+				const deserialized = column._deserializeFilter(serialized);
+				assert.deepEqual(deserialized[0], { id: 'b', name: 'bb' });
+				assert.deepEqual(deserialized[1], { id: 'g', name: 'gg' });
+				done();
+			});
+		});
+	}());
+
+	</script>
+</body>
+</html>
