@@ -168,6 +168,34 @@
 					}
 					return true;
 				});
+			},
+
+			_serializeFilter: function (obj = this.filter) {
+				if (!(Array.isArray(obj) && obj.length > 0)) {
+					return null;
+				}
+				return obj.map(item => {
+					const property = this.valueProperty;
+					if (!property) {
+						return item;
+					}
+					return this.get(property, item);
+				}).join('~');
+			},
+
+			_deserializeFilter: function (obj) {
+				if (obj == null || obj  === '') {
+					return null;
+				}
+				return obj.split('~').map(item => this.values.find(v => {
+					const property = this.valueProperty;
+					if (!property) {
+						const vv = typeof v === 'number' ? v.toString() : v;
+						const ii = typeof item === 'number' ? item.toString() : item;
+						return vv === ii;
+					}
+					return this.get(property, v) === item;
+				}));
 			}
 		});
 	</script>
