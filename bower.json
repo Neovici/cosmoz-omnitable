@@ -40,10 +40,12 @@
 		"cosmoz-bottom-bar": "neovici/cosmoz-bottom-bar#master",
 		"cosmoz-behaviors": "neovici/cosmoz-behaviors#master",
 		"cosmoz-page-router": "Neovici/cosmoz-page-router#master",
+		"cosmoz-dialog": "Neovici/cosmoz-dialog#master",
 		"paper-autocomplete-chips": "Neovici/paper-autocomplete-chips#master",
 		"import-filesaver": "JaySunSyn/import-filesaver",
 		"cosmoz-datetime-input": "Neovici/cosmoz-datetime-input#master",
-		"nullxlsx": "Neovici/nullxlsx#master"
+		"nullxlsx": "Neovici/nullxlsx#master",
+		"paper-dialog-scrollable": "^2.1.0"
 	},
 	"devDependencies": {
 		"paper-button": "PolymerElements/paper-button#1 - 2",
@@ -81,7 +83,8 @@
 				"paper-autocomplete-chips": "Neovici/paper-autocomplete-chips#master",
 				"import-filesaver": "JaySunSyn/import-filesaver",
 				"cosmoz-datetime-input": "Neovici/cosmoz-datetime-input#master",
-				"nullxlsx": "Neovici/nullxlsx#master"
+        		"nullxlsx": "Neovici/nullxlsx#master",
+       			"paper-dialog-scrollable": "^2.1.0"
 			},
 			"devDependencies": {
 				"paper-button": "PolymerElements/paper-button#^2.0.0",

@@ -1,0 +1,117 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html"/>
+<link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
+
+<link rel="import" href="cosmoz-omnitable-repeater-behavior.html">
+<!--
+`cosmoz-omnitable-headers-dialog` is an element for displaying omnitable column headers in a separate dialog.
+
+    <cosmoz-dialog>
+		<template>
+			<cosmoz-omnitable-headers-dialog
+				columns="[[disabledColumns]]">
+			</cosmoz-omnitable-headers-dialog>
+		</template>
+	</cosmoz-dialog>
+
+In the above example, the `<cosmoz-omnitable-headers-dialog>` element is wrapped
+with a `cosmoz-dialog` element which enables it to be displayed as a dialog.
+
+@group Cosmoz Elements
+@element cosmoz-omnitable-headers-dialog
+@demo demo/index.html
+-->
+<dom-module id="cosmoz-omnitable-headers-dialog">
+	<template>
+		<style include="cosmoz-omnitable-styles iron-flex">
+			:host {
+				display: block;
+				overflow: visible;
+			}
+
+			.container {
+				padding: 3px;
+				max-height: calc(100vh - 200px);
+			}
+		</style>
+		
+		<div class="container layout vertical">
+			<slot name="header-cell"></slot>
+		</div>
+	</template>
+	<script>
+	(() => {
+		'use strict';
+		Polymer({
+			is: 'cosmoz-omnitable-headers-dialog',
+
+			behaviors: [
+				Cosmoz.OmnitableRepeaterBehavior,
+				Polymer.IronResizableBehavior
+			],
+
+			_elementType: 'div',
+
+			_slotName: 'header-cell',
+
+			listeners: {
+				'iron-resize': '_onResize'
+			},
+
+			_onResize() {
+				this._sizeSuggestionWrapper();
+			},
+
+			_sizeSuggestionWrapper() {
+				const autoCompleteChips = Polymer.dom(this).querySelectorAll('paper-autocomplete-chips');
+				const autoCompletes = Polymer.dom(this).querySelectorAll('paper-autocomplete');
+	
+				Polymer.dom.addDebouncer(this.debounce('suggestionWith', () => {
+					autoCompleteChips.forEach(acc => {
+						if (acc.offsetWidth === 0) {
+							// Reset initial styles
+							acc.updateStyles({
+								'--paper-autocomplete-chips-suggestions-position': 'absolute',
+								'--paper-autocomplete-chips-suggestions-width': 'auto',
+								'--paper-autocomplete-chips-suggestions-min-width': '100%'
+							});
+							return;
+						}
+						acc.updateStyles({
+							'--paper-autocomplete-chips-suggestions-position': 'fixed',
+							'--paper-autocomplete-chips-suggestions-width': `${acc.offsetWidth}px`,
+							'--paper-autocomplete-chips-suggestions-min-width': '0'
+						});
+					});
+
+					autoCompletes.forEach(ac => {
+						if (ac.offsetWidth === 0) {
+							// Reset initial styles
+							ac.updateStyles({
+								'--paper-autocomplete-suggestions-wrapper': 'position:absolute; width:auto; min-width:100%'
+							});
+							return;
+						}
+						ac.updateStyles({
+							'--paper-autocomplete-suggestions-wrapper': `position:fixed; width:${ac.offsetWidth}px; min-width:0`
+						});
+					});
+				}, 10));
+			},
+
+			_getTemplateInstance(column) {
+				return column.headerTemplatizer.getInstance();
+			},
+
+			_detachTemplateInstance(instance, column, element) {
+				column.headerTemplatizer.detachInstance(instance, element);
+			},
+
+			_configureTemplateInstance(instance) {
+				this._forwardPropertiesFlush(instance);
+			}
+		});
+	})();
+	</script>
+</dom-module>

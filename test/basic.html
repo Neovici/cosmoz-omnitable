@@ -55,9 +55,12 @@
 				omnitable = fixture('basic');
 				data = Cosmoz.TableDemoBehavior.generateTableDemoData(10, 11, 25);
 				omnitable.data = data;
-				omnitable.addEventListener('visible-columns-changed', function () {
+
+				const asyncDone = () => {
 					Polymer.Base.async(done, 30);
-				});
+					omnitable.removeEventListener('visible-columns-changed', asyncDone);
+				};
+				omnitable.addEventListener('visible-columns-changed', asyncDone);
 				omnitable.notifyResize();
 			});
 

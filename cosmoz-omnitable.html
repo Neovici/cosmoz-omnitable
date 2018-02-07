@@ -2,6 +2,7 @@
 
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html"/>
 <link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html"/>
+<link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
 <link rel="import" href="../iron-icons/iron-icons.html"/>
 <link rel="import" href="../iron-icon/iron-icon.html"/>
 <link rel="import" href="../iron-label/iron-label.html"/>
@@ -13,11 +14,13 @@
 <link rel="import" href="../paper-item/paper-item.html"/>
 <link rel="import" href="../paper-listbox/paper-listbox.html"/>
 <link rel="import" href="../paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../paper-dialog-scrollable/paper-dialog-scrollable.html">
 
 <link rel="import" href="../cosmoz-grouped-list/cosmoz-grouped-list.html"/>
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 <link rel="import" href="../cosmoz-bottom-bar/cosmoz-bottom-bar.html"/>
 <link rel="import" href="../cosmoz-page-router/cosmoz-page-location.html">
+<link rel="import" href="../cosmoz-dialog/cosmoz-dialog.html">
 
 <link rel="import" href="../import-filesaver/import-filesaver.html"/>
 <link rel="import" href="../nullxlsx/dist/import-nullxlsx.html"/>
@@ -31,8 +34,7 @@
 <link rel="import" href="cosmoz-omnitable-styles.html">
 <link rel="import" href="cosmoz-omnitable-item.html">
 <link rel="import" href="cosmoz-omnitable-columns.html">
-
-
+<link rel="import" href="cosmoz-omnitable-headers-dialog.html">
 <!--
 `<cosmoz-omnitable>`
 
@@ -47,12 +49,22 @@
 		<cosmoz-page-location id="location" route-hash="{{ _routeHash }}"></cosmoz-page-location>
 
 		<div class="mainContainer">
-			<div class="header" id="header">
-				<div class="selectAllCheckbox" hidden$="[[ !_showCheckboxes ]]">
-					<paper-checkbox checked$="{{ _allSelected }}" on-change="_onAllCheckboxChange" hidden$="[[ !_dataIsValid ]]">
-					</paper-checkbox>
+			<div class="layout horizontal center">
+				<div class="header" id="header">
+					<div class="selectAllCheckbox" hidden$="[[ !_showCheckboxes ]]">
+						<paper-checkbox checked$="{{ _allSelected }}" on-change="_onAllCheckboxChange" hidden$="[[ !_dataIsValid ]]">
+						</paper-checkbox>
+					</div>
+					<cosmoz-omnitable-header-row columns="[[ visibleColumns ]]" group-on-column="[[ groupOnColumn ]]">
+					</cosmoz-omnitable-header-row>
+					<div class="filter-btn-wrapper">
+						<paper-icon-button
+							hidden$="[[allColumnsVisible]]"
+							icon="icons:filter-list"
+							on-click="_openFilterDialog">
+						</paper-icon-button>
+					</div>
 				</div>
-				<cosmoz-omnitable-header-row columns="[[ visibleColumns ]]" group-on-column="[[ groupOnColumn ]]"></cosmoz-omnitable-header-row>
 			</div>
 			<div class="tableContent" id="tableContent">
 				<template is="dom-if" if="[[ !_dataIsValid ]]">
@@ -217,6 +229,21 @@
 			<slot></slot>
 		</div>
 
+		<cosmoz-dialog with-backdrop id="filterDialog">
+			<template>
+				<h2>[[_('Filter', t)]]</h2>
+				<paper-dialog-scrollable>
+					<cosmoz-omnitable-headers-dialog
+						columns="[[_filterDialogColumns]]"
+						with-backdrop>
+					</cosmoz-omnitable-headers-dialog>
+				</paper-dialog-scrollable>
+				<div class="buttons">
+					<paper-button dialog-dismiss>[[_("Close")]]</paper-button>
+				</div>
+			</template>
+		</cosmoz-dialog>
+		
 	</template>
 	<script type="text/javascript" src="cosmoz-omnitable.js"></script>
 </dom-module>

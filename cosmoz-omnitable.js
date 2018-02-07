@@ -234,13 +234,30 @@
 			 */
 			_allSelected: {
 				type: Boolean
+			},
+
+			_filterDialogColumns: {
+				type: Array,
+				notify: true
+			},
+			/**
+			 * True if all columns are visible.
+			 */
+			allColumnsVisible: {
+				type: Boolean,
+				computed: '_computeColumnsAllVisible(visibleColumns.*, columns)'
 			}
 		},
 
 		observers: [
 			'_dataChanged(data.*)',
 			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
-			' _selectedItemsChanged(selectedItems.*)'
+			'_selectedItemsChanged(selectedItems.*)',
+			'_setFilterDialogColumns(disabledColumns.*)',
+			// groupOn can trigger a column to get visible or hidden depending on it's size
+			// and the size of the groupOnColumn which gets hidden in the header. That's why
+			// we call _debounceUpdateColumns if groupOn changes.
+			'_debounceUpdateColumns(groupOn)'
 		],
 
 		behaviors: [
@@ -292,6 +309,22 @@
 
 		_disabledColumnsIndexes: null,
 
+		_scalingUp: false,
+
+		_setFilterDialogColumns(disabledColumnsChange) {
+			const disabledColumns = disabledColumnsChange.base;
+			const filterDialogColumns = disabledColumns.filter(c => c !== this.groupOnColumn);
+			// Otherwise change doesn't notify `cosmoz-omnitable-repeater-behavior`
+			// Todo: figure out a nicer way.
+			this._filterDialogColumns = [];
+
+			this.set('_filterDialogColumns', filterDialogColumns);
+
+			if (!filterDialogColumns || filterDialogColumns.length < 1) {
+				this.$.filterDialog.close();
+			}
+		},
+
 		_computeDataValidity(data) {
 			return data && Array.isArray(data) && data.length > 0;
 		},
@@ -307,6 +340,14 @@
 
 		_computeShowCheckboxes(dataIsValid, hasActions) {
 			return dataIsValid && hasActions;
+		},
+
+		_computeColumnsAllVisible(visibleColumnsChange, columns) {
+			const visibleColumns = visibleColumnsChange.base;
+			if (!visibleColumns || !columns) {
+				return;
+			}
+			return visibleColumns.length === columns.length;
 		},
 
 		visibleChanged(turnedVisible) {
@@ -564,6 +605,7 @@
 			} else {
 				this.debounce('groupItems', this._groupItems);
 			}
+			this.debounce('groupItems', this._groupItems);
 		},
 
 		_debounceGroupItems: function () {
@@ -1220,6 +1262,10 @@
 			}
 
 			this.set(path, serialized === undefined ? null : serialized);
+		},
+
+		_openFilterDialog() {
+			this.$$('#filterDialog').open();
 		}
 	});
 }());
