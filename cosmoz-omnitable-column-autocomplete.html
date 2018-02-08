@@ -21,6 +21,7 @@
 				selected-items="{{ filter }}"
 				text-property="[[ textProperty ]]"
 				value-property="[[ valueProperty ]]"
+				focused="{{ focused }}"
 				show-results-on-focus>
 				<paper-spinner-lite style="width: 20px; height: 20px;" suffix slot="suffix" active="[[ loading ]]" hidden="[[ !loading ]]"></paper-spinner-lite>
 			</paper-autocomplete-chips>
@@ -81,7 +82,15 @@
 				editMinWidth: {
 					type: String,
 					value: '55px'
-				}
+				},
+
+				/**
+				 * `focused` If true, the autocomplete column currently has focus.
+				 */
+				focused: {
+					type: Boolean,
+					notify: true
+				},
 			},
 
 			getComparableValue: function (item, valuePath = this.valuePath) {
