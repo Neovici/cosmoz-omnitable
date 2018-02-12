@@ -4,7 +4,7 @@
 <dom-module id="cosmoz-clear-button">
 	<template>
 		<style is="custom-style">
-			:host(:not([filter])) {
+			:host(:not([light])) {
 				position: absolute;
 				right: 0;
 				z-index: +1;
@@ -14,7 +14,7 @@
 				display: none !important;
 			}
 
-			:host(:not([filter])) iron-icon {
+			:host(:not([light])) iron-icon {
 				top: 10px;
 				margin: 2px 7px;
 				color: #cdcdcd;
@@ -31,7 +31,7 @@
 				float: right;
 			}
 
-			:host(:not([filter])) iron-icon:hover {
+			:host(:not([light])) iron-icon:hover {
 				background-color: #b0b0b0;
 				color: #dfdfdf;
 			}
@@ -46,6 +46,12 @@
 					type: Boolean,
 					value: false,
 					reflectToAttribute: true
+				},
+
+				light: {
+					type: Boolean,
+					reflectToAttribute: true,
+					value: false
 				}
 			}
 		});
