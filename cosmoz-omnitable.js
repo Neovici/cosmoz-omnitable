@@ -1152,13 +1152,7 @@
 				return;
 			}
 
-			let deserialized = column._deserializeFilter(value);
-
-			if (deserialized === null) {
-				column.resetFilter();
-				return;
-			}
-			column.set('filter', deserialized);
+			column.setFilterFromHash(value);
 		},
 		_computeRouteHashKeyRule(hashParam) {
 			if (!hashParam) {
