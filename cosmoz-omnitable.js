@@ -1225,10 +1225,12 @@
 		},
 
 		_fitDropdowns() {
-			const dropdowns = [this.$.groupOnSelector, this.$.sortOnSelector];
+			const menuButtons = [this.$.groupOnSelector, this.$.sortOnSelector]
+				.map(d => d.$.menuButton)
+				.concat([this.$.bottomBar.$.menu]);
 
-			dropdowns.forEach(dropdown => {
-				dropdown.$.menuButton.$.dropdown.fitInto = this;
+			menuButtons.forEach(button => {
+				button.$.dropdown.fitInto = this;
 			});
 		}
 
