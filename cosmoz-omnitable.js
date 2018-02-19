@@ -1225,14 +1225,12 @@
 		},
 
 		_fitDropdowns() {
-			const menuButtons = [this.$.groupOnSelector, this.$.sortOnSelector]
+			[this.$.groupOnSelector, this.$.sortOnSelector]
 				.map(d => d.$.menuButton)
-				.concat([this.$.bottomBar.$.menu]);
-
-			menuButtons.forEach(button => {
-				button.$.dropdown.fitInto = this;
-			});
+				.concat([this.$.bottomBar.$.menu])
+				.forEach(button => {
+					button.$.dropdown.fitInto = this;
+				});
 		}
-
 	});
 }());
