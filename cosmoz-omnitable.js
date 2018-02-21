@@ -274,6 +274,8 @@
 			});
 			this.$.groupedList.scrollTarget = this.$.scroller;
 			this.listen(this,  'cosmoz-column-hidden-changed', '_debounceUpdateColumns');
+
+			this._fitDropdowns();
 		},
 
 		detached: function () {
@@ -1220,6 +1222,15 @@
 			}
 
 			this.set(path, serialized === undefined ? null : serialized);
+		},
+
+		_fitDropdowns() {
+			[this.$.groupOnSelector, this.$.sortOnSelector]
+				.map(d => d.$.menuButton)
+				.concat([this.$.bottomBar.$.menu])
+				.forEach(button => {
+					button.$.dropdown.fitInto = this;
+				});
 		}
 	});
 }());
