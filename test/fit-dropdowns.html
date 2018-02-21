@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+	<head>
+		<title>cosmoz-omnitable fit-dropdowns tests</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+		<script src="../../web-component-tester/browser.js"></script>
+		<script src="../../test-fixture/test-fixture-mocha.js"></script>
+
+		<link rel="import" href="../../test-fixture/test-fixture.html">
+		<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
+
+		<link rel="import" href="../cosmoz-omnitable.html">
+		<link rel="import" href="../cosmoz-omnitable-column-autocomplete.html">
+		<link rel="import" href="../cosmoz-omnitable-column.html">
+	</head>
+	<body>
+		<test-fixture id="basic">
+			<template>
+				<cosmoz-omnitable hash-param="test" style='height:300px'>
+					<cosmoz-omnitable-column-autocomplete width="40px" title="Id" name="id" value-path="id" sort-on="id" group-on="id">
+						<template class="cell">
+							<span>[[ item.id ]]</span>
+						</template>
+					</cosmoz-omnitable-column-autocomplete>
+					<cosmoz-omnitable-column-autocomplete title="Group" name="group" value-path="group" flex="0" width="125px">
+					</cosmoz-omnitable-column-autocomplete>
+					<cosmoz-omnitable-column title="Name" name="name" value-path="name" sort-on="name" group-on="name" flex="2">
+						<template class="cell">
+							<span>[[ item.name ]]</span>
+						</template>
+					</cosmoz-omnitable-column>
+				</cosmoz-omnitable>
+			</template>
+		</test-fixture>
+
+		<script>
+		(function () {
+			let omnitable;
+			const data = [
+					{ id: 0, group: 'group0', name: 'Item 0' },
+					{ id: 1, group: 'group0', name: 'Item 1' },
+					{ id: 2, group: 'group1', name: 'Item 2' },
+					{ id: 3, group: 'group1', name: 'Item 3' }
+				],
+				instantiate = function (done) {
+					omnitable = fixture('basic');
+					omnitable.data = data;
+					omnitable.addEventListener('visible-columns-changed', function () {
+						Polymer.Base.async(done, 30);
+					});
+					omnitable.notifyResize();
+				};
+
+			suite('fit-dropdowns', function () {
+				test('sets iron-dropdown fitInto property', function (done) {
+					instantiate(function () {
+						[
+							omnitable.$.groupOnSelector,
+							omnitable.$.sortOnSelector
+						]
+							.map(d => d.$.menuButton)
+							.concat([omnitable.$.bottomBar.$.menu])
+							.forEach(button => {
+								assert.equal(button.$.dropdown.fitInto, omnitable);
+							});
+						done();
+					});
+				});
+			});
+		})();
+		</script>
+	</body>
+</html>
