@@ -368,12 +368,12 @@
 		},
 
 		/**
-		 * Returns whether `filter` is set to a usable value.
-		 *
-		 * @returns {Boolean}  True if filter is set
+		 * Returns whether 'filterNotify.base' or `filter` is set to a usable value.
+		 * @param {Object|void} filterNotify filter.*
+		 * @returns {Boolean}  True if filter or filterNotify.base is set
 		 */
-		hasFilter() {
-			const filter = this.filter,
+		hasFilter(filterNotify) {
+			const filter = filterNotify == null ? this.filter : filterNotify.base,
 				isArray = Array.isArray(filter);
 
 			if (filter == null || filter === ''
