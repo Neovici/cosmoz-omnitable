@@ -123,7 +123,7 @@
 		},
 
 		_getCellTitle: function (column, item) {
-			return column && column.getString(item, column.valuePath);
+			return column && column.getString(item, column.titlePath || column.valuePath);
 		},
 	});
 }());
