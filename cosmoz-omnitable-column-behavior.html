@@ -17,8 +17,7 @@
 			},
 
 			valuePath: {
-				type: String,
-				observer: 'valuePathChanged'
+				type: String
 			},
 
 			/**
@@ -94,11 +93,13 @@
 			},
 
 			sortOn: {
-				type: String
+				type: String,
+				value: '' // need a default value for compatibility with Polymer 1.x, to trigger _pathsChanged observer
 			},
 
 			groupOn: {
-				type: String
+				type: String,
+				value: '' // need a default value for compatibility with Polymer 1.x, to trigger _pathsChanged observer
 			},
 
 			/**
@@ -215,7 +216,8 @@
 		StyleModules: [],
 
 		observers: [
-			'__filterChanged(filter.*)'
+			'__filterChanged(filter.*)',
+			'_pathsChanged(valuePath, groupOn, sortOn)'
 		],
 
 		ready: function () {
@@ -312,15 +314,17 @@
 			return this.get(valuePath, item);
 		},
 
-		valuePathChanged: function (newPath, oldPath) {
-			if (newPath === undefined || newPath === null) {
+		_pathsChanged(valuePath, groupOn, sortOn) {
+			if (valuePath === undefined || valuePath === null) {
 				return;
 			}
-			if (this.groupOn === oldPath || this.groupOn === undefined) {
-				this.set('groupOn', newPath);
+
+			if (groupOn === undefined || groupOn === '') {
+				this.set('groupOn', valuePath);
 			}
-			if (this.sortOn === oldPath || this.sortOn === undefined) {
-				this.set('sortOn', newPath);
+
+			if (sortOn === undefined || sortOn === '') {
+				this.set('sortOn', valuePath);
 			}
 		},
 
