@@ -22,6 +22,16 @@
 			},
 
 			/**
+			 * Path to a property of a table's item that will be used as the title of the cell.
+			 * The title of the cell is a text usually displayed in a 'tool tip' popup when the mouse is over it.
+			 * This property should be set when valuePath reference an object, to prevent the title of the cell
+			 * to be [object Object].
+			 */
+			titlePath: {
+				type: String
+			},
+
+			/**
 			 * If the column should be disabled until enabled with enabledColumns
 			 */
 			disabled: {
