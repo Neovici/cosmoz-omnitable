@@ -267,6 +267,15 @@
 				done();
 			});
 
+			test('getCurrency returns valid currency or null', function (done) {
+				assert.equal(column.getCurrency(data[0], 'amount'), 'USD');
+				assert.isUndefined(column.getCurrency(data[1], 'amount'));
+				assert.equal(column.getCurrency(data[2], 'amount'), 'AUD');
+				assert.equal(column.getCurrency(data[3], 'amount'), 'EUR');
+				assert.equal(column.getCurrency(data[4], 'amount'), 'DKK');
+				done();
+			});
+
 			test('computes array of formaters', function (done) {
 				Object.keys(column._formatters).forEach(function (el) {
 					assert.include(['SEK', 'USD', 'AUD', 'EUR', 'DKK'], el);
