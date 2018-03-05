@@ -63,6 +63,11 @@
 					type: Boolean,
 					value: false
 				},
+
+				/**
+				 * Exchange rates of currencies. Example: {"EUR": 1, "USD":0.8169982616, "AUD":0.6529827192, "SEK": 0.1019271438}'
+				 * Default exchange rate is 1 and it is used for every currency that is present on column values but missing from exchange rates object.
+				 */
 				rates: {
 					type: Object
 				},
