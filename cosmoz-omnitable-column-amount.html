@@ -2,7 +2,6 @@
 <link rel="import" href="cosmoz-omnitable-column-range-behavior.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
-
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 
 <link rel="import" href="ui-helpers/cosmoz-clear-button.html">
@@ -49,9 +48,17 @@
 			],
 
 			properties: {
+
+				/**
+				 *  Base Currency used in filters
+				 */
 				currency: {
 					type: String
 				},
+
+				/**
+				 *  If this is set true then currency property will be the currency with highest occurrence in values
+				 */
 				autodetect: {
 					type: Boolean,
 					value: false
@@ -85,6 +92,13 @@
 			observers: [
 				'_valuesChanged(values)'
 			],
+
+			/**
+			 *  Auto-detect currency property: Most frequently occurring currency
+			 *
+			 * @param  {Array} values Array of amounts
+			 * @returns {void}
+			 */
 			_valuesChanged: function (values) {
 				if (!Array.isArray(values) || values.length < 1) {
 					return;
@@ -113,13 +127,13 @@
 			},
 
 			/**
-			 * Converts a value to an amount object optionaly limiting it.
-			 *
-			 * @param  {Object} value  The value to convert to number
-			 * @param  {Object} limit  The value used to limit the number
-			 * @param  {Function} limitFunc  The function used to limit the number (Math.min|Math.max)
-			 * @returns {Object|void}    Value converted to Number or void
-			 */
+				 * Converts a value to an amount object optionaly limiting it.
+				 *
+				 * @param  {Object} value  The value to convert to number
+				 * @param  {Object} limit  The value used to limit the number
+				 * @param  {Function} limitFunc  The function used to limit the number (Math.min|Math.max)
+				 * @returns {Object|void}    Value converted to Number or void
+				 */
 			toAmount(value, limit, limitFunc) {
 				if (value == null || value === '') {
 					return;
@@ -161,12 +175,12 @@
 			},
 
 			/**
-			 *   Get the comparable value of an item.
-			 *
-			 * @param  {Object} item       Item to be processed
-			 * @param  {String} valuePath  Property path
-			 * @returns {Number|void}      Valid value or void
-			 */
+				 *   Get the comparable value of an item.
+				 *
+				 * @param  {Object} item       Item to be processed
+				 * @param  {String} valuePath  Property path
+				 * @returns {Number|void}      Valid value or void
+				 */
 			getComparableValue(item, valuePath) {
 				const value = Cosmoz.RangeColumnBehavior.getComparableValue.call(this, item, valuePath);
 				if (value == null) {
@@ -209,13 +223,14 @@
 					currency
 				});
 			},
+
 			/**
-			 * Converts an amount to symbol and value to be rendered.
-			 *
-			 * @param  {Object} value Amount to be formated
-			 * @param  {Object} _formatters = this._formatters All possible formatters.
-			 * @returns {String} Formated value or empty string.
-			 */
+				 * Converts an amount to symbol and value to be rendered.
+				 *
+				 * @param  {Object} value Amount to be formated
+				 * @param  {Object} _formatters = this._formatters All possible formatters.
+				 * @returns {String} Formated value or empty string.
+				 */
 			renderValue(value) {
 				const amount = this.toAmount(value);
 				if (amount == null) {
