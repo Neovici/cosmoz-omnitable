@@ -1,6 +1,7 @@
 <link rel="import" href="cosmoz-omnitable-column-behavior.html">
 <link rel="import" href="../iron-icon/iron-icon.html"/>
 <link rel="import" href="../paper-input/paper-input.html"/>
+<link rel="import" href="ui-helpers/cosmoz-clear-button.html">
 
 <dom-module id="cosmoz-omnitable-column">
 	<template>
@@ -15,7 +16,7 @@
 
 		<template class="header">
 			<paper-input label="[[ title ]]" value="{{ filter }}" focused="{{ headerFocused }}">
-				<iron-icon icon="clear" suffix slot="suffix" hidden$="[[ !filter.length ]]" style="cursor: pointer;" on-click="resetFilter"></iron-icon>
+				<cosmoz-clear-button suffix slot="suffix" visible="[[ hasFilter(filter.*) ]]" light on-click="resetFilter"></cosmoz-clear-button>
 			</paper-input>
 		</template>
 
