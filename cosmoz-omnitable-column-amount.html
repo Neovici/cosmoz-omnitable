@@ -10,7 +10,7 @@
 <dom-module id="cosmoz-omnitable-column-amount">
 	<template>
 		<template class="cell">
-			<span>[[ getString(item, valuePath, _formatters) ]]</span>
+			<span>[[ getString(item, valuePath, locale) ]]</span>
 		</template>
 
 		<template class="edit-cell">
@@ -49,9 +49,15 @@
 			],
 
 			properties: {
-				defaultCurrency: {
-					type: String,
-					value: 'SEK'
+				currency: {
+					type: String
+				},
+				autodetect: {
+					type: Boolean,
+					value: false
+				},
+				rates: {
+					type: Object
 				},
 				width: {
 					type: String,
@@ -73,33 +79,37 @@
 				_filterText: {
 					type: String,
 					computed: '_computeFilterText(filter.*, _formatters)'
-				},
-				_formatters: {
-					type: Object,
-					computed: '_computePossibleFormatters(locale, values)'
-				},
+				}
 			},
-			_computePossibleFormatters: function (locale, values) {
+
+			observers: [
+				'_valuesChanged(values)'
+			],
+			_valuesChanged: function (values) {
 				if (!Array.isArray(values) || values.length < 1) {
 					return;
 				}
-				return values
-					// extract currencies
-					.map(value => value.currency)
-					// unique currencies
-					.filter((currency, index, array) => currency != null && currency !== this.defaultCurrency && array.indexOf(currency) === index)
-					.reduce((all, currency) =>
-						Object.assign(all, {
-							[currency]: new Intl.NumberFormat(locale || undefined, {
-								style: 'currency',
-								currency
-							})
-						}), {
-						[this.defaultCurrency]: new Intl.NumberFormat(locale || undefined, {
-							style: 'currency',
-							currency: this.defaultCurrency
-						})
-					});
+				if (!this.autodetect && this.currency) {
+					return;
+				}
+				// array with currencies as keys and occurence as value
+				const currencies = values.reduce((p, n) => {
+					if (n.currency) {
+						const c = n.currency;
+						p[c] = (p[c] || 0) + 1;
+					}
+					return p;
+				}, {});
+
+				let key = Object.keys(currencies)[0];
+				Object.keys(currencies).reduce((p, n) => {
+					const max = Math.max(p, currencies[n]);
+					if (max === currencies[n]) {
+						key = n;
+					}
+					return max;
+				}, 0);
+				this.currency = key;
 			},
 
 			/**
@@ -162,7 +172,14 @@
 				if (value == null) {
 					return;
 				}
-				return this.toNumber(value.amount);
+				const amount = this.toNumber(value.amount),
+					rates = this.rates;
+
+				if (rates == null) {
+					return amount;
+				}
+
+				return amount * (rates[value.currency] || 1);
 			},
 			getString(item, valuePath = this.valuePath) {
 				const value = this.toValue(this.get(valuePath, item));
@@ -180,6 +197,18 @@
 				return value && value.currency;
 			},
 
+			getFormatter(currency, locale) {
+				const id = locale ? locale : '';
+				const key = currency + id || '',
+					formatters = this._formatters = this._formatters || {};
+				if (formatters[key]) {
+					return formatters[key];
+				}
+				return formatters[key] = new Intl.NumberFormat(locale || undefined, {
+					style: 'currency',
+					currency
+				});
+			},
 			/**
 			 * Converts an amount to symbol and value to be rendered.
 			 *
@@ -187,17 +216,13 @@
 			 * @param  {Object} _formatters = this._formatters All possible formatters.
 			 * @returns {String} Formated value or empty string.
 			 */
-			renderValue(value, _formatters = this._formatters) {
+			renderValue(value) {
 				const amount = this.toAmount(value);
-				if (amount == null || _formatters == null) {
+				if (amount == null) {
 					return '';
 				}
-				const formatter = _formatters[amount.currency];
-				if (!formatter) {
-					console.warn('formatter not found', value);
-					return '';
-				}
-				return formatter.format(value.amount);
+				return this.getFormatter(amount.currency, this.locale)
+					.format(value.amount);
 			},
 
 			_amountValueChanged(event) {
@@ -232,7 +257,7 @@
 				}
 				return this.toValue({
 					amount: number,
-					currency: property && this.get(['filter', property, 'currency']) || this.defaultCurrency
+					currency: property && this.get(['filter', property, 'currency']) || this.currency
 				});
 			},
 
