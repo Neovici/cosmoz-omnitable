@@ -94,12 +94,12 @@
 
 			sortOn: {
 				type: String,
-				value: '' // need a default value for compatibility with Polymer 1.x, to trigger _pathsChanged observer
+				value: null // need a default value for compatibility with Polymer 1.x, to trigger _pathsChanged observer
 			},
 
 			groupOn: {
 				type: String,
-				value: '' // need a default value for compatibility with Polymer 1.x, to trigger _pathsChanged observer
+				value: null // need a default value for compatibility with Polymer 1.x, to trigger _pathsChanged observer
 			},
 
 			/**
@@ -315,15 +315,15 @@
 		},
 
 		_pathsChanged(valuePath, groupOn, sortOn) {
-			if (valuePath === undefined || valuePath === null) {
+			if (valuePath == null) {
 				return;
 			}
 
-			if (groupOn === undefined || groupOn === '') {
+			if (groupOn == null) {
 				this.set('groupOn', valuePath);
 			}
 
-			if (sortOn === undefined || sortOn === '') {
+			if (sortOn == null) {
 				this.set('sortOn', valuePath);
 			}
 		},
