@@ -26,6 +26,14 @@
 				</cosmoz-omnitable-column-date>
 				<cosmoz-omnitable-column-date id="date3" name="date3" value-path="date">
 				</cosmoz-omnitable-column-date>
+				<cosmoz-omnitable-column name="columnWithGroupOn" value-path="valuePath" group-on="groupOnValuePath">
+				</cosmoz-omnitable-column>
+				<cosmoz-omnitable-column name="columnWithoutGroupOn" value-path="valuePath">
+				</cosmoz-omnitable-column>
+				<cosmoz-omnitable-column name="columnWithSortOn" value-path="valuePath" sort-on="sortOnValuePath">
+				</cosmoz-omnitable-column>
+				<cosmoz-omnitable-column name="columnWithoutSortOn" value-path="valuePath">
+				</cosmoz-omnitable-column>
 			</cosmoz-omnitable>
 		</template>
 	</test-fixture>
@@ -54,10 +62,10 @@
 			setup(function (done) {
 				omnitable = fixture('basic');
 				data = Cosmoz.TableDemoBehavior.generateTableDemoData(10, 11, 25);
-				omnitable.data = data;
 				omnitable.addEventListener('visible-columns-changed', function () {
 					Polymer.Base.async(done, 30);
 				});
+				omnitable.data = data;
 				omnitable.notifyResize();
 			});
 
@@ -82,6 +90,37 @@
 
 					done();
 				}, 60);
+			});
+
+			test('sets column groupOn property to valuePath when group-on attribute is missing', function () {
+				var column = omnitable.columns.find(function (col) {
+					return col.name === 'columnWithoutGroupOn';
+				});
+
+				assert.equal(column.groupOn, 'valuePath');
+			});
+
+			test('sets column groupOn property to group-on attribute', function () {
+				var column = omnitable.columns.find(function (col) {
+					return col.name === 'columnWithGroupOn';
+				});
+
+				assert.equal(column.groupOn, 'groupOnValuePath');
+			});
+
+			test('sets column sortOn property to valuePath when sort-on attribute is missing', function () {
+				var column = omnitable.columns.find(function (col) {
+					return col.name === 'columnWithoutSortOn';
+				});
+
+				assert.equal(column.sortOn, 'valuePath');
+			});
+			test('sets column sortOn property to sort-on attribute', function () {
+				var column = omnitable.columns.find(function (col) {
+					return col.name === 'columnWithSortOn';
+				});
+
+				assert.equal(column.sortOn, 'sortOnValuePath');
 			});
 		});
 
