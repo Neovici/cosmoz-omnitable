@@ -62,11 +62,15 @@
 			setup(function (done) {
 				omnitable = fixture('basic');
 				data = Cosmoz.TableDemoBehavior.generateTableDemoData(10, 11, 25);
-				omnitable.addEventListener('visible-columns-changed', function () {
-					Polymer.Base.async(done, 30);
-				});
 				omnitable.data = data;
 				omnitable.notifyResize();
+				if (omnitable.visibleColumns != null && omnitable.visibleColumns.length) {
+					done();
+				} else {
+					omnitable.addEventListener('visible-columns-changed', function () {
+						Polymer.Base.async(done, 30);
+					});
+				}
 			});
 
 			test('it retrieves column by name', function (done) {
