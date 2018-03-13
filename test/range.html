@@ -30,8 +30,7 @@
 	<test-fixture id="rates">
 		<template>
 			<cosmoz-omnitable class="flex">
-				<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount" autodetect
-					rates='{"EUR": 1, "USD":0.8169982616, "AUD": 0.6529827192, "SEK": 0.1019271438, "GBP": 1.1347079368}'>
+				<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount" autodetect>
 				</cosmoz-omnitable-column-amount>
 			</cosmoz-omnitable>
 		</template>
@@ -351,6 +350,7 @@
 				omnitable.addEventListener('visible-columns-changed', function () {
 					Polymer.Base.async(function () {
 						column = omnitable.columns[0];
+						column.rates = {'EUR': 1, 'USD': 0.8169982616, 'AUD': 0.6529827192, 'SEK': 0.1019271438, 'GBP': 1.1347079368};
 						done();
 					}, 30);
 				});
@@ -389,6 +389,17 @@
 				assert.equal(column.getComparableValue({ amount: 491, currency: 'AED' }), 491);
 				assert.equal(column.getComparableValue({ amount: 7321, currency: 'CRC' }), 7321);
 				assert.equal(column.getComparableValue({ amount: 901, currency: 'BHD' }), 901);
+			});
+
+			test('toAmount limits the value with rates', function () {
+				assert.deepEqual(column.toAmount({amount: 746, currency: 'GBP'}), {amount: 746, currency: 'GBP'});
+				assert.deepEqual(column.toAmount({amount: 1248, currency: 'GBP'}, {amount: 46, currency: 'SEK'}, Math.max), {amount: 1248, currency: 'GBP'});
+
+				assert.deepEqual(column.toAmount({amount: 15, currency: 'SEK'}, {amount: 12, currency: 'EUR'}, Math.min), {amount: 15, currency: 'SEK'});
+				assert.deepEqual(column.toAmount({amount: 150, currency: 'SEK'}, {amount: 12, currency: 'EUR'}, Math.min), {amount: 12, currency: 'EUR'});
+
+				assert.deepEqual(column.toAmount({amount: 20, currency: 'AUD'}, {amount: 19, currency: 'EUR'}, Math.min), {amount: 20, currency: 'AUD'});
+				assert.deepEqual(column.toAmount({amount: 30, currency: 'AUD'}, {amount: 19, currency: 'EUR'}, Math.min), {amount: 19, currency: 'EUR'});
 			});
 
 			test('currency is auto-detected', function () {
@@ -440,6 +451,7 @@
 				omnitable.addEventListener('visible-columns-changed', function () {
 					Polymer.Base.async(function () {
 						column = omnitable.columns[0];
+						column.rates = {'EUR': 1, 'USD': 0.8169982616, 'AUD': 0.6529827192, 'SEK': 0.1019271438, 'GBP': 1.1347079368};
 						done();
 					}, 30);
 				});
@@ -449,6 +461,20 @@
 			test('currency is configurable', function (done) {
 				assert.equal(column.currency, 'SEK');
 				done();
+			});
+
+			test('changing _filterInput updates filter with rates', function (done) {
+				assert.isNull(column._filterInput.min);
+				assert.isNull(column._filterInput.max);
+				column.addEventListener('filter-changed', function () {
+					assert.equal(column.filter.min.amount, 105);
+					assert.equal(column.filter.max.amount, 150);
+					done();
+				});
+				column._filterInput = {
+					min: 105,
+					max: 150
+				};
 			});
 		});
 	}());
