@@ -167,8 +167,13 @@
 					return amount;
 				}
 
-				lNumber = this.toNumber(amount.amount, lAmount.amount, limitFunc);
-				return lNumber === number ? amount : lAmount;
+				// calculate value and limit amounts with rates
+				const rates = this.rates || {},
+					valAmount = amount.amount * (rates[amount.currency] || 1),
+					limAmount = lAmount.amount * (rates[lAmount.currency] || 1);
+
+				lNumber = this.toNumber(valAmount, limAmount, limitFunc);
+				return lNumber === valAmount ? amount : lAmount;
 			},
 
 			toValue() {
