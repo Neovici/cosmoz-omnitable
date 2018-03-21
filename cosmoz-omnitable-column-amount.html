@@ -26,11 +26,11 @@
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 150px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
 					<paper-input type="number" label="[[ _('Min amount', t) ]]" title="[[ _('Minimum amount', t) ]]" value="{{ _filterInput.min }}"
-							min="[[ _toInputString(_limit.fromMin) ]]" max="[[ _toInputString(_limit.fromMax) ]]">
+							min="[[ _toInputStringAmount(_limit.fromMin) ]]" max="[[ _toInputStringAmount(_limit.fromMax) ]]">
 						<div slot="suffix" suffix>[[ filter.min.currency ]]</div>
 					</paper-input>
 					<paper-input type="number" label="[[ _('Max amount', t) ]]" title="[[ _('Maximum amount', t) ]]" value="{{ _filterInput.max }}"
-						min="[[ _toInputString(_limit.toMin) ]]" max="[[ _toInputString(_limit.toMax) ]]">
+						min="[[ _toInputStringAmount(_limit.toMin) ]]" max="[[ _toInputStringAmount(_limit.toMax) ]]">
 						<div slot="suffix" suffix>[[ filter.max.currency ]]</div>
 					</paper-input>
 				</div>
@@ -273,6 +273,19 @@
 					return null; //Need null to clear input
 				}
 				return this.toNumber(amount.amount);
+			},
+
+			_toInputStringAmount(value) {
+				const rates = this.rates;
+				if (rates == null) {
+					return this._toInputString(value);
+				}
+				const amount = this.toValue(value);
+				if (amount == null) {
+					return null;
+				}
+				const toCurrency = this.toNumber(amount.amount) * (rates[amount.currency] || 1) / (rates[this.currency] || 1);
+				return toCurrency.toFixed(2);
 			},
 
 			_fromInputString(value, property) {
