@@ -346,7 +346,14 @@
 
 			setup(function (done) {
 				omnitable = fixture('rates');
-				omnitable.data = data;
+				omnitable.data = data.concat([
+					{ amount: { amount: -21, currency: 'USD' } },
+					{ amount: { amount: 935, currency: 'EUR' } },
+					{ amount: { amount: 345, currency: 'EUR' } },
+					{ amount: { amount: 2136, currency: 'EUR' } },
+					{ amount: { amount: -142, currency: 'USD' } },
+					{ amount: { amount: 5917, currency: 'AUD' } }
+				]);
 				omnitable.addEventListener('visible-columns-changed', function () {
 					Polymer.Base.async(function () {
 						column = omnitable.columns[0];
@@ -400,6 +407,11 @@
 
 				assert.deepEqual(column.toAmount({amount: 20, currency: 'AUD'}, {amount: 19, currency: 'EUR'}, Math.min), {amount: 20, currency: 'AUD'});
 				assert.deepEqual(column.toAmount({amount: 30, currency: 'AUD'}, {amount: 19, currency: 'EUR'}, Math.min), {amount: 19, currency: 'EUR'});
+			});
+
+			test('min and max of filter input is converted to currency', () => {
+				assert.equal(column._toInputStringAmount(column._limit.fromMin), -116.01); // ( -142 * 0.8169982616 / 1 ).toFixed(2)
+				assert.equal(column._toInputStringAmount(column._limit.fromMax), 3863.70); // ( 5917 * 0.6529827192 / 1 ).toFixed(2)
 			});
 
 			test('currency is auto-detected', function () {
