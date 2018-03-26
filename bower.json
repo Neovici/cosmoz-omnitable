@@ -43,7 +43,8 @@
 		"paper-autocomplete-chips": "Neovici/paper-autocomplete-chips#^1.0.0",
 		"import-filesaver": "JaySunSyn/import-filesaver",
 		"cosmoz-datetime-input": "Neovici/cosmoz-datetime-input#^1.0.0",
-		"nullxlsx": "Neovici/nullxlsx#^1.0.0"
+		"nullxlsx": "Neovici/nullxlsx#^1.0.0",
+		"FileSaver.js": "eligrey/FileSaver.js#1.3.4"
 	},
 	"devDependencies": {
 		"paper-button": "PolymerElements/paper-button#1 - 2",
