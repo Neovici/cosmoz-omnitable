@@ -69,7 +69,7 @@
 				'_filterChanged(filter, autocompleteItems)'
 			],
 
-			_computeAutocompleteItems: function () {
+			_computeAutocompleteItems() {
 				return this.values
 					.reduce((acc, val) => acc.concat(val), [])
 					// Make the item list unique
@@ -83,16 +83,16 @@
 					});
 			},
 
-			_getLabelForValue: function (value) {
+			_getLabelForValue(value) {
 				return value.toString();
 			},
 
-			_applySingleFilter: function (filterString, item) {
+			_applySingleFilter(filterString, item) {
 				const value = this.get(this.valuePath, item).toString().toLowerCase();
 				return value === filterString;
 			},
 
-			_applyMultiFilter: function (filter, item) {
+			_applyMultiFilter(filter, item) {
 				const filterArray = filter.map(element => element.toString().toLowerCase()),
 					listValue = this.get(this.valuePath, item);
 
@@ -101,7 +101,7 @@
 				);
 			},
 
-			_autocompleteSelectedItemsChanged: function () {
+			_autocompleteSelectedItemsChanged() {
 				const filter = this.filter,
 					items = this.autocompleteSelectedItems;
 				if (Array.isArray(filter) && items.length === this.filter.length &&  items.every((item, i) => item.value === filter[i])) {
