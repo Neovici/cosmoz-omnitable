@@ -154,6 +154,10 @@
 				assert.isTrue(column._applyMultiFilter([123, 456], { list: ['123', '345', '678']}));
 			});
 
+			test('getString returns values', () => {
+				column.textProperty = null;
+				assert.equal(column.getString({ list: ['123', '345', '678']}), '123, 345, 678');
+			});
 		});
 	})();
 	</script>
