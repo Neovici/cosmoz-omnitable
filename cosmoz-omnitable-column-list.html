@@ -84,12 +84,18 @@
 			},
 
 			_getLabelForValue(value) {
+				if (value == null) {
+					return null;
+				}
 				return value.toString();
 			},
 
 			_applySingleFilter(filterString, item) {
-				const value = this.get(this.valuePath, item).toString().toLowerCase();
-				return value === filterString;
+				const value = this.get(this.valuePath, item);
+				if (value == null) {
+					return false;
+				}
+				return value.toString().toLowerCase() === filterString;
 			},
 
 			_applyMultiFilter(filter, item) {
