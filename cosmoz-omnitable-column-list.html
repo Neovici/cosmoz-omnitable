@@ -99,7 +99,9 @@
 			},
 
 			_applyMultiFilter(filter, item) {
-				const filterArray = filter.map(element => element.toString().toLowerCase()),
+				const filterArray = filter.map(element => {
+						return element ? element.toString().toLowerCase() : null;
+					}),
 					listValue = this.get(this.valuePath, item);
 
 				return listValue.some(val =>
