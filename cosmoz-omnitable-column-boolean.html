@@ -130,7 +130,7 @@
 			},
 
 			_computeSelected(item, valuePath) {
-				const value = this.get(valuePath, item);
+				const value = this.get(valuePath || this.valuePath, item);
 				if (value != null) {
 					return value.toString();
 				}
