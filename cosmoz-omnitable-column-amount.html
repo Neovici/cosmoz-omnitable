@@ -2,7 +2,6 @@
 <link rel="import" href="cosmoz-omnitable-column-range-behavior.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
-
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 
 <link rel="import" href="ui-helpers/cosmoz-clear-button.html">
@@ -10,7 +9,7 @@
 <dom-module id="cosmoz-omnitable-column-amount">
 	<template>
 		<template class="cell">
-			<span>[[ getString(item, valuePath, _formatters) ]]</span>
+			<span>[[ getString(item, valuePath, locale) ]]</span>
 		</template>
 
 		<template class="edit-cell">
@@ -27,11 +26,11 @@
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 150px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
 					<paper-input type="number" label="[[ _('Min amount', t) ]]" title="[[ _('Minimum amount', t) ]]" value="{{ _filterInput.min }}"
-							min="[[ _toInputString(_limit.fromMin) ]]" max="[[ _toInputString(_limit.fromMax) ]]">
+							min="[[ _toInputStringAmount(_limit.fromMin) ]]" max="[[ _toInputStringAmount(_limit.fromMax) ]]">
 						<div slot="suffix" suffix>[[ filter.min.currency ]]</div>
 					</paper-input>
 					<paper-input type="number" label="[[ _('Max amount', t) ]]" title="[[ _('Maximum amount', t) ]]" value="{{ _filterInput.max }}"
-						min="[[ _toInputString(_limit.toMin) ]]" max="[[ _toInputString(_limit.toMax) ]]">
+						min="[[ _toInputStringAmount(_limit.toMin) ]]" max="[[ _toInputStringAmount(_limit.toMax) ]]">
 						<div slot="suffix" suffix>[[ filter.max.currency ]]</div>
 					</paper-input>
 				</div>
@@ -49,9 +48,28 @@
 			],
 
 			properties: {
-				defaultCurrency: {
-					type: String,
-					value: 'SEK'
+
+				/**
+				 *  Base Currency used in filters
+				 */
+				currency: {
+					type: String
+				},
+
+				/**
+				 *  If this is set true then currency property will be the currency with highest occurrence in values
+				 */
+				autodetect: {
+					type: Boolean,
+					value: false
+				},
+
+				/**
+				 * Exchange rates of currencies. Example: {"EUR": 1, "USD":0.8169982616, "AUD":0.6529827192, "SEK": 0.1019271438}'
+				 * Default exchange rate is 1 and it is used for every currency that is present on column values but missing from exchange rates object.
+				 */
+				rates: {
+					type: Object
 				},
 				width: {
 					type: String,
@@ -73,43 +91,54 @@
 				_filterText: {
 					type: String,
 					computed: '_computeFilterText(filter.*, _formatters)'
-				},
-				_formatters: {
-					type: Object,
-					computed: '_computePossibleFormatters(locale, values)'
-				},
+				}
 			},
-			_computePossibleFormatters: function (locale, values) {
+
+			observers: [
+				'_valuesChanged(values)'
+			],
+
+			/**
+			 *  Auto-detect currency property: Most frequently occurring currency
+			 *
+			 * @param  {Array} values Array of amounts
+			 * @returns {void}
+			 */
+			_valuesChanged: function (values) {
 				if (!Array.isArray(values) || values.length < 1) {
 					return;
 				}
-				return values
-					// extract currencies
-					.map(value => value.currency)
-					// unique currencies
-					.filter((currency, index, array) => currency != null && currency !== this.defaultCurrency && array.indexOf(currency) === index)
-					.reduce((all, currency) =>
-						Object.assign(all, {
-							[currency]: new Intl.NumberFormat(locale || undefined, {
-								style: 'currency',
-								currency
-							})
-						}), {
-						[this.defaultCurrency]: new Intl.NumberFormat(locale || undefined, {
-							style: 'currency',
-							currency: this.defaultCurrency
-						})
-					});
+				if (!this.autodetect && this.currency) {
+					return;
+				}
+				// array with currencies as keys and occurence as value
+				const currencies = values.reduce((p, n) => {
+					if (n.currency) {
+						const c = n.currency;
+						p[c] = (p[c] || 0) + 1;
+					}
+					return p;
+				}, {});
+
+				let key = Object.keys(currencies)[0];
+				Object.keys(currencies).reduce((p, n) => {
+					const max = Math.max(p, currencies[n]);
+					if (max === currencies[n]) {
+						key = n;
+					}
+					return max;
+				}, 0);
+				this.currency = key;
 			},
 
 			/**
-			 * Converts a value to an amount object optionaly limiting it.
-			 *
-			 * @param  {Object} value  The value to convert to number
-			 * @param  {Object} limit  The value used to limit the number
-			 * @param  {Function} limitFunc  The function used to limit the number (Math.min|Math.max)
-			 * @returns {Object|void}    Value converted to Number or void
-			 */
+				 * Converts a value to an amount object optionaly limiting it.
+				 *
+				 * @param  {Object} value  The value to convert to number
+				 * @param  {Object} limit  The value used to limit the number
+				 * @param  {Function} limitFunc  The function used to limit the number (Math.min|Math.max)
+				 * @returns {Object|void}    Value converted to Number or void
+				 */
 			toAmount(value, limit, limitFunc) {
 				if (value == null || value === '') {
 					return;
@@ -138,8 +167,13 @@
 					return amount;
 				}
 
-				lNumber = this.toNumber(amount.amount, lAmount.amount, limitFunc);
-				return lNumber === number ? amount : lAmount;
+				// calculate value and limit amounts with rates
+				const rates = this.rates || {},
+					valAmount = amount.amount * (rates[amount.currency] || 1),
+					limAmount = lAmount.amount * (rates[lAmount.currency] || 1);
+
+				lNumber = this.toNumber(valAmount, limAmount, limitFunc);
+				return lNumber === valAmount ? amount : lAmount;
 			},
 
 			toValue() {
@@ -151,18 +185,25 @@
 			},
 
 			/**
-			 *   Get the comparable value of an item.
-			 *
-			 * @param  {Object} item       Item to be processed
-			 * @param  {String} valuePath  Property path
-			 * @returns {Number|void}      Valid value or void
-			 */
+				 *   Get the comparable value of an item.
+				 *
+				 * @param  {Object} item       Item to be processed
+				 * @param  {String} valuePath  Property path
+				 * @returns {Number|void}      Valid value or void
+				 */
 			getComparableValue(item, valuePath) {
 				const value = Cosmoz.RangeColumnBehavior.getComparableValue.call(this, item, valuePath);
 				if (value == null) {
 					return;
 				}
-				return this.toNumber(value.amount);
+				const amount = this.toNumber(value.amount),
+					rates = this.rates;
+
+				if (rates == null) {
+					return amount;
+				}
+
+				return amount * (rates[value.currency] || 1);
 			},
 			getString(item, valuePath = this.valuePath) {
 				const value = this.toValue(this.get(valuePath, item));
@@ -180,24 +221,33 @@
 				return value && value.currency;
 			},
 
+			getFormatter(currency, locale) {
+				const id = locale ? locale : '';
+				const key = currency + id || '',
+					formatters = this._formatters = this._formatters || {};
+				if (formatters[key]) {
+					return formatters[key];
+				}
+				return formatters[key] = new Intl.NumberFormat(locale || undefined, {
+					style: 'currency',
+					currency
+				});
+			},
+
 			/**
-			 * Converts an amount to symbol and value to be rendered.
-			 *
-			 * @param  {Object} value Amount to be formated
-			 * @param  {Object} _formatters = this._formatters All possible formatters.
-			 * @returns {String} Formated value or empty string.
-			 */
-			renderValue(value, _formatters = this._formatters) {
+				 * Converts an amount to symbol and value to be rendered.
+				 *
+				 * @param  {Object} value Amount to be formated
+				 * @param  {Object} _formatters = this._formatters All possible formatters.
+				 * @returns {String} Formated value or empty string.
+				 */
+			renderValue(value) {
 				const amount = this.toAmount(value);
-				if (amount == null || _formatters == null) {
+				if (amount == null) {
 					return '';
 				}
-				const formatter = _formatters[amount.currency];
-				if (!formatter) {
-					console.warn('formatter not found', value);
-					return '';
-				}
-				return formatter.format(value.amount);
+				return this.getFormatter(amount.currency, this.locale)
+					.format(value.amount);
 			},
 
 			_amountValueChanged(event) {
@@ -225,6 +275,19 @@
 				return this.toNumber(amount.amount);
 			},
 
+			_toInputStringAmount(value) {
+				const rates = this.rates;
+				if (rates == null) {
+					return this._toInputString(value);
+				}
+				const amount = this.toValue(value);
+				if (amount == null) {
+					return null;
+				}
+				const toCurrency = this.toNumber(amount.amount) * (rates[amount.currency] || 1) / (rates[this.currency] || 1);
+				return toCurrency.toFixed(2);
+			},
+
 			_fromInputString(value, property) {
 				const number = this.toNumber(value);
 				if (number == null) {
@@ -232,7 +295,7 @@
 				}
 				return this.toValue({
 					amount: number,
-					currency: property && this.get(['filter', property, 'currency']) || this.defaultCurrency
+					currency: property && this.get(['filter', property, 'currency']) || this.currency
 				});
 			},
 
