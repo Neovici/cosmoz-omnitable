@@ -2,7 +2,8 @@
   "schema_version": "1.0.0",
   "elements": [
     {
-      "description":"",
+      "description": "",
+      "summary": "",
       "path": "cosmoz-omnitable-templatizer.html",
       "properties": [
         {
@@ -1599,7 +1600,7 @@
           "params": [
             {
               "name": "filterNotify",
-              "type": "(Object|void)",
+              "type": "(Object | void)",
               "description": "filter.*"
             }
           ],
@@ -2770,7 +2771,8 @@
               "name": "value"
             },
             {
-              "name": "flush = false"
+              "name": "flush",
+              "defaultValue": "false"
             }
           ],
           "inheritedFrom": "Cosmoz.OmnitableRepeaterBehavior"
@@ -2802,10 +2804,12 @@
               "name": "value"
             },
             {
-              "name": "isPathNotification = false"
+              "name": "isPathNotification",
+              "defaultValue": "false"
             },
             {
-              "name": "flush = false"
+              "name": "flush",
+              "defaultValue": "false"
             }
           ],
           "inheritedFrom": "Cosmoz.OmnitableRepeaterBehavior"
@@ -3422,7 +3426,8 @@
               "name": "value"
             },
             {
-              "name": "flush = false"
+              "name": "flush",
+              "defaultValue": "false"
             }
           ],
           "inheritedFrom": "Cosmoz.OmnitableRepeaterBehavior"
@@ -3454,10 +3459,12 @@
               "name": "value"
             },
             {
-              "name": "isPathNotification = false"
+              "name": "isPathNotification",
+              "defaultValue": "false"
             },
             {
-              "name": "flush = false"
+              "name": "flush",
+              "defaultValue": "false"
             }
           ],
           "inheritedFrom": "Cosmoz.OmnitableRepeaterBehavior"
@@ -4333,7 +4340,8 @@
               "name": "value"
             },
             {
-              "name": "flush = false"
+              "name": "flush",
+              "defaultValue": "false"
             }
           ],
           "inheritedFrom": "Cosmoz.OmnitableRepeaterBehavior"
@@ -4365,10 +4373,12 @@
               "name": "value"
             },
             {
-              "name": "isPathNotification = false"
+              "name": "isPathNotification",
+              "defaultValue": "false"
             },
             {
-              "name": "flush = false"
+              "name": "flush",
+              "defaultValue": "false"
             }
           ],
           "inheritedFrom": "Cosmoz.OmnitableRepeaterBehavior"
@@ -5158,7 +5168,8 @@
               "name": "value"
             },
             {
-              "name": "flush = false"
+              "name": "flush",
+              "defaultValue": "false"
             }
           ],
           "inheritedFrom": "Cosmoz.OmnitableRepeaterBehavior"
@@ -5190,10 +5201,12 @@
               "name": "value"
             },
             {
-              "name": "isPathNotification = false"
+              "name": "isPathNotification",
+              "defaultValue": "false"
             },
             {
-              "name": "flush = false"
+              "name": "flush",
+              "defaultValue": "false"
             }
           ],
           "inheritedFrom": "Cosmoz.OmnitableRepeaterBehavior"
@@ -5880,11 +5893,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 55,
+              "line": 73,
               "column": 4
             },
             "end": {
-              "line": 58,
+              "line": 76,
               "column": 5
             }
           },
@@ -5900,11 +5913,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 59,
+              "line": 77,
               "column": 4
             },
             "end": {
-              "line": 62,
+              "line": 80,
               "column": 5
             }
           },
@@ -5986,11 +5999,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 64,
+              "line": 82,
               "column": 4
             },
             "end": {
-              "line": 67,
+              "line": 85,
               "column": 5
             }
           },
@@ -6006,11 +6019,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 68,
+              "line": 86,
               "column": 4
             },
             "end": {
-              "line": 71,
+              "line": 89,
               "column": 5
             }
           },
@@ -6419,24 +6432,62 @@
           "inheritedFrom": "Cosmoz.RangeColumnBehavior"
         },
         {
-          "name": "defaultCurrency",
+          "name": "currency",
           "type": "string",
-          "description": "",
+          "description": "Base Currency used in filters",
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 51,
+              "line": 54,
               "column": 4
             },
             "end": {
-              "line": 54,
+              "line": 56,
+              "column": 5
+            }
+          },
+          "metadata": {
+            "polymer": {}
+          }
+        },
+        {
+          "name": "autodetect",
+          "type": "boolean",
+          "description": "If this is set true then currency property will be the currency with highest occurrence in values",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 61,
+              "column": 4
+            },
+            "end": {
+              "line": 64,
               "column": 5
             }
           },
           "metadata": {
             "polymer": {}
           },
-          "defaultValue": "\"SEK\""
+          "defaultValue": "false"
+        },
+        {
+          "name": "rates",
+          "type": "Object",
+          "description": "Exchange rates of currencies. Example: {\"EUR\": 1, \"USD\":0.8169982616, \"AUD\":0.6529827192, \"SEK\": 0.1019271438}'\nDefault exchange rate is 1 and it is used for every currency that is present on column values but missing from exchange rates object.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 70,
+              "column": 4
+            },
+            "end": {
+              "line": 72,
+              "column": 5
+            }
+          },
+          "metadata": {
+            "polymer": {}
+          }
         },
         {
           "name": "_filterText",
@@ -6445,32 +6496,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 72,
+              "line": 90,
               "column": 4
             },
             "end": {
-              "line": 75,
-              "column": 5
-            }
-          },
-          "metadata": {
-            "polymer": {
-              "readOnly": true
-            }
-          }
-        },
-        {
-          "name": "_formatters",
-          "type": "Object",
-          "description": "",
-          "privacy": "protected",
-          "sourceRange": {
-            "start": {
-              "line": 76,
-              "column": 4
-            },
-            "end": {
-              "line": 79,
+              "line": 93,
               "column": 5
             }
           },
@@ -6656,11 +6686,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 166,
+              "line": 202,
               "column": 3
             },
             "end": {
-              "line": 175,
+              "line": 211,
               "column": 4
             }
           },
@@ -6680,11 +6710,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 148,
+              "line": 177,
               "column": 3
             },
             "end": {
-              "line": 150,
+              "line": 179,
               "column": 4
             }
           },
@@ -6730,11 +6760,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 159,
+              "line": 188,
               "column": 3
             },
             "end": {
-              "line": 165,
+              "line": 201,
               "column": 4
             }
           },
@@ -6752,7 +6782,7 @@
             }
           ],
           "return": {
-            "type": "(Number|void)",
+            "type": "(Number | void)",
             "desc": "Valid value or void"
           }
         },
@@ -7332,12 +7362,12 @@
           "params": [
             {
               "name": "value",
-              "type": "(Number|*)",
+              "type": "(Number | *)",
               "description": "The value to convert to number"
             },
             {
               "name": "limit",
-              "type": "(Number|*)",
+              "type": "(Number | *)",
               "description": "The value used to limit the number"
             },
             {
@@ -7347,7 +7377,7 @@
             }
           ],
           "return": {
-            "type": "(Number|void)",
+            "type": "(Number | void)",
             "desc": "Value converted to Number or void"
           },
           "inheritedFrom": "Cosmoz.RangeColumnBehavior"
@@ -7358,11 +7388,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 144,
+              "line": 173,
               "column": 3
             },
             "end": {
-              "line": 146,
+              "line": 175,
               "column": 4
             }
           },
@@ -7375,11 +7405,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 189,
+              "line": 238,
               "column": 3
             },
             "end": {
-              "line": 200,
+              "line": 245,
               "column": 4
             }
           },
@@ -7389,9 +7419,6 @@
               "name": "value",
               "type": "Object",
               "description": "Amount to be formated"
-            },
-            {
-              "name": "_formatters = this._formatters"
             }
           ],
           "return": {
@@ -7541,11 +7568,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 227,
+              "line": 272,
               "column": 3
             },
             "end": {
-              "line": 236,
+              "line": 281,
               "column": 4
             }
           },
@@ -7565,11 +7592,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 219,
+              "line": 264,
               "column": 3
             },
             "end": {
-              "line": 225,
+              "line": 270,
               "column": 4
             }
           },
@@ -7675,11 +7702,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 238,
+              "line": 283,
               "column": 3
             },
             "end": {
-              "line": 243,
+              "line": 288,
               "column": 4
             }
           },
@@ -7696,11 +7723,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 245,
+              "line": 290,
               "column": 3
             },
             "end": {
-              "line": 257,
+              "line": 302,
               "column": 4
             }
           },
@@ -7712,28 +7739,30 @@
           ]
         },
         {
-          "name": "_computePossibleFormatters",
-          "description": "",
+          "name": "_valuesChanged",
+          "description": "Auto-detect currency property: Most frequently occurring currency",
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 81,
+              "line": 106,
               "column": 3
             },
             "end": {
-              "line": 102,
+              "line": 131,
               "column": 4
             }
           },
           "metadata": {},
           "params": [
             {
-              "name": "locale"
-            },
-            {
-              "name": "values"
+              "name": "values",
+              "type": "Array",
+              "description": "Array of amounts"
             }
-          ]
+          ],
+          "return": {
+            "type": "void"
+          }
         },
         {
           "name": "toAmount",
@@ -7741,11 +7770,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 112,
+              "line": 141,
               "column": 3
             },
             "end": {
-              "line": 142,
+              "line": 171,
               "column": 4
             }
           },
@@ -7768,7 +7797,7 @@
             }
           ],
           "return": {
-            "type": "(Object|void)",
+            "type": "(Object | void)",
             "desc": "Value converted to Number or void"
           }
         },
@@ -7778,11 +7807,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 177,
+              "line": 213,
               "column": 3
             },
             "end": {
-              "line": 180,
+              "line": 216,
               "column": 4
             }
           },
@@ -7797,16 +7826,40 @@
           ]
         },
         {
+          "name": "getFormatter",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 218,
+              "column": 3
+            },
+            "end": {
+              "line": 229,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "currency"
+            },
+            {
+              "name": "locale"
+            }
+          ]
+        },
+        {
           "name": "_amountValueChanged",
           "description": "",
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 202,
+              "line": 247,
               "column": 3
             },
             "end": {
-              "line": 217,
+              "line": 262,
               "column": 4
             }
           },
@@ -7823,11 +7876,11 @@
       "metadata": {},
       "sourceRange": {
         "start": {
-          "line": 41,
+          "line": 40,
           "column": 10
         },
         "end": {
-          "line": 258,
+          "line": 303,
           "column": 3
         }
       },
@@ -8091,11 +8144,11 @@
           "description": "",
           "sourceRange": {
             "start": {
-              "line": 55,
+              "line": 73,
               "column": 4
             },
             "end": {
-              "line": 58,
+              "line": 76,
               "column": 5
             }
           },
@@ -8107,11 +8160,11 @@
           "description": "",
           "sourceRange": {
             "start": {
-              "line": 59,
+              "line": 77,
               "column": 4
             },
             "end": {
-              "line": 62,
+              "line": 80,
               "column": 5
             }
           },
@@ -8177,11 +8230,11 @@
           "description": "",
           "sourceRange": {
             "start": {
-              "line": 64,
+              "line": 82,
               "column": 4
             },
             "end": {
-              "line": 67,
+              "line": 85,
               "column": 5
             }
           },
@@ -8193,11 +8246,11 @@
           "description": "",
           "sourceRange": {
             "start": {
-              "line": 68,
+              "line": 86,
               "column": 4
             },
             "end": {
-              "line": 71,
+              "line": 89,
               "column": 5
             }
           },
@@ -8403,20 +8456,52 @@
           "inheritedFrom": "Cosmoz.RangeColumnBehavior"
         },
         {
-          "name": "default-currency",
-          "description": "",
+          "name": "currency",
+          "description": "Base Currency used in filters",
           "sourceRange": {
             "start": {
-              "line": 51,
+              "line": 54,
               "column": 4
             },
             "end": {
-              "line": 54,
+              "line": 56,
               "column": 5
             }
           },
           "metadata": {},
           "type": "string"
+        },
+        {
+          "name": "autodetect",
+          "description": "If this is set true then currency property will be the currency with highest occurrence in values",
+          "sourceRange": {
+            "start": {
+              "line": 61,
+              "column": 4
+            },
+            "end": {
+              "line": 64,
+              "column": 5
+            }
+          },
+          "metadata": {},
+          "type": "boolean"
+        },
+        {
+          "name": "rates",
+          "description": "Exchange rates of currencies. Example: {\"EUR\": 1, \"USD\":0.8169982616, \"AUD\":0.6529827192, \"SEK\": 0.1019271438}'\nDefault exchange rate is 1 and it is used for every currency that is present on column values but missing from exchange rates object.",
+          "sourceRange": {
+            "start": {
+              "line": 70,
+              "column": 4
+            },
+            "end": {
+              "line": 72,
+              "column": 5
+            }
+          },
+          "metadata": {},
+          "type": "Object"
         }
       ],
       "events": [
@@ -9585,7 +9670,7 @@
           "params": [
             {
               "name": "filterNotify",
-              "type": "(Object|void)",
+              "type": "(Object | void)",
               "description": "filter.*"
             }
           ],
@@ -11604,7 +11689,7 @@
           "params": [
             {
               "name": "filterNotify",
-              "type": "(Object|void)",
+              "type": "(Object | void)",
               "description": "filter.*"
             }
           ],
@@ -13621,7 +13706,7 @@
           "metadata": {},
           "params": [],
           "return": {
-            "type": "(Number|void)",
+            "type": "(Number | void)",
             "desc": "Valid value or void"
           },
           "inheritedFrom": "Cosmoz.DateColumnBehaviorImpl"
@@ -14202,12 +14287,12 @@
           "params": [
             {
               "name": "value",
-              "type": "(Number|*)",
+              "type": "(Number | *)",
               "description": "The value to convert to number"
             },
             {
               "name": "limit",
-              "type": "(Number|*)",
+              "type": "(Number | *)",
               "description": "The value used to limit the number"
             },
             {
@@ -14217,7 +14302,7 @@
             }
           ],
           "return": {
-            "type": "(Number|void)",
+            "type": "(Number | void)",
             "desc": "Value converted to Number or void"
           },
           "inheritedFrom": "Cosmoz.RangeColumnBehavior"
@@ -14607,12 +14692,12 @@
           "params": [
             {
               "name": "value",
-              "type": "(Date|String)",
+              "type": "(Date | String)",
               "description": "Value to convert to date"
             },
             {
               "name": "limit",
-              "type": "(Date|String)",
+              "type": "(Date | String)",
               "description": "Value used to limit the date"
             },
             {
@@ -14622,7 +14707,7 @@
             }
           ],
           "return": {
-            "type": "(Date|void)",
+            "type": "(Date | void)",
             "desc": "Value converted to date optionaly limitated"
           },
           "inheritedFrom": "Cosmoz.DateColumnBehaviorImpl"
@@ -15332,7 +15417,7 @@
       "properties": [
         {
           "name": "abs",
-          "type": "Member",
+          "type": "Object",
           "description": "Math.abs",
           "privacy": "public",
           "sourceRange": {
@@ -17541,7 +17626,7 @@
           "params": [
             {
               "name": "filterNotify",
-              "type": "(Object|void)",
+              "type": "(Object | void)",
               "description": "filter.*"
             }
           ],
@@ -19819,7 +19904,7 @@
           "params": [
             {
               "name": "filterNotify",
-              "type": "(Object|void)",
+              "type": "(Object | void)",
               "description": "filter.*"
             }
           ],
@@ -22140,7 +22225,7 @@
             }
           ],
           "return": {
-            "type": "(Number|void)",
+            "type": "(Number | void)",
             "desc": "Valid value or void"
           },
           "inheritedFrom": "Cosmoz.RangeColumnBehavior"
@@ -22721,12 +22806,12 @@
           "params": [
             {
               "name": "value",
-              "type": "(Number|*)",
+              "type": "(Number | *)",
               "description": "The value to convert to number"
             },
             {
               "name": "limit",
-              "type": "(Number|*)",
+              "type": "(Number | *)",
               "description": "The value used to limit the number"
             },
             {
@@ -22736,7 +22821,7 @@
             }
           ],
           "return": {
-            "type": "(Number|void)",
+            "type": "(Number | void)",
             "desc": "Value converted to Number or void"
           },
           "inheritedFrom": "Cosmoz.RangeColumnBehavior"
@@ -25021,7 +25106,7 @@
             }
           ],
           "return": {
-            "type": "(Number|void)",
+            "type": "(Number | void)",
             "desc": "Valid value or void"
           }
         },
@@ -25601,12 +25686,12 @@
           "params": [
             {
               "name": "value",
-              "type": "(Number|*)",
+              "type": "(Number | *)",
               "description": "The value to convert to number"
             },
             {
               "name": "limit",
-              "type": "(Number|*)",
+              "type": "(Number | *)",
               "description": "The value used to limit the number"
             },
             {
@@ -25616,7 +25701,7 @@
             }
           ],
           "return": {
-            "type": "(Number|void)",
+            "type": "(Number | void)",
             "desc": "Value converted to Number or void"
           },
           "inheritedFrom": "Cosmoz.RangeColumnBehavior"
@@ -25995,12 +26080,12 @@
           "params": [
             {
               "name": "value",
-              "type": "(Date|Number)",
+              "type": "(Date | Number)",
               "description": "Date or Timestamp ( miliseconds since property _fixedDate ) to be converted"
             },
             {
               "name": "limit",
-              "type": "(Date|Number)",
+              "type": "(Date | Number)",
               "description": "Optional value to limit the date."
             },
             {
@@ -26010,7 +26095,7 @@
             }
           ],
           "return": {
-            "type": "(Date|void)",
+            "type": "(Date | void)",
             "desc": "Value converted to date optionaly limitated"
           }
         },
@@ -27947,7 +28032,7 @@
           "metadata": {},
           "params": [],
           "return": {
-            "type": "(Number|void)",
+            "type": "(Number | void)",
             "desc": "Valid value or void"
           },
           "inheritedFrom": "Cosmoz.DateColumnBehaviorImpl"
@@ -28528,12 +28613,12 @@
           "params": [
             {
               "name": "value",
-              "type": "(Number|*)",
+              "type": "(Number | *)",
               "description": "The value to convert to number"
             },
             {
               "name": "limit",
-              "type": "(Number|*)",
+              "type": "(Number | *)",
               "description": "The value used to limit the number"
             },
             {
@@ -28543,7 +28628,7 @@
             }
           ],
           "return": {
-            "type": "(Number|void)",
+            "type": "(Number | void)",
             "desc": "Value converted to Number or void"
           },
           "inheritedFrom": "Cosmoz.RangeColumnBehavior"
@@ -28923,12 +29008,12 @@
           "params": [
             {
               "name": "value",
-              "type": "(Date|String)",
+              "type": "(Date | String)",
               "description": "Value to convert to date"
             },
             {
               "name": "limit",
-              "type": "(Date|String)",
+              "type": "(Date | String)",
               "description": "Value used to limit the date"
             },
             {
@@ -28938,7 +29023,7 @@
             }
           ],
           "return": {
-            "type": "(Date|void)",
+            "type": "(Date | void)",
             "desc": "Value converted to date optionaly limitated"
           },
           "inheritedFrom": "Cosmoz.DateColumnBehaviorImpl"
@@ -31296,7 +31381,10 @@
               "description": "The value of the column attribute."
             },
             {
-              "name": "attribute = 'name'"
+              "name": "attribute",
+              "type": "String",
+              "defaultValue": "'name'",
+              "description": "The attribute name of the column."
             },
             {
               "name": "columns = this.columns"
@@ -33810,7 +33898,7 @@
               "params": [
                 {
                   "name": "filterNotify",
-                  "type": "(Object|void)",
+                  "type": "(Object | void)",
                   "description": "filter.*"
                 }
               ],
@@ -34910,7 +34998,8 @@
                   "name": "value"
                 },
                 {
-                  "name": "flush = false"
+                  "name": "flush",
+                  "defaultValue": "false"
                 }
               ]
             },
@@ -34940,10 +35029,12 @@
                   "name": "value"
                 },
                 {
-                  "name": "isPathNotification = false"
+                  "name": "isPathNotification",
+                  "defaultValue": "false"
                 },
                 {
-                  "name": "flush = false"
+                  "name": "flush",
+                  "defaultValue": "false"
                 }
               ]
             },
@@ -35252,12 +35343,12 @@
               "params": [
                 {
                   "name": "value",
-                  "type": "(Number|*)",
+                  "type": "(Number | *)",
                   "description": "The value to convert to number"
                 },
                 {
                   "name": "limit",
-                  "type": "(Number|*)",
+                  "type": "(Number | *)",
                   "description": "The value used to limit the number"
                 },
                 {
@@ -35267,7 +35358,7 @@
                 }
               ],
               "return": {
-                "type": "(Number|void)",
+                "type": "(Number | void)",
                 "desc": "Value converted to Number or void"
               }
             },
@@ -35316,7 +35407,7 @@
                 }
               ],
               "return": {
-                "type": "(Number|void)",
+                "type": "(Number | void)",
                 "desc": "Valid value or void"
               }
             },
@@ -36068,12 +36159,12 @@
               "params": [
                 {
                   "name": "value",
-                  "type": "(Date|String)",
+                  "type": "(Date | String)",
                   "description": "Value to convert to date"
                 },
                 {
                   "name": "limit",
-                  "type": "(Date|String)",
+                  "type": "(Date | String)",
                   "description": "Value used to limit the date"
                 },
                 {
@@ -36083,7 +36174,7 @@
                 }
               ],
               "return": {
-                "type": "(Date|void)",
+                "type": "(Date | void)",
                 "desc": "Value converted to date optionaly limitated"
               }
             },
@@ -36121,7 +36212,7 @@
               "metadata": {},
               "params": [],
               "return": {
-                "type": "(Number|void)",
+                "type": "(Number | void)",
                 "desc": "Valid value or void"
               }
             },
@@ -36740,12 +36831,12 @@
               "params": [
                 {
                   "name": "value",
-                  "type": "(Number|*)",
+                  "type": "(Number | *)",
                   "description": "The value to convert to number"
                 },
                 {
                   "name": "limit",
-                  "type": "(Number|*)",
+                  "type": "(Number | *)",
                   "description": "The value used to limit the number"
                 },
                 {
@@ -36755,7 +36846,7 @@
                 }
               ],
               "return": {
-                "type": "(Number|void)",
+                "type": "(Number | void)",
                 "desc": "Value converted to Number or void"
               },
               "inheritedFrom": "Cosmoz.RangeColumnBehavior"
@@ -36795,7 +36886,7 @@
               "metadata": {},
               "params": [],
               "return": {
-                "type": "(Number|void)",
+                "type": "(Number | void)",
                 "desc": "Valid value or void"
               },
               "inheritedFrom": "Cosmoz.DateColumnBehaviorImpl"
@@ -37351,12 +37442,12 @@
               "params": [
                 {
                   "name": "value",
-                  "type": "(Date|String)",
+                  "type": "(Date | String)",
                   "description": "Value to convert to date"
                 },
                 {
                   "name": "limit",
-                  "type": "(Date|String)",
+                  "type": "(Date | String)",
                   "description": "Value used to limit the date"
                 },
                 {
@@ -37366,7 +37457,7 @@
                 }
               ],
               "return": {
-                "type": "(Date|void)",
+                "type": "(Date | void)",
                 "desc": "Value converted to date optionaly limitated"
               },
               "inheritedFrom": "Cosmoz.DateColumnBehaviorImpl"
