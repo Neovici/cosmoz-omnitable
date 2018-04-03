@@ -96,52 +96,41 @@
 
 			_filterChangedFromAbove: false,
 
-			_textFilterChanged: function (textFilter) {
+			_textFilterChanged(textFilter) {
 				if (this._filterChangedFromAbove) {
 					this._filterChangedFromAbove = false;
 					return;
 				}
-				var b = null;
-				if (textFilter) {
-					b = textFilter === 'true';
-				}
 				this._filterChangedFromInput = true;
-				this.set('filter', b);
+				this.set('filter', textFilter && textFilter === 'true' ? true : null);
 			},
 
-			_filterChanged: function (filter) {
+			_filterChanged(filter) {
 				if (this._filterChangedFromInput) {
 					this._filterChangedFromInput = false;
 					return;
 				}
-
 				this._filterChangedFromAbove = true;
-				if (typeof filter === 'boolean') {
-					this._textFilter = filter.toString();
-				} else {
-					this._textFilter = null;
-				}
-
+				this._textFilter = typeof filter === 'boolean' ? filter.toString() : null;
 			},
 
-			getString: function (item, valuePath) {
-				var value = this.get(valuePath || this.valuePath, item);
+			getString(item, valuePath) {
+				const value = this.get(valuePath || this.valuePath, item);
 				return value ? this.trueLabel : this.falseLabel;
 			},
 
-			getFilterFn: function () {
+			getFilterFn() {
 				if (this.filter != null) {
 					return this._applySingleFilter.bind(this);
 				}
 			},
 
-			_applySingleFilter: function (item) {
-				var value = this.get(this.valuePath, item);
-				return value === this.filter;
+			_applySingleFilter(item) {
+				return this.get(this.valuePath, item) === this.filter;
 			},
 
-			_computeSelected: function (item, valuePath) {
-				var value = this.get(valuePath, item);
+			_computeSelected(item, valuePath) {
+				const value = this.get(valuePath || this.valuePath, item);
 				if (value != null) {
 					return value.toString();
 				}
@@ -152,7 +141,7 @@
 			/** cosmoz-omnitable-column-behavior */
 
 			_valueChanged(e) {
-				var value = e.target.selected === 'true',
+				const value = e.target.selected === 'true',
 					item = e.model.item,
 					oldValue = this.get(this.valuePath, item),
 					formatFn = value => {

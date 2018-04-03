@@ -126,6 +126,54 @@
 
 				assert.equal(column.sortOn, 'sortOnValuePath');
 			});
+
+			test('_serializeFilter returns filter', () => {
+				const column = omnitable.columns.find(col => {
+						return col.name === 'columnWithGroupOn';
+					}),
+					filter = {key: 'value'};
+				assert.deepEqual(column._serializeFilter(filter), filter);
+			});
+
+			test('_serializeFilter uses default filter', () => {
+				const column = omnitable.columns.find(col => {
+					return col.name === 'columnWithGroupOn';
+				});
+				assert.isNull(column.filter);
+				column.filter = {key: 'value'};
+				assert.deepEqual(column._serializeFilter(), column.filter);
+			});
+
+			test('_serializeFilter handles null filter', () => {
+				const column = omnitable.columns.find(col => {
+					return col.name === 'columnWithGroupOn';
+				});
+				assert.isNull(column.filter);
+				assert.isNull(column._serializeFilter());
+			});
+
+			test('_deserializeFilter returns object', () => {
+				const column = omnitable.columns.find(col => {
+					return col.name === 'columnWithGroupOn';
+				});
+				assert.deepEqual(column._deserializeFilter({key: 'value'}), {key: 'value'});
+			});
+
+			test('_deserializeFilter handles null', () => {
+				const column = omnitable.columns.find(col => {
+					return col.name === 'columnWithGroupOn';
+				});
+				assert.isNull(column._deserializeFilter());
+			});
+
+			test('resetFilter resets filter to null', () => {
+				const column = omnitable.columns.find(col => {
+					return col.name === 'columnWithGroupOn';
+				});
+				column.filter = {key: 'value'};
+				column.resetFilter();
+				assert.isNull(column.filter);
+			});
 		});
 
 		suite('it logs unnamed column', function () {

@@ -107,6 +107,9 @@
 			},
 
 			_getLabelForValue: function (value) {
+				if (value == null) {
+					return null;
+				}
 				return value.toString();
 			},
 
@@ -124,14 +127,17 @@
 			},
 
 			_applySingleFilter: function (filterString, item) {
-				const value = this.get(this.valuePath, item).toString().toLowerCase();
-				return value === filterString;
+				const value = this.get(this.valuePath, item);
+				if (value == null) {
+					return false;
+				}
+				return value.toString().toLowerCase() === filterString;
 			},
 
 			_applyMultiFilter: function (filter, item) {
 				const valueFilter = element => {
 						const value = this.valueProperty ? this.get(this.valueProperty, element) : element;
-						return value.toString().toLowerCase();
+						return value ? value.toString().toLowerCase() : null;
 					},
 					filterArray = filter.map(valueFilter),
 					listValue = this.get(this.valuePath, item);

@@ -69,7 +69,7 @@
 				'_filterChanged(filter, autocompleteItems)'
 			],
 
-			_computeAutocompleteItems: function () {
+			_computeAutocompleteItems() {
 				return this.values
 					.reduce((acc, val) => acc.concat(val), [])
 					// Make the item list unique
@@ -83,17 +83,25 @@
 					});
 			},
 
-			_getLabelForValue: function (value) {
+			_getLabelForValue(value) {
+				if (value == null) {
+					return null;
+				}
 				return value.toString();
 			},
 
-			_applySingleFilter: function (filterString, item) {
-				const value = this.get(this.valuePath, item).toString().toLowerCase();
-				return value === filterString;
+			_applySingleFilter(filterString, item) {
+				const value = this.get(this.valuePath, item);
+				if (value == null) {
+					return false;
+				}
+				return value.toString().toLowerCase() === filterString;
 			},
 
-			_applyMultiFilter: function (filter, item) {
-				const filterArray = filter.map(element => element.toString().toLowerCase()),
+			_applyMultiFilter(filter, item) {
+				const filterArray = filter.map(element => {
+						return element ? element.toString().toLowerCase() : null;
+					}),
 					listValue = this.get(this.valuePath, item);
 
 				return listValue.some(val =>
@@ -101,7 +109,7 @@
 				);
 			},
 
-			_autocompleteSelectedItemsChanged: function () {
+			_autocompleteSelectedItemsChanged() {
 				const filter = this.filter,
 					items = this.autocompleteSelectedItems;
 				if (Array.isArray(filter) && items.length === this.filter.length &&  items.every((item, i) => item.value === filter[i])) {
