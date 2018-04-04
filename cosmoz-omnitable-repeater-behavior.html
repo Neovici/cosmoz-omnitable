@@ -197,9 +197,6 @@
 			this._elements
 				.splice(start, removedColumns.length)
 				.forEach(element => {
-					if (element.hasAttribute('hidden')) {
-						element.removeAttribute('hidden');
-					}
 					this._detachTemplateInstance(element.__instance, element.__column, element);
 					element.__instance = element.__column = null;
 					Polymer.dom(this).removeChild(element);
