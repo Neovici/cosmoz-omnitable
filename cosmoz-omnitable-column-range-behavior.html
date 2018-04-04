@@ -269,27 +269,34 @@
 			this.debounce('_limitInput', this._limitInput, 600);
 		},
 
+		/**
+		 * Debounced function called by `_filterInputChanged` when `_filterInput` changes.
+		 * @returns {void}
+		 */
 		_limitInput() {
 			const input = this._filterInput,
 				path = this.__inputChangePath,
-				limit = this._limit;
+				value = path ? this._fromInputString(this.get(path, input), path) : null;
 
-			if (path != null) {
-				const value = this._fromInputString(this.get(path, input), path);
-				this.__inputChangePath = null;
-				if (value != null) {
-					const cPath = path === 'min' ? 'from' : 'to',
-						limited = this.toValue(
-							this.get(cPath + 'Max', limit),
-							this.toValue(value, this.get(cPath + 'Min', limit), Math.max),
-							Math.min
-						);
+			this.__inputChangePath = null;
 
-					if (this.getComparableValue(value) !== this.getComparableValue(limited)) {
-						this.set('_filterInput.' + path, this._toInputString(limited, path));
-						this.cancelDebouncer('_limitInput');
-					}
-				}
+			if (value == null) {
+				//Don't limit a null value
+				return this._updateFilter();
+			}
+
+			const limit = this._limit,
+				limitPath = path === 'min' ? 'from' : 'to',
+				limitedValue = value != null ? this.toValue(
+					this.get(limitPath + 'Max', limit),
+					this.toValue(value, this.get(limitPath + 'Min', limit), Math.max),
+					Math.min
+				) : null;
+
+			if (this.getComparableValue(value) !== this.getComparableValue(limitedValue)) {
+				//set value without debouncing _limitInput again.
+				this.set(['_filterInput', path], this._toInputString(limitedValue, path));
+				this.cancelDebouncer('_limitInput');
 			}
 
 			this._updateFilter();
