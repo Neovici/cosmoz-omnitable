@@ -87,7 +87,20 @@
 				const localDate = this.toValue(this._toLocalISOString(date));
 				localDate.setHours(0, 0, 0, 0);
 				return localDate;
+			},
+
+			_filterInputChanged(change) {
+				const path = change.path.split('.')[1],
+					value = path && change.value;
+
+				// don't trigger change when date input begins with 0; Year (starting from 0000) was limited before the needed value was typed.
+				if (value && value.match(/^0+/)) {
+					this.cancelDebouncer('_limitInput');
+					return;
+				}
+				Cosmoz.RangeColumnBehavior._filterInputChanged.call(this, change);
 			}
+
 		});
 
 	</script>
