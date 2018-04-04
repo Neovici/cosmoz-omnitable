@@ -198,7 +198,7 @@
 				.splice(start, removedColumns.length)
 				.forEach(element => {
 					this._detachTemplateInstance(element.__instance, element.__column, element);
-					element.__instance = element.__column = null;
+					element.__instance = element.__column = element.column = null;
 					Polymer.dom(this).removeChild(element);
 				});
 		},
