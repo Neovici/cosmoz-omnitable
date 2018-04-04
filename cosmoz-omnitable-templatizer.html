@@ -98,6 +98,12 @@
 			this._reusableTemplateInstances.push(instance);
 		},
 
+		detached() {
+			// This runs only in 2.x because in 1.x the templatizer isn't even attached.
+			this._reusableTemplateInstances.splice(0);
+			this._templateInstancesInUse.splice(0);
+		},
+
 		releaseInstances: function () {
 			this._reusableTemplateInstances = this._templateInstancesInUse;
 			this._templateInstancesInUse = [];
