@@ -611,30 +611,11 @@
 				return array;
 			}, []);
 
-			groups.sort(function (a, b) {
-				var
-					v1 = groupOnColumn.getComparableValue(a.items[0], groupOnColumn.groupOn),
+			groups.sort((a, b) => {
+				const v1 = groupOnColumn.getComparableValue(a.items[0], groupOnColumn.groupOn),
 					v2 = groupOnColumn.getComparableValue(b.items[0], groupOnColumn.groupOn);
 
-				if (typeof v1 === 'object' && typeof v2 === 'object') {
-					// HACK(pasleq): worst case, compare using values converted to string
-					v1 = v1.toString();
-					v2 = v2.toString();
-				}
-				if (typeof v1 === 'number' && typeof v2 === 'number') {
-					return v1 - v2;
-				}
-				if (typeof v1 === 'string' && typeof v2 === 'string') {
-					return v1 < v2 ? -1 : 1;
-				}
-				if (typeof v1 === 'boolean' && typeof v2 === 'boolean') {
-					if (v1 === v2) {
-						return 0;
-					}
-					return v1 ? -1 : 1;
-				}
-
-				return 0;
+				return this._genericSorter(v1, v2);
 			});
 
 			if (this.groupOnDescending) {
@@ -652,45 +633,52 @@
 			this.debounce('sortItems', this._sortFilteredGroupedItems);
 		},
 
+		_genericSorter(a, b) {
+			if (a === b) {
+				return 0;
+			}
+
+			if (a === undefined) {
+				return -1;
+			}
+
+			if (b === undefined) {
+				return 1;
+			}
+
+			if (typeof a === 'object' && typeof b === 'object') {
+				// HACK(pasleq): worst case, compare using values converted to string
+				return a.toString() < b.toString() ? -1 : 1;
+			}
+
+			if (typeof a === 'number' && typeof b === 'number') {
+				return a - b;
+			}
+
+			if (typeof a === 'string' && typeof b === 'string') {
+				return a < b ? -1 : 1;
+			}
+
+			if (typeof a === 'boolean' && typeof b === 'boolean') {
+				return a ? -1 : 1;
+			}
+
+			console.warn('unsupported sort', typeof a, a, typeof b, b);
+			return 0;
+		},
+
 		/**
-		 * Sorting method, can be overridden
+		 * compareFunction for Array.prototype.sort(), can be overridden
+		 * See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
 		 * @param {*} a First compare value
 		 * @param {*} b Second compare value
-		 * @returns {void}
+		 * @returns {number} -1 if a has lower index, 0 if a and b index are same, 1 if b is lower
 		*/
 		sorter(a, b) {
 			const v1 = this.sortOnColumn.getComparableValue(a, this.sortOnColumn.sortOn),
 				v2 = this.sortOnColumn.getComparableValue(b, this.sortOnColumn.sortOn);
 
-			if (v1 === v2) {
-				return 0;
-			}
-
-			if (v1 === undefined) {
-				return -1;
-			}
-
-			if (v2 === undefined) {
-				return 1;
-			}
-
-			if (typeof v1 === 'number' && typeof v2 === 'number') {
-				return v1 - v2;
-			}
-
-			if (typeof v1 === 'string' && typeof v2 === 'string') {
-				return v1 < v2 ? -1 : 1;
-			}
-
-			if (typeof v1 === 'boolean' && typeof v2 === 'boolean') {
-				if (v1 === v2) {
-					return 0;
-				}
-				return v1 ? -1 : 1;
-			}
-
-			console.warn('unsupported sort', typeof v1, v1, typeof v2, v2);
-			return 0;
+			return this._genericSorter(v1, v2);
 		},
 
 		_sortFilteredGroupedItems: function () {
