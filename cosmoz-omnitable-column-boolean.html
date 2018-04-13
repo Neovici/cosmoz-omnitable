@@ -102,7 +102,11 @@
 					return;
 				}
 				this._filterChangedFromInput = true;
-				this.set('filter', textFilter && textFilter === 'true' ? true : null);
+				if (textFilter) {
+					this.set('filter', textFilter === 'true' ? true : false);
+				} else {
+					this.set('filter', null);
+				}
 			},
 
 			_filterChanged(filter) {
