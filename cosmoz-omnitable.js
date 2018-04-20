@@ -229,6 +229,11 @@
 				computed: '_computeRouteHashKeyRule(hashParam)'
 			},
 
+			immediateDataInit: {
+				type: Boolean,
+				value: false
+			},
+
 			/**
 			 * True when all items are selected.
 			 */
@@ -312,7 +317,7 @@
 		},
 
 		visibleChanged(turnedVisible) {
-			if (turnedVisible && !Array.isArray(this.columns)) {
+			if (turnedVisible && !Array.isArray(this.columns) || this.immediateDataInit && !Array.isArray(this.visibleColumns)) {
 				this._debounceUpdateColumns();
 			}
 		},
@@ -407,7 +412,7 @@
 
 			this._setVisible(this.offsetParent != null);
 
-			if (!this.visible) {
+			if (!this.visible && !this.immediateDataInit) {
 				return;
 			}
 
@@ -452,7 +457,10 @@
 			}
 
 			this.columns = columns;
-			this.visibleColumns = columns.slice();
+
+			if (this.visible) {
+				this.visibleColumns = columns.slice();
+			}
 
 			this._updateParamsFromHash();
 
