@@ -111,6 +111,9 @@
 		},
 
 		renderValue(value, formatter = this.formatter) {
+			if (formatter == null) {
+				return;
+			}
 			const date = this.toValue(value);
 			if (date == null) {
 				return;
