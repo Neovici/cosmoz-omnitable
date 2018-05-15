@@ -150,7 +150,10 @@
 			 */
 			filteredItems: {
 				type: Array,
-				observer: '_debounceGroupItems'
+				observer: '_debounceGroupItems',
+				value() {
+					return [];
+				}
 			},
 
 			/**
@@ -569,7 +572,7 @@
 		},
 
 		_debounceGroupItems: function () {
-			if (!this.isAttached || !this.filteredItems) {
+			if (!this.isAttached || !Array.isArray(this.filteredItems) || this.filteredItems.length === 0) {
 				return;
 			}
 			this.debounce('groupItems', this._groupItems);
