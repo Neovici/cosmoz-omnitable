@@ -1,6 +1,7 @@
 <link rel="import" href="../paper-autocomplete-chips/paper-autocomplete-chips.html">
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 <link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-list-behavior.html">
 
 <dom-module id="cosmoz-omnitable-column-list-horizontal">
 	<template>
@@ -49,7 +50,8 @@
 
 			behaviors: [
 				Cosmoz.OmnitableColumnBehavior,
-				Cosmoz.TranslatableBehavior
+				Cosmoz.TranslatableBehavior,
+				Cosmoz.ListColumnBehavior
 			],
 
 			properties: {
@@ -72,16 +74,6 @@
 					value() {
 						return this._getDefaultFilter();
 					}
-				},
-
-				textProperty: {
-					type: String,
-					value: 'label'
-				},
-
-				valueProperty: {
-					type: String,
-					value: 'value'
 				}
 			},
 
@@ -111,19 +103,6 @@
 					return null;
 				}
 				return value.toString();
-			},
-
-			getString(item, valuePath = this.valuePath) {
-				const values = this.get(valuePath, item);
-
-				if (values == null) {
-					return '';
-				}
-
-				return values
-					.map(value => this.textProperty ? this.get(this.textProperty, value) : value)
-					.filter((value, index, array) => array.indexOf(value) === index)
-					.join(', ');
 			},
 
 			_applySingleFilter: function (filterString, item) {

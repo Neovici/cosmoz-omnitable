@@ -1,6 +1,7 @@
 <link rel="import" href="../paper-autocomplete-chips/paper-autocomplete-chips.html">
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 <link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-list-behavior.html">
 <link rel="import" href="cosmoz-omnitable-column-list-data.html">
 
 <dom-module id="cosmoz-omnitable-column-list">
@@ -32,7 +33,8 @@
 
 			behaviors: [
 				Cosmoz.OmnitableColumnBehavior,
-				Cosmoz.TranslatableBehavior
+				Cosmoz.TranslatableBehavior,
+				Cosmoz.ListColumnBehavior
 			],
 
 			properties: {

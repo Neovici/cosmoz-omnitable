@@ -1,0 +1,31 @@
+<script>
+	window.Cosmoz = window.Cosmoz || {};
+
+	/** @polymerBehavior */
+	Cosmoz.ListColumnBehavior = {
+		properties: {
+			textProperty: {
+				type: String,
+				value: 'label'
+			},
+
+			valueProperty: {
+				type: String,
+				value: 'value'
+			}
+		},
+
+		getString(item, valuePath = this.valuePath) {
+			const values = this.get(valuePath, item);
+
+			if (values == null) {
+				return '';
+			}
+
+			return values
+				.map(value => this.textProperty ? this.get(this.textProperty, value) : value)
+				.filter((value, index, array) => array.indexOf(value) === index)
+				.join(', ');
+		}
+	};
+</script>
