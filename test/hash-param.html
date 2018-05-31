@@ -89,11 +89,11 @@
 				});
 
 				test('updates filter from url hash', function (done) {
-					location.hash = '#/#test-filter--id=["1"]';
+					location.hash = '#/#test-filter--id=1';
 					instantiate(function () {
 						assert.isArray(omnitable.columns[0].filter);
 						assert.lengthOf(omnitable.columns[0].filter, 1);
-						assert.include(omnitable.columns[0].filter, '1');
+						assert.include(omnitable.columns[0].filter, 1);
 						done();
 					});
 				});
@@ -163,7 +163,7 @@
 						hash = omnitable._routeHash;
 					column.filter = [0, 1];
 					Polymer.Base.async(function () {
-						assert.equal(hash['test-filter--id'], '[0,1]');
+						assert.equal(hash['test-filter--id'], '0~1');
 						column.resetFilter();
 						Polymer.Base.async(function () {
 							assert.equal(hash['test-filter--id'], null);

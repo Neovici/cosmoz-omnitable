@@ -457,6 +457,14 @@
 			return this.deserialize(obj, type);
 		},
 
+		setFilterFromHash(value) {
+			const deserialized = this._deserializeFilter(value);
+
+			if (deserialized === null) {
+				return this.resetFilter();
+			}
+			this.set('filter', deserialized);
+		}
 	};
 
 </script>

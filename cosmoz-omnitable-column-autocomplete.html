@@ -85,6 +85,9 @@
 				},
 
 			},
+			observers: [
+				'_valuesForHashChanged(values.*)'
+			],
 
 			getComparableValue: function (item, valuePath = this.valuePath) {
 				return this.getString(item, valuePath);
@@ -161,7 +164,54 @@
 					}
 					return true;
 				});
+			},
+
+			_normalizeValue(value) {
+				if (value == null) {
+					return value;
+				}
+
+				return isNaN(value) ? value : Number(value);
+			},
+
+			_serializeFilter(filter = this.filter) {
+				if (!Array.isArray(filter) || filter.length === 0) {
+					return null;
+				}
+				const property = this.valueProperty;
+				return filter
+					.map(item => property ? this.get(property, item) : item)
+					.join('~');
+			},
+
+			_deserializeFilter(filterString) {
+				if (filterString == null || filterString  === '') {
+					return null;
+				}
+				const property = this.valueProperty;
+				return filterString
+					.split('~')
+					.map(item => this.values
+						.find(v => this._normalizeValue(property ? this.get(property, v) : v) === this._normalizeValue(item))
+					).filter(i => i != null);
+			},
+
+			_valuesForHashChanged() {
+				if (!Array.isArray(this.values) || this._pendingFilterString) {
+					return;
+				}
+				this.setFilterFromHash(this._pendingFilterString);
+				this._pendingFilterString = null;
+			},
+
+			setFilterFromHash(value) {
+				if (!Array.isArray(this.values)) {
+					this._pendingFilterString = value;
+					return;
+				}
+				Cosmoz.OmnitableColumnBehavior.setFilterFromHash.call(this, value);
 			}
+
 		});
 	</script>
 </dom-module>
