@@ -101,7 +101,7 @@
 					}),
 					listValue = this.get(this.valuePath, item);
 				return listValue.some(val =>
-					filterArray.indexOf(val.toString().toLowerCase()) >= 0
+					filterArray.indexOf(val[this.valueProperty].toLowerCase()) >= 0
 				);
 			},
 
