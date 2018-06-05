@@ -120,7 +120,7 @@
 					return;
 				}
 				this.autocompleteSelectedItems = this.filter.map(f => {
-					return autoItems.find(a => a.value === f);
+					return autoItems.find(a => a[this.valueProperty] === f);
 				});
 			}
 		});
