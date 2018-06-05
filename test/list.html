@@ -84,12 +84,12 @@
 			});
 
 			test('_applyMultiFilter works', () => {
-				assert.isTrue(column._applyMultiFilter([123, 456], { list: ['123', '345', '678']}));
+				assert.isTrue(column._applyMultiFilter([123, 456], { list: [123, 345, 678]}));
 			});
 
 			test('_filterChanged updates autocompleteSelectedItems', () => {
-				column.autocompleteSelectedItems = ['123', '456'];
-				assert.deepEqual(column._filterChanged([123, 456], ['123', '456']));
+				column.autocompleteSelectedItems = [123, 456];
+				assert.deepEqual(column._filterChanged([123, 456], [123, 456]));
 			});
 
 		});
