@@ -111,7 +111,7 @@
 				if (Array.isArray(filter) && items.length === this.filter.length &&  items.every((item, i) => item[this.valueProperty] === filter[i])) {
 					return;
 				}
-				this.filter = this.autocompleteSelectedItems.map(item => item.value);
+				this.filter = this.autocompleteSelectedItems.map(item => item[this.valueProperty]);
 			},
 
 			_filterChanged(filter, autoItems) {
