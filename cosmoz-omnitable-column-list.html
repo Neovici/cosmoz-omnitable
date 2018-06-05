@@ -63,7 +63,7 @@
 					value() {
 						return this._getDefaultFilter();
 					}
-				},
+				}
 			},
 
 			observers: [
@@ -75,58 +75,56 @@
 				return this.values
 					.reduce((acc, val) => acc.concat(val), [])
 					// Make the item list unique
-					.filter((value, index, array) => array.indexOf(value) === index)
-					.sort()
-					.map(value => {
-						return {
-							value: value,
-							label: this._getLabelForValue(value)
-						};
-					});
-			},
-
-			_getLabelForValue(value) {
-				if (value == null) {
-					return null;
-				}
-				return value.toString();
-			},
-
-			_applySingleFilter(filterString, item) {
-				const value = this.get(this.valuePath, item);
-				if (value == null) {
-					return false;
-				}
-				return value.toString().toLowerCase() === filterString;
+					.filter((value, index, array) => {
+						let arrayIndexMatching = -1;
+						array.forEach((arrayCurrentValue, arrayIndex) => {
+							if (arrayIndexMatching === -1) {
+								if (arrayCurrentValue instanceof Object && arrayCurrentValue[this.valueProperty] === value[this.valueProperty] || arrayCurrentValue === value) {
+									arrayIndexMatching = arrayIndex;
+								}
+							}
+						});
+						return arrayIndexMatching === index;
+					})
+					.sort();
 			},
 
 			_applyMultiFilter(filter, item) {
-				const filterArray = filter.map(element => {
-						return element ? element.toString().toLowerCase() : null;
-					}),
+				const filterArray = filter,
 					listValue = this.get(this.valuePath, item);
-
-				return listValue.some(val =>
-					filterArray.indexOf(val.toString().toLowerCase()) >= 0
-				);
+				return listValue.some(val => {
+					if (val instanceof Object && filterArray.indexOf(val[this.valueProperty]) >= 0) {
+						return true;
+					}
+					if (filterArray.indexOf(val) >= 0) {
+						return true;
+					}
+					return false;
+				});
 			},
 
 			_autocompleteSelectedItemsChanged() {
 				const filter = this.filter,
 					items = this.autocompleteSelectedItems;
-				if (Array.isArray(filter) && items.length === this.filter.length &&  items.every((item, i) => item.value === filter[i])) {
+				if (Array.isArray(filter)
+					&& items.length === this.filter.length
+					&& items.every((item, i) =>
+						item instanceof Object && item[this.valueProperty] === filter[i] || item === filter[i])) {
 					return;
 				}
-				this.filter = this.autocompleteSelectedItems.map(item => item.value);
+				this.filter = this.autocompleteSelectedItems.map(item => item instanceof Object ? item[this.valueProperty] : item);
 			},
 
 			_filterChanged(filter, autoItems) {
 				const items = this.autocompleteSelectedItems;
-				if (!Array.isArray(autoItems) || Array.isArray(items) && items.length === this.filter.length && filter.every((f, i) => items[i] && f === items[i].value)) {
+				if (!Array.isArray(autoItems)
+					|| Array.isArray(items)
+						&& items.length === this.filter.length
+						&& filter.every((f, i) => items[i] instanceof Object && f === items[i][this.valueProperty] || items[i] === f)) {
 					return;
 				}
 				this.autocompleteSelectedItems = this.filter.map(f => {
-					return autoItems.find(a => a.value === f);
+					return autoItems.find(a => a instanceof Object && a[this.valueProperty] === f || a === f);
 				});
 			}
 		});

@@ -71,12 +71,6 @@
 				assert.equal(column._getDefaultFilter().length, 0);
 			});
 
-			test('_getLabelForValue returns value to String', () => {
-				assert.isNull(column._getLabelForValue());
-				assert.equal(column._getLabelForValue(123), '123');
-				assert.equal(column._getLabelForValue([1, 2, 3]), '1,2,3');
-			});
-
 			test('_applySingleFilter returns true if filterString is equal to value', () => {
 				assert.isTrue(column._applySingleFilter('abc', {list: 'abc', some: 'data'}));
 			});
@@ -90,12 +84,12 @@
 			});
 
 			test('_applyMultiFilter works', () => {
-				assert.isTrue(column._applyMultiFilter([123, 456], { list: ['123', '345', '678']}));
+				assert.isTrue(column._applyMultiFilter([123, 456], { list: [123, 345, 678]}));
 			});
 
 			test('_filterChanged updates autocompleteSelectedItems', () => {
-				column.autocompleteSelectedItems = ['123', '456'];
-				assert.deepEqual(column._filterChanged([123, 456], ['123', '456']));
+				column.autocompleteSelectedItems = [123, 456];
+				assert.deepEqual(column._filterChanged([123, 456], [123, 456]));
 			});
 
 		});
@@ -130,12 +124,6 @@
 				assert.equal(column.filter.length, 0);
 				assert.isTrue(Array.isArray(column._getDefaultFilter()));
 				assert.equal(column._getDefaultFilter().length, 0);
-			});
-
-			test('_getLabelForValue returns value to String', () => {
-				assert.isNull(column._getLabelForValue());
-				assert.equal(column._getLabelForValue(123), '123');
-				assert.equal(column._getLabelForValue([1, 2, 3]), '1,2,3');
 			});
 
 			test('_applySingleFilter returns true if filterString is equal to value', () => {
