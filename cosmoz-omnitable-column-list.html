@@ -89,24 +89,14 @@
 					.sort();
 			},
 
-			_applySingleFilter(filterString, item) {
-				const value = this.get(this.valuePath, item);
-				if (value == null) {
-					return false;
-				}
-				return value.toString().toLowerCase() === filterString;
-			},
-
 			_applyMultiFilter(filter, item) {
-				const filterArray = filter.map(element => {
-						return element ? element.toString().toLowerCase() : null;
-					}),
+				const filterArray = filter,
 					listValue = this.get(this.valuePath, item);
 				return listValue.some(val => {
-					if (val instanceof Object && filterArray.indexOf(val[this.valueProperty].toLowerCase()) >= 0) {
+					if (val instanceof Object && filterArray.indexOf(val[this.valueProperty]) >= 0) {
 						return true;
 					}
-					if (filterArray.indexOf(val.toString().toLowerCase()) >= 0) {
+					if (filterArray.indexOf(val) >= 0) {
 						return true;
 					}
 					return false;
@@ -116,15 +106,21 @@
 			_autocompleteSelectedItemsChanged() {
 				const filter = this.filter,
 					items = this.autocompleteSelectedItems;
-				if (Array.isArray(filter) && items.length === this.filter.length && items.every((item, i) => item instanceof Object && item[this.valueProperty] === filter[i] || item === filter[i])) {
+				if (Array.isArray(filter)
+					&& items.length === this.filter.length
+					&& items.every((item, i) =>
+						item instanceof Object && item[this.valueProperty] === filter[i] || item === filter[i])) {
 					return;
 				}
-				this.filter = this.autocompleteSelectedItems.map(item => item instanceof Object && item[this.valueProperty] || item);
+				this.filter = this.autocompleteSelectedItems.map(item => item instanceof Object ? item[this.valueProperty] : item);
 			},
 
 			_filterChanged(filter, autoItems) {
 				const items = this.autocompleteSelectedItems;
-				if (!Array.isArray(autoItems) || Array.isArray(items) && items.length === this.filter.length && filter.every((f, i) => items[i] && f === items[i].value)) {
+				if (!Array.isArray(autoItems)
+					|| Array.isArray(items)
+						&& items.length === this.filter.length
+						&& filter.every((f, i) => items[i] instanceof Object && f === items[i][this.valueProperty] || items[i] === f)) {
 					return;
 				}
 				this.autocompleteSelectedItems = this.filter.map(f => {
