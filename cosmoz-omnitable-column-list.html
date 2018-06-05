@@ -63,14 +63,6 @@
 					value() {
 						return this._getDefaultFilter();
 					}
-				},
-
-				textProperty: {
-					type: String
-				},
-
-				valueProperty: {
-					type: String
 				}
 			},
 
@@ -108,7 +100,6 @@
 						return element ? element.toString().toLowerCase() : null;
 					}),
 					listValue = this.get(this.valuePath, item);
-
 				return listValue.some(val =>
 					filterArray.indexOf(val.toString().toLowerCase()) >= 0
 				);
