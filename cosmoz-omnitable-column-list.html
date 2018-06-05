@@ -64,6 +64,14 @@
 						return this._getDefaultFilter();
 					}
 				},
+
+				textProperty: {
+					type: String
+				},
+
+				valueProperty: {
+					type: String
+				}
 			},
 
 			observers: [
@@ -75,21 +83,16 @@
 				return this.values
 					.reduce((acc, val) => acc.concat(val), [])
 					// Make the item list unique
-					.filter((value, index, array) => array.indexOf(value) === index)
-					.sort()
-					.map(value => {
-						return {
-							value: value,
-							label: this._getLabelForValue(value)
-						};
-					});
-			},
-
-			_getLabelForValue(value) {
-				if (value == null) {
-					return null;
-				}
-				return value.toString();
+					.filter((value, index, array) => {
+						let arrayIndexMatching = -1;
+						array.forEach((arrayCurrentValue, arrayIndex) => {
+							if (arrayIndexMatching === -1 && arrayCurrentValue[this.valueProperty] === value[this.valueProperty]) {
+								arrayIndexMatching = arrayIndex;
+							}
+						});
+						return arrayIndexMatching === index;
+					})
+					.sort();
 			},
 
 			_applySingleFilter(filterString, item) {
@@ -114,7 +117,7 @@
 			_autocompleteSelectedItemsChanged() {
 				const filter = this.filter,
 					items = this.autocompleteSelectedItems;
-				if (Array.isArray(filter) && items.length === this.filter.length &&  items.every((item, i) => item.value === filter[i])) {
+				if (Array.isArray(filter) && items.length === this.filter.length &&  items.every((item, i) => item[this.valueProperty] === filter[i])) {
 					return;
 				}
 				this.filter = this.autocompleteSelectedItems.map(item => item.value);
