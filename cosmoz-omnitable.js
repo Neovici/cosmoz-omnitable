@@ -572,7 +572,7 @@
 		},
 
 		_debounceGroupItems: function () {
-			if (!this.isAttached || !Array.isArray(this.filteredItems) || this.filteredItems.length === 0) {
+			if (!this.isAttached || !Array.isArray(this.filteredItems)) {
 				return;
 			}
 			this.debounce('groupItems', this._groupItems);
@@ -581,8 +581,8 @@
 		_groupItems: function () {
 			this._updateRouteParam('groupOn');
 
-			if (!this.filteredItems || this.filteredItems.length === 0) {
-				this.filteredGroupedItems  = [];
+			if (!Array.isArray(this.filteredItems) || this.filteredItems.length === 0) {
+				this.filteredGroupedItems = [];
 				this.sortedFilteredGroupedItems = [];
 				this._groupsCount = 0;
 				return;
