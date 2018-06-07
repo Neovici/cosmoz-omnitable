@@ -1097,46 +1097,33 @@
 				this.$.groupedList.selectItem(item);
 				return;
 			}
-			const itemPosition = this.sortedFilteredGroupedItems.indexOf(item);
-			let endPosition = 0;
+			const items = this.sortedFilteredGroupedItems,
+				itemsReverse = Object.assign([], this.sortedFilteredGroupedItems).reverse(),
+				itemPosition = this.sortedFilteredGroupedItems.indexOf(item),
+				selectItems = items => {
+					if (!items) {
+						return;
+					}
+					items.forEach(item => this.$.groupedList.selectItem(item));
+				},
+				getSubset = (items, start, end) => {
+					return end > start ?
+						items.slice(start, end) :
+						items.slice(end, start);
+				};
 
-			// Look up
-			for (let index = itemPosition - 1; index >= 0; index--) {
-				const item = this.sortedFilteredGroupedItems[index];
-				if (this.selectedItems.indexOf(item) > -1) {
-					endPosition = index;
-					break;
-				}
+			if (this.selectedItems && this.selectedItems.length === 0) {
+				selectItems(getSubset(items, itemPosition, 0));
+				return;
 			}
 
-			if (endPosition === 0) {
-				// Not found => Look down
-				for (let index = itemPosition + 1; index < this.sortedFilteredGroupedItems.length; index++) {
-					const item = this.sortedFilteredGroupedItems[index];
-					if (this.selectedItems.indexOf(item) > -1) {
-						endPosition = index;
-						break;
-					}
-				}
+			const endItem = items.find(item => this.selectedItems.indexOf(item) > -1) ||
+				// No items above 'item' are selected
+				// Try to find a selected item below 'item'
+				itemsReverse.find(item => this.selectedItems.indexOf(item) > -1);
 
-				if (endPosition !== 0) {
-					// Select down
-					for (let index = itemPosition; index <= endPosition; index++) {
-						const item = this.sortedFilteredGroupedItems[index];
-						this.$.groupedList.selectItem(item);
-					}
-				}
-
-			} else {
-				// Select up
-				for (let index = itemPosition; index >= endPosition; index--) {
-					const item = this.sortedFilteredGroupedItems[index];
-					this.$.groupedList.selectItem(item);
-				}
-			}
-
-
-
+			const endPosition = endItem ? items.indexOf(endItem) : 0;
+			selectItems(getSubset(items, itemPosition, endPosition));
 		},
 
 		deselectItem: function (item) {
