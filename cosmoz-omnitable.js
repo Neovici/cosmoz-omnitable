@@ -374,7 +374,7 @@
 			if (this.isItemSelected(item)) {
 				this.deselectItem(item);
 			} else {
-				this.selectItem(item);
+				this.selectItem(item, event.shiftKey);
 			}
 
 			event.preventDefault();
@@ -1092,8 +1092,51 @@
 			this.set('data.' + key + '.' + itemPath, value);
 		},
 
-		selectItem: function (item) {
-			this.$.groupedList.selectItem(item);
+		selectItem: function (item, selectRange) {
+			if (!selectRange) {
+				this.$.groupedList.selectItem(item);
+				return;
+			}
+			const itemPosition = this.sortedFilteredGroupedItems.indexOf(item);
+			let endPosition = 0;
+
+			// Look up
+			for (let index = itemPosition - 1; index >= 0; index--) {
+				const item = this.sortedFilteredGroupedItems[index];
+				if (this.selectedItems.indexOf(item) > -1) {
+					endPosition = index;
+					break;
+				}
+			}
+
+			if (endPosition === 0) {
+				// Not found => Look down
+				for (let index = itemPosition + 1; index < this.sortedFilteredGroupedItems.length; index++) {
+					const item = this.sortedFilteredGroupedItems[index];
+					if (this.selectedItems.indexOf(item) > -1) {
+						endPosition = index;
+						break;
+					}
+				}
+
+				if (endPosition !== 0) {
+					// Select down
+					for (let index = itemPosition; index <= endPosition; index++) {
+						const item = this.sortedFilteredGroupedItems[index];
+						this.$.groupedList.selectItem(item);
+					}
+				}
+
+			} else {
+				// Select up
+				for (let index = itemPosition; index >= endPosition; index--) {
+					const item = this.sortedFilteredGroupedItems[index];
+					this.$.groupedList.selectItem(item);
+				}
+			}
+
+
+
 		},
 
 		deselectItem: function (item) {

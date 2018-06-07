@@ -89,7 +89,7 @@
 								<div class="item-row-wrapper">
 									<div selected$="[[selected]]" class="itemRow" highlighted$="[[highlighted]]">
 										<div class="selectItemCheckbox" hidden$="[[ !_showCheckboxes ]]">
-											<paper-checkbox checked="{{ selected }}" on-change="_onItemCheckboxChange"></paper-checkbox>
+											<paper-checkbox checked="{{ selected }}" on-click="_onItemCheckboxChange"></paper-checkbox>
 										</div>
 										<cosmoz-omnitable-item-row
 											columns="[[ visibleColumns ]]"
