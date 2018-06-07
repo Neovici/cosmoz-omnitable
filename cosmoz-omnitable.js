@@ -361,7 +361,7 @@
 			if (selected) {
 				this.$.groupedList.deselectGroup(group);
 			} else {
-				this.$.groupedList.selectGroup(group);
+				this.selectGroup(group, event.shiftKey);
 			}
 
 			event.preventDefault();
@@ -1090,6 +1090,13 @@
 				key = dataColl.getKey(item);
 
 			this.set('data.' + key + '.' + itemPath, value);
+		},
+
+		selectGroup(group, selectRange) {
+			if (!selectRange) {
+				this.$.groupedList.selectGroup(group, event.shiftKey);
+				return;
+			}
 		},
 
 		selectItem: function (item, selectRange) {

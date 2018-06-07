@@ -116,7 +116,7 @@
 							<template>
 								<div class$="[[ _getGroupRowClasses(folded) ]]">
 									<div class="selectGroupCheckbox" hidden$="[[ !_showCheckboxes ]]">
-										<paper-checkbox checked="{{ selected }}" on-change="_onGroupCheckboxChange"></paper-checkbox>
+										<paper-checkbox checked="{{ selected }}" on-click="_onGroupCheckboxChange"></paper-checkbox>
 									</div>
 
 									<h3 class="groupRow-label">
