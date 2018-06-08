@@ -1098,6 +1098,26 @@
 				items.slice(end, start + 1);
 		},
 
+		_selectItems(items) {
+			if (!items) {
+				return;
+			}
+			items.forEach(i => this.$.groupedList.selectItem(i));
+		},
+
+		_selectRange(items, item) {
+			const itemsReverse = Object.assign([], items).reverse(),
+				itemPosition = items.indexOf(item);
+			const endItem = items.find(i => this.selectedItems.indexOf(i) > -1) ||
+				// No items above 'item' are selected
+				// Try to find a selected item below 'item'
+				itemsReverse.find(item => this.selectedItems.indexOf(item) > -1);
+
+			const endPosition = endItem ? items.indexOf(endItem) : 0;
+			const itemsToSelect = this._getSubset(items, itemPosition, endPosition);
+			this._selectItems(itemsToSelect);
+		},
+
 		selectGroup(group, selectRange) {
 			const selectGroup = group => this.$.groupedList.toggleSelectGroup(group, false);
 			selectGroup(group);
@@ -1108,23 +1128,13 @@
 			const groups = this.sortedFilteredGroupedItems,
 				groupPosition = groups.indexOf(group),
 				items = groups.reduce((a, b) => a.concat(b.items), []),
-				itemsReverse = Object.assign([], items).reverse(),
-				itemPosition = items.indexOf(group.items[0]),
-				selectGroups = groups => groups.forEach(group => selectGroup(group)),
-				selectItems = items => items.forEach(item => this.$.groupedList.selectItem(item));
+				selectGroups = groups => groups.forEach(group => selectGroup(group));
 
 			if (this.selectedItems && this.selectedItems.length === 0) {
 				selectGroups(this._getSubset(groups, groupPosition, 0));
 				return;
 			}
-			const endItem = items.find(item => this.selectedItems.indexOf(item) > -1) ||
-				// No items above 'item' are selected
-				// Try to find a selected item below 'item'
-				itemsReverse.find(item => this.selectedItems.indexOf(item) > -1);
-
-			const endPosition = endItem ? items.indexOf(endItem) : 0;
-			const itemsToSelect = this._getSubset(items, itemPosition, endPosition);
-			selectItems(itemsToSelect);
+			this._selectRange(items, group.items[0]);
 		},
 
 		selectItem: function (item, selectRange) {
@@ -1137,22 +1147,14 @@
 			const items = this.groupOn ?
 					this.sortedFilteredGroupedItems.reduce((a, b) => a.concat(b.items), []) :
 					this.sortedFilteredGroupedItems,
-				itemsReverse = Object.assign([], items).reverse(),
-				itemPosition = items.indexOf(item),
-				selectItems = items => items.forEach(item => selectItem(item));
+				itemPosition = items.indexOf(item);
 
 			if (this.selectedItems && this.selectedItems.length === 0) {
-				selectItems(this._getSubset(items, itemPosition, 0));
+				this._selectItems(this._getSubset(items, itemPosition, 0));
 				return;
 			}
 
-			const endItem = items.find(item => this.selectedItems.indexOf(item) > -1) ||
-				// No items above 'item' are selected
-				// Try to find a selected item below 'item'
-				itemsReverse.find(item => this.selectedItems.indexOf(item) > -1);
-
-			const endPosition = endItem ? items.indexOf(endItem) : 0;
-			selectItems(this._getSubset(items, itemPosition, endPosition));
+			this._selectRange(items, item);
 		},
 
 		deselectItem: function (item) {
