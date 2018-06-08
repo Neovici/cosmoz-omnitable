@@ -359,9 +359,9 @@
 				selected = this.$.groupedList.isGroupSelected(group);
 
 			if (selected) {
-				this.$.groupedList.deselectGroup(group);
+				this.$.groupedList.toggleSelectGroup(group, true);
 			} else {
-				this.$.groupedList.selectGroup(group);
+				this.selectGroup(group, event.shiftKey);
 			}
 
 			event.preventDefault();
@@ -374,7 +374,7 @@
 			if (this.isItemSelected(item)) {
 				this.deselectItem(item);
 			} else {
-				this.selectItem(item);
+				this.selectItem(item, event.shiftKey);
 			}
 
 			event.preventDefault();
@@ -1092,8 +1092,69 @@
 			this.set('data.' + key + '.' + itemPath, value);
 		},
 
-		selectItem: function (item) {
-			this.$.groupedList.selectItem(item);
+		_getSubset(items, start, end) {
+			return end > start ?
+				items.slice(start, end + 1) :
+				items.slice(end, start + 1);
+		},
+
+		_selectItems(items) {
+			if (!items) {
+				return;
+			}
+			items.forEach(i => this.$.groupedList.selectItem(i));
+		},
+
+		_selectRange(items, item) {
+			const itemsReverse = Object.assign([], items).reverse(),
+				itemPosition = items.indexOf(item);
+			const endItem = items.find(i => this.selectedItems.indexOf(i) > -1) ||
+				// No items above 'item' are selected
+				// Try to find a selected item below 'item'
+				itemsReverse.find(item => this.selectedItems.indexOf(item) > -1);
+
+			const endPosition = endItem ? items.indexOf(endItem) : 0;
+			const itemsToSelect = this._getSubset(items, itemPosition, endPosition);
+			this._selectItems(itemsToSelect);
+		},
+
+		selectGroup(group, selectRange) {
+			const selectGroup = group => this.$.groupedList.toggleSelectGroup(group, false);
+			selectGroup(group);
+
+			if (!selectRange) {
+				return;
+			}
+			const groups = this.sortedFilteredGroupedItems,
+				groupPosition = groups.indexOf(group),
+				items = groups.reduce((a, b) => a.concat(b.items), []),
+				selectGroups = groups => groups.forEach(group => selectGroup(group));
+
+			if (this.selectedItems && this.selectedItems.length === 0) {
+				selectGroups(this._getSubset(groups, groupPosition, 0));
+				return;
+			}
+			this._selectRange(items, group.items[0]);
+		},
+
+		selectItem: function (item, selectRange) {
+			const selectItem = item => this.$.groupedList.selectItem(item);
+
+			if (!selectRange) {
+				selectItem(item);
+				return;
+			}
+			const items = this.groupOn ?
+					this.sortedFilteredGroupedItems.reduce((a, b) => a.concat(b.items), []) :
+					this.sortedFilteredGroupedItems,
+				itemPosition = items.indexOf(item);
+
+			if (this.selectedItems && this.selectedItems.length === 0) {
+				this._selectItems(this._getSubset(items, itemPosition, 0));
+				return;
+			}
+
+			this._selectRange(items, item);
 		},
 
 		deselectItem: function (item) {
