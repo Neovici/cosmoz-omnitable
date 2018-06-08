@@ -151,9 +151,7 @@
 			filteredItems: {
 				type: Array,
 				observer: '_debounceGroupItems',
-				value() {
-					return [];
-				}
+				value: () => []
 			},
 
 			/**
@@ -306,7 +304,7 @@
 		},
 
 		_computeSortDirection(descending) {
-			var direction = descending ? this._('Descending') : this._('Ascending');
+			const direction = descending ? this._('Descending') : this._('Ascending');
 			return `(${direction})`;
 		},
 
@@ -325,16 +323,14 @@
 			this._disabledColumnsIndexes = [];
 		},
 
-		_onUpdateItemSize: function (event, detail) {
+		_onUpdateItemSize(event, detail) {
 			if (detail && detail.item) {
 				this.$.groupedList.updateSize(detail.item);
 			}
 			event.stopPropagation();
 		},
 
-		_onColumnTitleChanged: function (event) {
-			var column = event.target,
-				columnIndex;
+		_onColumnTitleChanged(event) {
 
 			event.stopPropagation();
 
@@ -342,7 +338,8 @@
 				return;
 			}
 
-			columnIndex = this.columns.indexOf(column);
+			const column = event.target,
+				columnIndex = this.columns.indexOf(column);
 
 			// re-notify column change to make dom-repeat re-render menu item title
 			this.notifyPath(['columns', columnIndex, 'title']);
@@ -353,9 +350,8 @@
 		},
 
 		// Handle selection/deselection of a group
-		_onGroupCheckboxChange: function (event) {
-			var
-				group = event.model.item,
+		_onGroupCheckboxChange(event) {
+			const group = event.model.item,
 				selected = this.$.groupedList.isGroupSelected(group);
 
 			if (selected) {
@@ -369,8 +365,8 @@
 		},
 
 		// Handle selection/deselection of an item
-		_onItemCheckboxChange: function (event) {
-			var item = event.model.item;
+		_onItemCheckboxChange(event) {
+			const item = event.model.item;
 			if (this.isItemSelected(item)) {
 				this.deselectItem(item);
 			} else {
@@ -382,7 +378,7 @@
 		},
 
 		_itemRowTapped(event) {
-			var item = event.model.item;
+			const item = event.model.item;
 			this.highlight(item, this.isItemHighlighted(item));
 		},
 
@@ -472,7 +468,7 @@
 		 */
 		_verifyColumnSetup(columns, columnNames = columns.map(c => c.name)) {
 			// Check if column names are set and unique
-			var columnsMissingNameAttribute = columns
+			const columnsMissingNameAttribute = columns
 				.filter(column => {
 					var name = column.name;
 					if (!name) {
@@ -490,7 +486,7 @@
 		},
 		// TODO: provides a mean to avoid setting the values for a column
 		// TODO: should process (distinct, sort, min, max) the values at the column level depending on the column type
-		_setColumnValues: function (columns = this.columns) {
+		_setColumnValues(columns = this.columns) {
 			if (!Array.isArray(this.data) || this.data.length < 1 || !Array.isArray(columns) || columns.length < 1) {
 				return;
 			}
@@ -537,11 +533,11 @@
 			this._filterForRouteChanged(detail.column);
 		},
 
-		_debounceFilterItems: function () {
+		_debounceFilterItems() {
 			this.debounce('filterItems', this._filterItems);
 		},
 
-		_filterItems: function () {
+		_filterItems() {
 			if (Array.isArray(this.data) && this.data.length > 0 && Array.isArray(this.columns)) {
 				// Call filtering code only on columns that has a filter
 				const filterFunctions = this.columns
@@ -563,7 +559,7 @@
 			}
 		},
 
-		_groupOnColumnChanged: function (column) {
+		_groupOnColumnChanged(column) {
 			if (column && column.hasFilter()) {
 				column.resetFilter();
 			} else {
@@ -571,14 +567,14 @@
 			}
 		},
 
-		_debounceGroupItems: function () {
+		_debounceGroupItems() {
 			if (!this.isAttached || !Array.isArray(this.filteredItems)) {
 				return;
 			}
 			this.debounce('groupItems', this._groupItems);
 		},
 
-		_groupItems: function () {
+		_groupItems() {
 			this._updateRouteParam('groupOn');
 
 			if (!Array.isArray(this.filteredItems) || this.filteredItems.length === 0) {
@@ -588,8 +584,7 @@
 				return;
 			}
 
-			var groupOnColumn = this.groupOnColumn,
-				groups;
+			const groupOnColumn = this.groupOnColumn;
 
 			if (!groupOnColumn || !groupOnColumn.groupOn) {
 				this.filteredGroupedItems = this.filteredItems;
@@ -597,15 +592,14 @@
 				return;
 			}
 
-			groups = this.filteredItems.reduce((array, item) => {
-				var gval = groupOnColumn.getComparableValue(item, groupOnColumn.groupOn),
-					group;
+			const groups = this.filteredItems.reduce((array, item) => {
+				const gval = groupOnColumn.getComparableValue(item, groupOnColumn.groupOn);
 
 				if (gval === undefined) {
 					return array;
 				}
 
-				group = array.find(g => g.id === gval);
+				let group = array.find(g => g.id === gval);
 				if (!group) {
 					group = { id: gval, name: gval, items: [] };
 					array.push(group);
@@ -629,7 +623,7 @@
 			this.filteredGroupedItems = groups;
 		},
 
-		_debounceSortItems: function () {
+		_debounceSortItems() {
 			if (!Array.isArray(this.data) || this.data.length < 1 || !Array.isArray(this.columns)) {
 				return;
 			}
@@ -671,8 +665,9 @@
 		},
 
 		/**
-		 * compareFunction for Array.prototype.sort(), can be overridden
-		 * See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+		 * compareFunction for sort(), can be overridden
+		 * @see Array.prototype.sort()
+		 * {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort}
 		 * @param {*} a First compare value
 		 * @param {*} b Second compare value
 		 * @returns {number} -1 if a has lower index, 0 if a and b index are same, 1 if b is lower
@@ -684,7 +679,7 @@
 			return this._genericSorter(v1, v2);
 		},
 
-		_sortFilteredGroupedItems: function () {
+		_sortFilteredGroupedItems() {
 			if (!this.filteredGroupedItems) {
 				return;
 			}
@@ -730,7 +725,7 @@
 			this._debounceAdjustColumns();
 		},
 
-		_debounceAdjustColumns: function () {
+		_debounceAdjustColumns() {
 			// 16ms 'magic' number copied from iron-list
 			// But this makes headers change width after the table has completed rendering,
 			// which might look strange.
@@ -773,7 +768,7 @@
 				return;
 			}
 
-			var scroller = this.$.scroller,
+			const scroller = this.$.scroller,
 				currentWidth = this.$.tableContent.clientWidth,
 				itemRow = Polymer.dom(firstRow).querySelector('cosmoz-omnitable-item-row'),
 				cells = Array.from(Polymer.dom(itemRow).children);
@@ -822,7 +817,7 @@
 			});
 		},
 
-		_canScaleUp: function (width) {
+		_canScaleUp(width) {
 			if (!this.disabledColumns || this.disabledColumns.length === 0) {
 				return false;
 			}
@@ -842,11 +837,11 @@
 			return false;
 		},
 
-		_disableColumn: function () {
-			var disabledColumn,
+		_disableColumn() {
+			let disabledColumn,
 				disabledColumnIndex;
 			// disables/hides columns that for example does not fit in the current screen size.
-			this.visibleColumns.forEach(function (column, index) {
+			this.visibleColumns.forEach((column, index) => {
 				if (disabledColumn === undefined || disabledColumn.priority >= column.priority) {
 					disabledColumn = column;
 					disabledColumnIndex = index;
@@ -861,9 +856,9 @@
 			}
 		},
 
-		_enableColumn: function () {
+		_enableColumn() {
 			// Columns are disabled by priority, so we can re-enable them
-			var column = this.pop('disabledColumns'),
+			const column = this.pop('disabledColumns'),
 				columnIndex = this._disabledColumnsIndexes.pop();
 
 			this.splice('visibleColumns', columnIndex, 0, column);
@@ -878,14 +873,14 @@
 		 * @return {Boolean}  true if "empty", false otherwise
 		 * ^memberOf element/cz-omnitable
 		 */
-		_isEmpty: function (obj) {
+		_isEmpty(obj) {
 			if (obj === undefined || obj === null) {
 				return true;
 			}
 			if (obj instanceof Array && obj.length === 0) {
 				return true;
 			}
-			var objType = typeof obj;
+			const objType = typeof obj;
 			if (objType === 'string' && obj.length === 0) {
 				return true;
 			}
@@ -895,7 +890,7 @@
 			return false;
 		},
 
-		_makeCsvField: function (str) {
+		_makeCsvField(str) {
 			var result = str.replace(/"/g, '""');
 			if (result.search(/("|,|\n)/g) >= 0) {
 				return '"' + result + '"';
@@ -906,8 +901,8 @@
 		 * Triggers a download of selected rows as a CSV file.
 		 * @returns {undefined}
 		 */
-		_saveAsCsvAction: function () {
-			var separator = ';',
+		_saveAsCsvAction() {
+			const separator = ';',
 				lf = '\n',
 				header = this.columns.map(col => this._makeCsvField(col.title)).join(separator) + lf,
 				rows = this.selectedItems.map(item => {
@@ -931,17 +926,14 @@
 		 * Makes the data ready to be exported as XLSX.
 		 * @returns {Array} data Array of prepared rows.
 		 */
-		_prepareXlsxData: function () {
-			var	headers = this.columns.map(col => col.title),
-				data = this.selectedItems.map(item => {
-					return this.columns.map(column => {
-						var value = column.toXlsxValue(item);
-						if (value === undefined || value === null) {
-							return '';
-						}
-						return value;
-					});
-				});
+		_prepareXlsxData() {
+			const headers = this.columns.map(col => col.title),
+				data = this.selectedItems.map(item =>
+					this.columns.map(column => {
+						const value = column.toXlsxValue(item);
+						return value == null ? '' : value;
+					})
+				);
 
 			data.unshift(headers);
 			return data;
@@ -952,24 +944,20 @@
 		 * @param {Object} data The prepared rows to be saved as file with default value this._prepareXlsxData().
 		 * @returns {undefined}
 		 */
-		_saveAsXlsxAction: function () {
-			var data = this._prepareXlsxData(),
+		_saveAsXlsxAction() {
+			const data = this._prepareXlsxData(),
 				xlsx = new NullXlsx(this.xlsxFilename).addSheetFromData(data, this.xlsxSheetname).generate();
 
-			saveAs(new File([xlsx], this.xlsxFilename,
-				{ type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}
-			));
+			saveAs(new File([xlsx], this.xlsxFilename, {
+				type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+			}));
 		},
 
 		/** view functions */
 
-		_getGroupRowClasses: function (folded) {
-			return folded ? 'groupRow groupRow-folded' : 'groupRow';
-		},
+		_getGroupRowClasses: folded => folded ? 'groupRow groupRow-folded' : 'groupRow',
+		_getFoldIcon: expanded => expanded ? 'expand-less' : 'expand-more',
 
-		_getFoldIcon: function (expanded) {
-			return expanded ? 'expand-less' : 'expand-more';
-		},
 		/**
 		 * Called if an item from the sortOn dropdown gets tapped.
 		 * Reverses the descending value if the sortOn value did not change.
@@ -994,8 +982,8 @@
 		 * @param  {Event} event event
 		 * @returns {undefined}
 		 */
-		_toggleGroup: function (event) {
-			var firstRow = this.$.groupedList.getFirstVisibleItemElement(),
+		_toggleGroup(event) {
+			const firstRow = this.$.groupedList.getFirstVisibleItemElement(),
 				folded = event.model.folded;
 
 			this.$.groupedList.toggleFold(event.model);
@@ -1005,8 +993,8 @@
 			}
 		},
 
-		_toggleItem: function (event) {
-			var item = event.model.item;
+		_toggleItem(event) {
+			const item = event.model.item;
 			this.$.groupedList.toggleCollapse(item);
 		},
 		/**
@@ -1015,7 +1003,7 @@
 		 * @param  {Object} detail `action` event details
 		 * @returns {undefined}
 		 */
-		_onAction: function (event, detail) {
+		_onAction(event, detail) {
 			detail.item.dispatchEvent(new window.CustomEvent('run', {
 				bubbles: true,
 				cancelable: true,
@@ -1027,19 +1015,18 @@
 			event.stopPropagation();
 		},
 
-		_selectedItemsChanged: function (change) {
+		_selectedItemsChanged(change) {
 			if (change.path === 'selectedItems' || change.path === 'selectedItems.splices') {
 				this._allSelected = this.data && change.base.length === this.data.length;
 			}
 		},
 
-		_onAllCheckboxChange: function (event) {
+		_onAllCheckboxChange(event) {
 			if (event.target === null) {
 				return;
 			}
 
-			var checked = event.target.checked;
-			if (checked) {
+			if (event.target.checked) {
 				this.$.groupedList.selectAll();
 			} else {
 				this.$.groupedList.deselectAll();
@@ -1053,27 +1040,25 @@
 		 * @param {Array} items Array of items to remove
 		 * @return {Array} Array containing removed items
 		 */
-		removeItems: function (items) {
-			var i,
-				removedItems = [],
-				removed;
+		removeItems(items) {
+			const removedItems = [];
 
-			for (i = items.length - 1; i >= 0; i -= 1) {
-				removed = this.arrayDelete('data', items[i]);
-				if (removed) {
-					removedItems = removedItems.concat(removed);
+			for (let i = items.length - 1; i >= 0; i -= 1) {
+				const removed = this.removeItem(items[i]);
+				if (removed != null) {
+					removedItems.push(removed);
 				}
 			}
-			return removed;
+			return removedItems;
 		},
 		/**
 		 * Helper method to remove an item from `data`.
  		 * @param  {Object} item Item to remove
  		 * @return {Object} item removed
 		 */
-		removeItem: function (item) {
-			var removed = this.arrayDelete('data', item);
-			if (removed && removed.length) {
+		removeItem(item) {
+			const removed = this.arrayDelete('data', item);
+			if (Array.isArray(removed) && removed.length > 0) {
 				return removed[0];
 			}
 		},
@@ -1085,22 +1070,22 @@
 		 * @param {String} value The new value of the item.
 		 * @returns {undefined}
 		 */
-		setItemValue: function (item, itemPath, value) {
-			var dataColl = Polymer.Collection.get(this.data),
+		setItemValue(item, itemPath, value) {
+			const dataColl = Polymer.Collection.get(this.data),
 				key = dataColl.getKey(item);
 
 			this.set('data.' + key + '.' + itemPath, value);
 		},
 
-		selectItem: function (item) {
+		selectItem(item) {
 			this.$.groupedList.selectItem(item);
 		},
 
-		deselectItem: function (item) {
+		deselectItem(item) {
 			this.$.groupedList.deselectItem(item);
 		},
 
-		isItemSelected: function (item) {
+		isItemSelected(item) {
 			return this.$.groupedList.isItemSelected(item);
 		},
 
@@ -1108,19 +1093,19 @@
 			return this.$.groupedList.isItemHighlighted(item);
 		},
 
-		highlight(i, reverse) {
-			if (!i) {
+		highlight(items, reverse) {
+			if (!items) {
 				return;
 			}
-			var gl = this.$.groupedList;
-			if (Array.isArray(i)) {
-				i.forEach(item => gl.highlightItem(item, reverse));
+			const gl = this.$.groupedList;
+			if (Array.isArray(items)) {
+				items.forEach(item => gl.highlightItem(item, reverse));
 				return;
 			}
-			gl.highlightItem(i, reverse);
+			gl.highlightItem(items, reverse);
 		},
 
-		_routeHashPropertyChanged: function (key, value) {
+		_routeHashPropertyChanged(key, value) {
 			const deserialized = this.deserialize(value, this.properties[key].type);
 			if (deserialized === this.get(key)) {
 				return;
@@ -1143,7 +1128,7 @@
 				return;
 			}
 
-			let deserialized = column._deserializeFilter(value);
+			const deserialized = column._deserializeFilter(value);
 
 			if (deserialized === null) {
 				column.resetFilter();
@@ -1157,7 +1142,7 @@
 			}
 			return new RegExp('^' + hashParam + '-(.+?)(?=(?:--|$))(?:-{2})?([A-Za-z0-9-_]+)?$');
 		},
-		_routeHashKeyChanged: function (key, value) {
+		_routeHashKeyChanged(key, value) {
 			const match = key.match(this._routeHashKeyRule);
 
 			if (!Array.isArray(match)) {
@@ -1173,7 +1158,7 @@
 			}
 		},
 
-		_updateParamsFromHash: function () {
+		_updateParamsFromHash() {
 			if (!this.hashParam || !this._routeHash) {
 				return;
 			}
@@ -1183,7 +1168,7 @@
 			});
 		},
 
-		_updateRouteParam: function (key) {
+		_updateRouteParam(key) {
 			if (!this.hashParam || !this._routeHash) {
 				return;
 			}
@@ -1199,7 +1184,7 @@
 			this.set(path, serialized === undefined ? null : serialized);
 		},
 
-		_filterForRouteChanged: function (column) {
+		_filterForRouteChanged(column) {
 			if (!this.hashParam || !this._routeHash || !Array.isArray(this.data)) {
 				return;
 			}
