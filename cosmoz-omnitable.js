@@ -359,7 +359,7 @@
 				selected = this.$.groupedList.isGroupSelected(group);
 
 			if (selected) {
-				this.$.groupedList.deselectGroup(group);
+				this.$.groupedList.toggleSelectGroup(group, true);
 			} else {
 				this.selectGroup(group, event.shiftKey);
 			}
@@ -1092,35 +1092,57 @@
 			this.set('data.' + key + '.' + itemPath, value);
 		},
 
+		_getSubset(items, start, end) {
+			return end > start ?
+				items.slice(start, end + 1) :
+				items.slice(end, start + 1);
+		},
+
 		selectGroup(group, selectRange) {
+			const selectGroup = group => this.$.groupedList.toggleSelectGroup(group, false);
+			selectGroup(group);
+
 			if (!selectRange) {
-				this.$.groupedList.selectGroup(group, event.shiftKey);
 				return;
 			}
+			const groups = this.sortedFilteredGroupedItems,
+				groupPosition = groups.indexOf(group),
+				items = groups.reduce((a, b) => a.concat(b.items), []),
+				itemsReverse = Object.assign([], items).reverse(),
+				itemPosition = items.indexOf(group.items[0]),
+				selectGroups = groups => groups.forEach(group => selectGroup(group)),
+				selectItems = items => items.forEach(item => this.$.groupedList.selectItem(item));
+
+			if (this.selectedItems && this.selectedItems.length === 0) {
+				selectGroups(this._getSubset(groups, groupPosition, 0));
+				return;
+			}
+			const endItem = items.find(item => this.selectedItems.indexOf(item) > -1) ||
+				// No items above 'item' are selected
+				// Try to find a selected item below 'item'
+				itemsReverse.find(item => this.selectedItems.indexOf(item) > -1);
+
+			const endPosition = endItem ? items.indexOf(endItem) : 0;
+			const itemsToSelect = this._getSubset(items, itemPosition, endPosition);
+			selectItems(itemsToSelect);
 		},
 
 		selectItem: function (item, selectRange) {
+			const selectItem = item => this.$.groupedList.selectItem(item);
+
 			if (!selectRange) {
-				this.$.groupedList.selectItem(item);
+				selectItem(item);
 				return;
 			}
-			const items = this.sortedFilteredGroupedItems,
-				itemsReverse = Object.assign([], this.sortedFilteredGroupedItems).reverse(),
-				itemPosition = this.sortedFilteredGroupedItems.indexOf(item),
-				selectItems = items => {
-					if (!items) {
-						return;
-					}
-					items.forEach(item => this.$.groupedList.selectItem(item));
-				},
-				getSubset = (items, start, end) => {
-					return end > start ?
-						items.slice(start, end) :
-						items.slice(end, start);
-				};
+			const items = this.groupOn ?
+					this.sortedFilteredGroupedItems.reduce((a, b) => a.concat(b.items), []) :
+					this.sortedFilteredGroupedItems,
+				itemsReverse = Object.assign([], items).reverse(),
+				itemPosition = items.indexOf(item),
+				selectItems = items => items.forEach(item => selectItem(item));
 
 			if (this.selectedItems && this.selectedItems.length === 0) {
-				selectItems(getSubset(items, itemPosition, 0));
+				selectItems(this._getSubset(items, itemPosition, 0));
 				return;
 			}
 
@@ -1130,7 +1152,7 @@
 				itemsReverse.find(item => this.selectedItems.indexOf(item) > -1);
 
 			const endPosition = endItem ? items.indexOf(endItem) : 0;
-			selectItems(getSubset(items, itemPosition, endPosition));
+			selectItems(this._getSubset(items, itemPosition, endPosition));
 		},
 
 		deselectItem: function (item) {
