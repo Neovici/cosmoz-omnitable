@@ -46,13 +46,13 @@
 				<h3>Cosmoz omnitable grouping demo</h3>
 				<cosmoz-translations locale="[[ locale ]]"></cosmoz-translations>
 				<div>
-					<p>Table sould be grouped by column <code>Group</code> on load. Current <code>groupOn</code> value: <span style="color: red">{{group}}</span>.</p>
+					<p>Table sould be grouped by column <code>Group</code> on load. Current <code>groupOn</code> value: <span style="color: red">{{ group }}</span>.</p>
 					<p>You can group the table only by columns Boolean, Group, Date, DateJSON and Sub-property</p>
 				</div>
 				<div class="layout horizontal center">
 					<button class="action" on-tap="changeData">Generate a new data set</button>
 					<div class="action">
-						Selected items count: <span>{{selectedItems.length}}</span>
+						Selected items count: <span>{{ selectedItems.length }}</span>
 					</div>
 					<div class="action">
 						<paper-dropdown-menu label="Locale" no-animations>
@@ -65,11 +65,11 @@
 					</div>
 				</div>
 
-				<cosmoz-omnitable id="omnitable" class="flex" data="[[data]]"
+				<cosmoz-omnitable id="omnitable" class="flex" data="[[ data ]]"
 					selection-enabled selected-items="{{ selectedItems }}" group-on="{{ group }}">
 					<cosmoz-omnitable-column title="Id" name="id" value-path="id" sort-on="id">
 						<template class="cell">
-							<a href="#!/purchase/suppliers/view?id=[[ item.id ]]">[[item.id]]</a>
+							<a href="#!/purchase/suppliers/view?id=[[ item.id ]]">[[ item.id ]]</a>
 						</template>
 					</cosmoz-omnitable-column>
 					<cosmoz-omnitable-column-boolean title="Boolean" name="bool" value-path="bool" sort-on="bool" group-on="bool"
