@@ -42,7 +42,9 @@
 -->
 <dom-module id="cosmoz-omnitable">
 	<template>
-		<style include="cosmoz-omnitable-styles iron-flex"></style>
+		<style include="cosmoz-omnitable-styles iron-flex">
+			/* polymer-cli v1.7.x linter breaks with empty line */
+		</style>
 
 		<cosmoz-page-location id="location" route-hash="{{ _routeHash }}"></cosmoz-page-location>
 
