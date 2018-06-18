@@ -65,36 +65,45 @@
 	(function () {
 		'use strict';
 
-		suite('basic', function () {
+		suite('basic', () => {
 			let omnitable,
 				data;
 
-			setup(next => {
+			setup(done => {
 				omnitable = fixture('basic');
+
+				const onVisible = () => {
+					const columns = omnitable.visibleColumns;
+					if (Array.isArray(columns) && columns.length > 0) {
+						omnitable.removeEventListener('visible-columns-changed', onVisible);
+						Polymer.Base.async(done, 120);
+					}
+				};
+
 				data = Cosmoz.TableDemoBehavior.generateTableDemoData(10, 11, 25);
+				omnitable.addEventListener('visible-columns-changed', onVisible);
 				omnitable.data = data;
 				omnitable.notifyResize();
-				// if (omnitable.visibleColumns != null && omnitable.visibleColumns.length) {
-				// 	next();
-				// } else {
-				// 	omnitable.addEventListener('visible-columns-changed', () => {
-				Polymer.Base.async(next, 30);
-				// });
-				// }
 			});
 
 			test('groupOn id', () => {
 				assert.equal(omnitable.groupOn, 'id');
-				assert.equal(omnitable.groupOnColumn.name, 'id');
-				assert.equal(omnitable.groupOnColumn, omnitable.columns[0]);
+				const groupOnColumn = omnitable.groupOnColumn;
+				assert.equal(typeof groupOnColumn, 'object');
+				assert.equal(groupOnColumn.is, 'cosmoz-omnitable-column');
+				assert.equal(groupOnColumn.name, 'id', 'Expected "groupOnColumn" to be the column that matches "groupOn" value');
+				assert.equal(groupOnColumn, omnitable.columns[0]);
 			});
 
-			test('groupOnDescending true for id column changes order of items', abcd => {
 
-				const items = omnitable.sortedFilteredGroupedItems,
-					first = items[0],
+			test('groupOnDescending true for id column changes order of items', done => {
+				const items = omnitable.sortedFilteredGroupedItems;
+				assert.isArray(items);
+				assert.isObject(items[0]);
+
+				const first = items[0],
 					second = items[1],
-					idx = items.length - 1,
+					idx = items.length - 1, // index of last item
 					last = items[idx];
 				assert.equal(first.id, 0);
 				assert.equal(second.id, 1);
@@ -107,28 +116,29 @@
 					assert.equal(items[0].id, idx);
 					assert.equal(items[idx - 1].id, 1);
 					assert.equal(items[idx].id, 0);
-					abcd();
-				}, 300);
+					done();
+				}, 120);
 			});
-
 		});
 
 		suite('bool', () => {
 			let omnitable,
 				data;
 
-			setup(function (done) {
+			setup(done => {
 				omnitable = fixture('bool');
+				const onVisible = () => {
+					const columns = omnitable.visibleColumns;
+					if (Array.isArray(columns) && columns.length > 0) {
+						omnitable.removeEventListener('visible-columns-changed', onVisible);
+						Polymer.Base.async(done, 120);
+					}
+				};
+
 				data = Cosmoz.TableDemoBehavior.generateTableDemoData(10, 11, 25);
+				omnitable.addEventListener('visible-columns-changed', onVisible);
 				omnitable.data = data;
 				omnitable.notifyResize();
-				// if (omnitable.visibleColumns != null && omnitable.visibleColumns.length) {
-				// 	done();
-				// } else {
-				// 	omnitable.addEventListener('visible-columns-changed', function () {
-				Polymer.Base.async(done, 30);
-				// 	});
-				// }
 			});
 
 			test('groupOnDescending true for boolean column changes order of items', done => {
@@ -148,7 +158,7 @@
 					assert.equal(omnitable.sortedFilteredGroupedItems[0].id, false);
 					assert.equal(omnitable.sortedFilteredGroupedItems[idx].id, true);
 					done();
-				}, 200);
+				}, 120);
 			});
 		});
 	}());
