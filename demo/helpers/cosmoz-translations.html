@@ -1,0 +1,64 @@
+<link rel="import" href="../../../cosmoz-i18next/cosmoz-i18next.html">
+
+<dom-module id="cosmoz-translations">
+	<template>
+		<cosmoz-i18next
+			translations="[[ _getTranslations(locale) ]]"
+			interpolation-prefix="{"
+			interpolation-suffix="}"
+			key-separator="::"
+			ns-separator=":::">
+		</cosmoz-i18next>
+	</template>
+	<script>
+		(function () {
+			'use strict';
+
+			Polymer({
+				is: 'cosmoz-translations',
+
+				_getTranslations(locale) {
+					if (locale === 'sv') {
+						return {
+							'Ascending': 'stigande',
+							'Descending': 'fallande',
+							'Amount': 'Belopp',
+							'Group': 'Grupp',
+							'{0} group': '{0} grupp',
+							'{0} group_plural': '{0} grupper',
+							'{0} row': '{0} rad',
+							'{0} row_plural': '{0} rader',
+							'{0} selected item': '{0} valt objekt',
+							'{0} selected item_plural': '{0} valda objekt',
+							'Group on': 'Gruppera på',
+							'Sort on': 'Sortera på',
+							'No grouping': 'Ingen gruppering',
+							'No sorting': 'Ingen sortering'
+						};
+
+					} else if (locale === 'fr') {
+						return {
+							'Ascending': 'croissant',
+							'Descending': 'décroissant',
+							'Amount': 'Montant',
+							'Save as CSV': 'Eporter en CSV',
+							'Group': 'Groupe',
+							'{0} group': '{0} groupe',
+							'{0} group_plural': '{0} groupes',
+							'{0} row': '{0} ligne',
+							'{0} row_plural': '{0} lignes',
+							'{0} selected item': '{0} élément sélectionné',
+							'{0} selected item_plural': '{0} éléments sélectionnés',
+							'Group on': 'Grouper sur',
+							'Sort on': 'Trier sur',
+							'No grouping': 'Pas de groupement',
+							'No sorting': 'Pas de tri'
+						};
+					}
+
+					return {};
+				}
+			});
+		}());
+	</script>
+</dom-module>

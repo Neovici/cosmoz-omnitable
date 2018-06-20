@@ -8,13 +8,15 @@
 
 	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 	<link rel="import" href="../../polymer/polymer.html">
+	<link rel="import" href="../../neon-animation/web-animations.html">
 	<link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
 	<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+	<link rel="import" href="../../paper-dropdown-menu/paper-dropdown-menu-light.html">
 	<link rel="import" href="../../iron-icons/editor-icons.html">
 	<link rel="import" href="../../iron-icons/iron-icons.html">
 	<link rel="import" href="../../paper-button/paper-button.html">
-	<link rel="import" href="../../cosmoz-i18next/cosmoz-i18next.html">
 	<link rel="import" href="../cosmoz-omnitable.html">
+	<link rel="import" href="./helpers/cosmoz-translations.html">
 
 	<link rel="import" href="table-demo-behavior.html">
 
@@ -42,18 +44,19 @@
 			</style>
 			<div class="layout vertical fit">
 				<h3>Cosmoz omnitable grouping demo</h3>
+				<cosmoz-translations locale="[[ locale ]]"></cosmoz-translations>
 				<div>
-					<p>Table sould be grouped by column <code>Group</code> on load. Current <code>groupOn</code> value: <span style="color: red">{{group}}</span>.</p>
+					<p>Table sould be grouped by column <code>Group</code> on load. Current <code>groupOn</code> value: <span style="color: red">{{ group }}</span>.</p>
 					<p>You can group the table only by columns Boolean, Group, Date, DateJSON and Sub-property</p>
 				</div>
 				<div class="layout horizontal center">
 					<button class="action" on-tap="changeData">Generate a new data set</button>
 					<div class="action">
-						Selected items count: <span>{{selectedItems.length}}</span>
+						Selected items count: <span>{{ selectedItems.length }}</span>
 					</div>
 					<div class="action">
-						<paper-dropdown-menu label="Locale">
-							<paper-listbox class="dropdown-content" selected="{{locale}}" attr-for-selected="value">
+						<paper-dropdown-menu label="Locale" no-animations>
+							<paper-listbox class="dropdown-content" slot="dropdown-content" selected="{{ locale }}" attr-for-selected="value">
 								<paper-item value="en">en</paper-item>
 								<paper-item value="fr">fr</paper-item>
 								<paper-item value="sv">sv</paper-item>
@@ -62,31 +65,31 @@
 					</div>
 				</div>
 
-				<cosmoz-omnitable id="omnitable" class="flex" data="[[data]]"
-					selection-enabled selected-items="{{selectedItems}}" group-on="{{group}}">
+				<cosmoz-omnitable id="omnitable" class="flex" data="[[ data ]]"
+					selection-enabled selected-items="{{ selectedItems }}" group-on="{{ group }}">
 					<cosmoz-omnitable-column title="Id" name="id" value-path="id" sort-on="id">
 						<template class="cell">
-							<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.id]]</a>
+							<a href="#!/purchase/suppliers/view?id=[[ item.id ]]">[[ item.id ]]</a>
 						</template>
 					</cosmoz-omnitable-column>
 					<cosmoz-omnitable-column-boolean title="Boolean" name="bool" value-path="bool" sort-on="bool" group-on="bool"
 						true-label="Oui" false-label="Non">
 					</cosmoz-omnitable-column-boolean>
-					<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" locale="{{locale}}" sort-on="value">
+					<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" locale="{{ locale }}" sort-on="value">
 					</cosmoz-omnitable-column-number>
 					<cosmoz-omnitable-column title="Group" name="group" value-path="group" bind-values sort-on="group" group-on="group">
 					</cosmoz-omnitable-column>
 					<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount" sort-on="amount">
 					</cosmoz-omnitable-column-amount>
-					<cosmoz-omnitable-column-date title="Date" name="date" value-path="date" locale="{{locale}}" sort-on="date" group-on="date">
+					<cosmoz-omnitable-column-date title="Date" name="date" value-path="date" locale="{{ locale }}" sort-on="date" group-on="date">
 					</cosmoz-omnitable-column-date>
-					<cosmoz-omnitable-column-date title="DateJSON" name="datejson" value-path="dateJSON" locale="{{locale}}" sort-on="dateJSON" group-on="dateJSON">
+					<cosmoz-omnitable-column-date title="DateJSON" name="datejson" value-path="dateJSON" locale="{{ locale }}" sort-on="dateJSON" group-on="dateJSON">
 					</cosmoz-omnitable-column-date>
 					<cosmoz-omnitable-column title="Sub-property" name="subproperty" value-path="sub.subProp" sort-on="sub.subProp" group-on="sub.subProp">
 					</cosmoz-omnitable-column>
 					<cosmoz-omnitable-column title="Name" name="name" value-path="name" bind-values sort-on="name">
 						<template class="cell">
-							<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.name]]</a>
+							<a href="#!/purchase/suppliers/view?id=[[ item.id ]]">[[ item.name ]]</a>
 						</template>
 					</cosmoz-omnitable-column>
 				</cosmoz-omnitable>
@@ -97,68 +100,63 @@
 	<x-page class="fit"></x-page>
 
 	<script type="text/javascript">
-/*global document, window, Cosmoz, Polymer */
-(function () {
-	'use strict';
+		/*global document, window, Cosmoz, Polymer */
+		(function () {
+			'use strict';
 
 
-	Polymer({
-		is: 'x-page',
+			Polymer({
+				is: 'x-page',
 
-		properties: {
-			data: {
-				type: Array
-			},
-			selectedItems: {
-				type: Array
-			},
-			locale: {
-				type: String,
-				value: null
-			},
-			group: {
-				type: String,
-				value: 'group'
-			}
-		},
+				properties: {
+					data: {
+						type: Array
+					},
+					selectedItems: {
+						type: Array
+					},
+					locale: {
+						type: String,
+						value: null
+					},
+					group: {
+						type: String,
+						value: 'group'
+					}
+				},
 
-		behaviors: [
-			Cosmoz.TableDemoBehavior
-		],
+				behaviors: [
+					Cosmoz.TableDemoBehavior
+				],
 
-		ready: function () {
-			//this.changeData();
-		},
+				attached() {
+					this.data = this.generateTableDemoData(20, 25, 25);
+				},
 
-		attached: function () {
-			this.data = this.generateTableDemoData(20, 25, 25);
-		},
+				changeData() {
+					this.data = this.generateTableDemoData(20, 25, 10);
+				},
 
-		changeData: function () {
-			this.data = this.generateTableDemoData(20, 25, 10);
-		},
+				_localeChanged(locale, oldLocale) {
+					console.log('_localeChanged', locale, oldLocale);
+				},
 
-		_localeChanged: function (locale, oldLocale) {
-			console.log('_localeChanged', locale, oldLocale);
-		},
+				_computeLabel(text, count) {
+					return text + ' ' + count + ' items';
+				},
 
-		_computeLabel: function (text, count) {
-			return text + ' ' + count + ' items';
-		},
+				updateSelectedRows(event, detail) {
+					detail.items.forEach(item => {
+						this.$.omnitable.setItemValue(item, 'randomString3', 'blablablalbal');
+					}, this);
+				},
 
-		updateSelectedRows: function (event, detail) {
-			detail.items.forEach(function (item) {
-				this.$.omnitable.setItemValue(item, 'randomString3', 'blablablalbal');
-			}, this);
-
-		},
-
-		removeItems: function (event, detail) {
-			console.log('runAction', detail.items, event, detail, detail.items);
-			detail.omnitable.removeItems(detail.items);
-		}
-	});
-}());
+				removeItems(event, detail) {
+					console.log('runAction', detail.items, event, detail, detail.items);
+					detail.omnitable.removeItems(detail.items);
+				}
+			});
+		}());
 
 	</script>
 </body>

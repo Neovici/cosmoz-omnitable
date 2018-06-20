@@ -275,11 +275,20 @@
 				done();
 			});
 
-			test('computes array of formaters', function (done) {
-				Object.keys(column._formatters).forEach(function (el) {
-					assert.include(['SEK', 'USD', 'AUD', 'EUR', 'DKK'], el);
-				});
-				done();
+			test('computes array of formaters', done => {
+				const verifyFormatters = () => {
+					const formatters = column._formatters;
+
+					if (formatters == null) {
+						Polymer.Base.async(verifyFormatters, 50);
+					} else {
+						Object.keys(formatters).forEach(el => {
+							assert.include(['SEK', 'USD', 'AUD', 'EUR', 'DKK'], el);
+						});
+						done();
+					}
+				};
+				Polymer.Base.async(verifyFormatters, 50);
 			});
 
 			test('changing filter updates _filterInput', function (done) {
