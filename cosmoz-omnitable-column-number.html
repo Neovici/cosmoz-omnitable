@@ -93,6 +93,35 @@
 				return new Intl.NumberFormat(locale || undefined, options);
 			},
 
+			/**
+			 *   Get the comparable value of an item.
+			 *
+			 * @param  {Object} item       Item to be processed
+			 * @param  {String} valuePath  Property path
+			 * @returns {Number|void}      Valid value or void
+			 */
+			getComparableValue(item, valuePath) {
+				if (item == null) {
+					return;
+				}
+				let value = item;
+				if (valuePath != null) {
+					value = this.get(valuePath, item);
+				}
+				value = this.toValue(value);
+				if (value == null) {
+					return;
+				}
+
+				const decimals = this.minimumFractionDigits;
+				if (decimals !== null) {
+					const d = Math.pow(10, decimals),
+						temp = parseInt(value * d, 10) / d;
+					return temp.toFixed(decimals);
+				}
+				return value;
+			},
+
 			renderValue(value, formatter = this.formatter) {
 				const number = this.toNumber(value);
 				if (number == null) {
