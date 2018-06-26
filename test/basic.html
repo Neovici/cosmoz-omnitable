@@ -183,6 +183,24 @@
 				done();
 			});
 
+			test('_hiddenChanged fires cosmoz-column-hidden-changed', done => {
+				const column = omnitable.columns[3];
+				assert.isUndefined(column.hidden);
+				column.addEventListener('cosmoz-column-hidden-changed', () => {
+					done();
+				});
+				column.hidden = true;
+			});
+
+			test('_applyMultiFilter works with an simple test filter', done => {
+				const column = omnitable.columns[3];
+				let filter = ['a', 'b'];
+				assert.isTrue(column._applyMultiFilter(filter, {valuePath: 'abc'}));
+				filter = ['x', 'y'];
+				assert.isFalse(column._applyMultiFilter(filter, {valuePath: 'abc'}));
+				done();
+			});
+
 			test('getHeaderTemplateInstance handles undefined _headerTemplatizer', done => {
 				const column = omnitable.columns[3];
 				column._headerTemplatizer = undefined;
