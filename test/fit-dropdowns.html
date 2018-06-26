@@ -72,6 +72,21 @@
 			});
 
 			suite('autocomplete unit tests', () => {
+				test('getString handles undefined parameter and property of column', done => {
+					instantiate(() => {
+						const column = omnitable.columns[0];
+						column.valuePath = undefined;
+						try {
+							// assert.throws(
+							column.getString({ id: 70, group: 'group0', name: 'Item 0' });
+							// , ReferenceError);
+						} catch (e) {
+							assert.equal(e.toString(), 'console.error: [object HTMLElement] has undefined valuePath  for item [object Object]');
+						}
+						done();
+					});
+				});
+
 				test('getString handles undefined valuePath parameter', done => {
 					instantiate(() => {
 						const column = omnitable.columns[0];
