@@ -223,6 +223,37 @@
 				omnitable.notifyResize();
 			});
 
+			test('_toHashString handles null', done => {
+				assert.equal(column._toHashString(null), '');
+				done();
+			});
+
+			test('_toHashString handles undefined', done => {
+				assert.equal(column._toHashString(undefined), '');
+				done();
+			});
+
+			test('_fromHashString handles null', done => {
+				assert.isUndefined(column._fromHashString(null));
+				done();
+			});
+
+			test('_fromHashString handles undefined', done => {
+				assert.isUndefined(column._fromHashString(undefined));
+				done();
+			});
+
+			test('_fromHashString handles empty string', done => {
+				assert.isUndefined(column._fromHashString(''));
+				done();
+			});
+
+			// test('toXlsxValue handles undefined valuePath parameter and property', done => {
+			// 	column.valuePath = undefined;
+			// 	assert.equal(column.toXlsxValue({date: new Date() }), '');
+			// 	done();
+			// });
+
 			test('_toInputString converts datetime to local string', function (done) {
 				assert.equal(column._toInputString(new Date(86400000)), '1970-01-02T02:00:00');
 				assert.equal(column._toInputString(new Date('2006-07-14T07:05:39')), '2006-07-14T07:05:39');
