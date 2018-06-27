@@ -70,6 +70,133 @@
 					});
 				});
 			});
+
+			suite('autocomplete unit tests', () => {
+				test('getComparableValue returns value converted to String', done => {
+					instantiate(() => {
+						const column = omnitable.columns[0];
+						assert.equal(column.getComparableValue({ id: 14, group: 'group0', name: 'Item 14' }), 14);
+						done();
+					});
+				});
+				test('getString handles undefined parameter and property of column', done => {
+					instantiate(() => {
+						const column = omnitable.columns[0];
+						column.valuePath = undefined;
+						try {
+							// assert.throws(
+							column.getString({ id: 70, group: 'group0', name: 'Item 0' });
+							// , ReferenceError);
+						} catch (e) {
+							assert.equal(e.toString(), 'console.error: [object HTMLElement] has undefined valuePath  for item [object Object]');
+						}
+						done();
+					});
+				});
+
+				test('getString handles undefined valuePath parameter', done => {
+					instantiate(() => {
+						const column = omnitable.columns[0];
+						assert.equal(column.getString({ id: 70, group: 'group0', name: 'Item 0' }), 70);
+						done();
+					});
+				});
+
+				test('getString handles itemValue as array', done => {
+					instantiate(() => {
+						const column = omnitable.columns[0];
+						assert.equal(column.getString({ id: [70, 80], group: 'group0', name: 'Item 0' }), '70, 80');
+						done();
+					});
+				});
+
+				test('getString handles itemValue as object', done => {
+					instantiate(() => {
+						const column = omnitable.columns[0];
+						assert.equal(column.getString({ id: { text: '10'}, group: 'group0', name: 'Item 0' }), '10');
+						done();
+					});
+				});
+
+				test('toXlsxValue handles undefined valuePath', done => {
+					instantiate(() => {
+						const column = omnitable.columns[0];
+						column.valuePath = null;
+						assert.equal(column.toXlsxValue({ id: 30, group: 'group0', name: 'Item 30' }), '');
+						done();
+					});
+				});
+
+				test('_applySingleFilter filters some string', done => {
+					instantiate(() => {
+						const column = omnitable.columns[0];
+						assert.isTrue(column._applySingleFilter('some', { id: 'some', group: 'group0', name: 'Item 30' }));
+						done();
+					});
+				});
+
+				test('_applyMultiFilter handles null value', done => {
+					instantiate(() => {
+						const column = omnitable.columns[0];
+						assert.isFalse(column._applyMultiFilter([], {id: null, group: 'group0', name: ' Item id null' }));
+						done();
+					});
+				});
+
+				test('_unique handles undefined values', done => {
+					instantiate(() => {
+						const column = omnitable.columns[0];
+						assert.isUndefined(column._unique());
+						done();
+					});
+				});
+
+				test('_unique handles unique values', done => {
+					instantiate(() => {
+						const column = omnitable.columns[0],
+							items = [
+								{id: 0, group: 'group0', name: ' Item 0'},
+								{id: 1, group: 'group0', name: ' Item 1'},
+								{id: 2, group: 'group1', name: ' Item 2'}
+							];
+						assert.deepEqual(column._unique(items, 'id'), items);
+						done();
+					});
+				});
+
+				test('_unique returns unique values', done => {
+					instantiate(() => {
+						const column = omnitable.columns[0];
+						let items = [
+							{id: 0, group: 'group0', name: ' Item 0'},
+							{id: 1, group: 'group0', name: ' Item 1'},
+							{id: 0, group: 'group0', name: ' Item 0'},
+						];
+						assert.deepEqual(column._unique(items, 'id'), [
+							{id: 0, group: 'group0', name: ' Item 0'},
+							{id: 1, group: 'group0', name: ' Item 1'}
+						]);
+
+						items = [
+							{id: 0, group: 'group0', name: ' Item 0'},
+							{id: 1, group: 'group0', name: ' Item 1'},
+							{id: 0, group: 'group0', name: ' Item 0'},
+							{id: 1, group: 'group0', name: ' Item 1'},
+							{id: 2, group: 'group1', name: ' Item 2'},
+							{id: 2, group: 'group1', name: ' Item 2'},
+							{id: 3, group: 'group1', name: ' Item 3'},
+							{id: 0, group: 'group0', name: ' Item 0'},
+						];
+						assert.deepEqual(column._unique(items, 'id'), [
+							{id: 0, group: 'group0', name: ' Item 0'},
+							{id: 1, group: 'group0', name: ' Item 1'},
+							{id: 2, group: 'group1', name: ' Item 2'},
+							{id: 3, group: 'group1', name: ' Item 3'}
+						]);
+						done();
+					});
+				});
+			});
 		})();
 		</script>
 	</body>
