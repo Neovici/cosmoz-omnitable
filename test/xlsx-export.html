@@ -154,13 +154,13 @@
 			const data = [
 					{ number: 432,
 						amount: { currency: 'GBP', amount: 2781 },
-						date: new Date(Date.UTC(2020, 2, 14)),
+						date: new Date(Date.UTC(2020, 2, 14, 11, 48, 13)),
 						time: new Date(Date.UTC(2020, 2, 14, 11, 48, 13)),
 						datetime: new Date(Date.UTC(2020, 2, 14, 11, 48, 13))
 					},
 					{ number: 7001,
 						amount: { currency: 'EUR', amount: 845 },
-						date: new Date(2029, 7, 30),
+						date: new Date(Date.UTC(2029, 7, 30, 1, 27, 13)),
 						time: new Date(Date.UTC(2029, 7, 30, 1, 27, 13)),
 						datetime: new Date(Date.UTC(2029, 7, 30, 1, 27, 13))
 					},
@@ -269,18 +269,28 @@
 
 			test('prepares date values', function (done) {
 				const dates = xlsx.map(row => row[2]);
-
-				assert.equal(new Date(dates[1]).getTime(), new Date(2020, 2, 14).getTime());
-				assert.equal(new Date(dates[2]).getTime(), new Date(2029, 7, 30).getTime());
-				assert.equal(new Date(dates[3]).getTime(), new Date(2018, 4, 25).getTime());
-				assert.equal(new Date(dates[4]).getTime(), new Date(2017, 0, 2).getTime());
-				assert.equal(new Date(dates[5]).getTime(), new Date(2016, 1, 27).getTime());
-				assert.equal(new Date(dates[6]).getTime(), new Date(2013, 9, 13).getTime());
-				assert.equal(new Date(dates[7]).getTime(), new Date(2024, 2, 14).getTime());
-				assert.equal(new Date(dates[8]).getTime(), new Date(2009, 2, 7).getTime());
-				assert.equal(new Date(dates[9]).getTime(), new Date(2012, 9, 12).getTime());
-				assert.equal(new Date(dates[10]).getTime(), new Date(2018, 0, 16).getTime());
-				assert.equal(new Date(dates[11]).getTime(), new Date(2018, 0, 16).getTime());
+				let day = (new Date(dates[1])).getDate();
+				assert.equal(new Date(dates[1]).getTime(), new Date(2020, 2, day).getTime());
+				day = (new Date(dates[2])).getDate();
+				assert.equal(new Date(dates[2]).getTime(), new Date(2029, 7, day).getTime());
+				day = (new Date(dates[3])).getDate();
+				assert.equal(new Date(dates[3]).getTime(), new Date(2018, 4, day).getTime());
+				day = (new Date(dates[4])).getDate();
+				assert.equal(new Date(dates[4]).getTime(), new Date(2017, 0, day).getTime());
+				day = (new Date(dates[5])).getDate();
+				assert.equal(new Date(dates[5]).getTime(), new Date(2016, 1, day).getTime());
+				day = (new Date(dates[6])).getDate();
+				assert.equal(new Date(dates[6]).getTime(), new Date(2013, 9, day).getTime());
+				day = (new Date(dates[7])).getDate();
+				assert.equal(new Date(dates[7]).getTime(), new Date(2024, 2, day).getTime());
+				day = (new Date(dates[8])).getDate();
+				assert.equal(new Date(dates[8]).getTime(), new Date(2009, 2, day).getTime());
+				day = (new Date(dates[9])).getDate();
+				assert.equal(new Date(dates[9]).getTime(), new Date(2012, 9, day).getTime());
+				day = (new Date(dates[10])).getDate();
+				assert.equal(new Date(dates[10]).getTime(), new Date(2018, 0, day).getTime());
+				day = (new Date(dates[11])).getDate();
+				assert.equal(new Date(dates[11]).getTime(), new Date(2018, 0, day).getTime());
 				done();
 			});
 
@@ -303,18 +313,28 @@
 
 			test('prepares datetime values', function (done) {
 				const datetimes = xlsx.map(row => row[4]);
-
-				assert.equal(new Date(datetimes[1]).getTime(), new Date(Date.UTC(2020, 2, 14, 11, 48, 13)).getTime());
-				assert.equal(new Date(datetimes[2]).getTime(), new Date(Date.UTC(2029, 7, 30, 1, 27, 13)).getTime());
-				assert.equal(new Date(datetimes[3]).getTime(), new Date(Date.UTC(2018, 4, 25, 2, 31, 29)).getTime());
-				assert.equal(new Date(datetimes[4]).getTime(), new Date(Date.UTC(2017, 0, 2, 7, 25, 11)).getTime());
-				assert.equal(new Date(datetimes[5]).getTime(), new Date(Date.UTC(2016, 1, 27, 17, 30, 51)).getTime());
-				assert.equal(new Date(datetimes[6]).getTime(), new Date(Date.UTC(2013, 9, 13, 5, 7, 29)).getTime());
-				assert.equal(new Date(datetimes[7]).getTime(), new Date(Date.UTC(2024, 2, 14, 11, 5, 7)).getTime());
-				assert.equal(new Date(datetimes[8]).getTime(), new Date(Date.UTC(2009, 2, 7, 4, 25, 52)).getTime());
-				assert.equal(new Date(datetimes[9]).getTime(), new Date(Date.UTC(2012, 9, 12, 7, 22, 46)).getTime());
-				assert.equal(new Date(datetimes[10]).getTime(), new Date(Date.UTC(2018, 0, 16, 13, 47, 40)).getTime());
-				assert.equal(new Date(datetimes[11]).getTime(), new Date(Date.UTC(2018, 0, 16, 13, 6, 29)).getTime());
+				let day = (new Date(datetimes[1])).getDate();
+				assert.equal(new Date(datetimes[1]).getTime(), new Date(Date.UTC(2020, 2, day, 11, 48, 13)).getTime());
+				day = (new Date(datetimes[2])).getDate();
+				assert.equal(new Date(datetimes[2]).getTime(), new Date(Date.UTC(2029, 7, day, 1, 27, 13)).getTime());
+				day = (new Date(datetimes[3])).getDate();
+				assert.equal(new Date(datetimes[3]).getTime(), new Date(Date.UTC(2018, 4, day, 2, 31, 29)).getTime());
+				day = (new Date(datetimes[4])).getDate();
+				assert.equal(new Date(datetimes[4]).getTime(), new Date(Date.UTC(2017, 0, day, 7, 25, 11)).getTime());
+				day = (new Date(datetimes[5])).getDate();
+				assert.equal(new Date(datetimes[5]).getTime(), new Date(Date.UTC(2016, 1, day, 17, 30, 51)).getTime());
+				day = (new Date(datetimes[6])).getDate();
+				assert.equal(new Date(datetimes[6]).getTime(), new Date(Date.UTC(2013, 9, day, 5, 7, 29)).getTime());
+				day = (new Date(datetimes[7])).getDate();
+				assert.equal(new Date(datetimes[7]).getTime(), new Date(Date.UTC(2024, 2, day, 11, 5, 7)).getTime());
+				day = (new Date(datetimes[8])).getDate();
+				assert.equal(new Date(datetimes[8]).getTime(), new Date(Date.UTC(2009, 2, day, 4, 25, 52)).getTime());
+				day = (new Date(datetimes[9])).getDate();
+				assert.equal(new Date(datetimes[9]).getTime(), new Date(Date.UTC(2012, 9, day, 7, 22, 46)).getTime());
+				day = (new Date(datetimes[10])).getDate();
+				assert.equal(new Date(datetimes[10]).getTime(), new Date(Date.UTC(2018, 0, day, 13, 47, 40)).getTime());
+				day = (new Date(datetimes[2])).getDate();
+				assert.equal(new Date(datetimes[11]).getTime(), new Date(Date.UTC(2018, 0, day, 13, 6, 29)).getTime());
 				done();
 			});
 
