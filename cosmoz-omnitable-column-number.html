@@ -113,8 +113,9 @@
 					return;
 				}
 
-				const decimals = this.minimumFractionDigits;
+				const decimals = this.maximumFractionDigits;
 				if (decimals !== null) {
+					// truncate value to maximum decimals; https://github.com/Neovici/cosmoz-omnitable/issues/176
 					const d = Math.pow(10, decimals),
 						temp = parseInt(value * d, 10) / d;
 					return temp.toFixed(decimals);

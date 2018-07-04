@@ -20,7 +20,7 @@
 	<test-fixture id="range">
 		<template>
 			<cosmoz-omnitable id="omnitable" class="flex">
-				<cosmoz-omnitable-column-number title="Age" name="age" value-path="age" minimum-fraction-digits=2>
+				<cosmoz-omnitable-column-number title="Age" name="age" value-path="age" maximum-fraction-digits=2>
 				</cosmoz-omnitable-column-number>
 				<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount">
 				</cosmoz-omnitable-column-amount>
@@ -75,7 +75,7 @@
 				amount: { amount: 347, currency: 'USD' }
 			},
 			{
-				age: 46.768, // needed in minimumFractionDigits test
+				age: 46.768, // needed in maximumFractionDigits test
 				amount: { amount: 2581, currency: 'EUR' }
 			}
 		];
@@ -219,7 +219,7 @@
 				column._filterInput =  {min: -11, max: 17};
 			});
 
-			test('filter comparision uses minimumFractionDigits', done => {
+			test('filter comparision uses maximumFractionDigits', done => {
 				assert.isNull(column._filterInput.min);
 				assert.isNull(column._filterInput.max);
 
