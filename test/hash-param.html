@@ -8,6 +8,7 @@
 		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 		<script src="../../web-component-tester/browser.js"></script>
 		<script src="../../test-fixture/test-fixture-mocha.js"></script>
+		<script src="./helpers.js"></script>
 
 		<link rel="import" href="../../test-fixture/test-fixture.html">
 		<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
@@ -40,6 +41,9 @@
 		<script>
 		(function () {
 			/* global setupOmnitableFixture*/
+			// get dom Type from helpers.js
+			const domType = getDomType(); //eslint-disable-line no-undef
+
 			let omnitable;
 			const data = [
 					{ id: 0, group: 'group0', name: 'Item 0' },
@@ -52,7 +56,7 @@
 					omnitable = setupOmnitableFixture('basic', data, () => done());
 				};
 
-			suite('basic-read', function () {
+			suite('basic-read' + domType, () => {
 				teardown(function (done) {
 					location.hash = '';
 					done();
@@ -96,7 +100,7 @@
 				});
 			});
 
-			suite('basic-write', function () {
+			suite('basic-write' + domType, () => {
 				setup(instantiate);
 				teardown(function (done) {
 					location.hash = '';

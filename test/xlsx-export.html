@@ -8,6 +8,7 @@
 	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 	<script src="../../web-component-tester/browser.js"></script>
 	<script src="../../test-fixture/test-fixture-mocha.js"></script>
+	<script src="./helpers.js"></script>
 
 	<link rel="import" href="../../test-fixture/test-fixture.html">
 	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
@@ -53,9 +54,12 @@
 	(function () {
 		'use strict';
 
+		// get dom Type from helpers.js
+		const domType = getDomType(); //eslint-disable-line no-undef
+
 		sinon.assert.expose(chai.assert, { prefix: '' });
 
-		suite('xlsx-export-omnitable', function () {
+		suite('xlsx-export-omnitable' + domType, () => {
 			var omnitable,
 				data = [
 					{ id: 0, 'first-name': 'Carl', amount: 12.4, date: new Date(2017, 7 - 1, 10) },
@@ -148,7 +152,7 @@
 			});
 		});
 
-		suite('toXlsx range tests', function () {
+		suite('toXlsx range tests' + domType, () => {
 			var omnitable,
 				xlsx;
 			const data = [

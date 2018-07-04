@@ -8,6 +8,7 @@
 	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 	<script src="../../web-component-tester/browser.js"></script>
 	<script src="../../test-fixture/test-fixture-mocha.js"></script>
+	<script src="./helpers.js"></script>
 
 	<link rel="import" href="../../test-fixture/test-fixture.html">
 	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
@@ -75,7 +76,10 @@
 		/* global setupOmnitableFixture*/
 		'use strict';
 
-		suite('id', () => {
+		// get dom Type from helpers.js
+		const domType = getDomType(); //eslint-disable-line no-undef
+
+		suite('id' + domType, () => {
 			let omnitable,
 				data;
 
@@ -119,7 +123,7 @@
 			});
 		});
 
-		suite('bool', () => {
+		suite('bool' + domType, () => {
 			let omnitable,
 				data;
 
@@ -148,37 +152,36 @@
 				}, 120);
 			});
 		});
-	}());
 
-	suite('amount', () => {
-		let omnitable,
-			data;
+		suite('amount' + domType, () => {
+			let omnitable,
+				data;
 
 		setup(done => {
 			data = Cosmoz.TableDemoBehavior.generateTableDemoData(10, 11, 25);
 			omnitable = setupOmnitableFixture('amount', data, () => done());
 		});
 
-		test('setting groupOn property to "amount" updates property groupOnColumn', done => {
-			omnitable.groupOn = 'amount';
+			test('setting groupOn property to "amount" updates property groupOnColumn', done => {
+				omnitable.groupOn = 'amount';
 
-			omnitable.notifyResize();
-			const verifyColumn = () => {
-				const groupOnColumn = omnitable.groupOnColumn;
-				if (groupOnColumn == null) {
-					Polymer.Base.async(verifyColumn, 50);
-				} else {
-					assert.equal(typeof groupOnColumn, 'object');
-					assert.equal(groupOnColumn.is, 'cosmoz-omnitable-column-amount');
-					assert.equal(groupOnColumn.name, 'amount', 'Expected "groupOnColumn" to be the column that matches "groupOn" value');
-					assert.equal(groupOnColumn, omnitable.columns[0]);
-					done();
-				}
-			};
-			Polymer.Base.async(verifyColumn, 50);
+				omnitable.notifyResize();
+				const verifyColumn = () => {
+					const groupOnColumn = omnitable.groupOnColumn;
+					if (groupOnColumn == null) {
+						Polymer.Base.async(verifyColumn, 50);
+					} else {
+						assert.equal(typeof groupOnColumn, 'object');
+						assert.equal(groupOnColumn.is, 'cosmoz-omnitable-column-amount');
+						assert.equal(groupOnColumn.name, 'amount', 'Expected "groupOnColumn" to be the column that matches "groupOn" value');
+						assert.equal(groupOnColumn, omnitable.columns[0]);
+						done();
+					}
+				};
+				Polymer.Base.async(verifyColumn, 50);
+			});
 		});
-	});
 
-
+	}());
 	</script>
 </body></html>

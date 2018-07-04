@@ -8,6 +8,7 @@
 		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 		<script src="../../web-component-tester/browser.js"></script>
 		<script src="../../test-fixture/test-fixture-mocha.js"></script>
+		<script src="./helpers.js"></script>
 
 		<link rel="import" href="../../test-fixture/test-fixture.html">
 		<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
@@ -39,6 +40,9 @@
 		<script>
 		(function () {
 			/* global setupOmnitableFixture*/
+			// get dom Type from helpers.js
+			const domType = getDomType(); //eslint-disable-line no-undef
+
 			let omnitable;
 			const data = [
 					{ id: 0, group: 'group0', name: 'Item 0' },
@@ -50,7 +54,7 @@
 					omnitable = setupOmnitableFixture('basic', data, () => done());
 				};
 
-			suite('fit-dropdowns', () => {
+			suite('fit-dropdowns' + domType, () => {
 				test('sets iron-dropdown fitInto property', done => {
 					instantiate(() => {
 						[
@@ -67,7 +71,7 @@
 				});
 			});
 
-			suite('autocomplete unit tests', () => {
+			suite('autocomplete unit tests' + domType, () => {
 				test('getComparableValue returns value converted to String', done => {
 					instantiate(() => {
 						const column = omnitable.columns[0];

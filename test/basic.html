@@ -8,13 +8,14 @@
 	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 	<script src="../../web-component-tester/browser.js"></script>
 	<script src="../../test-fixture/test-fixture-mocha.js"></script>
-
+	<script src="./helpers.js"></script>
 	<link rel="import" href="../../test-fixture/test-fixture.html">
 	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
 	<link rel="import" href="helpers.html">
 	<link rel="import" href="../cosmoz-omnitable.html">
 	<link rel="import" href="../cosmoz-omnitable-columns.html">
 	<link rel="import" href="../demo/table-demo-behavior.html">
+
 </head>
 <body>
 	<test-fixture id="basic">
@@ -55,8 +56,9 @@
 	(function () {
 		/* global setupOmnitableFixture*/
 		'use strict';
-
-		suite('basic', function () {
+		// get dom Type from helpers.js
+		const domType = getDomType(); //eslint-disable-line no-undef
+		suite('basic' + domType, () => {
 			var omnitable,
 				data;
 
@@ -208,7 +210,7 @@
 			});
 		});
 
-		suite('it logs unnamed column', function () {
+		suite('it logs unnamed column' + domType, () => {
 			var omnitable,
 				data,
 				consoleErrorStub;
