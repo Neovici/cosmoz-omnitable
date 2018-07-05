@@ -72,6 +72,7 @@
 				amount: { amount: 2015, currency: 'EUR' }
 			},
 			{
+				age: 46.7511, // 46,75xx
 				amount: { amount: 347, currency: 'USD' }
 			},
 			{
@@ -219,13 +220,24 @@
 				column._filterInput =  {min: -11, max: 17};
 			});
 
-			test('filter comparision uses maximumFractionDigits', done => {
+			test('filter comparision uses maximumFractionDigits; item age outside the range', done => {
 				assert.isNull(column._filterInput.min);
 				assert.isNull(column._filterInput.max);
 
 				const handler = () => {
 					const items  = omnitable.sortedFilteredGroupedItems;
 					assert.equal(items.filter(item => item.age && item.age === 46.768).length, 0,  'Expected item coresponding to the age: 46.768 not to be in the filtered items, because it is outside the range.');
+					omnitable.removeEventListener('sorted-filtered-grouped-items-changed', handler);
+					done();
+				};
+				omnitable.addEventListener('sorted-filtered-grouped-items-changed', handler);
+				column._filterInput =  {min: 46.75, max: 46.76};
+			});
+
+			test('filter comparision uses maximumFractionDigits, item age inside range', done => {
+				const handler = () => {
+					const items  = omnitable.sortedFilteredGroupedItems;
+					assert.equal(items.filter(item => item.age && item.age === 46.7511).length, 1,  'Expected item coresponding to the age: 46.7511 to be in the filtered items.');
 					omnitable.removeEventListener('sorted-filtered-grouped-items-changed', handler);
 					done();
 				};
