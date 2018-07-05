@@ -225,14 +225,12 @@
 
 				const handler = () => {
 					const items  = omnitable.sortedFilteredGroupedItems;
-					assert.equal(items.length, 4, 'Expected item coresponding to the age: 46.768 to be in the filtered items.');
-					assert.equal(items[3].amount.amount, 2581); // item coresponding to the age: 46.768 is present on the filtered items.
-
+					assert.equal(items.filter(item => item.age && item.age === 46.768).length, 0,  'Expected item coresponding to the age: 46.768 not to be in the filtered items, because it is outside the range.');
 					omnitable.removeEventListener('sorted-filtered-grouped-items-changed', handler);
 					done();
 				};
 				omnitable.addEventListener('sorted-filtered-grouped-items-changed', handler);
-				column._filterInput =  {min: 46.76, max: 46.76};
+				column._filterInput =  {min: 46.75, max: 46.76};
 			});
 		});
 
