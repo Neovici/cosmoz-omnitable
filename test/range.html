@@ -244,6 +244,11 @@
 				omnitable.addEventListener('sorted-filtered-grouped-items-changed', handler);
 				column._filterInput =  {min: 46.75, max: 46.76};
 			});
+
+			test('getString displays 46.768 as 46.77', done => {
+				assert.equal(column.getString({age: 46.768}), 46.77);
+				done();
+			});
 		});
 
 		suite('amount', () => {
