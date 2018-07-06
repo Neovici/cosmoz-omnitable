@@ -70,6 +70,12 @@
 				assert.isTrue(column.filter);
 			});
 
+			test('_textFilterChanged updates filter as false', () => {
+				assert.isNull(column.filter);
+				column._textFilterChanged('false');
+				assert.isFalse(column.filter);
+			});
+
 			test('_textFilterChanged updates filter as null', done => {
 				column.filter = 'true';
 				column._filterChangedFromAbove = false;
@@ -123,6 +129,50 @@
 				e.model = {};
 				e.model.item = item;
 				el.dispatchEvent(e);
+			});
+
+			test('_serializeFilter handles null', () => {
+				assert.isNull(column._serializeFilter(null));
+			});
+
+			test('_serializeFilter handles undefined', () => {
+				assert.isNull(column._serializeFilter(undefined));
+			});
+
+			test('_serializeFilter handles empty string', () => {
+				assert.isNull(column._serializeFilter(''));
+			});
+
+			test('_serializeFilter handles boolean true', () => {
+				assert.equal(column._serializeFilter(true), 'true');
+			});
+
+			test('_serializeFilter handles boolean false', () => {
+				assert.equal(column._serializeFilter(false), 'false');
+			});
+
+			test('_deserializeFilter handles null', () => {
+				assert.isNull(column._deserializeFilter(null));
+			});
+
+			test('_deserializeFilter handles undefined', () => {
+				assert.isNull(column._deserializeFilter(undefined));
+			});
+
+			test('_deserializeFilter handles empty string', () => {
+				assert.isNull(column._deserializeFilter(''));
+			});
+
+			test('_deserializeFilter handles true string', () => {
+				assert.isTrue(column._deserializeFilter('true'));
+			});
+
+			test('_deserializeFilter handles false string', () => {
+				assert.isFalse(column._deserializeFilter('false'));
+			});
+
+			test('_deserializeFilter handles invalid string', () => {
+				assert.isNull(column._deserializeFilter('some invalid string'));
 			});
 		});
 	})();

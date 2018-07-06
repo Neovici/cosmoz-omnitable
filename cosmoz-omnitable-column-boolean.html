@@ -63,10 +63,6 @@
 					observer: '_textFilterChanged'
 				},
 
-				_textValue: {
-
-				},
-
 				templatetemplateWidth: {
 					type: String,
 					value: '60px'
@@ -156,8 +152,19 @@
 				}
 				this.set(this.valuePath, value, item);
 				this._fireItemChangeEvent(item, this.valuePath, oldValue, formatFn.bind(this));
-			}
+			},
 
+			_serializeFilter(obj = this.filter) {
+				if (obj == null || obj === '') {
+					return null;
+				}
+				return this.serialize(obj ? 'true' : 'false');
+			},
+
+			_deserializeFilter(obj) {
+				const value = this.deserialize(obj, String);
+				return value === 'true' ? true : value === 'false' ? false : null;
+			}
 		});
 
 	</script>
