@@ -354,11 +354,7 @@
 			const group = event.model.item,
 				selected = this.$.groupedList.isGroupSelected(group);
 
-			if (selected) {
-				this.$.groupedList.deselectGroup(group);
-			} else {
-				this.$.groupedList.selectGroup(group);
-			}
+			this.$.groupedList.toggleSelectGroup(group, selected);
 
 			event.preventDefault();
 			event.stopPropagation();

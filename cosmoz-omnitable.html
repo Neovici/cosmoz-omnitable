@@ -86,8 +86,7 @@
 				<div class="tableContent-scroller" id="scroller">
 					<cosmoz-grouped-list id="groupedList" data="{{ sortedFilteredGroupedItems }}"
 						selected-items="{{ selectedItems }}" highlighted-items="{{ highlightedItems }}" display-empty-groups="[[ displayEmptyGroups ]]">
-						<cosmoz-grouped-list-template id="itemTemplate">
-							<template>
+							<template slot="templates" class="item">
 								<div class="item-row-wrapper">
 									<div selected$="[[selected]]" class="itemRow" highlighted$="[[highlighted]]">
 										<div class="selectItemCheckbox" hidden$="[[ !_showCheckboxes ]]">
@@ -113,9 +112,7 @@
 									</cosmoz-omnitable-item-expand>
 								</div>
 							</template>
-						</cosmoz-grouped-list-template>
-						<cosmoz-grouped-list-template id="groupTemplate">
-							<template>
+							<template slot="templates" class="group">
 								<div class$="[[ _getGroupRowClasses(folded) ]]">
 									<div class="selectGroupCheckbox" hidden$="[[ !_showCheckboxes ]]">
 										<paper-checkbox checked="{{ selected }}" on-change="_onGroupCheckboxChange"></paper-checkbox>
@@ -134,7 +131,6 @@
 									<paper-icon-button icon="[[ _getFoldIcon(folded) ]]" on-tap="_toggleGroup"></paper-icon-button>
 								</div>
 							</template>
-						</cosmoz-grouped-list-template>
 					</cosmoz-grouped-list>
 				</div>
 			</div>
