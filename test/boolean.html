@@ -11,7 +11,7 @@
 
 	<link rel="import" href="../../test-fixture/test-fixture.html">
 	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-
+	<link rel="import" href="helpers.html">
 	<link rel="import" href="../cosmoz-omnitable.html">
 	<link rel="import" href="../cosmoz-omnitable-columns.html">
 	<link rel="import" href="../demo/table-demo-behavior.html">
@@ -28,6 +28,7 @@
 
 	<script>
 	(function () {
+		/* global setupOmnitableFixture*/
 		'use strict';
 
 		suite('basic', () => {
@@ -36,7 +37,7 @@
 				data;
 
 			setup(done => {
-				omnitable = fixture('basic');
+
 				data = [
 					{ boolean: true },
 					{ boolean: false },
@@ -44,16 +45,10 @@
 					{ boolean: 'invalid' },
 					{ boolean: 'true' }
 				];
-				omnitable.data = data;
-				omnitable.notifyResize();
-				if (omnitable.visibleColumns != null && omnitable.visibleColumns.length) {
+				omnitable = setupOmnitableFixture('basic', data, o => {
+					column = o.columns[0];
 					done();
-				} else {
-					omnitable.addEventListener('visible-columns-changed', () => {
-						column = omnitable.columns[0];
-						Polymer.Base.async(done, 30);
-					});
-				}
+				});
 			});
 
 			test('initializes boolean column', () => {

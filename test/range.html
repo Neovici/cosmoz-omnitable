@@ -11,7 +11,7 @@
 
 	<link rel="import" href="../../test-fixture/test-fixture.html">
 	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-
+	<link rel="import" href="helpers.html">
 	<link rel="import" href="../cosmoz-omnitable.html">
 	<link rel="import" href="../cosmoz-omnitable-columns.html">
 	<link rel="import" href="../demo/table-demo-behavior.html">
@@ -46,7 +46,7 @@
 	</test-fixture>
 
 	<script>
-	/*global sinon chai flush */
+	/*global sinon chai flush setupOmnitableFixture*/
 	(function () {
 		'use strict';
 		const data = [
@@ -87,15 +87,10 @@
 				column;
 
 			setup(function (done) {
-				omnitable = fixture('range');
-				omnitable.data = data;
-				omnitable.addEventListener('visible-columns-changed', function () {
-					Polymer.Base.async(function () {
-						column = omnitable.columns[0];
-						done();
-					}, 30);
+				omnitable = setupOmnitableFixture('range', data, o => {
+					column = o.columns[0];
+					done();
 				});
-				omnitable.notifyResize();
 			});
 
 			test('instantiates a cosmoz-omnitable-column-number', function (done) {
@@ -198,15 +193,10 @@
 				column;
 
 			setup(function (done) {
-				omnitable = fixture('range');
-				omnitable.data = data;
-				omnitable.addEventListener('visible-columns-changed', function () {
-					Polymer.Base.async(function () {
-						column = omnitable.columns[1];
-						done();
-					}, 30);
+				omnitable = setupOmnitableFixture('range', data, o => {
+					column = o.columns[1];
+					done();
 				});
-				omnitable.notifyResize();
 			});
 
 			test('instantiates a cosmoz-omnitable-column-amount', function (done) {
@@ -354,8 +344,7 @@
 				column;
 
 			setup(function (done) {
-				omnitable = fixture('rates');
-				omnitable.data = data.concat([
+				let newData = data.concat([
 					{ amount: { amount: -21, currency: 'USD' } },
 					{ amount: { amount: 935, currency: 'EUR' } },
 					{ amount: { amount: 345, currency: 'EUR' } },
@@ -363,14 +352,11 @@
 					{ amount: { amount: -142, currency: 'USD' } },
 					{ amount: { amount: 5917, currency: 'AUD' } }
 				]);
-				omnitable.addEventListener('visible-columns-changed', function () {
-					Polymer.Base.async(function () {
-						column = omnitable.columns[0];
-						column.rates = {'EUR': 1, 'USD': 0.8169982616, 'AUD': 0.6529827192, 'SEK': 0.1019271438, 'GBP': 1.1347079368};
-						done();
-					}, 30);
+				omnitable = setupOmnitableFixture('rates', newData, o => {
+					column = o.columns[0];
+					column.rates = {'EUR': 1, 'USD': 0.8169982616, 'AUD': 0.6529827192, 'SEK': 0.1019271438, 'GBP': 1.1347079368};
+					done();
 				});
-				omnitable.notifyResize();
 			});
 
 			test('instantiates a cosmoz-omnitable-column-amount', function (done) {
@@ -467,16 +453,11 @@
 				column;
 
 			setup(function (done) {
-				omnitable = fixture('currency');
-				omnitable.data = data;
-				omnitable.addEventListener('visible-columns-changed', function () {
-					Polymer.Base.async(function () {
-						column = omnitable.columns[0];
-						column.rates = {'EUR': 1, 'USD': 0.8169982616, 'AUD': 0.6529827192, 'SEK': 0.1019271438, 'GBP': 1.1347079368};
-						done();
-					}, 30);
+				omnitable = setupOmnitableFixture('currency', data, o => {
+					column = omnitable.columns[0];
+					column.rates = {'EUR': 1, 'USD': 0.8169982616, 'AUD': 0.6529827192, 'SEK': 0.1019271438, 'GBP': 1.1347079368};
+					done();
 				});
-				omnitable.notifyResize();
 			});
 
 			test('currency is configurable', function (done) {

@@ -11,7 +11,7 @@
 
 	<link rel="import" href="../../test-fixture/test-fixture.html">
 	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-
+	<link rel="import" href="helpers.html">
 	<link rel="import" href="../cosmoz-omnitable.html">
 	<link rel="import" href="../cosmoz-omnitable-columns.html">
 	<link rel="import" href="../demo/table-demo-behavior.html">
@@ -72,6 +72,7 @@
 
 	<script>
 	(function () {
+		/* global setupOmnitableFixture*/
 		'use strict';
 
 		suite('id', () => {
@@ -79,20 +80,8 @@
 				data;
 
 			setup(done => {
-				omnitable = fixture('id');
-
-				const onVisible = () => {
-					const columns = omnitable.visibleColumns;
-					if (Array.isArray(columns) && columns.length > 0) {
-						omnitable.removeEventListener('visible-columns-changed', onVisible);
-						Polymer.Base.async(done, 120);
-					}
-				};
-
 				data = Cosmoz.TableDemoBehavior.generateTableDemoData(10, 11, 25);
-				omnitable.addEventListener('visible-columns-changed', onVisible);
-				omnitable.data = data;
-				omnitable.notifyResize();
+				omnitable = setupOmnitableFixture('id', data, () => done());
 			});
 
 			test('groupOn id', () => {
@@ -135,19 +124,8 @@
 				data;
 
 			setup(done => {
-				omnitable = fixture('bool');
-				const onVisible = () => {
-					const columns = omnitable.visibleColumns;
-					if (Array.isArray(columns) && columns.length > 0) {
-						omnitable.removeEventListener('visible-columns-changed', onVisible);
-						Polymer.Base.async(done, 120);
-					}
-				};
-
 				data = Cosmoz.TableDemoBehavior.generateTableDemoData(10, 11, 25);
-				omnitable.addEventListener('visible-columns-changed', onVisible);
-				omnitable.data = data;
-				omnitable.notifyResize();
+				omnitable = setupOmnitableFixture('bool', data, () => done());
 			});
 
 			test('groupOnDescending true for boolean column changes order of items', done => {
@@ -177,20 +155,8 @@
 			data;
 
 		setup(done => {
-			omnitable = fixture('amount');
-
-			const onVisible = () => {
-				const columns = omnitable.visibleColumns;
-				if (Array.isArray(columns) && columns.length > 0) {
-					omnitable.removeEventListener('visible-columns-changed', onVisible);
-					Polymer.Base.async(done, 120);
-				}
-			};
-
 			data = Cosmoz.TableDemoBehavior.generateTableDemoData(10, 11, 25);
-			omnitable.addEventListener('visible-columns-changed', onVisible);
-			omnitable.data = data;
-			omnitable.notifyResize();
+			omnitable = setupOmnitableFixture('amount', data, () => done());
 		});
 
 		test('setting groupOn property to "amount" updates property groupOnColumn', done => {

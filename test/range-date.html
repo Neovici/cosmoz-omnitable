@@ -11,7 +11,7 @@
 
 	<link rel="import" href="../../test-fixture/test-fixture.html">
 	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-
+	<link rel="import" href="helpers.html">
 	<link rel="import" href="../cosmoz-omnitable.html">
 	<link rel="import" href="../cosmoz-omnitable-columns.html">
 	<link rel="import" href="../demo/table-demo-behavior.html">
@@ -35,7 +35,7 @@
 	</test-fixture>
 
 	<script>
-	/*global sinon chai flush */
+	/*global sinon chai flush setupOmnitableFixture*/
 	(function () {
 		'use strict';
 		const data = [
@@ -75,16 +75,10 @@
 				column;
 
 			setup(function (done) {
-				omnitable = fixture('range');
-				omnitable.data = data;
-
-				omnitable.addEventListener('visible-columns-changed', function () {
-					Polymer.Base.async(function () {
-						column = omnitable.columns[2];
-						done();
-					}, 30);
+				omnitable = setupOmnitableFixture('range', data, o => {
+					column = o.columns[2];
+					done();
 				});
-				omnitable.notifyResize();
 			});
 
 			test('instantiates a cosmoz-omnitable-column-date', function (done) {
@@ -211,16 +205,10 @@
 				column;
 
 			setup(function (done) {
-				omnitable = fixture('range');
-				omnitable.data = data;
-
-				omnitable.addEventListener('visible-columns-changed', function () {
-					Polymer.Base.async(function () {
-						column = omnitable.columns[3];
-						done();
-					}, 30);
+				omnitable = setupOmnitableFixture('range', data, o => {
+					column = o.columns[3];
+					done();
 				});
-				omnitable.notifyResize();
 			});
 
 			test('_toHashString handles null', done => {
@@ -308,15 +296,10 @@
 				column;
 
 			setup(function (done) {
-				omnitable = fixture('range');
-				omnitable.data = data;
-				omnitable.addEventListener('visible-columns-changed', function () {
-					Polymer.Base.async(function () {
-						column = omnitable.columns[4];
-						done();
-					}, 30);
+				omnitable = setupOmnitableFixture('range', data, o => {
+					column = o.columns[4];
+					done();
 				});
-				omnitable.notifyResize();
 			});
 
 			test('instantiates a cosmoz-omnitable-column-time', function (done) {

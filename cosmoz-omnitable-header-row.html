@@ -44,7 +44,9 @@
 		},
 
 		_detachTemplateInstance: function (instance, column, element) {
-			column.headerTemplatizer.detachInstance(instance, element);
+			if (column.headerTemplatizer) {
+				column.headerTemplatizer.detachInstance(instance, element);
+			}
 		},
 
 		_configureElement: function (element, column) {
