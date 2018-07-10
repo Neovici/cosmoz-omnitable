@@ -16,7 +16,7 @@
 				const columns = omnitable.visibleColumns;
 				if (Array.isArray(columns) && columns.length > 0) {
 					omnitable.removeEventListener('visible-columns-changed', onVisible);
-					Polymer.Base.async(() => callback(omnitable), 120);
+					Polymer.Base.async(() => callback(omnitable), 60);
 				}
 			};
 
