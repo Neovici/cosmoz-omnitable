@@ -772,7 +772,7 @@
 			let fits = scroller.scrollWidth <= scroller.clientWidth;
 
 			if (fits) {
-				fits = cells.every(cell =>
+				fits = cells.every(cell => cell.__column &&
 					cell.__column.overflow || cell.scrollWidth <= cell.clientWidth
 				);
 			}
