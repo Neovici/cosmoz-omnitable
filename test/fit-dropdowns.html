@@ -50,9 +50,9 @@
 					omnitable = setupOmnitableFixture('basic', data, () => done());
 				};
 
-			suite('fit-dropdowns', function () {
-				test('sets iron-dropdown fitInto property', function (done) {
-					instantiate(function () {
+			suite('fit-dropdowns', () => {
+				test('sets iron-dropdown fitInto property', done => {
+					instantiate(() => {
 						[
 							omnitable.$.groupOnSelector,
 							omnitable.$.sortOnSelector
@@ -72,20 +72,8 @@
 					instantiate(() => {
 						const column = omnitable.columns[0];
 						assert.equal(column.getComparableValue({ id: 14, group: 'group0', name: 'Item 14' }), 14);
-						done();
-					});
-				});
-				test('getString handles undefined parameter and property of column', done => {
-					instantiate(() => {
-						const column = omnitable.columns[0];
-						column.valuePath = undefined;
-						try {
-							// assert.throws(
-							column.getString({ id: 70, group: 'group0', name: 'Item 0' });
-							// , ReferenceError);
-						} catch (e) {
-							assert.equal(e.toString(), 'console.error: [object HTMLElement] has undefined valuePath  for item [object Object]');
-						}
+						assert.equal(column.getComparableValue({ id: 345, group: 'group7', name: 'Item 345' }), 345);
+						assert.equal(column.getComparableValue({ id: 27, group: 'group5', name: 'Item 27' }), 27);
 						done();
 					});
 				});
@@ -94,6 +82,16 @@
 					instantiate(() => {
 						const column = omnitable.columns[0];
 						assert.equal(column.getString({ id: 70, group: 'group0', name: 'Item 0' }), 70);
+						assert.equal(column.getString({ id: 41, group: 'group4', name: 'Item 41' }), 41);
+						assert.equal(column.getString({ id: 126, group: 'group12', name: 'Item 126' }), 126);
+						done();
+					});
+				});
+
+				test('getString handles itemValue as empty array', done => {
+					instantiate(() => {
+						const column = omnitable.columns[0];
+						assert.equal(column.getString({ id: [], group: 'group0', name: 'Item 0' }), '');
 						done();
 					});
 				});
@@ -102,6 +100,7 @@
 					instantiate(() => {
 						const column = omnitable.columns[0];
 						assert.equal(column.getString({ id: [70, 80], group: 'group0', name: 'Item 0' }), '70, 80');
+						assert.equal(column.getString({ id: [32, 743, -39, 285], group: 'group13', name: 'Item 32' }), '32, 743, -39, 285');
 						done();
 					});
 				});
@@ -110,6 +109,8 @@
 					instantiate(() => {
 						const column = omnitable.columns[0];
 						assert.equal(column.getString({ id: { text: '10'}, group: 'group0', name: 'Item 0' }), '10');
+						assert.equal(column.getString({ id: { text: '448'}, group: 'group14', name: 'Item 448' }), '448');
+						assert.equal(column.getString({ id: { text: '11'}, group: 'group11', name: 'Item 11' }), '11');
 						done();
 					});
 				});
