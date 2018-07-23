@@ -221,12 +221,7 @@
 				],
 				getRandomInt = function (min, max) {
 					return Math.floor(Math.random() * (max - min + 1)) + min;
-				},
-				getRandomDate = function () {
-					return new Date(getRandomInt(2014, 2024), getRandomInt(1, 12), getRandomInt(1, 28), getRandomInt(0, 23), getRandomInt(0, 59), getRandomInt(0, 59), getRandomInt(0, 999));
 				};
-
-			console.log('random date: ', getRandomDate());
 
 			setup(function (done) {
 				omnitable = fixture('toXlsx-range-fixture');
