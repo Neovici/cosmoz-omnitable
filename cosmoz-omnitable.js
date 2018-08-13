@@ -980,9 +980,9 @@
 		 */
 		_toggleGroup(event) {
 			const firstRow = this.$.groupedList.getFirstVisibleItemElement(),
-				folded = event.model.folded;
+				{model: {folded, item}} = event;
 
-			this.$.groupedList.toggleFold(event.model);
+			this.$.groupedList.toggleFold(item);
 
 			if (!firstRow && folded) {
 				this._debounceAdjustColumns();
