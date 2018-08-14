@@ -12,6 +12,14 @@
 		"flush": false,
 		"MockInteractions": false,
 		"sinon": true,
-		"WCT": false
+		"WCT": false,
+		"getDomType": false,
+		"setupOmnitableFixture":false
+	},
+	"rules": {
+		"no-unused-vars": [
+			"warn",
+			{"varsIgnorePattern":"omnitable"}
+		]
 	}
 }

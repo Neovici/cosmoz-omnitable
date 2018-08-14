@@ -8,10 +8,10 @@
 		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 		<script src="../../web-component-tester/browser.js"></script>
 		<script src="../../test-fixture/test-fixture-mocha.js"></script>
+		<script src="./helpers/utils.js"></script>
 
 		<link rel="import" href="../../test-fixture/test-fixture.html">
 		<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-		<link rel="import" href="helpers.html">
 		<link rel="import" href="../cosmoz-omnitable.html">
 		<link rel="import" href="../cosmoz-omnitable-column-autocomplete.html">
 		<link rel="import" href="../cosmoz-omnitable-column.html">
@@ -35,12 +35,13 @@
 				</cosmoz-omnitable>
 			</template>
 		</test-fixture>
-
 		<script>
 		(function () {
-			/* global setupOmnitableFixture*/
+			'use strict';
+
 			let omnitable;
-			const data = [
+			const domType = getDomType(),
+				data = [
 					{ id: 0, group: 'group0', name: 'Item 0' },
 					{ id: 1, group: 'group0', name: 'Item 1' },
 					{ id: 2, group: 'group1', name: 'Item 2' },
@@ -50,7 +51,7 @@
 					omnitable = setupOmnitableFixture('basic', data, () => done());
 				};
 
-			suite('fit-dropdowns', () => {
+			suite('fit-dropdowns' + domType, () => {
 				test('sets iron-dropdown fitInto property', done => {
 					instantiate(() => {
 						[
@@ -67,7 +68,7 @@
 				});
 			});
 
-			suite('autocomplete unit tests', () => {
+			suite('autocomplete unit tests' + domType, () => {
 				test('getComparableValue returns value converted to String', done => {
 					instantiate(() => {
 						const column = omnitable.columns[0];

@@ -8,10 +8,10 @@
 	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 	<script src="../../web-component-tester/browser.js"></script>
 	<script src="../../test-fixture/test-fixture-mocha.js"></script>
+	<script src="./helpers/utils.js"></script>
 
 	<link rel="import" href="../../test-fixture/test-fixture.html">
 	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-	<link rel="import" href="helpers.html">
 	<link rel="import" href="../cosmoz-omnitable.html">
 	<link rel="import" href="../cosmoz-omnitable-columns.html">
 	<link rel="import" href="../demo/table-demo-behavior.html">
@@ -35,42 +35,62 @@
 	</test-fixture>
 
 	<script>
-	/*global sinon chai flush setupOmnitableFixture*/
 	(function () {
 		'use strict';
-		const data = [
-			{ age: 17,
-				amount: { amount: '12.4', currency: 'USD' },
-				date: '2023-03-21T00:00:00Z',
-				time: ''
-			},
-			{ amount: { amount: 2 },
-				date: new Date('2015-03-18T00:00:00Z')
-			},
-			{ age: -11,
-				amount: { amount: 678, currency: 'AUD' },
-				date: new Date(86400000), // Fri Jan 02 1970
-				time: 86400000
-			},
-			{ age: 9,
-				amount: { amount: -8, currency: 'EUR' },
-				date: new Date(99, 5, 24, 11, 33, 30, 0), // Thu Jun 24 1999 11:33:30 GMT+0300 (EEST)
-				time: '86400000'
-			},
-			{
-				age: 5,
-				amount: { amount: '3450', currency: 'DKK' },
-				date: new Date('2016-08-27'),
-				time: '2016-08-27T14:34:56Z'
-			},
-			{
-				date: '2017-12-22T23:00:00Z'
-			}
-		];
+
+		const domType = getDomType(),
+			data = [
+				{ age: 17,
+					amount: { amount: '12.4', currency: 'USD' },
+					date: '2023-03-21T00:00:00Z',
+					time: ''
+				},
+				{ amount: { amount: 2 },
+					date: new Date('2015-03-18T00:00:00Z')
+				},
+				{ age: -11,
+					amount: { amount: 678, currency: 'AUD' },
+					date: new Date(86400000), // Fri Jan 02 1970
+					time: 86400000
+				},
+				{ age: 9,
+					amount: { amount: -8, currency: 'EUR' },
+					date: new Date(99, 5, 24, 11, 33, 30, 0), // Thu Jun 24 1999 11:33:30 GMT+0300 (EEST)
+					time: '86400000'
+				},
+				{
+					age: 5,
+					amount: { amount: '3450', currency: 'DKK' },
+					date: new Date('2016-08-27'),
+					time: '2016-08-27T14:34:56Z'
+				},
+				{
+					date: '2017-12-22T23:00:00Z',
+					time: '00:00:00'
+				}
+			];
+
+		const onFilter = (column, done) => {
+			let handler;
+			column.addEventListener('filter-changed', handler = () => {
+				column.removeEventListener('filter-changed', handler);
+				done();
+			});
+		};
+
+		const onFilterItems = (omnitable, column, done) => {
+			onFilter(column, () => {
+				let handler;
+				omnitable.addEventListener('sorted-filtered-grouped-items-changed', handler = () => {
+					done(omnitable.sortedFilteredGroupedItems);
+					omnitable.removeEventListener('sorted-filtered-grouped-items-changed', handler);
+				});
+			});
+		};
 
 		sinon.assert.expose(chai.assert, { prefix: '' });
 
-		suite('date', function () {
+		suite('date' + domType, () => {
 			let omnitable,
 				column;
 
@@ -125,26 +145,35 @@
 			});
 
 			test('_toLocalISOString returns formated date', function (done) {
-				assert.equal(column._toLocalISOString(new Date('2016-08-27')), '2016-08-27T03:00:00.000');
-				assert.equal(column._toLocalISOString(new Date('2015-01-03')), '2015-01-03T02:00:00.000');
-				assert.equal(column._toLocalISOString(new Date('2021-12-31')), '2021-12-31T02:00:00.000');
+				[
+					'2016-08-27',
+					'2015-01-03',
+					'2021-12-31'
+				].forEach(value => {
+					const date = column.toValue(value);
+					assert.equal(
+						column._toLocalISOString(date),
+						column.toValue(date.getTime() - date.getTimezoneOffset() * 6e4).toISOString().slice(0, 23)
+					);
+				});
+
 				done();
 			});
 
 			test('changing filter updates _filterInput', function (done) {
+				const min = column.toValue('2015-03-18'),
+					max = column.toValue('2023-03-21');
+
 				assert.isNull(column.filter.min);
 				assert.isNull(column.filter.max);
 
-				column.filter = {
-					min: new Date('2015-03-18'),
-					max: new Date('2023-03-21')
-				};
+				column.filter = {min, max};
+				const {max: fMax, min: fMin} = column._filterInput;
+				assert.equal(fMin, column._toLocalISOString(min).slice(0, 10), 'Expect _filterInput.min to be local ISO String');
+				assert.equal(fMax, column._toLocalISOString(max).slice(0, 10), 'Expect _filterInput.max to be local ISO String');
 
-				assert.equal(column._filterInput.min, '2015-03-18', 'Expect _filterInput.min to be local ISO String');
-				assert.equal(column._filterInput.max, '2023-03-21', 'Expect _filterInput.max to be local ISO String');
-
-				assert.equal(new Date(column._filterInput.min).getTime(), column.filter.min.getTime(), 'Expect min input and filter to be equal as dates');
-				assert.equal(new Date(column._filterInput.max).getTime(), column.filter.max.getTime(), 'Expect max input and filter to be equal as dates');
+				assert.equal(column.toValue(fMin).getTime(), min.getTime(), 'Expect min input and filter to be equal as dates');
+				assert.equal(column.toValue(fMax).getTime(), max.getTime(), 'Expect max input and filter to be equal as dates');
 
 				done();
 			});
@@ -153,7 +182,7 @@
 				assert.isNull(column._filterInput.min);
 				assert.isNull(column._filterInput.max);
 
-				column.addEventListener('filter-changed', function () {
+				onFilter(column, () => {
 					assert.equal(column.filter.min.getTime(), new Date('2015-03-18T00:00:00').getTime());
 					assert.equal(column.filter.max.getTime(), new Date('2023-03-21T23:59:59').getTime(), 'Expecting max date included');
 					done();
@@ -165,42 +194,47 @@
 			});
 
 			test('changing only _filterInput min updates filter min', function (done) {
-				column.addEventListener('filter-changed', function () {
+				onFilter(column, () => {
 					assert.equal(column.filter.min.getTime(), new Date('2015-08-27T00:00:00').getTime());
 					done();
 				});
 				column.set('_filterInput.min', '2015-08-27');
 			});
 
-			test('filtering on specific date with datetime source', function (done) {
-				// date: '2017-12-22T23:00:00Z'
+			test('filtering on specific date with datetime source', done => {
+				const value = data[5][column.valuePath], // '2017-12-22T23:00:00Z'
+					day = (new Date(value)).getDate();
 
-				assert.equal(column.getComparableValue(data[5], column.valuePath), new Date('2017-12-22T23:00:00Z').getTime());
-				column.addEventListener('filter-changed', function () {
-					assert.isTrue(column.getFilterFn()(data[5]));
+				onFilterItems(omnitable, column, items => {
+					assert.include(items.map(i => i[column.valuePath]), value);
 					done();
 				});
+				column._filterInput = {
+					min: `2017-12-${day}`,
+					max: `2017-12-${day + 1}`
+				};
 				column._filterInput = {
 					min: '2017-12-22',
 					max: '2017-12-23'
 				};
 			});
 
-			test('filtering on specific date with datetime source same day test', function (done) {
-				// date: '2017-12-22T23:00:00Z'
+			test('filtering on specific date, with datetime source, same day test', done => {
+				const value = data[5][column.valuePath], // '2017-12-22T23:00:00Z'
+					day = (new Date(value)).getDate();
 
-				column.addEventListener('filter-changed', function () {
-					assert.isTrue(column.getFilterFn()(data[5]));
+				onFilterItems(omnitable, column, items => {
+					assert.include(items.map(i => i[column.valuePath]), value);
 					done();
 				});
 				column._filterInput = {
-					min: '2017-12-23',
-					max: '2017-12-23'
+					min: `2017-12-${day}`,
+					max: `2017-12-${day}`
 				};
 			});
 		});
 
-		suite('datetime', function () {
+		suite('datetime' + domType, () => {
 			let omnitable,
 				column;
 
@@ -243,37 +277,44 @@
 			// });
 
 			test('_toInputString converts datetime to local string', function (done) {
-				assert.equal(column._toInputString(new Date(86400000)), '1970-01-02T02:00:00');
-				assert.equal(column._toInputString(new Date('2006-07-14T07:05:39')), '2006-07-14T07:05:39');
-				assert.equal(column._toInputString(new Date('2021-12-03T09:26:04')), '2021-12-03T09:26:04');
-				assert.equal(column._toInputString(new Date('2114-04-22T04:09:00')), '2114-04-22T04:09:00');
+				[
+					86400000,
+					'2006-07-14T07:05:39',
+					'2021-12-03T09:26:04',
+					'2114-04-22T04:09:00'
+				].forEach(value =>
+					assert.equal(column._toInputString(value), column._toLocalISOString(column.toValue(value)).slice(0, 19))
+				);
 				done();
 			});
 
-			test('_toHashString converts datetime to UTC string replacing : with .', function (done) {
-				assert.equal(column._toHashString(new Date(86400000)), '1970-01-02T00.00.00');
-				assert.equal(column._toHashString(new Date('2021-12-03T11:26:04')), '2021-12-03T09.26.04');
-				assert.equal(column._toHashString(new Date('2016-04-22T07:09:00')), '2016-04-22T04.09.00');
-				assert.equal(column._toHashString(new Date('2017-01-16T09:19:38')), '2017-01-16T07.19.38');
+			test('_toHashString converts datetime to UTC string replacing : with .', done => {
+				[
+					'2021-12-03T11:26:04',
+					'2016-04-22T07:09:00',
+					'2017-01-16T09:19:38'
+				].forEach(date =>
+					assert.equal(column._toHashString(date), column.toValue(date).toISOString().substr(0, 19).replace(/:/g, '.'))
+				);
 				done();
 			});
 
-			test('changing filter updates _filterInput', function (done) {
+			test('changing filter updates _filterInput', done => {
 				assert.isNull(column.filter.min);
 				assert.isNull(column.filter.max);
 				column.filter = {
-					min: new Date(86400000),
-					max: new Date(99, 5, 24, 11, 33, 30, 0)
+					min: new Date('1970-01-02T02:00:00'),
+					max: new Date('1999-06-24T11:33:30')
 				};
 				assert.equal(column._filterInput.min, '1970-01-02T02:00:00');
 				assert.equal(column._filterInput.max, '1999-06-24T11:33:30');
 				done();
 			});
 
-			test('changing _filterInput updates filter', function (done) {
-				column.addEventListener('filter-changed', function () {
-					assert.equal(column.filter.min.getTime(), 86400000);
-					assert.equal(column.filter.max.getTime(), new Date(99, 5, 24, 11, 33, 30, 0).getTime());
+			test('changing _filterInput updates filter', done => {
+				onFilter(column, () => {
+					assert.equal(column.filter.min.getTime(), new Date('1970-01-02T02:00:00').getTime());
+					assert.equal(column.filter.max.getTime(), new Date('1999-06-24T11:33:30').getTime());
 					done();
 				});
 				column._filterInput = {
@@ -283,7 +324,7 @@
 			});
 
 			test('changing only _filterInput min updates filter min', function (done) {
-				column.addEventListener('filter-changed', function () {
+				onFilter(column, () => {
 					assert.equal(column.filter.min.getTime(), new Date('2014-06-24T11:33:30').getTime());
 					done();
 				});
@@ -291,7 +332,7 @@
 			});
 		});
 
-		suite('time', function () {
+		suite('time' + domType, () => {
 			let omnitable,
 				column;
 
@@ -330,20 +371,20 @@
 			});
 
 			test('time toDate accepts limit as timestamp', function (done) {
-				assert.equal(column.toDate(new Date(Date.UTC(2029, 0, 2, 17, 23, 12)).getTime(), 86400000, Math.min).getTime(), 86400000);
+				assert.equal(column.toDate(new Date(2029, 0, 2, 17, 23, 12).getTime(), 86400000, Math.min).getTime(), 86400000);
 				done();
 			});
 
-			test('time getComparableValue returns right value', function (done) {
-				assert.equal(column.getComparableValue(data[2], 'time'), 0, 'Expected to parse time from miliseconds timestamp as number');
-				assert.equal(column.getComparableValue(data[4], 'time'), 56096000);
+			test('time getComparableValue returns right value', done => {
+				assert.equal(column.getComparableValue({time: '2015-03-18T00:00:00Z'}, 'time'), 0);
 				done();
 			});
 
-			test('time _toInputString returns local ISO string', function (done) {
+			test('time _toInputString returns local ISO string', done => {
 				assert.equal(column._toInputString(), null);
-				assert.equal(column._toInputString(new Date(86400000)), '02:00:00');
-				assert.equal(column._toInputString('2016-08-27T14:34:56Z'), '17:34:56');
+				assert.equal(column._toInputString('2019-11-03T17:21:44'), '17:21:44');
+				assert.equal(column._toInputString('2016-08-27T14:34:56'), '14:34:56');
+				assert.equal(column._toInputString('2016-08-27T14:34:56Z'), column._toLocalISOString(column.toValue('2016-08-27T14:34:56Z')).slice(11, 19));
 				done();
 			});
 
@@ -357,39 +398,41 @@
 				done();
 			});
 
-			test('changing filter updates _filterInput', function (done) {
+			test('changing filter updates _filterInput', done => {
 				assert.isNull(column.filter.min);
 				assert.isNull(column.filter.max);
 				column.filter = {
-					min: new Date(86400000),
-					max: '2016-08-27T14:34:56Z'
+					min: '2000-01-01T09:12:00',
+					max: '2016-08-27T09:34:56'
 				};
-				assert.equal(column._filterInput.min, '02:00:00');
-				assert.equal(column._filterInput.max, '17:34:56');
+				assert.equal(column._filterInput.min, '09:12:00');
+				assert.equal(column._filterInput.max, '09:34:56');
 				done();
 			});
 
-			test('changing _filterInput updates filter', function (done) {
+			test('changing _filterInput updates filter', done => {
 				assert.isNull(column._filterInput.min);
 				assert.isNull(column._filterInput.max);
 
-				column.addEventListener('filter-changed', function () {
-					assert.equal(column.filter.min.getTime(), new Date(Date.UTC(1970, 0, 1, 2, 30)).getTime());
-					assert.equal(column.filter.max.getTime(), new Date(Date.UTC(1970, 0, 1, 15, 34, 56)).getTime());
+				const min = '08:12:00',
+					max = '11:34:56';
+				onFilter(column, () => {
+					const {min: fMin, max: fMax} = column.filter;
+					assert.equal(fMin.getTime(), column.toValue(min).getTime());
+					assert.equal(fMax.getTime(), column.toValue(max).getTime());
 					done();
 				});
-				column._filterInput = {
-					min: '04:30:00',
-					max: '17:34:56'
-				};
+
+				column._filterInput = {min, max};
 			});
 
-			test('changing only _filterInput min updates filter min', function (done) {
-				column.addEventListener('filter-changed', function () {
-					assert.equal(column.filter.min.getTime(), new Date(Date.UTC(1970, 0, 1, 2, 21, 10)).getTime());
+			test('changing only _filterInput min updates filter min', done => {
+				const min = '04:21:10';
+				onFilter(column, () => {
+					assert.equal(column.filter.min.getTime(), column.toValue(min).getTime());
 					done();
 				});
-				column.set('_filterInput.min', '04:21:10');
+				column.set('_filterInput.min', min);
 			});
 
 		});

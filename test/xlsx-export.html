@@ -8,10 +8,10 @@
 	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 	<script src="../../web-component-tester/browser.js"></script>
 	<script src="../../test-fixture/test-fixture-mocha.js"></script>
+	<script src="./helpers/utils.js"></script>
 
 	<link rel="import" href="../../test-fixture/test-fixture.html">
 	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-	<link rel="import" href="helpers.html">
 	<link rel="import" href="../cosmoz-omnitable.html">
 	<link rel="import" href="../cosmoz-omnitable-columns.html">
 	<link rel="import" href="../demo/table-demo-behavior.html">
@@ -49,31 +49,29 @@
 	</test-fixture>
 
 	<script>
-	/*global sinon chai flush setupOmnitableFixture*/
 	(function () {
 		'use strict';
 
+		const domType = getDomType();
 		sinon.assert.expose(chai.assert, { prefix: '' });
 
-		suite('xlsx-export-omnitable', function () {
-			var omnitable,
-				data = [
-					{ id: 0, 'first-name': 'Carl', amount: 12.4, date: new Date(2017, 7 - 1, 10) },
-					{ id: 1, 'first-name': 'Mia', amount: 678, date: new Date() },
-					{ id: 2, 'first-name': 'Selena', amount: 2300, date: new Date(Date.UTC(2017, 11, 1, 3, 23, 16))},
-					{ id: 3, 'first-name': 'Teo', amount: 7000, date: new Date(Date.UTC(2016, 0, 13, 10, 41, 58))},
-					{ id: 4, 'first-name': 'Klark', amount: 23019, date: new Date(Date.UTC(2029, 7, 30, 1, 27, 13)) },
-					{ id: 5, 'first-name': 'Lenotika', amount: 9304, date: new Date(Date.UTC(2013, 9, 13, 5, 7, 29)) },
-					{ id: 6, 'first-name': 'Manil', amount: 28420, date: new Date(Date.UTC(2018, 10, 3, 24, 1, 14)) }
-				];
+		suite('xlsx-export-omnitable' + domType, () => {
+			let omnitable;
+			const data = [
+				{ id: 0, 'first-name': 'Carl', amount: 12.4, date: new Date(2017, 7 - 1, 10) },
+				{ id: 1, 'first-name': 'Mia', amount: 678, date: new Date() },
+				{ id: 2, 'first-name': 'Selena', amount: 2300, date: new Date(Date.UTC(2017, 11, 1, 3, 23, 16))},
+				{ id: 3, 'first-name': 'Teo', amount: 7000, date: new Date(Date.UTC(2016, 0, 13, 10, 41, 58))},
+				{ id: 4, 'first-name': 'Klark', amount: 23019, date: new Date(Date.UTC(2029, 7, 30, 1, 27, 13)) },
+				{ id: 5, 'first-name': 'Lenotika', amount: 9304, date: new Date(Date.UTC(2013, 9, 13, 5, 7, 29)) },
+				{ id: 6, 'first-name': 'Manil', amount: 28420, date: new Date(Date.UTC(2018, 10, 3, 24, 1, 14)) }
+			];
 
-			setup(function (done) {
+			setup(done => {
 				omnitable = fixture('xlsx-export-fixture');
 				omnitable.data = data;
 
-				flush(function () {
-					Polymer.Base.async(done, 90);
-				});
+				flush(() => Polymer.Base.async(done, 90));
 			});
 
 			test('it instantiates a cosmoz-omnitable element', function (done) {
@@ -82,7 +80,7 @@
 			});
 
 			test('it is loading the name of first id column', function (done) {
-				var id = omnitable.querySelector('#id');
+				const id = omnitable.querySelector('#id');
 				assert.isDefined(id);
 				assert.equal(id.getString(), 'id');
 				done();
@@ -93,7 +91,7 @@
 				omnitable.selectItem(data[0]);
 				omnitable.selectItem(data[1]);
 				// prepare selected items, verify data
-				var xlsx = omnitable._prepareXlsxData(),
+				const xlsx = omnitable._prepareXlsxData(),
 					headers = xlsx[0];
 				assert.equal(headers[0], omnitable.columns[0].title);
 				assert.equal(headers.length, omnitable.columns.length);
@@ -101,9 +99,9 @@
 			});
 
 			test('is exporting as xlsx file', function (done) {
-				var spyXlsx = sinon.spy(omnitable, '_saveAsXlsxAction'),
-					stubSaveAs = sinon.stub(window, 'saveAs'),
-					args;
+				const spyXlsx = sinon.spy(omnitable, '_saveAsXlsxAction'),
+					stubSaveAs = sinon.stub(window, 'saveAs');
+
 				omnitable.selectItem(data[0]);
 				omnitable.selectItem(data[1]);
 
@@ -112,7 +110,7 @@
 				assert.calledOnce(spyXlsx);
 				assert.calledOnce(stubSaveAs);
 
-				args =  stubSaveAs.lastCall.args[0];
+				const args =  stubSaveAs.lastCall.args[0];
 				// verify params of SaveAs; name and type of file to be created
 
 				assert.equal(args.name, 'Test.xlsx');
@@ -124,9 +122,9 @@
 			});
 
 			test('click twice creates two files', function (done) {
-				let spyXlsx = sinon.spy(omnitable, '_saveAsXlsxAction'),
-					stubSaveAs = sinon.stub(window, 'saveAs'),
-					args;
+				const spyXlsx = sinon.spy(omnitable, '_saveAsXlsxAction'),
+					stubSaveAs = sinon.stub(window, 'saveAs');
+
 				for (let i = 0; i < data.length; i++) {
 					omnitable.selectItem(data[i]);
 				}
@@ -137,7 +135,7 @@
 				assert.calledTwice(spyXlsx);
 				assert.calledTwice(stubSaveAs);
 
-				args =  stubSaveAs.lastCall.args[0];
+				const args =  stubSaveAs.lastCall.args[0];
 
 				assert.equal(args.name, 'Test.xlsx');
 				assert.equal(args.type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -148,80 +146,77 @@
 			});
 		});
 
-		suite('toXlsx range tests', function () {
-			var omnitable,
+		suite('toXlsx range tests' + domType, () => {
+			let omnitable,
 				xlsx;
 			const data = [
-					{ number: 432,
-						amount: { currency: 'GBP', amount: 2781 },
-						date: new Date(Date.UTC(2020, 2, 14)),
-						time: new Date(Date.UTC(2020, 2, 14, 11, 48, 13)),
-						datetime: new Date(Date.UTC(2020, 2, 14, 11, 48, 13))
-					},
-					{ number: 7001,
-						amount: { currency: 'EUR', amount: 845 },
-						date: new Date(2029, 7, 30),
-						time: new Date(Date.UTC(2029, 7, 30, 1, 27, 13)),
-						datetime: new Date(Date.UTC(2029, 7, 30, 1, 27, 13))
-					},
-					{ number: 2405,
-						amount: { currency: 'USD', amount: 107 },
-						date: new Date(Date.UTC(2018, 4, 25, 2, 31, 29)),
-						time: new Date(Date.UTC(2018, 4, 25, 2, 31, 29)),
-						datetime: new Date(Date.UTC(2018, 4, 25, 2, 31, 29))
-					},
-					{ number: 108,
-						amount: { currency: 'BRL', amount: 4406 },
-						date: new Date(Date.UTC(2017, 0, 2, 7, 25, 11)),
-						time: new Date(Date.UTC(2017, 0, 2, 7, 25, 11)),
-						datetime: new Date(Date.UTC(2017, 0, 2, 7, 25, 11))
-					},
-					{ number: 857,
-						amount: { currency: 'RON', amount: 341 },
-						date: new Date(Date.UTC(2016, 1, 27, 17, 30, 51)),
-						time: new Date(Date.UTC(2016, 1, 27, 17, 30, 51)),
-						datetime: new Date(Date.UTC(2016, 1, 27, 17, 30, 51))
-					},
-					{ number: 73,
-						amount: { currency: 'DKK', amount: 11 },
-						date: new Date(Date.UTC(2013, 9, 13, 5, 7, 29)),
-						time: new Date(Date.UTC(2013, 9, 13, 5, 7, 29)),
-						datetime: new Date(Date.UTC(2013, 9, 13, 5, 7, 29))
-					},
-					{ number: 5774,
-						amount: { currency: 'EUR', amount: 932 },
-						date: '2024-03-14T13:05:07',
-						time: '2024-03-14T13:05:07',
-						datetime: '2024-03-14T13:05:07'
-					},
-					{ number: 0,
-						amount: { currency: 'AED', amount: 765432 },
-						date: 'Thu Mar 7 2009 06:25:52 GMT+0200 (EET)', // Bucharest, Romania
-						time: 'Thu Mar 7 2009 06:25:52 GMT+0200 (EET)',
-						datetime: 'Thu Mar 7 2009 06:25:52 GMT+0200 (EET)'
-					},
-					{ number: 59,
-						amount: { currency: 'AUD', amount: -101 },
-						date: '2012-10-12T07:22:46Z',
-						time: '2012-10-12T07:22:46Z',
-						datetime: '2012-10-12T07:22:46Z'
-					},
-					{ number: -340,
-						amount: { currency: 'CAD', amount: -4321 },
-						date: 'Tue Jan 16 2018 05:47:40 UTC -8', // Vancouver Canada
-						time: 'Tue Jan 16 2018 05:47:40 UTC -8',
-						datetime: 'Tue Jan 16 2018 05:47:40 UTC -8'
-					},
-					{ number: -22,
-						amount: { currency: 'EUR', amount: -22 },
-						date: 'Tue Jan 16 2018 14:06:29 UTC +1', // Lisbon, Portugal (Lisboa)
-						time: 'Tue Jan 16 2018 14:06:29 UTC +1',
-						datetime: 'Tue Jan 16 2018 14:06:29 UTC +1'
-					},
-				],
-				getRandomInt = function (min, max) {
-					return Math.floor(Math.random() * (max - min + 1)) + min;
-				};
+				{ number: 432,
+					amount: { currency: 'GBP', amount: 2781 },
+					date: new Date(Date.UTC(2020, 2, 14, 11, 48, 13)),
+					time: new Date(Date.UTC(2020, 2, 14, 11, 48, 13)),
+					datetime: new Date(Date.UTC(2020, 2, 14, 11, 48, 13))
+				},
+				{ number: 7001,
+					amount: { currency: 'EUR', amount: 845 },
+					date: new Date(Date.UTC(2029, 7, 30, 1, 27, 13)),
+					time: new Date(Date.UTC(2029, 7, 30, 1, 27, 13)),
+					datetime: new Date(Date.UTC(2029, 7, 30, 1, 27, 13))
+				},
+				{ number: 2405,
+					amount: { currency: 'USD', amount: 107 },
+					date: new Date(Date.UTC(2018, 4, 25, 2, 31, 29)),
+					time: new Date(Date.UTC(2018, 4, 25, 2, 31, 29)),
+					datetime: new Date(Date.UTC(2018, 4, 25, 2, 31, 29))
+				},
+				{ number: 108,
+					amount: { currency: 'BRL', amount: 4406 },
+					date: new Date(Date.UTC(2017, 0, 2, 7, 25, 11)),
+					time: new Date(Date.UTC(2017, 0, 2, 7, 25, 11)),
+					datetime: new Date(Date.UTC(2017, 0, 2, 7, 25, 11))
+				},
+				{ number: 857,
+					amount: { currency: 'RON', amount: 341 },
+					date: new Date(Date.UTC(2016, 1, 27, 17, 30, 51)),
+					time: new Date(Date.UTC(2016, 1, 27, 17, 30, 51)),
+					datetime: new Date(Date.UTC(2016, 1, 27, 17, 30, 51))
+				},
+				{ number: 73,
+					amount: { currency: 'DKK', amount: 11 },
+					date: new Date(Date.UTC(2013, 9, 13, 5, 7, 29)),
+					time: new Date(Date.UTC(2013, 9, 13, 5, 7, 29)),
+					datetime: new Date(Date.UTC(2013, 9, 13, 5, 7, 29))
+				},
+				{ number: 5774,
+					amount: { currency: 'EUR', amount: 932 },
+					date: '2024-03-14T13:05:07',
+					time: '2024-03-14T13:05:07',
+					datetime: '2024-03-14T13:05:07'
+				},
+				{ number: 0,
+					amount: { currency: 'AED', amount: 765432 },
+					date: 'Thu Mar 7 2009 06:25:52 GMT+0200 (EET)', // Bucharest, Romania
+					time: 'Thu Mar 7 2009 06:25:52 GMT+0200 (EET)',
+					datetime: 'Thu Mar 7 2009 06:25:52 GMT+0200 (EET)'
+				},
+				{ number: 59,
+					amount: { currency: 'AUD', amount: -101 },
+					date: '2012-10-12T07:22:46Z',
+					time: '2012-10-12T07:22:46Z',
+					datetime: '2012-10-12T07:22:46Z'
+				},
+				{ number: -340,
+					amount: { currency: 'CAD', amount: -4321 },
+					date: 'Tue Jan 16 2018 05:47:40 UTC -8', // Vancouver Canada
+					time: 'Tue Jan 16 2018 05:47:40 UTC -8',
+					datetime: 'Tue Jan 16 2018 05:47:40 UTC -8'
+				},
+				{ number: -22,
+					amount: { currency: 'EUR', amount: -22 },
+					date: 'Tue Jan 16 2018 14:06:29 UTC +1', // Lisbon, Portugal (Lisboa)
+					time: 'Tue Jan 16 2018 14:06:29 UTC +1',
+					datetime: 'Tue Jan 16 2018 14:06:29 UTC +1'
+				},
+			];
 
 			setup(function (done) {
 				omnitable = fixture('toXlsx-range-fixture');
@@ -240,13 +235,13 @@
 				});
 			});
 
-			test('prepares number values', function (done) {
-				const numbers = xlsx.map(row => row[0]),
-					values = ['numbers', 432, 7001, 2405, 108, 857, 73, 5774, 0, 59, -340, -22];
-
-				for (let i = 1; i <= data.length; i++) {
-					assert.equal(numbers[i], values[i]);
-				}
+			test('prepares number values', done => {
+				xlsx
+					.map(row => row[0])
+					.slice(1)
+					.forEach((value, index) => {
+						assert.equal(value, data[index].number);
+					});
 				done();
 			});
 
@@ -268,53 +263,41 @@
 			});
 
 			test('prepares date values', function (done) {
-				const dates = xlsx.map(row => row[2]);
-
-				assert.equal(new Date(dates[1]).getTime(), new Date(2020, 2, 14).getTime());
-				assert.equal(new Date(dates[2]).getTime(), new Date(2029, 7, 30).getTime());
-				assert.equal(new Date(dates[3]).getTime(), new Date(2018, 4, 25).getTime());
-				assert.equal(new Date(dates[4]).getTime(), new Date(2017, 0, 2).getTime());
-				assert.equal(new Date(dates[5]).getTime(), new Date(2016, 1, 27).getTime());
-				assert.equal(new Date(dates[6]).getTime(), new Date(2013, 9, 13).getTime());
-				assert.equal(new Date(dates[7]).getTime(), new Date(2024, 2, 14).getTime());
-				assert.equal(new Date(dates[8]).getTime(), new Date(2009, 2, 7).getTime());
-				assert.equal(new Date(dates[9]).getTime(), new Date(2012, 9, 12).getTime());
-				assert.equal(new Date(dates[10]).getTime(), new Date(2018, 0, 16).getTime());
-				assert.equal(new Date(dates[11]).getTime(), new Date(2018, 0, 16).getTime());
+				const column = omnitable.columns[2];
+				xlsx
+					.map(row => row[2])
+					.slice(1)
+					.forEach((value, index) => {
+						const date	= column.toValue(data[index].date);
+						date.setHours(0, 0, 0);
+						assert.equal(column.toValue(value).getTime(), date.getTime());
+					});
 				done();
 			});
 
 			test('prepares time values', function (done) {
-				const times = xlsx.map(row => row[3]);
-
-				assert.equal(times[1], '1:48:13 PM'); // +2h
-				assert.equal(times[2], '4:27:13 AM'); // +3h Daylight Saving Time
-				assert.equal(times[3], '5:31:29 AM'); // +3h
-				assert.equal(times[4], '9:25:11 AM'); // +2h
-				assert.equal(times[5], '7:30:51 PM'); // +2h
-				assert.equal(times[6], '8:07:29 AM'); // +3h
-				assert.equal(times[7], '1:05:07 PM'); // +2h
-				assert.equal(times[8], '6:25:52 AM'); // +2h
-				assert.equal(times[9], '10:22:46 AM'); // +3h
-				assert.equal(times[10], '3:47:40 PM'); // -8h
-				assert.equal(times[11], '3:06:29 PM'); // +1h
+				const column = omnitable.columns[3];
+				xlsx
+					.map(row => row[3])
+					.slice(1)
+					.forEach((value, index) => {
+						const time = column.toXlsxValue(data[index]);
+						assert.equal(value, time);
+					});
 				done();
+
 			});
 
 			test('prepares datetime values', function (done) {
-				const datetimes = xlsx.map(row => row[4]);
-
-				assert.equal(new Date(datetimes[1]).getTime(), new Date(Date.UTC(2020, 2, 14, 11, 48, 13)).getTime());
-				assert.equal(new Date(datetimes[2]).getTime(), new Date(Date.UTC(2029, 7, 30, 1, 27, 13)).getTime());
-				assert.equal(new Date(datetimes[3]).getTime(), new Date(Date.UTC(2018, 4, 25, 2, 31, 29)).getTime());
-				assert.equal(new Date(datetimes[4]).getTime(), new Date(Date.UTC(2017, 0, 2, 7, 25, 11)).getTime());
-				assert.equal(new Date(datetimes[5]).getTime(), new Date(Date.UTC(2016, 1, 27, 17, 30, 51)).getTime());
-				assert.equal(new Date(datetimes[6]).getTime(), new Date(Date.UTC(2013, 9, 13, 5, 7, 29)).getTime());
-				assert.equal(new Date(datetimes[7]).getTime(), new Date(Date.UTC(2024, 2, 14, 11, 5, 7)).getTime());
-				assert.equal(new Date(datetimes[8]).getTime(), new Date(Date.UTC(2009, 2, 7, 4, 25, 52)).getTime());
-				assert.equal(new Date(datetimes[9]).getTime(), new Date(Date.UTC(2012, 9, 12, 7, 22, 46)).getTime());
-				assert.equal(new Date(datetimes[10]).getTime(), new Date(Date.UTC(2018, 0, 16, 13, 47, 40)).getTime());
-				assert.equal(new Date(datetimes[11]).getTime(), new Date(Date.UTC(2018, 0, 16, 13, 6, 29)).getTime());
+				const column = omnitable.columns[4];
+				xlsx
+					.map(row => row[4])
+					.slice(1)
+					.forEach((value, index) => {
+						const time = column.toXlsxValue(data[index]);
+						assert.equal(value, time);
+						assert.equal(column.toValue(value).getTime(), column.toValue(data[index].datetime).getTime());
+					});
 				done();
 			});
 
