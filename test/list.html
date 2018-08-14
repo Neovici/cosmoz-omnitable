@@ -8,11 +8,10 @@
 	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 	<script src="../../web-component-tester/browser.js"></script>
 	<script src="../../test-fixture/test-fixture-mocha.js"></script>
-	<script src="./helpers.js"></script>
+	<script src="./helpers/utils.js"></script>
 
 	<link rel="import" href="../../test-fixture/test-fixture.html">
 	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-	<link rel="import" href="helpers.html">
 	<link rel="import" href="../cosmoz-omnitable.html">
 	<link rel="import" href="../cosmoz-omnitable-columns.html">
 	<link rel="import" href="../demo/table-demo-behavior.html">
@@ -37,11 +36,10 @@
 
 	<script>
 	(function () {
-		/* global setupOmnitableFixture*/
 		'use strict';
 
 		// get dom Type from helpers.js
-		const domType = getDomType(); //eslint-disable-line no-undef
+		const domType = getDomType();
 
 		suite('basic' + domType, () => {
 			let omnitable,

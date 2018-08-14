@@ -8,11 +8,10 @@
 	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 	<script src="../../web-component-tester/browser.js"></script>
 	<script src="../../test-fixture/test-fixture-mocha.js"></script>
-	<script src="./helpers.js"></script>
+	<script src="./helpers/utils.js"></script>
 
 	<link rel="import" href="../../test-fixture/test-fixture.html">
 	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-	<link rel="import" href="helpers.html">
 	<link rel="import" href="../cosmoz-omnitable.html">
 	<link rel="import" href="../cosmoz-omnitable-columns.html">
 	<link rel="import" href="../demo/table-demo-behavior.html">
@@ -36,43 +35,40 @@
 	</test-fixture>
 
 	<script>
-	/*global sinon chai flush setupOmnitableFixture*/
 	(function () {
 		'use strict';
 
-		// get dom Type from helpers.js
-		const domType = getDomType(); //eslint-disable-line no-undef
-
-		const data = [
-			{ age: 17,
-				amount: { amount: '12.4', currency: 'USD' },
-				date: '2023-03-21T00:00:00Z',
-				time: ''
-			},
-			{ amount: { amount: 2 },
-				date: new Date('2015-03-18T00:00:00Z')
-			},
-			{ age: -11,
-				amount: { amount: 678, currency: 'AUD' },
-				date: new Date(86400000), // Fri Jan 02 1970
-				time: 86400000
-			},
-			{ age: 9,
-				amount: { amount: -8, currency: 'EUR' },
-				date: new Date(99, 5, 24, 11, 33, 30, 0), // Thu Jun 24 1999 11:33:30 GMT+0300 (EEST)
-				time: '86400000'
-			},
-			{
-				age: 5,
-				amount: { amount: '3450', currency: 'DKK' },
-				date: new Date('2016-08-27'),
-				time: '2016-08-27T14:34:56Z'
-			},
-			{
-				date: '2017-12-22T23:00:00Z',
-				time: '00:00:00'
-			}
-		];
+		const domType = getDomType(),
+			data = [
+				{ age: 17,
+					amount: { amount: '12.4', currency: 'USD' },
+					date: '2023-03-21T00:00:00Z',
+					time: ''
+				},
+				{ amount: { amount: 2 },
+					date: new Date('2015-03-18T00:00:00Z')
+				},
+				{ age: -11,
+					amount: { amount: 678, currency: 'AUD' },
+					date: new Date(86400000), // Fri Jan 02 1970
+					time: 86400000
+				},
+				{ age: 9,
+					amount: { amount: -8, currency: 'EUR' },
+					date: new Date(99, 5, 24, 11, 33, 30, 0), // Thu Jun 24 1999 11:33:30 GMT+0300 (EEST)
+					time: '86400000'
+				},
+				{
+					age: 5,
+					amount: { amount: '3450', currency: 'DKK' },
+					date: new Date('2016-08-27'),
+					time: '2016-08-27T14:34:56Z'
+				},
+				{
+					date: '2017-12-22T23:00:00Z',
+					time: '00:00:00'
+				}
+			];
 
 		const onFilter = (column, done) => {
 			let handler;
@@ -90,19 +86,6 @@
 					omnitable.removeEventListener('sorted-filtered-grouped-items-changed', handler);
 				});
 			});
-		};
-
-		const onColumnReady = (omnitable, columnIndex, done) => {
-			const checkReady = () => {
-				const {visibleColumns: visible, columns} = omnitable;
-				if (visible && visible.length > 0) {
-					omnitable.removeEventListener('visible-columns-changed', checkReady);
-					Polymer.Base.async(() => done(columns[columnIndex]), 30);
-				}
-			};
-			omnitable.addEventListener('visible-columns-changed', checkReady);
-			omnitable.notifyResize();
-			checkReady();
 		};
 
 		sinon.assert.expose(chai.assert, { prefix: '' });

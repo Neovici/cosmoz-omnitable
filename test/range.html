@@ -8,11 +8,10 @@
 	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 	<script src="../../web-component-tester/browser.js"></script>
 	<script src="../../test-fixture/test-fixture-mocha.js"></script>
-	<script src="./helpers.js"></script>
+	<script src="./helpers/utils.js"></script>
 
 	<link rel="import" href="../../test-fixture/test-fixture.html">
 	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-	<link rel="import" href="helpers.html">
 	<link rel="import" href="../cosmoz-omnitable.html">
 	<link rel="import" href="../cosmoz-omnitable-columns.html">
 	<link rel="import" href="../demo/table-demo-behavior.html">
@@ -47,43 +46,40 @@
 	</test-fixture>
 
 	<script>
-	/*global sinon chai flush setupOmnitableFixture*/
 	(function () {
 		'use strict';
 
-		// get dom Type from helpers.js
-		const domType = getDomType(); //eslint-disable-line no-undef
-
-		const data = [
-			{
-				age: 17,
-				amount: { amount: '12.4', currency: 'USD' },
-			},
-			{
-				amount: { amount: 2 }
-			},
-			{
-				age: -11,
-				amount: { amount: 678, currency: 'AUD' }
-			},
-			{
-				age: 9,
-				amount: { amount: -8, currency: 'EUR' }
-			},
-			{
-				age: 5,
-				amount: { amount: '3450', currency: 'DKK' }
-			},
-			{
-				amount: { amount: 2015, currency: 'EUR' }
-			},
-			{
-				amount: { amount: 347, currency: 'USD' }
-			},
-			{
-				amount: { amount: 2581, currency: 'EUR' }
-			}
-		];
+		const domType = getDomType(),
+			data = [
+				{
+					age: 17,
+					amount: { amount: '12.4', currency: 'USD' },
+				},
+				{
+					amount: { amount: 2 }
+				},
+				{
+					age: -11,
+					amount: { amount: 678, currency: 'AUD' }
+				},
+				{
+					age: 9,
+					amount: { amount: -8, currency: 'EUR' }
+				},
+				{
+					age: 5,
+					amount: { amount: '3450', currency: 'DKK' }
+				},
+				{
+					amount: { amount: 2015, currency: 'EUR' }
+				},
+				{
+					amount: { amount: 347, currency: 'USD' }
+				},
+				{
+					amount: { amount: 2581, currency: 'EUR' }
+				}
+			];
 
 		sinon.assert.expose(chai.assert, { prefix: '' });
 
@@ -458,7 +454,7 @@
 				column;
 
 			setup(function (done) {
-				omnitable = setupOmnitableFixture('currency', data, o => {
+				omnitable = setupOmnitableFixture('currency', data, omnitable => {
 					column = omnitable.columns[0];
 					column.rates = {'EUR': 1, 'USD': 0.8169982616, 'AUD': 0.6529827192, 'SEK': 0.1019271438, 'GBP': 1.1347079368};
 					done();
