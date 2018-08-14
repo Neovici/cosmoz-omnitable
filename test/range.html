@@ -48,39 +48,6 @@
 	<script>
 	(function () {
 		'use strict';
-		const data = [
-			{
-				age: 17,
-				amount: { amount: '12.4', currency: 'USD' },
-			},
-			{
-				amount: { amount: 2 }
-			},
-			{
-				age: -11,
-				amount: { amount: 678, currency: 'AUD' }
-			},
-			{
-				age: 9,
-				amount: { amount: -8, currency: 'EUR' }
-			},
-			{
-				age: 5,
-				amount: { amount: '3450', currency: 'DKK' }
-			},
-			{
-				amount: { amount: 2015, currency: 'EUR' }
-			},
-			{
-				age: 46.7511, // 46,75xx
-				amount: { amount: 347, currency: 'USD' }
-			},
-			{
-				age: 46.768, // needed in maximumFractionDigits test
-				amount: { amount: 2581, currency: 'EUR' }
-			}
-		];
-
 		const domType = getDomType(),
 			data = [
 				{
@@ -106,9 +73,11 @@
 					amount: { amount: 2015, currency: 'EUR' }
 				},
 				{
+					age: 46.7511, // 46,75xx
 					amount: { amount: 347, currency: 'USD' }
 				},
 				{
+					age: 46.768, // needed in maximumFractionDigits test
 					amount: { amount: 2581, currency: 'EUR' }
 				}
 			];
