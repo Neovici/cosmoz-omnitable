@@ -254,6 +254,8 @@
 			'update-item-size': '_onUpdateItemSize',
 			'cosmoz-column-title-changed': '_onColumnTitleChanged',
 			'cosmoz-column-filter-changed': '_filterChanged',
+			'cosmoz-column-editable-changed': '_onColumnEditableChanged',
+
 		},
 
 		attached() {
@@ -347,6 +349,15 @@
 			if (column === this.groupOnColumn) {
 				this.notifyPath(['groupOnColumn', 'title']);
 			}
+		},
+
+		_onColumnEditableChanged(event, {column}) {
+			event.stopPropagation();
+			const index = this.visibleColumns.indexOf(column);
+			if (index < 0) {
+				return;
+			}
+			this.notifyPath(['visibleColumns', index, 'editable']);
 		},
 
 		// Handle selection/deselection of a group

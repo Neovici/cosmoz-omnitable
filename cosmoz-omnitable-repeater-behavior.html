@@ -7,7 +7,7 @@
 	window.Cosmoz = window.Cosmoz || {};
 
 	const IS_V2 = Polymer.flush != null;
-
+	const editableRegex = /columns\.(\d*)\.editable/i;
 	/**
 	 * @polymerBehavior
 	 */
@@ -118,9 +118,11 @@
 			return element.__column;
 		},
 
-		_columnsChanged: function (change) {
-			var removedColumns;
-			if (change.path === 'columns') {
+		_columnsChanged: function ({path, base, value}) {
+			let removedColumns,
+				reMatch = editableRegex.exec(path);
+
+			if (path === 'columns') {
 				if (this._elements && this._elements.length) {
 					removedColumns = this._elements.map(function (element) {
 						return element.__column;
@@ -130,11 +132,16 @@
 					this._elements = [];
 				}
 				this._addElements(0, this.columns.length);
-			} else if (change.path === 'columns.splices') {
-				this._renderSplices(change.value.indexSplices);
-			} else if (change.path !== 'columns.length') {
+			} else if (path === 'columns.splices') {
+				this._renderSplices(value.indexSplices);
+			} else if (reMatch) {
+				const index = reMatch[1] >> 0,
+					column = base[index];
+				this._removeElements(index, [column]);
+				this._addElements(index, 1);
+			} else if (path !== 'columns.length') {
 				// column property change
-				console.warn('column property change');
+				console.warn('column property change', path);
 			}
 		},
 

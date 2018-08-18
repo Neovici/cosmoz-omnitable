@@ -32,7 +32,8 @@
 			 * If true, the column will be editable by using an input element for rendering.
 			 */
 			editable: {
-				type: Boolean
+				type: Boolean,
+				observer: '_editableChanged'
 			},
 
 			/**
@@ -419,6 +420,14 @@
 
 		_hiddenChanged: function () {
 			this.fire('cosmoz-column-hidden-changed', { column: this });
+		},
+
+		_editableChanged() {
+			if (this._dataTemplatizer) {
+				this._dataTemplatizer.releaseInstances();
+			}
+			this._dataTemplatizer = null;
+			this.fire('cosmoz-column-editable-changed', { column: this });
 		},
 
 		__filterChanged: function () {
