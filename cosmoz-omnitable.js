@@ -353,7 +353,12 @@
 
 		_onColumnEditableChanged(event, {column}) {
 			event.stopPropagation();
-			const index = this.visibleColumns.indexOf(column);
+			const {visibleColumns: columns} = this;
+			if (!Array.isArray(columns) || columns.length === 0) {
+				return;
+			}
+
+			const index = columns.indexOf(column);
 			if (index < 0) {
 				return;
 			}
