@@ -25,7 +25,8 @@
 			 */
 			disabled: {
 				type: Boolean,
-				value: false
+				value: false,
+				observer: '_disabledChanged'
 			},
 
 			/**
@@ -420,6 +421,9 @@
 
 		_hiddenChanged: function () {
 			this.fire('cosmoz-column-hidden-changed', { column: this });
+		},
+		_disabledChanged() {
+			this.fire('cosmoz-column-disabled-changed', { column: this });
 		},
 
 		_editableChanged() {

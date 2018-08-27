@@ -276,7 +276,8 @@
 				this._debounceUpdateColumns();
 			});
 			this.$.groupedList.scrollTarget = this.$.scroller;
-			this.listen(this,  'cosmoz-column-hidden-changed', '_debounceUpdateColumns');
+			this.listen(this, 'cosmoz-column-hidden-changed', '_debounceUpdateColumns');
+			this.listen(this, 'cosmoz-column-disabled-changed', '_debounceUpdateColumns');
 
 			this._fitDropdowns();
 		},
@@ -286,6 +287,7 @@
 				Polymer.dom(this).unobserveNodes(this._columnObserver);
 			}
 			this.unlisten(this, 'cosmoz-column-hidden-changed', '_debounceUpdateColumns');
+			this.unlisten(this, 'cosmoz-column-disabled-changed', '_debounceUpdateColumns');
 			// Just in case we get detached before a planned debouncer has not run yet.
 			this.cancelDebouncer('adjustColumns');
 			this.cancelDebouncer('updateColumns');
