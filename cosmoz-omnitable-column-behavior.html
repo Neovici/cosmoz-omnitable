@@ -258,22 +258,22 @@
 
 		_cellTemplateChanged: function (cellTemplate) {
 			if (cellTemplate !== undefined && cellTemplate !== null) {
-				this._dataTemplatizer = this._createTemplatizer(cellTemplate);
+				this._cellTemplatizer = this._createTemplatizer(cellTemplate);
 			}
 		},
 
+		get editableTemplatizer() {
+			return this._editableTemplatizer = this._editableTemplatizer ||
+				this._createTemplatizer('template.edit-cell');
+
+		},
+		get cellTemplatizer() {
+			return this._cellTemplatizer = this._cellTemplatizer ||
+				this._createTemplatizer('template.cell');
+		},
 
 		get dataTemplatizer() {
-			var selector;
-			if (!this._dataTemplatizer) {
-				if (this.editable) {
-					selector = 'template.edit-cell';
-				} else {
-					selector = 'template.cell';
-				}
-				this._dataTemplatizer = this._createTemplatizer(selector);
-			}
-			return this._dataTemplatizer;
+			return this.editable ? this.editableTemplatizer : this.cellTemplatizer;
 		},
 
 		get headerTemplatizer() {
@@ -427,10 +427,10 @@
 		},
 
 		_editableChanged() {
-			if (this._dataTemplatizer) {
-				this._dataTemplatizer.releaseInstances();
+			const prevTemplatizer = this.editable ? this._cellTemplatizer : this._editableTemplatizer;
+			if (prevTemplatizer) {
+				prevTemplatizer.releaseInstances();
 			}
-			this._dataTemplatizer = null;
 			this.fire('cosmoz-column-editable-changed', { column: this });
 		},
 
