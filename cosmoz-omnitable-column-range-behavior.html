@@ -288,8 +288,8 @@
 			const limit = this._limit,
 				limitPath = path === 'min' ? 'from' : 'to',
 				limitedValue = value != null ? this.toValue(
-					this.get(limitPath + 'Max', limit),
 					this.toValue(value, this.get(limitPath + 'Min', limit), Math.max),
+					this.get(limitPath + 'Max', limit),
 					Math.min
 				) : null;
 
