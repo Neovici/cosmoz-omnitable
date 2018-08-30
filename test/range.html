@@ -44,6 +44,14 @@
 			</cosmoz-omnitable>
 		</template>
 	</test-fixture>
+	<test-fixture id="externalValues">
+		<template>
+			<cosmoz-omnitable class="flex">
+				<cosmoz-omnitable-column-number title="Age" name="age" value-path="age" maximum-fraction-digits=2 external-values>
+			</cosmoz-omnitable>
+		</template>
+	</test-fixture>
+
 
 	<script>
 	(function () {
@@ -510,6 +518,29 @@
 					max: 150
 				};
 			});
+		});
+
+		suite('external values' + domType, () => {
+			let omnitable,
+				column;
+			setup(done => {
+				omnitable = setupOmnitableFixture('externalValues', [
+					{age: 1},
+					{age: 0},
+					{age: 20}
+				], o => {
+					column = o.columns[0];
+					done();
+				});
+			});
+			test('changing _filterInput min on column with external values updates filter min correctly', done => {
+				column.addEventListener('filter-changed', function () {
+					assert.equal(column.filter.min, -1);
+					done();
+				});
+				column.set('_filterInput.min', -1);
+			});
+
 		});
 	}());
 	</script>
