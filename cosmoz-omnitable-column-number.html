@@ -115,7 +115,7 @@
 
 				const decimals = this.maximumFractionDigits;
 				if (decimals !== null) {
-					return value.toFixed(decimals);
+					return this.toValue(value.toFixed(decimals));
 				}
 				return value;
 			},
