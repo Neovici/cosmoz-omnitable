@@ -134,10 +134,10 @@
 			});
 
 			test('returns the value of an item', function (done) {
-				assert.equal(column.getComparableValue({age: '13'}, 'age'), 13);
-				assert.equal(column.getComparableValue(13), 13);
-				assert.equal(column.getComparableValue(data[1], 'age'), null);
-				assert.equal(column.getComparableValue(data[2], 'age'), -11);
+				assert.strictEqual(column.getComparableValue({age: '13'}, 'age'), 13);
+				assert.strictEqual(column.getComparableValue(13), 13);
+				assert.strictEqual(column.getComparableValue(data[1], 'age'), null);
+				assert.strictEqual(column.getComparableValue(data[2], 'age'), -11);
 				done();
 			});
 
