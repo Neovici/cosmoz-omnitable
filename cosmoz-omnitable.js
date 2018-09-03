@@ -327,6 +327,16 @@
 			this._disabledColumnsIndexes = [];
 		},
 
+		getGroupOnRowValue: function (item, groupOn) {
+			if (item !== undefined && groupOn !== undefined && item.value !== undefined) {
+				var groupOnValueType = groupOn.split('.')[1];
+				if (groupOnValueType !== undefined) {
+					return item.value[groupOnValueType];
+				}
+			}
+			return;
+		},
+
 		_onUpdateItemSize(event, detail) {
 			if (detail && detail.item) {
 				this.$.groupedList.updateSize(detail.item);

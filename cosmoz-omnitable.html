@@ -119,16 +119,17 @@
 									</div>
 
 									<h3 class="groupRow-label">
-										<div><span>[[ groupOnColumn.title ]]</span>: &nbsp;</div>
-										<cosmoz-omnitable-group-row
+										<div><span>[[ groupOnColumn.title ]]</span>: [[ getGroupOnRowValue(item.items.0,groupOnColumn.groupOn) ]] &nbsp;</div>
+										<!--<cosmoz-omnitable-group-row
 											column="[[ groupOnColumn ]]"
 											item="[[ item.items.0 ]]"
 											selected="[[ selected ]]"
 											folded="[[ folded ]]">
-										</cosmoz-omnitable-group-row>
+										</cosmoz-omnitable-group-row>-->
 									</h3>
-									<div>[[ item.items.length ]]</div>
-									<paper-icon-button icon="[[ _getFoldIcon(folded) ]]" on-tap="_toggleGroup"></paper-icon-button>
+									<!--<div>[[ item.items.length ]]</div>
+									<paper-icon-button icon="[[ _getFoldIcon(folded) ]]" on-tap="_toggleGroup"></paper-icon-button>-->
+
 								</div>
 							</template>
 					</cosmoz-grouped-list>
