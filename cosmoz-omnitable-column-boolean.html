@@ -13,8 +13,7 @@
 		<template class="edit-cell">
 			<paper-dropdown-menu>
 				<paper-listbox class="dropdown-content" slot="dropdown-content"
-					attr-for-selected="value"
-					fallback-selection="[[ _computeSelected(item, valuePath) ]]"
+					selected="[[ _computeSelected(item, valuePath) ]]"
 					on-selected-item-changed="_valueChanged">
 					<paper-item value="true">[[ trueLabel ]]</paper-item>
 					<paper-item value="false">[[ falseLabel ]]</paper-item>
@@ -32,7 +31,6 @@
 				</paper-listbox>
 			</paper-dropdown-menu>
 		</template>
-
 	</template>
 	<script>
 		Polymer({
@@ -131,8 +129,13 @@
 
 			_computeSelected(item, valuePath) {
 				const value = this.get(valuePath || this.valuePath, item);
-				if (value != null) {
-					return value.toString();
+
+				if (value === true) {
+					return 0;
+				}
+
+				if (value === false) {
+					return 1;
 				}
 			},
 
@@ -141,7 +144,7 @@
 			/** cosmoz-omnitable-column-behavior */
 
 			_valueChanged(e) {
-				const value = e.target.selected === 'true',
+				const value = e.target.selected === 0,
 					item = e.model.item,
 					oldValue = this.get(this.valuePath, item),
 					formatFn = value => {
