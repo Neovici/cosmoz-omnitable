@@ -100,7 +100,7 @@
 			test('_valueChanged updates _valuePath', done => {
 				const item = {boolean: false},
 					el = document.createElement('div');
-				el.selected = 'true';
+				el.selected = 0;
 				el.addEventListener('click', e => {
 					column._valueChanged(e);
 					assert.equal(item.boolean, true);
@@ -115,7 +115,7 @@
 			test('_valueChanged does not update _valuePath if value is equal to oldValue', done => {
 				const item = {boolean: true},
 					el = document.createElement('div');
-				el.selected = 'true';
+				el.selected = 0;
 				el.addEventListener('click', e => {
 					column._valueChanged(e);
 					assert.equal(item.boolean, true);
