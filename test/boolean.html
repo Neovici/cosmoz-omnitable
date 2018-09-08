@@ -92,9 +92,9 @@
 				assert.equal(column.getString(data[1]), 'False');
 			});
 
-			test('_computeSelected returns boolean to string', () => {
-				assert.equal(column._computeSelected(data[0]), 'true');
-				assert.equal(column._computeSelected(data[1]), 'false');
+			test('_computeSelected returns boolean to number', () => {
+				assert.equal(column._computeSelected(data[0]), 0);
+				assert.equal(column._computeSelected(data[1]), 1);
 			});
 
 			test('_valueChanged updates _valuePath', done => {
