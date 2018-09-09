@@ -104,7 +104,7 @@
 			 * @param  {Array} values Array of amounts
 			 * @returns {void}
 			 */
-			_valuesChanged: function (values) {
+			_valuesChanged(values) {
 				if (!Array.isArray(values) || values.length < 1) {
 					return;
 				}

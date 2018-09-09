@@ -22,9 +22,9 @@
 				}
 			</style>
 			<ul>
-			<template is="dom-repeat" items="[[ get(valuePath, item) ]]" as="listitem">
-				<li>[[ listitem ]]</li>
-			</template>
+				<template is="dom-repeat" items="[[ get(valuePath, item) ]]" as="listitem">
+					<li>[[ listitem ]]</li>
+				</template>
 			</ul>
 		</template>
 
@@ -77,7 +77,7 @@
 				}
 			},
 
-			_computeAutocompleteItems: function (values = this.values) {
+			_computeAutocompleteItems(values = this.values) {
 				const unique = [];
 				return values
 					.reduce((acc, val) => acc.concat(val), [])
@@ -88,7 +88,7 @@
 						}
 						const val = this.valueProperty ? this.get(this.valueProperty, value) : value,
 							hasVal = unique.indexOf(val) !== -1;
-		
+
 						if (hasVal) {
 							return false;
 						}
@@ -98,14 +98,14 @@
 					.sort();
 			},
 
-			_getLabelForValue: function (value) {
+			_getLabelForValue(value) {
 				if (value == null) {
 					return null;
 				}
 				return value.toString();
 			},
 
-			_applySingleFilter: function (filterString, item) {
+			_applySingleFilter(filterString, item) {
 				const value = this.get(this.valuePath, item);
 				if (value == null) {
 					return false;
@@ -113,7 +113,7 @@
 				return value.toString().toLowerCase() === filterString;
 			},
 
-			_applyMultiFilter: function (filter, item) {
+			_applyMultiFilter(filter, item) {
 				const valueFilter = element => {
 						const value = this.valueProperty ? this.get(this.valueProperty, element) : element;
 						return value ? value.toString().toLowerCase() : null;

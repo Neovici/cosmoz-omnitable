@@ -222,12 +222,12 @@
 			'_pathsChanged(valuePath, groupOn, sortOn)'
 		],
 
-		ready: function () {
+		ready() {
 			this._headerTemplatizer = this._createTemplatizer('template.header');
 			this._itemCells = [];
 		},
 
-		_createTemplatizer: function (templateElementOrSelector) {
+		_createTemplatizer(templateElementOrSelector) {
 			var template,
 				templateHost,
 				templatizer,
@@ -256,7 +256,7 @@
 			return templatizer;
 		},
 
-		_cellTemplateChanged: function (cellTemplate) {
+		_cellTemplateChanged(cellTemplate) {
 			if (cellTemplate !== undefined && cellTemplate !== null) {
 				this._cellTemplatizer = this._createTemplatizer(cellTemplate);
 			}
@@ -280,14 +280,14 @@
 			return this._headerTemplatizer;
 		},
 
-		getHeaderTemplateInstance: function () {
+		getHeaderTemplateInstance() {
 			if (!this._headerTemplatizer || !this._headerTemplatizer.createInstance) {
 				return;
 			}
 			return this._headerTemplatizer.createInstance();
 		},
 
-		releaseHeaderTemplateInstance: function (instance) {
+		releaseHeaderTemplateInstance(instance) {
 			if (this._headerTemplatizer) {
 				this._headerTemplatizer.releaseInstance(instance);
 			}
@@ -297,11 +297,11 @@
 		 * Override this in column elements if you need a different default width
 		 */
 
-		_computePreferredDropdownHorizontalAlign: function (columnIndex) {
+		_computePreferredDropdownHorizontalAlign(columnIndex) {
 			return columnIndex === 0 ? 'left' : 'right';
 		},
 
-		getString: function (item, valuePath = this.valuePath) {
+		getString(item, valuePath = this.valuePath) {
 			if (valuePath === undefined) {
 				console.error(this, 'has undefined valuePath arg', valuePath, 'for item', item);
 				return;
@@ -309,7 +309,7 @@
 			return this.get(valuePath, item);
 		},
 
-		toXlsxValue: function (item, valuePath = this.valuePath) {
+		toXlsxValue(item, valuePath = this.valuePath) {
 			if (!valuePath) {
 				return '';
 			}
@@ -330,11 +330,11 @@
 			}
 		},
 
-		getComparableValue: function (item, valuePath) {
+		getComparableValue(item, valuePath) {
 			return this.get(valuePath, item);
 		},
 
-		_valueChanged: function (event) {
+		_valueChanged(event) {
 			var
 				input = event.target,
 				value = input.value,
@@ -348,7 +348,7 @@
 		_fireItemChangeEvent(item, valuePath, oldValue, formatFn) {
 			var value = this.get(valuePath, item),
 				change = {
-					item: item,
+					item,
 					valuePath: this.valuePath,
 					value: formatFn ? formatFn(value) : value,
 					oldValue: formatFn ? formatFn(oldValue) : oldValue
@@ -356,7 +356,7 @@
 			this.fire('column-item-changed', change);
 		},
 
-		getFilterFn: function () {
+		getFilterFn() {
 			if (!this.filter) {
 				return;
 			}
@@ -369,7 +369,7 @@
 			return this._applyMultiFilter.bind(this, this.filter);
 		},
 
-		resetFilter: function () {
+		resetFilter() {
 			this.filter = this._getDefaultFilter();
 		},
 
@@ -391,7 +391,7 @@
 			return true;
 		},
 
-		_getDefaultFilter: function () {
+		_getDefaultFilter() {
 			const type = this.get('properties.filter.type');
 
 			if (type === Array) {
@@ -400,7 +400,7 @@
 			return null;
 		},
 
-		_applySingleFilter: function (filterString, item) {
+		_applySingleFilter(filterString, item) {
 			const value = this.get(this.valuePath, item);
 			if (value == null) {
 				return false;
@@ -408,18 +408,18 @@
 			return value.toString().toLowerCase().indexOf(filterString) > -1;
 		},
 
-		_applyMultiFilter: function (filter, item) {
-			var	filterArray = filter.map(element => element.toString().toLowerCase()),
+		_applyMultiFilter(filter, item) {
+			var filterArray = filter.map(element => element.toString().toLowerCase()),
 				value = this.get(this.valuePath, item).toString().toLowerCase();
 
 			return filterArray.some(filter => value.indexOf(filter) >= 0);
 		},
 
-		_titleChanged: function () {
+		_titleChanged() {
 			this.fire('cosmoz-column-title-changed', { column: this });
 		},
 
-		_hiddenChanged: function () {
+		_hiddenChanged() {
 			this.fire('cosmoz-column-hidden-changed', { column: this });
 		},
 		_disabledChanged() {
@@ -434,16 +434,16 @@
 			this.fire('cosmoz-column-editable-changed', { column: this });
 		},
 
-		__filterChanged: function () {
+		__filterChanged() {
 			this.fire('cosmoz-column-filter-changed', { column: this });
 		},
 
-		_serializeFilter: function (obj = this.filter) {
+		_serializeFilter(obj = this.filter) {
 			const type = {}.toString.call(obj).split(' ')[1].slice(0, -1).toLowerCase();
 			let value = obj;
 
 			if (type === 'array' && !value.length) {
-				value =  null;
+				value = null;
 			} else if (type === 'object') {
 				const keys = Object.keys(obj).filter(k => obj[k] != null);
 				if (keys.length > 0) {
@@ -452,13 +452,13 @@
 						return acc;
 					}, {});
 				} else {
-					value =  null;
+					value = null;
 				}
 			}
 			return this.serialize(value);
 		},
 
-		_deserializeFilter: function (obj) {
+		_deserializeFilter(obj) {
 			const type = this.filter && this.filter.constructor || Object;
 
 			if (type === Object && obj == null) {

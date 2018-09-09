@@ -67,27 +67,27 @@
 				Polymer.IronResizableBehavior
 			],
 
-			_firstItem: function (items) {
+			_firstItem(items) {
 				if (items !== undefined && items !== null && items.length > 0) {
 					return items[0];
 				}
 			},
 
-			_hideExpand: function (items, expanded) {
+			_hideExpand(items, expanded) {
 				if (items !== undefined && items.length !== null) {
 					return items.length <= 2 || expanded;
 				}
 				return true;
 			},
 
-			_hideCollapse: function (items, expanded) {
+			_hideCollapse(items, expanded) {
 				if (items !== undefined && items.length !== null) {
 					return items.length <= 2 || !expanded;
 				}
 				return true;
 			},
 
-			_otherItems: function (items, expanded) {
+			_otherItems(items, expanded) {
 				if (items !== undefined && items !== null) {
 					if (items.length <= 2 || expanded) {
 						return items.slice(1);
@@ -95,13 +95,13 @@
 				}
 			},
 
-			_computeOthersCount: function (items) {
+			_computeOthersCount(items) {
 				if (items !== undefined && items !== null) {
 					return items.length - 1;
 				}
 			},
 
-			_toggleExpand: function (event) {
+			_toggleExpand(event) {
 				this._expanded = !this._expanded;
 				event.stopPropagation();
 				event.preventDefault();

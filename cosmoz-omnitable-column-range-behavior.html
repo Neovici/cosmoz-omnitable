@@ -12,7 +12,7 @@
 
 			values: {
 				type: Array,
-				value: function () {
+				value() {
 					return [];
 				}
 			},
@@ -115,7 +115,7 @@
 			return this.toValue(value);
 		},
 
-		toXlsxValue: function (item, valuePath = this.valuePath) {
+		toXlsxValue(item, valuePath = this.valuePath) {
 			const value = this.getComparableValue(item, valuePath);
 			if (value == null) {
 				return '';
@@ -196,8 +196,8 @@
 			return this._applySingleFilter.bind(this, this.filter);
 		},
 
-		_applySingleFilter: function (filter, item) {
-			var value = this.getComparableValue(item, this.valuePath),
+		_applySingleFilter(filter, item) {
+			const value = this.getComparableValue(item, this.valuePath),
 				minValue = this.getComparableValue(filter, 'min'),
 				maxValue = this.getComparableValue(filter, 'max');
 

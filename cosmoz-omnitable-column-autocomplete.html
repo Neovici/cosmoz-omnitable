@@ -86,7 +86,7 @@
 
 			},
 
-			getComparableValue: function (item, valuePath = this.valuePath) {
+			getComparableValue(item, valuePath = this.valuePath) {
 				return this.getString(item, valuePath);
 			},
 
@@ -106,14 +106,14 @@
 				return itemValue;
 			},
 
-			toXlsxValue: function (item, valuePath = this.valuePath) {
+			toXlsxValue(item, valuePath = this.valuePath) {
 				if (!valuePath) {
 					return '';
 				}
 				return this.getString(item, valuePath);
 			},
 
-			_applySingleFilter: function (filterString, item) {
+			_applySingleFilter(filterString, item) {
 				const value = this.get(this.valuePath, item).toString().toLowerCase();
 				return value === filterString;
 			},
