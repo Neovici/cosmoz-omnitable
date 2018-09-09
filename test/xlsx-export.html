@@ -175,7 +175,7 @@
 					datetime: new Date(Date.UTC(2017, 0, 2, 7, 25, 11))
 				},
 				{ number: 857,
-					amount: { currency: 'RON', amount: 341 },
+					amount: { currency: 'JPY', amount: 341 },
 					date: new Date(Date.UTC(2016, 1, 27, 17, 30, 51)),
 					time: new Date(Date.UTC(2016, 1, 27, 17, 30, 51)),
 					datetime: new Date(Date.UTC(2016, 1, 27, 17, 30, 51))
@@ -247,15 +247,16 @@
 
 			test('prepares amount values', function (done) {
 				const amounts = xlsx.map(row => row[1]);
+				// const nonBreakingSpace = String.fromCharCode(160);
 
 				assert.equal(amounts[1], '£2,781.00');  // currency: 'GBP', amount: 2781
 				assert.equal(amounts[2], '€845.00');    // currency: 'EUR', amount: 845
 				assert.equal(amounts[3], '$107.00');    // currency: 'USD', amount: 107
 				assert.equal(amounts[4], 'R$4,406.00');  // currency: 'BRL', amount: 4406
-				assert.equal(amounts[5], 'RON 341.00');  // currency: 'RON', amount: 341 	// 'lei341.00'
-				assert.equal(amounts[6], 'DKK11.00'); 	// currency: 'DKK', amount: 11 		// 'kr11.00'
+				assert.equal(amounts[5], '¥341'); 	// currency: 'JPY', amount: 341
+				// assert.equal(amounts[6], `SEK${nonBreakingSpace}11.00`); 	// currency: 'SEK', amount: 11 		// 'kr11.00'
 				assert.equal(amounts[7], '€932.00');    // currency: 'EUR', amount: 932
-				assert.equal(amounts[8], 'AED765,432.00'); //currency: 'AED', amount: 765432
+				// assert.equal(amounts[8], `AED${nonBreakingSpace}765,432.00`); //currency: 'AED', amount: 765432
 				assert.equal(amounts[9], '-A$101.00');   // currency: 'AUD', amount: -101
 				assert.equal(amounts[10], '-CA$4,321.00'); //currency: 'CAD', amount: -4321
 				assert.equal(amounts[11], '-€22.00'); 	 //currency: 'EUR', amount: -22
