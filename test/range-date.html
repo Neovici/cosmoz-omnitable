@@ -94,19 +94,19 @@
 			let omnitable,
 				column;
 
-			setup(function (done) {
+			setup(done => {
 				omnitable = setupOmnitableFixture('range', data, o => {
 					column = o.columns[2];
 					done();
 				});
 			});
 
-			test('instantiates a cosmoz-omnitable-column-date', function (done) {
+			test('instantiates a cosmoz-omnitable-column-date', done => {
 				assert.equal(column.is, 'cosmoz-omnitable-column-date');
 				done();
 			});
 
-			test('toDate converts an value to valid date', function (done) {
+			test('toDate converts an value to valid date', done => {
 				assert.equal(column.toDate('2023-03-21T00:00:00Z').getTime(), new Date('2023-03-21T00:00:00Z').getTime());
 				assert.equal(column.toDate(new Date('2015-03-18T00:00:00Z')).getTime(), new Date('2015-03-18T00:00:00Z').getTime());
 				assert.equal(column.toDate(new Date('2017-09-23T01:02:03Z')).getTime(), new Date('2017-09-23T01:02:03Z').getTime());
@@ -114,7 +114,7 @@
 				done();
 			});
 
-			test('toDate limits parameters', function (done) {
+			test('toDate limits parameters', done => {
 				assert.equal(column.toDate('2023-03-21T00:00:00Z', '2023-03-21T00:00:00Z', Math.min).getTime(), (new Date('2023-03-21T00:00:00Z')).getTime()); // min
 				assert.equal(column.toDate(new Date('2015-03-18T00:00:00Z'), '2053-04-21T00:00:00Z', Math.min).getTime(), (new Date('2015-03-18T00:00:00Z')).getTime()); // min
 				assert.equal(column.toDate('2023-03-21T00:00:00Z', '2023-04-21T00:00:00Z', Math.max).getTime(), (new Date('2023-04-21T00:00:00Z')).getTime()); //max
@@ -122,7 +122,7 @@
 				done();
 			});
 
-			test('date returns comparable values', function (done) {
+			test('date returns comparable values', done => {
 				assert.typeOf(column.getComparableValue('2023-03-21T00:00:00Z'), 'number');
 				assert.typeOf(column.getComparableValue(new Date('2015-03-18T00:00:00Z')), 'number');
 				assert.typeOf(column.getComparableValue(new Date(86400000)), 'number');
@@ -130,7 +130,7 @@
 				done();
 			});
 
-			test('getString returns formated date with locale en-US', function (done) {
+			test('getString returns formated date with locale en-US', done => {
 				assert.equal(column.getString(), '');
 				assert.isString(column.getString(data[0], 'date'));
 				assert.isString(column.getString(data[1], 'date'));
@@ -144,7 +144,7 @@
 				done();
 			});
 
-			test('_toLocalISOString returns formated date', function (done) {
+			test('_toLocalISOString returns formated date', done => {
 				[
 					'2016-08-27',
 					'2015-01-03',
@@ -160,7 +160,7 @@
 				done();
 			});
 
-			test('changing filter updates _filterInput', function (done) {
+			test('changing filter updates _filterInput', done => {
 				const min = column.toValue('2015-03-18'),
 					max = column.toValue('2023-03-21');
 
@@ -178,7 +178,7 @@
 				done();
 			});
 
-			test('changing _filterInput updates filter', function (done) {
+			test('changing _filterInput updates filter', done => {
 				assert.isNull(column._filterInput.min);
 				assert.isNull(column._filterInput.max);
 
@@ -193,7 +193,7 @@
 				};
 			});
 
-			test('changing only _filterInput min updates filter min', function (done) {
+			test('changing only _filterInput min updates filter min', done => {
 				onFilter(column, () => {
 					assert.equal(column.filter.min.getTime(), new Date('2015-08-27T00:00:00').getTime());
 					done();
@@ -238,7 +238,7 @@
 			let omnitable,
 				column;
 
-			setup(function (done) {
+			setup(done => {
 				omnitable = setupOmnitableFixture('range', data, o => {
 					column = o.columns[3];
 					done();
@@ -276,7 +276,7 @@
 			// 	done();
 			// });
 
-			test('_toInputString converts datetime to local string', function (done) {
+			test('_toInputString converts datetime to local string', done => {
 				[
 					86400000,
 					'2006-07-14T07:05:39',
@@ -323,7 +323,7 @@
 				};
 			});
 
-			test('changing only _filterInput min updates filter min', function (done) {
+			test('changing only _filterInput min updates filter min', done => {
 				onFilter(column, () => {
 					assert.equal(column.filter.min.getTime(), new Date('2014-06-24T11:33:30').getTime());
 					done();
@@ -336,19 +336,19 @@
 			let omnitable,
 				column;
 
-			setup(function (done) {
+			setup(done => {
 				omnitable = setupOmnitableFixture('range', data, o => {
 					column = o.columns[4];
 					done();
 				});
 			});
 
-			test('instantiates a cosmoz-omnitable-column-time', function (done) {
+			test('instantiates a cosmoz-omnitable-column-time', done => {
 				assert.equal(column.is, 'cosmoz-omnitable-column-time');
 				done();
 			});
 
-			test('time toDate converts timestamp to valid date', function (done) {
+			test('time toDate converts timestamp to valid date', done => {
 				assert.equal(column.toDate(''), null);
 				assert.equal(column.toDate(), null);
 				assert.equal(column.toDate(86400000).getTime(), new Date(Date.UTC(1970, 0, 2)).getTime());
@@ -356,12 +356,12 @@
 				done();
 			});
 
-			test('time toDate accepts time as string and converts it to date', function (done) {
+			test('time toDate accepts time as string and converts it to date', done => {
 				assert.equal(column.toDate('2016-08-27T14:34:56Z').getTime(), new Date(Date.UTC(2016, 7, 27, 14, 34, 56)).getTime());
 				done();
 			});
 
-			test('time toDate limits parameters', function (done) {
+			test('time toDate limits parameters', done => {
 				assert.equal(column.toDate(new Date(86400000), '2023-04-21T04:00:00Z', Math.min).getTime(), new Date(Date.UTC(1970, 0, 2)).getTime()); // min
 				assert.equal(column.toDate(new Date(86400000), '2053-04-21T11:23:32Z', Math.max).getTime(), new Date('2053-04-21T11:23:32Z').getTime()); // max
 				assert.equal(column.toDate('2016-08-27T14:34:56Z', '2023-04-21T04:00:00Z', Math.min).getTime(), new Date(Date.UTC(2023, 3, 21, 4)).getTime()); //min
@@ -370,7 +370,7 @@
 				done();
 			});
 
-			test('time toDate accepts limit as timestamp', function (done) {
+			test('time toDate accepts limit as timestamp', done => {
 				assert.equal(column.toDate(new Date(2029, 0, 2, 17, 23, 12).getTime(), 86400000, Math.min).getTime(), 86400000);
 				done();
 			});
@@ -388,7 +388,7 @@
 				done();
 			});
 
-			test('time _toHashString converts time to UTC string replacing : with .', function (done) {
+			test('time _toHashString converts time to UTC string replacing : with .', done => {
 				assert.equal(column._toHashString(new Date(86400000)), '00.00.00');
 				assert.equal(column._toHashString(new Date('2016-08-27T14:34:56Z')), '14.34.56');
 				assert.equal(column._toHashString(new Date('2004-11-14T06:13:06Z')), '06.13.06');

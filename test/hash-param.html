@@ -1,42 +1,44 @@
 <!doctype html>
 <html>
-	<head>
-		<title>cosmoz-omnitable hash-param tests</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-		<script src="../../web-component-tester/browser.js"></script>
-		<script src="../../test-fixture/test-fixture-mocha.js"></script>
-		<script src="./helpers/utils.js"></script>
+<head>
+	<title>cosmoz-omnitable hash-param tests</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-		<link rel="import" href="../../test-fixture/test-fixture.html">
-		<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-		<link rel="import" href="../cosmoz-omnitable.html">
-		<link rel="import" href="../cosmoz-omnitable-column-autocomplete.html">
-		<link rel="import" href="../cosmoz-omnitable-column.html">
-	</head>
-	<body>
-		<test-fixture id="basic">
-			<template>
-				<cosmoz-omnitable hash-param="test" style='height:300px'>
-					<cosmoz-omnitable-column-autocomplete width="40px" title="Id" name="id" value-path="id" sort-on="id" group-on="id">
-						<template class="cell">
-							<span>[[ item.id ]]</span>
-						</template>
-					</cosmoz-omnitable-column-autocomplete>
-					<cosmoz-omnitable-column-autocomplete title="Group" name="group" value-path="group" flex="0" width="125px">
-					</cosmoz-omnitable-column-autocomplete>
-					<cosmoz-omnitable-column title="Name" name="name" value-path="name" sort-on="name" group-on="name" flex="2">
-						<template class="cell">
-							<span>[[ item.name ]]</span>
-						</template>
-					</cosmoz-omnitable-column>
-				</cosmoz-omnitable>
-			</template>
-		</test-fixture>
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+	<script src="../../web-component-tester/browser.js"></script>
+	<script src="../../test-fixture/test-fixture-mocha.js"></script>
+	<script src="./helpers/utils.js"></script>
 
-		<script>
+	<link rel="import" href="../../test-fixture/test-fixture.html">
+	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
+	<link rel="import" href="../cosmoz-omnitable.html">
+	<link rel="import" href="../cosmoz-omnitable-column-autocomplete.html">
+	<link rel="import" href="../cosmoz-omnitable-column.html">
+</head>
+
+<body>
+	<test-fixture id="basic">
+		<template>
+			<cosmoz-omnitable hash-param="test" style='height:300px'>
+				<cosmoz-omnitable-column-autocomplete width="40px" title="Id" name="id" value-path="id" sort-on="id" group-on="id">
+					<template class="cell">
+						<span>[[ item.id ]]</span>
+					</template>
+				</cosmoz-omnitable-column-autocomplete>
+				<cosmoz-omnitable-column-autocomplete title="Group" name="group" value-path="group" flex="0" width="125px">
+				</cosmoz-omnitable-column-autocomplete>
+				<cosmoz-omnitable-column title="Name" name="name" value-path="name" sort-on="name" group-on="name" flex="2">
+					<template class="cell">
+						<span>[[ item.name ]]</span>
+					</template>
+				</cosmoz-omnitable-column>
+			</cosmoz-omnitable>
+		</template>
+	</test-fixture>
+
+	<script>
 		(function () {
 			'use strict';
 
@@ -54,31 +56,31 @@
 				};
 
 			suite('basic-read' + domType, () => {
-				teardown(function (done) {
+				teardown(done => {
 					location.hash = '';
 					done();
 				});
-				test('updates sortOn from url hash', function (done) {
+				test('updates sortOn from url hash', done => {
 					location.hash = '#/#test-sortOn=id';
-					instantiate(function () {
+					instantiate(() => {
 						assert.equal(omnitable.sortOn, 'id');
 						assert.isFalse(omnitable.descending);
 						done();
 					});
 				});
 
-				test('updates groupOn from url hash', function (done) {
+				test('updates groupOn from url hash', done => {
 					location.hash = '#/#test-groupOn=group';
-					instantiate(function () {
+					instantiate(() => {
 						assert.equal(omnitable.groupOn, 'group');
 						assert.isFalse(omnitable.descending);
 						done();
 					});
 				});
 
-				test('updates groupOn, sortOn and descending from url hash', function (done) {
+				test('updates groupOn, sortOn and descending from url hash', done => {
 					location.hash = '#/#test-groupOn=id&test-sortOn=name&test-descending';
-					instantiate(function () {
+					instantiate(() => {
 						assert.equal(omnitable.groupOn, 'id');
 						assert.equal(omnitable.sortOn, 'name');
 						assert.isTrue(omnitable.descending);
@@ -86,9 +88,9 @@
 					});
 				});
 
-				test('updates filter from url hash', function (done) {
+				test('updates filter from url hash', done => {
 					location.hash = '#/#test-filter--id=["1"]';
-					instantiate(function () {
+					instantiate(() => {
 						assert.isArray(omnitable.columns[0].filter);
 						assert.lengthOf(omnitable.columns[0].filter, 1);
 						assert.include(omnitable.columns[0].filter, '1');
@@ -99,13 +101,13 @@
 
 			suite('basic-write' + domType, () => {
 				setup(instantiate);
-				teardown(function (done) {
+				teardown(done => {
 					location.hash = '';
 					done();
 				});
-				test('updates _routeHash with defaults', function (done) {
-					const hash =  omnitable._routeHash;
-					Polymer.Base.async(function () {
+				test('updates _routeHash with defaults', done => {
+					const hash = omnitable._routeHash;
+					Polymer.Base.async(() => {
 						assert.equal(hash['test-sortOn'], '');
 						assert.equal(hash['test-groupOn'], '');
 						assert.isUndefined(hash['test-descending']);
@@ -114,13 +116,13 @@
 
 				});
 
-				test('updates _routeHash from sortOn', function (done) {
-					const hash =  omnitable._routeHash;
+				test('updates _routeHash from sortOn', done => {
+					const hash = omnitable._routeHash;
 					omnitable.sortOn = 'name';
-					Polymer.Base.async(function () {
+					Polymer.Base.async(() => {
 						assert.equal(hash['test-sortOn'], 'name');
 						omnitable.sortOn = '';
-						Polymer.Base.async(function () {
+						Polymer.Base.async(() => {
 							assert.equal(hash['test-sortOn'], '');
 							done();
 						}, 30);
@@ -128,13 +130,13 @@
 
 				});
 
-				test('updates _routeHash from groupOn', function (done) {
-					const hash =  omnitable._routeHash;
+				test('updates _routeHash from groupOn', done => {
+					const hash = omnitable._routeHash;
 					omnitable.groupOn = 'name';
-					Polymer.Base.async(function () {
+					Polymer.Base.async(() => {
 						assert.equal(hash['test-groupOn'], 'name');
 						omnitable.groupOn = '';
-						Polymer.Base.async(function () {
+						Polymer.Base.async(() => {
 							assert.equal(hash['test-groupOn'], '');
 							done();
 						});
@@ -142,28 +144,28 @@
 
 				});
 
-				test('updates _routeHash from descending', function (done) {
+				test('updates _routeHash from descending', done => {
 					const hash = omnitable._routeHash;
 					assert.isUndefined(hash['test-descending']);
 					omnitable.descending = true;
-					Polymer.Base.async(function () {
+					Polymer.Base.async(() => {
 						assert.equal(hash['test-descending'], '');
 						omnitable.descending = false;
-						Polymer.Base.async(function () {
+						Polymer.Base.async(() => {
 							assert.isNull(hash['test-descending']);
 							done();
 						}, 30);
 					}, 30);
 				});
 
-				test('updates _routeHash from filter', function (done) {
+				test('updates _routeHash from filter', done => {
 					const column = omnitable.columns[0],
 						hash = omnitable._routeHash;
 					column.filter = [0, 1];
-					Polymer.Base.async(function () {
+					Polymer.Base.async(() => {
 						assert.equal(hash['test-filter--id'], '[0,1]');
 						column.resetFilter();
-						Polymer.Base.async(function () {
+						Polymer.Base.async(() => {
 							assert.equal(hash['test-filter--id'], null);
 							done();
 						}, 30);
@@ -172,6 +174,7 @@
 
 			});
 		})();
-		</script>
-	</body>
+	</script>
+</body>
+
 </html>
