@@ -115,32 +115,32 @@
 			Cosmoz.TableDemoBehavior
 		],
 
-		ready: function () {
+		ready() {
 			//this.changeData();
 		},
 
-		attached: function () {
+		attached() {
 			var data = this.generateTableDemoData(10, 11, 25);
-			this.async(function () {
+			this.async(() => {
 				this.data = data;
-			}.bind(this), 100);
+			}, 100);
 			this.customDataTemplate = Polymer.dom(this).querySelector('#customDataTemplate');
 
 		},
 
-		changeData: function () {
+		changeData() {
 			this.data = this.generateTableDemoData(10, 11, 10);
 		},
 
-		emptyData: function () {
+		emptyData() {
 			this.data = [];
 		},
 
-		onTap: function (event) {
+		onTap(event) {
 			console.log('onTap', event);
 		},
 
-		_customFunction: function (item) {
+		_customFunction(item) {
 			return 'bla ' + item.id + ' bla';
 		}
 

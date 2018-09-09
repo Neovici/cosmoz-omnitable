@@ -126,34 +126,34 @@
 			Cosmoz.TableDemoBehavior
 		],
 
-		ready: function () {
+		ready() {
 			//this.changeData();
 		},
 
-		attached: function () {
+		attached() {
 			this.data = [];
 		},
 
-		changeData: function () {
+		changeData() {
 			this.data = this.generateTableDemoData(20, 25, 10);
 		},
 
-		_localeChanged: function (locale, oldLocale) {
+		_localeChanged(locale, oldLocale) {
 			console.log('_localeChanged', locale, oldLocale);
 		},
 
-		_computeLabel: function (text, count) {
+		_computeLabel(text, count) {
 			return text + ' ' + count + ' items';
 		},
 
-		updateSelectedRows: function (event, detail) {
+		updateSelectedRows(event, detail) {
 			detail.items.forEach(function (item) {
 				this.$.omnitable.setItemValue(item, 'name', 'blablablalbal');
 			}, this);
 
 		},
 
-		removeItems: function (event, detail) {
+		removeItems(event, detail) {
 			console.log('runAction', detail.items, event, detail, detail.items);
 			detail.omnitable.removeItems(detail.items);
 		}
