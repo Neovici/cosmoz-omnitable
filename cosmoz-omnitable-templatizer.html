@@ -17,36 +17,33 @@
 		_reusableTemplateInstances: null,
 		_parentModel: true,
 
-		ready: function () {
-
-			var instanceProps = {};
-
-			instanceProps['item'] = true;
-
-			this._instanceProps = instanceProps;
+		ready() {
+			this._instanceProps = {
+				item: true
+			};
 
 			this._templateInstancesInUse = [];
 			this._reusableTemplateInstances = [];
 		},
 
-		init: function (template, host) {
+		init(template, host) {
 			this._template = template;
 			this._templateHost = host;
 			this._methodHost = host;
 			this.dataHost = host;
 		},
 
-		_getRootDataHost: function () {
+		_getRootDataHost() {
 			return this._templateHost;
 		},
 
-		_ensureTemplatized: function () {
+		_ensureTemplatized() {
 			if (!this.ctor) {
 				this.templatize(this._template);
 			}
 		},
 
-		_forwardParentProp: function (prop, value) {
+		_forwardParentProp(prop, value) {
 			const set =  instance => {
 				instance[prop] = value;
 			};
@@ -54,7 +51,7 @@
 			this._reusableTemplateInstances.forEach(set);
 		},
 
-		_forwardParentPath: function (path, value) {
+		_forwardParentPath(path, value) {
 			const notify = instance => {
 				instance.notifyPath(path, value, true);
 			};
@@ -62,7 +59,7 @@
 			this._reusableTemplateInstances.forEach(notify);
 		},
 
-		_forwardHostPropV2: function (prop, value) {
+		_forwardHostPropV2(prop, value) {
 			const forward =  instance => {
 				instance.forwardHostProp(prop, value);
 			};
@@ -70,7 +67,7 @@
 			this._reusableTemplateInstances.forEach(forward);
 		},
 
-		getInstance: function () {
+		getInstance() {
 			var instance;
 
 			if (this._reusableTemplateInstances.length > 0) {
@@ -85,12 +82,12 @@
 			return instance;
 		},
 
-		detachInstance: function (instance) {
+		detachInstance(instance) {
 			this.releaseInstance(instance);
 			this._performInstanceDetach(instance);
 		},
 
-		releaseInstance: function (instance) {
+		releaseInstance(instance) {
 			const index  = this._templateInstancesInUse.indexOf(instance);
 			if (index < 0) {
 				return;
@@ -105,7 +102,7 @@
 			this._templateInstancesInUse.splice(0);
 		},
 
-		releaseInstances: function () {
+		releaseInstances() {
 			this._reusableTemplateInstances = this._templateInstancesInUse;
 			this._templateInstancesInUse = [];
 		},

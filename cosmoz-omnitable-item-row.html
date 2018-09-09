@@ -65,15 +65,13 @@
 
 		_slotName: 'item-cell',
 
-		_getTemplateInstance: function (column) {
-			return column.dataTemplatizer.getInstance();
-		},
+		_getTemplateInstance: column => column.dataTemplatizer.getInstance(),
 
-		_detachTemplateInstance: function (instance, column, element) {
+		_detachTemplateInstance(instance, column, element) {
 			column.dataTemplatizer.detachInstance(instance, element);
 		},
 
-		_configureElement: function (element, column) {
+		_configureElement(element, column) {
 			element.style.flexBasis = column.editable ? column.editWidth : column.width;
 			element.style.minWidth = column.editable ? column.editMinWidth : column.minWidth;
 			element.style.flexGrow = column.flex;
@@ -81,7 +79,7 @@
 			element.setAttribute('class', this._computeItemRowCellClasses(column));
 		},
 
-		_configureTemplateInstance: function (instance) {
+		_configureTemplateInstance(instance) {
 			if (instance.item !== this.item && this.item !== undefined) {
 				this._forwardProperty(instance, 'item', this.item);
 				this._forwardProperty(instance, 'selected', this.selected);
@@ -90,41 +88,37 @@
 			}
 		},
 
-		_computeItemRowCellClasses: function (column) {
-			var originalIndex = column.__index;
-			return 'itemRow-cell'
+		_computeItemRowCellClasses: column =>
+			'itemRow-cell'
 				+ (column.cellClass ? ' ' + column.cellClass + ' ' : '')
-				+ ' cosmoz-omnitable-column-' + originalIndex;
-		},
+				+ ' cosmoz-omnitable-column-' + column.__index,
 
-		_itemUpdated: function (itemChange) {
+		_itemUpdated(itemChange) {
 			if (itemChange.path === 'item') {
-				this.elements.forEach(function (element) {
+				this.elements.forEach(element => {
 					this._forwardProperty(this.getElementTemplateInstance(element), 'item', itemChange.value, true);
 					element.setAttribute('title', this._getCellTitle(this.getElementColumn(element), this.item));
-				}, this);
+				});
 			} else {
-				this.elements.forEach(function (element) {
+				this.elements.forEach(element => {
 					this._forwardNotifyPath(this.getElementTemplateInstance(element), itemChange.path, itemChange.value, true, true);
-				}, this);
+				});
 			}
 		},
 
-		_selectedChanged: function (selected) {
+		_selectedChanged(selected) {
 			this.templateInstances.forEach(instance => {
 				this._forwardProperty(instance, 'selected', selected, true);
 			});
 		},
 
-		_expandedChanged: function (expanded) {
+		_expandedChanged(expanded) {
 			this.templateInstances.forEach(instance => {
 				this._forwardProperty(instance, 'expanded', expanded, true);
 			});
 		},
 
-		_getCellTitle: function (column, item) {
-			return column && column.getString(item, column.valuePath);
-		},
+		_getCellTitle: (column, item)  => column && column.getString(item, column.valuePath)
 	});
 }());
 </script>

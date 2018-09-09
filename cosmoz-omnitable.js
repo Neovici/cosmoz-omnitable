@@ -282,7 +282,7 @@
 			this._fitDropdowns();
 		},
 
-		detached: function () {
+		detached() {
 			if (this._columnObserver) {
 				Polymer.dom(this).unobserveNodes(this._columnObserver);
 			}
@@ -353,9 +353,9 @@
 			}
 		},
 
-		_onColumnEditableChanged(event, {column}) {
+		_onColumnEditableChanged(event, { column }) {
 			event.stopPropagation();
-			const {visibleColumns: columns} = this;
+			const { visibleColumns: columns } = this;
 			if (!Array.isArray(columns) || columns.length === 0) {
 				return;
 			}
@@ -539,7 +539,7 @@
 			return column;
 		},
 
-		_filterChanged: function (e, detail) {
+		_filterChanged(e, detail) {
 			if (!Array.isArray(this.columns) || this.columns.length < 1 || this.columns.indexOf(detail.column) < 0) {
 				return;
 			}
@@ -567,7 +567,7 @@
 				}
 			} else {
 				this.filteredItems = [];
-				this.filteredGroupedItems  = [];
+				this.filteredGroupedItems = [];
 				this.sortedFilteredGroupedItems = [];
 				this._groupsCount = 0;
 			}
@@ -998,7 +998,7 @@
 		 */
 		_toggleGroup(event) {
 			const firstRow = this.$.groupedList.getFirstVisibleItemElement(),
-				{model: {folded, item}} = event;
+				{ model: { folded, item } } = event;
 
 			this.$.groupedList.toggleFold(item);
 
@@ -1188,7 +1188,7 @@
 			}
 
 			const path = ['_routeHash', this.hashParam + '-' + key],
-				hashValue =  this.get(path),
+				hashValue = this.get(path),
 				value = this.get(key),
 				serialized = this.serialize(value, this.properties[key].type);
 

@@ -8,8 +8,8 @@ var fs = require('fs'),
 	exec = require('child_process').exec,
 	gitRun = function (cmd, cwd, callback) {
 		exec(cmd, {
-			cwd: cwd
-		}, function (err, stdout, stderr) {
+			cwd
+		}, (err, stdout, stderr) => {
 			if (err) {
 				console.error('Gah error! ', err, stdout, stderr);
 				return;
@@ -18,35 +18,35 @@ var fs = require('fs'),
 		});
 	};
 
-gulp.task('update', function () {
-	fs.readdir('bower_components', function (err, bowerDirs) {
+gulp.task('update', () => {
+	fs.readdir('bower_components', (err, bowerDirs) => {
 		if (err) {
 			console.error('Gah error! ', err);
 			return;
 		}
-		bowerDirs.forEach(function (bowerDir) {
+		bowerDirs.forEach(bowerDir => {
 			if (bowerDir.indexOf('cosmoz-') === 0) {
 				var repo = 'bower_components' + path.sep + bowerDir;
-				fs.lstat(repo, function (err, stats) {
+				fs.lstat(repo, (err, stats) => {
 					if (stats.isSymbolicLink()) {
-						fs.realpath(repo, function (err, resolvedPath) {
+						fs.realpath(repo, (err, resolvedPath) => {
 							if (err) {
 								console.error('Gah error! ', err, resolvedPath);
 								return;
 							}
 							console.log('repo needs git pull:' + resolvedPath);
-							gitRun('git status --porcelain', resolvedPath, function (output) {
+							gitRun('git status --porcelain', resolvedPath, output => {
 								var needsStash = output.length > 0;
 								if (needsStash) {
-									gitRun('git stash', resolvedPath, function () {
-										gitRun('git pull', resolvedPath, function () {
-											gitRun('git stash pop', resolvedPath, function () {
+									gitRun('git stash', resolvedPath, () => {
+										gitRun('git pull', resolvedPath, () => {
+											gitRun('git stash pop', resolvedPath, () => {
 												console.log('stash pull stash done');
 											});
 										});
 									});
 								} else {
-									gitRun('git pull', resolvedPath, function () {
+									gitRun('git pull', resolvedPath, () => {
 										console.log('pull done');
 									});
 								}

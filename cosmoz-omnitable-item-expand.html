@@ -71,19 +71,19 @@
 
 		_slotName: 'item-expand-line',
 
-		_getTemplateInstance: function (column) {
+		_getTemplateInstance(column) {
 			return column.dataTemplatizer.getInstance();
 		},
 
-		_detachTemplateInstance: function (instance, column, element) {
+		_detachTemplateInstance(instance, column, element) {
 			column.dataTemplatizer.detachInstance(instance, element);
 		},
 
-		_configureElement: function (element, column) {
+		_configureElement(element, column) {
 			element.column = column;
 		},
 
-		_configureTemplateInstance: function (instance) {
+		_configureTemplateInstance(instance) {
 			if (instance.item !== this.item && this.item !== undefined) {
 				this._forwardProperty(instance, 'item', this.item);
 				this._forwardProperty(instance, 'selected', this.selected);
@@ -92,7 +92,7 @@
 			}
 		},
 
-		_updateSize: function (columnsCount) {
+		_updateSize(columnsCount) {
 			this.hidden = columnsCount === 0;
 			if (this.expanded) {
 				// Notify omnitable that this item is expanded and my need individual resize
@@ -100,7 +100,7 @@
 			}
 		},
 
-		_itemUpdated: function (itemChange) {
+		_itemUpdated(itemChange) {
 			if (itemChange.path === 'item') {
 				this.elements.forEach(function (element) {
 					this._forwardProperty(this.getElementTemplateInstance(element), 'item', itemChange.value, true);
@@ -112,13 +112,13 @@
 			}
 		},
 
-		_selectedChanged: function (selected) {
+		_selectedChanged(selected) {
 			this.templateInstances.forEach(instance => {
 				this._forwardProperty(instance, 'selected', selected, true);
 			});
 		},
 
-		_expandedChanged: function (expanded) {
+		_expandedChanged(expanded) {
 			this.templateInstances.forEach(instance => {
 				this._forwardProperty(instance, 'expanded', expanded, true);
 			});

@@ -46,7 +46,7 @@
 
 		_slotName: 'group-row',
 
-		_columnChanged: function (newColumn) {
+		_columnChanged(newColumn) {
 			if (!newColumn) {
 				return;
 			}
@@ -57,15 +57,15 @@
 			this.columns =  [newColumn];
 		},
 
-		_getTemplateInstance: function (column) {
+		_getTemplateInstance(column) {
 			return column.dataTemplatizer.getInstance();
 		},
 
-		_detachTemplateInstance: function (instance, column, element) {
+		_detachTemplateInstance(instance, column, element) {
 			column.dataTemplatizer.detachInstance(instance, element);
 		},
 
-		_configureTemplateInstance: function (instance) {
+		_configureTemplateInstance(instance) {
 			if (instance.item !== this.item && this.item !== undefined) {
 				this._forwardProperty(instance, 'item', this.item);
 				this._forwardProperty(instance, 'selected', this.selected);
@@ -74,7 +74,7 @@
 			}
 		},
 
-		_itemUpdated: function (itemChange) {
+		_itemUpdated(itemChange) {
 			if (itemChange.path === 'item') {
 				this.elements.forEach(function (element) {
 					this._forwardProperty(this.getElementTemplateInstance(element), 'item', itemChange.value, true);
@@ -86,19 +86,19 @@
 			}
 		},
 
-		_selectedChanged: function (selected) {
+		_selectedChanged(selected) {
 			this.templateInstances.forEach(instance => {
 				this._forwardProperty(instance, 'selected', selected, true);
 			});
 		},
 
-		_expandedChanged: function (expanded) {
+		_expandedChanged(expanded) {
 			this.templateInstances.forEach(instance => {
 				this._forwardProperty(instance, 'expanded', expanded, true);
 			});
 		},
 
-		_foldedChanged: function (folded) {
+		_foldedChanged(folded) {
 			this.templateInstances.forEach(instance => {
 				this._forwardProperty(instance, 'folded', folded, true);
 			});
