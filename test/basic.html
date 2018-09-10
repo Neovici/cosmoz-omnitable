@@ -177,11 +177,13 @@
 			});
 
 			test('_hiddenChanged fires cosmoz-column-hidden-changed', done => {
-				const column = omnitable.columns[3];
+				const column = omnitable.columns[3],
+					onHidden = () => {
+						column.removeEventListener('cosmoz-column-hidden-changed', onHidden);
+						done();
+					};
 				assert.isUndefined(column.hidden);
-				column.addEventListener('cosmoz-column-hidden-changed', () => {
-					done();
-				});
+				column.addEventListener('cosmoz-column-hidden-changed', onHidden);
 				column.hidden = true;
 			});
 
