@@ -88,8 +88,8 @@
 			});
 
 			test('getString uses this.valuePath as default', () => {
-				assert.equal(column.getString(data[0]), 'True');
-				assert.equal(column.getString(data[1]), 'False');
+				assert.equal(column.getString(data[0]), 'False');
+				assert.equal(column.getString(data[1]), 'True');
 			});
 
 			test('_computeSelected returns boolean to number', () => {
@@ -100,7 +100,7 @@
 			test('_valueChanged updates _valuePath', done => {
 				const item = {boolean: false},
 					el = document.createElement('div');
-				el.selected = 0;
+				el.selected = 1;
 				el.addEventListener('click', e => {
 					column._valueChanged(e);
 					assert.equal(item.boolean, true);
@@ -115,7 +115,7 @@
 			test('_valueChanged does not update _valuePath if value is equal to oldValue', done => {
 				const item = {boolean: true},
 					el = document.createElement('div');
-				el.selected = 0;
+				el.selected = 1;
 				el.addEventListener('click', e => {
 					column._valueChanged(e);
 					assert.equal(item.boolean, true);
