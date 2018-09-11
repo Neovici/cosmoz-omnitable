@@ -13,10 +13,11 @@
 		<template class="edit-cell">
 			<paper-dropdown-menu>
 				<paper-listbox class="dropdown-content" slot="dropdown-content"
+					attr-for-selected="value"
 					selected="[[ _computeSelected(item, valuePath) ]]"
 					on-selected-item-changed="_valueChanged">
-					<paper-item value="false">[[ falseLabel ]]</paper-item>
 					<paper-item value="true">[[ trueLabel ]]</paper-item>
+					<paper-item value="false">[[ falseLabel ]]</paper-item>
 				</paper-listbox>
 			</paper-dropdown-menu>
 		</template>
@@ -26,8 +27,8 @@
 					horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
 				<paper-listbox class="dropdown-content" slot="dropdown-content" attr-for-selected="value" selected="{{ _textFilter }}">
 					<paper-item value=""></paper-item>
-					<paper-item value="false">[[ falseLabel ]]</paper-item>
 					<paper-item value="true">[[ trueLabel ]]</paper-item>
+					<paper-item value="false">[[ falseLabel ]]</paper-item>
 				</paper-listbox>
 			</paper-dropdown-menu>
 		</template>
@@ -129,13 +130,8 @@
 
 			_computeSelected(item, valuePath) {
 				const value = this.get(valuePath || this.valuePath, item);
-
-				if (value === true) {
-					return 1;
-				}
-
-				if (value === false) {
-					return 0;
+				if (value != null) {
+					return value.toString();
 				}
 			},
 
@@ -144,7 +140,7 @@
 			/** cosmoz-omnitable-column-behavior */
 
 			_valueChanged(e) {
-				const value = e.target.selected === 1,
+				const value = e.target.selected === 'true',
 					item = e.model.item,
 					oldValue = this.get(this.valuePath, item),
 					formatFn = value => {
