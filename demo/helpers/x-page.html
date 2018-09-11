@@ -149,7 +149,7 @@
 				Cosmoz.TranslatableBehavior
 			],
 
-			attached: function () {
+			attached() {
 				var data = this.generateTableDemoData(10, 11, 25);
 				// Used to test filtering and sorting when a row has an undefined or null amount or number
 				data[0].amount = undefined;
@@ -163,40 +163,40 @@
 
 			},
 
-			changeData: function () {
+			changeData() {
 				this.data = this.generateTableDemoData(10, 11, 10);
 			},
 
-			changeSmallData: function () {
+			changeSmallData() {
 				this.data = this.generateTableDemoData(2, 2, 10);
 			},
 
-			emptyData: function () {
+			emptyData() {
 				this.data = [];
 			},
 
-			updateSelectedRows: function (event, detail) {
+			updateSelectedRows(event, detail) {
 				detail.items.forEach(function (item) {
 					this.$.omnitable.setItemValue(item, 'name', 'blablablalbal');
 				}, this);
 
 			},
 
-			removeItems: function (event, detail) {
+			removeItems(event, detail) {
 				console.log('runAction', detail.items, event, detail, detail.items);
 				detail.omnitable.removeItems(detail.items);
 			},
 
-			onTap: function (event) {
+			onTap(event) {
 				console.log('onTap', event);
 			},
 
-			_getItemLink: function (item) {
+			_getItemLink(item) {
 				return '#!/purchase/suppliers/view?id=' + item.id;
 			},
 
-			_getRowItems: function (numSelected) {
-				return new Array(numSelected).fill(undefined).map(function (none, i) {
+			_getRowItems(numSelected) {
+				return new Array(numSelected).fill(undefined).map((none, i) => {
 					return 'action ' + (i + 1);
 				});
 			}

@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>polymer</title>
 
-  <script src="//polygit.org/components/webcomponentsjs/webcomponents-lite.js"></script>
-  <link href="//polygit.org/components/polymer/polymer.html" rel="import">
+<head>
+	<title>polymer</title>
+
+	<script src="//polygit.org/components/webcomponentsjs/webcomponents-lite.js"></script>
+	<link href="//polygit.org/components/polymer/polymer.html" rel="import">
 
 </head>
+
 <body>
 
 	<dom-module id="x-templatizer">
-	  <template>
-	  	<button on-tap="addContent">Add content</button>
-	  	<div id="templates">
-			<slot></slot>
-  		</div>
-	  </template>
+		<template>
+			<button on-tap="addContent">Add content</button>
+			<div id="templates">
+				<slot></slot>
+			</div>
+		</template>
 	</dom-module>
 
 	<dom-module id="x-elem">
@@ -41,19 +43,19 @@
 
 	<script>
 		/*global HTMLImports,Polymer */
-		HTMLImports.whenReady(function () {
+		HTMLImports.whenReady(() => {
 			Polymer({
 				is: 'x-templatizer',
 				behaviors: [
 					Polymer.Templatizer
 				],
-				_ensureTemplatized: function () {
+				_ensureTemplatized() {
 					if (!this.ctor) {
 						this._template = Polymer.dom(this).querySelector('template');
 						this.templatize(this._template);
 					}
 				},
-				addContent: function () {
+				addContent() {
 					this._ensureTemplatized();
 
 					var instance = this.stamp({});
@@ -61,7 +63,7 @@
 					Polymer.dom(this).appendChild(instance.root);
 				},
 
-				_forwardParentProp: function (prop, value) {
+				_forwardParentProp(prop, value) {
 					console.log('implement forwarding prop to template instances', prop, value);
 				}
 
@@ -84,4 +86,5 @@
 
 
 </body>
+
 </html>

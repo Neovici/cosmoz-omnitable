@@ -33,10 +33,11 @@
 
 			// HACK: ensure paper-dropdown-menu updates current selected item label after translation change
 			// See https://github.com/PolymerElements/paper-dropdown-menu/issues/197
-			_labelChanged: function () {
+			_labelChanged() {
 				if (this.classList.contains('iron-selected')) {
-					this.fire('iron-deselect', { item: this});
-					this.fire('iron-select', { item: this});
+					const detail = { item: this };
+					this.fire('iron-deselect', detail);
+					this.fire('iron-select', detail);
 				}
 			}
 		});

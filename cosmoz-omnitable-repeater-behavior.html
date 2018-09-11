@@ -49,7 +49,7 @@
 		 * @param {Object} column - The column.
 		 * @return {Object} - The instance.
 		 */
-		_getTemplateInstance: function (column) {},
+		_getTemplateInstance(column) {},
 
 		/**
 		 * Detach and release the template instance associated with
@@ -60,7 +60,7 @@
 		 * @param {Object} element - The element.
 		 * @return {undefined}
 		 */
-		_detachTemplateInstance: function (instance, column, element) {},
+		_detachTemplateInstance(instance, column, element) {},
 
 		/**
 		 * Configure a newly created repeated element
@@ -68,7 +68,7 @@
 		 * @param {Object} element - The element.
 		 * @return {undefined}
 		 */
-		_configureElement: function (element) {},
+		_configureElement(element) {},
 
 		/**
 		 * Configure a newly created cell template instance
@@ -76,7 +76,7 @@
 		 * @param {Object} instance - The instance.
 		 * @return {undefined}
 		 */
-		_configureTemplateInstance: function (instance) {},
+		_configureTemplateInstance(instance) {},
 
 
 		/* eslint-enable no-empty-function, no-unused-vars */
@@ -93,9 +93,7 @@
 
 		get templateInstances() {
 			if (this._elements) {
-				return this._elements.map(function (element) {
-					return element.__instance;
-				});
+				return this._elements.map(element => element.__instance);
 			}
 			return [];
 		},
@@ -105,26 +103,22 @@
 		 * @param {Object} element - The element.
 		 * @return {Object} - The instance.
 		 */
-		getElementTemplateInstance: function (element) {
-			return element.__instance;
-		},
+		getElementTemplateInstance: element => element.__instance,
 
 		/**
 		 * Get the column that was used to rendered the specified element
 		 * @param {Object} element - The element.
 		 * @return {Object} - The column.
 		 */
-		getElementColumn: function (element) {
-			return element.__column;
-		},
+		getElementColumn: element => element.__column,
 
-		_columnsChanged: function ({path, base, value}) {
+		_columnsChanged({path, base, value}) {
 			let removedColumns,
 				reMatch = editableRegex.exec(path);
 
 			if (path === 'columns') {
 				if (this._elements && this._elements.length) {
-					removedColumns = this._elements.map(function (element) {
+					removedColumns = this._elements.map(element => {
 						return element.__column;
 					});
 					this._removeElements(0, removedColumns);
@@ -145,29 +139,25 @@
 			}
 		},
 
-		_renderSplices: function (splices) {
-			splices.forEach(function (splice) {
+		_renderSplices(splices) {
+			splices.forEach(splice => {
 				if (splice.removed.length) {
 					this._removeElements(splice.index, splice.removed);
 				}
 				if (splice.addedCount > 0) {
 					this._addElements(splice.index, splice.addedCount);
 				}
-			}, this);
+			});
 		},
 
-		_addElements: function (start, count) {
-			var i,
-				end = start + count,
-				column,
-				instance,
-				element,
+		_addElements(start, count) {
+			const end = start + count,
 				parent = Polymer.dom(this);
 
-			for (i = start; i < end; i++) {
-				column = this.columns[i];
-				element = document.createElement(this._elementType);
-				instance = this._getTemplateInstance(column);
+			for (let i = start; i < end; i++) {
+				const column = this.columns[i],
+					element = document.createElement(this._elementType),
+					instance = this._getTemplateInstance(column);
 				element.__instance = instance;
 				element.__column = column;
 
@@ -200,7 +190,7 @@
 			}
 		},
 
-		_removeElements: function (start, removedColumns) {
+		_removeElements(start, removedColumns) {
 			this._elements
 				.splice(start, removedColumns.length)
 				.forEach(element => {
@@ -210,7 +200,7 @@
 				});
 		},
 
-		_groupOnColumnChanged: function (column, previousColumn) {
+		_groupOnColumnChanged(column, previousColumn) {
 			if (!this._elements || !this._elements.length) {
 				return;
 			}
@@ -228,7 +218,7 @@
 			}
 		},
 
-		_forwardProperty: function (instance, name, value, flush = false) {
+		_forwardProperty(instance, name, value, flush = false) {
 			if (IS_V2) {
 				instance._setPendingProperty(name, value);
 			} else {
@@ -239,7 +229,7 @@
 			}
 		},
 
-		_forwardNotifyPath: function (instance, path, value, isPathNotification = false, flush = false) {
+		_forwardNotifyPath(instance, path, value, isPathNotification = false, flush = false) {
 			if (IS_V2) {
 				instance._setPendingPropertyOrPath(path, value, false, isPathNotification);
 			} else {
@@ -250,7 +240,7 @@
 			}
 		},
 
-		_forwardPropertiesFlush: function (instance) {
+		_forwardPropertiesFlush(instance) {
 			if (instance._flushProperties) {
 				instance._flushProperties(true);
 			}

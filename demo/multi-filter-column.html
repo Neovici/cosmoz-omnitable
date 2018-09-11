@@ -35,10 +35,10 @@
 				Cosmoz.OmnitableColumnBehavior
 			],
 
-			_filtersChanged: function (newFilters) {
+			_filtersChanged(newFilters) {
 				if (newFilters && newFilters !== '') {
 					var filterArray = newFilters.split(',');
-					this.filter = filterArray.filter(function (elem) {
+					this.filter = filterArray.filter(elem => {
 						return elem !== '';
 					});
 				}

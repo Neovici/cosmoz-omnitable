@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
 	<title>cosmoz-omnitable range tests for number and amount</title>
 	<meta charset="UTF-8">
@@ -16,6 +17,7 @@
 	<link rel="import" href="../cosmoz-omnitable-columns.html">
 	<link rel="import" href="../demo/table-demo-behavior.html">
 </head>
+
 <body>
 	<test-fixture id="range">
 		<template>
@@ -38,8 +40,7 @@
 	<test-fixture id="currency">
 		<template>
 			<cosmoz-omnitable class="flex">
-				<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount"
-					currency="SEK" >
+				<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount" currency="SEK">
 				</cosmoz-omnitable-column-amount>
 			</cosmoz-omnitable>
 		</template>
@@ -54,495 +55,496 @@
 
 
 	<script>
-	(function () {
-		'use strict';
-		const domType = getDomType(),
-			data = [
-				{
-					age: 17,
-					amount: { amount: '12.4', currency: 'USD' },
-				},
-				{
-					amount: { amount: 2 }
-				},
-				{
-					age: -11,
-					amount: { amount: 678, currency: 'AUD' }
-				},
-				{
-					age: 9,
-					amount: { amount: -8, currency: 'EUR' }
-				},
-				{
-					age: 5,
-					amount: { amount: '3450', currency: 'DKK' }
-				},
-				{
-					amount: { amount: 2015, currency: 'EUR' }
-				},
-				{
-					age: 46.7511, // 46,75xx
-					amount: { amount: 347, currency: 'USD' }
-				},
-				{
-					age: 46.768, // needed in maximumFractionDigits test
-					amount: { amount: 2581, currency: 'EUR' }
-				}
-			];
-
-		sinon.assert.expose(chai.assert, { prefix: '' });
-
-		suite('number' + domType, () => {
-			let omnitable,
-				column;
-
-			setup(function (done) {
-				omnitable = setupOmnitableFixture('range', data, o => {
-					column = o.columns[0];
-					done();
-				});
-			});
-
-			test('instantiates a cosmoz-omnitable-column-number', function (done) {
-				assert.equal(column.is, 'cosmoz-omnitable-column-number');
-				done();
-			});
-
-			test('toNumber convers a value to Number', function (done) {
-				assert.isUndefined(column.toNumber());
-				assert.equal(column.toNumber(-7.5), -7.5);
-				assert.equal(column.toNumber('-7.5'), -7.5);
-				assert.equal(column.toNumber(123e-5), 0.00123);
-				assert.isNotNumber(column.toNumber('some string not number'));
-				done();
-			});
-
-			test('toNumber limits parameters', function (done) {
-				assert.equal(column.toNumber('-2.0014', 4), -2.0014);
-				assert.equal(column.toNumber(3, 2, Math.min), 2);
-				assert.equal(column.toNumber('23.3', '-10.5443', Math.min), -10.5443);
-				assert.equal(column.toNumber(3, '2.0014', Math.min), 2.0014);
-				assert.equal(column.toNumber(3, 2.0014, Math.max), 3);
-				done();
-			});
-
-			test('computes range from values', function (done) {
-				assert.isObject(column._range);
-				assert.equal(column._range.min, -11);
-				assert.equal(column._range.max, 46.768);
-				done();
-			});
-
-			test('returns the value of an item', function (done) {
-				assert.strictEqual(column.getComparableValue({age: '13'}, 'age'), 13);
-				assert.strictEqual(column.getComparableValue(13), 13);
-				assert.equal(column.getComparableValue(data[1], 'age'), null);
-				assert.strictEqual(column.getComparableValue(data[2], 'age'), -11);
-				done();
-			});
-
-			test('changing filter updates _filterInput', function (done) {
-				assert.isNull(column.filter.min);
-				assert.isNull(column.filter.max);
-				column.filter = {
-					min: 3,
-					max: 200
-				};
-				assert.equal(column._filterInput.min, 3);
-				assert.equal(column._filterInput.max, 200);
-				done();
-			});
-
-			test('changing _filterInput updates filter', function (done) {
-				assert.isNull(column._filterInput.min);
-				assert.isNull(column._filterInput.max);
-				column.addEventListener('filter-changed', function () {
-					assert.equal(column.filter.min, -10);
-					assert.equal(column.filter.max, 15);
-					done();
-				});
-				column._filterInput = {
-					min: -10,
-					max: 15
-				};
-			});
-
-			test('changing only _filterInput min updates filter min', function (done) {
-				column.addEventListener('filter-changed', function () {
-					assert.equal(column.filter.min, -11);
-					done();
-				});
-				column.set('_filterInput.min', -21);
-			});
-
-			test('changing out of range _filterInput limits _filterInput', function (done) {
-				assert.isNull(column._filterInput.min);
-				assert.isNull(column._filterInput.max);
-
-				column.addEventListener('filter-changed', function handler() {
-					assert.equal(column._filterInput.min, -11);
-					assert.equal(column._filterInput.max, 17);
-					assert.equal(column.filter.min, -11);
-					assert.equal(column.filter.max, 17);
-
-					Polymer.Base.async(function () {
-						column.removeEventListener('filter-changed', handler);
-						column.addEventListener('filter-changed', function () {
-							assert.equal(column.filter.min, 17);
-							done();
-						});
-						column.set('_filterInput.min', 20);
-					});
-				});
-				column._filterInput =  {min: -11, max: 17};
-			});
-
-			test('filter comparision uses maximumFractionDigits; item age outside the range', done => {
-				assert.isNull(column._filterInput.min);
-				assert.isNull(column._filterInput.max);
-
-				const handler = () => {
-					const items  = omnitable.sortedFilteredGroupedItems;
-					assert.equal(items.filter(item => item.age && item.age === 46.768).length, 0,  'Expected item coresponding to the age: 46.768 not to be in the filtered items, because it is outside the range.');
-					omnitable.removeEventListener('sorted-filtered-grouped-items-changed', handler);
-					done();
-				};
-				omnitable.addEventListener('sorted-filtered-grouped-items-changed', handler);
-				column._filterInput =  {min: 46.75, max: 46.76};
-			});
-
-			test('filter comparision uses maximumFractionDigits, item age inside range', done => {
-				const handler = () => {
-					const items  = omnitable.sortedFilteredGroupedItems;
-					assert.equal(items.filter(item => item.age && item.age === 46.7511).length, 1,  'Expected item coresponding to the age: 46.7511 to be in the filtered items.');
-					omnitable.removeEventListener('sorted-filtered-grouped-items-changed', handler);
-					done();
-				};
-				omnitable.addEventListener('sorted-filtered-grouped-items-changed', handler);
-				column._filterInput =  {min: 46.75, max: 46.76};
-			});
-
-			test('getString displays 46.768 as 46.77', done => {
-				assert.equal(column.getString({age: 46.768}), 46.77);
-				done();
-			});
-		});
-
-		suite('amount', () => {
-			let omnitable,
-				column;
-
-			setup(function (done) {
-				omnitable = setupOmnitableFixture('range', data, o => {
-					column = o.columns[1];
-					done();
-				});
-			});
-
-			test('instantiates a cosmoz-omnitable-column-amount', function (done) {
-				assert.equal(column.is, 'cosmoz-omnitable-column-amount');
-				done();
-			});
-
-			test('toAmount returns a valid amount', function (done) {
-				assert.isUndefined(column.toAmount());
-				assert.isNull(column.toAmount('123'));
-				assert.isNull(column.toAmount({amount: 123}));
-				assert.isNull(column.toAmount({amount: '123'}));
-				assert.isNull(column.toAmount({currency: 'USD'}));
-
-				assert.isObject(column.toAmount({amount: 75, currency: 'SEK'}));
-				assert.deepEqual(column.toAmount({amount: 123, currency: 'AUD'}), {amount: 123, currency: 'AUD'});
-				assert.deepEqual(column.toAmount({amount: '2300', currency: 'USD'}), {amount: 2300, currency: 'USD'});
-				assert.deepEqual(column.toAmount({amount: 99, currency: 'SEK'}), {amount: 99, currency: 'SEK'});
-				done();
-			});
-
-			test('toAmount limits parameters value', function (done) {
-				assert.equal(column.toAmount({amount: '-2.0014', currency: 'SEK'}, 4).amount, -2.0014);
-				assert.equal(column.toAmount({amount: 3, currency: 'EUR'}, {amount: 2, currency: 'EUR'}, Math.min).amount, 2);
-				assert.equal(column.toAmount({amount: '23.3', currency: 'AUD'}, {amount: '-10.5443', currency: 'AUD'}, Math.min).amount, -10.5443);
-				assert.equal(column.toAmount({amount: 15.3, currency: 'DKK'}, {amount: '2.0014', currency: 'DKK'}, Math.min).amount, 2.0014);
-				assert.equal(column.toAmount({amount: 1592, currency: 'SEK'}, {amount: 2.0014, currency: 'SEK'}, Math.max).amount, 1592);
-				done();
-			});
-
-			test('returns comparable value', function (done) {
-				assert.equal(column.getComparableValue(data[3], 'amount'), -8);
-				assert.equal(column.getComparableValue(data[4], 'amount'), 3450);
-				assert.equal(column.getComparableValue({amount: '13', currency: 'EUR'}), 13);
-				assert.isUndefined(column.getComparableValue({}));
-				assert.isUndefined(column.getComparableValue([]));
-				done();
-			});
-
-			test('amount renders symbol and value', function (done) {
-				assert.equal(column.renderValue(null), '');
-				assert.equal(column.renderValue({}), '');
-				assert.equal(column.renderValue([]), '');
-				assert.equal(column.renderValue({amount: '12.4', currency: 'USD'}), '$12.40');
-				assert.equal(column.renderValue({amount: 534 }), '');
-				assert.equal(column.renderValue({amount: -897, currency: 'EUR'}), '-€897.00');
-				done();
-			});
-
-			test('getString returns valid amount or Invalid value', function (done) {
-				assert.equal(column.getString({amountPath: null}, 'amountPath'), '');
-				assert.equal(column.getString({amountPath: {}}, 'amountPath'), 'Invalid value');
-				assert.equal(column.getString({amountPath: []}, 'amountPath'), 'Invalid value');
-				assert.equal(column.getString(data[0]), '$12.40');
-				assert.equal(column.getString({amountPath: {amount: 2036 }}, 'amountPath'), 'Invalid value', 'Expected missing currency to be treated as invalid.');
-				assert.equal(column.getString({amountPath: {amount: 372, currency: 'EUR'}}, 'amountPath'), '€372.00');
-				done();
-			});
-
-			test('getCurrency returns valid currency or null', function (done) {
-				assert.equal(column.getCurrency(data[0], 'amount'), 'USD');
-				assert.isUndefined(column.getCurrency(data[1], 'amount'));
-				assert.equal(column.getCurrency(data[2], 'amount'), 'AUD');
-				assert.equal(column.getCurrency(data[3], 'amount'), 'EUR');
-				assert.equal(column.getCurrency(data[4], 'amount'), 'DKK');
-				done();
-			});
-
-			test('computes array of formaters', done => {
-				const verifyFormatters = () => {
-					const formatters = column._formatters;
-
-					if (formatters == null) {
-						Polymer.Base.async(verifyFormatters, 50);
-					} else {
-						Object.keys(formatters).forEach(el => {
-							assert.include(['SEK', 'USD', 'AUD', 'EUR', 'DKK'], el);
-						});
-						done();
+		(function () {
+			'use strict';
+			const domType = getDomType(),
+				data = [
+					{
+						age: 17,
+						amount: { amount: '12.4', currency: 'USD' },
+					},
+					{
+						amount: { amount: 2 }
+					},
+					{
+						age: -11,
+						amount: { amount: 678, currency: 'AUD' }
+					},
+					{
+						age: 9,
+						amount: { amount: -8, currency: 'EUR' }
+					},
+					{
+						age: 5,
+						amount: { amount: '3450', currency: 'DKK' }
+					},
+					{
+						amount: { amount: 2015, currency: 'EUR' }
+					},
+					{
+						age: 46.7511, // 46,75xx
+						amount: { amount: 347, currency: 'USD' }
+					},
+					{
+						age: 46.768, // needed in maximumFractionDigits test
+						amount: { amount: 2581, currency: 'EUR' }
 					}
-				};
-				Polymer.Base.async(verifyFormatters, 50);
-			});
-
-			test('changing filter updates _filterInput', function (done) {
-				assert.isNull(column.filter.min);
-				assert.isNull(column.filter.max);
-				column.filter = {
-					min: {amount: 225, currency: 'EUR'},
-					max: {amount: 457, currency: 'EUR'}
-				};
-				assert.equal(column._filterInput.min, 225);
-				assert.equal(column._filterInput.max, 457);
-				done();
-			});
-
-			test('changing _filterInput updates filter', function (done) {
-				assert.isNull(column._filterInput.min);
-				assert.isNull(column._filterInput.max);
-				column.addEventListener('filter-changed', function () {
-					assert.equal(column.filter.min.amount, 1);
-					assert.equal(column.filter.max.amount, 15);
-					done();
-				});
-				column._filterInput = {
-					min: 1,
-					max: 15
-				};
-			});
-
-			test('changing only _filterInput min updates filter min', function (done) {
-				column.addEventListener('filter-changed', function () {
-					assert.equal(column.filter.min.amount, -8);
-					done();
-				});
-				column.set('_filterInput.min', -2317);
-			});
-
-			test('changing out of range _filterInput limits _filterInput', function (done) {
-				assert.isNull(column._filterInput.min);
-				assert.isNull(column._filterInput.max);
-
-				column.addEventListener('filter-changed', function handler() {
-					assert.equal(column._filterInput.min, 7);
-					assert.equal(column._filterInput.max, 77);
-					assert.equal(column.filter.min.amount, 7);
-					assert.equal(column.filter.max.amount, 77);
-
-					Polymer.Base.async(function () {
-						column.removeEventListener('filter-changed', handler);
-						column.addEventListener('filter-changed', function () {
-							assert.equal(column.filter.min.amount, 77);
-							done();
-						});
-						column.set('_filterInput.min', 9992);
-					});
-				});
-				column._filterInput =  {min: 7, max: 77};
-			});
-
-		});
-
-		suite('currency rates', () => {
-			let omnitable,
-				column;
-
-			setup(function (done) {
-				let newData = data.concat([
-					{ amount: { amount: -21, currency: 'USD' } },
-					{ amount: { amount: 935, currency: 'EUR' } },
-					{ amount: { amount: 345, currency: 'EUR' } },
-					{ amount: { amount: 2136, currency: 'EUR' } },
-					{ amount: { amount: -142, currency: 'USD' } },
-					{ amount: { amount: 5917, currency: 'AUD' } }
-				]);
-				omnitable = setupOmnitableFixture('rates', newData, o => {
-					column = o.columns[0];
-					column.rates = {'EUR': 1, 'USD': 0.8169982616, 'AUD': 0.6529827192, 'SEK': 0.1019271438, 'GBP': 1.1347079368};
-					done();
-				});
-			});
-
-			test('instantiates a cosmoz-omnitable-column-amount', function (done) {
-				assert.equal(column.is, 'cosmoz-omnitable-column-amount');
-				done();
-			});
-
-			test('getComparableValue with rates returns value', function (done) {
-				assert.equal(column.getComparableValue({ amount: '10', currency: 'EUR' }), 10);
-				assert.equal(column.getComparableValue({ amount: -645, currency: 'EUR' }), -645);
-				assert.equal(column.getComparableValue({ amount: '10', currency: 'USD' }), 8.169982616);
-				assert.equal(column.getComparableValue({ amount: 10, currency: 'GBP' }), 11.347079368);
-				assert.equal(column.getComparableValue({ amount: 10, currency: 'SEK' }).toFixed(8), 1.01927144);
-				assert.equal(column.getComparableValue({ amount: 678, currency: 'AUD' }).toFixed(8), 442.72228362);
-				assert.equal(column.getComparableValue({ amount: '12.4', currency: 'USD' }).toFixed(8), 10.13077844);
-				done();
-			});
-
-			test('changing currency does not affect comparable value', function () {
-				column.currency = 'USD';
-				assert.equal(column.getComparableValue({ amount: '-3147', currency: 'EUR' }), -3147);
-				assert.equal(column.getComparableValue({ amount: '1000', currency: 'USD' }), 816.9982616);
-				column.currency = 'GBP';
-				assert.equal(column.getComparableValue({ amount: 333, currency: 'EUR' }), 333);
-				assert.equal(column.getComparableValue({ amount: -100, currency: 'USD' }), -81.69982616);
-				assert.equal(column.getComparableValue({ amount: 2534, currency: 'SEK' }).toFixed(8), 258.28338239);
-			});
-
-			test('getComparableValue with default rate returns value', function () {
-				assert.equal(column.getComparableValue({ amount: '3450', currency: 'DKK' }), 3450);
-				assert.equal(column.getComparableValue({ amount: -888, currency: 'AED' }), -888);
-				assert.equal(column.getComparableValue({ amount: 491, currency: 'AED' }), 491);
-				assert.equal(column.getComparableValue({ amount: 7321, currency: 'CRC' }), 7321);
-				assert.equal(column.getComparableValue({ amount: 901, currency: 'BHD' }), 901);
-			});
-
-			test('toAmount limits the value with rates', function () {
-				assert.deepEqual(column.toAmount({amount: 746, currency: 'GBP'}), {amount: 746, currency: 'GBP'});
-				assert.deepEqual(column.toAmount({amount: 1248, currency: 'GBP'}, {amount: 46, currency: 'SEK'}, Math.max), {amount: 1248, currency: 'GBP'});
-
-				assert.deepEqual(column.toAmount({amount: 15, currency: 'SEK'}, {amount: 12, currency: 'EUR'}, Math.min), {amount: 15, currency: 'SEK'});
-				assert.deepEqual(column.toAmount({amount: 150, currency: 'SEK'}, {amount: 12, currency: 'EUR'}, Math.min), {amount: 12, currency: 'EUR'});
-
-				assert.deepEqual(column.toAmount({amount: 20, currency: 'AUD'}, {amount: 19, currency: 'EUR'}, Math.min), {amount: 20, currency: 'AUD'});
-				assert.deepEqual(column.toAmount({amount: 30, currency: 'AUD'}, {amount: 19, currency: 'EUR'}, Math.min), {amount: 19, currency: 'EUR'});
-			});
-
-			test('min and max of filter input is converted to currency', () => {
-				assert.equal(column._toInputStringAmount(column._limit.fromMin), -116.01); // ( -142 * 0.8169982616 / 1 ).toFixed(2)
-				assert.equal(column._toInputStringAmount(column._limit.fromMax), 3863.70); // ( 5917 * 0.6529827192 / 1 ).toFixed(2)
-			});
-
-			test('currency is auto-detected', function () {
-				assert.equal(column.currency, 'EUR');
-			});
-
-			test('currency is auto-detected after data change', function (done) {
-				assert.equal(column.currency, 'EUR');
-				omnitable.data = [
-					{ amount: { amount: 345, currency: 'GBP' } },
-					{ amount: { amount: -21, currency: 'USD' } },
-					{ amount: { amount: 935, currency: 'INR' } },
-					{ amount: { amount: 345, currency: 'GBP' } },
-					{ amount: { amount: 2136, currency: 'AUD' } },
-					{ amount: { amount: -142, currency: 'GBP' } },
-					{ amount: { amount: 1917, currency: 'AUD' } }
 				];
 
-				Polymer.Base.async(function () {
-					assert.equal(column.currency, 'GBP');
+			sinon.assert.expose(chai.assert, { prefix: '' });
 
+			suite('number' + domType, () => {
+				let omnitable,
+					column;
+
+				setup(done => {
+					omnitable = setupOmnitableFixture('range', data, o => {
+						column = o.columns[0];
+						done();
+					});
+				});
+
+				test('instantiates a cosmoz-omnitable-column-number', done => {
+					assert.equal(column.is, 'cosmoz-omnitable-column-number');
+					done();
+				});
+
+				test('toNumber convers a value to Number', done => {
+					assert.isUndefined(column.toNumber());
+					assert.equal(column.toNumber(-7.5), -7.5);
+					assert.equal(column.toNumber('-7.5'), -7.5);
+					assert.equal(column.toNumber(123e-5), 0.00123);
+					assert.isNotNumber(column.toNumber('some string not number'));
+					done();
+				});
+
+				test('toNumber limits parameters', done => {
+					assert.equal(column.toNumber('-2.0014', 4), -2.0014);
+					assert.equal(column.toNumber(3, 2, Math.min), 2);
+					assert.equal(column.toNumber('23.3', '-10.5443', Math.min), -10.5443);
+					assert.equal(column.toNumber(3, '2.0014', Math.min), 2.0014);
+					assert.equal(column.toNumber(3, 2.0014, Math.max), 3);
+					done();
+				});
+
+				test('computes range from values', done => {
+					assert.isObject(column._range);
+					assert.equal(column._range.min, -11);
+					assert.equal(column._range.max, 46.768);
+					done();
+				});
+
+				test('returns the value of an item', done => {
+					assert.strictEqual(column.getComparableValue({ age: '13' }, 'age'), 13);
+					assert.strictEqual(column.getComparableValue(13), 13);
+					assert.equal(column.getComparableValue(data[1], 'age'), null);
+					assert.strictEqual(column.getComparableValue(data[2], 'age'), -11);
+					done();
+				});
+
+				test('changing filter updates _filterInput', done => {
+					assert.isNull(column.filter.min);
+					assert.isNull(column.filter.max);
+					column.filter = {
+						min: 3,
+						max: 200
+					};
+					assert.equal(column._filterInput.min, 3);
+					assert.equal(column._filterInput.max, 200);
+					done();
+				});
+
+				test('changing _filterInput updates filter', done => {
+					assert.isNull(column._filterInput.min);
+					assert.isNull(column._filterInput.max);
+					column.addEventListener('filter-changed', () => {
+						assert.equal(column.filter.min, -10);
+						assert.equal(column.filter.max, 15);
+						done();
+					});
+					column._filterInput = {
+						min: -10,
+						max: 15
+					};
+				});
+
+				test('changing only _filterInput min updates filter min', done => {
+					column.addEventListener('filter-changed', () => {
+						assert.equal(column.filter.min, -11);
+						done();
+					});
+					column.set('_filterInput.min', -21);
+				});
+
+				test('changing out of range _filterInput limits _filterInput', done => {
+					assert.isNull(column._filterInput.min);
+					assert.isNull(column._filterInput.max);
+
+					column.addEventListener('filter-changed', function handler() {
+						assert.equal(column._filterInput.min, -11);
+						assert.equal(column._filterInput.max, 17);
+						assert.equal(column.filter.min, -11);
+						assert.equal(column.filter.max, 17);
+
+						Polymer.Base.async(() => {
+							column.removeEventListener('filter-changed', handler);
+							column.addEventListener('filter-changed', () => {
+								assert.equal(column.filter.min, 17);
+								done();
+							});
+							column.set('_filterInput.min', 20);
+						});
+					});
+					column._filterInput = { min: -11, max: 17 };
+				});
+
+				test('filter comparision uses maximumFractionDigits; item age outside the range', done => {
+					assert.isNull(column._filterInput.min);
+					assert.isNull(column._filterInput.max);
+
+					const handler = () => {
+						const items = omnitable.sortedFilteredGroupedItems;
+						assert.equal(items.filter(item => item.age && item.age === 46.768).length, 0, 'Expected item coresponding to the age: 46.768 not to be in the filtered items, because it is outside the range.');
+						omnitable.removeEventListener('sorted-filtered-grouped-items-changed', handler);
+						done();
+					};
+					omnitable.addEventListener('sorted-filtered-grouped-items-changed', handler);
+					column._filterInput = { min: 46.75, max: 46.76 };
+				});
+
+				test('filter comparision uses maximumFractionDigits, item age inside range', done => {
+					const handler = () => {
+						const items = omnitable.sortedFilteredGroupedItems;
+						assert.equal(items.filter(item => item.age && item.age === 46.7511).length, 1, 'Expected item coresponding to the age: 46.7511 to be in the filtered items.');
+						omnitable.removeEventListener('sorted-filtered-grouped-items-changed', handler);
+						done();
+					};
+					omnitable.addEventListener('sorted-filtered-grouped-items-changed', handler);
+					column._filterInput = { min: 46.75, max: 46.76 };
+				});
+
+				test('getString displays 46.768 as 46.77', done => {
+					assert.equal(column.getString({ age: 46.768 }), 46.77);
+					done();
+				});
+			});
+
+			suite('amount', () => {
+				let omnitable,
+					column;
+
+				setup(done => {
+					omnitable = setupOmnitableFixture('range', data, o => {
+						column = o.columns[1];
+						done();
+					});
+				});
+
+				test('instantiates a cosmoz-omnitable-column-amount', done => {
+					assert.equal(column.is, 'cosmoz-omnitable-column-amount');
+					done();
+				});
+
+				test('toAmount returns a valid amount', done => {
+					assert.isUndefined(column.toAmount());
+					assert.isNull(column.toAmount('123'));
+					assert.isNull(column.toAmount({ amount: 123 }));
+					assert.isNull(column.toAmount({ amount: '123' }));
+					assert.isNull(column.toAmount({ currency: 'USD' }));
+
+					assert.isObject(column.toAmount({ amount: 75, currency: 'SEK' }));
+					assert.deepEqual(column.toAmount({ amount: 123, currency: 'AUD' }), { amount: 123, currency: 'AUD' });
+					assert.deepEqual(column.toAmount({ amount: '2300', currency: 'USD' }), { amount: 2300, currency: 'USD' });
+					assert.deepEqual(column.toAmount({ amount: 99, currency: 'SEK' }), { amount: 99, currency: 'SEK' });
+					done();
+				});
+
+				test('toAmount limits parameters value', done => {
+					assert.equal(column.toAmount({ amount: '-2.0014', currency: 'SEK' }, 4).amount, -2.0014);
+					assert.equal(column.toAmount({ amount: 3, currency: 'EUR' }, { amount: 2, currency: 'EUR' }, Math.min).amount, 2);
+					assert.equal(column.toAmount({ amount: '23.3', currency: 'AUD' }, { amount: '-10.5443', currency: 'AUD' }, Math.min).amount, -10.5443);
+					assert.equal(column.toAmount({ amount: 15.3, currency: 'DKK' }, { amount: '2.0014', currency: 'DKK' }, Math.min).amount, 2.0014);
+					assert.equal(column.toAmount({ amount: 1592, currency: 'SEK' }, { amount: 2.0014, currency: 'SEK' }, Math.max).amount, 1592);
+					done();
+				});
+
+				test('returns comparable value', done => {
+					assert.equal(column.getComparableValue(data[3], 'amount'), -8);
+					assert.equal(column.getComparableValue(data[4], 'amount'), 3450);
+					assert.equal(column.getComparableValue({ amount: '13', currency: 'EUR' }), 13);
+					assert.isUndefined(column.getComparableValue({}));
+					assert.isUndefined(column.getComparableValue([]));
+					done();
+				});
+
+				test('amount renders symbol and value', done => {
+					assert.equal(column.renderValue(null), '');
+					assert.equal(column.renderValue({}), '');
+					assert.equal(column.renderValue([]), '');
+					assert.equal(column.renderValue({ amount: '12.4', currency: 'USD' }), '$12.40');
+					assert.equal(column.renderValue({ amount: 534 }), '');
+					assert.equal(column.renderValue({ amount: -897, currency: 'EUR' }), '-€897.00');
+					done();
+				});
+
+				test('getString returns valid amount or Invalid value', done => {
+					assert.equal(column.getString({ amountPath: null }, 'amountPath'), '');
+					assert.equal(column.getString({ amountPath: {} }, 'amountPath'), 'Invalid value');
+					assert.equal(column.getString({ amountPath: [] }, 'amountPath'), 'Invalid value');
+					assert.equal(column.getString(data[0]), '$12.40');
+					assert.equal(column.getString({ amountPath: { amount: 2036 } }, 'amountPath'), 'Invalid value', 'Expected missing currency to be treated as invalid.');
+					assert.equal(column.getString({ amountPath: { amount: 372, currency: 'EUR' } }, 'amountPath'), '€372.00');
+					done();
+				});
+
+				test('getCurrency returns valid currency or null', done => {
+					assert.equal(column.getCurrency(data[0], 'amount'), 'USD');
+					assert.isUndefined(column.getCurrency(data[1], 'amount'));
+					assert.equal(column.getCurrency(data[2], 'amount'), 'AUD');
+					assert.equal(column.getCurrency(data[3], 'amount'), 'EUR');
+					assert.equal(column.getCurrency(data[4], 'amount'), 'DKK');
+					done();
+				});
+
+				test('computes array of formaters', done => {
+					const verifyFormatters = () => {
+						const formatters = column._formatters;
+
+						if (formatters == null) {
+							Polymer.Base.async(verifyFormatters, 50);
+						} else {
+							Object.keys(formatters).forEach(el => {
+								assert.include(['SEK', 'USD', 'AUD', 'EUR', 'DKK'], el);
+							});
+							done();
+						}
+					};
+					Polymer.Base.async(verifyFormatters, 50);
+				});
+
+				test('changing filter updates _filterInput', done => {
+					assert.isNull(column.filter.min);
+					assert.isNull(column.filter.max);
+					column.filter = {
+						min: { amount: 225, currency: 'EUR' },
+						max: { amount: 457, currency: 'EUR' }
+					};
+					assert.equal(column._filterInput.min, 225);
+					assert.equal(column._filterInput.max, 457);
+					done();
+				});
+
+				test('changing _filterInput updates filter', done => {
+					assert.isNull(column._filterInput.min);
+					assert.isNull(column._filterInput.max);
+					column.addEventListener('filter-changed', () => {
+						assert.equal(column.filter.min.amount, 1);
+						assert.equal(column.filter.max.amount, 15);
+						done();
+					});
+					column._filterInput = {
+						min: 1,
+						max: 15
+					};
+				});
+
+				test('changing only _filterInput min updates filter min', done => {
+					column.addEventListener('filter-changed', () => {
+						assert.equal(column.filter.min.amount, -8);
+						done();
+					});
+					column.set('_filterInput.min', -2317);
+				});
+
+				test('changing out of range _filterInput limits _filterInput', done => {
+					assert.isNull(column._filterInput.min);
+					assert.isNull(column._filterInput.max);
+
+					column.addEventListener('filter-changed', function handler() {
+						assert.equal(column._filterInput.min, 7);
+						assert.equal(column._filterInput.max, 77);
+						assert.equal(column.filter.min.amount, 7);
+						assert.equal(column.filter.max.amount, 77);
+
+						Polymer.Base.async(() => {
+							column.removeEventListener('filter-changed', handler);
+							column.addEventListener('filter-changed', () => {
+								assert.equal(column.filter.min.amount, 77);
+								done();
+							});
+							column.set('_filterInput.min', 9992);
+						});
+					});
+					column._filterInput = { min: 7, max: 77 };
+				});
+
+			});
+
+			suite('currency rates', () => {
+				let omnitable,
+					column;
+
+				setup(done => {
+					let newData = data.concat([
+						{ amount: { amount: -21, currency: 'USD' } },
+						{ amount: { amount: 935, currency: 'EUR' } },
+						{ amount: { amount: 345, currency: 'EUR' } },
+						{ amount: { amount: 2136, currency: 'EUR' } },
+						{ amount: { amount: -142, currency: 'USD' } },
+						{ amount: { amount: 5917, currency: 'AUD' } }
+					]);
+					omnitable = setupOmnitableFixture('rates', newData, o => {
+						column = o.columns[0];
+						column.rates = { 'EUR': 1, 'USD': 0.8169982616, 'AUD': 0.6529827192, 'SEK': 0.1019271438, 'GBP': 1.1347079368 };
+						done();
+					});
+				});
+
+				test('instantiates a cosmoz-omnitable-column-amount', done => {
+					assert.equal(column.is, 'cosmoz-omnitable-column-amount');
+					done();
+				});
+
+				test('getComparableValue with rates returns value', done => {
+					assert.equal(column.getComparableValue({ amount: '10', currency: 'EUR' }), 10);
+					assert.equal(column.getComparableValue({ amount: -645, currency: 'EUR' }), -645);
+					assert.equal(column.getComparableValue({ amount: '10', currency: 'USD' }), 8.169982616);
+					assert.equal(column.getComparableValue({ amount: 10, currency: 'GBP' }), 11.347079368);
+					assert.equal(column.getComparableValue({ amount: 10, currency: 'SEK' }).toFixed(8), 1.01927144);
+					assert.equal(column.getComparableValue({ amount: 678, currency: 'AUD' }).toFixed(8), 442.72228362);
+					assert.equal(column.getComparableValue({ amount: '12.4', currency: 'USD' }).toFixed(8), 10.13077844);
+					done();
+				});
+
+				test('changing currency does not affect comparable value', () => {
+					column.currency = 'USD';
+					assert.equal(column.getComparableValue({ amount: '-3147', currency: 'EUR' }), -3147);
+					assert.equal(column.getComparableValue({ amount: '1000', currency: 'USD' }), 816.9982616);
+					column.currency = 'GBP';
+					assert.equal(column.getComparableValue({ amount: 333, currency: 'EUR' }), 333);
+					assert.equal(column.getComparableValue({ amount: -100, currency: 'USD' }), -81.69982616);
+					assert.equal(column.getComparableValue({ amount: 2534, currency: 'SEK' }).toFixed(8), 258.28338239);
+				});
+
+				test('getComparableValue with default rate returns value', () => {
+					assert.equal(column.getComparableValue({ amount: '3450', currency: 'DKK' }), 3450);
+					assert.equal(column.getComparableValue({ amount: -888, currency: 'AED' }), -888);
+					assert.equal(column.getComparableValue({ amount: 491, currency: 'AED' }), 491);
+					assert.equal(column.getComparableValue({ amount: 7321, currency: 'CRC' }), 7321);
+					assert.equal(column.getComparableValue({ amount: 901, currency: 'BHD' }), 901);
+				});
+
+				test('toAmount limits the value with rates', () => {
+					assert.deepEqual(column.toAmount({ amount: 746, currency: 'GBP' }), { amount: 746, currency: 'GBP' });
+					assert.deepEqual(column.toAmount({ amount: 1248, currency: 'GBP' }, { amount: 46, currency: 'SEK' }, Math.max), { amount: 1248, currency: 'GBP' });
+
+					assert.deepEqual(column.toAmount({ amount: 15, currency: 'SEK' }, { amount: 12, currency: 'EUR' }, Math.min), { amount: 15, currency: 'SEK' });
+					assert.deepEqual(column.toAmount({ amount: 150, currency: 'SEK' }, { amount: 12, currency: 'EUR' }, Math.min), { amount: 12, currency: 'EUR' });
+
+					assert.deepEqual(column.toAmount({ amount: 20, currency: 'AUD' }, { amount: 19, currency: 'EUR' }, Math.min), { amount: 20, currency: 'AUD' });
+					assert.deepEqual(column.toAmount({ amount: 30, currency: 'AUD' }, { amount: 19, currency: 'EUR' }, Math.min), { amount: 19, currency: 'EUR' });
+				});
+
+				test('min and max of filter input is converted to currency', () => {
+					assert.equal(column._toInputStringAmount(column._limit.fromMin), -116.01); // ( -142 * 0.8169982616 / 1 ).toFixed(2)
+					assert.equal(column._toInputStringAmount(column._limit.fromMax), 3863.70); // ( 5917 * 0.6529827192 / 1 ).toFixed(2)
+				});
+
+				test('currency is auto-detected', () => {
+					assert.equal(column.currency, 'EUR');
+				});
+
+				test('currency is auto-detected after data change', done => {
+					assert.equal(column.currency, 'EUR');
 					omnitable.data = [
-						{ amount: { amount: 1917, currency: 'AUD' } },
-						{ amount: { amount: 6515, currency: 'SEK' } },
-						{ amount: { amount: 234, currency: 'EUR' } },
-						{ amount: { amount: 7843, currency: 'INR' } },
-						{ amount: { amount: 454, currency: 'INR' } },
-						{ amount: { amount: 539, currency: 'INR' } },
-						{ amount: { amount: -326, currency: 'GBP' } },
-						{ amount: { amount: 1917, currency: 'AUD' } },
-						{ amount: { amount: 1917, currency: 'USD' } }
+						{ amount: { amount: 345, currency: 'GBP' } },
+						{ amount: { amount: -21, currency: 'USD' } },
+						{ amount: { amount: 935, currency: 'INR' } },
+						{ amount: { amount: 345, currency: 'GBP' } },
+						{ amount: { amount: 2136, currency: 'AUD' } },
+						{ amount: { amount: -142, currency: 'GBP' } },
+						{ amount: { amount: 1917, currency: 'AUD' } }
 					];
 
-					Polymer.Base.async(function () {
-						assert.equal(column.currency, 'INR');
-						done();
+					Polymer.Base.async(() => {
+						assert.equal(column.currency, 'GBP');
+
+						omnitable.data = [
+							{ amount: { amount: 1917, currency: 'AUD' } },
+							{ amount: { amount: 6515, currency: 'SEK' } },
+							{ amount: { amount: 234, currency: 'EUR' } },
+							{ amount: { amount: 7843, currency: 'INR' } },
+							{ amount: { amount: 454, currency: 'INR' } },
+							{ amount: { amount: 539, currency: 'INR' } },
+							{ amount: { amount: -326, currency: 'GBP' } },
+							{ amount: { amount: 1917, currency: 'AUD' } },
+							{ amount: { amount: 1917, currency: 'USD' } }
+						];
+
+						Polymer.Base.async(() => {
+							assert.equal(column.currency, 'INR');
+							done();
+						}, 400);
 					}, 400);
-				}, 400);
-			});
-		});
-
-		suite('default currency' + domType, () => {
-			let omnitable,
-				column;
-
-			setup(function (done) {
-				omnitable = setupOmnitableFixture('currency', data, omnitable => {
-					column = omnitable.columns[0];
-					column.rates = {'EUR': 1, 'USD': 0.8169982616, 'AUD': 0.6529827192, 'SEK': 0.1019271438, 'GBP': 1.1347079368};
-					done();
 				});
 			});
 
-			test('currency is configurable', function (done) {
-				assert.equal(column.currency, 'SEK');
-				done();
-			});
+			suite('default currency' + domType, () => {
+				let omnitable,
+					column;
 
-			test('changing _filterInput updates filter with rates', function (done) {
-				assert.isNull(column._filterInput.min);
-				assert.isNull(column._filterInput.max);
-				column.addEventListener('filter-changed', function () {
-					assert.equal(column.filter.min.amount, 105);
-					assert.equal(column.filter.max.amount, 150);
+				setup(done => {
+					omnitable = setupOmnitableFixture('currency', data, omnitable => {
+						column = omnitable.columns[0];
+						column.rates = { 'EUR': 1, 'USD': 0.8169982616, 'AUD': 0.6529827192, 'SEK': 0.1019271438, 'GBP': 1.1347079368 };
+						done();
+					});
+				});
+
+				test('currency is configurable', done => {
+					assert.equal(column.currency, 'SEK');
 					done();
 				});
-				column._filterInput = {
-					min: 105,
-					max: 150
-				};
-			});
-		});
 
-		suite('external values' + domType, () => {
-			let omnitable,
-				column;
-			setup(done => {
-				omnitable = setupOmnitableFixture('externalValues', [
-					{age: 1},
-					{age: 0},
-					{age: 20}
-				], o => {
-					column = o.columns[0];
-					done();
+				test('changing _filterInput updates filter with rates', done => {
+					assert.isNull(column._filterInput.min);
+					assert.isNull(column._filterInput.max);
+					column.addEventListener('filter-changed', () => {
+						assert.equal(column.filter.min.amount, 105);
+						assert.equal(column.filter.max.amount, 150);
+						done();
+					});
+					column._filterInput = {
+						min: 105,
+						max: 150
+					};
 				});
 			});
-			test('changing _filterInput min on column with external values updates filter min correctly', done => {
-				column.addEventListener('filter-changed', function () {
-					assert.equal(column.filter.min, -1);
-					done();
-				});
-				column.set('_filterInput.min', -1);
-			});
 
-		});
-	}());
+			suite('external values' + domType, () => {
+				let omnitable,
+					column;
+				setup(done => {
+					omnitable = setupOmnitableFixture('externalValues', [
+						{ age: 1 },
+						{ age: 0 },
+						{ age: 20 }
+					], o => {
+						column = o.columns[0];
+						done();
+					});
+				});
+				test('changing _filterInput min on column with external values updates filter min correctly', done => {
+					column.addEventListener('filter-changed', () => {
+						assert.equal(column.filter.min, -1);
+						done();
+					});
+					column.set('_filterInput.min', -1);
+				});
+
+			});
+		}());
 	</script>
 </body>
+
 </html>

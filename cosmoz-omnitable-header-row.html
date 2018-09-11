@@ -39,23 +39,23 @@
 
 		_slotName: 'header-cell',
 
-		_getTemplateInstance: function (column) {
+		_getTemplateInstance(column) {
 			return column.headerTemplatizer.getInstance();
 		},
 
-		_detachTemplateInstance: function (instance, column, element) {
+		_detachTemplateInstance(instance, column, element) {
 			if (column.headerTemplatizer) {
 				column.headerTemplatizer.detachInstance(instance, element);
 			}
 		},
 
-		_configureElement: function (element, column) {
+		_configureElement(element, column) {
 			this.toggleClass(column.headerCellClass, true, element);
 			this.toggleClass('header-cell', true, element);
 			element.setAttribute('title', column.title);
 		},
 
-		_configureTemplateInstance: function (instance) {
+		_configureTemplateInstance(instance) {
 			this._forwardPropertiesFlush(instance);
 		}
 	});

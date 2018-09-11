@@ -146,7 +146,7 @@
 			this._fireItemChangeEvent(item, this.valuePath, oldValue, this.renderValue.bind(this));
 		},
 
-		_toLocalISOString: function (date) {
+		_toLocalISOString(date) {
 			if (!(date instanceof Date)) {
 				return null;
 			}
