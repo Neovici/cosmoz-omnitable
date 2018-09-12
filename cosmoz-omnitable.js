@@ -48,7 +48,7 @@
 			_dataIsValid: {
 				type: Boolean,
 				value: false,
-				computed: '_computeDataValidity(data)'
+				computed: '_computeDataValidity(data.*)'
 			},
 
 			/**
@@ -299,7 +299,7 @@
 
 		_disabledColumnsIndexes: null,
 
-		_computeDataValidity(data) {
+		_computeDataValidity({base: data} = {}) {
 			return data && Array.isArray(data) && data.length > 0;
 		},
 
