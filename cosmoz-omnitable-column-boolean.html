@@ -14,7 +14,7 @@
 			<paper-dropdown-menu>
 				<paper-listbox class="dropdown-content" slot="dropdown-content"
 					attr-for-selected="value"
-					fallback-selection="[[ _computeSelected(item, valuePath) ]]"
+					selected="[[ _computeSelected(item, valuePath) ]]"
 					on-selected-item-changed="_valueChanged">
 					<paper-item value="true">[[ trueLabel ]]</paper-item>
 					<paper-item value="false">[[ falseLabel ]]</paper-item>
@@ -32,7 +32,6 @@
 				</paper-listbox>
 			</paper-dropdown-menu>
 		</template>
-
 	</template>
 	<script>
 		Polymer({
