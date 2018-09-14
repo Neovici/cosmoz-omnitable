@@ -22,6 +22,8 @@
 			<cosmoz-omnitable id="omnitable" class="flex" selection-enabled>
 				<cosmoz-omnitable-column-boolean name="boolean" value-path="boolean">
 				</cosmoz-omnitable-column-boolean>
+				<cosmoz-omnitable-column-boolean name="boolean2" value-path="boolean" true-label="default true label" false-label="default false label">
+				</cosmoz-omnitable-column-boolean>
 			</cosmoz-omnitable>
 		</template>
 	</test-fixture>
@@ -35,6 +37,7 @@
 		suite('basic' + domType, () => {
 			let omnitable,
 				column,
+				column2,
 				data;
 
 			setup(done => {
@@ -48,6 +51,7 @@
 				];
 				omnitable = setupOmnitableFixture('basic', data, o => {
 					column = o.columns[0];
+					column2 = o.columns[1];
 					done();
 				});
 			});
@@ -92,9 +96,24 @@
 				assert.equal(column.getString(data[1]), 'False');
 			});
 
+			test('getString uses this.valuePath as default', () => {
+				assert.equal(column2.getString(data[0]), 'default true label');
+				assert.equal(column2.getString(data[1]), 'default false label');
+			});
+
 			test('_computeSelected returns boolean to string', () => {
 				assert.equal(column._computeSelected(data[0]), 'true');
 				assert.equal(column._computeSelected(data[1]), 'false');
+			});
+
+			test('toXlsxValue converts boolean to string', () => {
+				assert.equal(column.toXlsxValue(data[0]), 'True');
+				assert.equal(column.toXlsxValue(data[1]), 'False');
+			});
+
+			test('toXlsxValue converts boolean to string', () => {
+				assert.equal(column2.toXlsxValue(data[0]), 'default true label');
+				assert.equal(column2.toXlsxValue(data[1]), 'default false label');
 			});
 
 			test('_valueChanged updates _valuePath', done => {

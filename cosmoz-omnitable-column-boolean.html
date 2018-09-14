@@ -163,7 +163,15 @@
 			_deserializeFilter(obj) {
 				const value = this.deserialize(obj, String);
 				return value === 'true' ? true : value === 'false' ? false : null;
+			},
+
+			toXlsxValue(item, valuePath = this.valuePath) {
+				if (!valuePath) {
+					return '';
+				}
+				return this.get(valuePath, item) ? this.trueLabel : this.falseLabel;
 			}
+
 		});
 
 	</script>
