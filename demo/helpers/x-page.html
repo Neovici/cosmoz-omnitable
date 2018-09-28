@@ -52,7 +52,7 @@
 			</div>
 
 			<cosmoz-omnitable loading="[[ loading ]]" id="omnitable" class="flex" data="[[ data ]]" selection-enabled selected-items="{{ selectedItems }}"
-			hash-param="[[ hashParam ]]">
+			hash-param="[[ hashParam ]]" total-number-of-rows="[[ totalNumberOfRows ]]">
 				<cosmoz-omnitable-column-date title="Date" name="date" value-path="date" sort-on="date" group-on="date" locale="[[ locale ]]">
 				</cosmoz-omnitable-column-date>
 				<cosmoz-omnitable-column-autocomplete flex="0" width="40px" title="Id" name="id" value-path="id" sort-on="id" group-on="id">
@@ -141,6 +141,9 @@
 				},
 				hashParam: {
 					type: String
+				},
+				totalNumberOfRows: {
+					type: Number
 				}
 			},
 

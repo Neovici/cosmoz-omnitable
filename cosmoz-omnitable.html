@@ -175,7 +175,7 @@
 				</div>
 				<div class="footer-tableStats">
 					<span>[[ ngettext('{0} group', '{0} groups', _groupsCount, t) ]]</span>
-					<span>[[ ngettext('{0} row', '{0} rows', filteredItems.length, t) ]]</span>
+					<span>[[ _renderFooterRowInformation(filteredItems.length, totalNumberOfRows) ]]</span>
 				</div>
 				<cosmoz-bottom-bar id="bottomBar" class="footer-actionBar" match-parent has-actions="{{ hasActions }}" on-action="_onAction" active$="[[ !_isEmpty(selectedItems.length) ]]" computed-bar-height="{{ computedBarHeight }}">
 					<div slot="info">[[ ngettext('{0} selected item', '{0} selected items', selectedItems.length, t) ]]</div>

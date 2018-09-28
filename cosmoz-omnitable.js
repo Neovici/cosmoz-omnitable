@@ -235,6 +235,13 @@
 			 */
 			_allSelected: {
 				type: Boolean
+			},
+
+			/**
+			 * If used will show the number of available rows in the footer
+			 */
+			totalNumberOfRows: {
+				type: Number
 			}
 		},
 
@@ -1221,6 +1228,16 @@
 				.forEach(button => {
 					button.$.dropdown.fitInto = this;
 				});
+		},
+
+		_renderFooterRowInformation(availableRows, totalNumberOfRows) {
+			if (totalNumberOfRows == null || !Number.isInteger(totalNumberOfRows)) {
+				return this.ngettext('{0} row', '{0} rows', availableRows);
+			}
+			if (availableRows === 0) {
+				return this.gettext('{0} of {1} rows', availableRows, totalNumberOfRows);
+			}
+			return this.ngettext('1 - {0} of {1} row', '1 - {0} of {1} rows', availableRows, totalNumberOfRows);
 		}
 	});
 }());
