@@ -121,6 +121,7 @@
 			_applyMultiFilter(filter, item) {
 				// check if the item does not have a value for the filtered property
 				let value = this.get(this.valuePath, item);
+
 				if (value == null) {
 					return false;
 				}
@@ -137,6 +138,9 @@
 						let val = element;
 						if (this.valueProperty) {
 							val = element[this.valueProperty];
+						}
+						if (val == null) {
+							return val;
 						}
 						return val.toString().toLowerCase();
 					})
