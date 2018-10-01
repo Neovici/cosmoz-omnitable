@@ -241,7 +241,7 @@
 			 * If used will show the number of available rows in the footer
 			 */
 			totalNumberOfRows: {
-				type: Number
+				type: Object
 			}
 		},
 
@@ -1231,13 +1231,10 @@
 		},
 
 		_renderFooterRowInformation(availableRows, totalNumberOfRows) {
-			if (totalNumberOfRows == null || !Number.isInteger(totalNumberOfRows)) {
+			if (totalNumberOfRows == null || totalNumberOfRows.noOfRows == null || !Number.isInteger(totalNumberOfRows.noOfRows)) {
 				return this.ngettext('{0} row', '{0} rows', availableRows);
 			}
-			if (availableRows === 0) {
-				return this.gettext('{0} of {1} rows', availableRows, totalNumberOfRows);
-			}
-			return this.ngettext('1 - {0} of {1} row', '1 - {0} of {1} rows', availableRows, totalNumberOfRows);
+			return this.ngettext('{0} of {1} row', '{0} of {1} rows', availableRows, totalNumberOfRows.localSearch ? availableRows : totalNumberOfRows.noOfRows);
 		}
 	});
 }());
