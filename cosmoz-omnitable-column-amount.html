@@ -25,11 +25,11 @@
 					horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 150px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
-					<paper-input type="number" label="[[ _('Min amount', t) ]]" title="[[ _('Minimum amount', t) ]]" value="{{ _filterInput.min }}"
+					<paper-input label="[[ _('Min amount', t) ]]" title="[[ _('Minimum amount', t) ]]" value="{{ _filterInput.min }}"
 							min="[[ _toInputStringAmount(_limit.fromMin) ]]" max="[[ _toInputStringAmount(_limit.fromMax) ]]">
 						<div slot="suffix" suffix>[[ filter.min.currency ]]</div>
 					</paper-input>
-					<paper-input type="number" label="[[ _('Max amount', t) ]]" title="[[ _('Maximum amount', t) ]]" value="{{ _filterInput.max }}"
+					<paper-input label="[[ _('Max amount', t) ]]" title="[[ _('Maximum amount', t) ]]" value="{{ _filterInput.max }}"
 						min="[[ _toInputStringAmount(_limit.toMin) ]]" max="[[ _toInputStringAmount(_limit.toMax) ]]">
 						<div slot="suffix" suffix>[[ filter.max.currency ]]</div>
 					</paper-input>

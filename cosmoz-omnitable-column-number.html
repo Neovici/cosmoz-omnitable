@@ -25,10 +25,10 @@
 					horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
-					<paper-input type="number" label="[[ _('From', t) ]]" value="{{ _filterInput.min }}"
+					<paper-input label="[[ _('From', t) ]]" value="{{ _filterInput.min }}"
 						min="[[ _toInputString(_limit.fromMin) ]]" max="[[ _toInputString(_limit.fromMax) ]]">
 					</paper-input>
-					<paper-input type="number" label="[[ _('To', t) ]]" value="{{ _filterInput.max }}"
+					<paper-input label="[[ _('To', t) ]]" value="{{ _filterInput.max }}"
 						min="[[ _toInputString(_limit.toMin) ]]" max="[[ _toInputString(_limit.toMax) ]]">
 					</paper-input>
 				</div>
