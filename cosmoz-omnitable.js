@@ -255,7 +255,7 @@
 			'cosmoz-column-title-changed': '_onColumnTitleChanged',
 			'cosmoz-column-filter-changed': '_filterChanged',
 			'cosmoz-column-editable-changed': '_onColumnEditableChanged',
-
+			'cosmoz-column-values-update': '_onColumnValuesUpdate'
 		},
 
 		attached() {
@@ -497,6 +497,13 @@
 			});
 
 			return columnsMissingNameAttribute.length === 0;
+		},
+
+		_onColumnValuesUpdate(event, detail) {
+			if (detail == null || detail.column == null) {
+				return;
+			}
+			this._setColumnValues([detail.column]);
 		},
 		// TODO: provides a mean to avoid setting the values for a column
 		// TODO: should process (distinct, sort, min, max) the values at the column level depending on the column type
