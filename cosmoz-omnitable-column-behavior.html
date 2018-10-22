@@ -42,7 +42,8 @@
 			 */
 			externalValues: {
 				type: Boolean,
-				value: false
+				value: false,
+				observer: '_externalValuesChanged'
 			},
 
 			filter: {
@@ -260,6 +261,19 @@
 			if (cellTemplate !== undefined && cellTemplate !== null) {
 				this._cellTemplatizer = this._createTemplatizer(cellTemplate);
 			}
+		},
+
+		_externalValuesChanged(newExternalValuesValue) {
+			if (newExternalValuesValue) {
+				return;
+			}
+			this.dispatchEvent(new CustomEvent('cosmoz-column-values-update', {
+				bubbles: true,
+				composed: true,
+				detail: {
+					column: this
+				}
+			}));
 		},
 
 		get editableTemplatizer() {
