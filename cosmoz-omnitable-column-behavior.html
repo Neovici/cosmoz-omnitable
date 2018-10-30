@@ -314,7 +314,14 @@
 		_computePreferredDropdownHorizontalAlign(columnIndex) {
 			return columnIndex === 0 ? 'left' : 'right';
 		},
-
+		/**
+		 * Get cell title displayed when hovering on the cell.
+		 * @param {object} item Row item.
+		 * @returns {string} Cell title.
+		 */
+		getCellTitle(item) {
+			return this.getString(item);
+		},
 		getString(item, valuePath = this.valuePath) {
 			if (valuePath === undefined) {
 				console.error(this, 'has undefined valuePath arg', valuePath, 'for item', item);
