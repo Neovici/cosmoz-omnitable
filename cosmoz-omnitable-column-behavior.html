@@ -226,7 +226,12 @@
 			'__filterChanged(filter.*)',
 			'_pathsChanged(valuePath, groupOn, sortOn)'
 		],
-
+		/**
+		 * Cell title function, can be overrided.
+		 * @param {object} item Row item.
+		 * @param {string} valuePath Path in item.
+		 * @returns Cell title.
+		 */
 		cellTitleFn(item, valuePath) {
 			return this.getString(item, valuePath);
 		},
