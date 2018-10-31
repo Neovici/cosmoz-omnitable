@@ -66,25 +66,13 @@
 					type: Number,
 					value: null
 				},
-				titleMaximumFractionDigits: {
-					type: Number,
-					value: null
-				},
 				minimumFractionDigits: {
-					type: Number,
-					value: null // browser default 0 for numbers, currency-specific or 2 for currency
-				},
-				titleMinimumFractionDigits: {
 					type: Number,
 					value: null // browser default 0 for numbers, currency-specific or 2 for currency
 				},
 				formatter: {
 					type: Object,
 					computed: '_computeFormatter(locale, minimumFractionDigits, maximumFractionDigits)'
-				},
-				titleFormatter: {
-					type: Object,
-					computed: '_computeFormatter(locale, titleMinimumFractionDigits, titleMaximumFractionDigits)'
 				},
 				_filterText: {
 					type: String,
@@ -104,6 +92,7 @@
 				}
 				return new Intl.NumberFormat(locale || undefined, options);
 			},
+
 			/**
 			 *   Get the comparable value of an item.
 			 *
@@ -138,14 +127,6 @@
 				}
 				return formatter.format(number);
 			},
-			/**
-			 * Get cell title displayed when hovering on the cell.
-			 * @param {object} item Row item.
-			 * @returns {string} Cell title.
-			 */
-			getCellTitle(item) {
-				return this.getString(item, this.valuePath, this.titleFormatter);
-			}
 		});
 	</script>
 </dom-module>

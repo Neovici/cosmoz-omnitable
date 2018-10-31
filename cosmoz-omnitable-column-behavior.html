@@ -188,6 +188,10 @@
 				observer: '_cellTemplateChanged'
 			},
 
+			cellTitleFn: {
+				type: Function
+			},
+
 			hidden: {
 				type: Boolean,
 				reflectToAttribute: true,
@@ -222,6 +226,10 @@
 			'__filterChanged(filter.*)',
 			'_pathsChanged(valuePath, groupOn, sortOn)'
 		],
+
+		cellTitleFn(item, valuePath) {
+			return this.getString(item, valuePath);
+		},
 
 		ready() {
 			this._headerTemplatizer = this._createTemplatizer('template.header');
@@ -320,7 +328,7 @@
 		 * @returns {string} Cell title.
 		 */
 		getCellTitle(item) {
-			return this.getString(item);
+			return this.cellTitleFn(item, this.valuePath);
 		},
 		getString(item, valuePath = this.valuePath) {
 			if (valuePath === undefined) {
@@ -329,7 +337,6 @@
 			}
 			return this.get(valuePath, item);
 		},
-
 		toXlsxValue(item, valuePath = this.valuePath) {
 			if (!valuePath) {
 				return '';

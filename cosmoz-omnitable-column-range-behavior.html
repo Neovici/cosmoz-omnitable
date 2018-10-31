@@ -122,14 +122,8 @@
 			}
 			return value;
 		},
-		/**
-		 * Get cell title displayed when hovering on the cell.
-		 * @param {object} item Row item.
-		 * @param {object} valuePath Path to cell data in row item.
-		 * @param {object} formatter Formatter used to format cell.
-		 * @returns {string} Cell title.
-		 */
-		getString(item, valuePath = this.valuePath, formatter = this.formatter) {
+
+		getString(item, valuePath = this.valuePath) {
 			if (valuePath === undefined) {
 				console.error(this, 'has undefined valuePath', valuePath, 'for item', item);
 				return;
@@ -138,7 +132,7 @@
 			if (value == null) {
 				return '';
 			}
-			return this.renderValue(value, formatter);
+			return this.renderValue(value);
 		},
 		renderValue() {
 			//overrideable
