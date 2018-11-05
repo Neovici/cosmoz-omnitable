@@ -195,10 +195,10 @@
 			*/
 			cellTitleFn: {
 				type: Function,
-				value: function () {
-					return function(item, valuePath = this.valuePath) {
+				value() {
+					return function (item, valuePath = this.valuePath) {
 						return this.getString(item, valuePath);
-					}
+					};
 				}
 			},
 
