@@ -187,16 +187,15 @@
 				type: Object,
 				observer: '_cellTemplateChanged'
 			},
-
+			/**
+			* Cell title function, can be overriden.
+			* @param {object} item Row item.
+			* @param {string} valuePath Path in the item.
+			* @returns {string} Cell title.
+			*/
 			cellTitleFn: {
 				type: Function,
 				value: function () {
-					/**
-					* Cell title function, can be overrided.
-					* @param {object} item Row item.
-					* @param {string} valuePath Path in item.
-					* @returns {string} Cell title.
-					*/
 					return function(item, valuePath = this.valuePath) {
 						return this.getString(item, valuePath);
 					}
