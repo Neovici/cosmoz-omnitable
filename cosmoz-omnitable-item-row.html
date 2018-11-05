@@ -124,7 +124,7 @@
 		 * @returns {string} Cell title.
 		 */
 		_getCellTitle(column, item) {
-			return column && column.getCellTitle(item);
+			return column && column.cellTitleFn(item, column.valuePath);
 		}
 	});
 }());

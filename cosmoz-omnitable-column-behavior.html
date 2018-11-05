@@ -189,7 +189,18 @@
 			},
 
 			cellTitleFn: {
-				type: Function
+				type: Function,
+				value: function () {
+					/**
+					* Cell title function, can be overrided.
+					* @param {object} item Row item.
+					* @param {string} valuePath Path in item.
+					* @returns {string} Cell title.
+					*/
+					return function(item, valuePath = this.valuePath) {
+						return this.getString(item, valuePath);
+					}
+				}
 			},
 
 			hidden: {
@@ -226,15 +237,6 @@
 			'__filterChanged(filter.*)',
 			'_pathsChanged(valuePath, groupOn, sortOn)'
 		],
-		/**
-		 * Cell title function, can be overrided.
-		 * @param {object} item Row item.
-		 * @param {string} valuePath Path in item.
-		 * @returns {string} Cell title.
-		 */
-		cellTitleFn(item, valuePath) {
-			return this.getString(item, valuePath);
-		},
 
 		ready() {
 			this._headerTemplatizer = this._createTemplatizer('template.header');
@@ -326,14 +328,6 @@
 
 		_computePreferredDropdownHorizontalAlign(columnIndex) {
 			return columnIndex === 0 ? 'left' : 'right';
-		},
-		/**
-		 * Get cell title displayed when hovering on the cell.
-		 * @param {object} item Row item.
-		 * @returns {string} Cell title.
-		 */
-		getCellTitle(item) {
-			return this.cellTitleFn(item, this.valuePath);
 		},
 		getString(item, valuePath = this.valuePath) {
 			if (valuePath === undefined) {
