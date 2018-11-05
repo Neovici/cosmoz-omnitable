@@ -187,6 +187,20 @@
 				type: Object,
 				observer: '_cellTemplateChanged'
 			},
+			/**
+			* Cell title function, can be overriden.
+			* @param {object} item Row item.
+			* @param {string} valuePath Path in the item.
+			* @returns {string} Cell title.
+			*/
+			cellTitleFn: {
+				type: Function,
+				value() {
+					return function (item, valuePath = this.valuePath) {
+						return this.getString(item, valuePath);
+					};
+				}
+			},
 
 			hidden: {
 				type: Boolean,
@@ -314,7 +328,6 @@
 		_computePreferredDropdownHorizontalAlign(columnIndex) {
 			return columnIndex === 0 ? 'left' : 'right';
 		},
-
 		getString(item, valuePath = this.valuePath) {
 			if (valuePath === undefined) {
 				console.error(this, 'has undefined valuePath arg', valuePath, 'for item', item);
@@ -322,7 +335,6 @@
 			}
 			return this.get(valuePath, item);
 		},
-
 		toXlsxValue(item, valuePath = this.valuePath) {
 			if (!valuePath) {
 				return '';

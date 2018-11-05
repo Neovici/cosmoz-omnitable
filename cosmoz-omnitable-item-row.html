@@ -117,8 +117,15 @@
 				this._forwardProperty(instance, 'expanded', expanded, true);
 			});
 		},
-
-		_getCellTitle: (column, item)  => column && column.getString(item, column.valuePath)
+		/**
+		 * Get cell title displayed when hovering on the cell.
+		 * @param {object} column Column data.
+		 * @param {object} item Row item.
+		 * @returns {string} Cell title.
+		 */
+		_getCellTitle(column, item) {
+			return column && column.cellTitleFn(item, column.valuePath);
+		}
 	});
 }());
 </script>
