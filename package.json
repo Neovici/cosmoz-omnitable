@@ -11,7 +11,7 @@
 		"eslint-plugin-html": "^3.2.2",
 		"eslint-plugin-mocha": "^4.11.0",
 		"gulp": "^3.9.0",
-		"polymer-cli": "^1.6.0",
+		"polymer-cli": "^1.8.0",
 		"web-component-tester-istanbul": "Neovici/web-component-tester-istanbul"
 	},
 	"scripts": {
