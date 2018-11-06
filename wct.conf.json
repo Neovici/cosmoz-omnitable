@@ -2,7 +2,7 @@
 	"testTimeout": 900000,
 	"plugins": {
 		"local": {
-			"browsers": ["chrome", "firefox"]
+			"browsers": ["chrome"]
 		},
 		"istanbul": {
 			"dir": "./coverage",
