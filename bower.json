@@ -38,7 +38,7 @@
 		"cosmoz-grouped-list": "Neovici/cosmoz-grouped-list#^2.0.1",
 		"cosmoz-i18next": "Neovici/cosmoz-i18next#^1.0.0",
 		"cosmoz-bottom-bar": "neovici/cosmoz-bottom-bar#^2.0.0",
-		"cosmoz-behaviors": "neovici/cosmoz-behaviors#^1.0.0",
+		"cosmoz-behaviors": "neovici/cosmoz-behaviors#^2.0.1",
 		"cosmoz-page-router": "Neovici/cosmoz-page-router#^1.0.0",
 		"paper-autocomplete-chips": "Neovici/paper-autocomplete-chips#^1.0.0",
 		"import-filesaver": "JaySunSyn/import-filesaver",
