@@ -254,6 +254,7 @@
 
 		behaviors: [
 			Polymer.IronResizableBehavior,
+			Cosmoz.CommonBehaviors,
 			Cosmoz.TranslatableBehavior
 		],
 
