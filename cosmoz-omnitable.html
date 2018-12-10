@@ -134,7 +134,7 @@
 					</cosmoz-grouped-list>
 				</div>
 			</div>
-			<div class$="footer [[ _getFooterHiddenClass(hideFooter) ]]">
+			<div class$="footer [[ ifElse(hideFooter, 'hidden', '') ]]">
 				<div class="footer-controls">
 					<div class="footer-control">
 						<paper-dropdown-menu id="groupOnSelector" vertical-align="bottom" horizontal-align="left"

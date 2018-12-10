@@ -186,7 +186,8 @@
 			 * Footer visibility setting.
 			 */
 			hideFooter: {
-				type: Boolean
+				type: Boolean,
+				value: false
 			},
 
 			/**
