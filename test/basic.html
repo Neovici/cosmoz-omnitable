@@ -68,6 +68,14 @@
 					omnitable = setupOmnitableFixture('basic', data, () => done());
 				});
 
+				test('it hides footer on hide-footer', done => {
+					omnitable.hideFooter = true;
+					flush();
+					assert.equal(omnitable.querySelector('.footer'), null);
+					omnitable.hideFooter = false;
+					done();
+				});
+
 				test('it retrieves column by name', done => {
 					var date = omnitable.querySelector('#date1');
 					Polymer.Base.async(() => {
