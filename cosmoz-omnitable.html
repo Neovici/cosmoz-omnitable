@@ -136,7 +136,7 @@
 				</div>
 			</div>
 			<div class$="footer [[ ifElse(hideFooter, 'hidden', '') ]]">
-				<div class="footer-controls">
+				<div class$="footer-controls [[ ifElse(hideFooter, 'hidden', '') ]]">
 					<div class="footer-control">
 						<paper-dropdown-menu id="groupOnSelector" vertical-align="bottom" horizontal-align="left"
 							label="[[ _('Group on', t) ]] [[ _computeSortDirection(groupOnDescending, t) ]]">
@@ -153,7 +153,7 @@
 							</paper-listbox>
 						</paper-dropdown-menu>
 					</div>
-					<div class="footer-control">
+					<div class$="footer-control [[ ifElse(hideFooter, 'hidden', '') ]]">
 						<paper-dropdown-menu id="sortOnSelector" vertical-align="bottom" horizontal-align="right"
 							label="[[_('Sort on', t)]] [[ _computeSortDirection(descending, t) ]]">
 							<paper-listbox
@@ -174,7 +174,7 @@
 						</paper-dropdown-menu>
 					</div>
 				</div>
-				<div class="footer-tableStats">
+				<div class$="footer-tableStats [[ ifElse(hideFooter, 'hidden', '') ]]">
 					<span>[[ ngettext('{0} group', '{0} groups', _groupsCount, t) ]]</span>
 					<span>[[ ngettext('{0} row', '{0} rows', filteredItems.length, t) ]]</span>
 				</div>

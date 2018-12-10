@@ -71,7 +71,7 @@
 				test('it hides footer on hide-footer', done => {
 					omnitable.hideFooter = true;
 					flush();
-					assert.equal(omnitable.querySelector('.footer'), null);
+					assert.equal(omnitable.querySelector('.footer > .footer-control'), null);
 					omnitable.hideFooter = false;
 					done();
 				});
