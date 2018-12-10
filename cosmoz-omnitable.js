@@ -183,6 +183,13 @@
 			},
 
 			/**
+			 * Footer visibility setting.
+			 */
+			hideFooter: {
+				type: Boolean
+			},
+
+			/**
 			 * List of columns definition for this table.
 			 */
 			columns: {
@@ -314,6 +321,14 @@
 
 		_computeShowCheckboxes(dataIsValid, hasActions) {
 			return dataIsValid && hasActions;
+		},
+		/**
+		 * Get footer hidden class.
+		 * @param {boolean} hideFooter Whether to hide footer.
+		 * @returns {void}
+		 **/
+		_getFooterHiddenClass(hideFooter) {
+			return hideFooter ? 'hidden' : '';
 		},
 
 		visibleChanged(turnedVisible) {
