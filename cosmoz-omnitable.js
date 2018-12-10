@@ -324,14 +324,6 @@
 		_computeShowCheckboxes(dataIsValid, hasActions) {
 			return dataIsValid && hasActions;
 		},
-		/**
-		 * Get footer hidden class.
-		 * @param {boolean} hideFooter Whether to hide footer.
-		 * @returns {void}
-		 **/
-		_getFooterHiddenClass(hideFooter) {
-			return hideFooter ? 'hidden' : '';
-		},
 
 		visibleChanged(turnedVisible) {
 			if (turnedVisible && !Array.isArray(this.columns)) {
