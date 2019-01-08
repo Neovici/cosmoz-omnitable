@@ -292,6 +292,7 @@
 			this.cancelDebouncer('adjustColumns');
 			this.cancelDebouncer('updateColumns');
 			this.cancelDebouncer('filterItems');
+			this.cancelDebouncer('groupItems');
 			this.cancelDebouncer('sortItems');
 		},
 

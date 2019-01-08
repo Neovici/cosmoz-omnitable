@@ -154,73 +154,65 @@
 					done();
 				});
 
-				test('changing _filterInput updates filter', done => {
+				test('changing _filterInput updates filter', () => {
 					assert.isNull(column._filterInput.min);
 					assert.isNull(column._filterInput.max);
-					column.addEventListener('filter-changed', () => {
-						assert.equal(column.filter.min, -10);
-						assert.equal(column.filter.max, 15);
-						done();
-					});
 					column._filterInput = {
 						min: -10,
 						max: 15
 					};
+					column.flushDebouncer('_limitInput');
+					assert.equal(column.filter.min, -10);
+					assert.equal(column.filter.max, 15);
 				});
 
-				test('changing only _filterInput min updates filter min', done => {
-					column.addEventListener('filter-changed', () => {
-						assert.equal(column.filter.min, -11);
-						done();
-					});
+				test('changing only _filterInput min updates filter min', () => {
 					column.set('_filterInput.min', -21);
+					column.flushDebouncer('_limitInput');
+					assert.equal(column.filter.min, -11);
 				});
 
-				test('changing out of range _filterInput limits _filterInput', done => {
+				test('changing out of range _filterInput limits _filterInput', () => {
 					assert.isNull(column._filterInput.min);
 					assert.isNull(column._filterInput.max);
 
-					column.addEventListener('filter-changed', function handler() {
-						assert.equal(column._filterInput.min, -11);
-						assert.equal(column._filterInput.max, 17);
-						assert.equal(column.filter.min, -11);
-						assert.equal(column.filter.max, 17);
-
-						Polymer.Base.async(() => {
-							column.removeEventListener('filter-changed', handler);
-							column.addEventListener('filter-changed', () => {
-								assert.equal(column.filter.min, 17);
-								done();
-							});
-							column.set('_filterInput.min', 20);
-						});
-					});
 					column._filterInput = { min: -11, max: 17 };
+					column.flushDebouncer('_limitInput');
+
+					assert.equal(column._filterInput.min, -11);
+					assert.equal(column._filterInput.max, 17);
+					assert.equal(column.filter.min, -11);
+					assert.equal(column.filter.max, 17);
+
+					column.set('_filterInput.min', 20);
+					column.flushDebouncer('_limitInput');
+
+					assert.equal(column.filter.min, 17);
 				});
 
-				test('filter comparision uses maximumFractionDigits; item age outside the range', done => {
+				test('filter comparision uses maximumFractionDigits; item age outside the range', () => {
 					assert.isNull(column._filterInput.min);
 					assert.isNull(column._filterInput.max);
 
-					const handler = () => {
-						const items = omnitable.sortedFilteredGroupedItems;
-						assert.equal(items.filter(item => item.age && item.age === 46.768).length, 0, 'Expected item coresponding to the age: 46.768 not to be in the filtered items, because it is outside the range.');
-						omnitable.removeEventListener('sorted-filtered-grouped-items-changed', handler);
-						done();
-					};
-					omnitable.addEventListener('sorted-filtered-grouped-items-changed', handler);
 					column._filterInput = { min: 46.75, max: 46.76 };
+					column.flushDebouncer('_limitInput');
+					omnitable.flushDebouncer('filterItems');
+					omnitable.flushDebouncer('groupItems');
+					omnitable.flushDebouncer('sortItems');
+
+					const items = omnitable.sortedFilteredGroupedItems;
+					assert.equal(items.filter(item => item.age && item.age === 46.768).length, 0, 'Expected item coresponding to the age: 46.768 not to be in the filtered items, because it is outside the range.');
 				});
 
-				test('filter comparision uses maximumFractionDigits, item age inside range', done => {
-					const handler = () => {
-						const items = omnitable.sortedFilteredGroupedItems;
-						assert.equal(items.filter(item => item.age && item.age === 46.7511).length, 1, 'Expected item coresponding to the age: 46.7511 to be in the filtered items.');
-						omnitable.removeEventListener('sorted-filtered-grouped-items-changed', handler);
-						done();
-					};
-					omnitable.addEventListener('sorted-filtered-grouped-items-changed', handler);
+				test('filter comparision uses maximumFractionDigits, item age inside range', () => {
 					column._filterInput = { min: 46.75, max: 46.76 };
+					column.flushDebouncer('_limitInput');
+					omnitable.flushDebouncer('filterItems');
+					omnitable.flushDebouncer('groupItems');
+					omnitable.flushDebouncer('sortItems');
+
+					const items = omnitable.sortedFilteredGroupedItems;
+					assert.equal(items.filter(item => item.age && item.age === 46.7511).length, 1, 'Expected item coresponding to the age: 46.7511 to be in the filtered items.');
 				});
 
 				test('getString displays 46.768 as 46.77', done => {
