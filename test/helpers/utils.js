@@ -1,27 +1,17 @@
 (function () {
 	'use strict';
 
-	const setupOmnitableFixture = (omnitableFixtureName, data, callback) => {
+	const setupOmnitableFixture = (omnitableFixtureName, data, done) => {
 		const omnitable = fixture(omnitableFixtureName);
 		omnitable.data = data;
-		if (omnitable.visibleColumns != null && omnitable.visibleColumns.length) {
-			callback(omnitable);
-		} else {
-			// In Polymer 1.x, the visible-columns-changed event will be fire multiple times,
-			// causing done to be called multiple times, which mocha does not allow.
-			// So using a flag to prevent multiple calls to done.
-			const onVisible = () => {
-				const columns = omnitable.visibleColumns;
-				if (Array.isArray(columns) && columns.length > 0) {
-					omnitable.removeEventListener('visible-columns-changed', onVisible);
-					Polymer.Base.async(() => callback(omnitable), 60);
-				}
-			};
-
-			omnitable.addEventListener('visible-columns-changed', onVisible);
-		}
-
-		omnitable.notifyResize();
+		flush(() => {
+			omnitable.flushDebouncer('adjustColumns');
+			omnitable.flushDebouncer('updateColumns');
+			omnitable.flushDebouncer('filterItems');
+			omnitable.flushDebouncer('groupItems');
+			omnitable.flushDebouncer('sortItems');
+			done(omnitable);
+		});
 		return omnitable;
 	};
 
