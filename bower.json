@@ -39,7 +39,7 @@
 		"cosmoz-i18next": "Neovici/cosmoz-i18next#^1.0.0",
 		"cosmoz-bottom-bar": "neovici/cosmoz-bottom-bar#^2.0.0",
 		"cosmoz-behaviors": "neovici/cosmoz-behaviors#^1.0.0",
-		"cosmoz-page-router": "Neovici/cosmoz-page-router#^1.0.0",
+		"cosmoz-page-router": "Neovici/cosmoz-page-router#^2.0.0",
 		"paper-autocomplete-chips": "Neovici/paper-autocomplete-chips#^1.0.0",
 		"import-filesaver": "JaySunSyn/import-filesaver",
 		"cosmoz-datetime-input": "Neovici/cosmoz-datetime-input#^1.0.0",
