@@ -70,7 +70,7 @@
 				let omnitable,
 					column;
 
-				setup(done => omnitable = setupOmnitableFixture('basic', data.slice(0), o => {
+				setup(done => omnitable = setupOmnitableFixture('basic', data.slice(0), () => {
 					column = omnitable.columns[0];
 					done();
 				}));

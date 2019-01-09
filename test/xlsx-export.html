@@ -68,7 +68,7 @@
 			];
 
 			setup(done => {
-				omnitable = setupOmnitableFixture('xlsx-export-fixture', data.slice(0), o => done());
+				omnitable = setupOmnitableFixture('xlsx-export-fixture', data.slice(0), () => done());
 			});
 
 			test('it instantiates a cosmoz-omnitable element', () => {
