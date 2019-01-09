@@ -76,12 +76,11 @@
 				assert.isFalse(column.filter);
 			});
 
-			test('_textFilterChanged updates filter as null', done => {
+			test('_textFilterChanged updates filter as null', () => {
 				column.filter = 'true';
 				column._filterChangedFromAbove = false;
 				column._textFilterChanged();
 				assert.isNull(column.filter);
-				done();
 			});
 
 			test('filterChanged observer converts boolean to string', () => {
