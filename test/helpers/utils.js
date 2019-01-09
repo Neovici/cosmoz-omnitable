@@ -27,19 +27,6 @@
 		return domType;
 	};
 
-	const onColumnReady = (omnitable, columnIndex, done) => {
-		const checkReady = () => {
-			const {visibleColumns: visible, columns} = omnitable;
-			if (visible && visible.length > 0) {
-				omnitable.removeEventListener('visible-columns-changed', checkReady);
-				Polymer.Base.async(() => done(columns[columnIndex]), 30);
-			}
-		};
-		omnitable.addEventListener('visible-columns-changed', checkReady);
-		omnitable.notifyResize();
-		checkReady();
-	};
-
-	Object.assign(window, {setupOmnitableFixture, getDomType, onColumnReady});
+	Object.assign(window, {setupOmnitableFixture, getDomType});
 }());
 
