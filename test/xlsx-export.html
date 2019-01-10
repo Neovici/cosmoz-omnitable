@@ -68,25 +68,20 @@
 			];
 
 			setup(done => {
-				omnitable = fixture('xlsx-export-fixture');
-				omnitable.data = data;
-
-				flush(() => Polymer.Base.async(done, 90));
+				omnitable = setupOmnitableFixture('xlsx-export-fixture', data.slice(0), () => done());
 			});
 
-			test('it instantiates a cosmoz-omnitable element', done => {
+			test('it instantiates a cosmoz-omnitable element', () => {
 				assert.equal(omnitable.is, 'cosmoz-omnitable');
-				done();
 			});
 
-			test('it is loading the name of first id column', done => {
+			test('it is loading the name of first id column', () => {
 				const id = omnitable.querySelector('#id');
 				assert.isDefined(id);
 				assert.equal(id.getString(), 'id');
-				done();
 			});
 
-			test('it prepares selected items', done => {
+			test('it prepares selected items', () => {
 			// select two items
 				omnitable.selectItem(data[0]);
 				omnitable.selectItem(data[1]);
@@ -95,10 +90,9 @@
 					headers = xlsx[0];
 				assert.equal(headers[0], omnitable.columns[0].title);
 				assert.equal(headers.length, omnitable.columns.length);
-				done();
 			});
 
-			test('is exporting as xlsx file', done => {
+			test('is exporting as xlsx file', () => {
 				const spyXlsx = sinon.spy(omnitable, '_saveAsXlsxAction'),
 					stubSaveAs = sinon.stub(window, 'saveAs');
 
@@ -118,10 +112,9 @@
 
 				spyXlsx.restore();
 				stubSaveAs.restore();
-				done();
 			});
 
-			test('click twice creates two files', done => {
+			test('click twice creates two files', () => {
 				const spyXlsx = sinon.spy(omnitable, '_saveAsXlsxAction'),
 					stubSaveAs = sinon.stub(window, 'saveAs');
 
@@ -142,7 +135,6 @@
 
 				spyXlsx.restore();
 				stubSaveAs.restore();
-				done();
 			});
 		});
 
@@ -219,33 +211,23 @@
 			];
 
 			setup(done => {
-				omnitable = fixture('toXlsx-range-fixture');
-				omnitable.data = data;
-
-				flush(() => {
-					Polymer.Base.async(() => {
-						// select items
-						for (let i = 0; i < data.length; i++) {
-							omnitable.selectItem(data[i]);
-						}
-						// prepare xlsx data
-						xlsx = omnitable._prepareXlsxData();
-						done();
-					}, 90);
+				omnitable = setupOmnitableFixture('toXlsx-range-fixture', data, () => {
+					data.map(item => omnitable.selectItem(item));
+					xlsx = omnitable._prepareXlsxData();
+					done();
 				});
 			});
 
-			test('prepares number values', done => {
+			test('prepares number values', () => {
 				xlsx
 					.map(row => row[0])
 					.slice(1)
 					.forEach((value, index) => {
 						assert.equal(value, data[index].number);
 					});
-				done();
 			});
 
-			test('prepares amount values', done => {
+			test('prepares amount values', () => {
 				const amounts = xlsx.map(row => row[1]);
 				// const nonBreakingSpace = String.fromCharCode(160);
 
@@ -260,10 +242,9 @@
 				assert.equal(amounts[9], '-A$101.00');   // currency: 'AUD', amount: -101
 				assert.equal(amounts[10], '-CA$4,321.00'); //currency: 'CAD', amount: -4321
 				assert.equal(amounts[11], '-€22.00'); 	 //currency: 'EUR', amount: -22
-				done();
 			});
 
-			test('prepares date values', done => {
+			test('prepares date values', () => {
 				const column = omnitable.columns[2];
 				xlsx
 					.map(row => row[2])
@@ -273,10 +254,9 @@
 						date.setHours(0, 0, 0);
 						assert.equal(column.toValue(value).getTime(), date.getTime());
 					});
-				done();
 			});
 
-			test('prepares time values', done => {
+			test('prepares time values', () => {
 				const column = omnitable.columns[3];
 				xlsx
 					.map(row => row[3])
@@ -285,11 +265,9 @@
 						const time = column.toXlsxValue(data[index]);
 						assert.equal(value, time);
 					});
-				done();
-
 			});
 
-			test('prepares datetime values', done => {
+			test('prepares datetime values', () => {
 				const column = omnitable.columns[4];
 				xlsx
 					.map(row => row[4])
@@ -299,9 +277,7 @@
 						assert.equal(value, time);
 						assert.equal(column.toValue(value).getTime(), column.toValue(data[index].datetime).getTime());
 					});
-				done();
 			});
-
 		});
 	}());
 

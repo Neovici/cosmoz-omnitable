@@ -94,8 +94,7 @@
 				assert.equal(groupOnColumn, omnitable.columns[0]);
 			});
 
-
-			test('groupOnDescending true for id column changes order of items', done => {
+			test('groupOnDescending true for id column changes order of items', () => {
 				const items = omnitable.sortedFilteredGroupedItems;
 				assert.isArray(items);
 				assert.isObject(items[0]);
@@ -104,19 +103,19 @@
 					second = items[1],
 					idx = items.length - 1, // index of last item
 					last = items[idx];
+
 				assert.equal(first.id, 0);
 				assert.equal(second.id, 1);
 				assert.equal(last.id, idx);
 
 				omnitable.groupOnDescending = true;
-
-				Polymer.Base.async(() => {
-					const items = omnitable.sortedFilteredGroupedItems;
-					assert.equal(items[0].id, idx);
-					assert.equal(items[idx - 1].id, 1);
-					assert.equal(items[idx].id, 0);
-					done();
-				}, 120);
+				omnitable.flushDebouncer('filterItems');
+				omnitable.flushDebouncer('groupItems');
+				omnitable.flushDebouncer('sortItems');
+				const gItems = omnitable.sortedFilteredGroupedItems;
+				assert.equal(gItems[0].id, idx);
+				assert.equal(gItems[idx - 1].id, 1);
+				assert.equal(gItems[idx].id, 0);
 			});
 		});
 
@@ -129,7 +128,7 @@
 				omnitable = setupOmnitableFixture('bool', data, () => done());
 			});
 
-			test('groupOnDescending true for boolean column changes order of items', done => {
+			test('groupOnDescending true for boolean column changes order of items', () => {
 				assert.equal(omnitable.groupOn, 'bool');
 				assert.equal(omnitable.groupOnColumn.name, 'bool');
 				assert.equal(omnitable.groupOnColumn, omnitable.columns[1]);
@@ -141,12 +140,11 @@
 				assert.equal(last.id, false);
 
 				omnitable.groupOnDescending = true;
-
-				Polymer.Base.async(() => {
-					assert.equal(omnitable.sortedFilteredGroupedItems[0].id, false);
-					assert.equal(omnitable.sortedFilteredGroupedItems[idx].id, true);
-					done();
-				}, 120);
+				omnitable.flushDebouncer('filterItems');
+				omnitable.flushDebouncer('groupItems');
+				omnitable.flushDebouncer('sortItems');
+				assert.equal(omnitable.sortedFilteredGroupedItems[0].id, false);
+				assert.equal(omnitable.sortedFilteredGroupedItems[idx].id, true);
 			});
 		});
 
@@ -159,23 +157,16 @@
 				omnitable = setupOmnitableFixture('amount', data, () => done());
 			});
 
-			test('setting groupOn property to "amount" updates property groupOnColumn', done => {
+			test('setting groupOn property to "amount" updates property groupOnColumn', () => {
 				omnitable.groupOn = 'amount';
-
-				omnitable.notifyResize();
-				const verifyColumn = () => {
-					const groupOnColumn = omnitable.groupOnColumn;
-					if (groupOnColumn == null) {
-						Polymer.Base.async(verifyColumn, 50);
-					} else {
-						assert.equal(typeof groupOnColumn, 'object');
-						assert.equal(groupOnColumn.is, 'cosmoz-omnitable-column-amount');
-						assert.equal(groupOnColumn.name, 'amount', 'Expected "groupOnColumn" to be the column that matches "groupOn" value');
-						assert.equal(groupOnColumn, omnitable.columns[0]);
-						done();
-					}
-				};
-				Polymer.Base.async(verifyColumn, 50);
+				omnitable.flushDebouncer('filterItems');
+				omnitable.flushDebouncer('groupItems');
+				omnitable.flushDebouncer('sortItems');
+				const groupOnColumn = omnitable.groupOnColumn;
+				assert.equal(typeof groupOnColumn, 'object');
+				assert.equal(groupOnColumn.is, 'cosmoz-omnitable-column-amount');
+				assert.equal(groupOnColumn.name, 'amount', 'Expected "groupOnColumn" to be the column that matches "groupOn" value');
+				assert.equal(groupOnColumn, omnitable.columns[0]);
 			});
 		});
 
