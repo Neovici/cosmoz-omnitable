@@ -1,35 +1,35 @@
 <!doctype html>
 <html>
 
-<head>
-	<title>cosmoz-omnitable hash-param tests</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<head>
+		<title>cosmoz-omnitable hash-param tests</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-	<script src="../../web-component-tester/browser.js"></script>
-	<script src="../../test-fixture/test-fixture-mocha.js"></script>
-	<script src="./helpers/utils.js"></script>
+		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+		<script src="../../web-component-tester/browser.js"></script>
+		<script src="../../test-fixture/test-fixture-mocha.js"></script>
+		<script src="./helpers/utils.js"></script>
 
-	<link rel="import" href="../../test-fixture/test-fixture.html">
-	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-	<link rel="import" href="../cosmoz-omnitable.html">
-	<link rel="import" href="../cosmoz-omnitable-column-autocomplete.html">
-	<link rel="import" href="../cosmoz-omnitable-column.html">
-</head>
+		<link rel="import" href="../../test-fixture/test-fixture.html">
+		<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
+		<link rel="import" href="../cosmoz-omnitable.html">
+		<link rel="import" href="../cosmoz-omnitable-column-autocomplete.html">
+		<link rel="import" href="../cosmoz-omnitable-column.html">
+	</head>
 
-<body>
-	<test-fixture id="basic">
-		<template>
-			<cosmoz-omnitable hash-param="test" style='height:300px'>
-				<cosmoz-omnitable-column-autocomplete width="40px" title="Id" name="id" value-path="id" sort-on="id" group-on="id">
-					<template class="cell">
-						<span>[[ item.id ]]</span>
-					</template>
-				</cosmoz-omnitable-column-autocomplete>
-				<cosmoz-omnitable-column-autocomplete title="Group" name="group" value-path="group" flex="0" width="125px">
-				</cosmoz-omnitable-column-autocomplete>
-				<cosmoz-omnitable-column title="Name" name="name" value-path="name" sort-on="name" group-on="name" flex="2">
+	<body>
+		<test-fixture id="basic">
+			<template>
+				<cosmoz-omnitable hash-param="test" style='height:300px'>
+					<cosmoz-omnitable-column-autocomplete width="40px" title="Id" name="id" value-path="id" sort-on="id" group-on="id">
+						<template class="cell">
+							<span>[[ item.id ]]</span>
+						</template>
+					</cosmoz-omnitable-column-autocomplete>
+					<cosmoz-omnitable-column-autocomplete title="Group" name="group" value-path="group" flex="0" width="125px">
+					</cosmoz-omnitable-column-autocomplete>
+					<cosmoz-omnitable-column title="Name" name="name" value-path="name" sort-on="name" group-on="name" flex="2">
 					<template class="cell">
 						<span>[[ item.name ]]</span>
 					</template>
@@ -105,71 +105,61 @@
 					location.hash = '';
 					done();
 				});
-				test('updates _routeHash with defaults', done => {
+				test('updates _routeHash with defaults', () => {
 					const hash = omnitable._routeHash;
-					Polymer.Base.async(() => {
-						assert.equal(hash['test-sortOn'], '');
-						assert.equal(hash['test-groupOn'], '');
-						assert.isUndefined(hash['test-descending']);
-						done();
-					}, 30);
-
+					assert.equal(hash['test-sortOn'], '');
+					assert.equal(hash['test-groupOn'], '');
+					assert.isUndefined(hash['test-descending']);
 				});
 
-				test('updates _routeHash from sortOn', done => {
+				test('updates _routeHash from sortOn', () => {
 					const hash = omnitable._routeHash;
+
 					omnitable.sortOn = 'name';
-					Polymer.Base.async(() => {
-						assert.equal(hash['test-sortOn'], 'name');
-						omnitable.sortOn = '';
-						Polymer.Base.async(() => {
-							assert.equal(hash['test-sortOn'], '');
-							done();
-						}, 30);
-					}, 30);
+					omnitable.flushDebouncer('sortItems');
+					assert.equal(hash['test-sortOn'], 'name');
 
+					omnitable.sortOn = '';
+					omnitable.flushDebouncer('sortItems');
+					assert.equal(hash['test-sortOn'], '');
 				});
 
-				test('updates _routeHash from groupOn', done => {
+				test('updates _routeHash from groupOn', () => {
 					const hash = omnitable._routeHash;
-					omnitable.groupOn = 'name';
-					Polymer.Base.async(() => {
-						assert.equal(hash['test-groupOn'], 'name');
-						omnitable.groupOn = '';
-						Polymer.Base.async(() => {
-							assert.equal(hash['test-groupOn'], '');
-							done();
-						});
-					}, 30);
 
+					omnitable.groupOn = 'name';
+					omnitable.flushDebouncer('groupItems');
+					assert.equal(hash['test-groupOn'], 'name');
+
+					omnitable.groupOn = '';
+					omnitable.flushDebouncer('groupItems');
+					assert.equal(hash['test-groupOn'], '');
 				});
 
-				test('updates _routeHash from descending', done => {
+				test('updates _routeHash from descending', () => {
 					const hash = omnitable._routeHash;
 					assert.isUndefined(hash['test-descending']);
+
 					omnitable.descending = true;
-					Polymer.Base.async(() => {
-						assert.equal(hash['test-descending'], '');
-						omnitable.descending = false;
-						Polymer.Base.async(() => {
-							assert.isNull(hash['test-descending']);
-							done();
-						}, 30);
-					}, 30);
+					omnitable.flushDebouncer('sortItems');
+					assert.equal(hash['test-descending'], '');
+
+					omnitable.descending = false;
+					omnitable.flushDebouncer('sortItems');
+					assert.isNull(hash['test-descending']);
 				});
 
-				test('updates _routeHash from filter', done => {
+				test('updates _routeHash from filter', () => {
 					const column = omnitable.columns[0],
 						hash = omnitable._routeHash;
+
 					column.filter = [0, 1];
-					Polymer.Base.async(() => {
-						assert.equal(hash['test-filter--id'], '[0,1]');
-						column.resetFilter();
-						Polymer.Base.async(() => {
-							assert.equal(hash['test-filter--id'], null);
-							done();
-						}, 30);
-					}, 30);
+					omnitable.flushDebouncer('filterItems');
+					assert.equal(hash['test-filter--id'], '[0,1]');
+
+					column.resetFilter();
+					omnitable.flushDebouncer('filterItems');
+					assert.equal(hash['test-filter--id'], null);
 				});
 
 			});

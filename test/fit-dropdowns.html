@@ -46,153 +46,117 @@
 					{ id: 1, group: 'group0', name: 'Item 1' },
 					{ id: 2, group: 'group1', name: 'Item 2' },
 					{ id: 3, group: 'group1', name: 'Item 3' }
-				],
-				instantiate = function (done) {
-					omnitable = setupOmnitableFixture('basic', data, () => done());
-				};
+				];
 
 			suite('fit-dropdowns' + domType, () => {
-				test('sets iron-dropdown fitInto property', done => {
-					instantiate(() => {
-						[
-							omnitable.$.groupOnSelector,
-							omnitable.$.sortOnSelector
-						]
-							.map(d => d.$.menuButton)
-							.concat([omnitable.$.bottomBar.$.menu])
-							.forEach(button => {
-								assert.equal(button.$.dropdown.fitInto, omnitable);
-							});
-						done();
-					});
+				let omnitable;
+
+				setup(done => omnitable = setupOmnitableFixture('basic', data.slice(0), () => done()));
+
+				test('sets iron-dropdown fitInto property', () => {
+					[
+						omnitable.$.groupOnSelector,
+						omnitable.$.sortOnSelector
+					]
+						.map(d => d.$.menuButton)
+						.concat([omnitable.$.bottomBar.$.menu])
+						.forEach(button => {
+							assert.equal(button.$.dropdown.fitInto, omnitable);
+						});
 				});
 			});
 
 			suite('autocomplete unit tests' + domType, () => {
-				test('getComparableValue returns value converted to String', done => {
-					instantiate(() => {
-						const column = omnitable.columns[0];
-						assert.equal(column.getComparableValue({ id: 14, group: 'group0', name: 'Item 14' }), 14);
-						assert.equal(column.getComparableValue({ id: 345, group: 'group7', name: 'Item 345' }), 345);
-						assert.equal(column.getComparableValue({ id: 27, group: 'group5', name: 'Item 27' }), 27);
-						done();
-					});
+				let omnitable,
+					column;
+
+				setup(done => omnitable = setupOmnitableFixture('basic', data.slice(0), () => {
+					column = omnitable.columns[0];
+					done();
+				}));
+
+				test('getComparableValue returns value converted to String', () => {
+					assert.equal(column.getComparableValue({ id: 14, group: 'group0', name: 'Item 14' }), 14);
+					assert.equal(column.getComparableValue({ id: 345, group: 'group7', name: 'Item 345' }), 345);
+					assert.equal(column.getComparableValue({ id: 27, group: 'group5', name: 'Item 27' }), 27);
 				});
 
-				test('getString handles undefined valuePath parameter', done => {
-					instantiate(() => {
-						const column = omnitable.columns[0];
-						assert.equal(column.getString({ id: 70, group: 'group0', name: 'Item 0' }), 70);
-						assert.equal(column.getString({ id: 41, group: 'group4', name: 'Item 41' }), 41);
-						assert.equal(column.getString({ id: 126, group: 'group12', name: 'Item 126' }), 126);
-						done();
-					});
+				test('getString handles undefined valuePath parameter', () => {
+					assert.equal(column.getString({ id: 70, group: 'group0', name: 'Item 0' }), 70);
+					assert.equal(column.getString({ id: 41, group: 'group4', name: 'Item 41' }), 41);
+					assert.equal(column.getString({ id: 126, group: 'group12', name: 'Item 126' }), 126);
 				});
 
-				test('getString handles itemValue as empty array', done => {
-					instantiate(() => {
-						const column = omnitable.columns[0];
-						assert.equal(column.getString({ id: [], group: 'group0', name: 'Item 0' }), '');
-						done();
-					});
+				test('getString handles itemValue as empty array', () => {
+					assert.equal(column.getString({ id: [], group: 'group0', name: 'Item 0' }), '');
 				});
 
-				test('getString handles itemValue as array', done => {
-					instantiate(() => {
-						const column = omnitable.columns[0];
-						assert.equal(column.getString({ id: [70, 80], group: 'group0', name: 'Item 0' }), '70, 80');
-						assert.equal(column.getString({ id: [32, 743, -39, 285], group: 'group13', name: 'Item 32' }), '32, 743, -39, 285');
-						done();
-					});
+				test('getString handles itemValue as array', () => {
+					assert.equal(column.getString({ id: [70, 80], group: 'group0', name: 'Item 0' }), '70, 80');
+					assert.equal(column.getString({ id: [32, 743, -39, 285], group: 'group13', name: 'Item 32' }), '32, 743, -39, 285');
 				});
 
-				test('getString handles itemValue as object', done => {
-					instantiate(() => {
-						const column = omnitable.columns[0];
-						assert.equal(column.getString({ id: { text: '10'}, group: 'group0', name: 'Item 0' }), '10');
-						assert.equal(column.getString({ id: { text: '448'}, group: 'group14', name: 'Item 448' }), '448');
-						assert.equal(column.getString({ id: { text: '11'}, group: 'group11', name: 'Item 11' }), '11');
-						done();
-					});
+				test('getString handles itemValue as object', () => {
+					assert.equal(column.getString({ id: { text: '10'}, group: 'group0', name: 'Item 0' }), '10');
+					assert.equal(column.getString({ id: { text: '448'}, group: 'group14', name: 'Item 448' }), '448');
+					assert.equal(column.getString({ id: { text: '11'}, group: 'group11', name: 'Item 11' }), '11');
 				});
 
-				test('toXlsxValue handles undefined valuePath', done => {
-					instantiate(() => {
-						const column = omnitable.columns[0];
-						column.valuePath = null;
-						assert.equal(column.toXlsxValue({ id: 30, group: 'group0', name: 'Item 30' }), '');
-						done();
-					});
+				test('toXlsxValue handles undefined valuePath', () => {
+					const valuePath = column.valuePath;
+					column.valuePath = null;
+					assert.equal(column.toXlsxValue({ id: 30, group: 'group0', name: 'Item 30' }), '');
+					column.valuePath = valuePath;
 				});
 
-				test('_applySingleFilter filters some string', done => {
-					instantiate(() => {
-						const column = omnitable.columns[0];
-						assert.isTrue(column._applySingleFilter('some', { id: 'some', group: 'group0', name: 'Item 30' }));
-						done();
-					});
+				test('_applySingleFilter filters some string', () => {
+					assert.isTrue(column._applySingleFilter('some', { id: 'some', group: 'group0', name: 'Item 30' }));
 				});
 
-				test('_applyMultiFilter handles null value', done => {
-					instantiate(() => {
-						const column = omnitable.columns[0];
-						assert.isFalse(column._applyMultiFilter([], {id: null, group: 'group0', name: ' Item id null' }));
-						done();
-					});
+				test('_applyMultiFilter handles null value', () => {
+					assert.isFalse(column._applyMultiFilter([], {id: null, group: 'group0', name: ' Item id null' }));
 				});
 
-				test('_unique handles undefined values', done => {
-					instantiate(() => {
-						const column = omnitable.columns[0];
-						assert.isUndefined(column._unique());
-						done();
-					});
+				test('_unique handles undefined values', () => {
+					assert.isUndefined(column._unique());
 				});
 
-				test('_unique handles unique values', done => {
-					instantiate(() => {
-						const column = omnitable.columns[0],
-							items = [
-								{id: 0, group: 'group0', name: ' Item 0'},
-								{id: 1, group: 'group0', name: ' Item 1'},
-								{id: 2, group: 'group1', name: ' Item 2'}
-							];
-						assert.deepEqual(column._unique(items, 'id'), items);
-						done();
-					});
+				test('_unique handles unique values', () => {
+					const items = [
+						{id: 0, group: 'group0', name: ' Item 0'},
+						{id: 1, group: 'group0', name: ' Item 1'},
+						{id: 2, group: 'group1', name: ' Item 2'}
+					];
+					assert.deepEqual(column._unique(items, 'id'), items);
 				});
 
-				test('_unique returns unique values', done => {
-					instantiate(() => {
-						const column = omnitable.columns[0];
-						let items = [
-							{id: 0, group: 'group0', name: ' Item 0'},
-							{id: 1, group: 'group0', name: ' Item 1'},
-							{id: 0, group: 'group0', name: ' Item 0'},
-						];
-						assert.deepEqual(column._unique(items, 'id'), [
-							{id: 0, group: 'group0', name: ' Item 0'},
-							{id: 1, group: 'group0', name: ' Item 1'}
-						]);
+				test('_unique returns unique values', () => {
+					let items = [
+						{id: 0, group: 'group0', name: ' Item 0'},
+						{id: 1, group: 'group0', name: ' Item 1'},
+						{id: 0, group: 'group0', name: ' Item 0'},
+					];
+					assert.deepEqual(column._unique(items, 'id'), [
+						{id: 0, group: 'group0', name: ' Item 0'},
+						{id: 1, group: 'group0', name: ' Item 1'}
+					]);
 
-						items = [
-							{id: 0, group: 'group0', name: ' Item 0'},
-							{id: 1, group: 'group0', name: ' Item 1'},
-							{id: 0, group: 'group0', name: ' Item 0'},
-							{id: 1, group: 'group0', name: ' Item 1'},
-							{id: 2, group: 'group1', name: ' Item 2'},
-							{id: 2, group: 'group1', name: ' Item 2'},
-							{id: 3, group: 'group1', name: ' Item 3'},
-							{id: 0, group: 'group0', name: ' Item 0'},
-						];
-						assert.deepEqual(column._unique(items, 'id'), [
-							{id: 0, group: 'group0', name: ' Item 0'},
-							{id: 1, group: 'group0', name: ' Item 1'},
-							{id: 2, group: 'group1', name: ' Item 2'},
-							{id: 3, group: 'group1', name: ' Item 3'}
-						]);
-						done();
-					});
+					items = [
+						{id: 0, group: 'group0', name: ' Item 0'},
+						{id: 1, group: 'group0', name: ' Item 1'},
+						{id: 0, group: 'group0', name: ' Item 0'},
+						{id: 1, group: 'group0', name: ' Item 1'},
+						{id: 2, group: 'group1', name: ' Item 2'},
+						{id: 2, group: 'group1', name: ' Item 2'},
+						{id: 3, group: 'group1', name: ' Item 3'},
+						{id: 0, group: 'group0', name: ' Item 0'},
+					];
+					assert.deepEqual(column._unique(items, 'id'), [
+						{id: 0, group: 'group0', name: ' Item 0'},
+						{id: 1, group: 'group0', name: ' Item 1'},
+						{id: 2, group: 'group1', name: ' Item 2'},
+						{id: 3, group: 'group1', name: ' Item 3'}
+					]);
 				});
 			});
 		})();

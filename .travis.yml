@@ -1,10 +1,7 @@
+---
 language: node_js
-node_js: 8
-dist: trusty
-sudo: required
-env:
-  global:
-    - CC_TEST_REPORTER_ID=a061a568c2b58fab68f6fad8d19fa398b5ea29d701348e69716e4f48132fc4c3
+node_js: "lts/*"
+
 addons:
   firefox: latest
   apt:
@@ -12,23 +9,30 @@ addons:
       - google-chrome
     packages:
       - google-chrome-stable
+
 cache:
   yarn: true
   directories:
     - node_modules
     - bower_components
-    - bower_components-1.x
-    - ".eslintcache"
-    - "$HOME/.cache/bower"
+    - .eslintcache
+    - $HOME/.cache/bower
+    - $HOME/cc
+
+env:
+  global:
+    - CC_TEST_REPORTER_ID=a061a568c2b58fab68f6fad8d19fa398b5ea29d701348e69716e4f48132fc4c3
+    - NEO_CC_URL=https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+    - NEO_CC=$HOME/cc/cc-test-reporter
+
 before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
-  - yarn run lint
+  - yarn lint
+  - ([[ -e $NEO_CC ]] || curl -L $NEO_CC_URL > $NEO_CC) && chmod +x $NEO_CC
+  - $NEO_CC before-build
 script:
-  - xvfb-run yarn test
-after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - yarn test
+  - $NEO_CC after-build --exit-code $TRAVIS_TEST_RESULT
+
 notifications:
   slack:
     secure: pcg5FvPJohl11ppMWa1J9MwW6XzYUcksocD6vwLqQ+wLn0VmwJcUi1t0Rs68htKBuuNN4ht7OJ0n12okSrctLATCwyF6cII8AhbhDV0vb+JLjrZS45y9s2nnLS3zFmwWdL6aMnjWWp8ZOvtcNoAcDZmsWRl1ZLDljU75PcFnTjsctMBptMsWvIZqgogrzC2ZZnHGoTeN3l8mXTRUs6owb1p0mjhoxKyUkp9X0yNz4nr48addhj+wDpOljSHEqfpRU3hw1RQmQUxJanv1f8CVUmgZlg1iIpTJoP9yC87GybZdowtYvkG9FpUePzao2IuvsKRwMmKpKLJrD8pt3wGo/ASV2v7tAfD5ILioDcfy3IO+l4ytWK+02w6H1/NO6hGZvapgApYqGYZs3TobiO4+P2UJL4AdNaSNv6LGMB0hlOZyCho1lrFGVI8zk08oRLeQUXGZspJlioLnlH6r0cRGwYLeNowg5bDF3CYq9lFJ/1ckI/6j4+8SumTlRfnvJGq26ckXSvxGtlaM9IojtPoiTqs4stfeNVXggeXHtwJXSZHiXpKVd+iH7W7rnzBQtHYkfkzHEliIDFfSimj47UfSIMa1NoROelvWrx/e70sXOFUlDvIuIEy75FQ47LYaIkuQGrYVofe+1bBURtZpNPUbReti2gEdAIV177QYCKkNJ5o=
