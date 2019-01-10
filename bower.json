@@ -40,7 +40,7 @@
 		"cosmoz-bottom-bar": "neovici/cosmoz-bottom-bar#^2.2.1",
 		"cosmoz-behaviors": "neovici/cosmoz-behaviors#^2.0.0",
 		"cosmoz-page-router": "Neovici/cosmoz-page-router#^2.1.1",
-		"paper-autocomplete-chips": "Neovici/paper-autocomplete-chips#^2.0.0",
+		"paper-autocomplete-chips": "Neovici/paper-autocomplete-chips#^2.0.1",
 		"import-filesaver": "JaySunSyn/import-filesaver",
 		"cosmoz-datetime-input": "Neovici/cosmoz-datetime-input#^2.0.0",
 		"nullxlsx": "Neovici/nullxlsx#^1.0.3",

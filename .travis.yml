@@ -31,7 +31,6 @@ before_script:
   - $NEO_CC before-build
 script:
   - yarn test
-after_script:
   - $NEO_CC after-build --exit-code $TRAVIS_TEST_RESULT
 
 notifications:
