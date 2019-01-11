@@ -318,7 +318,7 @@
 		},
 
 		visibleChanged(turnedVisible) {
-			if (turnedVisible && !Array.isArray(this.columns)) {
+			if (turnedVisible) {
 				this._debounceUpdateColumns();
 			}
 		},
@@ -441,7 +441,11 @@
 				columns = columns.filter(column => !column.disabled);
 			}
 
-			if (!columns || columns.length === 0) {
+			const columnsChanged = !Array.isArray(this.columns) ||
+				this.columns.length !== columns.length ||
+				this.columns.every(col => columns.indexOf(col) !== -1);
+
+			if (!columns || columns.length === 0 || !columnsChanged) {
 				return;
 			}
 
