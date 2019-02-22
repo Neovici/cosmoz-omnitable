@@ -117,7 +117,8 @@
 
 			_filterChanged(filter, autoItems) {
 				const items = this.autocompleteSelectedItems;
-				if (!Array.isArray(autoItems)
+				if (!Array.isArray(filter)
+					|| !Array.isArray(autoItems)
 					|| Array.isArray(items)
 						&& items.length === this.filter.length
 						&& filter.every((f, i) => items[i] instanceof Object && f === items[i][this.valueProperty] || items[i] === f)) {
