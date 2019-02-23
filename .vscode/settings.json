@@ -1,7 +1,19 @@
 {
 	"eslint.autoFixOnSave": true,
 	"eslint.validate": [
-		{ "language": "javascript", "autoFix": true },
-		{ "language": "html", "autoFix": true }
-	]
+		{
+			"language": "javascript",
+			"autoFix": true
+		},
+		{
+			"language": "html",
+			"autoFix": true
+		}
+	],
+	"files.watcherExclude": {
+		"**/.git/objects/**": true,
+		"**/.git/subtree-cache/**": true,
+		"**/node_modules/**": true,
+		"**/bower_components/**": true
+	}
 }
