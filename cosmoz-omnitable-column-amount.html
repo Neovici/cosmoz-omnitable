@@ -38,77 +38,78 @@
 		</template>
 	</template>
 	<script type="text/javascript">
-		Polymer({
-			is: 'cosmoz-omnitable-column-amount',
+		class CosmozOmnitableColumnAmount extends Polymer.mixinBehaviors([
+			Cosmoz.OmnitableColumnBehavior,
+			Cosmoz.TranslatableBehavior,
+			Cosmoz.RangeColumnBehavior
+		], Polymer.Element) {
+			static get is() {
+				return 'cosmoz-omnitable-column-amount';
+			}
+			static get observers() {
+				return [
+					'_valuesChanged(autodetect, currency, values)'
+				];
+			}
+			static get properties() {
+				return {
+					/**
+					* Base Currency used in filters
+					*/
+					currency: {
+						type: String
+					},
 
-			behaviors: [
-				Cosmoz.OmnitableColumnBehavior,
-				Cosmoz.TranslatableBehavior,
-				Cosmoz.RangeColumnBehavior
-			],
+					/**
+					* If this is set true then currency property will be the currency with highest occurrence in values
+					*/
+					autodetect: {
+						type: Boolean,
+						value: false
+					},
 
-			properties: {
+					/**
+					* Exchange rates of currencies. Example: {"EUR": 1, "USD":0.8169982616, "AUD":0.6529827192, "SEK": 0.1019271438}'
+					* Default exchange rate is 1 and it is used for every currency that is present on column values but missing from exchange rates object.
+					*/
+					rates: {
+						type: Object
+					},
+					width: {
+						type: String,
+						value: '70px'
+					},
+					editWidth: {
+						type: String,
+						value: '70px'
+					},
 
-				/**
-				 *  Base Currency used in filters
-				 */
-				currency: {
-					type: String
-				},
-
-				/**
-				 *  If this is set true then currency property will be the currency with highest occurrence in values
-				 */
-				autodetect: {
-					type: Boolean,
-					value: false
-				},
-
-				/**
-				 * Exchange rates of currencies. Example: {"EUR": 1, "USD":0.8169982616, "AUD":0.6529827192, "SEK": 0.1019271438}'
-				 * Default exchange rate is 1 and it is used for every currency that is present on column values but missing from exchange rates object.
-				 */
-				rates: {
-					type: Object
-				},
-				width: {
-					type: String,
-					value: '70px'
-				},
-				editWidth: {
-					type: String,
-					value: '70px'
-				},
-
-				cellClass: {
-					type: String,
-					value: 'amount-cell align-right'
-				},
-				headerCellClass: {
-					type: String,
-					value: 'amount-header-cell'
-				},
-				_filterText: {
-					type: String,
-					computed: '_computeFilterText(filter.*, _formatters)'
-				}
-			},
-
-			observers: [
-				'_valuesChanged(values)'
-			],
-
+					cellClass: {
+						type: String,
+						value: 'amount-cell align-right'
+					},
+					headerCellClass: {
+						type: String,
+						value: 'amount-header-cell'
+					},
+					_filterText: {
+						type: String,
+						computed: '_computeFilterText(filter.*, _formatters)'
+					}
+				};
+			}
 			/**
-			 *  Auto-detect currency property: Most frequently occurring currency
-			 *
-			 * @param  {Array} values Array of amounts
-			 * @returns {void}
-			 */
-			_valuesChanged(values) {
+			* Auto-detect currency property: Most frequently occurring currency
+			* @param {boolean} autodetect Whether the currency property will be the currency with highest occurrence in values or not.
+			* @param {string} currency Base currency used in filters.
+			* @param {Array} values Array of amounts
+			* @returns {void}
+			*/
+			_valuesChanged(autodetect, currency, values) {
 				if (!Array.isArray(values) || values.length < 1) {
 					return;
 				}
-				if (!this.autodetect && this.currency) {
+				if (!autodetect && currency) {
 					return;
 				}
 				// array with currencies as keys and occurence as value
@@ -128,17 +129,17 @@
 					}
 					return max;
 				}, 0);
-				this.currency = key;
-			},
+				this.set('currency', key);
+			}
 
 			/**
-				 * Converts a value to an amount object optionaly limiting it.
-				 *
-				 * @param  {Object} value  The value to convert to number
-				 * @param  {Object} limit  The value used to limit the number
-				 * @param  {Function} limitFunc  The function used to limit the number (Math.min|Math.max)
-				 * @returns {Object|void}    Value converted to Number or void
-				 */
+			* Converts a value to an amount object optionaly limiting it.
+			*
+			* @param {Object} value The value to convert to number
+			* @param {Object} limit The value used to limit the number
+			* @param {Function} limitFunc The function used to limit the number (Math.min|Math.max)
+			* @returns {Object|void} Value converted to Number or void
+			*/
 			toAmount(value, limit, limitFunc) {
 				if (value == null || value === '') {
 					return;
@@ -174,23 +175,23 @@
 
 				lNumber = this.toNumber(valAmount, limAmount, limitFunc);
 				return lNumber === valAmount ? amount : lAmount;
-			},
+			}
 
 			toValue() {
 				return this.toAmount.apply(this, arguments);
-			},
+			}
 
 			toXlsxValue(item, valuePath = this.valuePath) {
 				return this.getString(item, valuePath);
-			},
+			}
 
 			/**
-				 *   Get the comparable value of an item.
-				 *
-				 * @param  {Object} item       Item to be processed
-				 * @param  {String} valuePath  Property path
-				 * @returns {Number|void}      Valid value or void
-				 */
+			* Get the comparable value of an item.
+			*
+			* @param {Object} item Item to be processed
+			* @param {String} valuePath Property path
+			* @returns {Number|void} Valid value or void
+			*/
 			getComparableValue(item, valuePath) {
 				const value = Cosmoz.RangeColumnBehavior.getComparableValue.call(this, item, valuePath);
 				if (value == null) {
@@ -204,7 +205,7 @@
 				}
 
 				return amount * (rates[value.currency] || 1);
-			},
+			}
 			getString(item, valuePath = this.valuePath) {
 				const value = this.toValue(this.get(valuePath, item));
 				if (value === undefined) {
@@ -214,12 +215,12 @@
 					return 'Invalid value';
 				}
 				return this.renderValue(value);
-			},
+			}
 
 			getCurrency(item, valuePath) {
 				const value = this.get(valuePath, item);
 				return value && value.currency;
-			},
+			}
 
 			getFormatter(currency, locale) {
 				const id = locale ? locale : '';
@@ -232,15 +233,14 @@
 					style: 'currency',
 					currency
 				});
-			},
-
+			}
 			/**
-				 * Converts an amount to symbol and value to be rendered.
-				 *
-				 * @param  {Object} value Amount to be formated
-				 * @param  {Object} _formatters = this._formatters All possible formatters.
-				 * @returns {String} Formated value or empty string.
-				 */
+			* Converts an amount to symbol and value to be rendered.
+			*
+			* @param {Object} value Amount to be formated
+			* @param {Object} _formatters = this._formatters All possible formatters.
+			* @returns {String} Formated value or empty string.
+			*/
 			renderValue(value) {
 				const amount = this.toAmount(value);
 				if (amount == null) {
@@ -248,7 +248,7 @@
 				}
 				return this.getFormatter(amount.currency, this.locale)
 					.format(value.amount);
-			},
+			}
 
 			_amountValueChanged(event) {
 				const
@@ -265,7 +265,7 @@
 
 				this.set(this.valuePath, newValue, item);
 				this._fireItemChangeEvent(item, this.valuePath, originalValue, this.renderValue.bind(this));
-			},
+			}
 
 			_toInputString(value) {
 				let amount = this.toValue(value);
@@ -273,7 +273,7 @@
 					return null; //Need null to clear input
 				}
 				return this.toNumber(amount.amount);
-			},
+			}
 
 			_toInputStringAmount(value) {
 				const rates = this.rates;
@@ -286,7 +286,7 @@
 				}
 				const toCurrency = this.toNumber(amount.amount) * (rates[amount.currency] || 1) / (rates[this.currency] || 1);
 				return toCurrency.toFixed(2);
-			},
+			}
 
 			_fromInputString(value, property) {
 				const number = this.toNumber(value);
@@ -297,14 +297,14 @@
 					amount: number,
 					currency: property && this.get(['filter', property, 'currency']) || this.currency
 				});
-			},
+			}
 
 			_toHashString(value) {
 				if (!value) {
 					return '';
 				}
 				return value.amount + value.currency;
-			},
+			}
 
 			_fromHashString(value) {
 				if (value == null || value === '') {
@@ -319,7 +319,7 @@
 					currency: params[2]
 				};
 			}
-		});
-
+		}
+		customElements.define(CosmozOmnitableColumnAmount.is, CosmozOmnitableColumnAmount);
 	</script>
 </dom-module>
