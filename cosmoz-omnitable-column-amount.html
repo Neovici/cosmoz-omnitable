@@ -1,5 +1,7 @@
 <link rel="import" href="cosmoz-omnitable-column-behavior.html">
 <link rel="import" href="cosmoz-omnitable-column-range-behavior.html">
+<link rel="import" href="../shadycss/apply-shim.html">
+<link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
@@ -38,7 +40,9 @@
 		</template>
 	</template>
 	<script type="text/javascript">
-		class CosmozOmnitableColumnAmount extends Polymer.mixinBehaviors([
+		window.Cosmoz  = window.Cosmoz || {};
+
+		class OmnitableColumnAmount extends Polymer.mixinBehaviors([
 			Cosmoz.OmnitableColumnBehavior,
 			Cosmoz.TranslatableBehavior,
 			Cosmoz.RangeColumnBehavior
@@ -97,6 +101,11 @@
 						computed: '_computeFilterText(filter.*, _formatters)'
 					}
 				};
+			}
+
+			_computeFilterText() {
+				// TODO: for linting, remove when fully moved to 2.x class based and mixinBehaviors is removed
+				return Cosmoz.RangeColumnBehavior._computeFilterText.apply(this, arguments);
 			}
 			/**
 			* Auto-detect currency property: Most frequently occurring currency
@@ -320,6 +329,8 @@
 				};
 			}
 		}
-		customElements.define(CosmozOmnitableColumnAmount.is, CosmozOmnitableColumnAmount);
+		customElements.define(OmnitableColumnAmount.is, OmnitableColumnAmount);
+
+		Cosmoz.OmnitableColumnAmount = OmnitableColumnAmount;
 	</script>
 </dom-module>

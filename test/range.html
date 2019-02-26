@@ -225,8 +225,8 @@
 					});
 				});
 
-				test('instantiates a cosmoz-omnitable-column-amount', () => {
-					assert.equal(column.is, 'cosmoz-omnitable-column-amount');
+				test('column is an instance of the correct class', () => {
+					assert.instanceOf(column, Cosmoz.OmnitableColumnAmount);
 				});
 
 				test('toAmount returns a valid amount', () => {
@@ -359,8 +359,8 @@
 					});
 				});
 
-				test('instantiates a cosmoz-omnitable-column-amount', () => {
-					assert.equal(column.is, 'cosmoz-omnitable-column-amount');
+				test('column is an instance of the correct class', () => {
+					assert.instanceOf(column, Cosmoz.OmnitableColumnAmount);
 				});
 
 				test('getComparableValue with rates returns value', () => {
