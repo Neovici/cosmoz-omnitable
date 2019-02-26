@@ -164,7 +164,7 @@
 				omnitable.flushDebouncer('sortItems');
 				const groupOnColumn = omnitable.groupOnColumn;
 				assert.equal(typeof groupOnColumn, 'object');
-				assert.equal(groupOnColumn.is, 'cosmoz-omnitable-column-amount');
+				assert.instanceOf(groupOnColumn, Cosmoz.OmnitableColumnAmount);
 				assert.equal(groupOnColumn.name, 'amount', 'Expected "groupOnColumn" to be the column that matches "groupOn" value');
 				assert.equal(groupOnColumn, omnitable.columns[0]);
 			});
