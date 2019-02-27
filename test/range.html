@@ -285,7 +285,6 @@
 				});
 
 				test('computes array of formaters', () => {
-					omnitable.$.groupedList.flushDebouncer('render');
 					flush();
 					const formatters = column._formatters;
 					Object.keys(formatters).forEach(el => {
