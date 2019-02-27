@@ -1,21 +1,23 @@
-<link rel="import" href="cosmoz-omnitable-column-behavior.html">
-<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html"/>
-<link rel="import" href="../paper-listbox/paper-listbox.html"/>
-<link rel="import" href="../paper-item/paper-item.html"/>
+<link rel="import" href="cosmoz-omnitable-column-behavior.html" />
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html" />
+<link rel="import" href="../paper-listbox/paper-listbox.html" />
+<link rel="import" href="../paper-item/paper-item.html" />
 
 <dom-module id="cosmoz-omnitable-column-boolean">
 	<template>
-
 		<template class="cell">
 			[[ getString(item, valuePath) ]]
 		</template>
 
 		<template class="edit-cell">
 			<paper-dropdown-menu>
-				<paper-listbox class="dropdown-content" slot="dropdown-content"
+				<paper-listbox
+					class="dropdown-content"
+					slot="dropdown-content"
 					attr-for-selected="value"
 					selected="[[ _computeSelected(item, valuePath) ]]"
-					on-selected-item-changed="_valueChanged">
+					on-selected-item-changed="_valueChanged"
+				>
 					<paper-item value="true">[[ trueLabel ]]</paper-item>
 					<paper-item value="false">[[ falseLabel ]]</paper-item>
 				</paper-listbox>
@@ -23,9 +25,17 @@
 		</template>
 
 		<template class="header">
-			<paper-dropdown-menu label="[[ title ]]"
-					horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
-				<paper-listbox class="dropdown-content" slot="dropdown-content" attr-for-selected="value" selected="{{ _textFilter }}">
+			<paper-dropdown-menu
+				label="[[ title ]]"
+				horizontal-align="[[ preferredDropdownHorizontalAlign ]]"
+				opened="{{ headerFocused }}"
+			>
+				<paper-listbox
+					class="dropdown-content"
+					slot="dropdown-content"
+					attr-for-selected="value"
+					selected="{{ _textFilter }}"
+				>
 					<paper-item value=""></paper-item>
 					<paper-item value="true">[[ trueLabel ]]</paper-item>
 					<paper-item value="false">[[ falseLabel ]]</paper-item>
@@ -34,114 +44,102 @@
 		</template>
 	</template>
 	<script>
-		window.Cosmoz  = window.Cosmoz || {};
+		Polymer({
+			is: 'cosmoz-omnitable-column-boolean',
 
-		class OmnitableColumnBoolean extends Polymer.mixinBehaviors([
-			Cosmoz.OmnitableColumnBehavior
-		], Polymer.Element) {
-			static get is() {
-				return 'cosmoz-omnitable-column-boolean';
-			}
-			static get observers() {
-				return [
-					'_filterChanged(filter, _filterChangedFromInput)',
-					'_textFilterChanged(_textFilter, _filterChangedFromAbove)'
-				];
-			}
-			static get properties() {
-				return {
-					filter: {
-						type: Boolean,
-						notify: true,
-						value() {
-							return this._getDefaultFilter();
-						}
-					},
-
-					trueLabel: {
-						type: String,
-						value: 'True'
-					},
-
-					falseLabel: {
-						type: String,
-						value: 'False'
-					},
-
-					// TODO(pasleq): same questions as for cosmoz-omnitable-column-date
-					_filterChangedFromInput: {
-						type: Boolean,
-						value: false
-					},
-
-					_filterChangedFromAbove: {
-						type: Boolean,
-						value: false
-					},
-
-					_textFilter: {
-						type: String,
-					},
-
-					templatetemplateWidth: {
-						type: String,
-						value: '60px'
-					},
-
-					/**
-					* No need to grow, as the values in a boolean column should have known fixed width
-					* @returns {String} Default flex
-					*/
-					flex: {
-						type: String,
-						value: '0'
+			properties: {
+				filter: {
+					type: Boolean,
+					notify: true,
+					value() {
+						return this._getDefaultFilter();
 					}
-				};
-			}
+				},
 
-			_textFilterChanged(textFilter, filterChangedFromAbove) {
-				if (filterChangedFromAbove) {
-					this.set('_filterChangedFromAbove', false);
+				trueLabel: {
+					type: String,
+					value: 'True'
+				},
+
+				falseLabel: {
+					type: String,
+					value: 'False'
+				},
+
+				_textFilter: {
+					type: String,
+					observer: '_textFilterChanged'
+				},
+
+				templatetemplateWidth: {
+					type: String,
+					value: '60px'
+				},
+
+				/**
+				 * No need to grow, as the values in a boolean column should have known fixed width
+				 * @returns {String} Default flex
+				 */
+				flex: {
+					type: String,
+					value: '0'
+				}
+			},
+
+			behaviors: [Cosmoz.OmnitableColumnBehavior],
+
+			observers: ['_filterChanged(filter)'],
+
+			// TODO(pasleq): same questions as for cosmoz-omnitable-column-date
+
+			_filterChangedFromInput: false,
+
+			_filterChangedFromAbove: false,
+
+			_textFilterChanged(textFilter) {
+				if (this._filterChangedFromAbove) {
+					this._filterChangedFromAbove = false;
 					return;
 				}
-				this.set('_filterChangedFromInput', true);
+				this._filterChangedFromInput = true;
 				if (textFilter) {
 					this.set('filter', textFilter === 'true' ? true : false);
 				} else {
 					this.set('filter', null);
 				}
-			}
+			},
 
-			_filterChanged(filter, filterChangedFromInput) {
-				if (filterChangedFromInput) {
-					this.set('_filterChangedFromInput', false);
+			_filterChanged(filter) {
+				if (this._filterChangedFromInput) {
+					this._filterChangedFromInput = false;
 					return;
 				}
-				this.set('_filterChangedFromAbove', true);
-				this.set('_textFilter', typeof filter === 'boolean' ? filter.toString() : null);
-			}
+				this._filterChangedFromAbove = true;
+				this._textFilter =
+					typeof filter === 'boolean' ? filter.toString() : null;
+			},
 
 			getString(item, valuePath) {
 				const value = this.get(valuePath || this.valuePath, item);
 				return value ? this.trueLabel : this.falseLabel;
-			}
+			},
 
 			getFilterFn() {
 				if (this.filter != null) {
 					return this._applySingleFilter.bind(this);
 				}
-			}
+			},
 
 			_applySingleFilter(item) {
 				return this.get(this.valuePath, item) === this.filter;
-			}
+			},
 
 			_computeSelected(item, valuePath) {
 				const value = this.get(valuePath || this.valuePath, item);
 				if (value != null) {
 					return value.toString();
 				}
-			}
+			},
 
 			/** OVERRIDES */
 
@@ -158,20 +156,25 @@
 					return;
 				}
 				this.set(this.valuePath, value, item);
-				this._fireItemChangeEvent(item, this.valuePath, oldValue, formatFn.bind(this));
-			}
+				this._fireItemChangeEvent(
+					item,
+					this.valuePath,
+					oldValue,
+					formatFn.bind(this)
+				);
+			},
 
 			_serializeFilter(obj = this.filter) {
 				if (obj == null || obj === '') {
 					return null;
 				}
 				return this.serialize(obj ? 'true' : 'false');
-			}
+			},
 
 			_deserializeFilter(obj) {
 				const value = this.deserialize(obj, String);
 				return value === 'true' ? true : value === 'false' ? false : null;
-			}
+			},
 
 			toXlsxValue(item, valuePath = this.valuePath) {
 				if (!valuePath) {
@@ -179,9 +182,6 @@
 				}
 				return this.get(valuePath, item) ? this.trueLabel : this.falseLabel;
 			}
-		}
-		customElements.define(OmnitableColumnBoolean.is, OmnitableColumnBoolean);
-
-		Cosmoz.OmnitableColumnBoolean = OmnitableColumnBoolean;
+		});
 	</script>
 </dom-module>
