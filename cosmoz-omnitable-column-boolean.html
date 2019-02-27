@@ -44,57 +44,62 @@
 		</template>
 	</template>
 	<script>
-		Polymer({
-			is: 'cosmoz-omnitable-column-boolean',
+		window.Cosmoz = window.Cosmoz || {};
 
-			properties: {
-				filter: {
-					type: Boolean,
-					notify: true,
-					value() {
-						return this._getDefaultFilter();
+		class OmnitableColumnBoolean extends Polymer.mixinBehaviors(
+			[Cosmoz.OmnitableColumnBehavior],
+			Polymer.Element
+		) {
+			static get is() {
+				return 'cosmoz-omnitable-column-boolean';
+			}
+
+			static get properties() {
+				return {
+					filter: {
+						type: Boolean,
+						notify: true,
+						value() {
+							return this._getDefaultFilter();
+						}
+					},
+
+					trueLabel: {
+						type: String,
+						value: 'True'
+					},
+
+					falseLabel: {
+						type: String,
+						value: 'False'
+					},
+
+					_textFilter: {
+						type: String,
+						observer: '_textFilterChanged'
+					},
+
+					templatetemplateWidth: {
+						type: String,
+						value: '60px'
+					},
+
+					/**
+					 * No need to grow, as the values in a boolean column should have known fixed width
+					 * @returns {String} Default flex
+					 */
+					flex: {
+						type: String,
+						value: '0'
 					}
-				},
+				};
+			}
 
-				trueLabel: {
-					type: String,
-					value: 'True'
-				},
-
-				falseLabel: {
-					type: String,
-					value: 'False'
-				},
-
-				_textFilter: {
-					type: String,
-					observer: '_textFilterChanged'
-				},
-
-				templatetemplateWidth: {
-					type: String,
-					value: '60px'
-				},
-
-				/**
-				 * No need to grow, as the values in a boolean column should have known fixed width
-				 * @returns {String} Default flex
-				 */
-				flex: {
-					type: String,
-					value: '0'
-				}
-			},
-
-			behaviors: [Cosmoz.OmnitableColumnBehavior],
-
-			observers: ['_filterChanged(filter)'],
+			static get observers() {
+				return ['_filterChanged(filter)'];
+			}
 
 			// TODO(pasleq): same questions as for cosmoz-omnitable-column-date
-
-			_filterChangedFromInput: false,
-
-			_filterChangedFromAbove: false,
 
 			_textFilterChanged(textFilter) {
 				if (this._filterChangedFromAbove) {
@@ -107,7 +112,7 @@
 				} else {
 					this.set('filter', null);
 				}
-			},
+			}
 
 			_filterChanged(filter) {
 				if (this._filterChangedFromInput) {
@@ -117,29 +122,29 @@
 				this._filterChangedFromAbove = true;
 				this._textFilter =
 					typeof filter === 'boolean' ? filter.toString() : null;
-			},
+			}
 
 			getString(item, valuePath) {
 				const value = this.get(valuePath || this.valuePath, item);
 				return value ? this.trueLabel : this.falseLabel;
-			},
+			}
 
 			getFilterFn() {
 				if (this.filter != null) {
 					return this._applySingleFilter.bind(this);
 				}
-			},
+			}
 
 			_applySingleFilter(item) {
 				return this.get(this.valuePath, item) === this.filter;
-			},
+			}
 
 			_computeSelected(item, valuePath) {
 				const value = this.get(valuePath || this.valuePath, item);
 				if (value != null) {
 					return value.toString();
 				}
-			},
+			}
 
 			/** OVERRIDES */
 
@@ -162,19 +167,19 @@
 					oldValue,
 					formatFn.bind(this)
 				);
-			},
+			}
 
 			_serializeFilter(obj = this.filter) {
 				if (obj == null || obj === '') {
 					return null;
 				}
 				return this.serialize(obj ? 'true' : 'false');
-			},
+			}
 
 			_deserializeFilter(obj) {
 				const value = this.deserialize(obj, String);
 				return value === 'true' ? true : value === 'false' ? false : null;
-			},
+			}
 
 			toXlsxValue(item, valuePath = this.valuePath) {
 				if (!valuePath) {
@@ -182,6 +187,9 @@
 				}
 				return this.get(valuePath, item) ? this.trueLabel : this.falseLabel;
 			}
-		});
+		}
+		customElements.define(OmnitableColumnBoolean.is, OmnitableColumnBoolean);
+
+		Cosmoz.OmnitableColumnBoolean = OmnitableColumnBoolean;
 	</script>
 </dom-module>
