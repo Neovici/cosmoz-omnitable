@@ -48,7 +48,7 @@
 	<test-fixture id="externalValues">
 		<template>
 			<cosmoz-omnitable class="flex">
-				<cosmoz-omnitable-column-number title="Age" name="age" value-path="age" maximum-fraction-digits=2 external-values>
+				<cosmoz-omnitable-column-number title="Age" name="age" value-path="age" maximum-fraction-digits=2 external-values></cosmoz-omnitable-column-number>
 			</cosmoz-omnitable>
 		</template>
 	</test-fixture>
@@ -284,11 +284,13 @@
 					assert.equal(column.getCurrency(data[4], 'amount'), 'DKK');
 				});
 
-				test('computes array of formaters', () => {
-					flush();
-					const formatters = column._formatters;
-					Object.keys(formatters).forEach(el => {
-						assert.include(['SEK', 'USD', 'AUD', 'EUR', 'DKK'], el);
+				test('computes array of formaters', done => {
+					flush(() => {
+						const formatters = column._formatters;
+						Object.keys(formatters).forEach(el => {
+							assert.include(['SEK', 'USD', 'AUD', 'EUR', 'DKK'], el);
+						});
+						done();
 					});
 				});
 
