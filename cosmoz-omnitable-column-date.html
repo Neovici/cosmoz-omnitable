@@ -1,12 +1,12 @@
-<link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-behavior.html" />
 
-<link rel="import" href="../paper-input/paper-input.html">
-<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-input/paper-input.html" />
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html" />
 
-<link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
+<link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html" />
 
-<link rel="import" href="ui-helpers/cosmoz-clear-button.html">
-<link rel="import" href="cosmoz-omnitable-column-date-behavior.html">
+<link rel="import" href="ui-helpers/cosmoz-clear-button.html" />
+<link rel="import" href="cosmoz-omnitable-column-date-behavior.html" />
 
 <dom-module id="cosmoz-omnitable-column-date">
 	<template>
@@ -15,52 +15,84 @@
 		</template>
 
 		<template class="edit-cell">
-			<paper-input no-label-float type="date" on-change="_dateValueChanged"
-				value="[[ getInputString(item, valuePath) ]]">
+			<paper-input
+				no-label-float
+				type="date"
+				on-change="_dateValueChanged"
+				value="[[ getInputString(item, valuePath) ]]"
+			>
 			</paper-input>
 		</template>
 
 		<template class="header">
-			<cosmoz-clear-button on-click="resetFilter" visible="[[ hasFilter(filter.*) ]]"></cosmoz-clear-button>
-			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _tooltip ]]"
-					horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
-				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
+			<cosmoz-clear-button
+				on-click="resetFilter"
+				visible="[[ hasFilter(filter.*) ]]"
+			></cosmoz-clear-button>
+			<paper-dropdown-menu
+				label="[[ title ]]"
+				placeholder="[[ _filterText ]]"
+				title="[[ _tooltip ]]"
+				horizontal-align="[[ preferredDropdownHorizontalAlign ]]"
+				opened="{{ headerFocused }}"
+			>
+				<div
+					class="dropdown-content"
+					slot="dropdown-content"
+					style="padding: 15px; min-width: 100px;"
+				>
 					<h3 style="margin: 0;">[[ title ]]</h3>
-					<paper-input type="date" label="[[ _('From date', t) ]]"
-						min="[[ _toInputString(_limit.fromMin) ]]" max="[[ _toInputString(_limit.fromMax) ]]"
-						value="{{ _filterInput.min }}">
+					<paper-input
+						type="date"
+						label="[[ _('From date', t) ]]"
+						min="[[ _toInputString(_limit.fromMin) ]]"
+						max="[[ _toInputString(_limit.fromMax) ]]"
+						value="{{ _filterInput.min }}"
+					>
 					</paper-input>
-					<paper-input type="date" label="[[ _('Until date', t) ]]"
-						min="[[ _toInputString(_limit.toMin) ]]" max="[[ _toInputString(_limit.toMax) ]]"
-						value="{{ _filterInput.max }}">
+					<paper-input
+						type="date"
+						label="[[ _('Until date', t) ]]"
+						min="[[ _toInputString(_limit.toMin) ]]"
+						max="[[ _toInputString(_limit.toMax) ]]"
+						value="{{ _filterInput.max }}"
+					>
 					</paper-input>
 				</div>
 			</paper-dropdown-menu>
 		</template>
 	</template>
 	<script>
-		/*global Cosmoz */
-		Polymer({
-			is: 'cosmoz-omnitable-column-date',
-			properties: {
-				headerCellClass: {
-					type: String,
-					value: 'date-header-cell'
-				},
-				minWidth: {
-					type: String,
-					value: '82px'
-				},
-				editMinWidth: {
-					type: String,
-					value: '82px'
-				}
-			},
-			behaviors: [
+		window.Cosmoz = window.Cosmoz || {};
+
+		class OmnitableColumnDate extends Polymer.mixinBehaviors(
+			[
 				Cosmoz.OmnitableColumnBehavior,
 				Cosmoz.TranslatableBehavior,
 				Cosmoz.DateColumnBehavior
 			],
+			Polymer.Element
+		) {
+			static get is() {
+				return 'cosmoz-omnitable-column-date';
+			}
+
+			static get properties() {
+				return {
+					headerCellClass: {
+						type: String,
+						value: 'date-header-cell'
+					},
+					minWidth: {
+						type: String,
+						value: '82px'
+					},
+					editMinWidth: {
+						type: String,
+						value: '82px'
+					}
+				};
+			}
 
 			_fromInputString(value, property) {
 				const date = this.toDate(value);
@@ -74,7 +106,7 @@
 					date.setHours(23, 59, 59);
 				}
 				return date;
-			},
+			}
 
 			toXlsxValue(item, valuePath = this.valuePath) {
 				if (!valuePath) {
@@ -87,7 +119,7 @@
 				const localDate = this.toValue(this._toLocalISOString(date));
 				localDate.setHours(0, 0, 0, 0);
 				return localDate;
-			},
+			}
 
 			_filterInputChanged(change) {
 				const path = change.path.split('.')[1],
@@ -98,10 +130,11 @@
 					this.cancelDebouncer('_limitInput');
 					return;
 				}
-				Cosmoz.RangeColumnBehavior._filterInputChanged.call(this, change);
+				super._filterInputChanged(change);
 			}
+		}
+		customElements.define(OmnitableColumnDate.is, OmnitableColumnDate);
 
-		});
-
+		Cosmoz.OmnitableColumnDate = OmnitableColumnDate;
 	</script>
 </dom-module>

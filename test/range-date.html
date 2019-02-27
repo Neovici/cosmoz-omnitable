@@ -84,7 +84,7 @@
 			});
 
 			test('instantiates a cosmoz-omnitable-column-date', () => {
-				assert.equal(column.is, 'cosmoz-omnitable-column-date');
+				assert.instanceOf(column, Cosmoz.OmnitableColumnDate);
 			});
 
 			test('toDate converts an value to valid date', () => {
