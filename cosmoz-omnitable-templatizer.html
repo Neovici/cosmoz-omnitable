@@ -1,21 +1,21 @@
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/polymer.html" />
 <script>
-(function () {
-	'use strict';
-	const IS_V2 = Polymer.flush != null;
+	window.Cosmoz = window.Cosmoz || {};
 
-	Polymer({
+	class OmnitableTemplatizer extends Polymer.mixinBehaviors(
+		[Polymer.Templatizer],
+		Polymer.Element
+	) {
+		static get is() {
+			return 'cosmoz-omnitable-templatizer';
+		}
 
-		is: 'cosmoz-omnitable-templatizer',
-
-		behaviors: [
-			Polymer.Templatizer
-		],
-
-		_templateInstancesInUse: null,
-
-		_reusableTemplateInstances: null,
-		_parentModel: true,
+		constructor() {
+			super();
+			this._templateInstancesInUse = null;
+			this._reusableTemplateInstances = null;
+			this._parentModel = true;
+		}
 
 		ready() {
 			this._instanceProps = {
@@ -24,32 +24,32 @@
 
 			this._templateInstancesInUse = [];
 			this._reusableTemplateInstances = [];
-		},
+		}
 
 		init(template, host) {
 			this._template = template;
 			this._templateHost = host;
 			this._methodHost = host;
 			this.dataHost = host;
-		},
+		}
 
 		_getRootDataHost() {
 			return this._templateHost;
-		},
+		}
 
 		_ensureTemplatized() {
 			if (!this.ctor) {
 				this.templatize(this._template);
 			}
-		},
+		}
 
 		_forwardParentProp(prop, value) {
-			const set =  instance => {
+			const set = instance => {
 				instance[prop] = value;
 			};
 			this._templateInstancesInUse.forEach(set);
 			this._reusableTemplateInstances.forEach(set);
-		},
+		}
 
 		_forwardParentPath(path, value) {
 			const notify = instance => {
@@ -57,62 +57,64 @@
 			};
 			this._templateInstancesInUse.forEach(notify);
 			this._reusableTemplateInstances.forEach(notify);
-		},
+		}
 
 		_forwardHostPropV2(prop, value) {
-			const forward =  instance => {
+			const forward = instance => {
 				instance.forwardHostProp(prop, value);
 			};
 			this._templateInstancesInUse.forEach(forward);
 			this._reusableTemplateInstances.forEach(forward);
-		},
+		}
 
 		getInstance() {
 			var instance;
 
 			if (this._reusableTemplateInstances.length > 0) {
-				instance = this._performInstanceDetach(this._reusableTemplateInstances.pop());
+				instance = this._performInstanceDetach(
+					this._reusableTemplateInstances.pop()
+				);
 			} else {
 				this._ensureTemplatized();
-				instance = this.stamp(IS_V2 ? null : {});
+				instance = this.stamp(null);
 			}
 
 			this._templateInstancesInUse.push(instance);
 			instance.__detached__ = false;
 			return instance;
-		},
+		}
 
 		detachInstance(instance) {
 			this.releaseInstance(instance);
 			this._performInstanceDetach(instance);
-		},
+		}
 
 		releaseInstance(instance) {
-			const index  = this._templateInstancesInUse.indexOf(instance);
+			const index = this._templateInstancesInUse.indexOf(instance);
 			if (index < 0) {
 				return;
 			}
 			this._templateInstancesInUse.splice(index, 1);
 			this._reusableTemplateInstances.push(instance);
-		},
+		}
 
 		detached() {
 			// This runs only in 2.x because in 1.x the templatizer isn't even attached.
 			this._reusableTemplateInstances.splice(0);
 			this._templateInstancesInUse.splice(0);
-		},
+		}
 
 		releaseInstances() {
 			this._reusableTemplateInstances = this._templateInstancesInUse;
 			this._templateInstancesInUse = [];
-		},
+		}
 
 		_performInstanceDetach(instance) {
 			if (instance.__detached__) {
 				return instance;
 			}
 
-			const children = IS_V2 ? instance.children : instance._children;
+			const children = instance.children;
 
 			for (let i = 0; i < children.length; i++) {
 				Polymer.dom(instance.root).appendChild(children[i]);
@@ -121,7 +123,8 @@
 			instance.__detached__ = true;
 			return instance;
 		}
+	}
+	customElements.define(OmnitableTemplatizer.is, OmnitableTemplatizer);
 
-	});
-}());
+	Cosmoz.OmnitableTemplatizer = OmnitableTemplatizer;
 </script>
