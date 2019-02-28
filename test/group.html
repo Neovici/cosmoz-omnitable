@@ -89,7 +89,7 @@
 				assert.equal(omnitable.groupOn, 'id');
 				const groupOnColumn = omnitable.groupOnColumn;
 				assert.equal(typeof groupOnColumn, 'object');
-				assert.equal(groupOnColumn.is, 'cosmoz-omnitable-column');
+				assert.instanceOf(groupOnColumn, Cosmoz.OmnitableColumn);
 				assert.equal(groupOnColumn.name, 'id', 'Expected "groupOnColumn" to be the column that matches "groupOn" value');
 				assert.equal(groupOnColumn, omnitable.columns[0]);
 			});
