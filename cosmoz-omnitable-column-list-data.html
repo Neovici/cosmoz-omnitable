@@ -86,12 +86,12 @@
 
 			isEmpty() {
 				// FIXME: remove this when TemplateHelperBehavior is a 2.x mixin
-				Cosmoz.TemplateHelperBehavior.isEmpty.apply(this, arguments);
+				return Cosmoz.TemplateHelperBehavior.isEmpty.apply(this, arguments);
 			}
 
 			_() {
 				// FIXME: remove this when TranslatableBehavior is a 2.x mixin
-				Cosmoz.TranslatableBehavior._.apply(this, arguments);
+				return Cosmoz.TranslatableBehavior._.apply(this, arguments);
 			}
 
 			_firstItem(items) {
