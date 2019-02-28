@@ -105,7 +105,7 @@
 				});
 
 				test('instantiates a cosmoz-omnitable-column-number', () => {
-					assert.equal(column.is, 'cosmoz-omnitable-column-number');
+					assert.instanceOf(column, Cosmoz.OmnitableColumnNumber);
 				});
 
 				test('toNumber convers a value to Number', () => {

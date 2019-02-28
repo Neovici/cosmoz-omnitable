@@ -36,49 +36,65 @@
 		</template>
 	</template>
 	<script>
-		Polymer({
-			is: 'cosmoz-omnitable-column-number',
+		window.Cosmoz = window.Cosmoz || {};
 
-			behaviors: [
+		class OmnitableColumnNumber extends Polymer.mixinBehaviors(
+			[
 				Cosmoz.OmnitableColumnBehavior,
 				Cosmoz.TranslatableBehavior,
 				Cosmoz.RangeColumnBehavior
 			],
+			Polymer.Element
+		) {
+			static get is() {
+				return 'cosmoz-omnitable-column-number';
+			}
 
-			properties: {
-				cellClass: {
-					type: String,
-					value: 'number-cell align-right'
-				},
-				width: {
-					type: String,
-					value: '30px'
-				},
-				editWidth: {
-					type: String,
-					value: '30px'
-				},
-				headerCellClass: {
-					type: String,
-					value: 'number-header-cell'
-				},
-				maximumFractionDigits: {
-					type: Number,
-					value: null
-				},
-				minimumFractionDigits: {
-					type: Number,
-					value: null // browser default 0 for numbers, currency-specific or 2 for currency
-				},
-				formatter: {
-					type: Object,
-					computed: '_computeFormatter(locale, minimumFractionDigits, maximumFractionDigits)'
-				},
-				_filterText: {
-					type: String,
-					computed: '_computeFilterText(filter.*, formatter)'
-				}
-			},
+			static get properties() {
+				return {
+					cellClass: {
+						type: String,
+						value: 'number-cell align-right'
+					},
+					width: {
+						type: String,
+						value: '30px'
+					},
+					editWidth: {
+						type: String,
+						value: '30px'
+					},
+					headerCellClass: {
+						type: String,
+						value: 'number-header-cell'
+					},
+					maximumFractionDigits: {
+						type: Number,
+						value: null
+					},
+					minimumFractionDigits: {
+						type: Number,
+						value: null // browser default 0 for numbers, currency-specific or 2 for currency
+					},
+					formatter: {
+						type: Object,
+						computed:
+							'_computeFormatter(locale, minimumFractionDigits, maximumFractionDigits)'
+					},
+					_filterText: {
+						type: String,
+						computed: '_computeFilterText(filter.*, formatter)'
+					}
+				};
+			}
+
+			_computeFilterText() {
+				// FIXME: remove when RangeColumnBehavior is a 2.x mixin
+				return super._computeFilterText.apply(
+					this,
+					arguments
+				);
+			}
 
 			_computeFormatter(locale, minimumFractionDigits, maximumFractionDigits) {
 				const options = {
@@ -91,7 +107,7 @@
 					options.maximumFractionDigits = maximumFractionDigits;
 				}
 				return new Intl.NumberFormat(locale || undefined, options);
-			},
+			}
 
 			/**
 			 *   Get the comparable value of an item.
@@ -118,7 +134,7 @@
 					return this.toValue(value.toFixed(decimals));
 				}
 				return value;
-			},
+			}
 
 			renderValue(value, formatter = this.formatter) {
 				const number = this.toNumber(value);
@@ -126,7 +142,10 @@
 					return;
 				}
 				return formatter.format(number);
-			},
-		});
+			}
+		}
+		customElements.define(OmnitableColumnNumber.is, OmnitableColumnNumber);
+
+		Cosmoz.OmnitableColumnNumber = OmnitableColumnNumber;
 	</script>
 </dom-module>
