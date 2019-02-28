@@ -25,16 +25,18 @@
 		</style>
 
 		<ul hidden$="[[ isEmpty(items) ]]">
-			<li>
-				<span>[[ _firstItem(items) ]]</span>
-			</li>
+			<li><span>[[ _firstItem(items) ]]</span></li>
 			<li class="see-more" hidden$="[[_hideExpand(items, _expanded)]]">
-				<a href="#" on-tap="_toggleExpand">[[ _('and {0} more', _othersCount, t) ]]</a>
+				<a href="#" on-tap="_toggleExpand"
+					>[[ _('and {0} more', _othersCount, t) ]]</a
+				>
 			</li>
-			<template is="dom-repeat" items="[[ _otherItems(items, _expanded) ]]" as="item">
-				<li>
-					<span class="item">[[ item ]]</span>
-				</li>
+			<template
+				is="dom-repeat"
+				items="[[ _otherItems(items, _expanded) ]]"
+				as="item"
+			>
+				<li><span class="item">[[ item ]]</span></li>
 			</template>
 			<li class="see-less" hidden$="[[ _hideCollapse(items, _expanded) ]]">
 				<a href="#" on-tap="_toggleExpand">[[ _('See less', t) ]]</a>
@@ -42,50 +44,75 @@
 		</ul>
 	</template>
 	<script>
-		Polymer({
-			is: 'cosmoz-omnitable-column-list-data',
+		window.Cosmoz = window.Cosmoz || {};
 
-			properties: {
-				items: {
-					type: Array
-				},
-
-				_expanded: {
-					type: Boolean,
-					value: false
-				},
-
-				_othersCount: {
-					type: Number,
-					computed: '_computeOthersCount(items)'
-				}
-			},
-
-			behaviors: [
+		class OmnitableColumnListData extends Polymer.mixinBehaviors(
+			[
 				Cosmoz.TemplateHelperBehavior,
 				Cosmoz.TranslatableBehavior,
 				Polymer.IronResizableBehavior
 			],
+			Polymer.Element
+		) {
+			static get is() {
+				return 'cosmoz-omnitable-column-list-data';
+			}
+
+			static get properties() {
+				return {
+					items: {
+						type: Array
+					},
+
+					_expanded: {
+						type: Boolean,
+						value: false
+					},
+
+					_othersCount: {
+						type: Number,
+						computed: '_computeOthersCount(items)'
+					},
+
+					// FIXME: remove when TranslatableBehavior is a 2.x mixin
+					t: {
+						type: Object,
+						value() {
+							return {};
+						}
+					}
+				};
+			}
+
+			isEmpty() {
+				// FIXME: remove this when TemplateHelperBehavior is a 2.x mixin
+				Cosmoz.TemplateHelperBehavior.isEmpty.apply(this, arguments);
+			}
+
+			_() {
+				// FIXME: remove this when TranslatableBehavior is a 2.x mixin
+				Cosmoz.TranslatableBehavior._.apply(this, arguments);
+			}
 
 			_firstItem(items) {
 				if (items !== undefined && items !== null && items.length > 0) {
 					return items[0];
 				}
-			},
+			}
 
 			_hideExpand(items, expanded) {
 				if (items !== undefined && items.length !== null) {
 					return items.length <= 2 || expanded;
 				}
 				return true;
-			},
+			}
 
 			_hideCollapse(items, expanded) {
 				if (items !== undefined && items.length !== null) {
 					return items.length <= 2 || !expanded;
 				}
 				return true;
-			},
+			}
 
 			_otherItems(items, expanded) {
 				if (items !== undefined && items !== null) {
@@ -93,13 +120,13 @@
 						return items.slice(1);
 					}
 				}
-			},
+			}
 
 			_computeOthersCount(items) {
 				if (items !== undefined && items !== null) {
 					return items.length - 1;
 				}
-			},
+			}
 
 			_toggleExpand(event) {
 				this._expanded = !this._expanded;
@@ -107,6 +134,9 @@
 				event.preventDefault();
 				this.fire('iron-resize');
 			}
-		});
+		}
+		customElements.define(OmnitableColumnListData.is, OmnitableColumnListData);
+
+		Cosmoz.OmnitableColumnListData = OmnitableColumnListData;
 	</script>
 </dom-module>
