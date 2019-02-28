@@ -99,7 +99,7 @@
 			});
 
 			test('initializes list column', () => {
-				assert.equal(column.is, 'cosmoz-omnitable-column-list-horizontal');
+				assert.instanceOf(column, Cosmoz.OmnitableColumnListHorizontal);
 			});
 
 			test('_getDefaultFilter returns []', () => {
