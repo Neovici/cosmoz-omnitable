@@ -304,7 +304,7 @@
 			});
 
 			test('instantiates a cosmoz-omnitable-column-time', () => {
-				assert.equal(column.is, 'cosmoz-omnitable-column-time');
+				assert.instanceOf(column, Cosmoz.OmnitableColumnTime);
 			});
 
 			test('time toDate converts timestamp to valid date', () => {
