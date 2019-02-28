@@ -9,8 +9,12 @@
 	<script>
 		window.Cosmoz = window.Cosmoz || {};
 
-		class OmnitableGroupRow extends Polymer.mixinBehaviors(
-			[Cosmoz.OmnitableRepeaterBehavior],
+		/**
+		 * @polymer
+		 * @customElement
+		 * @appliesMixin Cosmoz.OmnitableRepeaterBehavior
+		 */
+		class OmnitableGroupRow extends Cosmoz.OmnitableRepeaterBehavior(
 			Polymer.Element
 		) {
 			static get is() {
@@ -76,7 +80,7 @@
 					this._forwardProperty(instance, 'item', this.item);
 					this._forwardProperty(instance, 'selected', this.selected);
 					this._forwardProperty(instance, 'folded', this.folded);
-					this._forwardPropertiesFlush(instance);
+					instance._flushProperties(true);
 				}
 			}
 
