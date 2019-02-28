@@ -1,109 +1,128 @@
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="cosmoz-omnitable-repeater-behavior.html">
-<link rel="import" href="../iron-flex-layout/iron-flex-layout.html"/>
+<link rel="import" href="../polymer/polymer.html" />
+<link rel="import" href="cosmoz-omnitable-repeater-behavior.html" />
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html" />
 
 <dom-module id="cosmoz-omnitable-group-row">
 	<template>
 		<slot name="group-row"></slot>
 	</template>
 	<script>
-(function () {
-	Polymer({
+		window.Cosmoz = window.Cosmoz || {};
 
-		is: 'cosmoz-omnitable-group-row',
-
-		behaviors: [
-			Cosmoz.OmnitableRepeaterBehavior
-		],
-
-		properties: {
-
-			column: {
-				type: Object,
-				observer: '_columnChanged'
-			},
-
-			item: {
-				type: Object
-			},
-
-			selected: {
-				type: Boolean,
-				observer: '_selectedChanged'
-			},
-
-			folded: {
-				type: Boolean,
-				observer: '_foldedChanged'
-			},
-		},
-
-		observers: [
-			'_itemUpdated(item.*)',
-		],
-
-		_elementType: 'div',
-
-		_slotName: 'group-row',
-
-		_columnChanged(newColumn) {
-			if (!newColumn) {
-				return;
+		class OmnitableGroupRow extends Polymer.mixinBehaviors(
+			[Cosmoz.OmnitableRepeaterBehavior],
+			Polymer.Element
+		) {
+			static get is() {
+				return 'cosmoz-omnitable-group-row';
 			}
-			if (this.columns && this.columns.length > 0) {
-				this.splice('columns', 0, 1, newColumn);
-				return;
+
+			static get properties() {
+				return {
+					column: {
+						type: Object,
+						observer: '_columnChanged'
+					},
+
+					item: {
+						type: Object
+					},
+
+					selected: {
+						type: Boolean,
+						observer: '_selectedChanged'
+					},
+
+					folded: {
+						type: Boolean,
+						observer: '_foldedChanged'
+					}
+				};
 			}
-			this.columns =  [newColumn];
-		},
 
-		_getTemplateInstance(column) {
-			return column.dataTemplatizer.getInstance();
-		},
-
-		_detachTemplateInstance(instance, column, element) {
-			column.dataTemplatizer.detachInstance(instance, element);
-		},
-
-		_configureTemplateInstance(instance) {
-			if (instance.item !== this.item && this.item !== undefined) {
-				this._forwardProperty(instance, 'item', this.item);
-				this._forwardProperty(instance, 'selected', this.selected);
-				this._forwardProperty(instance, 'folded', this.folded);
-				this._forwardPropertiesFlush(instance);
+			static get observers() {
+				return ['_itemUpdated(item.*)'];
 			}
-		},
 
-		_itemUpdated(itemChange) {
-			if (itemChange.path === 'item') {
-				this.elements.forEach(function (element) {
-					this._forwardProperty(this.getElementTemplateInstance(element), 'item', itemChange.value, true);
-				}, this);
-			} else {
-				this.elements.forEach(function (element) {
-					this._forwardNotifyPath(this.getElementTemplateInstance(element), itemChange.path, itemChange.value, true, true);
-				}, this);
+			get _elementType() {
+				return 'div';
 			}
-		},
 
-		_selectedChanged(selected) {
-			this.templateInstances.forEach(instance => {
-				this._forwardProperty(instance, 'selected', selected, true);
-			});
-		},
+			get _slotName() {
+				return 'group-row';
+			}
 
-		_expandedChanged(expanded) {
-			this.templateInstances.forEach(instance => {
-				this._forwardProperty(instance, 'expanded', expanded, true);
-			});
-		},
+			_columnChanged(newColumn) {
+				if (!newColumn) {
+					return;
+				}
+				if (this.columns && this.columns.length > 0) {
+					this.splice('columns', 0, 1, newColumn);
+					return;
+				}
+				this.columns = [newColumn];
+			}
 
-		_foldedChanged(folded) {
-			this.templateInstances.forEach(instance => {
-				this._forwardProperty(instance, 'folded', folded, true);
-			});
-		},
-	});
-}());
+			_getTemplateInstance(column) {
+				return column.dataTemplatizer.getInstance();
+			}
+
+			_detachTemplateInstance(instance, column, element) {
+				column.dataTemplatizer.detachInstance(instance, element);
+			}
+
+			_configureTemplateInstance(instance) {
+				if (instance.item !== this.item && this.item !== undefined) {
+					this._forwardProperty(instance, 'item', this.item);
+					this._forwardProperty(instance, 'selected', this.selected);
+					this._forwardProperty(instance, 'folded', this.folded);
+					this._forwardPropertiesFlush(instance);
+				}
+			}
+
+			_itemUpdated(itemChange) {
+				if (itemChange.path === 'item') {
+					this.elements.forEach(function (element) {
+						this._forwardProperty(
+							this.getElementTemplateInstance(element),
+							'item',
+							itemChange.value,
+							true
+						);
+					}, this);
+				} else {
+					this.elements.forEach(function (element) {
+						this._forwardNotifyPath(
+							this.getElementTemplateInstance(element),
+							itemChange.path,
+							itemChange.value,
+							true,
+							true
+						);
+					}, this);
+				}
+			}
+
+			_selectedChanged(selected) {
+				this.templateInstances.forEach(instance => {
+					this._forwardProperty(instance, 'selected', selected, true);
+				});
+			}
+
+			_expandedChanged(expanded) {
+				this.templateInstances.forEach(instance => {
+					this._forwardProperty(instance, 'expanded', expanded, true);
+				});
+			}
+
+			_foldedChanged(folded) {
+				this.templateInstances.forEach(instance => {
+					this._forwardProperty(instance, 'folded', folded, true);
+				});
+			}
+		}
+		customElements.define(OmnitableGroupRow.is, OmnitableGroupRow);
+
+		Cosmoz.OmnitableGroupRow = OmnitableGroupRow;
 	</script>
 </dom-module>
