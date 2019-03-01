@@ -1,5 +1,5 @@
 <link rel="import" href="../polymer/polymer.html" />
-<link rel="import" href="cosmoz-omnitable-repeater-behavior.html" />
+<link rel="import" href="cosmoz-omnitable-repeater-mixin.html" />
 <link rel="import" href="cosmoz-omnitable-item-expand-line.html" />
 
 <dom-module id="cosmoz-omnitable-item-expand">
@@ -34,9 +34,9 @@
 	/**
 	 * @polymer
 	 * @customElement
-	 * @appliesMixin Cosmoz.OmnitableRepeaterBehavior
+	 * @appliesMixin Cosmoz.OmnitableRepeaterMixin
 	 */
-	class OmnitableItemExpand extends Cosmoz.OmnitableRepeaterBehavior(
+	class OmnitableItemExpand extends Cosmoz.OmnitableRepeaterMixin(
 		Polymer.Element
 	) {
 		static get is() {

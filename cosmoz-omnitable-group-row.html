@@ -1,5 +1,5 @@
 <link rel="import" href="../polymer/polymer.html" />
-<link rel="import" href="cosmoz-omnitable-repeater-behavior.html" />
+<link rel="import" href="cosmoz-omnitable-repeater-mixin.html" />
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html" />
 
 <dom-module id="cosmoz-omnitable-group-row">
@@ -12,9 +12,9 @@
 		/**
 		 * @polymer
 		 * @customElement
-		 * @appliesMixin Cosmoz.OmnitableRepeaterBehavior
+		 * @appliesMixin Cosmoz.OmnitableRepeaterMixin
 		 */
-		class OmnitableGroupRow extends Cosmoz.OmnitableRepeaterBehavior(
+		class OmnitableGroupRow extends Cosmoz.OmnitableRepeaterMixin(
 			Polymer.Element
 		) {
 			static get is() {
