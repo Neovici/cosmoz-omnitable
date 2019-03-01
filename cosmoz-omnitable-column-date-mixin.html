@@ -10,7 +10,7 @@ window.Cosmoz = window.Cosmoz || {};
  * @param {class} base The base class
  * @returns {class} The base class with the mixin applied
  */
-Cosmoz.DateColumnMixin = base =>
+Cosmoz.DateColumnMixin = Polymer.dedupingMixin(base =>
 	/**
 	 * @polymer
 	 * @mixinClass
@@ -179,5 +179,6 @@ Cosmoz.DateColumnMixin = base =>
 				':' + pad(date.getSeconds()) +
 				'.' + (date.getMilliseconds() / 1000).toFixed(3).slice(2, 5);
 		}
-	};
+	}
+);
 </script>

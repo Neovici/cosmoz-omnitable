@@ -7,7 +7,7 @@ window.Cosmoz = window.Cosmoz || {};
  * @param {class} base The base class
  * @returns {class} The base class with the mixin applied
  */
-Cosmoz.RangeColumnMixin = base =>
+Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 	/**
 	 * @polymer
 	 * @mixinClass
@@ -444,5 +444,6 @@ Cosmoz.RangeColumnMixin = base =>
 		_fromHashString(value, property) {
 			return this._fromInputString(value, property);
 		}
-	};
+	}
+);
 </script>
