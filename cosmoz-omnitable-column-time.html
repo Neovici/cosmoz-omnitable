@@ -4,7 +4,7 @@
 <link rel="import" href="ui-helpers/cosmoz-clear-button.html">
 <link rel="import" href="cosmoz-omnitable-column-behavior.html">
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
-<link rel="import" href="cosmoz-omnitable-column-date-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-date-mixin.html">
 
 <dom-module id="cosmoz-omnitable-column-time">
 	<template>
@@ -33,18 +33,20 @@
 				</div>
 			</paper-dropdown-menu>
 		</template>
-
 	</template>
 	<script>
 		window.Cosmoz = window.Cosmoz || {};
 
-		class OmnitableColumnTime extends Polymer.mixinBehaviors(
-			[
-				Cosmoz.OmnitableColumnBehavior,
-				Cosmoz.TranslatableBehavior,
-				Cosmoz.DateColumnBehavior
-			],
-			Polymer.Element
+		/**
+		 * @polymer
+		 * @customElement
+		 * @appliesMixin Cosmoz.DateColumnMixin
+		 */
+		class OmnitableColumnTime extends Cosmoz.DateColumnMixin(
+			Polymer.mixinBehaviors(
+				[Cosmoz.OmnitableColumnBehavior, Cosmoz.TranslatableBehavior],
+				Polymer.Element
+			)
 		) {
 			static get is() {
 				return 'cosmoz-omnitable-column-time';
@@ -96,12 +98,7 @@
 					typeof value === 'string' && value.length > 3 && value.length <= 9
 						? this._fixedDate + 'T' + value
 						: value;
-				return Cosmoz.DateColumnBehaviorImpl.toDate.call(
-					this,
-					date,
-					limit,
-					limitFunc
-				);
+				return super.toDate(date, limit, limitFunc);
 			}
 
 			_toInputString(value) {

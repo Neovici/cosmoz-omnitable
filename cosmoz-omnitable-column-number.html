@@ -7,7 +7,7 @@
 
 <link rel="import" href="ui-helpers/cosmoz-clear-button.html">
 <link rel="import" href="cosmoz-omnitable-column-behavior.html">
-<link rel="import" href="cosmoz-omnitable-column-range-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-range-mixin.html">
 
 <dom-module id="cosmoz-omnitable-column-number">
 	<template>
@@ -38,13 +38,16 @@
 	<script>
 		window.Cosmoz = window.Cosmoz || {};
 
-		class OmnitableColumnNumber extends Polymer.mixinBehaviors(
-			[
-				Cosmoz.OmnitableColumnBehavior,
-				Cosmoz.TranslatableBehavior,
-				Cosmoz.RangeColumnBehavior
-			],
-			Polymer.Element
+		/**
+		 * @polymer
+		 * @customElement
+		 * @appliesMixin Cosmoz.RangeColumnMixin
+		 */
+		class OmnitableColumnNumber extends Cosmoz.RangeColumnMixin(
+			Polymer.mixinBehaviors(
+				[Cosmoz.OmnitableColumnBehavior, Cosmoz.TranslatableBehavior],
+				Polymer.Element
+			)
 		) {
 			static get is() {
 				return 'cosmoz-omnitable-column-number';
@@ -86,14 +89,6 @@
 						computed: '_computeFilterText(filter.*, formatter)'
 					}
 				};
-			}
-
-			_computeFilterText() {
-				// FIXME: remove when RangeColumnBehavior is a 2.x mixin
-				return super._computeFilterText.apply(
-					this,
-					arguments
-				);
 			}
 
 			_computeFormatter(locale, minimumFractionDigits, maximumFractionDigits) {
