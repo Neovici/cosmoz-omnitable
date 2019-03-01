@@ -77,7 +77,7 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 			];
 		}
 
-		detached() {
+		disconnectedCallback() {
 			this.cancelDebouncer('_limitInput');
 		}
 
