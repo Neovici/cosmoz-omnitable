@@ -155,14 +155,14 @@
 						min: -10,
 						max: 15
 					};
-					column.flushDebouncer('_limitInput');
+					Polymer.flush();
 					assert.equal(column.filter.min, -10);
 					assert.equal(column.filter.max, 15);
 				});
 
 				test('changing only _filterInput min updates filter min', () => {
 					column.set('_filterInput.min', -21);
-					column.flushDebouncer('_limitInput');
+					Polymer.flush();
 					assert.equal(column.filter.min, -11);
 				});
 
@@ -171,7 +171,7 @@
 					assert.isNull(column._filterInput.max);
 
 					column._filterInput = { min: -11, max: 17 };
-					column.flushDebouncer('_limitInput');
+					Polymer.flush();
 
 					assert.equal(column._filterInput.min, -11);
 					assert.equal(column._filterInput.max, 17);
@@ -179,7 +179,7 @@
 					assert.equal(column.filter.max, 17);
 
 					column.set('_filterInput.min', 20);
-					column.flushDebouncer('_limitInput');
+					Polymer.flush();
 
 					assert.equal(column.filter.min, 17);
 				});
@@ -189,7 +189,7 @@
 					assert.isNull(column._filterInput.max);
 
 					column._filterInput = { min: 46.75, max: 46.76 };
-					column.flushDebouncer('_limitInput');
+					Polymer.flush();
 					omnitable.flushDebouncer('filterItems');
 					omnitable.flushDebouncer('groupItems');
 					omnitable.flushDebouncer('sortItems');
@@ -200,7 +200,7 @@
 
 				test('filter comparision uses maximumFractionDigits, item age inside range', () => {
 					column._filterInput = { min: 46.75, max: 46.76 };
-					column.flushDebouncer('_limitInput');
+					Polymer.flush();
 					omnitable.flushDebouncer('filterItems');
 					omnitable.flushDebouncer('groupItems');
 					omnitable.flushDebouncer('sortItems');
@@ -312,14 +312,14 @@
 						min: 1,
 						max: 15
 					};
-					column.flushDebouncer('_limitInput');
+					Polymer.flush();
 					assert.equal(column.filter.min.amount, 1);
 					assert.equal(column.filter.max.amount, 15);
 				});
 
 				test('changing only _filterInput min updates filter min', () => {
 					column.set('_filterInput.min', -2317);
-					column.flushDebouncer('_limitInput');
+					Polymer.flush();
 					assert.equal(column.filter.min.amount, -8);
 				});
 
@@ -328,14 +328,14 @@
 					assert.isNull(column._filterInput.max);
 
 					column._filterInput = { min: 7, max: 77 };
-					column.flushDebouncer('_limitInput');
+					Polymer.flush();
 					assert.equal(column._filterInput.min, 7);
 					assert.equal(column._filterInput.max, 77);
 					assert.equal(column.filter.min.amount, 7);
 					assert.equal(column.filter.max.amount, 77);
 
 					column.set('_filterInput.min', 9992);
-					column.flushDebouncer('_limitInput');
+					Polymer.flush();
 					assert.equal(column.filter.min.amount, 77);
 				});
 			});
@@ -464,7 +464,7 @@
 						min: 105,
 						max: 150
 					};
-					column.flushDebouncer('_limitInput');
+					Polymer.flush();
 					assert.equal(column.filter.min.amount, 105);
 					assert.equal(column.filter.max.amount, 150);
 				});
@@ -485,7 +485,7 @@
 				});
 				test('changing _filterInput min on column with external values updates filter min correctly', () => {
 					column.set('_filterInput.min', -1);
-					column.flushDebouncer('_limitInput');
+					Polymer.flush();
 					assert.equal(column.filter.min, -1);
 				});
 			});

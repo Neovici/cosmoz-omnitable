@@ -130,7 +130,7 @@
 
 				// don't trigger change when date input begins with 0; Year (starting from 0000) was limited before the needed value was typed.
 				if (value && value.match(/^0+/)) {
-					this.cancelDebouncer('_limitInput');
+					this._limitInputDebouncer.cancel();
 					return;
 				}
 				super._filterInputChanged(change);

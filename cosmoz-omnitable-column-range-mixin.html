@@ -78,7 +78,7 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 		}
 
 		disconnectedCallback() {
-			this.cancelDebouncer('_limitInput');
+			this._limitInputDebouncer.cancel();
 		}
 
 		/**
@@ -296,7 +296,13 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 		_filterInputChanged(change) {
 			const path = change.path.split('.')[1];
 			this.__inputChangePath = path || null;
-			this.debounce('_limitInput', this._limitInput, 600);
+
+			this._limitInputDebouncer = Polymer.Debouncer.debounce(
+				this._limitInputDebouncer,
+				Polymer.Async.timeOut.after(600),
+				() => this._limitInput()
+			);
+			Polymer.enqueueDebouncer(this._limitInputDebouncer);
 		}
 
 		/**
@@ -341,7 +347,7 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 					['_filterInput', path],
 					this._toInputString(limitedValue, path)
 				);
-				this.cancelDebouncer('_limitInput');
+				this._limitInputDebouncer.cancel();
 			}
 
 			this._updateFilter();
@@ -387,7 +393,7 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 				min: this._toInputString(filter.min),
 				max: this._toInputString(filter.max)
 			});
-			this.cancelDebouncer('_limitInput');
+			this._limitInputDebouncer.cancel();
 		}
 
 		hasFilter() {
