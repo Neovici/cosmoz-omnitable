@@ -39,11 +39,13 @@
 			// HACK: ensure paper-dropdown-menu updates current selected item label after translation change
 			// See https://github.com/PolymerElements/paper-dropdown-menu/issues/197
 			_labelChanged() {
-				if (this.classList.contains('iron-selected')) {
-					const detail = { item: this };
-					this.fire('iron-deselect', detail);
-					this.fire('iron-select', detail);
+				if (!this.classList.contains('iron-selected')) {
+					return;
 				}
+
+				const detail = { item: this };
+				this.dispatchEvent(new CustomEvent('iron-deselect', { detail }));
+				this.dispatchEvent(new CustomEvent('iron-select', { detail }));
 			}
 		}
 		customElements.define(OmnitableItem.is, OmnitableItem);
