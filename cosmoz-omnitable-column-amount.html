@@ -56,7 +56,9 @@
 				return 'cosmoz-omnitable-column-amount';
 			}
 			static get observers() {
-				return ['_valuesChanged(autodetect, currency, values)'];
+				return [
+					'_valuesChanged(autodetect, currency, values)',
+				];
 			}
 			static get properties() {
 				return {
@@ -259,9 +261,8 @@
 				if (amount == null) {
 					return '';
 				}
-				return this.getFormatter(amount.currency, this.locale).format(
-					value.amount
-				);
+				return this.getFormatter(amount.currency, this.locale)
+					.format(value.amount);
 			}
 
 			_amountValueChanged(event) {

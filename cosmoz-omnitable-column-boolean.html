@@ -100,7 +100,9 @@
 			}
 
 			static get observers() {
-				return ['_filterChanged(filter)'];
+				return [
+					'_filterChanged(filter)',
+				];
 			}
 
 			// TODO(pasleq): same questions as for cosmoz-omnitable-column-date

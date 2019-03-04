@@ -33,7 +33,9 @@
 				}
 
 				static get observers() {
-					return ['_columnsChanged(columns.*)'];
+					return [
+						'_columnsChanged(columns.*)'
+					];
 				}
 
 				/* eslint-disable no-empty-function, no-unused-vars */
@@ -129,12 +131,11 @@
 				}
 
 				_columnsChanged({ path, base, value }) {
-					let removedColumns,
-						reMatch = editableRegex.exec(path);
+					const reMatch = editableRegex.exec(path);
 
 					if (path === 'columns') {
 						if (this._elements && this._elements.length) {
-							removedColumns = this._elements.map(element => {
+							const removedColumns = this._elements.map(element => {
 								return element.__column;
 							});
 							this._removeElements(0, removedColumns);

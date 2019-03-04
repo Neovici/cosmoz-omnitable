@@ -95,26 +95,24 @@
 					return;
 				}
 				const used = [];
-				return (
-					this.values
-						// flatten two-dimensional arrays to one
-						.reduce((acc, val) => acc.concat(val), [])
-						// Make the item list unique
-						.filter((item, index, array) => {
-							if (array.indexOf(item) !== index) {
+				return this.values
+					// flatten two-dimensional arrays to one
+					.reduce((acc, val) => acc.concat(val), [])
+					// Make the item list unique
+					.filter((item, index, array) => {
+						if (array.indexOf(item) !== index) {
+							return false;
+						}
+						if (valueProperty) {
+							let value = this.get(valueProperty, item);
+							if (used.indexOf(value) !== -1) {
 								return false;
 							}
-							if (valueProperty) {
-								let value = this.get(valueProperty, item);
-								if (used.indexOf(value) !== -1) {
-									return false;
-								}
-								used.push(value);
-							}
-							return true;
-						})
-						.sort()
-				);
+							used.push(value);
+						}
+						return true;
+					})
+					.sort();
 			}
 
 			_applyMultiFilter(filters, item) {

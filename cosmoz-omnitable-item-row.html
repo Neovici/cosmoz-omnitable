@@ -63,7 +63,9 @@
 		}
 
 		static get observers() {
-			return ['_itemUpdated(item.*)'];
+			return [
+				'_itemUpdated(item.*)'
+			];
 		}
 
 		get _elementType() {
@@ -104,12 +106,9 @@
 		}
 
 		_computeItemRowCellClasses(column) {
-			return (
-				'itemRow-cell' +
+			return 'itemRow-cell' +
 				(column.cellClass ? ' ' + column.cellClass + ' ' : '') +
-				' cosmoz-omnitable-column-' +
-				column.__index
-			);
+				' cosmoz-omnitable-column-' + column.__index;
 		}
 
 		_itemUpdated(itemChange) {
@@ -117,9 +116,7 @@
 				this.elements.forEach(element => {
 					this._forwardProperty(
 						this.getElementTemplateInstance(element),
-						'item',
-						itemChange.value,
-						true
+						'item',	itemChange.value,	true
 					);
 					element.setAttribute(
 						'title',

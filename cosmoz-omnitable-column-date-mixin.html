@@ -81,7 +81,7 @@ Cosmoz.DateColumnMixin = Polymer.dedupingMixin(base =>
 			if (lDate == null) {
 				return date;
 			}
-			var comparableDate = this.getComparableValue(date),
+			const comparableDate = this.getComparableValue(date),
 				comparableLDate = this.getComparableValue(lDate),
 				limitedValue = limitFunc(comparableDate, comparableLDate);
 			return limitedValue === comparableDate ? date : lDate;

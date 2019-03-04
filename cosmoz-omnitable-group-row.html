@@ -45,7 +45,9 @@
 			}
 
 			static get observers() {
-				return ['_itemUpdated(item.*)'];
+				return [
+					'_itemUpdated(item.*)',
+				];
 			}
 
 			get _elementType() {

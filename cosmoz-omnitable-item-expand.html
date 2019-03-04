@@ -69,7 +69,10 @@
 		}
 
 		static get observers() {
-			return ['_updateSize(columns.length)', '_itemUpdated(item.*)'];
+			return [
+				'_updateSize(columns.length)',
+				'_itemUpdated(item.*)'
+			];
 		}
 
 		get _elementType() {

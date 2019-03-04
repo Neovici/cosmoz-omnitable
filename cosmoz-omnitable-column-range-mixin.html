@@ -338,15 +338,9 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 						)
 						: null;
 
-			if (
-				this.getComparableValue(value) !==
-				this.getComparableValue(limitedValue)
-			) {
+			if (this.getComparableValue(value) !== this.getComparableValue(limitedValue)) {
 				//set value without debouncing _limitInput again.
-				this.set(
-					['_filterInput', path],
-					this._toInputString(limitedValue, path)
-				);
+				this.set(['_filterInput', path], this._toInputString(limitedValue, path));
 				this._limitInputDebouncer.cancel();
 			}
 
@@ -405,9 +399,7 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 			if (!isSet) {
 				return false;
 			}
-			return (
-				this.toValue(filter.min) != null || this.toValue(filter.max) != null
-			);
+			return this.toValue(filter.min) != null || this.toValue(filter.max) != null;
 		}
 
 		_serializeFilter(filter = this.filter) {

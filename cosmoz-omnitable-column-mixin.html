@@ -247,9 +247,8 @@
 		}
 
 		_createTemplatizer(templateElementOrSelector) {
-			var template,
+			let template,
 				templateHost,
-				templatizer,
 				root;
 			if (templateElementOrSelector instanceof HTMLTemplateElement) {
 				template = templateElementOrSelector;
@@ -267,14 +266,14 @@
 				}
 			}
 
-			templatizer = document.createElement('cosmoz-omnitable-templatizer');
+			const templatizer = document.createElement('cosmoz-omnitable-templatizer');
 			this.appendChild(templatizer);
 			templatizer.init(template, templateHost);
 			return templatizer;
 		}
 
 		_cellTemplateChanged(cellTemplate) {
-			if (cellTemplate !== undefined && cellTemplate !== null) {
+			if (cellTemplate != null) {
 				this._cellTemplatizer = this._createTemplatizer(cellTemplate);
 			}
 		}
@@ -362,7 +361,7 @@
 		}
 
 		_valueChanged(event) {
-			var input = event.target,
+			const input = event.target,
 				value = input.value,
 				item = event.model.item,
 				oldValue = this.get(this.valuePath, item);
@@ -372,7 +371,7 @@
 		}
 
 		_fireItemChangeEvent(item, valuePath, oldValue, formatFn) {
-			var value = this.get(valuePath, item),
+			const value = this.get(valuePath, item),
 				change = {
 					item,
 					valuePath: this.valuePath,
@@ -409,12 +408,18 @@
 			const filter = filterNotify == null ? this.filter : filterNotify.base,
 				isArray = Array.isArray(filter);
 
-			if (filter == null || filter === ''
-				|| isArray && filter.length === 0
-				|| typeof filter === 'object' && !isArray && Object.keys(filter).filter(k => filter[k] != null).length === 0
-			) {
+			if (!filter) {
 				return false;
 			}
+
+			if (isArray && filter.length === 0) {
+				return false;
+			}
+
+			if (typeof filter === 'object' && !isArray && Object.keys(filter).filter(k => filter[k] != null).length === 0) {
+				return false;
+			}
+
 			return true;
 		}
 
@@ -436,7 +441,7 @@
 		}
 
 		_applyMultiFilter(filter, item) {
-			var filterArray = filter.map(element => element.toString().toLowerCase()),
+			const filterArray = filter.map(element => element.toString().toLowerCase()),
 				value = this.get(this.valuePath, item).toString().toLowerCase();
 
 			return filterArray.some(filter => value.indexOf(filter) >= 0);
