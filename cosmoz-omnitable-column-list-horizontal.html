@@ -1,7 +1,7 @@
 <link rel="import" href="../paper-autocomplete-chips/paper-autocomplete-chips.html">
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 <link rel="import" href="cosmoz-omnitable-column-mixin.html">
-<link rel="import" href="cosmoz-omnitable-column-list-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-list-mixin.html">
 
 <dom-module id="cosmoz-omnitable-column-list-horizontal">
 	<template>
@@ -61,13 +61,15 @@
 		 * @polymer
 		 * @customElement
 		 * @appliesMixin Cosmoz.OmnitableColumnMixin
+		 * @appliesMixin Cosmoz.ListColumnMixin
 		 */
-		class OmnitableColumnListHorizontal extends Cosmoz.OmnitableColumnMixin(
-			Polymer.mixinBehaviors(
-				[Cosmoz.TranslatableBehavior, Cosmoz.ListColumnBehavior],
-				Polymer.Element
-			)
-		) {
+		class OmnitableColumnListHorizontal extends
+			Cosmoz.OmnitableColumnMixin(Cosmoz.ListColumnMixin(
+				Polymer.mixinBehaviors(
+					[Cosmoz.TranslatableBehavior],
+					Polymer.Element
+				)
+			)) {
 			static get is() {
 				return 'cosmoz-omnitable-column-list-horizontal';
 			}
