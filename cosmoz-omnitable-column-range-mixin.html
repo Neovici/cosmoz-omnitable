@@ -398,7 +398,7 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 
 		hasFilter() {
 			const filter = this.filter,
-				isSet = Cosmoz.OmnitableColumnBehavior.hasFilter.apply(
+				isSet = super.hasFilter.apply(
 					this,
 					arguments
 				);

@@ -1,4 +1,4 @@
-<link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-mixin.html">
 <link rel="import" href="../iron-icon/iron-icon.html"/>
 <link rel="import" href="../paper-input/paper-input.html"/>
 <link rel="import" href="ui-helpers/cosmoz-clear-button.html">
@@ -23,10 +23,12 @@
 	<script>
 		window.Cosmoz = window.Cosmoz || {};
 
-		class OmnitableColumn extends Polymer.mixinBehaviors(
-			[Cosmoz.OmnitableColumnBehavior],
-			Polymer.Element
-		) {
+		/**
+		 * @polymer
+		 * @customElement
+		 * @appliesMixin Cosmoz.OmnitableColumnMixin
+		 */
+		class OmnitableColumn extends Cosmoz.OmnitableColumnMixin(Polymer.Element) {
 			static get is() {
 				return 'cosmoz-omnitable-column';
 			}

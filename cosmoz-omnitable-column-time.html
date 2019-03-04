@@ -2,7 +2,7 @@
 <link rel="import" href="../paper-input/paper-input.html">
 
 <link rel="import" href="ui-helpers/cosmoz-clear-button.html">
-<link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-mixin.html">
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 <link rel="import" href="cosmoz-omnitable-column-date-mixin.html">
 
@@ -41,13 +41,14 @@
 		 * @polymer
 		 * @customElement
 		 * @appliesMixin Cosmoz.DateColumnMixin
+		 * @appliesMixin Cosmoz.OmnitableColumnMixin
 		 */
-		class OmnitableColumnTime extends Cosmoz.DateColumnMixin(
+		class OmnitableColumnTime extends Cosmoz.DateColumnMixin(Cosmoz.OmnitableColumnMixin(
 			Polymer.mixinBehaviors(
-				[Cosmoz.OmnitableColumnBehavior, Cosmoz.TranslatableBehavior],
+				[Cosmoz.TranslatableBehavior],
 				Polymer.Element
 			)
-		) {
+		)) {
 			static get is() {
 				return 'cosmoz-omnitable-column-time';
 			}

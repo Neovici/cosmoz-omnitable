@@ -1,4 +1,4 @@
-<link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-mixin.html">
 <link rel="import" href="cosmoz-omnitable-column-range-mixin.html">
 <link rel="import" href="../shadycss/apply-shim.html">
 <link rel="import" href="../polymer/polymer-element.html">
@@ -46,11 +46,12 @@
 		 * @polymer
 		 * @customElement
 		 * @appliesMixin Cosmoz.RangeColumnMixin
+		 * @appliesMixin Cosmoz.OmnitableColumnMixin
 		 */
-		class OmnitableColumnAmount extends Cosmoz.RangeColumnMixin(Polymer.mixinBehaviors(
-			[Cosmoz.OmnitableColumnBehavior, Cosmoz.TranslatableBehavior],
+		class OmnitableColumnAmount extends Cosmoz.RangeColumnMixin(Cosmoz.OmnitableColumnMixin(Polymer.mixinBehaviors(
+			[Cosmoz.TranslatableBehavior],
 			Polymer.Element
-		)) {
+		))) {
 			static get is() {
 				return 'cosmoz-omnitable-column-amount';
 			}

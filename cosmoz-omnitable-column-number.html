@@ -6,7 +6,7 @@
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 
 <link rel="import" href="ui-helpers/cosmoz-clear-button.html">
-<link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-mixin.html">
 <link rel="import" href="cosmoz-omnitable-column-range-mixin.html">
 
 <dom-module id="cosmoz-omnitable-column-number">
@@ -42,11 +42,11 @@
 		 * @polymer
 		 * @customElement
 		 * @appliesMixin Cosmoz.RangeColumnMixin
+		 * @appliesMixin Cosmoz.OmnitableColumnMixin
 		 */
 		class OmnitableColumnNumber extends Cosmoz.RangeColumnMixin(
-			Polymer.mixinBehaviors(
-				[Cosmoz.OmnitableColumnBehavior, Cosmoz.TranslatableBehavior],
-				Polymer.Element
+			Cosmoz.OmnitableColumnMixin(
+				Polymer.mixinBehaviors([Cosmoz.TranslatableBehavior], Polymer.Element)
 			)
 		) {
 			static get is() {

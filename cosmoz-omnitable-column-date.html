@@ -1,4 +1,4 @@
-<link rel="import" href="cosmoz-omnitable-column-behavior.html" />
+<link rel="import" href="cosmoz-omnitable-column-mixin.html" />
 
 <link rel="import" href="../paper-input/paper-input.html" />
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html" />
@@ -69,13 +69,11 @@
 		 * @polymer
 		 * @customElement
 		 * @appliesMixin Cosmoz.DateColumnMixin
+		 * @appliesMixin Cosmoz.OmnitableColumnMixin
 		 */
-		class OmnitableColumnDate extends Cosmoz.DateColumnMixin(
-			Polymer.mixinBehaviors(
-				[Cosmoz.OmnitableColumnBehavior, Cosmoz.TranslatableBehavior],
-				Polymer.Element
-			)
-		) {
+		class OmnitableColumnDate extends Cosmoz.DateColumnMixin(Cosmoz.OmnitableColumnMixin(
+			Polymer.mixinBehaviors([Cosmoz.TranslatableBehavior], Polymer.Element)
+		)) {
 			static get is() {
 				return 'cosmoz-omnitable-column-date';
 			}

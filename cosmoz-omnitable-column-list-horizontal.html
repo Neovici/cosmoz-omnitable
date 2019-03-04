@@ -1,6 +1,6 @@
 <link rel="import" href="../paper-autocomplete-chips/paper-autocomplete-chips.html">
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
-<link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-mixin.html">
 <link rel="import" href="cosmoz-omnitable-column-list-behavior.html">
 
 <dom-module id="cosmoz-omnitable-column-list-horizontal">
@@ -57,13 +57,16 @@
 	<script type="text/javascript">
 		window.Cosmoz = window.Cosmoz || {};
 
-		class OmnitableColumnListHorizontal extends Polymer.mixinBehaviors(
-			[
-				Cosmoz.OmnitableColumnBehavior,
-				Cosmoz.TranslatableBehavior,
-				Cosmoz.ListColumnBehavior
-			],
-			Polymer.Element
+		/**
+		 * @polymer
+		 * @customElement
+		 * @appliesMixin Cosmoz.OmnitableColumnMixin
+		 */
+		class OmnitableColumnListHorizontal extends Cosmoz.OmnitableColumnMixin(
+			Polymer.mixinBehaviors(
+				[Cosmoz.TranslatableBehavior, Cosmoz.ListColumnBehavior],
+				Polymer.Element
+			)
 		) {
 			static get is() {
 				return 'cosmoz-omnitable-column-list-horizontal';
@@ -155,6 +158,15 @@
 
 			_getDefaultFilter() {
 				return [];
+			}
+
+			getString() {
+				const value = super.getString.apply(this, arguments);
+				if (!Array.isArray(value) || value.length === 0) {
+					return '';
+				}
+
+				return value.join(', ');
 			}
 		}
 

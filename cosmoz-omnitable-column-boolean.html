@@ -1,4 +1,4 @@
-<link rel="import" href="cosmoz-omnitable-column-behavior.html" />
+<link rel="import" href="cosmoz-omnitable-column-mixin.html" />
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html" />
 <link rel="import" href="../paper-listbox/paper-listbox.html" />
 <link rel="import" href="../paper-item/paper-item.html" />
@@ -46,8 +46,12 @@
 	<script>
 		window.Cosmoz = window.Cosmoz || {};
 
-		class OmnitableColumnBoolean extends Polymer.mixinBehaviors(
-			[Cosmoz.OmnitableColumnBehavior],
+		/**
+		 * @polymer
+		 * @customElement
+		 * @appliesMixin Cosmoz.OmnitableColumnMixin
+		 */
+		class OmnitableColumnBoolean extends Cosmoz.OmnitableColumnMixin(
 			Polymer.Element
 		) {
 			static get is() {
@@ -173,11 +177,11 @@
 				if (obj == null || obj === '') {
 					return null;
 				}
-				return this.serialize(obj ? 'true' : 'false');
+				return this._serializeValue(obj ? 'true' : 'false');
 			}
 
 			_deserializeFilter(obj) {
-				const value = this.deserialize(obj, String);
+				const value = this._deserializeValue(obj, String);
 				return value === 'true' ? true : value === 'false' ? false : null;
 			}
 

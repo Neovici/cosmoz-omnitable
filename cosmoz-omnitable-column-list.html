@@ -1,6 +1,6 @@
 <link rel="import" href="../paper-autocomplete-chips/paper-autocomplete-chips.html">
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
-<link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-mixin.html">
 <link rel="import" href="cosmoz-omnitable-column-list-behavior.html">
 <link rel="import" href="cosmoz-omnitable-column-list-data.html">
 
@@ -30,13 +30,16 @@
 	<script type="text/javascript">
 		window.Cosmoz = window.Cosmoz || {};
 
-		class OmnitableColumnList extends Polymer.mixinBehaviors(
-			[
-				Cosmoz.OmnitableColumnBehavior,
-				Cosmoz.TranslatableBehavior,
-				Cosmoz.ListColumnBehavior
-			],
-			Polymer.Element
+		/**
+		 * @polymer
+		 * @customElement
+		 * @appliesMixin Cosmoz.OmnitableColumnMixin
+		 */
+		class OmnitableColumnList extends Cosmoz.OmnitableColumnMixin(
+			Polymer.mixinBehaviors(
+				[Cosmoz.TranslatableBehavior, Cosmoz.ListColumnBehavior],
+				Polymer.Element
+			)
 		) {
 			static get is() {
 				return 'cosmoz-omnitable-column-list';
