@@ -1,4 +1,4 @@
-<link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-mixin.html">
 <link rel="import" href="../iron-icon/iron-icon.html"/>
 <link rel="import" href="../paper-input/paper-input.html"/>
 <link rel="import" href="ui-helpers/cosmoz-clear-button.html">
@@ -19,41 +19,48 @@
 				<cosmoz-clear-button suffix slot="suffix" visible="[[ hasFilter(filter.*) ]]" light on-click="resetFilter"></cosmoz-clear-button>
 			</paper-input>
 		</template>
-
 	</template>
 	<script>
-		Polymer({
+		window.Cosmoz = window.Cosmoz || {};
 
-			is: 'cosmoz-omnitable-column',
+		/**
+		 * @polymer
+		 * @customElement
+		 * @appliesMixin Cosmoz.OmnitableColumnMixin
+		 */
+		class OmnitableColumn extends Cosmoz.OmnitableColumnMixin(Polymer.Element) {
+			static get is() {
+				return 'cosmoz-omnitable-column';
+			}
 
-			properties: {
-				minWidth: {
-					type: String,
-					value: '55px'
-				},
+			static get properties() {
+				return {
+					minWidth: {
+						type: String,
+						value: '55px'
+					},
 
-				editMinWidth: {
-					type: String,
-					value: '55px'
-				}
-			},
-
-			behaviors: [
-				Cosmoz.OmnitableColumnBehavior
-			],
+					editMinWidth: {
+						type: String,
+						value: '55px'
+					}
+				};
+			}
 
 			_serializeFilter(filter = this.filter) {
 				return filter || null;
-			},
+			}
 
 			_deserializeFilter(obj) {
 				return obj || null;
-			},
+			}
 
 			resetFilter() {
 				this.filter = null;
 			}
-		});
+		}
+		customElements.define(OmnitableColumn.is, OmnitableColumn);
 
+		Cosmoz.OmnitableColumn = OmnitableColumn;
 	</script>
 </dom-module>

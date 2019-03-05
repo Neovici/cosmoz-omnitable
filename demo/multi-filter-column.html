@@ -1,4 +1,4 @@
-<link rel="import" href="../cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="../cosmoz-omnitable-column-mixin.html">
 
 <dom-module id="multi-filter-column">
 	<template>
@@ -32,7 +32,7 @@
 			},
 
 			behaviors: [
-				Cosmoz.OmnitableColumnBehavior
+				Cosmoz.OmnitableColumnMixin
 			],
 
 			_filtersChanged(newFilters) {

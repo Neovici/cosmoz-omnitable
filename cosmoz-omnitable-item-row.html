@@ -1,6 +1,6 @@
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="cosmoz-omnitable-repeater-behavior.html">
-<link rel="import" href="../iron-flex-layout/iron-flex-layout.html"/>
+<link rel="import" href="../polymer/polymer.html" />
+<link rel="import" href="cosmoz-omnitable-repeater-mixin.html" />
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html" />
 
 <dom-module id="cosmoz-omnitable-item-row">
 	<template>
@@ -20,7 +20,8 @@
 				text-overflow: ellipsis;
 			}
 
-			:host > ::slotted([hidden]),:host [hidden] {
+			:host > ::slotted([hidden]),
+			:host [hidden] {
 				display: none !important;
 			}
 		</style>
@@ -29,47 +30,59 @@
 </dom-module>
 
 <script>
-(function () {
-	'use strict';
+	window.Cosmoz = window.Cosmoz || {};
 
-	Polymer({
+	/**
+	 * @polymer
+	 * @customElement
+	 * @appliesMixin Cosmoz.OmnitableRepeaterMixin
+	 */
+	class OmnitableItemRow extends Cosmoz.OmnitableRepeaterMixin(
+		Polymer.Element
+	) {
+		static get is() {
+			return 'cosmoz-omnitable-item-row';
+		}
 
-		is: 'cosmoz-omnitable-item-row',
+		static get properties() {
+			return {
+				item: {
+					type: Object
+				},
 
-		behaviors: [
-			Cosmoz.OmnitableRepeaterBehavior
-		],
+				selected: {
+					type: Boolean,
+					observer: '_selectedChanged'
+				},
 
-		properties: {
-			item: {
-				type: Object
-			},
+				expanded: {
+					type: Boolean,
+					observer: '_expandedChanged'
+				}
+			};
+		}
 
-			selected: {
-				type: Boolean,
-				observer: '_selectedChanged'
-			},
+		static get observers() {
+			return [
+				'_itemUpdated(item.*)'
+			];
+		}
 
-			expanded: {
-				type: Boolean,
-				observer: '_expandedChanged'
-			},
+		get _elementType() {
+			return 'div';
+		}
 
-		},
+		get _slotName() {
+			return 'item-cell';
+		}
 
-		observers: [
-			'_itemUpdated(item.*)',
-		],
-
-		_elementType: 'div',
-
-		_slotName: 'item-cell',
-
-		_getTemplateInstance: column => column.dataTemplatizer.getInstance(),
+		_getTemplateInstance(column) {
+			return column.dataTemplatizer.getInstance();
+		}
 
 		_detachTemplateInstance(instance, column, element) {
 			column.dataTemplatizer.detachInstance(instance, element);
-		},
+		}
 
 		_configureElement(element, column) {
 			element.style.flexBasis = column.editable ? column.editWidth : column.width;
@@ -77,21 +90,22 @@
 			element.style.flexGrow = column.flex;
 			element.setAttribute('title', this._getCellTitle(column, this.item));
 			element.setAttribute('class', this._computeItemRowCellClasses(column));
-		},
+		}
 
 		_configureTemplateInstance(instance) {
 			if (instance.item !== this.item && this.item !== undefined) {
 				this._forwardProperty(instance, 'item', this.item);
 				this._forwardProperty(instance, 'selected', this.selected);
 				this._forwardProperty(instance, 'expanded', this.expanded);
-				this._forwardPropertiesFlush(instance);
+				instance._flushProperties(true);
 			}
-		},
+		}
 
-		_computeItemRowCellClasses: column =>
-			'itemRow-cell'
-				+ (column.cellClass ? ' ' + column.cellClass + ' ' : '')
-				+ ' cosmoz-omnitable-column-' + column.__index,
+		_computeItemRowCellClasses(column) {
+			return 'itemRow-cell' +
+				(column.cellClass ? ' ' + column.cellClass + ' ' : '') +
+				' cosmoz-omnitable-column-' + column.__index;
+		}
 
 		_itemUpdated(itemChange) {
 			if (itemChange.path === 'item') {
@@ -104,19 +118,20 @@
 					this._forwardNotifyPath(this.getElementTemplateInstance(element), itemChange.path, itemChange.value, true, true);
 				});
 			}
-		},
+		}
 
 		_selectedChanged(selected) {
 			this.templateInstances.forEach(instance => {
 				this._forwardProperty(instance, 'selected', selected, true);
 			});
-		},
+		}
 
 		_expandedChanged(expanded) {
 			this.templateInstances.forEach(instance => {
 				this._forwardProperty(instance, 'expanded', expanded, true);
 			});
-		},
+		}
+
 		/**
 		 * Get cell title displayed when hovering on the cell.
 		 * @param {object} column Column data.
@@ -126,6 +141,8 @@
 		_getCellTitle(column, item) {
 			return column && column.cellTitleFn(item, column.valuePath);
 		}
-	});
-}());
+	}
+	customElements.define(OmnitableItemRow.is, OmnitableItemRow);
+
+	Cosmoz.OmnitableItemow = OmnitableItemRow;
 </script>

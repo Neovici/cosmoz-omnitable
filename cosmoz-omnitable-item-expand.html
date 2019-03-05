@@ -1,6 +1,6 @@
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="cosmoz-omnitable-repeater-behavior.html">
-<link rel="import" href="cosmoz-omnitable-item-expand-line.html">
+<link rel="import" href="../polymer/polymer.html" />
+<link rel="import" href="cosmoz-omnitable-repeater-mixin.html" />
+<link rel="import" href="cosmoz-omnitable-item-expand-line.html" />
 
 <dom-module id="cosmoz-omnitable-item-expand">
 	<template>
@@ -10,7 +10,7 @@
 				padding: 5px 4%;
 				line-height: 1.3em;
 				border-bottom: solid 1px #e2e2e2;
-    			background-color: #fafafa;
+				background-color: #fafafa;
 				@apply --cosmoz-omnitable-item-expand;
 			}
 
@@ -18,87 +18,99 @@
 				display: none !important;
 			}
 
-			:host([hidden]), :host > ::slotted([hidden]), :host [hidden] {
+			:host([hidden]),
+			:host > ::slotted([hidden]),
+			:host [hidden] {
 				display: none !important;
 			}
-
 		</style>
 		<slot name="item-expand-line"></slot>
 	</template>
 </dom-module>
 
 <script>
-(function () {
-	'use strict';
+	window.Cosmoz = window.Cosmoz || {};
 
-	Polymer({
+	/**
+	 * @polymer
+	 * @customElement
+	 * @appliesMixin Cosmoz.OmnitableRepeaterMixin
+	 */
+	class OmnitableItemExpand extends Cosmoz.OmnitableRepeaterMixin(
+		Polymer.Element
+	) {
+		static get is() {
+			return 'cosmoz-omnitable-item-expand';
+		}
 
-		is: 'cosmoz-omnitable-item-expand',
+		static get properties() {
+			return {
+				item: {
+					type: Object
+				},
 
-		behaviors: [
-			Cosmoz.OmnitableRepeaterBehavior
-		],
+				selected: {
+					type: Boolean,
+					observer: '_selectedChanged'
+				},
 
-		properties: {
-			item: {
-				type: Object
-			},
+				expanded: {
+					type: Boolean,
+					value: false,
+					reflectToAttribute: true,
+					observer: '_expandedChanged'
+				},
 
-			selected: {
-				type: Boolean,
-				observer: '_selectedChanged'
-			},
+				hidden: {
+					type: Boolean,
+					reflectToAttribute: true
+				}
+			};
+		}
 
-			expanded: {
-				type: Boolean,
-				value: false,
-				reflectToAttribute: true,
-				observer: '_expandedChanged'
-			},
+		static get observers() {
+			return [
+				'_updateSize(columns.length)',
+				'_itemUpdated(item.*)'
+			];
+		}
 
-			hidden: {
-				type: Boolean,
-				reflectToAttribute: true,
-			}
-		},
+		get _elementType() {
+			return 'cosmoz-omnitable-item-expand-line';
+		}
 
-		observers: [
-			'_updateSize(columns.length)',
-			'_itemUpdated(item.*)'
-		],
-
-		_elementType: 'cosmoz-omnitable-item-expand-line',
-
-		_slotName: 'item-expand-line',
+		get _slotName() {
+			return 'item-expand-line';
+		}
 
 		_getTemplateInstance(column) {
 			return column.dataTemplatizer.getInstance();
-		},
+		}
 
 		_detachTemplateInstance(instance, column, element) {
 			column.dataTemplatizer.detachInstance(instance, element);
-		},
+		}
 
 		_configureElement(element, column) {
 			element.column = column;
-		},
+		}
 
 		_configureTemplateInstance(instance) {
 			if (instance.item !== this.item && this.item !== undefined) {
 				this._forwardProperty(instance, 'item', this.item);
 				this._forwardProperty(instance, 'selected', this.selected);
 				this._forwardProperty(instance, 'expanded', this.expanded);
-				this._forwardPropertiesFlush(instance);
+				instance._flushProperties(true);
 			}
-		},
+		}
 
 		_updateSize(columnsCount) {
 			this.hidden = columnsCount === 0;
 			if (this.expanded) {
 				// Notify omnitable that this item is expanded and my need individual resize
-				this.fire('update-item-size', { item: this.item }, { bubbles: true});
+				this.fire('update-item-size', { item: this.item }, { bubbles: true });
 			}
-		},
+		}
 
 		_itemUpdated(itemChange) {
 			if (itemChange.path === 'item') {
@@ -110,20 +122,21 @@
 					this._forwardNotifyPath(this.getElementTemplateInstance(element), itemChange.path, itemChange.value, true, true);
 				}, this);
 			}
-		},
+		}
 
 		_selectedChanged(selected) {
 			this.templateInstances.forEach(instance => {
 				this._forwardProperty(instance, 'selected', selected, true);
 			});
-		},
+		}
 
 		_expandedChanged(expanded) {
 			this.templateInstances.forEach(instance => {
 				this._forwardProperty(instance, 'expanded', expanded, true);
 			});
 		}
+	}
+	customElements.define(OmnitableItemExpand.is, OmnitableItemExpand);
 
-	});
-}());
+	Cosmoz.OmnitableItemExpand = OmnitableItemExpand;
 </script>

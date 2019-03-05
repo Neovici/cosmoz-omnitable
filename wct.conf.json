@@ -1,13 +1,10 @@
 {
 	"plugins": {
 		"local": {
-			"browsers": ["chrome"],
+			"browsers": ["chrome", "firefox"],
 			"browserOptions": {
-				"chrome": [
-					"headless",
-					"disable-gpu",
-					"no-sandbox"
-				]
+				"chrome": ["headless", "disable-gpu", "no-sandbox"],
+				"firefox": ["--headless"]
 			}
 		},
 		"istanbul": {

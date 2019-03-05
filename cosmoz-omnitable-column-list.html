@@ -1,7 +1,7 @@
 <link rel="import" href="../paper-autocomplete-chips/paper-autocomplete-chips.html">
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
-<link rel="import" href="cosmoz-omnitable-column-behavior.html">
-<link rel="import" href="cosmoz-omnitable-column-list-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-mixin.html">
+<link rel="import" href="cosmoz-omnitable-column-list-mixin.html">
 <link rel="import" href="cosmoz-omnitable-column-list-data.html">
 
 <dom-module id="cosmoz-omnitable-column-list">
@@ -28,49 +28,61 @@
 	</template>
 
 	<script type="text/javascript">
-		Polymer({
-			is: 'cosmoz-omnitable-column-list',
+		window.Cosmoz = window.Cosmoz || {};
 
-			behaviors: [
-				Cosmoz.OmnitableColumnBehavior,
-				Cosmoz.TranslatableBehavior,
-				Cosmoz.ListColumnBehavior
-			],
+		/**
+		 * @polymer
+		 * @customElement
+		 * @appliesMixin Cosmoz.OmnitableColumnMixin
+		 * @appliesMixin Cosmoz.ListColumnMixin
+		 */
+		class OmnitableColumnList extends
+			Cosmoz.OmnitableColumnMixin(Cosmoz.ListColumnMixin(
+				Polymer.mixinBehaviors(
+					[Cosmoz.TranslatableBehavior],
+					Polymer.Element
+				)
+			)) {
+			static get is() {
+				return 'cosmoz-omnitable-column-list';
+			}
 
-			properties: {
-				autocompleteItems: {
-					type: Array,
-					notify: true,
-					computed: '_computeAutocompleteItems(valueProperty, values.length)'
-				},
+			static get properties() {
+				return {
+					autocompleteItems: {
+						type: Array,
+						notify: true,
+						computed: '_computeAutocompleteItems(valueProperty, values.length)'
+					},
 
-				/**
-				 * Ask for a list of values
-				 */
-				bindValues: {
-					type: Boolean,
-					readOnly: true,
-					value: true
-				},
+					/**
+					 * Ask for a list of values
+					 */
+					bindValues: {
+						type: Boolean,
+						readOnly: true,
+						value: true
+					},
 
-				filter: {
-					type: Array,
-					notify: true,
-					value() {
-						return this._getDefaultFilter();
+					filter: {
+						type: Array,
+						notify: true,
+						value() {
+							return this._getDefaultFilter();
+						}
+					},
+
+					textProperty: {
+						type: String,
+						value: ''
+					},
+
+					valueProperty: {
+						type: String,
+						value: ''
 					}
-				},
-
-				textProperty: {
-					type: String,
-					value: ''
-				},
-
-				valueProperty: {
-					type: String,
-					value: ''
-				}
-			},
+				};
+			}
 
 			getTexts(valuePath, item, textProperty) {
 				let values = this.get(valuePath, item);
@@ -78,7 +90,7 @@
 					values = values.map(value => this.get(textProperty, value));
 				}
 				return values;
-			},
+			}
 
 			_computeAutocompleteItems(valueProperty) {
 				if (!Array.isArray(this.values)) {
@@ -103,7 +115,7 @@
 						return true;
 					})
 					.sort();
-			},
+			}
 
 			_applyMultiFilter(filters, item) {
 				let itemValues = this.get(this.valuePath, item);
@@ -121,6 +133,13 @@
 							.some(itemValue => itemValue === filterValue)
 					);
 			}
-		});
+
+			_getDefaultFilter() {
+				return [];
+			}
+		}
+		customElements.define(OmnitableColumnList.is, OmnitableColumnList);
+
+		Cosmoz.OmnitableColumnList = OmnitableColumnList;
 	</script>
 </dom-module>

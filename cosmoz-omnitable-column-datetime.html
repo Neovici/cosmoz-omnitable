@@ -1,5 +1,5 @@
-<link rel="import" href="cosmoz-omnitable-column-behavior.html">
-<link rel="import" href="cosmoz-omnitable-column-date-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-mixin.html">
+<link rel="import" href="cosmoz-omnitable-column-date-mixin.html">
 
 <link rel="import" href="../cosmoz-datetime-input/cosmoz-datetime-input.html">
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
@@ -38,46 +38,54 @@
 		</template>
 	</template>
 	<script>
-		Polymer({
-			is: 'cosmoz-omnitable-column-datetime',
+		window.Cosmoz = window.Cosmoz || {};
 
-			properties: {
-				filterStep: {
-					type: Number,
-					value: 1
-				},
+		/**
+		 * @polymer
+		 * @customElement
+		 * @appliesMixin Cosmoz.DateColumnMixin
+		 * @appliesMixin Cosmoz.OmnitableColumnMixin
+		 */
+		class OmnitableColumnDatetime extends Cosmoz.DateColumnMixin(Cosmoz.OmnitableColumnMixin(
+			Polymer.mixinBehaviors([Cosmoz.TranslatableBehavior], Polymer.Element)
+		)) {
+			static get is() {
+				return 'cosmoz-omnitable-column-datetime';
+			}
 
-				width: {
-					type: String,
-					value: '210px'
-				},
+			static get properties() {
+				return {
+					filterStep: {
+						type: Number,
+						value: 1
+					},
 
-				editWidth: {
-					type: String,
-					value: '320px'
-				},
+					width: {
+						type: String,
+						value: '210px'
+					},
 
-				minWidth: {
-					type: String,
-					value: '128px'
-				},
+					editWidth: {
+						type: String,
+						value: '320px'
+					},
 
-				editMinWidth: {
-					type: String,
-					value: '128px'
-				},
+					minWidth: {
+						type: String,
+						value: '128px'
+					},
 
-				headerCellClass: {
-					type: String,
-					value: 'datetime-header-cell'
-				}
-			},
+					editMinWidth: {
+						type: String,
+						value: '128px'
+					},
 
-			behaviors: [
-				Cosmoz.OmnitableColumnBehavior,
-				Cosmoz.TranslatableBehavior,
-				Cosmoz.DateColumnBehavior
-			],
+					headerCellClass: {
+						type: String,
+						value: 'datetime-header-cell'
+					}
+				};
+			}
 
 			_toInputString(value) {
 				const date = this.toValue(value);
@@ -85,7 +93,7 @@
 					return;
 				}
 				return this._toLocalISOString(date).slice(0, 19);
-			},
+			}
 
 			_toHashString(value) {
 				const date = this.toValue(value);
@@ -94,7 +102,7 @@
 				}
 				//Use utc in hash
 				return date.toISOString().slice(0, 19).replace(/:/g, '.');
-			},
+			}
 
 			_fromHashString(value) {
 				if (value == null || value === '') {
@@ -102,14 +110,14 @@
 				}
 				//Parse utc from hash string
 				return this.toValue(value.replace(/\./g, ':') + 'Z');
-			},
+			}
 
 			toXlsxValue(item, valuePath = this.valuePath) {
 				if (!valuePath) {
 					return '';
 				}
 				return this.get(valuePath, item);
-			},
+			}
 
 			// OVERRIDES
 			_computeFormatter(locale) {
@@ -121,8 +129,11 @@
 					minute: 'numeric'
 				};
 				return new Intl.DateTimeFormat(locale || undefined, timeFormatOption);
-			},
-		});
+			}
+		}
 
+		customElements.define(OmnitableColumnDatetime.is, OmnitableColumnDatetime);
+
+		Cosmoz.OmnitableColumnDatetime = OmnitableColumnDatetime;
 	</script>
 </dom-module>

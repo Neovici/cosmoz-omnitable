@@ -1,19 +1,24 @@
 <script>
 	window.Cosmoz = window.Cosmoz || {};
 
-	/** @polymerBehavior */
-	Cosmoz.ListColumnBehavior = {
-		properties: {
-			textProperty: {
-				type: String,
-				value: 'label'
-			},
+	/**
+	 * @polymer
+	 * @mixinFunction
+	 */
+	Cosmoz.ListColumnMixin = Polymer.dedupingMixin(base =>	class extends base {
+		static get properties() {
+			return {
+				textProperty: {
+					type: String,
+					value: 'label'
+				},
 
-			valueProperty: {
-				type: String,
-				value: 'value'
-			}
-		},
+				valueProperty: {
+					type: String,
+					value: 'value'
+				}
+			};
+		}
 
 		getString(item, valuePath = this.valuePath) {
 			const values = this.get(valuePath, item);
@@ -27,5 +32,5 @@
 				.filter((value, index, array) => array.indexOf(value) === index)
 				.join(', ');
 		}
-	};
+	});
 </script>

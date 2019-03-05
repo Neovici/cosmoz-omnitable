@@ -2,9 +2,9 @@
 <link rel="import" href="../paper-input/paper-input.html">
 
 <link rel="import" href="ui-helpers/cosmoz-clear-button.html">
-<link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-mixin.html">
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
-<link rel="import" href="cosmoz-omnitable-column-date-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-date-mixin.html">
 
 <dom-module id="cosmoz-omnitable-column-time">
 	<template>
@@ -33,46 +33,55 @@
 				</div>
 			</paper-dropdown-menu>
 		</template>
-
 	</template>
 	<script>
-		Polymer({
-			is: 'cosmoz-omnitable-column-time',
+		window.Cosmoz = window.Cosmoz || {};
 
-			behaviors: [
-				Cosmoz.OmnitableColumnBehavior,
-				Cosmoz.TranslatableBehavior,
-				Cosmoz.DateColumnBehavior
-			],
+		/**
+		 * @polymer
+		 * @customElement
+		 * @appliesMixin Cosmoz.DateColumnMixin
+		 * @appliesMixin Cosmoz.OmnitableColumnMixin
+		 */
+		class OmnitableColumnTime extends Cosmoz.DateColumnMixin(Cosmoz.OmnitableColumnMixin(
+			Polymer.mixinBehaviors([Cosmoz.TranslatableBehavior], Polymer.Element)
+		)) {
+			static get is() {
+				return 'cosmoz-omnitable-column-time';
+			}
 
-			properties: {
-				/*
-				 * Specifies the value granularity of the time input's value in the filter.
-				 * 1 => full seconds
-				 * 0.1 => milliseconds
-				 */
-				filterStep: {
-					type: String,
-					value: '1'
-				},
+			static get properties() {
+				return {
+					/*
+					 * Specifies the value granularity of the time input's value in the filter.
+					 * 1 => full seconds
+					 * 0.1 => milliseconds
+					 */
+					filterStep: {
+						type: String,
+						value: '1'
+					},
 
-				headerCellClass: {
-					type: String,
-					value: 'time-header-cell'
-				},
+					headerCellClass: {
+						type: String,
+						value: 'time-header-cell'
+					},
 
-				minWidth: {
-					type: String,
-					value: '63px'
-				},
+					minWidth: {
+						type: String,
+						value: '63px'
+					},
 
-				editMinWidth: {
-					type: String,
-					value: '63px'
-				}
-			},
+					editMinWidth: {
+						type: String,
+						value: '63px'
+					}
+				};
+			}
 
-			_fixedDate: '1970-01-01',
+			get _fixedDate() {
+				return '1970-01-01';
+			}
 
 			/**
 			 * Converts time to date optionaly limiting it.
@@ -83,9 +92,11 @@
 			 * @returns {Date|void}          Value converted to date optionaly limitated
 			 */
 			toDate(value, limit, limitFunc) {
-				const date = typeof value === 'string' && value.length > 3 &&  value.length <= 9 ? this._fixedDate + 'T' + value : value;
-				return Cosmoz.DateColumnBehaviorImpl.toDate.call(this, date, limit, limitFunc);
-			},
+				const date = typeof value === 'string' && value.length > 3 && value.length <= 9
+					? this._fixedDate + 'T' + value
+					: value;
+				return super.toDate(date, limit, limitFunc);
+			}
 
 			_toInputString(value) {
 				const date = this.toValue(value);
@@ -93,7 +104,7 @@
 					return null;
 				}
 				return this._toLocalISOString(date).slice(11, 19);
-			},
+			}
 
 			_toHashString(value) {
 				const date = this.toValue(value);
@@ -102,7 +113,7 @@
 				}
 				//Use utc in hash
 				return date.toISOString().slice(11, 19).replace(/:/g, '.');
-			},
+			}
 
 			_fromHashString(value) {
 				if (value == null || value === '') {
@@ -110,7 +121,7 @@
 				}
 				//Parse utc from hash string
 				return this.toValue(value.replace(/\./g, ':') + 'Z');
-			},
+			}
 
 			/**
 			 *   Get the comparable value of an item.
@@ -132,29 +143,30 @@
 					return;
 				}
 				return this.toNumber(value.getTime());
-			},
+			}
 
 			toXlsxValue(item, valuePath = this.valuePath) {
 				if (!valuePath) {
 					return '';
 				}
 				return this.getString(item, valuePath);
-			},
+			}
 
 			_timeValueChanged(e) {
 				const input = e.target,
 					timeString = input.value,
 					item = e.model.item,
 					oldTime = this.toDate(item.date),
-					newTime = this.toDate(oldTime != null ? oldTime.toISOString().slice(0, 10) + 'T' + timeString : timeString),
+					newTime = this.toDate(oldTime != null
+						? oldTime.toISOString().slice(0, 10) + 'T' + timeString
+						: timeString),
 					formatFn = value => value;
 				if (newTime != null) {
 					return;
 				}
 				this.set(this.valuePath, newTime, item);
 				this._fireItemChangeEvent(item, this.valuePath, oldTime, formatFn.bind(this));
-			},
-
+			}
 
 			// OVERRIDES
 
@@ -166,6 +178,9 @@
 				};
 				return new Intl.DateTimeFormat(locale || undefined, timeFormatOption);
 			}
-		});
+		}
+		customElements.define(OmnitableColumnTime.is, OmnitableColumnTime);
+
+		Cosmoz.OmnitableColumnTime = OmnitableColumnTime;
 	</script>
 </dom-module>

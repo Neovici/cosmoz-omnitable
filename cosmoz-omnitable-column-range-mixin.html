@@ -1,71 +1,85 @@
 <script>
-	window.Cosmoz = window.Cosmoz || {};
+window.Cosmoz = window.Cosmoz || {};
 
-	/** @polymerBehavior */
-	Cosmoz.RangeColumnBehavior = {
-		properties: {
-			bindValues: {
-				type: Boolean,
-				readOnly: true,
-				value: true
-			},
+/**
+ * @polymer
+ * @mixinFunction
+ * @param {class} base The base class
+ * @returns {class} The base class with the mixin applied
+ */
+Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
+	/**
+	 * @polymer
+	 * @mixinClass
+	 */
+	class extends base {
+		static get properties() {
+			return {
+				bindValues: {
+					type: Boolean,
+					readOnly: true,
+					value: true
+				},
 
-			values: {
-				type: Array,
-				value() {
-					return [];
+				values: {
+					type: Array,
+					value() {
+						return [];
+					}
+				},
+
+				min: {
+					type: Number,
+					value: null
+				},
+
+				max: {
+					type: Number,
+					value: null
+				},
+
+				locale: {
+					type: String,
+					value: null
+				},
+
+				_filterInput: {
+					type: Object,
+					value() {
+						return { min: null, max: null };
+					}
+				},
+
+				_range: {
+					type: Object,
+					computed: '_computeRange(values.*)'
+				},
+
+				_limit: {
+					type: Object,
+					computed: '_computeLimit(_range, _filterInput.*, min, max)',
+					value() {
+						return {};
+					}
+				},
+
+				_tooltip: {
+					type: String,
+					computed: '_computeTooltip(title, _filterText)'
 				}
-			},
+			};
+		}
 
-			min: {
-				type: Number,
-				value: null
-			},
+		static get observers() {
+			return [
+				'_filterInputChanged(_filterInput.*)',
+				'_filterChanged(filter.*)'
+			];
+		}
 
-			max: {
-				type: Number,
-				value: null
-			},
-
-			locale: {
-				type: String,
-				value: null
-			},
-
-			_filterInput: {
-				type: Object,
-				value() {
-					return { min: null, max: null };
-				}
-			},
-
-			_range: {
-				type: Object,
-				computed: '_computeRange(values.*)'
-			},
-
-			_limit: {
-				type: Object,
-				computed: '_computeLimit(_range, _filterInput.*, min, max)',
-				value() {
-					return {};
-				}
-			},
-
-			_tooltip: {
-				type: String,
-				computed: '_computeTooltip(title, _filterText)'
-			},
-		},
-
-		observers: [
-			'_filterInputChanged(_filterInput.*)',
-			'_filterChanged(filter.*)'
-		],
-
-		detached() {
-			this.cancelDebouncer('_limitInput');
-		},
+		disconnectedCallback() {
+			this._limitInputDebouncer.cancel();
+		}
 
 		/**
 		 * Converts a value to number optionaly limiting it.
@@ -91,11 +105,11 @@
 				return number;
 			}
 			return limitFunc(number, lNumber);
-		},
+		}
 
 		toValue() {
 			return this.toNumber.apply(this, arguments);
-		},
+		}
 
 		/**
 		 *   Get the comparable value of an item.
@@ -113,7 +127,7 @@
 				value = this.get(valuePath, item);
 			}
 			return this.toValue(value);
-		},
+		}
 
 		toXlsxValue(item, valuePath = this.valuePath) {
 			const value = this.getComparableValue(item, valuePath);
@@ -121,7 +135,7 @@
 				return '';
 			}
 			return value;
-		},
+		}
 
 		getString(item, valuePath = this.valuePath) {
 			if (valuePath === undefined) {
@@ -133,15 +147,15 @@
 				return '';
 			}
 			return this.renderValue(value);
-		},
+		}
 		renderValue() {
 			//overrideable
-		},
+		}
 
 		getInputString(item, valuePath = this.valuePath) {
 			const value = this.toValue(this.get(valuePath, item));
 			return this._toInputString(value);
-		},
+		}
 
 		/**
 		 * Computes min/max range from values.
@@ -152,7 +166,7 @@
 		_computeRange(change) {
 			const allValues = change.base,
 				values = Array.isArray(allValues) && allValues.length
-				&& allValues.map(v => this.toValue(v)).filter(n => n != null);
+					&& allValues.map(v => this.toValue(v)).filter(n => n != null);
 
 			if (!values || values.length < 1) {
 				return {
@@ -166,7 +180,7 @@
 					max: this.toValue(n, p.max, Math.max)
 				};
 			}, {});
-		},
+		}
 
 		_computeLimit(range, inputChange, min, max) {
 			if (!range) {
@@ -184,7 +198,7 @@
 				toMin: this.toValue(aMin, this._fromInputString(input.min, 'min'), Math.max),
 				toMax: aMax
 			};
-		},
+		}
 
 		getFilterFn() {
 			const min = this.getComparableValue(this.filter, 'min'),
@@ -194,7 +208,7 @@
 				return;
 			}
 			return this._applySingleFilter.bind(this, this.filter);
-		},
+		}
 
 		_applySingleFilter(filter, item) {
 			const value = this.getComparableValue(item, this.valuePath),
@@ -210,7 +224,7 @@
 			}
 
 			return true;
-		},
+		}
 
 		_computeFilterText(change) {
 			if (change.base == null) {
@@ -229,18 +243,18 @@
 				text.push(this.renderValue(max));
 			}
 			return text.length > 1 ? text.join('') : null;
-		},
+		}
 
 		_computeTooltip(title, text) {
 			if (text == null) {
 				return title;
 			}
 			return `${title}: ${text}`;
-		},
+		}
 
 		_fromInputString(value) {
 			return this.toValue(value);
-		},
+		}
 
 		_toInputString(value) {
 			const val = this.toValue(value);
@@ -248,14 +262,14 @@
 				return null;
 			}
 			return val;
-		},
+		}
 
 		_getDefaultFilter() {
 			return {
 				min: null,
 				max: null
 			};
-		},
+		}
 
 		/**
 		 * Observes changes of _filterInput, saves the path, debounces _limitInput.
@@ -266,8 +280,14 @@
 		_filterInputChanged(change) {
 			const path = change.path.split('.')[1];
 			this.__inputChangePath = path || null;
-			this.debounce('_limitInput', this._limitInput, 600);
-		},
+
+			this._limitInputDebouncer = Polymer.Debouncer.debounce(
+				this._limitInputDebouncer,
+				Polymer.Async.timeOut.after(600),
+				() => this._limitInput()
+			);
+			Polymer.enqueueDebouncer(this._limitInputDebouncer);
+		}
 
 		/**
 		 * Debounced function called by `_filterInputChanged` when `_filterInput` changes.
@@ -287,20 +307,18 @@
 
 			const limit = this._limit,
 				limitPath = path === 'min' ? 'from' : 'to',
-				limitedValue = value != null ? this.toValue(
-					this.toValue(value, this.get(limitPath + 'Min', limit), Math.max),
-					this.get(limitPath + 'Max', limit),
-					Math.min
-				) : null;
+				lowerLimit = this.get(limitPath + 'Min', limit),
+				upperLimit = this.get(limitPath + 'Max', limit),
+				limitedValue = this.toValue(this.toValue(value, lowerLimit, Math.max), upperLimit, Math.min);
 
 			if (this.getComparableValue(value) !== this.getComparableValue(limitedValue)) {
 				//set value without debouncing _limitInput again.
 				this.set(['_filterInput', path], this._toInputString(limitedValue, path));
-				this.cancelDebouncer('_limitInput');
+				this._limitInputDebouncer.cancel();
 			}
 
 			this._updateFilter();
-		},
+		}
 
 		_updateFilter() {
 			const input = this._filterInput,
@@ -314,8 +332,8 @@
 				return;
 			}
 
-			this.set('filter', {min, max});
-		},
+			this.set('filter', { min, max });
+		}
 
 		_filterChanged(change) {
 			if (this._filterInput == null) {
@@ -336,17 +354,17 @@
 				min: this._toInputString(filter.min),
 				max: this._toInputString(filter.max)
 			});
-			this.cancelDebouncer('_limitInput');
-		},
+			this._limitInputDebouncer.cancel();
+		}
 
 		hasFilter() {
 			const filter = this.filter,
-				isSet = Cosmoz.OmnitableColumnBehavior.hasFilter.apply(this, arguments);
+				isSet = super.hasFilter.apply(this, arguments);
 			if (!isSet) {
 				return false;
 			}
 			return this.toValue(filter.min) != null || this.toValue(filter.max) != null;
-		},
+		}
 
 		_serializeFilter(filter = this.filter) {
 			if (filter == null) {
@@ -358,11 +376,11 @@
 			if (min == null && max == null) {
 				return;
 			}
-			return  this._toHashString(min) + '~' + this._toHashString(max);
-		},
+			return this._toHashString(min) + '~' + this._toHashString(max);
+		}
 
 		_deserializeFilter(obj) {
-			if (obj == null || obj  === '') {
+			if (obj == null || obj === '') {
 				return null;
 			}
 			const matches = obj.match(/^([^~]+)?~([^~]+)?/i);
@@ -375,7 +393,7 @@
 				min: this._fromHashString(matches[1], 'min'),
 				max: this._fromHashString(matches[2], 'max')
 			};
-		},
+		}
 
 		_toHashString(value) {
 			let string = this._toInputString(value);
@@ -383,10 +401,11 @@
 				return '';
 			}
 			return string;
-		},
+		}
 
 		_fromHashString(value, property) {
 			return this._fromInputString(value, property);
 		}
-	};
+	}
+);
 </script>

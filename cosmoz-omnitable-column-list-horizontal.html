@@ -1,7 +1,7 @@
 <link rel="import" href="../paper-autocomplete-chips/paper-autocomplete-chips.html">
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
-<link rel="import" href="cosmoz-omnitable-column-behavior.html">
-<link rel="import" href="cosmoz-omnitable-column-list-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-mixin.html">
+<link rel="import" href="cosmoz-omnitable-column-list-mixin.html">
 
 <dom-module id="cosmoz-omnitable-column-list-horizontal">
 	<template>
@@ -45,37 +45,45 @@
 	</template>
 
 	<script type="text/javascript">
-		Polymer({
-			is: 'cosmoz-omnitable-column-list-horizontal',
+		window.Cosmoz = window.Cosmoz || {};
 
-			behaviors: [
-				Cosmoz.OmnitableColumnBehavior,
-				Cosmoz.TranslatableBehavior,
-				Cosmoz.ListColumnBehavior
-			],
+		/**
+		 * @polymer
+		 * @customElement
+		 * @appliesMixin Cosmoz.OmnitableColumnMixin
+		 * @appliesMixin Cosmoz.ListColumnMixin
+		 */
+		class OmnitableColumnListHorizontal extends	Cosmoz.OmnitableColumnMixin(Cosmoz.ListColumnMixin(
+			Polymer.mixinBehaviors([Cosmoz.TranslatableBehavior], Polymer.Element)
+		)) {
+			static get is() {
+				return 'cosmoz-omnitable-column-list-horizontal';
+			}
 
-			properties: {
-				autocompleteSelectedItems: {
-					type: Array
-				},
+			static get properties() {
+				return {
+					autocompleteSelectedItems: {
+						type: Array
+					},
 
-				/**
-				 * Ask for a list of values
-				 */
-				bindValues: {
-					type: Boolean,
-					readOnly: true,
-					value: true
-				},
+					/**
+					 * Ask for a list of values
+					 */
+					bindValues: {
+						type: Boolean,
+						readOnly: true,
+						value: true
+					},
 
-				filter: {
-					type: Array,
-					notify: true,
-					value() {
-						return this._getDefaultFilter();
+					filter: {
+						type: Array,
+						notify: true,
+						value() {
+							return this._getDefaultFilter();
+						}
 					}
-				}
-			},
+				};
+			}
 
 			_computeAutocompleteItems(values = this.values) {
 				const unique = [];
@@ -96,14 +104,14 @@
 						return true;
 					})
 					.sort();
-			},
+			}
 
 			_getLabelForValue(value) {
 				if (value == null) {
 					return null;
 				}
 				return value.toString();
-			},
+			}
 
 			_applySingleFilter(filterString, item) {
 				const value = this.get(this.valuePath, item);
@@ -111,7 +119,7 @@
 					return false;
 				}
 				return value.toString().toLowerCase() === filterString;
-			},
+			}
 
 			_applyMultiFilter(filter, item) {
 				const valueFilter = element => {
@@ -129,6 +137,26 @@
 					.map(valueFilter)
 					.some(val => filterArray.indexOf(val) >= 0);
 			}
-		});
+
+			_getDefaultFilter() {
+				return [];
+			}
+
+			getString() {
+				const value = super.getString.apply(this, arguments);
+				if (!Array.isArray(value) || value.length === 0) {
+					return '';
+				}
+
+				return value.join(', ');
+			}
+		}
+
+		customElements.define(
+			OmnitableColumnListHorizontal.is,
+			OmnitableColumnListHorizontal
+		);
+
+		Cosmoz.OmnitableColumnListHorizontal = OmnitableColumnListHorizontal;
 	</script>
 </dom-module>

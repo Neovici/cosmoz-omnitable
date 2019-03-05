@@ -1,5 +1,5 @@
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="cosmoz-omnitable-repeater-behavior.html">
+<link rel="import" href="../polymer/polymer.html" />
+<link rel="import" href="cosmoz-omnitable-repeater-mixin.html" />
 
 <dom-module id="cosmoz-omnitable-header-row">
 	<template>
@@ -15,7 +15,8 @@
 				white-space: nowrap;
 				text-overflow: ellipsis;
 			}
-			:host > ::slotted([hidden]),:host [hidden] {
+			:host > ::slotted([hidden]),
+			:host [hidden] {
 				display: none !important;
 			}
 		</style>
@@ -24,40 +25,47 @@
 </dom-module>
 
 <script>
-(function () {
-	'use strict';
+	window.Cosmoz = window.Cosmoz || {};
 
-	Polymer({
+	/**
+	 * @polymer
+	 * @customElement
+	 * @appliesMixin Cosmoz.OmnitableRepeaterMixin
+	 */
+	class OmnitableHeaderRow extends Cosmoz.OmnitableRepeaterMixin(Polymer.Element) {
+		static get is() {
+			return 'cosmoz-omnitable-header-row';
+		}
 
-		is: 'cosmoz-omnitable-header-row',
+		get _elementType() {
+			return 'div';
+		}
 
-		behaviors: [
-			Cosmoz.OmnitableRepeaterBehavior
-		],
-
-		_elementType: 'div',
-
-		_slotName: 'header-cell',
+		get _slotName() {
+			return 'header-cell';
+		}
 
 		_getTemplateInstance(column) {
 			return column.headerTemplatizer.getInstance();
-		},
+		}
 
 		_detachTemplateInstance(instance, column, element) {
 			if (column.headerTemplatizer) {
 				column.headerTemplatizer.detachInstance(instance, element);
 			}
-		},
+		}
 
 		_configureElement(element, column) {
-			this.toggleClass(column.headerCellClass, true, element);
-			this.toggleClass('header-cell', true, element);
+			element.classList.toggle(column.headerCellClass, true);
+			element.classList.toggle('header-cell', true);
 			element.setAttribute('title', column.title);
-		},
+		}
 
 		_configureTemplateInstance(instance) {
-			this._forwardPropertiesFlush(instance);
+			instance._flushProperties(true);
 		}
-	});
-}());
+	}
+	customElements.define(OmnitableHeaderRow.is, OmnitableHeaderRow);
+
+	Cosmoz.OmnitableHeaderRow = OmnitableHeaderRow;
 </script>

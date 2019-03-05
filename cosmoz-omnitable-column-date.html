@@ -1,12 +1,12 @@
-<link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-mixin.html" />
 
-<link rel="import" href="../paper-input/paper-input.html">
-<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-input/paper-input.html" />
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html" />
 
-<link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
+<link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html" />
 
-<link rel="import" href="ui-helpers/cosmoz-clear-button.html">
-<link rel="import" href="cosmoz-omnitable-column-date-behavior.html">
+<link rel="import" href="ui-helpers/cosmoz-clear-button.html" />
+<link rel="import" href="cosmoz-omnitable-column-date-mixin.html" />
 
 <dom-module id="cosmoz-omnitable-column-date">
 	<template>
@@ -15,15 +15,14 @@
 		</template>
 
 		<template class="edit-cell">
-			<paper-input no-label-float type="date" on-change="_dateValueChanged"
-				value="[[ getInputString(item, valuePath) ]]">
+			<paper-input no-label-float type="date" on-change="_dateValueChanged" value="[[ getInputString(item, valuePath) ]]">
 			</paper-input>
 		</template>
 
 		<template class="header">
 			<cosmoz-clear-button on-click="resetFilter" visible="[[ hasFilter(filter.*) ]]"></cosmoz-clear-button>
 			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]" title="[[ _tooltip ]]"
-					horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
+				horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
 					<paper-input type="date" label="[[ _('From date', t) ]]"
@@ -39,28 +38,37 @@
 		</template>
 	</template>
 	<script>
-		/*global Cosmoz */
-		Polymer({
-			is: 'cosmoz-omnitable-column-date',
-			properties: {
-				headerCellClass: {
-					type: String,
-					value: 'date-header-cell'
-				},
-				minWidth: {
-					type: String,
-					value: '82px'
-				},
-				editMinWidth: {
-					type: String,
-					value: '82px'
-				}
-			},
-			behaviors: [
-				Cosmoz.OmnitableColumnBehavior,
-				Cosmoz.TranslatableBehavior,
-				Cosmoz.DateColumnBehavior
-			],
+		window.Cosmoz = window.Cosmoz || {};
+
+		/**
+		 * @polymer
+		 * @customElement
+		 * @appliesMixin Cosmoz.DateColumnMixin
+		 * @appliesMixin Cosmoz.OmnitableColumnMixin
+		 */
+		class OmnitableColumnDate extends Cosmoz.DateColumnMixin(Cosmoz.OmnitableColumnMixin(
+			Polymer.mixinBehaviors([Cosmoz.TranslatableBehavior], Polymer.Element)
+		)) {
+			static get is() {
+				return 'cosmoz-omnitable-column-date';
+			}
+
+			static get properties() {
+				return {
+					headerCellClass: {
+						type: String,
+						value: 'date-header-cell'
+					},
+					minWidth: {
+						type: String,
+						value: '82px'
+					},
+					editMinWidth: {
+						type: String,
+						value: '82px'
+					}
+				};
+			}
 
 			_fromInputString(value, property) {
 				const date = this.toDate(value);
@@ -74,7 +82,7 @@
 					date.setHours(23, 59, 59);
 				}
 				return date;
-			},
+			}
 
 			toXlsxValue(item, valuePath = this.valuePath) {
 				if (!valuePath) {
@@ -87,7 +95,7 @@
 				const localDate = this.toValue(this._toLocalISOString(date));
 				localDate.setHours(0, 0, 0, 0);
 				return localDate;
-			},
+			}
 
 			_filterInputChanged(change) {
 				const path = change.path.split('.')[1],
@@ -95,13 +103,14 @@
 
 				// don't trigger change when date input begins with 0; Year (starting from 0000) was limited before the needed value was typed.
 				if (value && value.match(/^0+/)) {
-					this.cancelDebouncer('_limitInput');
+					this._limitInputDebouncer.cancel();
 					return;
 				}
-				Cosmoz.RangeColumnBehavior._filterInputChanged.call(this, change);
+				super._filterInputChanged(change);
 			}
+		}
+		customElements.define(OmnitableColumnDate.is, OmnitableColumnDate);
 
-		});
-
+		Cosmoz.OmnitableColumnDate = OmnitableColumnDate;
 	</script>
 </dom-module>

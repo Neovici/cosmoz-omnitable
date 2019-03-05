@@ -84,7 +84,7 @@
 			});
 
 			test('instantiates a cosmoz-omnitable-column-date', () => {
-				assert.equal(column.is, 'cosmoz-omnitable-column-date');
+				assert.instanceOf(column, Cosmoz.OmnitableColumnDate);
 			});
 
 			test('toDate converts an value to valid date', () => {
@@ -160,14 +160,14 @@
 					min: '2015-03-18',
 					max: '2023-03-21'
 				};
-				column.flushDebouncer('_limitInput');
+				Polymer.flush();
 				assert.equal(column.filter.min.getTime(), new Date('2015-03-18T00:00:00').getTime());
 				assert.equal(column.filter.max.getTime(), new Date('2023-03-21T23:59:59').getTime(), 'Expecting max date included');
 			});
 
 			test('changing only _filterInput min updates filter min', () => {
 				column.set('_filterInput.min', '2015-08-27');
-				column.flushDebouncer('_limitInput');
+				Polymer.flush();
 				assert.equal(column.filter.min.getTime(), new Date('2015-08-27T00:00:00').getTime());
 			});
 
@@ -280,14 +280,14 @@
 					min: '1970-01-02T02:00:00',
 					max: '1999-06-24T11:33:30'
 				};
-				column.flushDebouncer('_limitInput');
+				Polymer.flush();
 				assert.equal(column.filter.min.getTime(), new Date('1970-01-02T02:00:00').getTime());
 				assert.equal(column.filter.max.getTime(), new Date('1999-06-24T11:33:30').getTime());
 			});
 
 			test('changing only _filterInput min updates filter min', () => {
 				column.set('_filterInput.min', '2014-06-24T11:33:30');
-				column.flushDebouncer('_limitInput');
+				Polymer.flush();
 				assert.equal(column.filter.min.getTime(), new Date('2014-06-24T11:33:30').getTime());
 			});
 		});
@@ -304,7 +304,7 @@
 			});
 
 			test('instantiates a cosmoz-omnitable-column-time', () => {
-				assert.equal(column.is, 'cosmoz-omnitable-column-time');
+				assert.instanceOf(column, Cosmoz.OmnitableColumnTime);
 			});
 
 			test('time toDate converts timestamp to valid date', () => {
@@ -369,7 +369,7 @@
 					max = '11:34:56';
 
 				column._filterInput = {min, max};
-				column.flushDebouncer('_limitInput');
+				Polymer.flush();
 				const {min: fMin, max: fMax} = column.filter;
 				assert.equal(fMin.getTime(), column.toValue(min).getTime());
 				assert.equal(fMax.getTime(), column.toValue(max).getTime());
@@ -378,7 +378,7 @@
 			test('changing only _filterInput min updates filter min', () => {
 				const min = '04:21:10';
 				column.set('_filterInput.min', min);
-				column.flushDebouncer('_limitInput');
+				Polymer.flush();
 				assert.equal(column.filter.min.getTime(), column.toValue(min).getTime());
 			});
 

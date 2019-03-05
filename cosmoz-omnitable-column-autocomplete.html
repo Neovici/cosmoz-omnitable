@@ -1,7 +1,7 @@
 <link rel="import" href="../paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../paper-autocomplete-chips/paper-autocomplete-chips.html">
 
-<link rel="import" href="cosmoz-omnitable-column-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-mixin.html">
 
 <dom-module id="cosmoz-omnitable-column-autocomplete">
 	<template>
@@ -29,66 +29,71 @@
 	</template>
 
 	<script>
-		Polymer({
-			is: 'cosmoz-omnitable-column-autocomplete',
+		window.Cosmoz  = window.Cosmoz || {};
 
-			behaviors: [
-				Cosmoz.OmnitableColumnBehavior
-			],
+		/**
+		 * @polymer
+		 * @customElement
+		 * @appliesMixin Cosmoz.OmnitableColumnMixin
+		 */
+		class OmnitableColumnAutocomplete extends Cosmoz.OmnitableColumnMixin(Polymer.Element) {
+			static get is() {
+				return 'cosmoz-omnitable-column-autocomplete';
+			}
+			static get properties() {
+				return {
+					/**
+					* Ask for a list of values
+					*/
+					bindValues: {
+						type: Boolean,
+						readOnly: true,
+						value: true
+					},
 
-			properties: {
-				/**
-				 * Ask for a list of values
-				 */
-				bindValues: {
-					type: Boolean,
-					readOnly: true,
-					value: true
-				},
+					filter: {
+						type: Array,
+						notify: true,
+						value() {
+							return this._getDefaultFilter();
+						}
+					},
 
-				filter: {
-					type: Array,
-					notify: true,
-					value() {
-						return this._getDefaultFilter();
-					}
-				},
+					query: {
+						type: String,
+						notify: true
+					},
 
-				query: {
-					type: String,
-					notify: true
-				},
+					textProperty: {
+						type: String,
+						value: 'text'
+					},
 
-				textProperty: {
-					type: String,
-					value: 'text'
-				},
+					valueProperty: {
+						type: String,
+						value: ''
+					},
 
-				valueProperty: {
-					type: String,
-					value: ''
-				},
+					headerCellClass: {
+						type: String,
+						value: 'autocomplete-header-cell'
+					},
 
-				headerCellClass: {
-					type: String,
-					value: 'autocomplete-header-cell'
-				},
+					minWidth: {
+						type: String,
+						value: '55px'
+					},
 
-				minWidth: {
-					type: String,
-					value: '55px'
-				},
-
-				editMinWidth: {
-					type: String,
-					value: '55px'
-				},
-
-			},
+					editMinWidth: {
+						type: String,
+						value: '55px'
+					},
+				};
+			}
 
 			getComparableValue(item, valuePath = this.valuePath) {
 				return this.getString(item, valuePath);
-			},
+			}
 
 			getString(item, valuePath = this.valuePath) {
 				if (valuePath === undefined) {
@@ -104,19 +109,19 @@
 					return this.get(textProp, itemValue);
 				}
 				return itemValue;
-			},
+			}
 
 			toXlsxValue(item, valuePath = this.valuePath) {
 				if (!valuePath) {
 					return '';
 				}
 				return this.getString(item, valuePath);
-			},
+			}
 
 			_applySingleFilter(filterString, item) {
 				const value = this.get(this.valuePath, item).toString().toLowerCase();
 				return value === filterString;
-			},
+			}
 
 			_applyMultiFilter(filter, item) {
 				// check if the item does not have a value for the filtered property
@@ -145,7 +150,7 @@
 						return val.toString().toLowerCase();
 					})
 					.indexOf(value) !== -1;
-			},
+			}
 
 			_unique(values, valueProperty) {
 				if (!Array.isArray(values)) {
@@ -166,6 +171,13 @@
 					return true;
 				});
 			}
-		});
+
+			_getDefaultFilter() {
+				return [];
+			}
+		}
+		customElements.define(OmnitableColumnAutocomplete.is, OmnitableColumnAutocomplete);
+
+		Cosmoz.OmnitableColumnAutocomplete = OmnitableColumnAutocomplete;
 	</script>
 </dom-module>

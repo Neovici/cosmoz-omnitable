@@ -1,5 +1,5 @@
-<link rel="import" href="cosmoz-omnitable-column-behavior.html">
-<link rel="import" href="cosmoz-omnitable-column-range-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-mixin.html">
+<link rel="import" href="cosmoz-omnitable-column-range-mixin.html">
 <link rel="import" href="../shadycss/apply-shim.html">
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../paper-input/paper-input.html">
@@ -40,13 +40,17 @@
 		</template>
 	</template>
 	<script type="text/javascript">
-		window.Cosmoz  = window.Cosmoz || {};
+		window.Cosmoz = window.Cosmoz || {};
 
-		class OmnitableColumnAmount extends Polymer.mixinBehaviors([
-			Cosmoz.OmnitableColumnBehavior,
-			Cosmoz.TranslatableBehavior,
-			Cosmoz.RangeColumnBehavior
-		], Polymer.Element) {
+		/**
+		 * @polymer
+		 * @customElement
+		 * @appliesMixin Cosmoz.RangeColumnMixin
+		 * @appliesMixin Cosmoz.OmnitableColumnMixin
+		 */
+		class OmnitableColumnAmount extends Cosmoz.RangeColumnMixin(Cosmoz.OmnitableColumnMixin(
+			Polymer.mixinBehaviors([Cosmoz.TranslatableBehavior], Polymer.Element)
+		)) {
 			static get is() {
 				return 'cosmoz-omnitable-column-amount';
 			}
@@ -58,24 +62,24 @@
 			static get properties() {
 				return {
 					/**
-					* Base Currency used in filters
-					*/
+					 * Base Currency used in filters
+					 */
 					currency: {
 						type: String
 					},
 
 					/**
-					* If this is set true then currency property will be the currency with highest occurrence in values
-					*/
+					 * If this is set true then currency property will be the currency with highest occurrence in values
+					 */
 					autodetect: {
 						type: Boolean,
 						value: false
 					},
 
 					/**
-					* Exchange rates of currencies. Example: {"EUR": 1, "USD":0.8169982616, "AUD":0.6529827192, "SEK": 0.1019271438}'
-					* Default exchange rate is 1 and it is used for every currency that is present on column values but missing from exchange rates object.
-					*/
+					 * Exchange rates of currencies. Example: {"EUR": 1, "USD":0.8169982616, "AUD":0.6529827192, "SEK": 0.1019271438}'
+					 * Default exchange rate is 1 and it is used for every currency that is present on column values but missing from exchange rates object.
+					 */
 					rates: {
 						type: Object
 					},
@@ -103,17 +107,13 @@
 				};
 			}
 
-			_computeFilterText() {
-				// TODO: for linting, remove when fully moved to 2.x class based and mixinBehaviors is removed
-				return Cosmoz.RangeColumnBehavior._computeFilterText.apply(this, arguments);
-			}
 			/**
-			* Auto-detect currency property: Most frequently occurring currency
-			* @param {boolean} autodetect Whether the currency property will be the currency with highest occurrence in values or not.
-			* @param {string} currency Base currency used in filters.
-			* @param {Array} values Array of amounts
-			* @returns {void}
-			*/
+			 * Auto-detect currency property: Most frequently occurring currency
+			 * @param {boolean} autodetect Whether the currency property will be the currency with highest occurrence in values or not.
+			 * @param {string} currency Base currency used in filters.
+			 * @param {Array} values Array of amounts
+			 * @returns {void}
+			 */
 			_valuesChanged(autodetect, currency, values) {
 				if (!Array.isArray(values) || values.length < 1) {
 					return;
@@ -142,13 +142,13 @@
 			}
 
 			/**
-			* Converts a value to an amount object optionaly limiting it.
-			*
-			* @param {Object} value The value to convert to number
-			* @param {Object} limit The value used to limit the number
-			* @param {Function} limitFunc The function used to limit the number (Math.min|Math.max)
-			* @returns {Object|void} Value converted to Number or void
-			*/
+			 * Converts a value to an amount object optionaly limiting it.
+			 *
+			 * @param {Object} value The value to convert to number
+			 * @param {Object} limit The value used to limit the number
+			 * @param {Function} limitFunc The function used to limit the number (Math.min|Math.max)
+			 * @returns {Object|void} Value converted to Number or void
+			 */
 			toAmount(value, limit, limitFunc) {
 				if (value == null || value === '') {
 					return;
@@ -195,14 +195,15 @@
 			}
 
 			/**
-			* Get the comparable value of an item.
-			*
-			* @param {Object} item Item to be processed
-			* @param {String} valuePath Property path
-			* @returns {Number|void} Valid value or void
-			*/
+			 * Get the comparable value of an item.
+			 *
+			 * @param {Object} item Item to be processed
+			 * @param {String} valuePath Property path
+			 * @returns {Number|void} Valid value or void
+			 */
 			getComparableValue(item, valuePath) {
-				const value = Cosmoz.RangeColumnBehavior.getComparableValue.call(this, item, valuePath);
+				const value = super.getComparableValue(item, valuePath);
+
 				if (value == null) {
 					return;
 				}
@@ -244,12 +245,12 @@
 				});
 			}
 			/**
-			* Converts an amount to symbol and value to be rendered.
-			*
-			* @param {Object} value Amount to be formated
-			* @param {Object} _formatters = this._formatters All possible formatters.
-			* @returns {String} Formated value or empty string.
-			*/
+			 * Converts an amount to symbol and value to be rendered.
+			 *
+			 * @param {Object} value Amount to be formated
+			 * @param {Object} _formatters = this._formatters All possible formatters.
+			 * @returns {String} Formated value or empty string.
+			 */
 			renderValue(value) {
 				const amount = this.toAmount(value);
 				if (amount == null) {
@@ -260,8 +261,7 @@
 			}
 
 			_amountValueChanged(event) {
-				const
-					input = event.target,
+				const input = event.target,
 					value = input.value,
 					item = event.model.item,
 					originalValue = this.get(this.valuePath, item);

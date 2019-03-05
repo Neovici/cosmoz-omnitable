@@ -57,7 +57,7 @@
 			});
 
 			test('initializes boolean column', () => {
-				assert.equal(column.is, 'cosmoz-omnitable-column-boolean');
+				assert.instanceOf(column, Cosmoz.OmnitableColumnBoolean);
 			});
 
 			test('_getDefaultFilter is null', () => {

@@ -1,48 +1,62 @@
-<link rel="import" href="cosmoz-omnitable-column-range-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-range-mixin.html" />
 <script>
-	window.Cosmoz = window.Cosmoz || {};
+window.Cosmoz = window.Cosmoz || {};
 
-	/** @polymerBehavior */
-	Cosmoz.DateColumnBehaviorImpl = {
-		properties: {
-			max: {
-				type: Date,
-				value: null
-			},
+/**
+ * @polymer
+ * @mixinFunction
+ * @appliesMixin Cosmoz.RangeColumnMixin
 
-			min: {
-				type: Date,
-				value: null
-			},
+ * @param {class} base The base class
+ * @returns {class} The base class with the mixin applied
+ */
+Cosmoz.DateColumnMixin = Polymer.dedupingMixin(base =>
+	/**
+	 * @polymer
+	 * @mixinClass
+	 */
+	class extends Cosmoz.RangeColumnMixin(base) {
+		static get properties() {
+			return {
+				max: {
+					type: Date,
+					value: null
+				},
 
-			_filterText: {
-				type: String,
-				computed: '_computeFilterText(filter.*, formatter)'
-			},
+				min: {
+					type: Date,
+					value: null
+				},
 
-			width: {
-				type: String,
-				value: '100px'
-			},
+				_filterText: {
+					type: String,
+					computed: '_computeFilterText(filter.*, formatter)'
+				},
 
-			editWidth: {
-				type: String,
-				value: '150px'
-			},
+				width: {
+					type: String,
+					value: '100px'
+				},
 
-			/**
-			 * No need to grow, as the values in a date column should have known fixed width
-			 * @returns {String} Default flex
-			 */
-			flex: {
-				type: String,
-				value: '0'
-			},
-			formatter: {
-				type: Object,
-				computed: '_computeFormatter(locale)'
-			}
-		},
+				editWidth: {
+					type: String,
+					value: '150px'
+				},
+
+				/**
+				 * No need to grow, as the values in a date column should have known fixed width
+				 * @returns {String} Default flex
+				 */
+				flex: {
+					type: String,
+					value: '0'
+				},
+				formatter: {
+					type: Object,
+					computed: '_computeFormatter(locale)'
+				}
+			};
+		}
 
 		/**
 		 * Converts an value to date optionaly limiting it.
@@ -67,29 +81,30 @@
 			if (lDate == null) {
 				return date;
 			}
-			var comparableDate = this.getComparableValue(date),
+			const comparableDate = this.getComparableValue(date),
 				comparableLDate = this.getComparableValue(lDate),
 				limitedValue = limitFunc(comparableDate, comparableLDate);
 			return limitedValue === comparableDate ? date : lDate;
-		},
+		}
 
 		toValue() {
 			return this.toDate.apply(this, arguments);
-		},
+		}
 
 		/**
 		 * Get comparable number from date
 		 *
+		 * @param  {Object} item       Item to be processed
+		 * @param  {String} valuePath  Property path
 		 * @returns {Number|void} Valid value or void
 		 */
-		getComparableValue() {
-			const value = Cosmoz.RangeColumnBehavior.getComparableValue.apply(this, arguments);
+		getComparableValue(item, valuePath) {
+			const value = super.getComparableValue(item, valuePath);
 			if (value == null) {
 				return;
 			}
 			return this.toNumber(value.getTime());
-		},
-
+		}
 
 		/**
 		 * Get date of item as string
@@ -108,7 +123,7 @@
 				return 'Invalid Date';
 			}
 			return this.renderValue(value, formatter);
-		},
+		}
 
 		renderValue(value, formatter = this.formatter) {
 			if (formatter == null) {
@@ -119,11 +134,11 @@
 				return;
 			}
 			return formatter.format(date);
-		},
+		}
 
 		_computeFormatter(locale) {
 			return new Intl.DateTimeFormat(locale || undefined);
-		},
+		}
 
 		_toInputString(value) {
 			const date = this.toValue(value);
@@ -131,7 +146,7 @@
 				return null;
 			}
 			return this._toLocalISOString(date).slice(0, 10);
-		},
+		}
 
 		_dateValueChanged(event) {
 			const input = event.currentTarget,
@@ -144,7 +159,7 @@
 			}
 			this.set(this.valuePath, date, item);
 			this._fireItemChangeEvent(item, this.valuePath, oldValue, this.renderValue.bind(this));
-		},
+		}
 
 		_toLocalISOString(date) {
 			if (!(date instanceof Date)) {
@@ -159,7 +174,6 @@
 				':' + pad(date.getSeconds()) +
 				'.' + (date.getMilliseconds() / 1000).toFixed(3).slice(2, 5);
 		}
-	};
-	/** @polymerBehavior */
-	Cosmoz.DateColumnBehavior = [Cosmoz.RangeColumnBehavior, Cosmoz.DateColumnBehaviorImpl];
+	}
+);
 </script>

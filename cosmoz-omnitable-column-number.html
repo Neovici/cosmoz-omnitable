@@ -6,8 +6,8 @@
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 
 <link rel="import" href="ui-helpers/cosmoz-clear-button.html">
-<link rel="import" href="cosmoz-omnitable-column-behavior.html">
-<link rel="import" href="cosmoz-omnitable-column-range-behavior.html">
+<link rel="import" href="cosmoz-omnitable-column-mixin.html">
+<link rel="import" href="cosmoz-omnitable-column-range-mixin.html">
 
 <dom-module id="cosmoz-omnitable-column-number">
 	<template>
@@ -36,49 +36,57 @@
 		</template>
 	</template>
 	<script>
-		Polymer({
-			is: 'cosmoz-omnitable-column-number',
+		window.Cosmoz = window.Cosmoz || {};
 
-			behaviors: [
-				Cosmoz.OmnitableColumnBehavior,
-				Cosmoz.TranslatableBehavior,
-				Cosmoz.RangeColumnBehavior
-			],
+		/**
+		 * @polymer
+		 * @customElement
+		 * @appliesMixin Cosmoz.RangeColumnMixin
+		 * @appliesMixin Cosmoz.OmnitableColumnMixin
+		 */
+		class OmnitableColumnNumber extends Cosmoz.RangeColumnMixin(Cosmoz.OmnitableColumnMixin(
+			Polymer.mixinBehaviors([Cosmoz.TranslatableBehavior], Polymer.Element)
+		)) {
+			static get is() {
+				return 'cosmoz-omnitable-column-number';
+			}
 
-			properties: {
-				cellClass: {
-					type: String,
-					value: 'number-cell align-right'
-				},
-				width: {
-					type: String,
-					value: '30px'
-				},
-				editWidth: {
-					type: String,
-					value: '30px'
-				},
-				headerCellClass: {
-					type: String,
-					value: 'number-header-cell'
-				},
-				maximumFractionDigits: {
-					type: Number,
-					value: null
-				},
-				minimumFractionDigits: {
-					type: Number,
-					value: null // browser default 0 for numbers, currency-specific or 2 for currency
-				},
-				formatter: {
-					type: Object,
-					computed: '_computeFormatter(locale, minimumFractionDigits, maximumFractionDigits)'
-				},
-				_filterText: {
-					type: String,
-					computed: '_computeFilterText(filter.*, formatter)'
-				}
-			},
+			static get properties() {
+				return {
+					cellClass: {
+						type: String,
+						value: 'number-cell align-right'
+					},
+					width: {
+						type: String,
+						value: '30px'
+					},
+					editWidth: {
+						type: String,
+						value: '30px'
+					},
+					headerCellClass: {
+						type: String,
+						value: 'number-header-cell'
+					},
+					maximumFractionDigits: {
+						type: Number,
+						value: null
+					},
+					minimumFractionDigits: {
+						type: Number,
+						value: null // browser default 0 for numbers, currency-specific or 2 for currency
+					},
+					formatter: {
+						type: Object,
+						computed: '_computeFormatter(locale, minimumFractionDigits, maximumFractionDigits)'
+					},
+					_filterText: {
+						type: String,
+						computed: '_computeFilterText(filter.*, formatter)'
+					}
+				};
+			}
 
 			_computeFormatter(locale, minimumFractionDigits, maximumFractionDigits) {
 				const options = {
@@ -91,7 +99,7 @@
 					options.maximumFractionDigits = maximumFractionDigits;
 				}
 				return new Intl.NumberFormat(locale || undefined, options);
-			},
+			}
 
 			/**
 			 *   Get the comparable value of an item.
@@ -118,7 +126,7 @@
 					return this.toValue(value.toFixed(decimals));
 				}
 				return value;
-			},
+			}
 
 			renderValue(value, formatter = this.formatter) {
 				const number = this.toNumber(value);
@@ -126,7 +134,10 @@
 					return;
 				}
 				return formatter.format(number);
-			},
-		});
+			}
+		}
+		customElements.define(OmnitableColumnNumber.is, OmnitableColumnNumber);
+
+		Cosmoz.OmnitableColumnNumber = OmnitableColumnNumber;
 	</script>
 </dom-module>
