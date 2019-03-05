@@ -89,22 +89,11 @@
 			_itemUpdated(itemChange) {
 				if (itemChange.path === 'item') {
 					this.elements.forEach(function (element) {
-						this._forwardProperty(
-							this.getElementTemplateInstance(element),
-							'item',
-							itemChange.value,
-							true
-						);
+						this._forwardProperty(this.getElementTemplateInstance(element), 'item', itemChange.value, true);
 					}, this);
 				} else {
 					this.elements.forEach(function (element) {
-						this._forwardNotifyPath(
-							this.getElementTemplateInstance(element),
-							itemChange.path,
-							itemChange.value,
-							true,
-							true
-						);
+						this._forwardNotifyPath(this.getElementTemplateInstance(element), itemChange.path, itemChange.value, true, true);
 					}, this);
 				}
 			}

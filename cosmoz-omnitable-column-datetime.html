@@ -47,10 +47,7 @@
 		 * @appliesMixin Cosmoz.OmnitableColumnMixin
 		 */
 		class OmnitableColumnDatetime extends Cosmoz.DateColumnMixin(Cosmoz.OmnitableColumnMixin(
-			Polymer.mixinBehaviors(
-				[Cosmoz.TranslatableBehavior],
-				Polymer.Element
-			)
+			Polymer.mixinBehaviors([Cosmoz.TranslatableBehavior], Polymer.Element)
 		)) {
 			static get is() {
 				return 'cosmoz-omnitable-column-datetime';
@@ -104,10 +101,7 @@
 					return '';
 				}
 				//Use utc in hash
-				return date
-					.toISOString()
-					.slice(0, 19)
-					.replace(/:/g, '.');
+				return date.toISOString().slice(0, 19).replace(/:/g, '.');
 			}
 
 			_fromHashString(value) {

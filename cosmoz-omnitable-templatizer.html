@@ -2,10 +2,7 @@
 <script>
 	window.Cosmoz = window.Cosmoz || {};
 
-	class OmnitableTemplatizer extends Polymer.mixinBehaviors(
-		[Polymer.Templatizer],
-		Polymer.Element
-	) {
+	class OmnitableTemplatizer extends Polymer.mixinBehaviors([Polymer.Templatizer], Polymer.Element) {
 		static get is() {
 			return 'cosmoz-omnitable-templatizer';
 		}
@@ -71,9 +68,7 @@
 			let instance;
 
 			if (this._reusableTemplateInstances.length > 0) {
-				instance = this._performInstanceDetach(
-					this._reusableTemplateInstances.pop()
-				);
+				instance = this._performInstanceDetach(this._reusableTemplateInstances.pop());
 			} else {
 				this._ensureTemplatized();
 				instance = this.stamp(null);

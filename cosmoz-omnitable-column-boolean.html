@@ -16,8 +16,7 @@
 					slot="dropdown-content"
 					attr-for-selected="value"
 					selected="[[ _computeSelected(item, valuePath) ]]"
-					on-selected-item-changed="_valueChanged"
-				>
+					on-selected-item-changed="_valueChanged">
 					<paper-item value="true">[[ trueLabel ]]</paper-item>
 					<paper-item value="false">[[ falseLabel ]]</paper-item>
 				</paper-listbox>
@@ -25,17 +24,8 @@
 		</template>
 
 		<template class="header">
-			<paper-dropdown-menu
-				label="[[ title ]]"
-				horizontal-align="[[ preferredDropdownHorizontalAlign ]]"
-				opened="{{ headerFocused }}"
-			>
-				<paper-listbox
-					class="dropdown-content"
-					slot="dropdown-content"
-					attr-for-selected="value"
-					selected="{{ _textFilter }}"
-				>
+			<paper-dropdown-menu label="[[ title ]]" horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
+				<paper-listbox class="dropdown-content" slot="dropdown-content" attr-for-selected="value" selected="{{ _textFilter }}">
 					<paper-item value=""></paper-item>
 					<paper-item value="true">[[ trueLabel ]]</paper-item>
 					<paper-item value="false">[[ falseLabel ]]</paper-item>
@@ -51,9 +41,7 @@
 		 * @customElement
 		 * @appliesMixin Cosmoz.OmnitableColumnMixin
 		 */
-		class OmnitableColumnBoolean extends Cosmoz.OmnitableColumnMixin(
-			Polymer.Element
-		) {
+		class OmnitableColumnBoolean extends Cosmoz.OmnitableColumnMixin(Polymer.Element) {
 			static get is() {
 				return 'cosmoz-omnitable-column-boolean';
 			}
@@ -126,8 +114,7 @@
 					return;
 				}
 				this._filterChangedFromAbove = true;
-				this._textFilter =
-					typeof filter === 'boolean' ? filter.toString() : null;
+				this._textFilter = typeof filter === 'boolean' ? filter.toString() : null;
 			}
 
 			getString(item, valuePath) {
@@ -167,12 +154,7 @@
 					return;
 				}
 				this.set(this.valuePath, value, item);
-				this._fireItemChangeEvent(
-					item,
-					this.valuePath,
-					oldValue,
-					formatFn.bind(this)
-				);
+				this._fireItemChangeEvent(item, this.valuePath, oldValue, formatFn.bind(this));
 			}
 
 			_serializeFilter(obj = this.filter) {

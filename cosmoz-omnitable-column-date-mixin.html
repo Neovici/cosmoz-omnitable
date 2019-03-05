@@ -158,12 +158,7 @@ Cosmoz.DateColumnMixin = Polymer.dedupingMixin(base =>
 				return;
 			}
 			this.set(this.valuePath, date, item);
-			this._fireItemChangeEvent(
-				item,
-				this.valuePath,
-				oldValue,
-				this.renderValue.bind(this)
-			);
+			this._fireItemChangeEvent(item, this.valuePath, oldValue, this.renderValue.bind(this));
 		}
 
 		_toLocalISOString(date) {

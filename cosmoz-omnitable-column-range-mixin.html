@@ -139,13 +139,7 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 
 		getString(item, valuePath = this.valuePath) {
 			if (valuePath === undefined) {
-				console.error(
-					this,
-					'has undefined valuePath',
-					valuePath,
-					'for item',
-					item
-				);
+				console.error(this, 'has undefined valuePath', valuePath, 'for item', item);
 				return;
 			}
 			const value = this.get(valuePath, item);
@@ -171,10 +165,8 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 		 */
 		_computeRange(change) {
 			const allValues = change.base,
-				values =
-					Array.isArray(allValues) &&
-					allValues.length &&
-					allValues.map(v => this.toValue(v)).filter(n => n != null);
+				values = Array.isArray(allValues) && allValues.length
+					&& allValues.map(v => this.toValue(v)).filter(n => n != null);
 
 			if (!values || values.length < 1) {
 				return {
@@ -202,16 +194,8 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 
 			return {
 				fromMin: aMin,
-				fromMax: this.toValue(
-					aMax,
-					this._fromInputString(input.max, 'max'),
-					Math.min
-				),
-				toMin: this.toValue(
-					aMin,
-					this._fromInputString(input.min, 'min'),
-					Math.max
-				),
+				fromMax: this.toValue(aMax, this._fromInputString(input.max, 'max'), Math.min),
+				toMin: this.toValue(aMin, this._fromInputString(input.min, 'min'), Math.max),
 				toMax: aMax
 			};
 		}
@@ -312,9 +296,7 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 		_limitInput() {
 			const input = this._filterInput,
 				path = this.__inputChangePath,
-				value = path
-					? this._fromInputString(this.get(path, input), path)
-					: null;
+				value = path ? this._fromInputString(this.get(path, input), path) : null;
 
 			this.__inputChangePath = null;
 
@@ -325,18 +307,9 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 
 			const limit = this._limit,
 				limitPath = path === 'min' ? 'from' : 'to',
-				limitedValue =
-					value != null
-						? this.toValue(
-							this.toValue(
-								value,
-								this.get(limitPath + 'Min', limit),
-								Math.max
-							),
-							this.get(limitPath + 'Max', limit),
-							Math.min
-						)
-						: null;
+				lowerLimit = this.get(limitPath + 'Min', limit),
+				upperLimit = this.get(limitPath + 'Max', limit),
+				limitedValue = this.toValue(this.toValue(value, lowerLimit, Math.max), upperLimit, Math.min);
 
 			if (this.getComparableValue(value) !== this.getComparableValue(limitedValue)) {
 				//set value without debouncing _limitInput again.
@@ -353,11 +326,8 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 				min = this._fromInputString(input.min, 'min'),
 				max = this._fromInputString(input.max, 'max');
 
-			if (
-				this.getComparableValue(min) ===
-					this.getComparableValue(filter, 'min') &&
-				this.getComparableValue(max) ===
-					this.getComparableValue(filter, 'max')
+			if (this.getComparableValue(min) === this.getComparableValue(filter, 'min')
+				&& this.getComparableValue(max) === this.getComparableValue(filter, 'max')
 			) {
 				return;
 			}
@@ -374,11 +344,8 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 				min = this._fromInputString(input.min, 'min'),
 				max = this._fromInputString(input.max, 'max');
 
-			if (
-				this.getComparableValue(min) ===
-					this.getComparableValue(filter, 'min') &&
-				this.getComparableValue(max) ===
-					this.getComparableValue(filter, 'max')
+			if (this.getComparableValue(min) === this.getComparableValue(filter, 'min')
+				&& this.getComparableValue(max) === this.getComparableValue(filter, 'max')
 			) {
 				return;
 			}
@@ -392,10 +359,7 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 
 		hasFilter() {
 			const filter = this.filter,
-				isSet = super.hasFilter.apply(
-					this,
-					arguments
-				);
+				isSet = super.hasFilter.apply(this, arguments);
 			if (!isSet) {
 				return false;
 			}

@@ -44,10 +44,7 @@
 		 * @appliesMixin Cosmoz.OmnitableColumnMixin
 		 */
 		class OmnitableColumnTime extends Cosmoz.DateColumnMixin(Cosmoz.OmnitableColumnMixin(
-			Polymer.mixinBehaviors(
-				[Cosmoz.TranslatableBehavior],
-				Polymer.Element
-			)
+			Polymer.mixinBehaviors([Cosmoz.TranslatableBehavior], Polymer.Element)
 		)) {
 			static get is() {
 				return 'cosmoz-omnitable-column-time';
@@ -95,10 +92,9 @@
 			 * @returns {Date|void}          Value converted to date optionaly limitated
 			 */
 			toDate(value, limit, limitFunc) {
-				const date =
-					typeof value === 'string' && value.length > 3 && value.length <= 9
-						? this._fixedDate + 'T' + value
-						: value;
+				const date = typeof value === 'string' && value.length > 3 && value.length <= 9
+					? this._fixedDate + 'T' + value
+					: value;
 				return super.toDate(date, limit, limitFunc);
 			}
 
@@ -116,10 +112,7 @@
 					return '';
 				}
 				//Use utc in hash
-				return date
-					.toISOString()
-					.slice(11, 19)
-					.replace(/:/g, '.');
+				return date.toISOString().slice(11, 19).replace(/:/g, '.');
 			}
 
 			_fromHashString(value) {
@@ -141,9 +134,7 @@
 				if (item == null) {
 					return;
 				}
-				let value = this._toInputString(
-					valuePath == null ? item : this.get(valuePath, item)
-				);
+				let value = this._toInputString(valuePath == null ? item : this.get(valuePath, item));
 				if (value == null) {
 					return;
 				}
@@ -166,22 +157,15 @@
 					timeString = input.value,
 					item = e.model.item,
 					oldTime = this.toDate(item.date),
-					newTime = this.toDate(
-						oldTime != null
-							? oldTime.toISOString().slice(0, 10) + 'T' + timeString
-							: timeString
-					),
+					newTime = this.toDate(oldTime != null
+						? oldTime.toISOString().slice(0, 10) + 'T' + timeString
+						: timeString),
 					formatFn = value => value;
 				if (newTime != null) {
 					return;
 				}
 				this.set(this.valuePath, newTime, item);
-				this._fireItemChangeEvent(
-					item,
-					this.valuePath,
-					oldTime,
-					formatFn.bind(this)
-				);
+				this._fireItemChangeEvent(item, this.valuePath, oldTime, formatFn.bind(this));
 			}
 
 			// OVERRIDES

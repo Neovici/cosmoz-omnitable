@@ -85,12 +85,8 @@
 		}
 
 		_configureElement(element, column) {
-			element.style.flexBasis = column.editable
-				? column.editWidth
-				: column.width;
-			element.style.minWidth = column.editable
-				? column.editMinWidth
-				: column.minWidth;
+			element.style.flexBasis = column.editable ? column.editWidth : column.width;
+			element.style.minWidth = column.editable ? column.editMinWidth : column.minWidth;
 			element.style.flexGrow = column.flex;
 			element.setAttribute('title', this._getCellTitle(column, this.item));
 			element.setAttribute('class', this._computeItemRowCellClasses(column));
@@ -114,26 +110,12 @@
 		_itemUpdated(itemChange) {
 			if (itemChange.path === 'item') {
 				this.elements.forEach(element => {
-					this._forwardProperty(
-						this.getElementTemplateInstance(element),
-						'item',
-						itemChange.value,
-						true
-					);
-					element.setAttribute(
-						'title',
-						this._getCellTitle(this.getElementColumn(element), this.item)
-					);
+					this._forwardProperty(this.getElementTemplateInstance(element), 'item', itemChange.value, true);
+					element.setAttribute('title', this._getCellTitle(this.getElementColumn(element), this.item));
 				});
 			} else {
 				this.elements.forEach(element => {
-					this._forwardNotifyPath(
-						this.getElementTemplateInstance(element),
-						itemChange.path,
-						itemChange.value,
-						true,
-						true
-					);
+					this._forwardNotifyPath(this.getElementTemplateInstance(element), itemChange.path, itemChange.value, true, true);
 				});
 			}
 		}

@@ -48,10 +48,9 @@
 		 * @appliesMixin Cosmoz.RangeColumnMixin
 		 * @appliesMixin Cosmoz.OmnitableColumnMixin
 		 */
-		class OmnitableColumnAmount extends Cosmoz.RangeColumnMixin(Cosmoz.OmnitableColumnMixin(Polymer.mixinBehaviors(
-			[Cosmoz.TranslatableBehavior],
-			Polymer.Element
-		))) {
+		class OmnitableColumnAmount extends Cosmoz.RangeColumnMixin(Cosmoz.OmnitableColumnMixin(
+			Polymer.mixinBehaviors([Cosmoz.TranslatableBehavior], Polymer.Element)
+		)) {
 			static get is() {
 				return 'cosmoz-omnitable-column-amount';
 			}
@@ -155,11 +154,7 @@
 					return;
 				}
 
-				if (
-					typeof value !== 'object' ||
-					value.currency == null ||
-					value.currency === ''
-				) {
+				if (typeof value !== 'object' || value.currency == null || value.currency === '') {
 					return null;
 				}
 
@@ -278,12 +273,7 @@
 					};
 
 				this.set(this.valuePath, newValue, item);
-				this._fireItemChangeEvent(
-					item,
-					this.valuePath,
-					originalValue,
-					this.renderValue.bind(this)
-				);
+				this._fireItemChangeEvent(item, this.valuePath, originalValue, this.renderValue.bind(this));
 			}
 
 			_toInputString(value) {
@@ -303,9 +293,7 @@
 				if (amount == null) {
 					return null;
 				}
-				const toCurrency =
-					this.toNumber(amount.amount) * (rates[amount.currency] || 1) /
-					(rates[this.currency] || 1);
+				const toCurrency = this.toNumber(amount.amount) * (rates[amount.currency] || 1) / (rates[this.currency] || 1);
 				return toCurrency.toFixed(2);
 			}
 
@@ -316,9 +304,7 @@
 				}
 				return this.toValue({
 					amount: number,
-					currency:
-						property && this.get(['filter', property, 'currency']) ||
-						this.currency
+					currency: property && this.get(['filter', property, 'currency']) || this.currency
 				});
 			}
 

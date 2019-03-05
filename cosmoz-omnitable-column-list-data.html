@@ -25,18 +25,16 @@
 		</style>
 
 		<ul hidden$="[[ isEmpty(items) ]]">
-			<li><span>[[ _firstItem(items) ]]</span></li>
-			<li class="see-more" hidden$="[[_hideExpand(items, _expanded)]]">
-				<a href="#" on-tap="_toggleExpand"
-					>[[ _('and {0} more', _othersCount, t) ]]</a
-				>
+			<li>
+				<span>[[ _firstItem(items) ]]</span>
 			</li>
-			<template
-				is="dom-repeat"
-				items="[[ _otherItems(items, _expanded) ]]"
-				as="item"
-			>
-				<li><span class="item">[[ item ]]</span></li>
+			<li class="see-more" hidden$="[[_hideExpand(items, _expanded)]]">
+				<a href="#" on-tap="_toggleExpand">[[ _('and {0} more', _othersCount, t) ]]</a>
+			</li>
+			<template is="dom-repeat" items="[[ _otherItems(items, _expanded) ]]"	as="item">
+				<li>
+					<span class="item">[[ item ]]</span>
+				</li>
 			</template>
 			<li class="see-less" hidden$="[[ _hideCollapse(items, _expanded) ]]">
 				<a href="#" on-tap="_toggleExpand">[[ _('See less', t) ]]</a>

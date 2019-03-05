@@ -15,30 +15,21 @@
 					display: inline;
 				}
 				ul li:after {
-					content: ', ';
+					content: ", ";
 				}
 				ul li:last-child:after {
-					content: '';
+					content: "";
 				}
 			</style>
 			<ul>
-				<template
-					is="dom-repeat"
-					items="[[ get(valuePath, item) ]]"
-					as="listitem"
-				>
+				<template is="dom-repeat" items="[[ get(valuePath, item) ]]" as="listitem">
 					<li>[[ listitem ]]</li>
 				</template>
 			</ul>
 		</template>
 
 		<template class="edit-cell">
-			<paper-input
-				no-label-float
-				type="text"
-				on-change="_valueChanged"
-				value="[[ getString(item, valuePath) ]]"
-			></paper-input>
+			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]"></paper-input>
 		</template>
 
 		<template class="header">
@@ -48,8 +39,7 @@
 				selected-items="{{ filter }}"
 				text-property="[[ textProperty ]]"
 				value-property="[[ valueProperty ]]"
-				show-results-on-focus
-			>
+				show-results-on-focus>
 			</paper-autocomplete-chips>
 		</template>
 	</template>
@@ -63,13 +53,9 @@
 		 * @appliesMixin Cosmoz.OmnitableColumnMixin
 		 * @appliesMixin Cosmoz.ListColumnMixin
 		 */
-		class OmnitableColumnListHorizontal extends
-			Cosmoz.OmnitableColumnMixin(Cosmoz.ListColumnMixin(
-				Polymer.mixinBehaviors(
-					[Cosmoz.TranslatableBehavior],
-					Polymer.Element
-				)
-			)) {
+		class OmnitableColumnListHorizontal extends	Cosmoz.OmnitableColumnMixin(Cosmoz.ListColumnMixin(
+			Polymer.mixinBehaviors([Cosmoz.TranslatableBehavior], Polymer.Element)
+		)) {
 			static get is() {
 				return 'cosmoz-omnitable-column-list-horizontal';
 			}
@@ -108,9 +94,7 @@
 						if (array.indexOf(value) !== index) {
 							return false;
 						}
-						const val = this.valueProperty
-								? this.get(this.valueProperty, value)
-								: value,
+						const val = this.valueProperty ? this.get(this.valueProperty, value) : value,
 							hasVal = unique.indexOf(val) !== -1;
 
 						if (hasVal) {
@@ -139,9 +123,7 @@
 
 			_applyMultiFilter(filter, item) {
 				const valueFilter = element => {
-						const value = this.valueProperty
-							? this.get(this.valueProperty, element)
-							: element;
+						const value = this.valueProperty ? this.get(this.valueProperty, element) : element;
 						return value ? value.toString().toLowerCase() : null;
 					},
 					filterArray = filter.map(valueFilter),
