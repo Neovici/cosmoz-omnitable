@@ -405,19 +405,19 @@
 		 * @returns {Boolean}  True if filter or filterNotify.base is set
 		 */
 		hasFilter(filterNotify) {
-			const filter = filterNotify == null ? this.filter : filterNotify.base,
-				isArray = Array.isArray(filter);
+			const filter = filterNotify == null ? this.filter : filterNotify.base;
 
-			if (!filter) {
+			if (filter == null || filter === '') {
 				return false;
 			}
 
-			if (isArray && filter.length === 0) {
-				return false;
+			if (Array.isArray(filter)) {
+				return filter.length > 0;
 			}
 
-			if (typeof filter === 'object' && !isArray && Object.keys(filter).filter(k => filter[k] != null).length === 0) {
-				return false;
+			if (typeof filter === 'object') {
+				const setFilters = Object.keys(filter).filter(k => filter[k] != null);
+				return setFilters.length > 0;
 			}
 
 			return true;
