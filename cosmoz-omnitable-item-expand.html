@@ -108,7 +108,10 @@
 			this.hidden = columnsCount === 0;
 			if (this.expanded) {
 				// Notify omnitable that this item is expanded and my need individual resize
-				this.fire('update-item-size', { item: this.item }, { bubbles: true });
+				this.dispatchEvent(new CustomEvent('update-item-size', {
+					bubbles: true,
+					detail: { item: this.item }
+				}));
 			}
 		}
 
