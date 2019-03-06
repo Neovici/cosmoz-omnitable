@@ -116,11 +116,11 @@
 					const hash = omnitable._routeHash;
 
 					omnitable.sortOn = 'name';
-					omnitable.flushDebouncer('sortItems');
+					omnitable._sortItemsDebouncer.flush();
 					assert.equal(hash['test-sortOn'], 'name');
 
 					omnitable.sortOn = '';
-					omnitable.flushDebouncer('sortItems');
+					omnitable._sortItemsDebouncer.flush();
 					assert.equal(hash['test-sortOn'], '');
 				});
 
@@ -128,11 +128,11 @@
 					const hash = omnitable._routeHash;
 
 					omnitable.groupOn = 'name';
-					omnitable.flushDebouncer('groupItems');
+					omnitable._groupItemsDebouncer.flush();
 					assert.equal(hash['test-groupOn'], 'name');
 
 					omnitable.groupOn = '';
-					omnitable.flushDebouncer('groupItems');
+					omnitable._groupItemsDebouncer.flush();
 					assert.equal(hash['test-groupOn'], '');
 				});
 
@@ -141,11 +141,11 @@
 					assert.isUndefined(hash['test-descending']);
 
 					omnitable.descending = true;
-					omnitable.flushDebouncer('sortItems');
+					omnitable.flush();
 					assert.equal(hash['test-descending'], '');
 
 					omnitable.descending = false;
-					omnitable.flushDebouncer('sortItems');
+					omnitable.flush();
 					assert.isNull(hash['test-descending']);
 				});
 
@@ -154,11 +154,11 @@
 						hash = omnitable._routeHash;
 
 					column.filter = [0, 1];
-					omnitable.flushDebouncer('filterItems');
+					omnitable.flush();
 					assert.equal(hash['test-filter--id'], '[0,1]');
 
 					column.resetFilter();
-					omnitable.flushDebouncer('filterItems');
+					omnitable.flush();
 					assert.equal(hash['test-filter--id'], null);
 				});
 

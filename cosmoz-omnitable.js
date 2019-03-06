@@ -4,264 +4,300 @@
 	'use strict';
 
 	const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending', 'groupOnDescending'];
+	const {
+		FlattenedNodesObserver,
+		Debouncer,
+		Async,
+	} = Polymer;
 
-	Polymer({
+	/**
+	 * @polymer
+	 * @customElement
+	 * @appliesMixin Polymer.IronResizableBehavior
+	 * @appliesMixin Cosmoz.TranslatableBehavior
+	 */
+	class Omnitable extends Polymer.mixinBehaviors([
+		Polymer.IronResizableBehavior,
+		Cosmoz.TranslatableBehavior
+	], Polymer.Element) {
+		static get is() {
+			return 'cosmoz-omnitable';
+		}
 
-		is: 'cosmoz-omnitable',
+		static get properties() {
+			return {
 
-		properties: {
-
-			/**
+				/**
 			 * Filename when saving as CSV
 			 */
-			csvFilename: {
-				type: String,
-				value: 'omnitable.csv'
-			},
+				csvFilename: {
+					type: String,
+					value: 'omnitable.csv'
+				},
 
-			/**
+				/**
 			 * Filename when saving as XLSX
 			 */
-			xlsxFilename: {
-				type: String,
-				value: 'omnitable.xlsx'
-			},
+				xlsxFilename: {
+					type: String,
+					value: 'omnitable.xlsx'
+				},
 
-			/**
+				/**
 			 * Sheet name when saving as XLSX
 			 */
-			xlsxSheetname: {
-				type: String,
-				value: 'Omnitable'
-			},
+				xlsxSheetname: {
+					type: String,
+					value: 'Omnitable'
+				},
 
-			/**
+				/**
 			 * Array used to list items.
 			 */
-			data: {
-				type: Array
-			},
+				data: {
+					type: Array
+				},
 
-			/**
+				/**
 			 * True if data is a valid and not empty array.
 			 */
-			_dataIsValid: {
-				type: Boolean,
-				value: false,
-				computed: '_computeDataValidity(data.*)'
-			},
+				_dataIsValid: {
+					type: Boolean,
+					value: false,
+					computed: '_computeDataValidity(data.*)'
+				},
 
-			/**
+				/**
 			 * If set to true, then group a row will be displayed for groups that contain no items.
 			 */
-			displayEmptyGroups: {
-				type: Boolean,
-				value: false
-			},
+				displayEmptyGroups: {
+					type: Boolean,
+					value: false
+				},
 
-			/**
+				/**
 			 * Specific columns to enable
 			 */
-			enabledColumns: {
-				type: Array,
-				observer: '_debounceUpdateColumns'
-			},
+				enabledColumns: {
+					type: Array,
+					observer: '_debounceUpdateColumns'
+				},
 
-			/**
+				/**
 			 * Whether bottom-bar has actions.
 			 */
-			hasActions: {
-				type: Boolean,
-				value: false
-			},
+				hasActions: {
+					type: Boolean,
+					value: false
+				},
 
-			/**
+				/**
 			 * Shows a loading overlay to indicate data will be updated
 			 */
-			loading: {
-				type: Boolean,
-				value: false
-			},
+				loading: {
+					type: Boolean,
+					value: false
+				},
 
-			/**
+				/**
 			 * Whether to show checkboxes to perform bottom-bar actions on
 			 */
-			_showCheckboxes: {
-				type: Boolean,
-				computed: '_computeShowCheckboxes(_dataIsValid, hasActions)'
-			},
+				_showCheckboxes: {
+					type: Boolean,
+					computed: '_computeShowCheckboxes(_dataIsValid, hasActions)'
+				},
 
-			/**
+				/**
 			 * List of selected rows/items in `data`.
 			 */
-			selectedItems: {
-				type: Array,
-				notify: true
-			},
+				selectedItems: {
+					type: Array,
+					notify: true
+				},
 
-			highlightedItems: {
-				type: Array,
-				notify: true
-			},
+				highlightedItems: {
+					type: Array,
+					notify: true
+				},
 
-			descending: {
-				type: Boolean,
-				value: false,
-				notify: true
-			},
+				descending: {
+					type: Boolean,
+					value: false,
+					notify: true
+				},
 
-			sortOn: {
-				type: String,
-				value: '',
-				notify: true
-			},
+				sortOn: {
+					type: String,
+					value: '',
+					notify: true
+				},
 
-			sortOnColumn: {
-				type: Object,
-				computed: '_getColumn(sortOn, "name", columns)'
-			},
+				sortOnColumn: {
+					type: Object,
+					computed: '_getColumn(sortOn, "name", columns)'
+				},
 
-			groupOnDescending: {
-				type: Boolean,
-				value: false,
-				observer: '_debounceGroupItems'
-			},
-			/**
+				groupOnDescending: {
+					type: Boolean,
+					value: false,
+					observer: '_debounceGroupItems'
+				},
+				/**
 			 * The column name to group on.
 			 */
-			groupOn: {
-				type: String,
-				notify: true,
-				value: ''
-			},
+				groupOn: {
+					type: String,
+					notify: true,
+					value: ''
+				},
 
-			/**
+				/**
 			 * The column that matches the current `groupOn` value.
 			 */
-			groupOnColumn: {
-				type: Object,
-				notify: true,
-				observer: '_groupOnColumnChanged',
-				computed: '_getColumn(groupOn, "name", columns)'
-			},
+				groupOnColumn: {
+					type: Object,
+					notify: true,
+					observer: '_groupOnColumnChanged',
+					computed: '_getColumn(groupOn, "name", columns)'
+				},
 
-			/**
+				/**
 			 * Items matching current set filter(s)
 			 */
-			filteredItems: {
-				type: Array,
-				observer: '_debounceGroupItems',
-				value: () => []
-			},
+				filteredItems: {
+					type: Array,
+					observer: '_debounceGroupItems',
+					value: () => []
+				},
 
-			/**
+				/**
 			 * Grouped items structure after filtering.
 			 */
-			filteredGroupedItems: {
-				type: Array
-			},
+				filteredGroupedItems: {
+					type: Array
+				},
 
-			/**
+				/**
 			 * Sorted items structure after filtering and grouping.
 			 */
-			sortedFilteredGroupedItems: {
-				type: Array,
-				notify: true
-			},
+				sortedFilteredGroupedItems: {
+					type: Array,
+					notify: true
+				},
 
-			/**
+				/**
 			 * Keep track of width-changes to identify if we go bigger or smaller
 			 */
-			_previousWidth: {
-				type: Number,
-				value: 0
-			},
+				_previousWidth: {
+					type: Number,
+					value: 0
+				},
 
-			_groupsCount: {
-				type: Number,
-				value: 0
-			},
+				_groupsCount: {
+					type: Number,
+					value: 0
+				},
 
-			/**
+				/**
 			 * List of columns definition for this table.
 			 */
-			columns: {
-				type: Array,
-				notify: true
-			},
+				columns: {
+					type: Array,
+					notify: true
+				},
 
-			visible: {
-				type: Boolean,
-				notify: true,
-				readOnly: true,
-				value: false,
-				observer: 'visibleChanged'
-			},
+				visible: {
+					type: Boolean,
+					notify: true,
+					readOnly: true,
+					value: false,
+					observer: 'visibleChanged'
+				},
 
-			/**
+				/**
 			 * List of <b>visible</b> columns.
 			 */
-			visibleColumns: {
-				type: Array,
-				notify: true,
-				observer: '_visibleColumnsChanged'
-			},
+				visibleColumns: {
+					type: Array,
+					notify: true,
+					observer: '_visibleColumnsChanged'
+				},
 
-			disabledColumns: {
-				type: Array,
-				notify: true
-			},
+				disabledColumns: {
+					type: Array,
+					notify: true
+				},
 
-			_filterIsTooStrict: {
-				type: Boolean,
-				computed: '_computeFilterIsTooStrict(_dataIsValid, sortedFilteredGroupedItems.length)'
-			},
+				_filterIsTooStrict: {
+					type: Boolean,
+					computed: '_computeFilterIsTooStrict(_dataIsValid, sortedFilteredGroupedItems.length)'
+				},
 
-			hashParam: {
-				type: String
-			},
+				hashParam: {
+					type: String
+				},
 
-			_routeHash: {
-				type: Object
+				_routeHash: {
+					type: Object
 
-			},
-			_routeHashKeyRule: {
-				type: RegExp,
-				computed: '_computeRouteHashKeyRule(hashParam)'
-			},
+				},
+				_routeHashKeyRule: {
+					type: RegExp,
+					computed: '_computeRouteHashKeyRule(hashParam)'
+				},
 
-			/**
+				/**
 			 * True when all items are selected.
 			 */
-			_allSelected: {
-				type: Boolean
-			}
-		},
+				_allSelected: {
+					type: Boolean
+				},
 
-		observers: [
-			'_dataChanged(data.*)',
-			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
-			' _selectedItemsChanged(selectedItems.*)'
-		],
+				// FIXME: remove when TranslatableBehavior is a 2.x mixin
+				t: {
+					type: Object,
+					value() {
+						return {};
+					}
+				}
+			};
+		}
 
-		behaviors: [
-			Polymer.IronResizableBehavior,
-			Cosmoz.TranslatableBehavior
-		],
+		static get observers() {
+			return [
+				'_dataChanged(data.*)',
+				'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
+				' _selectedItemsChanged(selectedItems.*)'
+			];
+		}
 
-		listeners: {
-			'iron-resize': '_onResize',
-			'update-item-size': '_onUpdateItemSize',
-			'cosmoz-column-title-changed': '_onColumnTitleChanged',
-			'cosmoz-column-filter-changed': '_filterChanged',
-			'cosmoz-column-editable-changed': '_onColumnEditableChanged',
-			'cosmoz-column-values-update': '_onColumnValuesUpdate'
-		},
+		_() {
+			// FIXME: remove this when TranslatableBehavior is a 2.x mixin
+			return Cosmoz.TranslatableBehavior._.apply(this, arguments);
+		}
 
-		attached() {
+		ngettext() {
+			// FIXME: remove this when TranslatableBehavior is a 2.x mixin
+			return Cosmoz.TranslatableBehavior.ngettext.apply(this, arguments);
+		}
+
+		constructor() {
+			super();
+
+			this.disabledColumnsIndexes = null;
+
+			this._adjustColumns = this._adjustColumns.bind(this);
+			this._updateColumns = this._updateColumns.bind(this);
+			this._filterItems = this._filterItems.bind(this);
+			this._groupItems = this._groupItems.bind(this);
+			this._sortFilteredGroupedItems = this._sortFilteredGroupedItems.bind(this);
+		}
+
+		connectedCallback() {
+			super.connectedCallback();
 			/** WARNING: we do not support columns changes yet. */
 			// `isOmnitableColumn` is a property from cosmoz-omnitable-column-behavior
-			this._columnObserver = Polymer.dom(this).observeNodes(info => {
+			this._columnObserver = new FlattenedNodesObserver(this.$.columnsSlot, info => {
 				const colFilter = child => child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn,
 					addedColumns = info.addedNodes.filter(colFilter),
 					removedColumns = info.removedNodes.filter(colFilter),
@@ -275,65 +311,109 @@
 
 				this._debounceUpdateColumns();
 			});
+
 			this.$.groupedList.scrollTarget = this.$.scroller;
-			this.listen(this, 'cosmoz-column-hidden-changed', '_debounceUpdateColumns');
-			this.listen(this, 'cosmoz-column-disabled-changed', '_debounceUpdateColumns');
+			this.addEventListener('cosmoz-column-hidden-changed', this._debounceUpdateColumns);
+			this.addEventListener('cosmoz-column-disabled-changed', this._debounceUpdateColumns);
 
+			this.addEventListener('iron-resize', this._onResize);
+			this.addEventListener('update-item-size', this._onUpdateItemSize);
+			this.addEventListener('cosmoz-column-title-changed', this._onColumnTitleChanged);
+			this.addEventListener('cosmoz-column-filter-changed', this._filterChanged);
+			this.addEventListener('cosmoz-column-editable-changed', this._onColumnEditableChanged);
+			this.addEventListener('cosmoz-column-values-update', this._onColumnValuesUpdate);
 			this._fitDropdowns();
-		},
+		}
 
-		detached() {
+		disconnectedCallback() {
+			super.disconnectedCallback();
 			if (this._columnObserver) {
-				Polymer.dom(this).unobserveNodes(this._columnObserver);
+				this._columnObserver.disconnect();
+				this._columnObserver = null;
 			}
-			this.unlisten(this, 'cosmoz-column-hidden-changed', '_debounceUpdateColumns');
-			this.unlisten(this, 'cosmoz-column-disabled-changed', '_debounceUpdateColumns');
+
+			this.removeEventListener('cosmoz-column-hidden-changed', this._debounceUpdateColumns);
+			this.removeEventListener('cosmoz-column-disabled-changed', this._debounceUpdateColumns);
 			// Just in case we get detached before a planned debouncer has not run yet.
-			this.cancelDebouncer('adjustColumns');
-			this.cancelDebouncer('updateColumns');
-			this.cancelDebouncer('filterItems');
-			this.cancelDebouncer('groupItems');
-			this.cancelDebouncer('sortItems');
-		},
+			this._cancelDebouncers();
+
+			this.removeEventListener('iron-resize', this._onResize);
+			this.removeEventListener('update-item-size', this._onUpdateItemSize);
+			this.removeEventListener('cosmoz-column-title-changed', this._onColumnTitleChanged);
+			this.removeEventListener('cosmoz-column-filter-changed', this._filterChanged);
+			this.removeEventListener('cosmoz-column-editable-changed', this._onColumnEditableChanged);
+			this.removeEventListener('cosmoz-column-values-update', this._onColumnValuesUpdate);
+		}
+
+		flush() {
+			if (this._adjustColumnsDebouncer) {
+				this._adjustColumnsDebouncer.flush();
+			}
+
+			if (this._updateColumnsDebouncer) {
+				this._updateColumnsDebouncer.flush();
+			}
+
+			if (this._filterItemsDebouncer) {
+				this._filterItemsDebouncer.flush();
+			}
+
+			if (this._groupItemsDebouncer) {
+				this._groupItemsDebouncer.flush();
+			}
+
+			if (this._sortItemsDebouncer) {
+				this._sortItemsDebouncer.flush();
+			}
+		}
+
+		_cancelDebouncers() {
+			[this._adjustColumnsDebouncer,
+				this._updateColumnsDebouncer,
+				this._filterItemsDebouncer,
+				this._groupItemsDebouncer,
+				this._sortItemsDebouncer]
+				.filter(d => !!d)
+				.forEach(d => d.cancel());
+		}
 
 		/** ELEMENT BEHAVIOR */
 
-		_disabledColumnsIndexes: null,
-
 		_computeDataValidity({base: data} = {}) {
 			return data && Array.isArray(data) && data.length > 0;
-		},
+		}
 
 		_computeFilterIsTooStrict(dataIsValid, visibleItemsLength) {
 			return dataIsValid && visibleItemsLength < 1;
-		},
+		}
 
 		_computeSortDirection(descending) {
 			const direction = descending ? this._('Descending') : this._('Ascending');
 			return `(${direction})`;
-		},
+		}
 
 		_computeShowCheckboxes(dataIsValid, hasActions) {
 			return dataIsValid && hasActions;
-		},
+		}
 
 		visibleChanged(turnedVisible) {
 			if (turnedVisible) {
 				this._debounceUpdateColumns();
 			}
-		},
+		}
 
 		_visibleColumnsChanged() {
 			this.disabledColumns = [];
 			this._disabledColumnsIndexes = [];
-		},
+		}
 
-		_onUpdateItemSize(event, detail) {
+		_onUpdateItemSize(event) {
+			const {detail} = event;
 			if (detail && detail.item) {
 				this.$.groupedList.updateSize(detail.item);
 			}
 			event.stopPropagation();
-		},
+		}
 
 		_onColumnTitleChanged(event) {
 
@@ -352,11 +432,13 @@
 			if (column === this.groupOnColumn) {
 				this.notifyPath(['groupOnColumn', 'title']);
 			}
-		},
+		}
 
-		_onColumnEditableChanged(event, { column }) {
+		_onColumnEditableChanged(event) {
 			event.stopPropagation();
-			const { visibleColumns: columns } = this;
+			const {detail: {column}} = event,
+				{ visibleColumns: columns } = this;
+
 			if (!Array.isArray(columns) || columns.length === 0) {
 				return;
 			}
@@ -366,7 +448,7 @@
 				return;
 			}
 			this.notifyPath(['visibleColumns', index, 'editable']);
-		},
+		}
 
 		// Handle selection/deselection of a group
 		_onGroupCheckboxChange(event) {
@@ -377,7 +459,7 @@
 
 			event.preventDefault();
 			event.stopPropagation();
-		},
+		}
 
 		// Handle selection/deselection of an item
 		_onItemCheckboxChange(event) {
@@ -390,17 +472,17 @@
 
 			event.preventDefault();
 			event.stopPropagation();
-		},
+		}
 
 		_itemRowTapped(event) {
 			const item = event.model.item;
 			this.highlight(item, this.isItemHighlighted(item));
-		},
+		}
 
 		_onResize() {
 			this._setVisible(this.offsetParent != null);
 			this._debounceAdjustColumns();
-		},
+		}
 
 		_dataChanged() {
 			if (!Array.isArray(this.columns)) {
@@ -408,14 +490,14 @@
 			}
 			this._setColumnValues();
 			this._debounceFilterItems();
-		},
+		}
 
 		_debounceUpdateColumns() {
-			this.debounce('updateColumns', this._updateColumns, 10);
-		},
+			this._debounce('_updateColumnsDebouncer', this._updateColumns, Async.timeOut.after(10));
+		}
 
 		_updateColumns() {
-			if (!this.isAttached) {
+			if (!this.isConnected) {
 				return;
 			}
 
@@ -427,7 +509,12 @@
 
 			let columns = this.getEffectiveChildren().filter((child, index) => {
 					child.__index = index;
-					return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn && !child.hidden;
+					// filter only omnitable columns
+					return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn
+						// filter out elements that are hidden
+						&& !child.hidden
+						// filter out elements that don't have headerTemplatizer yet
+						&& child.headerTemplatizer != null;
 				}),
 				valuePathNames;
 
@@ -477,7 +564,7 @@
 			if (Array.isArray(this.data)) {
 				this._debounceFilterItems();
 			}
-		},
+		}
 		/**
 		 * Checks if the column setup is valid and logs errors.
 		 * As a separate functions to make testing easier.
@@ -502,14 +589,14 @@
 			});
 
 			return columnsMissingNameAttribute.length === 0;
-		},
+		}
 
-		_onColumnValuesUpdate(event, detail) {
+		_onColumnValuesUpdate({detail}) {
 			if (detail == null || detail.column == null) {
 				return;
 			}
 			this._setColumnValues([detail.column]);
-		},
+		}
 		// TODO: provides a mean to avoid setting the values for a column
 		// TODO: should process (distinct, sort, min, max) the values at the column level depending on the column type
 		_setColumnValues(columns = this.columns) {
@@ -533,7 +620,7 @@
 					)
 				);
 			});
-		},
+		}
 		/*
 		 * Returns a column based on an attribute.
 		 * @param {String} attributeValue The value of the column attribute.
@@ -549,19 +636,19 @@
 				console.warn(`Cannot find column with ${attribute} ${attributeValue}`);
 			}
 			return column;
-		},
+		}
 
-		_filterChanged(e, detail) {
+		_filterChanged({detail}) {
 			if (!Array.isArray(this.columns) || this.columns.length < 1 || this.columns.indexOf(detail.column) < 0) {
 				return;
 			}
 			this._debounceFilterItems();
 			this._filterForRouteChanged(detail.column);
-		},
+		}
 
 		_debounceFilterItems() {
-			this.debounce('filterItems', this._filterItems);
-		},
+			this._debounce('_filterItemsDebouncer', this._filterItems);
+		}
 
 		_filterItems() {
 			if (Array.isArray(this.data) && this.data.length > 0 && Array.isArray(this.columns)) {
@@ -583,24 +670,29 @@
 				this.sortedFilteredGroupedItems = [];
 				this._groupsCount = 0;
 			}
-		},
+		}
 
 		_groupOnColumnChanged(column) {
 			if (column && column.hasFilter()) {
 				column.resetFilter();
 			} else {
-				this.debounce('groupItems', this._groupItems);
+				this._debounce('_groupItemsDebouncer', this._groupItems);
 			}
-		},
+		}
 
 		_debounceGroupItems() {
-			if (!this.isAttached || !Array.isArray(this.filteredItems)) {
+			if (!this.isConnected || !Array.isArray(this.filteredItems)) {
 				return;
 			}
-			this.debounce('groupItems', this._groupItems);
-		},
+			this._debounce('_groupItemsDebouncer', this._groupItems);
+		}
 
 		_groupItems() {
+			// do not attempt to group items if no columns are defined
+			if (!Array.isArray(this.columns) || this.columns.length === 0) {
+				return;
+			}
+
 			this._updateRouteParam('groupOn');
 
 			if (!Array.isArray(this.filteredItems) || this.filteredItems.length === 0) {
@@ -647,14 +739,14 @@
 
 			this._groupsCount = groups.length;
 			this.filteredGroupedItems = groups;
-		},
+		}
 
 		_debounceSortItems() {
 			if (!Array.isArray(this.data) || this.data.length < 1 || !Array.isArray(this.columns)) {
 				return;
 			}
-			this.debounce('sortItems', this._sortFilteredGroupedItems);
-		},
+			this._debounce('_sortItemsDebouncer', this._sortFilteredGroupedItems);
+		}
 
 		_genericSorter(a, b) {
 			if (a === b) {
@@ -688,7 +780,7 @@
 
 			console.warn('unsupported sort', typeof a, a, typeof b, b);
 			return 0;
-		},
+		}
 
 		/**
 		 * compareFunction for sort(), can be overridden
@@ -703,7 +795,7 @@
 				v2 = this.sortOnColumn.getComparableValue(b, this.sortOnColumn.sortOn);
 
 			return this._genericSorter(v1, v2);
-		},
+		}
 
 		_sortFilteredGroupedItems() {
 			if (!this.filteredGroupedItems) {
@@ -749,14 +841,14 @@
 
 			this.set('sortedFilteredGroupedItems', this.filteredGroupedItems.slice());
 			this._debounceAdjustColumns();
-		},
+		}
 
 		_debounceAdjustColumns() {
 			// 16ms 'magic' number copied from iron-list
 			// But this makes headers change width after the table has completed rendering,
 			// which might look strange.
-			this.debounce('adjustColumns', this._adjustColumns, 16);
-		},
+			this._debounce('_adjustColumnsDebouncer', this._adjustColumns, Async.animationFrame);
+		}
 		/**
 		 * Enable/disable columns to properly fit in the available space.
 		 * Adjust headers width according to cells width
@@ -764,9 +856,8 @@
 		 * @returns {Boolean} Return
 		 */
 		_adjustColumns() {
-
 			// Safety check, but should never happen
-			if (!this.isAttached || !this.visible) {
+			if (!this.isConnected || !this.visible) {
 				return;
 			}
 
@@ -776,9 +867,9 @@
 
 			if (!hasVisibleData || !firstRow && this.$.groupedList.hasRenderedData) {
 				// reset headers width
-				const headerRow = Polymer.dom(this.$.header).querySelector('cosmoz-omnitable-header-row');
+				const headerRow = this.$.header.querySelector('cosmoz-omnitable-header-row');
 				Array
-					.from(Polymer.dom(headerRow).children)
+					.from(headerRow.children)
 					.forEach(header => {
 						header.style.minWidth = 'auto';
 						header.style.maxWidth = 'none';
@@ -796,8 +887,8 @@
 
 			const scroller = this.$.scroller,
 				currentWidth = this.$.tableContent.clientWidth,
-				itemRow = Polymer.dom(firstRow).querySelector('cosmoz-omnitable-item-row'),
-				cells = Array.from(Polymer.dom(itemRow).children);
+				itemRow = firstRow.querySelector('cosmoz-omnitable-item-row'),
+				cells = Array.from(itemRow.children);
 
 			let fits = scroller.scrollWidth <= scroller.clientWidth;
 
@@ -822,11 +913,11 @@
 			}
 
 			this._adjustHeadersWidth(cells);
-		},
+		}
 
 		_adjustHeadersWidth(cells) {
-			const headerRow = Polymer.dom(this.$.header).querySelector('cosmoz-omnitable-header-row'),
-				headers = Array.from(Polymer.dom(headerRow).children);
+			const headerRow = this.$.header.querySelector('cosmoz-omnitable-header-row'),
+				headers = Array.from(headerRow.children);
 
 			cells.forEach((cell, index) => {
 				const header = headers[index];
@@ -841,7 +932,7 @@
 				header.style.maxWidth = width === 'auto' ? 'none' : width;
 				header.style.width = width;
 			});
-		},
+		}
 
 		_canScaleUp(width) {
 			if (!this.disabledColumns || this.disabledColumns.length === 0) {
@@ -861,7 +952,7 @@
 			}
 
 			return false;
-		},
+		}
 
 		_disableColumn() {
 			let disabledColumn,
@@ -880,7 +971,7 @@
 				this.splice('visibleColumns', disabledColumnIndex, 1);
 				this._debounceAdjustColumns();
 			}
-		},
+		}
 
 		_enableColumn() {
 			// Columns are disabled by priority, so we can re-enable them
@@ -890,7 +981,7 @@
 			this.splice('visibleColumns', columnIndex, 0, column);
 
 			this._debounceAdjustColumns();
-		},
+		}
 		//TODO: Use cosmoz-behaviors
 		/**
 		 * Helper method for Polymer 1.0+ templates - check if variable
@@ -914,7 +1005,7 @@
 				return true;
 			}
 			return false;
-		},
+		}
 
 		_makeCsvField(str) {
 			var result = str.replace(/"/g, '""');
@@ -922,7 +1013,7 @@
 				return '"' + result + '"';
 			}
 			return str;
-		},
+		}
 		/**
 		 * Triggers a download of selected rows as a CSV file.
 		 * @returns {undefined}
@@ -946,7 +1037,7 @@
 			saveAs(new File(rows, this.csvFilename, {
 				type: 'text/csv;charset=utf-8'
 			}));
-		},
+		}
 
 		/**
 		 * Makes the data ready to be exported as XLSX.
@@ -963,7 +1054,7 @@
 
 			data.unshift(headers);
 			return data;
-		},
+		}
 
 		/**
 		 * Triggers a download of selected rows as a XLSX file.
@@ -977,12 +1068,16 @@
 			saveAs(new File([xlsx], this.xlsxFilename, {
 				type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 			}));
-		},
+		}
 
 		/** view functions */
 
-		_getGroupRowClasses: folded => folded ? 'groupRow groupRow-folded' : 'groupRow',
-		_getFoldIcon: expanded => expanded ? 'expand-less' : 'expand-more',
+		_getGroupRowClasses(folded) {
+			return folded ? 'groupRow groupRow-folded' : 'groupRow';
+		}
+		_getFoldIcon(expanded) {
+			return expanded ? 'expand-less' : 'expand-more';
+		}
 
 		/**
 		 * Called if an item from the sortOn dropdown gets tapped.
@@ -992,7 +1087,7 @@
 		 */
 		_applySortingDirection(e) {
 			const column = e.model.column,
-				data = Polymer.dom(e).localTarget.dataset,
+				data = e.target.dataset,
 				isGroup = data.groupOn != null,
 				compareTo = isGroup ? this.groupOnColumn : this.sortOnColumn,
 				property = isGroup ? 'groupOnDescending' : 'descending';
@@ -1002,7 +1097,7 @@
 				return;
 			}
 			this.set(property, false);
-		},
+		}
 		/**
 		 * Toggle folding of a group
 		 * @param  {Event} event event
@@ -1017,12 +1112,12 @@
 			if (!firstRow && folded) {
 				this._debounceAdjustColumns();
 			}
-		},
+		}
 
 		_toggleItem(event) {
 			const item = event.model.item;
 			this.$.groupedList.toggleCollapse(item);
-		},
+		}
 		/**
 		 * Turn an `action` event into a `run` event
 		 * @param  {Event} event  `action` event
@@ -1039,13 +1134,13 @@
 				}
 			}));
 			event.stopPropagation();
-		},
+		}
 
 		_selectedItemsChanged(change) {
 			if (change.path === 'selectedItems' || change.path === 'selectedItems.splices') {
 				this._allSelected = this.data && change.base.length === this.data.length;
 			}
-		},
+		}
 
 		_onAllCheckboxChange(event) {
 			if (event.target === null) {
@@ -1057,7 +1152,7 @@
 			} else {
 				this.$.groupedList.deselectAll();
 			}
-		},
+		}
 
 		/** PUBLIC */
 
@@ -1076,7 +1171,7 @@
 				}
 			}
 			return removedItems;
-		},
+		}
 		/**
 		 * Helper method to remove an item from `data`.
  		 * @param  {Object} item Item to remove
@@ -1087,7 +1182,7 @@
 			if (Array.isArray(removed) && removed.length > 0) {
 				return removed[0];
 			}
-		},
+		}
 		/**
 		 * Convenience method for setting a value to an item's path and notifying any
 		 * element bound to this item's path.
@@ -1101,23 +1196,23 @@
 				key = dataColl.getKey(item);
 
 			this.set('data.' + key + '.' + itemPath, value);
-		},
+		}
 
 		selectItem(item) {
 			this.$.groupedList.selectItem(item);
-		},
+		}
 
 		deselectItem(item) {
 			this.$.groupedList.deselectItem(item);
-		},
+		}
 
 		isItemSelected(item) {
 			return this.$.groupedList.isItemSelected(item);
-		},
+		}
 
 		isItemHighlighted(item) {
 			return this.$.groupedList.isItemHighlighted(item);
-		},
+		}
 
 		highlight(items, reverse) {
 			if (!items) {
@@ -1129,15 +1224,15 @@
 				return;
 			}
 			gl.highlightItem(items, reverse);
-		},
+		}
 
 		_routeHashPropertyChanged(key, value) {
-			const deserialized = this.deserialize(value, this.properties[key].type);
+			const deserialized = this.deserialize(value, Omnitable.properties[key].type);
 			if (deserialized === this.get(key)) {
 				return;
 			}
 			this.set(key, deserialized);
-		},
+		}
 
 		_routeHashFilterChanged(key, value) {
 			const column = this.columns.find(c => c.name === key);
@@ -1161,13 +1256,13 @@
 				return;
 			}
 			column.set('filter', deserialized);
-		},
+		}
 		_computeRouteHashKeyRule(hashParam) {
 			if (!hashParam) {
 				return;
 			}
 			return new RegExp('^' + hashParam + '-(.+?)(?=(?:--|$))(?:-{2})?([A-Za-z0-9-_]+)?$');
-		},
+		}
 		_routeHashKeyChanged(key, value) {
 			const match = key.match(this._routeHashKeyRule);
 
@@ -1182,7 +1277,7 @@
 			if (match[2] !== null && match[1] === 'filter') {
 				this._routeHashFilterChanged(match[2], value);
 			}
-		},
+		}
 
 		_updateParamsFromHash() {
 			if (!this.hashParam || !this._routeHash) {
@@ -1192,7 +1287,7 @@
 			Object.keys(hash).forEach(key => {
 				this._routeHashKeyChanged(key, hash[key]);
 			});
-		},
+		}
 
 		_updateRouteParam(key) {
 			if (!this.hashParam || !this._routeHash) {
@@ -1202,13 +1297,13 @@
 			const path = ['_routeHash', this.hashParam + '-' + key],
 				hashValue = this.get(path),
 				value = this.get(key),
-				serialized = this.serialize(value, this.properties[key].type);
+				serialized = this.serialize(value, Omnitable.properties[key].type);
 
 			if (serialized === hashValue) {
 				return;
 			}
 			this.set(path, serialized === undefined ? null : serialized);
-		},
+		}
 
 		_filterForRouteChanged(column) {
 			if (!this.hashParam || !this._routeHash || !Array.isArray(this.data)) {
@@ -1224,7 +1319,7 @@
 			}
 
 			this.set(path, serialized === undefined ? null : serialized);
-		},
+		}
 
 		_fitDropdowns() {
 			[this.$.groupOnSelector, this.$.sortOnSelector]
@@ -1234,5 +1329,12 @@
 					button.$.dropdown.fitInto = this;
 				});
 		}
-	});
+
+		_debounce(name, fn, asyncModule = Async.timeOut.after(0)) {
+			this[name] = Debouncer.debounce(this[name], asyncModule, fn);
+		}
+	}
+	customElements.define(Omnitable.is, Omnitable);
+
+	Cosmoz.Omnitable = Omnitable;
 }());

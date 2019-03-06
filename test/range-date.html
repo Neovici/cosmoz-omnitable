@@ -183,9 +183,7 @@
 					min: '2017-12-22',
 					max: '2017-12-23'
 				};
-				omnitable.flushDebouncer('filterItems');
-				omnitable.flushDebouncer('groupItems');
-				omnitable.flushDebouncer('sortItems');
+				omnitable.flush();
 				assert.include(omnitable.sortedFilteredGroupedItems.map(i => i[column.valuePath]), value);
 			});
 
@@ -198,9 +196,7 @@
 					max: `2017-12-${day}`
 				};
 
-				omnitable.flushDebouncer('filterItems');
-				omnitable.flushDebouncer('groupItems');
-				omnitable.flushDebouncer('sortItems');
+				omnitable.flush();
 
 				assert.include(omnitable.sortedFilteredGroupedItems.map(i => i[column.valuePath]), value);
 			});

@@ -109,9 +109,7 @@
 				assert.equal(last.id, idx);
 
 				omnitable.groupOnDescending = true;
-				omnitable.flushDebouncer('filterItems');
-				omnitable.flushDebouncer('groupItems');
-				omnitable.flushDebouncer('sortItems');
+				omnitable.flush();
 				const gItems = omnitable.sortedFilteredGroupedItems;
 				assert.equal(gItems[0].id, idx);
 				assert.equal(gItems[idx - 1].id, 1);
@@ -140,9 +138,7 @@
 				assert.equal(last.id, false);
 
 				omnitable.groupOnDescending = true;
-				omnitable.flushDebouncer('filterItems');
-				omnitable.flushDebouncer('groupItems');
-				omnitable.flushDebouncer('sortItems');
+				omnitable.flush();
 				assert.equal(omnitable.sortedFilteredGroupedItems[0].id, false);
 				assert.equal(omnitable.sortedFilteredGroupedItems[idx].id, true);
 			});
@@ -159,9 +155,7 @@
 
 			test('setting groupOn property to "amount" updates property groupOnColumn', () => {
 				omnitable.groupOn = 'amount';
-				omnitable.flushDebouncer('filterItems');
-				omnitable.flushDebouncer('groupItems');
-				omnitable.flushDebouncer('sortItems');
+				omnitable.flush();
 				const groupOnColumn = omnitable.groupOnColumn;
 				assert.equal(typeof groupOnColumn, 'object');
 				assert.instanceOf(groupOnColumn, Cosmoz.OmnitableColumnAmount);

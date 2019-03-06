@@ -72,7 +72,7 @@
 			});
 
 			test('it instantiates a cosmoz-omnitable element', () => {
-				assert.equal(omnitable.is, 'cosmoz-omnitable');
+				assert.instanceOf(omnitable, Cosmoz.Omnitable);
 			});
 
 			test('it is loading the name of first id column', () => {

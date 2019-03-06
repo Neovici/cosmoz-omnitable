@@ -78,13 +78,11 @@
 					assert.deepEqual(omnitable.visibleColumns, omnitable.columns);
 
 					omnitable.groupOn = 'date2';
-					omnitable.flushDebouncer('groupItems');
-					omnitable.flushDebouncer('sortItems');
+					omnitable.flush();
 					assert.deepEqual(omnitable.visibleColumns, omnitable.columns);
 
 					omnitable.groupOn = '';
-					omnitable.flushDebouncer('groupItems');
-					omnitable.flushDebouncer('sortItems');
+					omnitable.flush();
 					assert.deepEqual(omnitable.visibleColumns, omnitable.columns);
 
 				});
