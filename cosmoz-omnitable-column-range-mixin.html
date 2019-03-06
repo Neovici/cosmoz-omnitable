@@ -309,7 +309,8 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 				limitPath = path === 'min' ? 'from' : 'to',
 				lowerLimit = this.get(limitPath + 'Min', limit),
 				upperLimit = this.get(limitPath + 'Max', limit),
-				limitedValue = this.toValue(this.toValue(value, lowerLimit, Math.max), upperLimit, Math.min);
+				minValue = this.toValue(value, lowerLimit, Math.max),
+				limitedValue = this.toValue(minValue, upperLimit, Math.min);
 
 			if (this.getComparableValue(value) !== this.getComparableValue(limitedValue)) {
 				//set value without debouncing _limitInput again.
