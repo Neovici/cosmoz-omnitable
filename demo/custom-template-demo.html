@@ -97,22 +97,22 @@
 
 		properties: {
 			data: {
-				type: Array
+				type: Array,
 			},
 			selectedItems: {
-				type: Array
+				type: Array,
 			},
 			locale: {
 				type: String,
-				value: null
+				value: null,
 			},
 			customDataTemplate: {
-				type: Object
-			}
+				type: Object,
+			},
 		},
 
 		behaviors: [
-			Cosmoz.TableDemoBehavior
+			Cosmoz.TableDemoBehavior,
 		],
 
 		ready() {
@@ -142,7 +142,7 @@
 
 		_customFunction(item) {
 			return 'bla ' + item.id + ' bla';
-		}
+		},
 
 	});
 }());

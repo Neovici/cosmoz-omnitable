@@ -57,33 +57,33 @@
 				return {
 					filterStep: {
 						type: Number,
-						value: 1
+						value: 1,
 					},
 
 					width: {
 						type: String,
-						value: '210px'
+						value: '210px',
 					},
 
 					editWidth: {
 						type: String,
-						value: '320px'
+						value: '320px',
 					},
 
 					minWidth: {
 						type: String,
-						value: '128px'
+						value: '128px',
 					},
 
 					editMinWidth: {
 						type: String,
-						value: '128px'
+						value: '128px',
 					},
 
 					headerCellClass: {
 						type: String,
-						value: 'datetime-header-cell'
-					}
+						value: 'datetime-header-cell',
+					},
 				};
 			}
 
@@ -126,7 +126,7 @@
 					month: 'numeric',
 					day: 'numeric',
 					hour: 'numeric',
-					minute: 'numeric'
+					minute: 'numeric',
 				};
 				return new Intl.DateTimeFormat(locale || undefined, timeFormatOption);
 			}

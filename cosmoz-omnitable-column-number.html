@@ -55,42 +55,42 @@
 				return {
 					cellClass: {
 						type: String,
-						value: 'number-cell align-right'
+						value: 'number-cell align-right',
 					},
 					width: {
 						type: String,
-						value: '30px'
+						value: '30px',
 					},
 					editWidth: {
 						type: String,
-						value: '30px'
+						value: '30px',
 					},
 					headerCellClass: {
 						type: String,
-						value: 'number-header-cell'
+						value: 'number-header-cell',
 					},
 					maximumFractionDigits: {
 						type: Number,
-						value: null
+						value: null,
 					},
 					minimumFractionDigits: {
 						type: Number,
-						value: null // browser default 0 for numbers, currency-specific or 2 for currency
+						value: null, // browser default 0 for numbers, currency-specific or 2 for currency
 					},
 					formatter: {
 						type: Object,
-						computed: '_computeFormatter(locale, minimumFractionDigits, maximumFractionDigits)'
+						computed: '_computeFormatter(locale, minimumFractionDigits, maximumFractionDigits)',
 					},
 					_filterText: {
 						type: String,
-						computed: '_computeFilterText(filter.*, formatter)'
-					}
+						computed: '_computeFilterText(filter.*, formatter)',
+					},
 				};
 			}
 
 			_computeFormatter(locale, minimumFractionDigits, maximumFractionDigits) {
 				const options = {
-					localeMatcher: 'best fit' // chrome expects this when using custom options
+					localeMatcher: 'best fit', // chrome expects this when using custom options
 				};
 				if (minimumFractionDigits !== null) {
 					options.minimumFractionDigits = minimumFractionDigits;

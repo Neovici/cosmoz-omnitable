@@ -8,7 +8,7 @@ var fs = require('fs'),
 	exec = require('child_process').exec,
 	gitRun = function (cmd, cwd, callback) {
 		exec(cmd, {
-			cwd
+			cwd,
 		}, (err, stdout, stderr) => {
 			if (err) {
 				console.error('Gah error! ', err, stdout, stderr);

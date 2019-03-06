@@ -53,13 +53,13 @@
 					'Curabitur vestibulum',
 					'Cras laoreet',
 					'Himenaeos',
-					'maximus diam purus at mauris'
+					'maximus diam purus at mauris',
 				],
 				currencies = [
 					'SEK',
 					'USD',
 					'EUR',
-					'AUD'
+					'AUD',
 				];
 
 			let n = 0;
@@ -75,7 +75,7 @@
 						listValue.push('Item ' + k);
 						objectListValue.push({
 							name: 'Item ' + k,
-							value: 'item-value-' + k
+							value: 'item-value-' + k,
 						});
 					}
 					data.push({
@@ -85,10 +85,10 @@
 						bool: getRandomInt(0, 100) > 50,
 						object: {
 							value: getRandomInt(0, 10000),
-							label: 'Random string ' + getRandomInt(1, maxRandomString)
+							label: 'Random string ' + getRandomInt(1, maxRandomString),
 						},
 						sub: {
-							subProp: descriptions[n % descriptions.length]
+							subProp: descriptions[n % descriptions.length],
 						},
 						randomString: 'Random string ' + getRandomInt(1, maxRandomString),
 						randomString2: 'Random string 2 ' + getRandomInt(1, maxRandomString),
@@ -98,16 +98,16 @@
 						dateJSON: getRandomDateJSON(),
 						amount: {
 							amount: getRandomInt(10, 100),
-							currency: currencies[n % currencies.length]
+							currency: currencies[n % currencies.length],
 						},
 						group,
 						list: listValue,
-						objectList: objectListValue
+						objectList: objectListValue,
 					});
 					n += 1;
 				}
 			}
 			return data;
-		}
+		},
 	};
 </script>

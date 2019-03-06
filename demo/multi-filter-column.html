@@ -27,12 +27,12 @@
 			properties: {
 				filters: {
 					type: String,
-					observer: '_filtersChanged'
-				}
+					observer: '_filtersChanged',
+				},
 			},
 
 			behaviors: [
-				Cosmoz.OmnitableColumnMixin
+				Cosmoz.OmnitableColumnMixin,
 			],
 
 			_filtersChanged(newFilters) {
@@ -42,7 +42,7 @@
 						return elem !== '';
 					});
 				}
-			}
+			},
 
 		});
 

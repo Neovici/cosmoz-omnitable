@@ -108,26 +108,26 @@
 
 		properties: {
 			data: {
-				type: Array
+				type: Array,
 			},
 
 			selectedItems: {
-				type: Array
+				type: Array,
 			},
 
 			info: {
 				type: String,
-				observer: '_infoChanged'
-			}
+				observer: '_infoChanged',
+			},
 		},
 
 		behaviors: [
 			Cosmoz.TableDemoBehavior,
-			Cosmoz.TranslatableBehavior
+			Cosmoz.TranslatableBehavior,
 		],
 
 		listeners: {
-			'column-item-changed': '_itemChanged'
+			'column-item-changed': '_itemChanged',
 		},
 
 		ready() {
@@ -175,7 +175,7 @@
 		_itemChanged(e) {
 			var change = e.detail;
 			this.info = `Column ${e.target.name}: Item ${change.valuePath} changed from "${change.oldValue}" to "${change.value}"`;
-		}
+		},
 	});
 }());
 

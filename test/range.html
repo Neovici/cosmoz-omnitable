@@ -64,31 +64,31 @@
 						amount: { amount: '12.4', currency: 'USD' },
 					},
 					{
-						amount: { amount: 2 }
+						amount: { amount: 2 },
 					},
 					{
 						age: -11,
-						amount: { amount: 678, currency: 'AUD' }
+						amount: { amount: 678, currency: 'AUD' },
 					},
 					{
 						age: 9,
-						amount: { amount: -8, currency: 'EUR' }
+						amount: { amount: -8, currency: 'EUR' },
 					},
 					{
 						age: 5,
-						amount: { amount: '3450', currency: 'DKK' }
+						amount: { amount: '3450', currency: 'DKK' },
 					},
 					{
-						amount: { amount: 2015, currency: 'EUR' }
+						amount: { amount: 2015, currency: 'EUR' },
 					},
 					{
 						age: 46.7511, // 46,75xx
-						amount: { amount: 347, currency: 'USD' }
+						amount: { amount: 347, currency: 'USD' },
 					},
 					{
 						age: 46.768, // needed in maximumFractionDigits test
-						amount: { amount: 2581, currency: 'EUR' }
-					}
+						amount: { amount: 2581, currency: 'EUR' },
+					},
 				];
 
 			sinon.assert.expose(chai.assert, { prefix: '' });
@@ -142,7 +142,7 @@
 					assert.isNull(column.filter.max);
 					column.filter = {
 						min: 3,
-						max: 200
+						max: 200,
 					};
 					assert.equal(column._filterInput.min, 3);
 					assert.equal(column._filterInput.max, 200);
@@ -153,7 +153,7 @@
 					assert.isNull(column._filterInput.max);
 					column._filterInput = {
 						min: -10,
-						max: 15
+						max: 15,
 					};
 					Polymer.flush();
 					assert.equal(column.filter.min, -10);
@@ -299,7 +299,7 @@
 					assert.isNull(column.filter.max);
 					column.filter = {
 						min: { amount: 225, currency: 'EUR' },
-						max: { amount: 457, currency: 'EUR' }
+						max: { amount: 457, currency: 'EUR' },
 					};
 					assert.equal(column._filterInput.min, 225);
 					assert.equal(column._filterInput.max, 457);
@@ -310,7 +310,7 @@
 					assert.isNull(column._filterInput.max);
 					column._filterInput = {
 						min: 1,
-						max: 15
+						max: 15,
 					};
 					Polymer.flush();
 					assert.equal(column.filter.min.amount, 1);
@@ -351,7 +351,7 @@
 						{ amount: { amount: 345, currency: 'EUR' } },
 						{ amount: { amount: 2136, currency: 'EUR' } },
 						{ amount: { amount: -142, currency: 'USD' } },
-						{ amount: { amount: 5917, currency: 'AUD' } }
+						{ amount: { amount: 5917, currency: 'AUD' } },
 					]);
 					omnitable = setupOmnitableFixture('rates', newData, o => {
 						column = o.columns[0];
@@ -422,7 +422,7 @@
 						{ amount: { amount: 345, currency: 'GBP' } },
 						{ amount: { amount: 2136, currency: 'AUD' } },
 						{ amount: { amount: -142, currency: 'GBP' } },
-						{ amount: { amount: 1917, currency: 'AUD' } }
+						{ amount: { amount: 1917, currency: 'AUD' } },
 					];
 					assert.equal(column.currency, 'GBP');
 
@@ -435,7 +435,7 @@
 						{ amount: { amount: 539, currency: 'INR' } },
 						{ amount: { amount: -326, currency: 'GBP' } },
 						{ amount: { amount: 1917, currency: 'AUD' } },
-						{ amount: { amount: 1917, currency: 'USD' } }
+						{ amount: { amount: 1917, currency: 'USD' } },
 					];
 					assert.equal(column.currency, 'INR');
 				});
@@ -462,7 +462,7 @@
 					assert.isNull(column._filterInput.max);
 					column._filterInput = {
 						min: 105,
-						max: 150
+						max: 150,
 					};
 					Polymer.flush();
 					assert.equal(column.filter.min.amount, 105);
@@ -477,7 +477,7 @@
 					omnitable = setupOmnitableFixture('externalValues', [
 						{ age: 1 },
 						{ age: 0 },
-						{ age: 20 }
+						{ age: 20 },
 					], o => {
 						column = o.columns[0];
 						done();

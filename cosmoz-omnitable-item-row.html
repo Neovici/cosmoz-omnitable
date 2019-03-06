@@ -47,24 +47,24 @@
 		static get properties() {
 			return {
 				item: {
-					type: Object
+					type: Object,
 				},
 
 				selected: {
 					type: Boolean,
-					observer: '_selectedChanged'
+					observer: '_selectedChanged',
 				},
 
 				expanded: {
 					type: Boolean,
-					observer: '_expandedChanged'
-				}
+					observer: '_expandedChanged',
+				},
 			};
 		}
 
 		static get observers() {
 			return [
-				'_itemUpdated(item.*)'
+				'_itemUpdated(item.*)',
 			];
 		}
 

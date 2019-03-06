@@ -129,26 +129,26 @@
 
 			properties: {
 				data: {
-					type: Array
+					type: Array,
 				},
 				selectedItems: {
-					type: Array
+					type: Array,
 				},
 				locale: {
 					type: String,
-					value: 'sv'
+					value: 'sv',
 				},
 				customNameTemplate: {
-					type: Object
+					type: Object,
 				},
 				hashParam: {
-					type: String
-				}
+					type: String,
+				},
 			},
 
 			behaviors: [
 				Cosmoz.TableDemoBehavior,
-				Cosmoz.TranslatableBehavior
+				Cosmoz.TranslatableBehavior,
 			],
 
 			attached() {
@@ -201,7 +201,7 @@
 				return new Array(numSelected).fill(undefined).map((none, i) => {
 					return 'action ' + (i + 1);
 				});
-			}
+			},
 
 		});
 	}());

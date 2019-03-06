@@ -18,41 +18,41 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 				bindValues: {
 					type: Boolean,
 					readOnly: true,
-					value: true
+					value: true,
 				},
 
 				values: {
 					type: Array,
 					value() {
 						return [];
-					}
+					},
 				},
 
 				min: {
 					type: Number,
-					value: null
+					value: null,
 				},
 
 				max: {
 					type: Number,
-					value: null
+					value: null,
 				},
 
 				locale: {
 					type: String,
-					value: null
+					value: null,
 				},
 
 				_filterInput: {
 					type: Object,
 					value() {
 						return { min: null, max: null };
-					}
+					},
 				},
 
 				_range: {
 					type: Object,
-					computed: '_computeRange(values.*)'
+					computed: '_computeRange(values.*)',
 				},
 
 				_limit: {
@@ -60,20 +60,20 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 					computed: '_computeLimit(_range, _filterInput.*, min, max)',
 					value() {
 						return {};
-					}
+					},
 				},
 
 				_tooltip: {
 					type: String,
-					computed: '_computeTooltip(title, _filterText)'
-				}
+					computed: '_computeTooltip(title, _filterText)',
+				},
 			};
 		}
 
 		static get observers() {
 			return [
 				'_filterInputChanged(_filterInput.*)',
-				'_filterChanged(filter.*)'
+				'_filterChanged(filter.*)',
 			];
 		}
 
@@ -171,13 +171,13 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 			if (!values || values.length < 1) {
 				return {
 					min: null,
-					max: null
+					max: null,
 				};
 			}
 			return values.reduce((p, n) => {
 				return {
 					min: this.toValue(n, p.min, Math.min),
-					max: this.toValue(n, p.max, Math.max)
+					max: this.toValue(n, p.max, Math.max),
 				};
 			}, {});
 		}
@@ -196,7 +196,7 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 				fromMin: aMin,
 				fromMax: this.toValue(aMax, this._fromInputString(input.max, 'max'), Math.min),
 				toMin: this.toValue(aMin, this._fromInputString(input.min, 'min'), Math.max),
-				toMax: aMax
+				toMax: aMax,
 			};
 		}
 
@@ -267,7 +267,7 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 		_getDefaultFilter() {
 			return {
 				min: null,
-				max: null
+				max: null,
 			};
 		}
 
@@ -352,7 +352,7 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 
 			this.set('_filterInput', {
 				min: this._toInputString(filter.min),
-				max: this._toInputString(filter.max)
+				max: this._toInputString(filter.max),
 			});
 			this._limitInputDebouncer.cancel();
 		}
@@ -391,7 +391,7 @@ Cosmoz.RangeColumnMixin = Polymer.dedupingMixin(base =>
 
 			return {
 				min: this._fromHashString(matches[1], 'min'),
-				max: this._fromHashString(matches[2], 'max')
+				max: this._fromHashString(matches[2], 'max'),
 			};
 		}
 

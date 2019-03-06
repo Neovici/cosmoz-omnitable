@@ -168,12 +168,12 @@
 		properties: {
 			showContent2: {
 				type: Boolean,
-				value: false
-			}
+				value: false,
+			},
 		},
 		toggleSlot() {
 			this.showContent2 = !this.showContent2;
-		}
+		},
 	});
 
 	Polymer({
@@ -181,22 +181,22 @@
 
 		properties: {
 			data: {
-				type: Array
+				type: Array,
 			},
 			selectedItems: {
-				type: Array
+				type: Array,
 			},
 			locale: {
 				type: String,
-				value: null
+				value: null,
 			},
 			customNameTemplate: {
-				type: Object
-			}
+				type: Object,
+			},
 		},
 
 		behaviors: [
-			Cosmoz.TableDemoBehavior
+			Cosmoz.TableDemoBehavior,
 		],
 
 		ready() {
@@ -239,7 +239,7 @@
 
 		onTap(event) {
 			console.log('onTap', event);
-		}
+		},
 
 	});
 }());

@@ -59,23 +59,23 @@
 					 */
 					filterStep: {
 						type: String,
-						value: '1'
+						value: '1',
 					},
 
 					headerCellClass: {
 						type: String,
-						value: 'time-header-cell'
+						value: 'time-header-cell',
 					},
 
 					minWidth: {
 						type: String,
-						value: '63px'
+						value: '63px',
 					},
 
 					editMinWidth: {
 						type: String,
-						value: '63px'
-					}
+						value: '63px',
+					},
 				};
 			}
 
@@ -174,7 +174,7 @@
 				const timeFormatOption = {
 					hour: 'numeric',
 					minute: 'numeric',
-					second: 'numeric'
+					second: 'numeric',
 				};
 				return new Intl.DateTimeFormat(locale || undefined, timeFormatOption);
 			}

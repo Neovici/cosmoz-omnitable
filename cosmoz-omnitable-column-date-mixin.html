@@ -20,27 +20,27 @@ Cosmoz.DateColumnMixin = Polymer.dedupingMixin(base =>
 			return {
 				max: {
 					type: Date,
-					value: null
+					value: null,
 				},
 
 				min: {
 					type: Date,
-					value: null
+					value: null,
 				},
 
 				_filterText: {
 					type: String,
-					computed: '_computeFilterText(filter.*, formatter)'
+					computed: '_computeFilterText(filter.*, formatter)',
 				},
 
 				width: {
 					type: String,
-					value: '100px'
+					value: '100px',
 				},
 
 				editWidth: {
 					type: String,
-					value: '150px'
+					value: '150px',
 				},
 
 				/**
@@ -49,12 +49,12 @@ Cosmoz.DateColumnMixin = Polymer.dedupingMixin(base =>
 				 */
 				flex: {
 					type: String,
-					value: '0'
+					value: '0',
 				},
 				formatter: {
 					type: Object,
-					computed: '_computeFormatter(locale)'
-				}
+					computed: '_computeFormatter(locale)',
+				},
 			};
 		}
 

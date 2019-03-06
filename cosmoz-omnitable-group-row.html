@@ -25,28 +25,28 @@
 				return {
 					column: {
 						type: Object,
-						observer: '_columnChanged'
+						observer: '_columnChanged',
 					},
 
 					item: {
-						type: Object
+						type: Object,
 					},
 
 					selected: {
 						type: Boolean,
-						observer: '_selectedChanged'
+						observer: '_selectedChanged',
 					},
 
 					folded: {
 						type: Boolean,
-						observer: '_foldedChanged'
-					}
+						observer: '_foldedChanged',
+					},
 				};
 			}
 
 			static get observers() {
 				return [
-					'_itemUpdated(item.*)'
+					'_itemUpdated(item.*)',
 				];
 			}
 

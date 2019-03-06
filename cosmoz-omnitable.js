@@ -16,7 +16,7 @@
 			 */
 			csvFilename: {
 				type: String,
-				value: 'omnitable.csv'
+				value: 'omnitable.csv',
 			},
 
 			/**
@@ -24,7 +24,7 @@
 			 */
 			xlsxFilename: {
 				type: String,
-				value: 'omnitable.xlsx'
+				value: 'omnitable.xlsx',
 			},
 
 			/**
@@ -32,14 +32,14 @@
 			 */
 			xlsxSheetname: {
 				type: String,
-				value: 'Omnitable'
+				value: 'Omnitable',
 			},
 
 			/**
 			 * Array used to list items.
 			 */
 			data: {
-				type: Array
+				type: Array,
 			},
 
 			/**
@@ -48,7 +48,7 @@
 			_dataIsValid: {
 				type: Boolean,
 				value: false,
-				computed: '_computeDataValidity(data.*)'
+				computed: '_computeDataValidity(data.*)',
 			},
 
 			/**
@@ -56,7 +56,7 @@
 			 */
 			displayEmptyGroups: {
 				type: Boolean,
-				value: false
+				value: false,
 			},
 
 			/**
@@ -64,7 +64,7 @@
 			 */
 			enabledColumns: {
 				type: Array,
-				observer: '_debounceUpdateColumns'
+				observer: '_debounceUpdateColumns',
 			},
 
 			/**
@@ -72,7 +72,7 @@
 			 */
 			hasActions: {
 				type: Boolean,
-				value: false
+				value: false,
 			},
 
 			/**
@@ -80,7 +80,7 @@
 			 */
 			loading: {
 				type: Boolean,
-				value: false
+				value: false,
 			},
 
 			/**
@@ -88,7 +88,7 @@
 			 */
 			_showCheckboxes: {
 				type: Boolean,
-				computed: '_computeShowCheckboxes(_dataIsValid, hasActions)'
+				computed: '_computeShowCheckboxes(_dataIsValid, hasActions)',
 			},
 
 			/**
@@ -96,35 +96,35 @@
 			 */
 			selectedItems: {
 				type: Array,
-				notify: true
+				notify: true,
 			},
 
 			highlightedItems: {
 				type: Array,
-				notify: true
+				notify: true,
 			},
 
 			descending: {
 				type: Boolean,
 				value: false,
-				notify: true
+				notify: true,
 			},
 
 			sortOn: {
 				type: String,
 				value: '',
-				notify: true
+				notify: true,
 			},
 
 			sortOnColumn: {
 				type: Object,
-				computed: '_getColumn(sortOn, "name", columns)'
+				computed: '_getColumn(sortOn, "name", columns)',
 			},
 
 			groupOnDescending: {
 				type: Boolean,
 				value: false,
-				observer: '_debounceGroupItems'
+				observer: '_debounceGroupItems',
 			},
 			/**
 			 * The column name to group on.
@@ -132,7 +132,7 @@
 			groupOn: {
 				type: String,
 				notify: true,
-				value: ''
+				value: '',
 			},
 
 			/**
@@ -142,7 +142,7 @@
 				type: Object,
 				notify: true,
 				observer: '_groupOnColumnChanged',
-				computed: '_getColumn(groupOn, "name", columns)'
+				computed: '_getColumn(groupOn, "name", columns)',
 			},
 
 			/**
@@ -151,14 +151,14 @@
 			filteredItems: {
 				type: Array,
 				observer: '_debounceGroupItems',
-				value: () => []
+				value: () => [],
 			},
 
 			/**
 			 * Grouped items structure after filtering.
 			 */
 			filteredGroupedItems: {
-				type: Array
+				type: Array,
 			},
 
 			/**
@@ -166,7 +166,7 @@
 			 */
 			sortedFilteredGroupedItems: {
 				type: Array,
-				notify: true
+				notify: true,
 			},
 
 			/**
@@ -174,12 +174,12 @@
 			 */
 			_previousWidth: {
 				type: Number,
-				value: 0
+				value: 0,
 			},
 
 			_groupsCount: {
 				type: Number,
-				value: 0
+				value: 0,
 			},
 
 			/**
@@ -187,7 +187,7 @@
 			 */
 			columns: {
 				type: Array,
-				notify: true
+				notify: true,
 			},
 
 			visible: {
@@ -195,7 +195,7 @@
 				notify: true,
 				readOnly: true,
 				value: false,
-				observer: 'visibleChanged'
+				observer: 'visibleChanged',
 			},
 
 			/**
@@ -204,49 +204,49 @@
 			visibleColumns: {
 				type: Array,
 				notify: true,
-				observer: '_visibleColumnsChanged'
+				observer: '_visibleColumnsChanged',
 			},
 
 			disabledColumns: {
 				type: Array,
-				notify: true
+				notify: true,
 			},
 
 			_filterIsTooStrict: {
 				type: Boolean,
-				computed: '_computeFilterIsTooStrict(_dataIsValid, sortedFilteredGroupedItems.length)'
+				computed: '_computeFilterIsTooStrict(_dataIsValid, sortedFilteredGroupedItems.length)',
 			},
 
 			hashParam: {
-				type: String
+				type: String,
 			},
 
 			_routeHash: {
-				type: Object
+				type: Object,
 
 			},
 			_routeHashKeyRule: {
 				type: RegExp,
-				computed: '_computeRouteHashKeyRule(hashParam)'
+				computed: '_computeRouteHashKeyRule(hashParam)',
 			},
 
 			/**
 			 * True when all items are selected.
 			 */
 			_allSelected: {
-				type: Boolean
-			}
+				type: Boolean,
+			},
 		},
 
 		observers: [
 			'_dataChanged(data.*)',
 			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
-			' _selectedItemsChanged(selectedItems.*)'
+			' _selectedItemsChanged(selectedItems.*)',
 		],
 
 		behaviors: [
 			Polymer.IronResizableBehavior,
-			Cosmoz.TranslatableBehavior
+			Cosmoz.TranslatableBehavior,
 		],
 
 		listeners: {
@@ -255,7 +255,7 @@
 			'cosmoz-column-title-changed': '_onColumnTitleChanged',
 			'cosmoz-column-filter-changed': '_filterChanged',
 			'cosmoz-column-editable-changed': '_onColumnEditableChanged',
-			'cosmoz-column-values-update': '_onColumnValuesUpdate'
+			'cosmoz-column-values-update': '_onColumnValuesUpdate',
 		},
 
 		attached() {
@@ -733,7 +733,7 @@
 						return {
 							name: group.name,
 							id: group.id,
-							items: group.items
+							items: group.items,
 						};
 					}));
 				this._debounceAdjustColumns();
@@ -815,7 +815,7 @@
 			} else {
 				this._overflowConfig = {
 					columns: this.visibleColumns.length,
-					width: currentWidth
+					width: currentWidth,
 				};
 				this._disableColumn();
 				return;
@@ -944,7 +944,7 @@
 			rows.unshift(header);
 
 			saveAs(new File(rows, this.csvFilename, {
-				type: 'text/csv;charset=utf-8'
+				type: 'text/csv;charset=utf-8',
 			}));
 		},
 
@@ -975,7 +975,7 @@
 				xlsx = new NullXlsx(this.xlsxFilename).addSheetFromData(data, this.xlsxSheetname).generate();
 
 			saveAs(new File([xlsx], this.xlsxFilename, {
-				type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+				type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 			}));
 		},
 
@@ -1035,8 +1035,8 @@
 				cancelable: true,
 				detail: {
 					omnitable: this,
-					items: this.selectedItems
-				}
+					items: this.selectedItems,
+				},
 			}));
 			event.stopPropagation();
 		},
@@ -1233,6 +1233,6 @@
 				.forEach(button => {
 					button.$.dropdown.fitInto = this;
 				});
-		}
+		},
 	});
 }());

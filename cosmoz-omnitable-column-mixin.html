@@ -12,11 +12,11 @@
 			return {
 				title: {
 					type: String,
-					observer: '_titleChanged'
+					observer: '_titleChanged',
 				},
 
 				valuePath: {
-					type: String
+					type: String,
 				},
 
 				/**
@@ -25,7 +25,7 @@
 				disabled: {
 					type: Boolean,
 					value: false,
-					observer: '_disabledChanged'
+					observer: '_disabledChanged',
 				},
 
 				/**
@@ -33,7 +33,7 @@
 				 */
 				editable: {
 					type: Boolean,
-					observer: '_editableChanged'
+					observer: '_editableChanged',
 				},
 
 				/**
@@ -42,7 +42,7 @@
 				externalValues: {
 					type: Boolean,
 					value: false,
-					observer: '_externalValuesChanged'
+					observer: '_externalValuesChanged',
 				},
 
 				filter: {
@@ -50,7 +50,7 @@
 					notify: true,
 					value() {
 						return this._getDefaultFilter();
-					}
+					},
 				},
 
 				/**
@@ -60,7 +60,7 @@
 				headerFocused: {
 					type: Boolean,
 					value: false,
-					notify: true
+					notify: true,
 				},
 
 				/**
@@ -68,7 +68,7 @@
 				 */
 				loading: {
 					type: Boolean,
-					value: false
+					value: false,
 				},
 
 				/**
@@ -77,31 +77,31 @@
 				bindValues: {
 					type: Boolean,
 					readOnly: true,
-					value: false
+					value: false,
 				},
 
 				/**
 				 * Column name for use with enabledColumns
 				 */
 				name: {
-					type: String
+					type: String,
 				},
 
 				/**
 				 * All values for this column.
 				 */
 				values: {
-					type: Array
+					type: Array,
 				},
 
 				sortOn: {
 					type: String,
-					value: null // need a default value for compatibility with Polymer 1.x, to trigger _pathsChanged observer
+					value: null, // need a default value for compatibility with Polymer 1.x, to trigger _pathsChanged observer
 				},
 
 				groupOn: {
 					type: String,
-					value: null // need a default value for compatibility with Polymer 1.x, to trigger _pathsChanged observer
+					value: null, // need a default value for compatibility with Polymer 1.x, to trigger _pathsChanged observer
 				},
 
 				/**
@@ -111,7 +111,7 @@
 				isOmnitableColumn: {
 					type: Boolean,
 					value: true,
-					readOnly: true
+					readOnly: true,
 				},
 
 				/**
@@ -119,7 +119,7 @@
 				 */
 				width: {
 					type: String,
-					value: '75px'
+					value: '75px',
 				},
 
 				/**
@@ -127,7 +127,7 @@
 				 */
 				editWidth: {
 					type: String,
-					value: '75px'
+					value: '75px',
 				},
 
 				/**
@@ -135,7 +135,7 @@
 				 */
 				minWidth: {
 					type: String,
-					value: '40px'
+					value: '40px',
 				},
 
 				/**
@@ -143,7 +143,7 @@
 				 */
 				editMinWidth: {
 					type: String,
-					value: '40px'
+					value: '40px',
 				},
 
 				/**
@@ -151,21 +151,21 @@
 				 */
 				flex: {
 					type: String,
-					value: '1'
+					value: '1',
 				},
 
 				cellClass: {
 					type: String,
-					value: 'default-cell'
+					value: 'default-cell',
 				},
 
 				headerCellClass: {
 					type: String,
-					value: 'default-header-cell'
+					value: 'default-header-cell',
 				},
 
 				styleModule: {
-					type: String
+					type: String,
 				},
 
 				/**
@@ -174,17 +174,17 @@
 				 */
 				overflow: {
 					type: Boolean,
-					value: false
+					value: false,
 				},
 
 				priority: {
 					type: Number,
-					value: 0
+					value: 0,
 				},
 
 				cellTemplate: {
 					type: Object,
-					observer: '_cellTemplateChanged'
+					observer: '_cellTemplateChanged',
 				},
 				/**
 				 * Cell title function, can be overriden.
@@ -201,42 +201,42 @@
 						return function (item, valuePath = this.valuePath) {
 							return this.getString(item, valuePath);
 						};
-					}
+					},
 				},
 
 				hidden: {
 					type: Boolean,
 					reflectToAttribute: true,
-					observer: '_hiddenChanged'
+					observer: '_hiddenChanged',
 				},
 				/**
 				 * Index of this column in the list of displayed columns (excluding disabled/hidden columns).
 				 */
 				columnIndex: {
-					type: Number
+					type: Number,
 				},
 
 				preferredDropdownHorizontalAlign: {
 					type: String,
-					computed: '_computePreferredDropdownHorizontalAlign(columnIndex)'
+					computed: '_computePreferredDropdownHorizontalAlign(columnIndex)',
 				},
 
 				_dataTemplatizer: {
 					type: Object,
-					value: null
+					value: null,
 				},
 
 				_headerTemplatizer: {
 					type: Object,
-					value: null
-				}
+					value: null,
+				},
 			};
 		}
 
 		static get observers() {
 			return [
 				'__filterChanged(filter.*)',
-				'_pathsChanged(valuePath, groupOn, sortOn)'
+				'_pathsChanged(valuePath, groupOn, sortOn)',
 			];
 		}
 
@@ -286,8 +286,8 @@
 				bubbles: true,
 				composed: true,
 				detail: {
-					column: this
-				}
+					column: this,
+				},
 			}));
 		}
 
@@ -376,7 +376,7 @@
 					item,
 					valuePath: this.valuePath,
 					value: formatFn ? formatFn(value) : value,
-					oldValue: formatFn ? formatFn(oldValue) : oldValue
+					oldValue: formatFn ? formatFn(oldValue) : oldValue,
 				};
 
 			this.dispatchEvent(new CustomEvent('column-item-changed', {bubbles: true, detail: change}));

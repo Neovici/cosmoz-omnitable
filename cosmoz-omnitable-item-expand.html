@@ -46,32 +46,32 @@
 		static get properties() {
 			return {
 				item: {
-					type: Object
+					type: Object,
 				},
 
 				selected: {
 					type: Boolean,
-					observer: '_selectedChanged'
+					observer: '_selectedChanged',
 				},
 
 				expanded: {
 					type: Boolean,
 					value: false,
 					reflectToAttribute: true,
-					observer: '_expandedChanged'
+					observer: '_expandedChanged',
 				},
 
 				hidden: {
 					type: Boolean,
-					reflectToAttribute: true
-				}
+					reflectToAttribute: true,
+				},
 			};
 		}
 
 		static get observers() {
 			return [
 				'_updateSize(columns.length)',
-				'_itemUpdated(item.*)'
+				'_itemUpdated(item.*)',
 			];
 		}
 

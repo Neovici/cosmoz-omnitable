@@ -111,19 +111,19 @@
 
 		properties: {
 			data: {
-				type: Array
+				type: Array,
 			},
 			selectedItems: {
-				type: Array
+				type: Array,
 			},
 			locale: {
 				type: String,
-				value: null
-			}
+				value: null,
+			},
 		},
 
 		behaviors: [
-			Cosmoz.TableDemoBehavior
+			Cosmoz.TableDemoBehavior,
 		],
 
 		ready() {
@@ -156,7 +156,7 @@
 		removeItems(event, detail) {
 			console.log('runAction', detail.items, event, detail, detail.items);
 			detail.omnitable.removeItems(detail.items);
-		}
+		},
 	});
 }());
 

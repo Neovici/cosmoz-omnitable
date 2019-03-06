@@ -34,6 +34,16 @@
 		],
 		"brace-style": "error",
 		"camelcase": "error",
+		"comma-dangle": [
+			"error",
+			{
+				"arrays": "always-multiline",
+				"objects": "always-multiline",
+				"imports": "never",
+				"exports": "never",
+				"functions": "ignore"
+			}
+		],
 		"comma-spacing": [
 			"error",
 			{

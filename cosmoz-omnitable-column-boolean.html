@@ -53,27 +53,27 @@
 						notify: true,
 						value() {
 							return this._getDefaultFilter();
-						}
+						},
 					},
 
 					trueLabel: {
 						type: String,
-						value: 'True'
+						value: 'True',
 					},
 
 					falseLabel: {
 						type: String,
-						value: 'False'
+						value: 'False',
 					},
 
 					_textFilter: {
 						type: String,
-						observer: '_textFilterChanged'
+						observer: '_textFilterChanged',
 					},
 
 					templatetemplateWidth: {
 						type: String,
-						value: '60px'
+						value: '60px',
 					},
 
 					/**
@@ -82,14 +82,14 @@
 					 */
 					flex: {
 						type: String,
-						value: '0'
-					}
+						value: '0',
+					},
 				};
 			}
 
 			static get observers() {
 				return [
-					'_filterChanged(filter)'
+					'_filterChanged(filter)',
 				];
 			}
 

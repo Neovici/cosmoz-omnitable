@@ -52,7 +52,7 @@
 					autocompleteItems: {
 						type: Array,
 						notify: true,
-						computed: '_computeAutocompleteItems(valueProperty, values.length)'
+						computed: '_computeAutocompleteItems(valueProperty, values.length)',
 					},
 
 					/**
@@ -61,7 +61,7 @@
 					bindValues: {
 						type: Boolean,
 						readOnly: true,
-						value: true
+						value: true,
 					},
 
 					filter: {
@@ -69,18 +69,18 @@
 						notify: true,
 						value() {
 							return this._getDefaultFilter();
-						}
+						},
 					},
 
 					textProperty: {
 						type: String,
-						value: ''
+						value: '',
 					},
 
 					valueProperty: {
 						type: String,
-						value: ''
-					}
+						value: '',
+					},
 				};
 			}
 

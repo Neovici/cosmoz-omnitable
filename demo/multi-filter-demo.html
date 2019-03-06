@@ -85,24 +85,24 @@
 
 		properties: {
 			data: {
-				type: Array
+				type: Array,
 			},
 			selectedItems: {
-				type: Array
+				type: Array,
 			},
 			nameFilter: {
-				type: String
+				type: String,
 			},
 			boolFilter: {
-				type: Boolean
+				type: Boolean,
 			},
 			idFiltersString: {
 				type: String,
-			}
+			},
 		},
 
 		behaviors: [
-			Cosmoz.TableDemoBehavior
+			Cosmoz.TableDemoBehavior,
 		],
 
 		ready() {
@@ -131,7 +131,7 @@
 		removeItems(event, detail) {
 			console.log('runAction', detail.items, event, detail, detail.items);
 			detail.omnitable.removeItems(detail.items);
-		}
+		},
 	});
 }());
 

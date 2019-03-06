@@ -47,7 +47,7 @@
 			Polymer({
 				is: 'x-templatizer',
 				behaviors: [
-					Polymer.Templatizer
+					Polymer.Templatizer,
 				],
 				_ensureTemplatized() {
 					if (!this.ctor) {
@@ -65,7 +65,7 @@
 
 				_forwardParentProp(prop, value) {
 					console.log('implement forwarding prop to template instances', prop, value);
-				}
+				},
 
 			});
 
@@ -75,9 +75,9 @@
 					_hasActions: {
 						type: Number,
 						notify: true,
-						value: 0
-					}
-				}
+						value: 0,
+					},
+				},
 			});
 		});
 	</script>

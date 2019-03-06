@@ -48,7 +48,7 @@
 			[
 				Cosmoz.TemplateHelperBehavior,
 				Cosmoz.TranslatableBehavior,
-				Polymer.IronResizableBehavior
+				Polymer.IronResizableBehavior,
 			],
 			Polymer.Element
 		) {
@@ -59,17 +59,17 @@
 			static get properties() {
 				return {
 					items: {
-						type: Array
+						type: Array,
 					},
 
 					_expanded: {
 						type: Boolean,
-						value: false
+						value: false,
 					},
 
 					_othersCount: {
 						type: Number,
-						computed: '_computeOthersCount(items)'
+						computed: '_computeOthersCount(items)',
 					},
 
 					// FIXME: remove when TranslatableBehavior is a 2.x mixin
@@ -77,8 +77,8 @@
 						type: Object,
 						value() {
 							return {};
-						}
-					}
+						},
+					},
 				};
 			}
 

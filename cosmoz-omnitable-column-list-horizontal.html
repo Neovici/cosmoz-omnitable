@@ -63,7 +63,7 @@
 			static get properties() {
 				return {
 					autocompleteSelectedItems: {
-						type: Array
+						type: Array,
 					},
 
 					/**
@@ -72,7 +72,7 @@
 					bindValues: {
 						type: Boolean,
 						readOnly: true,
-						value: true
+						value: true,
 					},
 
 					filter: {
@@ -80,8 +80,8 @@
 						notify: true,
 						value() {
 							return this._getDefaultFilter();
-						}
-					}
+						},
+					},
 				};
 			}
 

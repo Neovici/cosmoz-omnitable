@@ -56,7 +56,7 @@
 			}
 			static get observers() {
 				return [
-					'_valuesChanged(autodetect, currency, values)'
+					'_valuesChanged(autodetect, currency, values)',
 				];
 			}
 			static get properties() {
@@ -65,7 +65,7 @@
 					 * Base Currency used in filters
 					 */
 					currency: {
-						type: String
+						type: String,
 					},
 
 					/**
@@ -73,7 +73,7 @@
 					 */
 					autodetect: {
 						type: Boolean,
-						value: false
+						value: false,
 					},
 
 					/**
@@ -81,29 +81,29 @@
 					 * Default exchange rate is 1 and it is used for every currency that is present on column values but missing from exchange rates object.
 					 */
 					rates: {
-						type: Object
+						type: Object,
 					},
 					width: {
 						type: String,
-						value: '70px'
+						value: '70px',
 					},
 					editWidth: {
 						type: String,
-						value: '70px'
+						value: '70px',
 					},
 
 					cellClass: {
 						type: String,
-						value: 'amount-cell align-right'
+						value: 'amount-cell align-right',
 					},
 					headerCellClass: {
 						type: String,
-						value: 'amount-header-cell'
+						value: 'amount-header-cell',
 					},
 					_filterText: {
 						type: String,
-						computed: '_computeFilterText(filter.*, _formatters)'
-					}
+						computed: '_computeFilterText(filter.*, _formatters)',
+					},
 				};
 			}
 
@@ -164,7 +164,7 @@
 				}
 				let amount = {
 						currency: value.currency,
-						amount: number
+						amount: number,
 					},
 					lAmount,
 					lNumber;
@@ -241,7 +241,7 @@
 				}
 				return formatters[key] = new Intl.NumberFormat(locale || undefined, {
 					style: 'currency',
-					currency
+					currency,
 				});
 			}
 			/**
@@ -269,7 +269,7 @@
 				let amountValue = Number(value),
 					newValue = {
 						amount: amountValue,
-						currency: originalValue.currency
+						currency: originalValue.currency,
 					};
 
 				this.set(this.valuePath, newValue, item);
@@ -304,7 +304,7 @@
 				}
 				return this.toValue({
 					amount: number,
-					currency: property && this.get(['filter', property, 'currency']) || this.currency
+					currency: property && this.get(['filter', property, 'currency']) || this.currency,
 				});
 			}
 
@@ -325,7 +325,7 @@
 				}
 				return {
 					amount: params[1],
-					currency: params[2]
+					currency: params[2],
 				};
 			}
 		}

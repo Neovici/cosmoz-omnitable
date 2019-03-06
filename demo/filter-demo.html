@@ -92,21 +92,21 @@
 
 		properties: {
 			data: {
-				type: Array
+				type: Array,
 			},
 			selectedItems: {
-				type: Array
+				type: Array,
 			},
 			nameFilter: {
-				type: String
+				type: String,
 			},
 			boolFilter: {
-				type: Boolean
-			}
+				type: Boolean,
+			},
 		},
 
 		behaviors: [
-			Cosmoz.TableDemoBehavior
+			Cosmoz.TableDemoBehavior,
 		],
 
 		ready() {
@@ -122,14 +122,14 @@
 			this.nameFilter = this.data[0].name;
 			this.amountFilter = {
 				minValue: this.data[0].amount.amount,
-				maxValue: this.data[0].amount.amount
+				maxValue: this.data[0].amount.amount,
 			};
 
 			this.dateFilter = this.data[0].dateJSON;
 			this.boolFilter = this.data[0].bool;
 			this.numberFilter = {
 				minValue: this.data[0].value - 1,
-				maxValue: this.data[0].value + 1
+				maxValue: this.data[0].value + 1,
 			};
 		},
 
@@ -151,7 +151,7 @@
 		removeItems(event, detail) {
 			console.log('runAction', detail.items, event, detail, detail.items);
 			detail.omnitable.removeItems(detail.items);
-		}
+		},
 	});
 }());
 

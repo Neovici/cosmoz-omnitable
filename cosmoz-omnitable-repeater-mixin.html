@@ -16,19 +16,19 @@
 		static get properties() {
 			return {
 				columns: {
-					type: Array
+					type: Array,
 				},
 
 				groupOnColumn: {
 					type: Object,
-					observer: '_groupOnColumnChanged'
-				}
+					observer: '_groupOnColumnChanged',
+				},
 			};
 		}
 
 		static get observers() {
 			return [
-				'_columnsChanged(columns.*)'
+				'_columnsChanged(columns.*)',
 			];
 		}
 
