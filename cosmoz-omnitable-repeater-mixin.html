@@ -163,7 +163,7 @@
 
 		_addElements(start, count) {
 			const end = start + count,
-				parent = Polymer.dom(this);
+				parent = this;
 
 			for (let i = start; i < end; i++) {
 				const column = this.columns[i],
@@ -182,7 +182,7 @@
 				this._configureTemplateInstance(instance);
 				element.setAttribute('slot', this._slotName);
 
-				Polymer.dom(element).appendChild(instance.root);
+				element.appendChild(instance.root);
 
 				if (i < this._elements.length) {
 					parent.insertBefore(element, this._elements[i]);
@@ -207,7 +207,7 @@
 				.forEach(element => {
 					this._detachTemplateInstance(element.__instance, element.__column, element);
 					element.__instance = element.__column = element.column = null;
-					Polymer.dom(this).removeChild(element);
+					this.removeChild(element);
 				});
 		}
 
