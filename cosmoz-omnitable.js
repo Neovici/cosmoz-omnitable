@@ -530,7 +530,7 @@
 
 			const columnsChanged = !Array.isArray(this.columns) ||
 				this.columns.length !== columns.length ||
-				this.columns.every(col => columns.indexOf(col) !== -1);
+				this.columns.some(col => columns.indexOf(col) === -1);
 
 			if (!columns || columns.length === 0 || !columnsChanged) {
 				return;
