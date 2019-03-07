@@ -4,12 +4,9 @@
 	const setupOmnitableFixture = (omnitableFixtureName, data, done) => {
 		const omnitable = fixture(omnitableFixtureName);
 		omnitable.data = data;
+		omnitable._columnObserver.flush();
 		flush(() => {
-			omnitable.flushDebouncer('adjustColumns');
-			omnitable.flushDebouncer('updateColumns');
-			omnitable.flushDebouncer('filterItems');
-			omnitable.flushDebouncer('groupItems');
-			omnitable.flushDebouncer('sortItems');
+			omnitable.flush();
 			done(omnitable);
 		});
 		return omnitable;
@@ -29,4 +26,3 @@
 
 	Object.assign(window, {setupOmnitableFixture, getDomType});
 }());
-

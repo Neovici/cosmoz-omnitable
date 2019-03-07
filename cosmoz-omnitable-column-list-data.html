@@ -47,8 +47,7 @@
 		class OmnitableColumnListData extends Polymer.mixinBehaviors(
 			[
 				Cosmoz.TemplateHelperBehavior,
-				Cosmoz.TranslatableBehavior,
-				Polymer.IronResizableBehavior
+				Cosmoz.TranslatableBehavior
 			],
 			Polymer.Element
 		) {
@@ -130,7 +129,7 @@
 				this._expanded = !this._expanded;
 				event.stopPropagation();
 				event.preventDefault();
-				this.fire('iron-resize');
+				this.dispatchEvent(new CustomEvent('iron-resize', {bubbles: true}));
 			}
 		}
 		customElements.define(OmnitableColumnListData.is, OmnitableColumnListData);

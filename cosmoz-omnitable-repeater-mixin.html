@@ -162,8 +162,7 @@
 		}
 
 		_addElements(start, count) {
-			const end = start + count,
-				parent = Polymer.dom(this);
+			const end = start + count;
 
 			for (let i = start; i < end; i++) {
 				const column = this.columns[i],
@@ -182,12 +181,12 @@
 				this._configureTemplateInstance(instance);
 				element.setAttribute('slot', this._slotName);
 
-				Polymer.dom(element).appendChild(instance.root);
+				element.appendChild(instance.root);
 
 				if (i < this._elements.length) {
-					parent.insertBefore(element, this._elements[i]);
+					this.insertBefore(element, this._elements[i]);
 				} else {
-					parent.appendChild(element);
+					this.appendChild(element);
 				}
 
 				// HACK(plequang): repeated element should have style scoped to cosmoz-omnitable, not to the column element.
@@ -207,7 +206,7 @@
 				.forEach(element => {
 					this._detachTemplateInstance(element.__instance, element.__column, element);
 					element.__instance = element.__column = element.column = null;
-					Polymer.dom(this).removeChild(element);
+					this.removeChild(element);
 				});
 		}
 
