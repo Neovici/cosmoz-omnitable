@@ -286,6 +286,7 @@
 
 			this.disabledColumnsIndexes = null;
 
+			this.debouncers = {};
 			this._adjustColumns = this._adjustColumns.bind(this);
 			this._updateColumns = this._updateColumns.bind(this);
 			this._filterItems = this._filterItems.bind(this);
@@ -346,35 +347,31 @@
 		}
 
 		flush() {
-			if (this._adjustColumnsDebouncer) {
-				this._adjustColumnsDebouncer.flush();
+			// NOTE: in some instances flushing a debouncer causes another debouncer
+			// to be set, so we must test each debouncer independently and in this order
+			if (this.debouncers._adjustColumnsDebouncer) {
+				this.debouncers._adjustColumnsDebouncer.flush();
 			}
 
-			if (this._updateColumnsDebouncer) {
-				this._updateColumnsDebouncer.flush();
+			if (this.debouncers._updateColumnsDebouncer) {
+				this.debouncers._updateColumnsDebouncer.flush();
 			}
 
-			if (this._filterItemsDebouncer) {
-				this._filterItemsDebouncer.flush();
+			if (this.debouncers._filterItemsDebouncer) {
+				this.debouncers._filterItemsDebouncer.flush();
 			}
 
-			if (this._groupItemsDebouncer) {
-				this._groupItemsDebouncer.flush();
+			if (this.debouncers._groupItemsDebouncer) {
+				this.debouncers._groupItemsDebouncer.flush();
 			}
 
-			if (this._sortItemsDebouncer) {
-				this._sortItemsDebouncer.flush();
+			if (this.debouncers._sortItemsDebouncer) {
+				this.debouncers._sortItemsDebouncer.flush();
 			}
 		}
 
 		_cancelDebouncers() {
-			[this._adjustColumnsDebouncer,
-				this._updateColumnsDebouncer,
-				this._filterItemsDebouncer,
-				this._groupItemsDebouncer,
-				this._sortItemsDebouncer]
-				.filter(d => !!d)
-				.forEach(d => d.cancel());
+			Object.values(this.debouncers).forEach(d => d.cancel());
 		}
 
 		/** ELEMENT BEHAVIOR */
@@ -1331,7 +1328,7 @@
 		}
 
 		_debounce(name, fn, asyncModule = Async.timeOut.after(0)) {
-			this[name] = Debouncer.debounce(this[name], asyncModule, fn);
+			this.debouncers[name] = Debouncer.debounce(this.debouncers[name], asyncModule, fn);
 		}
 	}
 	customElements.define(Omnitable.is, Omnitable);

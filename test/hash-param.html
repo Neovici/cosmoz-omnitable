@@ -116,11 +116,11 @@
 					const hash = omnitable._routeHash;
 
 					omnitable.sortOn = 'name';
-					omnitable._sortItemsDebouncer.flush();
+					omnitable.debouncers._sortItemsDebouncer.flush();
 					assert.equal(hash['test-sortOn'], 'name');
 
 					omnitable.sortOn = '';
-					omnitable._sortItemsDebouncer.flush();
+					omnitable.debouncers._sortItemsDebouncer.flush();
 					assert.equal(hash['test-sortOn'], '');
 				});
 
@@ -128,11 +128,11 @@
 					const hash = omnitable._routeHash;
 
 					omnitable.groupOn = 'name';
-					omnitable._groupItemsDebouncer.flush();
+					omnitable.debouncers._groupItemsDebouncer.flush();
 					assert.equal(hash['test-groupOn'], 'name');
 
 					omnitable.groupOn = '';
-					omnitable._groupItemsDebouncer.flush();
+					omnitable.debouncers._groupItemsDebouncer.flush();
 					assert.equal(hash['test-groupOn'], '');
 				});
 
