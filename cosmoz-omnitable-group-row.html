@@ -99,9 +99,9 @@
 			}
 
 			_selectedChanged(selected) {
-				this.templateInstances.forEach(instance => {
-					this._forwardProperty(instance, 'selected', selected, true);
-				});
+				this.templateInstances.forEach(instance =>
+					this._forwardProperty(instance, 'selected', selected, true)
+				);
 			}
 
 			_expandedChanged(expanded) {

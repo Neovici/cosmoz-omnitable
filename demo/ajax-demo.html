@@ -74,18 +74,13 @@
 	</template>
 
 	<script type="text/javascript">
-/*global window */
-(function () {
+
 	'use strict';
-	var t = document.getElementById('t');
+	const t = document.getElementById('t');
 
-	t.getEyeColorSearch = function (query) {
-		return {
-			q: query
-		};
-	};
+	t.getEyeColorSearch = q => ({ q });
 
-	t.getSearchParams = function (filterSplice) {
+	t.getSearchParams = filterSplice => {
 		if (!filterSplice) {
 			return;
 		}
@@ -93,7 +88,7 @@
 			eyeColor: filterSplice.indexSplices[0].object
 		};
 	};
-}());
+
 	</script>
 </body>
 </html>

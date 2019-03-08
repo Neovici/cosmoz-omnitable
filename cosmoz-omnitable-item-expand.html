@@ -117,26 +117,26 @@
 
 		_itemUpdated(itemChange) {
 			if (itemChange.path === 'item') {
-				this.elements.forEach(function (element) {
-					this._forwardProperty(this.getElementTemplateInstance(element), 'item', itemChange.value, true);
-				}, this);
+				this.elements.forEach(element =>
+					this._forwardProperty(this.getElementTemplateInstance(element), 'item', itemChange.value, true)
+				);
 			} else {
-				this.elements.forEach(function (element) {
-					this._forwardNotifyPath(this.getElementTemplateInstance(element), itemChange.path, itemChange.value, true, true);
-				}, this);
+				this.elements.forEach(element =>
+					this._forwardNotifyPath(this.getElementTemplateInstance(element), itemChange.path, itemChange.value, true, true)
+				);
 			}
 		}
 
 		_selectedChanged(selected) {
-			this.templateInstances.forEach(instance => {
-				this._forwardProperty(instance, 'selected', selected, true);
-			});
+			this.templateInstances.forEach(instance =>
+				this._forwardProperty(instance, 'selected', selected, true)
+			);
 		}
 
 		_expandedChanged(expanded) {
-			this.templateInstances.forEach(instance => {
-				this._forwardProperty(instance, 'expanded', expanded, true);
-			});
+			this.templateInstances.forEach(instance =>
+				this._forwardProperty(instance, 'expanded', expanded, true)
+			);
 		}
 	}
 	customElements.define(OmnitableItemExpand.is, OmnitableItemExpand);
