@@ -48,7 +48,7 @@
 	},
 	"devDependencies": {
 		"paper-toggle-button": "PolymerElements/paper-toggle-button#^2.1.1",
-		"cosmoz-viewinfo": "Neovici/cosmoz-viewinfo#^1.0.4",
+		"cosmoz-viewinfo": "Neovici/cosmoz-viewinfo#^2.0.0",
 		"iron-component-page": "PolymerElements/iron-component-page#^3.0.1",
 		"iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.1.2",
 		"iron-test-helpers": "PolymerElements/iron-test-helpers#^2.0.1",
