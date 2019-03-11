@@ -24,7 +24,8 @@ env:
     - CC_TEST_REPORTER_ID=a061a568c2b58fab68f6fad8d19fa398b5ea29d701348e69716e4f48132fc4c3
     - NEO_CC_URL=https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
     - NEO_CC=$HOME/cc/cc-test-reporter
-
+    - SAUCE_USERNAME=nomego
+    - secure: UBpSMi2Omci2y1vCF05pwG6QSDz1YkQDzxcW01SRk8auNegwEXW7O9Sclhipz+hRTt3x6yl+P3/rIimc5N2NHEfujjImz8SAP8pdD70CJyNBqQ+96JYY6MpqbmIwq5A7EfcmErzhkVt9/85APqWIGirtoc4oIF3g+OL05tY5L4CKvjs04wBT+J25aX6MlDukm7aVL7jy5byMU6U3IjuP8HzeHvzjG4o6gpWYqIRE4KG+W6swLsI4IWApO2PJZrIsUB4662XGMYO+ElowgnoVlYMtL9BxVxPymJUguivHtEhA5FO9BjW6ah/dOov7P55Ca0mALLACqKwJNk5ub4uHvD4VbMx10T5V6s5vXHoJ1fdGJ9R5JLQjhoeDO6S6v/hhSkK3sUqa8AUpymvmys3tjlh4iglGrsYzTtku9TmgEC1l0t8kEhrA7oedCH199LHZ5616hJHjWY5xZwmYrObakmyuB/xBa88qOzpfJvCX1XUDQfano6Vds1mODDAIUr1pQmoBjoGD5k4PSrKquAIVXHgbIlBlpgttNeLlq5TyPsXxigSNRtenr4c92WQAo8dboFfREbJ6WxE7QUaJ2j6HMFtbwCuA0Cag+EmjvZwWoI28vE0vpCePbSBsk+g88vbzI0v0ovKx4F8k+F55zMkukNgDAV7eASiNhFGAVOrQzgo=
 before_script:
   - yarn lint
   - ([[ -e $NEO_CC ]] || curl -L $NEO_CC_URL > $NEO_CC) && chmod +x $NEO_CC
