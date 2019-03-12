@@ -71,12 +71,12 @@
 				this.columns = [newColumn];
 			}
 
-			_getTemplateInstance(column) {
-				return column.dataTemplatizer.getInstance();
+			_getTemplateInstance(column, props) {
+				return column.getTemplateInstance(Cosmoz.OmnitableTemplatizeMixin.CELL_TEMPLATE, props);
 			}
 
-			_detachTemplateInstance(instance, column, element) {
-				column.dataTemplatizer.detachInstance(instance, element);
+			_detachTemplateInstance(instance, column) {
+				column.detachTemplateInstance(instance);
 			}
 
 			_configureTemplateInstance(instance) {

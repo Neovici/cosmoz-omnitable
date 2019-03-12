@@ -47,14 +47,12 @@
 			return 'header-cell';
 		}
 
-		_getTemplateInstance(column) {
-			return column.headerTemplatizer.getInstance();
+		_getTemplateInstance(column, props) {
+			return column.getTemplateInstance(Cosmoz.OmnitableTemplatizeMixin.HEADER_TEMPLATE, props);
 		}
 
-		_detachTemplateInstance(instance, column, element) {
-			if (column.headerTemplatizer) {
-				column.headerTemplatizer.detachInstance(instance, element);
-			}
+		_detachTemplateInstance(instance, column) {
+			column.detachTemplateInstance(instance);
 		}
 
 		_configureElement(element, column) {

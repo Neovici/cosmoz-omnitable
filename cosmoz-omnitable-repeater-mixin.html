@@ -164,11 +164,10 @@
 
 		_addElements(start, count) {
 			const end = start + count;
-
 			for (let i = start; i < end; i++) {
 				const column = this.columns[i],
 					element = document.createElement(this._elementType),
-					instance = this._getTemplateInstance(column);
+					instance = this._getTemplateInstance(column, {item: this.item});
 				element.__instance = instance;
 				element.__column = column;
 
@@ -205,7 +204,7 @@
 			this._elements
 				.splice(start, removedColumns.length)
 				.forEach(element => {
-					this._detachTemplateInstance(element.__instance, element.__column, element);
+					this._detachTemplateInstance(element.__instance, element.__column);
 					element.__instance = element.__column = element.column = null;
 					this.removeChild(element);
 				});

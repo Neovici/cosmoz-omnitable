@@ -78,12 +78,12 @@
 			return 'item-cell';
 		}
 
-		_getTemplateInstance(column) {
-			return column.dataTemplatizer.getInstance();
+		_getTemplateInstance(column, props) {
+			return column.getTemplateInstance(column.editable ? Cosmoz.OmnitableTemplatizeMixin.EDIT_TEMPLATE : Cosmoz.OmnitableTemplatizeMixin.CELL_TEMPLATE, props);
 		}
 
-		_detachTemplateInstance(instance, column, element) {
-			column.dataTemplatizer.detachInstance(instance, element);
+		_detachTemplateInstance(instance, column) {
+			column.detachTemplateInstance(instance);
 		}
 
 		_configureElement(element, column) {
