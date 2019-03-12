@@ -1,0 +1,24 @@
+<script>
+	class BasicColumn extends Cosmoz.OmnitableColumnMixin(Polymer.Element) {
+		static get is() {
+			return 'basic-column';
+		}
+
+		static get template() {
+			return Polymer.html`
+					<template class="cell">
+						<span class="basic-column-cell">[[ getString(item, valuePath) ]]</span>
+					</template>
+
+					<template class="edit-cell">
+						<span class="basic-column-cell">Edit: [[ getString(item, valuePath) ]]</span>
+					</template>
+
+					<template class="header">
+						<span class="basic-column-header">Header</span>
+					</template>
+			`;
+		}
+	}
+	customElements.define(BasicColumn.is, BasicColumn);
+</script>
