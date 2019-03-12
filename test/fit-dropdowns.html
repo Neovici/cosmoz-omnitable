@@ -40,15 +40,14 @@
 			'use strict';
 
 			let omnitable;
-			const domType = getDomType(),
-				data = [
-					{ id: 0, group: 'group0', name: 'Item 0' },
-					{ id: 1, group: 'group0', name: 'Item 1' },
-					{ id: 2, group: 'group1', name: 'Item 2' },
-					{ id: 3, group: 'group1', name: 'Item 3' }
-				];
+			const data = [
+				{ id: 0, group: 'group0', name: 'Item 0' },
+				{ id: 1, group: 'group0', name: 'Item 1' },
+				{ id: 2, group: 'group1', name: 'Item 2' },
+				{ id: 3, group: 'group1', name: 'Item 3' }
+			];
 
-			suite('fit-dropdowns' + domType, () => {
+			suite('fit-dropdowns', () => {
 				let omnitable;
 
 				setup(done => omnitable = setupOmnitableFixture('basic', data.slice(0), () => done()));
@@ -66,7 +65,7 @@
 				});
 			});
 
-			suite('autocomplete unit tests' + domType, () => {
+			suite('autocomplete unit tests', () => {
 				let omnitable,
 					column;
 

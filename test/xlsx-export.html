@@ -52,10 +52,9 @@
 	(function () {
 		'use strict';
 
-		const domType = getDomType();
 		sinon.assert.expose(chai.assert, { prefix: '' });
 
-		suite('xlsx-export-omnitable' + domType, () => {
+		suite('xlsx-export-omnitable', () => {
 			let omnitable;
 			const data = [
 				{ id: 0, 'first-name': 'Carl', amount: 12.4, date: new Date(2017, 7 - 1, 10) },
@@ -94,7 +93,10 @@
 
 			test('is exporting as xlsx file', () => {
 				const spyXlsx = sinon.spy(omnitable, '_saveAsXlsxAction'),
-					stubSaveAs = sinon.stub(window, 'saveAs');
+					oSaveAs = window.saveAs,
+					spySaveAs = sinon.spy();
+
+				window.saveAs = spySaveAs;
 
 				omnitable.selectItem(data[0]);
 				omnitable.selectItem(data[1]);
@@ -102,21 +104,24 @@
 				// click on Export as XLSX paper-button
 				MockInteractions.tap(omnitable.$.dropdownExtra.queryAllEffectiveChildren('paper-button')[1]);
 				assert.calledOnce(spyXlsx);
-				assert.calledOnce(stubSaveAs);
+				assert.calledOnce(spySaveAs);
 
-				const args =  stubSaveAs.lastCall.args[0];
+				const args =  spySaveAs.lastCall.args[0];
 				// verify params of SaveAs; name and type of file to be created
 
 				assert.equal(args.name, 'Test.xlsx');
 				assert.equal(args.type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 
 				spyXlsx.restore();
-				stubSaveAs.restore();
+				window.saveAs = oSaveAs;
 			});
 
 			test('click twice creates two files', () => {
 				const spyXlsx = sinon.spy(omnitable, '_saveAsXlsxAction'),
-					stubSaveAs = sinon.stub(window, 'saveAs');
+					oSaveAs = window.saveAs,
+					spySaveAs = sinon.spy();
+
+				window.saveAs = spySaveAs;
 
 				for (let i = 0; i < data.length; i++) {
 					omnitable.selectItem(data[i]);
@@ -126,19 +131,19 @@
 				MockInteractions.tap(button);
 				MockInteractions.tap(button);
 				assert.calledTwice(spyXlsx);
-				assert.calledTwice(stubSaveAs);
+				assert.calledTwice(spySaveAs);
 
-				const args =  stubSaveAs.lastCall.args[0];
+				const args =  spySaveAs.lastCall.args[0];
 
 				assert.equal(args.name, 'Test.xlsx');
 				assert.equal(args.type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 
 				spyXlsx.restore();
-				stubSaveAs.restore();
+				window.saveAs = oSaveAs;
 			});
 		});
 
-		suite('toXlsx range tests' + domType, () => {
+		suite('toXlsx range tests', () => {
 			let omnitable,
 				xlsx;
 			const data = [
@@ -198,15 +203,15 @@
 				},
 				{ number: -340,
 					amount: { currency: 'CAD', amount: -4321 },
-					date: 'Tue Jan 16 2018 05:47:40 UTC -8', // Vancouver Canada
-					time: 'Tue Jan 16 2018 05:47:40 UTC -8',
-					datetime: 'Tue Jan 16 2018 05:47:40 UTC -8'
+					date: 'Tue Jan 16 2018 05:47:40 -08:00', // Vancouver Canada
+					time: 'Tue Jan 16 2018 05:47:40 -08:00',
+					datetime: 'Tue Jan 16 2018 05:47:40 -08:00'
 				},
 				{ number: -22,
 					amount: { currency: 'EUR', amount: -22 },
-					date: 'Tue Jan 16 2018 14:06:29 UTC +1', // Lisbon, Portugal (Lisboa)
-					time: 'Tue Jan 16 2018 14:06:29 UTC +1',
-					datetime: 'Tue Jan 16 2018 14:06:29 UTC +1'
+					date: 'Tue Jan 16 2018 14:06:29 +01:00', // Lisbon, Portugal (Lisboa)
+					time: 'Tue Jan 16 2018 14:06:29 +01:00',
+					datetime: 'Tue Jan 16 2018 14:06:29 +01:00'
 				},
 			];
 
@@ -251,6 +256,7 @@
 					.slice(1)
 					.forEach((value, index) => {
 						const date	= column.toValue(data[index].date);
+						assert.isOk(date, `date at index: ${index}`);
 						date.setHours(0, 0, 0);
 						assert.equal(column.toValue(value).getTime(), date.getTime());
 					});

@@ -57,10 +57,9 @@
 		(function () {
 			'use strict';
 
-			const domType = getDomType();
 			sinon.assert.expose(chai.assert, { prefix: '' });
 
-			suite('basic' + domType, () => {
+			suite('basic', () => {
 				var omnitable,
 					data;
 
@@ -204,7 +203,7 @@
 				});
 			});
 
-			suite('it logs unnamed column' + domType, () => {
+			suite('it logs unnamed column', () => {
 				var omnitable,
 					data,
 					consoleErrorStub;

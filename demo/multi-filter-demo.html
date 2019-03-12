@@ -75,66 +75,63 @@
 	<x-page class="fit"></x-page>
 
 	<script type="text/javascript">
-/*global document, window, Cosmoz, Polymer */
-(function () {
-	'use strict';
+	(function () {
+		'use strict';
 
+		Polymer({
+			is: 'x-page',
 
-	Polymer({
-		is: 'x-page',
+			properties: {
+				data: {
+					type: Array
+				},
+				selectedItems: {
+					type: Array
+				},
+				nameFilter: {
+					type: String
+				},
+				boolFilter: {
+					type: Boolean
+				},
+				idFiltersString: {
+					type: String,
+				}
+			},
 
-		properties: {
-			data: {
-				type: Array
+			behaviors: [
+				Cosmoz.TableDemoBehavior
+			],
+
+			ready() {
+				//this.changeData();
 			},
-			selectedItems: {
-				type: Array
+
+			attached() {
+				this.data = this.generateTableDemoData(20, 25, 25);
 			},
-			nameFilter: {
-				type: String
+
+			changeData() {
+				this.data = this.generateTableDemoData(20, 25, 10);
 			},
-			boolFilter: {
-				type: Boolean
+
+			_computeLabel(text, count) {
+				return text + ' ' + count + ' items';
 			},
-			idFiltersString: {
-				type: String,
+
+			updateSelectedRows(event, detail) {
+				detail.items.forEach(function (item) {
+					this.$.omnitable.setItemValue(item, 'randomString3', 'blablablalbal');
+				}, this);
+
+			},
+
+			removeItems(event, detail) {
+				console.log('runAction', detail.items, event, detail, detail.items);
+				detail.omnitable.removeItems(detail.items);
 			}
-		},
-
-		behaviors: [
-			Cosmoz.TableDemoBehavior
-		],
-
-		ready() {
-			//this.changeData();
-		},
-
-		attached() {
-			this.data = this.generateTableDemoData(20, 25, 25);
-		},
-
-		changeData() {
-			this.data = this.generateTableDemoData(20, 25, 10);
-		},
-
-		_computeLabel(text, count) {
-			return text + ' ' + count + ' items';
-		},
-
-		updateSelectedRows(event, detail) {
-			detail.items.forEach(function (item) {
-				this.$.omnitable.setItemValue(item, 'randomString3', 'blablablalbal');
-			}, this);
-
-		},
-
-		removeItems(event, detail) {
-			console.log('runAction', detail.items, event, detail, detail.items);
-			detail.omnitable.removeItems(detail.items);
-		}
-	});
-}());
-
+		});
+	}());
 	</script>
 </body>
 </html>

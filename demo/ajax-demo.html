@@ -74,26 +74,25 @@
 	</template>
 
 	<script type="text/javascript">
-/*global window */
-(function () {
-	'use strict';
-	var t = document.getElementById('t');
+	(function () {
+		'use strict';
+		var t = document.getElementById('t');
 
-	t.getEyeColorSearch = function (query) {
-		return {
-			q: query
+		t.getEyeColorSearch = function (query) {
+			return {
+				q: query
+			};
 		};
-	};
 
-	t.getSearchParams = function (filterSplice) {
-		if (!filterSplice) {
-			return;
-		}
-		return {
-			eyeColor: filterSplice.indexSplices[0].object
+		t.getSearchParams = function (filterSplice) {
+			if (!filterSplice) {
+				return;
+			}
+			return {
+				eyeColor: filterSplice.indexSplices[0].object
+			};
 		};
-	};
-}());
+	}());
 	</script>
 </body>
 </html>
