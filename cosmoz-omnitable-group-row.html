@@ -71,51 +71,26 @@
 				this.columns = [newColumn];
 			}
 
-			_getTemplateInstance(column, props) {
-				return column.getTemplateInstance(Cosmoz.OmnitableTemplatizeMixin.CELL_TEMPLATE, props);
+			/**
+			 * @inheritdoc
+			 */
+			_getTemplateInstance(column) {
+				return column.getTemplateInstance(
+					Cosmoz.OmnitableTemplatizeMixin.CELL_TEMPLATE,
+					{item: this.item, selected: this.selected, expanded: this.expanded}
+				);
 			}
 
-			_detachTemplateInstance(instance, column) {
-				column.detachTemplateInstance(instance);
-			}
-
-			_configureTemplateInstance(instance) {
-				if (instance.item !== this.item && this.item !== undefined) {
-					this._forwardProperty(instance, 'item', this.item);
-					this._forwardProperty(instance, 'selected', this.selected);
-					this._forwardProperty(instance, 'folded', this.folded);
-					instance._flushProperties(true);
-				}
-			}
-
-			_itemUpdated(itemChange) {
-				if (itemChange.path === 'item') {
-					this.elements.forEach(element =>
-						this._forwardProperty(this.getElementTemplateInstance(element), 'item', itemChange.value, true)
-					);
-				} else {
-					this.elements.forEach(element =>
-						this._forwardNotifyPath(this.getElementTemplateInstance(element), itemChange.path, itemChange.value, true, true)
-					);
-				}
+			_itemUpdated(changeRecord) {
+				this.forwardPathChange(changeRecord);
 			}
 
 			_selectedChanged(selected) {
-				this.templateInstances.forEach(instance => {
-					this._forwardProperty(instance, 'selected', selected, true);
-				});
-			}
-
-			_expandedChanged(expanded) {
-				this.templateInstances.forEach(instance => {
-					this._forwardProperty(instance, 'expanded', expanded, true);
-				});
+				this.forwardChange('selected', selected);
 			}
 
 			_foldedChanged(folded) {
-				this.templateInstances.forEach(instance => {
-					this._forwardProperty(instance, 'folded', folded, true);
-				});
+				this.forwardChange('folded', folded);
 			}
 		}
 		customElements.define(OmnitableGroupRow.is, OmnitableGroupRow);

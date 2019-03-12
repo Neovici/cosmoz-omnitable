@@ -510,8 +510,6 @@
 					return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn
 						// filter out elements that are hidden
 						&& !child.hidden;
-					// filter out elements that don't have headerTemplatizer yet
-					// && child.headerTemplatizer != null;
 				}),
 				valuePathNames;
 
