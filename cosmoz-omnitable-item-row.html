@@ -103,7 +103,8 @@
 		}
 
 		_itemUpdated(changeRecord) {
-			this.forwardPathChange(changeRecord, (element, column) => {
+			this.forwardPathChange(changeRecord);
+			this.forEachElement((element, column) => {
 				element.setAttribute('title', this._getCellTitle(column, this.item));
 			});
 		}

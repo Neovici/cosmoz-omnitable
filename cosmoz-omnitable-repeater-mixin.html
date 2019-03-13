@@ -38,18 +38,18 @@
 			this._elements = [];
 		}
 
-		forwardChange(property, value, callback) {
-			this.forwardPathChange({path: property, value}, callback);
+		forwardChange(property, value) {
+			this.forwardPathChange({path: property, value});
 		}
 
-		forwardPathChange(changeRecord, callback) {
-			this._elements.forEach(element => {
-				this._forwardNotifyPath(element.__instance, changeRecord.path, changeRecord.value, true);
+		forwardPathChange(changeRecord) {
+			this._elements.forEach(element =>
+				this._forwardNotifyPath(element.__instance, changeRecord.path, changeRecord.value, true)
+			);
+		}
 
-				if (callback) {
-					callback(element, element.__column);
-				}
-			});
+		forEachElement(callback) {
+			this._elements.forEach(element =>	callback(element, element.__column, element.__instance));
 		}
 
 		/* eslint-disable no-empty-function, no-unused-vars */
