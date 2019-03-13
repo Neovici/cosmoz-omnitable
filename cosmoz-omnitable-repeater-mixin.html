@@ -7,6 +7,15 @@
 
 	window.Cosmoz = window.Cosmoz || {};
 
+	/**
+	 * Allows manipulation of elements.
+	 * @callback OmnitableRepeaterMixin~forEachElementCallback
+	 * @param {HTMLElement} element
+	 * @param {OmnitableColumn} column
+	 * @param {TemplateInstance} instance
+	 * @return {void}
+	 */
+
 	const editableRegex = /columns\.(\d*)\.editable/i;
 	/**
 	 *
@@ -33,6 +42,10 @@
 			this._columnsObserver = null;
 		}
 
+		/**
+		 * Adds an observer to render the cells when the columns are changed.
+		 * @return {void}
+		 */
 		trackColumns() {
 			if (this._columnsObserver) {
 				throw new Error('The columns are already tracked.');
@@ -40,37 +53,68 @@
 
 			this._createMethodObserver('_columnsChanged(columns.*)');
 
-			// HACK
+			// HACK we have to muck around with the property effect references because
+			// _createMethodObserver does not provide any reference to the property
+			// effect so we can easily remove it
 			this._columnsObserver = this[this.PROPERTY_EFFECT_TYPES.OBSERVE]['columns']
 				.find(fx => fx.info.methodName === '_columnsChanged');
 		}
 
+		/**
+		 * Stops reacting to column changes.
+		 * @return {void}
+		 */
 		stopTrackingColumns() {
 			if (!this._columnsObserver) {
 				throw new Error('The columns were not tracked.');
 			}
+
 			this._removePropertyEffect('columns', this.PROPERTY_EFFECT_TYPES.OBSERVE, this._columnsObserver);
 			this._columnsObserver = null;
 		}
 
-		renderItems() {
+		/**
+		 * Renders all cells.
+		 * @return {void}
+		 */
+		renderCells() {
 			this._addElements(0, this.columns.length);
 		}
 
-		destroyItems() {
+		/**
+		 * Destroys all cells.
+		 * @return {void}
+		 */
+		destroyCells() {
 			this._removeElements(0, this.columns);
 		}
 
+		/**
+		 * Forwards a property change to all cells.
+		 * @param  {String}	property the property
+		 * @param  {any}    value    the new value
+		 * @return {void}
+		 */
 		forwardChange(property, value) {
 			this.forwardPathChange({path: property, value});
 		}
 
+		/**
+		 * Forwards a path change to all cells.
+		 * @param  {Object} changeRecord the change record
+		 * @return {void}
+		 */
 		forwardPathChange(changeRecord) {
 			this._elements.forEach(element =>
 				this._forwardNotifyPath(element.__instance, changeRecord.path, changeRecord.value, true)
 			);
 		}
 
+		/**
+		 * Runs a callback on each element.
+		 * @param  {OmnitableRepeaterMixin~forEachElementCallback} callback the callback
+		 * @return {void}
+		 */
 		forEachElement(callback) {
 			this._elements.forEach(element =>	callback(element, element.__column, element.__instance));
 		}
@@ -99,7 +143,7 @@
 		 * Get a template instance for the specified column
 		 * Must be defined in implementors.
 		 * @abstract
-		 * @param {Object} column - The column.
+		 * @param {OmnitableColumnMixin} column - The column.
 		 * @return {Object} - The instance.
 		 */
 		_getTemplateInstance(column) {}
@@ -109,10 +153,10 @@
 		/**
 		 * Configure a newly created repeated element
 		 *
-		 * @param  {[type]} element  [description]
-		 * @param  {[type]} column   [description]
-		 * @param  {[type]} instance [description]
-		 * @return {[type]}          [description]
+		 * @param  {HTMLElement}          element  the root cell element
+		 * @param  {OmnitableColumnMixin} column   the column
+		 * @param  {TemplateInstance}     instance the template instance
+		 * @return {void}
 		 */
 		_configureElement(element, column, instance) {
 			element.__instance = instance;
