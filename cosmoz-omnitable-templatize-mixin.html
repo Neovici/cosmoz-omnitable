@@ -62,6 +62,16 @@
 		}
 
 		/**
+		 * Cleans up references to reusable instances when the element is detached.
+		 *
+		 * @return {void}
+		 */
+		disconnectedCallback() {
+			super.disconnectedCallback();
+			this._reusableTemplateInstances = [];
+		}
+
+		/**
 		 * Reuses an already created instance.
 		 *
 		 * @param  {TemplateInstance} instance an instance
