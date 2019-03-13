@@ -27,15 +27,38 @@
 			};
 		}
 
-		static get observers() {
-			return [
-				'_columnsChanged(columns.*)'
-			];
-		}
-
 		constructor() {
 			super();
 			this._elements = [];
+			this._columnsObserver = null;
+		}
+
+		trackColumns() {
+			if (this._columnsObserver) {
+				throw new Error('The columns are already tracked.');
+			}
+
+			this._createMethodObserver('_columnsChanged(columns.*)');
+
+			// HACK
+			this._columnsObserver = this[this.PROPERTY_EFFECT_TYPES.OBSERVE]['columns']
+				.find(fx => fx.info.methodName === '_columnsChanged');
+		}
+
+		stopTrackingColumns() {
+			if (!this._columnsObserver) {
+				throw new Error('The columns were not tracked.');
+			}
+			this._removePropertyEffect('columns', this.PROPERTY_EFFECT_TYPES.OBSERVE, this._columnsObserver);
+			this._columnsObserver = null;
+		}
+
+		renderItems() {
+			this._addElements(0, this.columns.length);
+		}
+
+		destroyItems() {
+			this._removeElements(0, this.columns);
 		}
 
 		forwardChange(property, value) {

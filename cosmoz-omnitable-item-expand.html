@@ -122,8 +122,16 @@
 			this.forwardChange('selected', selected);
 		}
 
-		_expandedChanged(expanded) {
+		_expandedChanged(expanded, prevValue) {
 			this.forwardChange('expanded', expanded);
+
+			if (expanded) {
+				this.trackColumns();
+				this.renderItems();
+			} else if (prevValue === true) {
+				this.stopTrackingColumns();
+				this.destroyItems();
+			}
 		}
 	}
 	customElements.define(OmnitableItemExpand.is, OmnitableItemExpand);
