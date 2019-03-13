@@ -29,6 +29,13 @@
 						<span class="overriden-column-cell">Overriden [[ item.name ]]</span>
 					</template>
 				</basic-column>
+				<!-- this column requires that host props are properly forwarded to the cell templates -->
+				<cosmoz-omnitable-column-list title="List" name="list" value-path="list">
+				</cosmoz-omnitable-column-list>
+				<!-- this column requires that the cell events are decorated with the parent model -->
+				<cosmoz-omnitable-column-boolean title="Boolean" name="bool" value-path="bool" sort-on="bool" group-on="bool"
+				true-label="Oui" false-label="Non">
+			</cosmoz-omnitable-column-boolean>
 			</cosmoz-omnitable>
 		</template>
 	</test-fixture>
@@ -42,9 +49,9 @@
 
 			beforeEach(done => {
 				const data = [
-					{id: 1, name: 'item 1'},
-					{id: 2, name: 'item 2'},
-					{id: 3, name: 'item 3'}
+					{id: 1, name: 'item 1', list: ['a', 'b', 'c'], bool: true},
+					{id: 2, name: 'item 2', list: ['a', 'b', 'c'], bool: false},
+					{id: 3, name: 'item 3', list: ['a', 'b', 'c'], bool: true}
 				];
 				omnitable = setupOmnitableFixture('basic', data, () => {
 					Polymer.flush();
@@ -81,10 +88,13 @@
 				});
 			});
 
-			it('should use editable template when the column is editable', () => {
-				omnitable.columns[0].editable = true;
-				const cells = Array.from(omnitable.shadowRoot.querySelectorAll('.basic-column-cell'));
-				expect(cells.map(c => c.innerText)).to.deep.equal(['Edit: item 1', 'Edit: item 2', 'Edit: item 3']);
+			it('should use editable template when the column is editable', done => {
+				omnitable.columns.forEach(c => c.editable = true);
+				flush(() => {
+					const cells = Array.from(omnitable.shadowRoot.querySelectorAll('.basic-column-cell'));
+					expect(cells.map(c => c.innerText)).to.deep.equal(['Edit: item 1', 'Edit: item 1', 'Edit: item 2', 'Edit: item 2', 'Edit: item 3', 'Edit: item 3']);
+					done();
+				});
 			});
 
 			it('should detach all template instances when omnitable is detached');
