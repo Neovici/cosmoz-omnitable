@@ -123,7 +123,11 @@
 
 			// search for the template in the light and shadow DOM
 			const template = this.querySelector('template.' + type) || this.root.querySelector('template.' + type);
-			// TODO: throw error if template does not exist
+
+			// throw error if template does not exist
+			if (!template) {
+				throw new Error('No template of type ' + type + ' found.');
+			}
 
 			// templatize the DOM template node
 			this._templateCtors[type] = Polymer.Templatize.templatize(template, this, {
