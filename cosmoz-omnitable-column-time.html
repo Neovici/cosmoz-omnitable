@@ -97,7 +97,7 @@
 			 */
 			toDate(value, limit, limitFunc) {
 				const date = typeof value === 'string' && value.length > 3 && value.length <= 9
-					? this._fixedDate + 'T' + value
+					? this.getAbsoluteISOString(this._fixedDate + 'T' + value)
 					: value;
 				return super.toDate(date, limit, limitFunc);
 			}
@@ -142,7 +142,8 @@
 				if (value == null) {
 					return;
 				}
-				value = this.toValue(this._fixedDate + 'T' + value);
+				value = this.getAbsoluteISOString(this._fixedDate + 'T' + value);
+				value = this.toValue(value);
 				if (value == null) {
 					return;
 				}
