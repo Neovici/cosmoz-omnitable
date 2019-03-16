@@ -148,6 +148,9 @@ Cosmoz.DateColumnMixin = Polymer.dedupingMixin(base =>
 		 * @return {String}                an ISO date string, with timezone info
 		 */
 		getAbsoluteISOString(localISOString) {
+			// Most browsers use local timezone when no timezone is specified
+			// but Safari uses UTC, so we set it implicitly
+			// TODO: Consider removing this when/if Safari handles local timezone correctly
 			if (localISOString.length === 19) {
 				return localISOString + this._getTimezoneString(localISOString);
 			}
