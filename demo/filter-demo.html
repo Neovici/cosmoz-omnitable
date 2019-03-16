@@ -82,79 +82,77 @@
 	<x-page class="fit"></x-page>
 
 	<script type="text/javascript">
-/*global document, window, Cosmoz, Polymer */
-(function () {
-	'use strict';
+	(function () {
+		'use strict';
 
 
-	Polymer({
-		is: 'x-page',
+		Polymer({
+			is: 'x-page',
 
-		properties: {
-			data: {
-				type: Array
+			properties: {
+				data: {
+					type: Array
+				},
+				selectedItems: {
+					type: Array
+				},
+				nameFilter: {
+					type: String
+				},
+				boolFilter: {
+					type: Boolean
+				}
 			},
-			selectedItems: {
-				type: Array
+
+			behaviors: [
+				Cosmoz.TableDemoBehavior
+			],
+
+			ready() {
+				//this.changeData();
 			},
-			nameFilter: {
-				type: String
+
+			attached() {
+				this.data = this.generateTableDemoData(20, 25, 25);
+
+				// Test
+				// set filters to display first item
+
+				this.nameFilter = this.data[0].name;
+				this.amountFilter = {
+					minValue: this.data[0].amount.amount,
+					maxValue: this.data[0].amount.amount
+				};
+
+				this.dateFilter = this.data[0].dateJSON;
+				this.boolFilter = this.data[0].bool;
+				this.numberFilter = {
+					minValue: this.data[0].value - 1,
+					maxValue: this.data[0].value + 1
+				};
 			},
-			boolFilter: {
-				type: Boolean
+
+			changeData() {
+				this.data = this.generateTableDemoData(20, 25, 10);
+			},
+
+			_computeLabel(text, count) {
+				return text + ' ' + count + ' items';
+			},
+
+			updateSelectedRows(event, detail) {
+				detail.items.forEach(function (item) {
+					this.$.omnitable.setItemValue(item, 'randomString3', 'blablablalbal');
+				}, this);
+
+			},
+
+			removeItems(event, detail) {
+				console.log('runAction', detail.items, event, detail, detail.items);
+				detail.omnitable.removeItems(detail.items);
 			}
-		},
-
-		behaviors: [
-			Cosmoz.TableDemoBehavior
-		],
-
-		ready() {
-			//this.changeData();
-		},
-
-		attached() {
-			this.data = this.generateTableDemoData(20, 25, 25);
-
-			// Test
-			// set filters to display first item
-
-			this.nameFilter = this.data[0].name;
-			this.amountFilter = {
-				minValue: this.data[0].amount.amount,
-				maxValue: this.data[0].amount.amount
-			};
-
-			this.dateFilter = this.data[0].dateJSON;
-			this.boolFilter = this.data[0].bool;
-			this.numberFilter = {
-				minValue: this.data[0].value - 1,
-				maxValue: this.data[0].value + 1
-			};
-		},
-
-		changeData() {
-			this.data = this.generateTableDemoData(20, 25, 10);
-		},
-
-		_computeLabel(text, count) {
-			return text + ' ' + count + ' items';
-		},
-
-		updateSelectedRows(event, detail) {
-			detail.items.forEach(function (item) {
-				this.$.omnitable.setItemValue(item, 'randomString3', 'blablablalbal');
-			}, this);
-
-		},
-
-		removeItems(event, detail) {
-			console.log('runAction', detail.items, event, detail, detail.items);
-			detail.omnitable.removeItems(detail.items);
-		}
-	});
-}());
-
+		});
+	}());
 	</script>
 </body>
 </html>

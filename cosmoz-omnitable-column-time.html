@@ -96,8 +96,11 @@
 			 * @returns {Date|void}          Value converted to date optionaly limitated
 			 */
 			toDate(value, limit, limitFunc) {
+			// Most browsers use local timezone when no timezone is specified
+			// but Safari uses UTC, so we set it implicitly
+			// TODO: Consider removing this when/if Safari handles local timezone correctly
 				const date = typeof value === 'string' && value.length > 3 && value.length <= 9
-					? this._fixedDate + 'T' + value
+					? this.getAbsoluteISOString(this._fixedDate + 'T' + value)
 					: value;
 				return super.toDate(date, limit, limitFunc);
 			}
@@ -142,7 +145,7 @@
 				if (value == null) {
 					return;
 				}
-				value = this.toValue(this._fixedDate + 'T' + value);
+				value = this.toValue(this.getAbsoluteISOString(this._fixedDate + 'T' + value));
 				if (value == null) {
 					return;
 				}

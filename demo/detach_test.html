@@ -160,89 +160,88 @@
 	</x-page>
 
 	<script type="text/javascript">
-/*global document, window, Cosmoz, Polymer */
-(function () {
-	'use strict';
-	Polymer({
-		is: 'x-container',
-		properties: {
-			showContent2: {
-				type: Boolean,
-				value: false
+	(function () {
+		'use strict';
+		Polymer({
+			is: 'x-container',
+			properties: {
+				showContent2: {
+					type: Boolean,
+					value: false
+				}
+			},
+			toggleSlot() {
+				this.showContent2 = !this.showContent2;
 			}
-		},
-		toggleSlot() {
-			this.showContent2 = !this.showContent2;
-		}
-	});
+		});
 
-	Polymer({
-		is: 'x-page',
+		Polymer({
+			is: 'x-page',
 
-		properties: {
-			data: {
-				type: Array
+			properties: {
+				data: {
+					type: Array
+				},
+				selectedItems: {
+					type: Array
+				},
+				locale: {
+					type: String,
+					value: null
+				},
+				customNameTemplate: {
+					type: Object
+				}
 			},
-			selectedItems: {
-				type: Array
+
+			behaviors: [
+				Cosmoz.TableDemoBehavior
+			],
+
+			ready() {
+				//this.changeData();
 			},
-			locale: {
-				type: String,
-				value: null
+
+			attached() {
+				var data = this.generateTableDemoData(10, 11, 25);
+				// Used to test filtering and sorting when a row has an undefined or null amount or number
+				data[0].amount = undefined;
+				data[1].value = undefined;
+				data[2].amount = null;
+				data[3].value = null;
+				this.async(() => {
+					this.data = data;
+				}, 100);
+				this.customNameTemplate = Polymer.dom(this).querySelector('#customNameTemplate');
+
 			},
-			customNameTemplate: {
-				type: Object
+
+			changeData() {
+				this.data = this.generateTableDemoData(10, 11, 10);
+			},
+
+			emptyData() {
+				this.data = [];
+			},
+
+			updateSelectedRows(event, detail) {
+				detail.items.forEach(function (item) {
+					this.$.omnitable.setItemValue(item, 'name', 'blablablalbal');
+				}, this);
+
+			},
+
+			removeItems(event, detail) {
+				console.log('runAction', detail.items, event, detail, detail.items);
+				detail.omnitable.removeItems(detail.items);
+			},
+
+			onTap(event) {
+				console.log('onTap', event);
 			}
-		},
 
-		behaviors: [
-			Cosmoz.TableDemoBehavior
-		],
-
-		ready() {
-			//this.changeData();
-		},
-
-		attached() {
-			var data = this.generateTableDemoData(10, 11, 25);
-			// Used to test filtering and sorting when a row has an undefined or null amount or number
-			data[0].amount = undefined;
-			data[1].value = undefined;
-			data[2].amount = null;
-			data[3].value = null;
-			this.async(() => {
-				this.data = data;
-			}, 100);
-			this.customNameTemplate = Polymer.dom(this).querySelector('#customNameTemplate');
-
-		},
-
-		changeData() {
-			this.data = this.generateTableDemoData(10, 11, 10);
-		},
-
-		emptyData() {
-			this.data = [];
-		},
-
-		updateSelectedRows(event, detail) {
-			detail.items.forEach(function (item) {
-				this.$.omnitable.setItemValue(item, 'name', 'blablablalbal');
-			}, this);
-
-		},
-
-		removeItems(event, detail) {
-			console.log('runAction', detail.items, event, detail, detail.items);
-			detail.omnitable.removeItems(detail.items);
-		},
-
-		onTap(event) {
-			console.log('onTap', event);
-		}
-
-	});
-}());
+		});
+	}());
 
 	</script>
 </body>

@@ -17,6 +17,29 @@
 				"cosmoz-omnitable-*.js"
 			],
 			"exclude": []
+		},
+		"sauce": {
+			"browsers": [{
+				"browserName": "chrome",
+				"platform": "Windows 10",
+				"version": "beta",
+				"timeZone": "Stockholm"
+			}, {
+				"browserName": "firefox",
+				"platform": "Windows 10",
+				"version": "",
+				"timeZone": "Stockholm"
+			}, {
+				"browserName": "safari",
+				"platform": "macOS 10.13",
+				"version": "11.1",
+				"timeZone": "Stockholm"
+			}, {
+				"browserName": "safari",
+				"platform": "macOS 10.13",
+				"version": "12",
+				"timeZone": "Stockholm"
+			}]
 		}
 	}
 }

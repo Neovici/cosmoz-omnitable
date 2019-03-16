@@ -87,65 +87,63 @@
 	</x-page>
 
 	<script type="text/javascript">
-/*global document, window, Cosmoz, Polymer */
-(function () {
-	'use strict';
+	(function () {
+		'use strict';
 
+		Polymer({
+			is: 'x-page',
 
-	Polymer({
-		is: 'x-page',
+			properties: {
+				data: {
+					type: Array
+				},
+				selectedItems: {
+					type: Array
+				},
+				locale: {
+					type: String,
+					value: null
+				},
+				customDataTemplate: {
+					type: Object
+				}
+			},
 
-		properties: {
-			data: {
-				type: Array
+			behaviors: [
+				Cosmoz.TableDemoBehavior
+			],
+
+			ready() {
+				//this.changeData();
 			},
-			selectedItems: {
-				type: Array
+
+			attached() {
+				var data = this.generateTableDemoData(10, 11, 25);
+				this.async(() => {
+					this.data = data;
+				}, 100);
+				this.customDataTemplate = Polymer.dom(this).querySelector('#customDataTemplate');
+
 			},
-			locale: {
-				type: String,
-				value: null
+
+			changeData() {
+				this.data = this.generateTableDemoData(10, 11, 10);
 			},
-			customDataTemplate: {
-				type: Object
+
+			emptyData() {
+				this.data = [];
+			},
+
+			onTap(event) {
+				console.log('onTap', event);
+			},
+
+			_customFunction(item) {
+				return 'bla ' + item.id + ' bla';
 			}
-		},
 
-		behaviors: [
-			Cosmoz.TableDemoBehavior
-		],
-
-		ready() {
-			//this.changeData();
-		},
-
-		attached() {
-			var data = this.generateTableDemoData(10, 11, 25);
-			this.async(() => {
-				this.data = data;
-			}, 100);
-			this.customDataTemplate = Polymer.dom(this).querySelector('#customDataTemplate');
-
-		},
-
-		changeData() {
-			this.data = this.generateTableDemoData(10, 11, 10);
-		},
-
-		emptyData() {
-			this.data = [];
-		},
-
-		onTap(event) {
-			console.log('onTap', event);
-		},
-
-		_customFunction(item) {
-			return 'bla ' + item.id + ' bla';
-		}
-
-	});
-}());
+		});
+	}());
 
 	</script>
 </body>

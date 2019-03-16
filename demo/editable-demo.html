@@ -98,87 +98,85 @@
 	<x-page class="fit"></x-page>
 
 	<script type="text/javascript">
-/*global document, window, Cosmoz, Polymer */
-(function () {
-	'use strict';
+	(function () {
+		'use strict';
 
 
-	Polymer({
-		is: 'x-page',
+		Polymer({
+			is: 'x-page',
 
-		properties: {
-			data: {
-				type: Array
+			properties: {
+				data: {
+					type: Array
+				},
+
+				selectedItems: {
+					type: Array
+				},
+
+				info: {
+					type: String,
+					observer: '_infoChanged'
+				}
 			},
 
-			selectedItems: {
-				type: Array
+			behaviors: [
+				Cosmoz.TableDemoBehavior,
+				Cosmoz.TranslatableBehavior
+			],
+
+			listeners: {
+				'column-item-changed': '_itemChanged'
 			},
 
-			info: {
-				type: String,
-				observer: '_infoChanged'
+			ready() {
+				//this.changeData();
+			},
+
+			attached() {
+				this.data = this.generateTableDemoData(20, 25, 25);
+			},
+
+			changeData() {
+				this.data = this.generateTableDemoData(20, 25, 10);
+			},
+
+			_computeLabel(text, count) {
+				return text + ' ' + count + ' items';
+			},
+
+			updateSelectedRows(event, detail) {
+				detail.items.forEach(function (item) {
+					this.$.omnitable.setItemValue(item, 'randomString3', 'blablablalbal');
+				}, this);
+
+			},
+
+			removeItems(event, detail) {
+				console.log('runAction', detail.items, event, detail, detail.items);
+				detail.omnitable.removeItems(detail.items);
+			},
+
+			_itemNameChanged(event) {
+				var item = event.model.item,
+					oldValue = item.name;
+				this.$.omnitable.setItemValue(item, 'name', event.target.value);
+				this.$.nameCol._fireItemChangeEvent(item, 'name', oldValue);
+			},
+
+			_infoChanged() {
+				this.$.info.setAttribute('active', true);
+				this.async(() => {
+					this.$.info.removeAttribute('active');
+				}, 4000);
+			},
+
+			_itemChanged(e) {
+				var change = e.detail;
+				this.info = `Column ${e.target.name}: Item ${change.valuePath} changed from "${change.oldValue}" to "${change.value}"`;
 			}
-		},
-
-		behaviors: [
-			Cosmoz.TableDemoBehavior,
-			Cosmoz.TranslatableBehavior
-		],
-
-		listeners: {
-			'column-item-changed': '_itemChanged'
-		},
-
-		ready() {
-			//this.changeData();
-		},
-
-		attached() {
-			this.data = this.generateTableDemoData(20, 25, 25);
-		},
-
-		changeData() {
-			this.data = this.generateTableDemoData(20, 25, 10);
-		},
-
-		_computeLabel(text, count) {
-			return text + ' ' + count + ' items';
-		},
-
-		updateSelectedRows(event, detail) {
-			detail.items.forEach(function (item) {
-				this.$.omnitable.setItemValue(item, 'randomString3', 'blablablalbal');
-			}, this);
-
-		},
-
-		removeItems(event, detail) {
-			console.log('runAction', detail.items, event, detail, detail.items);
-			detail.omnitable.removeItems(detail.items);
-		},
-
-		_itemNameChanged(event) {
-			var item = event.model.item,
-				oldValue = item.name;
-			this.$.omnitable.setItemValue(item, 'name', event.target.value);
-			this.$.nameCol._fireItemChangeEvent(item, 'name', oldValue);
-		},
-
-		_infoChanged() {
-			this.$.info.setAttribute('active', true);
-			this.async(() => {
-				this.$.info.removeAttribute('active');
-			}, 4000);
-		},
-
-		_itemChanged(e) {
-			var change = e.detail;
-			this.info = `Column ${e.target.name}: Item ${change.valuePath} changed from "${change.oldValue}" to "${change.value}"`;
-		}
-	});
-}());
-
+		});
+	}());
 	</script>
 </body>
 </html>

@@ -38,10 +38,7 @@
 	(function () {
 		'use strict';
 
-		// get dom Type from helpers.js
-		const domType = getDomType();
-
-		suite('basic' + domType, () => {
+		suite('basic', () => {
 			let omnitable,
 				column,
 				data;
@@ -83,7 +80,7 @@
 				assert.isTrue(column._applyMultiFilter([123, 456], { list: [123, 345, 678]}));
 			});
 		});
-		suite('horizontal' + domType, () => {
+		suite('horizontal', () => {
 			let omnitable,
 				column,
 				data;

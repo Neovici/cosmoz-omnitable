@@ -43,8 +43,7 @@
 			'use strict';
 
 			let omnitable;
-			const domType = getDomType(),
-				data = [
+			const data = [
 					{ id: 0, group: 'group0', name: 'Item 0' },
 					{ id: 1, group: 'group0', name: 'Item 1' },
 					{ id: 2, group: 'group1', name: 'Item 2' },
@@ -55,7 +54,7 @@
 					omnitable = setupOmnitableFixture('basic', data, () => done());
 				};
 
-			suite('basic-read' + domType, () => {
+			suite('basic-read', () => {
 				teardown(done => {
 					location.hash = '';
 					done();
@@ -99,7 +98,7 @@
 				});
 			});
 
-			suite('basic-write' + domType, () => {
+			suite('basic-write', () => {
 				setup(instantiate);
 				teardown(done => {
 					location.hash = '';

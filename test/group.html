@@ -74,9 +74,7 @@
 	(function () {
 		'use strict';
 
-		const domType = getDomType();
-
-		suite('id' + domType, () => {
+		suite('id', () => {
 			let omnitable,
 				data;
 
@@ -117,7 +115,7 @@
 			});
 		});
 
-		suite('bool' + domType, () => {
+		suite('bool', () => {
 			let omnitable,
 				data;
 
@@ -144,7 +142,7 @@
 			});
 		});
 
-		suite('amount' + domType, () => {
+		suite('amount', () => {
 			let omnitable,
 				data;
 

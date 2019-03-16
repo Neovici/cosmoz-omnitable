@@ -73,17 +73,31 @@ Cosmoz.DateColumnMixin = Polymer.dedupingMixin(base =>
 			if (value == null || value === '') {
 				return;
 			}
-			const date = value instanceof Date ? value : new Date(value);
+
+			// convert value to Date
+			let date = value;
+			if (!(date instanceof Date)) {
+				// if the value is an ISO string, make sure that it has an explicit timezone
+				if (typeof value === 'string') {
+					date = this.getAbsoluteISOString(date);
+				}
+
+				date = new Date(date);
+			}
+
 			if (Number.isNaN(date.getTime())) {
 				return null;
 			}
+
 			if (limitFunc == null || limit == null) {
 				return date;
 			}
-			let lDate = this.toDate(limit);
+
+			const lDate = this.toDate(limit);
 			if (lDate == null) {
 				return date;
 			}
+
 			const comparableDate = this.getComparableValue(date),
 				comparableLDate = this.getComparableValue(lDate),
 				limitedValue = limitFunc(comparableDate, comparableLDate);
@@ -126,6 +140,31 @@ Cosmoz.DateColumnMixin = Polymer.dedupingMixin(base =>
 				return 'Invalid Date';
 			}
 			return this.renderValue(value, formatter);
+		}
+
+		/**
+		 * Computes the local timezone and adds it to a local ISO string
+		 * @param  {String} localISOString an ISO date string, without timezone info
+		 * @return {String}                an ISO date string, with timezone info
+		 */
+		getAbsoluteISOString(localISOString) {
+			// Most browsers use local timezone when no timezone is specified
+			// but Safari uses UTC, so we set it implicitly
+			// TODO: Consider removing this when/if Safari handles local timezone correctly
+			if (localISOString.length === 19) {
+				return localISOString + this._getTimezoneString(localISOString);
+			}
+			return localISOString;
+		}
+
+		/**
+		 * Calculates the local timezone offset and formats it to ISO Timezone string.
+		 * @param  {String} localISOString an ISO date string
+		 * @return {String}                the ISO timezone
+		 */
+		_getTimezoneString(localISOString) {
+			const off = -new Date(localISOString).getTimezoneOffset() / 60;
+			return (off < 0 ? '-' : '+') + ['0', Math.abs(off)].join('').substr(-2) + ':00';
 		}
 
 		renderValue(value, formatter = this.formatter) {
