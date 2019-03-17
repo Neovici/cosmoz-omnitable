@@ -120,7 +120,7 @@
 			 */
 			onBadInputFloatLabel(event) {
 				const paperInput = event.currentTarget;
-				if (paperInput == null) {
+				if (paperInput == null ||  paperInput.tagName !== 'PAPER-INPUT') {
 					return;
 				}
 				paperInput.placeholder = paperInput.$.nativeInput.validity.badInput ? ' ' : '';

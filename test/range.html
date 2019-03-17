@@ -208,12 +208,13 @@
 					assert.equal(column.getString({ age: 46.768 }), 46.77);
 				});
 
-				test('badInput floats label', done => {
+				test('float label on invalid input', done => {
 					const numberHeader = omnitable.root.querySelector('.number-header-cell'),
 						filterMenu = numberHeader.querySelector('paper-dropdown-menu'),
 						menuContent = numberHeader.querySelector('.dropdown-content'),
 						isFloating = element => element.$.container.$.labelAndInputContainer.classList.contains('label-is-floating'),
-						isVisible = element => element.offsetWidth > 0 && element.offsetHeight > 0;
+						isVisible = element => element.offsetWidth > 0 && element.offsetHeight > 0,
+						inputEvent = new InputEvent('input');
 					assert.isFalse(isVisible(menuContent));
 					filterMenu.click();
 					const [from, to] = filterMenu.querySelectorAll('paper-input');
@@ -221,7 +222,9 @@
 					assert.isFalse(isFloating(to));
 					from.value = 'e';
 					to.value = 'e';
-					setTimeout(() => {
+					setTimeout(() => { // needed for native input to appear
+						from.dispatchEvent(inputEvent);
+						to.dispatchEvent(inputEvent);
 						assert.isTrue(isVisible(menuContent));
 						assert.isTrue(isFloating(from));
 						assert.isTrue(isFloating(to));
