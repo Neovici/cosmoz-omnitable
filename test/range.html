@@ -231,6 +231,10 @@
 						done();
 					}, 50);
 				});
+
+				test('make sure onBadInputFloatLabel doesn\'t explode', () => {
+					assert.strictEqual(column.onBadInputFloatLabel(new InputEvent('input')), undefined);
+				});
 			});
 
 			suite('amount', () => {
