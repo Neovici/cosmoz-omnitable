@@ -207,6 +207,27 @@
 				test('getString displays 46.768 as 46.77', () => {
 					assert.equal(column.getString({ age: 46.768 }), 46.77);
 				});
+
+				test('badInput floats label', done => {
+					const numberHeader = omnitable.root.querySelector('.number-header-cell'),
+						filterMenu = numberHeader.querySelector('paper-dropdown-menu'),
+						menuContent = numberHeader.querySelector('.dropdown-content'),
+						isFloating = element => element.$.container.$.labelAndInputContainer.classList.contains('label-is-floating'),
+						isVisible = element => element.offsetWidth > 0 && element.offsetHeight > 0;
+					assert.isFalse(isVisible(menuContent));
+					filterMenu.click();
+					const [from, to] = filterMenu.querySelectorAll('paper-input');
+					assert.isFalse(isFloating(from));
+					assert.isFalse(isFloating(to));
+					from.value = 'e';
+					to.value = 'e';
+					setTimeout(() => {
+						assert.isTrue(isVisible(menuContent));
+						assert.isTrue(isFloating(from));
+						assert.isTrue(isFloating(to));
+						done();
+					}, 50);
+				});
 			});
 
 			suite('amount', () => {
