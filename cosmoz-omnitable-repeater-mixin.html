@@ -163,9 +163,7 @@
 			element.__column = column;
 
 			if (column === this.groupOnColumn) {
-				element.setAttribute('hidden', '');
-			} else if (element.hasAttribute('hidden')) {
-				element.removeAttribute('hidden', '');
+				element.setAttribute('hidden', true);
 			}
 
 			element.setAttribute('slot', this._slotName);
