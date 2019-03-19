@@ -137,6 +137,10 @@
 
 						row.push('columns', columns[0]);
 						expect(row.textContent).to.equal('1aaa1');
+
+						row.pop('columns');
+						row.pop('columns');
+						expect(row.textContent).to.equal('1');
 					});
 
 					it('tracks column\'s editable state', () => {
@@ -180,16 +184,18 @@
 
 				describe('groupOnColumn', () => {
 					it('hides cells that belong to the column that the data is grouped on', () => {
+						row.groupOnColumn = columns[0];
 						row.renderCells();
 
-						row.groupOnColumn = columns[0];
 						expect(row.children[0].hidden).to.be.true;
 						expect(row.children[1].hidden).to.be.false;
 					});
 
 					it('handles group on column changes', () => {
-						row.renderCells();
 						row.groupOnColumn = columns[0];
+						row.renderCells();
+						expect(row.children[0].hidden).to.be.true;
+						expect(row.children[1].hidden).to.be.false;
 
 						row.groupOnColumn = columns[1];
 						expect(row.children[0].hidden).to.be.false;
@@ -199,6 +205,7 @@
 						expect(row.children[0].hidden).to.be.false;
 						expect(row.children[1].hidden).to.be.false;
 					});
+
 					it('ignores grouping on columns other than those configured', () => {
 						row.renderCells();
 
@@ -206,7 +213,6 @@
 						expect(row.children[0].hidden).to.be.false;
 						expect(row.children[1].hidden).to.be.false;
 					});
-
 				});
 			});
 		});
