@@ -6,6 +6,7 @@
 
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../neon-animation/web-animations.html">
 
 <link rel="import" href="../cosmoz-i18next/cosmoz-i18next.html">
 
@@ -29,10 +30,10 @@
 					horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
-					<paper-input type="number" label="[[ _('From', t) ]]" value="{{ _filterInput.min }}"
+					<paper-input type="number" label="[[ _('From', t) ]]" value="{{ _filterInput.min }}" on-input="onBadInputFloatLabel"
 						min="[[ _toInputString(_limit.fromMin) ]]" max="[[ _toInputString(_limit.fromMax) ]]">
 					</paper-input>
-					<paper-input type="number" label="[[ _('To', t) ]]" value="{{ _filterInput.max }}"
+					<paper-input type="number" label="[[ _('To', t) ]]" value="{{ _filterInput.max }}" on-input="onBadInputFloatLabel"
 						min="[[ _toInputString(_limit.toMin) ]]" max="[[ _toInputString(_limit.toMax) ]]">
 					</paper-input>
 				</div>
@@ -103,6 +104,26 @@
 					options.maximumFractionDigits = maximumFractionDigits;
 				}
 				return new Intl.NumberFormat(locale || undefined, options);
+			}
+
+			/**
+			 * Check if label should float based on validity
+			 *
+			 * Number inputs can have allowed characters that aren't numbers (-,e) and won't
+			 * trigger a value change and thus not float the label.
+			 * However, the validity will report badInput so we can trigger a label float by
+			 * setting it to something truthy but still not visible.
+			 * Fixed in paper-input 3.x
+			 *
+			 * @param {Event} event KeyboardEvent
+			 * @returns {void}
+			 */
+			onBadInputFloatLabel(event) {
+				const paperInput = event.currentTarget;
+				if (paperInput == null ||  paperInput.tagName !== 'PAPER-INPUT') {
+					return;
+				}
+				paperInput.placeholder = paperInput.$.nativeInput.validity.badInput ? ' ' : '';
 			}
 
 			/**
