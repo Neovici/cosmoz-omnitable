@@ -78,15 +78,28 @@
 			return 'item-cell';
 		}
 
+		constructor() {
+			super();
+			this.trackColumns();
+		}
+
+		/**
+		 * @inheritdoc
+		 */
 		_getTemplateInstance(column) {
-			return column.dataTemplatizer.getInstance();
+			return column.getTemplateInstance(
+				column.editable
+					? Cosmoz.OmnitableTemplatizeMixin.EDIT_TEMPLATE
+					: Cosmoz.OmnitableTemplatizeMixin.CELL_TEMPLATE,
+				{item: this.item, selected: this.selected, expanded: this.expanded}
+			);
 		}
 
-		_detachTemplateInstance(instance, column, element) {
-			column.dataTemplatizer.detachInstance(instance, element);
-		}
-
-		_configureElement(element, column) {
+		/**
+		 * @inheritdoc
+		 */
+		_configureElement(element, column, instance) {
+			super._configureElement(element, column, instance);
 			element.style.flexBasis = column.editable ? column.editWidth : column.width;
 			element.style.minWidth = column.editable ? column.editMinWidth : column.minWidth;
 			element.style.flexGrow = column.flex;
@@ -94,44 +107,19 @@
 			element.setAttribute('class', this._computeItemRowCellClasses(column));
 		}
 
-		_configureTemplateInstance(instance) {
-			if (instance.item !== this.item && this.item !== undefined) {
-				this._forwardProperty(instance, 'item', this.item);
-				this._forwardProperty(instance, 'selected', this.selected);
-				this._forwardProperty(instance, 'expanded', this.expanded);
-				instance._flushProperties(true);
-			}
-		}
-
-		_computeItemRowCellClasses(column) {
-			return 'itemRow-cell' +
-				(column.cellClass ? ' ' + column.cellClass + ' ' : '') +
-				' cosmoz-omnitable-column-' + column.__index;
-		}
-
-		_itemUpdated(itemChange) {
-			if (itemChange.path === 'item') {
-				this.elements.forEach(element => {
-					this._forwardProperty(this.getElementTemplateInstance(element), 'item', itemChange.value, true);
-					element.setAttribute('title', this._getCellTitle(this.getElementColumn(element), this.item));
-				});
-			} else {
-				this.elements.forEach(element => {
-					this._forwardNotifyPath(this.getElementTemplateInstance(element), itemChange.path, itemChange.value, true, true);
-				});
-			}
+		_itemUpdated(changeRecord) {
+			this.forwardPathChange(changeRecord);
+			this.forEachElement((element, column) => {
+				element.setAttribute('title', this._getCellTitle(column, this.item));
+			});
 		}
 
 		_selectedChanged(selected) {
-			this.templateInstances.forEach(instance => {
-				this._forwardProperty(instance, 'selected', selected, true);
-			});
+			this.forwardChange('selected', selected);
 		}
 
 		_expandedChanged(expanded) {
-			this.templateInstances.forEach(instance => {
-				this._forwardProperty(instance, 'expanded', expanded, true);
-			});
+			this.forwardChange('expanded', expanded);
 		}
 
 		/**
@@ -142,6 +130,12 @@
 		 */
 		_getCellTitle(column, item) {
 			return column && column.cellTitleFn(item, column.valuePath);
+		}
+
+		_computeItemRowCellClasses(column) {
+			return 'itemRow-cell'
+				+ (column.cellClass ? ' ' + column.cellClass + ' ' : '')
+				+ ' cosmoz-omnitable-column-' + column.__index;
 		}
 	}
 	customElements.define(OmnitableItemRow.is, OmnitableItemRow);

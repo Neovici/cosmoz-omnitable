@@ -166,12 +166,6 @@
 				});
 
 				// Column Behavior unit tests for more coverage
-				test('_cellTemplateChanged handles null', () => {
-					const column = omnitable.columns[3];
-					assert.isUndefined(column._cellTemplateChanged(null));
-					assert.isUndefined(column._cellTemplateChanged(undefined));
-				});
-
 				test('_hiddenChanged fires cosmoz-column-hidden-changed', () => {
 					const column = omnitable.columns[3],
 						hiddenSpy = sinon.spy();
@@ -188,18 +182,6 @@
 					assert.isTrue(column._applyMultiFilter(filter, { valuePath: 'abc' }));
 					filter = ['x', 'y'];
 					assert.isFalse(column._applyMultiFilter(filter, { valuePath: 'abc' }));
-				});
-
-				test('getHeaderTemplateInstance handles undefined _headerTemplatizer', () => {
-					const column = omnitable.columns[3];
-					column._headerTemplatizer = undefined;
-					assert.isUndefined(column.getHeaderTemplateInstance());
-				});
-
-				test('getHeaderTemplateInstance handles undefined _headerTemplatizer.createInstance', () => {
-					const column = omnitable.columns[3];
-					column._headerTemplatizer.createInstance = undefined;
-					assert.isUndefined(column.getHeaderTemplateInstance());
 				});
 			});
 
