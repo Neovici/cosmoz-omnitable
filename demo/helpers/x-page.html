@@ -88,8 +88,10 @@
 					</template>
 				</cosmoz-omnitable-column>
 				<cosmoz-omnitable-column title="Custom template"
-					name="custom-name" value-path="name" sort-on="name" width="50px" flex="2"
-					cell-template="[[ customNameTemplate ]]">
+					name="custom-name" value-path="name" sort-on="name" width="50px" flex="2">
+					<template class="cell">
+						<span style="background: red;" on-tap="onTap">[[ item.name ]]</span>
+					</template>
 				</cosmoz-omnitable-column>
 				<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" sort-on="value" group-on="value" locale="[[ locale ]]">
 				</cosmoz-omnitable-column-number>
@@ -138,9 +140,6 @@
 					type: String,
 					value: 'sv'
 				},
-				customNameTemplate: {
-					type: Object
-				},
 				hashParam: {
 					type: String
 				}
@@ -161,8 +160,6 @@
 				this.async(() => {
 					this.data = data;
 				}, 100);
-				this.customNameTemplate = Polymer.dom(this).querySelector('#customNameTemplate');
-
 			},
 
 			changeData() {

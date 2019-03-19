@@ -1,0 +1,28 @@
+<link rel="import" href="/components/shadycss/apply-shim.html">
+<link rel="import" href="/components/polymer/polymer-element.html"/>
+<link rel="import" href="../../../cosmoz-omnitable-column-mixin.html" />
+
+<script>
+	class BasicColumn extends Cosmoz.OmnitableColumnMixin(Polymer.Element) {
+		static get is() {
+			return 'basic-column';
+		}
+
+		static get template() {
+			return Polymer.html`
+					<template class="cell" strip-whitespace>
+						<span class="basic-column-cell">[[ getString(item, valuePath) ]]</span>
+					</template>
+
+					<template class="edit-cell" strip-whitespace>
+						<span class="basic-column-cell">Edit: [[ getString(item, valuePath) ]]</span>
+					</template>
+
+					<template class="header" strip-whitespace>
+						<span class="basic-column-header">Header</span>
+					</template>
+			`;
+		}
+	}
+	customElements.define(BasicColumn.is, BasicColumn);
+</script>

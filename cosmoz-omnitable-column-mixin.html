@@ -1,7 +1,7 @@
 <link rel="import" href="../shadycss/apply-shim.html"/>
+<link rel="import" href="cosmoz-omnitable-templatize-mixin.html" />
 <link rel="import" href="../polymer/lib/utils/mixin.html"/>
 
-<link rel="import" href="cosmoz-omnitable-templatizer.html" />
 
 <script>
 	window.Cosmoz = window.Cosmoz || {};
@@ -9,8 +9,9 @@
 	/**
 	 * @polymer
 	 * @mixinFunction
+	 * @appliesMixin Cosmoz.OmnitableTemplatizeMixin
 	 */
-	Cosmoz.OmnitableColumnMixin = Polymer.dedupingMixin(base =>	class extends base {
+	Cosmoz.OmnitableColumnMixin = Polymer.dedupingMixin(base =>	class extends Cosmoz.OmnitableTemplatizeMixin(base) {
 		static get properties() {
 			return {
 				title: {
@@ -185,10 +186,6 @@
 					value: 0
 				},
 
-				cellTemplate: {
-					type: Object,
-					observer: '_cellTemplateChanged'
-				},
 				/**
 				 * Cell title function, can be overriden.
 				 */
@@ -223,16 +220,6 @@
 					type: String,
 					computed: '_computePreferredDropdownHorizontalAlign(columnIndex)'
 				},
-
-				_dataTemplatizer: {
-					type: Object,
-					value: null
-				},
-
-				_headerTemplatizer: {
-					type: Object,
-					value: null
-				}
 			};
 		}
 
@@ -245,40 +232,7 @@
 
 		ready() {
 			super.ready();
-			this._headerTemplatizer = this._createTemplatizer('template.header');
 			this._itemCells = [];
-		}
-
-		_createTemplatizer(templateElementOrSelector) {
-			let template,
-				templateHost,
-				root;
-			if (templateElementOrSelector instanceof HTMLTemplateElement) {
-				template = templateElementOrSelector;
-				templateHost = templateElementOrSelector.parentNode;
-			} else {
-				template = this.querySelector(templateElementOrSelector);
-				if (template) {
-					root = this.getRootNode();
-				} else {
-					root = this.getRootNode();
-					template = this.root.querySelector(templateElementOrSelector);
-				}
-				if (root) {
-					templateHost = root.host;
-				}
-			}
-
-			const templatizer = document.createElement('cosmoz-omnitable-templatizer');
-			this.appendChild(templatizer);
-			templatizer.init(template, templateHost);
-			return templatizer;
-		}
-
-		_cellTemplateChanged(cellTemplate) {
-			if (cellTemplate != null) {
-				this._cellTemplatizer = this._createTemplatizer(cellTemplate);
-			}
 		}
 
 		_externalValuesChanged(newExternalValuesValue) {
@@ -292,36 +246,6 @@
 					column: this
 				}
 			}));
-		}
-
-		get editableTemplatizer() {
-			return this._editableTemplatizer = this._editableTemplatizer ||
-				this._createTemplatizer('template.edit-cell');
-		}
-		get cellTemplatizer() {
-			return this._cellTemplatizer = this._cellTemplatizer ||
-				this._createTemplatizer('template.cell');
-		}
-
-		get dataTemplatizer() {
-			return this.editable ? this.editableTemplatizer : this.cellTemplatizer;
-		}
-
-		get headerTemplatizer() {
-			return this._headerTemplatizer;
-		}
-
-		getHeaderTemplateInstance() {
-			if (!this._headerTemplatizer || !this._headerTemplatizer.createInstance) {
-				return;
-			}
-			return this._headerTemplatizer.createInstance();
-		}
-
-		releaseHeaderTemplateInstance(instance) {
-			if (this._headerTemplatizer) {
-				this._headerTemplatizer.releaseInstance(instance);
-			}
 		}
 
 		/**
@@ -462,10 +386,6 @@
 		}
 
 		_editableChanged() {
-			const prevTemplatizer = this.editable ? this._cellTemplatizer : this._editableTemplatizer;
-			if (prevTemplatizer) {
-				prevTemplatizer.releaseInstances();
-			}
 			this.dispatchEvent(new CustomEvent('cosmoz-column-editable-changed', {bubbles: true, detail: { column: this }}));
 		}
 

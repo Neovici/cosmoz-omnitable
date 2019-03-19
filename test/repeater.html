@@ -1,0 +1,221 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+	<title>cosmoz-omnitable repeater mixin test</title>
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+	<script src="../../web-component-tester/browser.js"></script>
+	<script src="../../test-fixture/test-fixture-mocha.js"></script>
+	<script src="./helpers/utils.js"></script>
+
+	<link rel="import" href="../../test-fixture/test-fixture.html">
+	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
+	<link rel="import" href="../cosmoz-omnitable.html">
+	<link rel="import" href="../cosmoz-omnitable-templatize-mixin.html">
+	<link rel="import" href="./helpers/fixtures/basic-column.html">
+	<link rel="import" href="./helpers/fixtures/basic-row.html">
+</head>
+<body>
+	<test-fixture id="basic">
+		<template strip-whitespace>
+			<basic-row></basic-row>
+			<div>
+				<basic-column value-path="id"></basic-column>
+				<basic-column>
+					<template class="cell" strip-whitespace>[[ item.complexData.someKey ]]</template>
+				</basic-column>
+			</div>
+			<div>
+				<basic-column>
+					<template class="cell" strip-whitespace>Id: [[ item.id ]]</template>
+				</basic-column>
+			</div>
+		</template>
+	</test-fixture>
+
+	<script>
+	(function () {
+		'use strict';
+
+		describe('OmnitableRepeaterMixin', () => {
+			context('columns configuration is missing', () => {
+				it('does not render anything', () => {
+					const [row] = fixture('basic');
+					row.columns = [];
+					row.renderCells();
+					expect(row.children).to.have.lengthOf(0);
+				});
+			});
+
+			context('columns configuration is present', () => {
+				let row,
+					columns,
+					otherColumns;
+
+				beforeEach(() => {
+					[row, {children: columns}, {children: otherColumns}] = fixture('basic');
+
+					columns = Array.from(columns);
+					otherColumns = Array.from(otherColumns);
+
+					row.item = { id: 1, complexData: {someKey: 'aaa'} };
+					row.columns = columns;
+				});
+
+				describe('renderCells', () => {
+					it('renders cells', () => {
+						row.renderCells();
+
+						expect(row.children).to.have.lengthOf(2);
+						expect(row.textContent).to.equal('1aaa');
+					});
+
+					it('configures cells according to the row configuration', () => {
+						row._elementType = 'span';
+						row._slotName = 'some-slot';
+						row.renderCells();
+
+						expect(row.children).to.have.lengthOf(2);
+						Array.from(row.children).forEach(cell => {
+							expect(cell.nodeName).to.equal('SPAN');
+							expect(cell.slot).to.equal('some-slot');
+						});
+					});
+				});
+
+				describe('destroyCells', () => {
+					it('destroys rendered cells', () => {
+						row.renderCells();
+						row.destroyCells();
+
+						expect(row.children).to.have.lengthOf(0);
+					});
+				});
+
+				describe('forEachElement', () => {
+					it('runs code on each rendered element', () => {
+						row.renderCells();
+						row.forEachElement(element => {
+							element.classList.add('ok');
+						});
+
+						Array.from(row.children).forEach(cell => {
+							expect(cell.classList.toString()).to.equal('ok');
+						});
+					});
+				});
+
+				describe('forwardChange', () => {
+					it('forwards simple changes to rendered elements', () => {
+						row.renderCells();
+
+						row.item = {id: 2, complexData: {someKey: 'bbb'}};
+						expect(row.textContent).to.equal('2bbb');
+					});
+				});
+
+				describe('forwardPathChange', () => {
+					it('forwards complex changes to rendered elements', () => {
+						row.renderCells();
+
+						row.set('item.complexData.someKey', 'abc');
+						expect(row.textContent).to.equal('1abc');
+					});
+				});
+
+				describe('trackColumns', () => {
+					it('tracks configuration changes', () => {
+						row.trackColumns();
+
+						row.columns = otherColumns;
+						expect(row.textContent).to.equal('Id: 1');
+
+						row.set('columns', columns);
+						expect(row.textContent).to.equal('1aaa');
+
+						row.push('columns', columns[0]);
+						expect(row.textContent).to.equal('1aaa1');
+
+						row.pop('columns');
+						row.pop('columns');
+						expect(row.textContent).to.equal('1');
+					});
+
+					it('tracks column\'s editable state', () => {
+						row.trackColumns();
+
+						row.set('columns.0.editable', true);
+						expect(row.textContent).to.equal('Edit: 1aaa');
+
+						row.set('columns.0.editable', false);
+						expect(row.textContent).to.equal('1aaa');
+					});
+
+					it('ensures that configuration tracking is used correctly', () => {
+						row.trackColumns();
+						expect(() => row.trackColumns()).to.throw('The columns are already tracked.');
+					});
+				});
+
+				describe('stopTrackingColumns', () => {
+					it('can stop tracking configuration changes', () => {
+						row.trackColumns();
+
+						row.set('columns', otherColumns);
+						expect(row.textContent).to.equal('Id: 1');
+
+						row.stopTrackingColumns();
+
+						row.set('columns', columns);
+						expect(row.textContent).to.equal('Id: 1');
+					});
+
+					it('ensures that configuration tracking is used correctly', () => {
+						expect(() => row.stopTrackingColumns()).to.throw('The columns are not tracked.');
+
+						row.trackColumns();
+
+						row.stopTrackingColumns();
+						expect(() => row.stopTrackingColumns()).to.throw('The columns are not tracked.');
+					});
+				});
+
+				describe('groupOnColumn', () => {
+					it('hides cells that belong to the column that the data is grouped on', () => {
+						row.groupOnColumn = columns[0];
+						row.renderCells();
+
+						expect(row.children[0].hidden).to.be.true;
+						expect(row.children[1].hidden).to.be.false;
+					});
+
+					it('handles group on column changes', () => {
+						row.groupOnColumn = columns[0];
+						row.renderCells();
+						expect(row.children[0].hidden).to.be.true;
+						expect(row.children[1].hidden).to.be.false;
+
+						row.groupOnColumn = columns[1];
+						expect(row.children[0].hidden).to.be.false;
+						expect(row.children[1].hidden).to.be.true;
+
+						row.groupOnColumn = null;
+						expect(row.children[0].hidden).to.be.false;
+						expect(row.children[1].hidden).to.be.false;
+					});
+
+					it('ignores grouping on columns other than those configured', () => {
+						row.renderCells();
+
+						row.groupOnColumn = otherColumns[0];
+						expect(row.children[0].hidden).to.be.false;
+						expect(row.children[1].hidden).to.be.false;
+					});
+				});
+			});
+		});
+	})();
+	</script>
+</html>

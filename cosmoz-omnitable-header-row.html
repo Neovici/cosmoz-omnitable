@@ -47,24 +47,26 @@
 			return 'header-cell';
 		}
 
+		constructor() {
+			super();
+			this.trackColumns();
+		}
+
+		/**
+		 * @inheritdoc
+		 */
 		_getTemplateInstance(column) {
-			return column.headerTemplatizer.getInstance();
+			return column.getTemplateInstance(Cosmoz.OmnitableTemplatizeMixin.HEADER_TEMPLATE);
 		}
 
-		_detachTemplateInstance(instance, column, element) {
-			if (column.headerTemplatizer) {
-				column.headerTemplatizer.detachInstance(instance, element);
-			}
-		}
-
-		_configureElement(element, column) {
+		/**
+		 * @inheritdoc
+		 */
+		_configureElement(element, column, instance) {
+			super._configureElement(element, column, instance);
 			element.classList.toggle(column.headerCellClass, true);
 			element.classList.toggle('header-cell', true);
 			element.setAttribute('title', column.title);
-		}
-
-		_configureTemplateInstance(instance) {
-			instance._flushProperties(true);
 		}
 	}
 	customElements.define(OmnitableHeaderRow.is, OmnitableHeaderRow);
