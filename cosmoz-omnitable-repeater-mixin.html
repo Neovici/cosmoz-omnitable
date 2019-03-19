@@ -240,7 +240,7 @@
 			this._elements
 				.splice(start, removedColumns.length)
 				.forEach(element => {
-					element.__column.detachTemplateInstance(element.__instance);
+					element.__column.recycleInstance(element.__instance);
 					element.__instance = element.__column = element.column = null;
 					this.removeChild(element);
 				});

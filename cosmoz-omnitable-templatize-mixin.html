@@ -3,7 +3,7 @@
 	'use strict';
 
 	/**
-	 * Prepares instances of templates
+	 * Prepares instances of templates and re-uses recycled instances.
 	 * @polymer
 	 * @mixinFunction
 	 */
@@ -13,7 +13,7 @@
 
 			this._templateCtors = {};
 			this._templateInstances = [];
-			this._reusableTemplateInstances = [];
+			this._recycledInstance = [];
 		}
 
 		/**
@@ -27,14 +27,14 @@
 		 * @return {TemplateInstance} the template instance
 		 */
 		getTemplateInstance(type, props) {
-			// first search in reusable instances pool
-			let instance = this._reusableTemplateInstances.find(i => i._type === type);
+			// first search in the recycled instances pool
+			let instance = this._recycledInstance.find(i => i._type === type);
 
 			if (instance) {
-				// reuse available instance
+				// reuse recycled instance
 				instance = this._reuseInstance(instance, props);
 			} else {
-				// if no reusable instance is available, create a new one
+				// if no recycled instance is available, create a new one
 				instance = this._createInstance(type, props);
 			}
 
@@ -44,12 +44,12 @@
 		}
 
 		/**
-		 * Detaches an instance.
+		 * Marks an instance for re-use.
 		 *
 		 * @param  {TemplateInstance} instance an instance
 		 * @return {TemplateInstance}          the detached instance
 		 */
-		detachTemplateInstance(instance) {
+		recycleInstance(instance) {
 			const index = this._templateInstances.indexOf(instance);
 			if (index < 0) {
 				return instance;
@@ -57,18 +57,27 @@
 
 			// remove from active instances pool
 			this._templateInstances.splice(index, 1);
-			this._reusableTemplateInstances.push(instance);
+			this._recycledInstance.push(instance);
 			return instance;
 		}
 
 		/**
-		 * Cleans up references to reusable instances when the element is detached.
+		 * Tests whether the instance is marked for re-use.
+		 * @param  {TemplateInstance}  instance an instance
+		 * @return {Boolean}                    true if instance is recycled
+		 */
+		isRecycledInstance(instance) {
+			return this._recycledInstance.includes(instance);
+		}
+
+		/**
+		 * Cleans up references to recycled instances when the element is detached.
 		 *
 		 * @return {void}
 		 */
 		disconnectedCallback() {
 			super.disconnectedCallback();
-			this._reusableTemplateInstances = [];
+			this._recycledInstance = [];
 		}
 
 		/**
@@ -79,8 +88,8 @@
 		 * @return {TemplateInstance}          the instance
 		 */
 		_reuseInstance(instance, props) {
-			// remove from reusable pool
-			this._reusableTemplateInstances.splice(this._reusableTemplateInstances.indexOf(instance), 1);
+			// remove from recycled pool
+			this._recycledInstance.splice(this._recycledInstance.indexOf(instance), 1);
 
 			// update props
 			this._forwardProperties(instance, props);

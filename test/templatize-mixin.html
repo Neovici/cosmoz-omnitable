@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+	<title>cosmoz-omnitable repeater mixin test</title>
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+	<script src="../../web-component-tester/browser.js"></script>
+	<script src="../../test-fixture/test-fixture-mocha.js"></script>
+	<script src="./helpers/utils.js"></script>
+
+	<link rel="import" href="../../test-fixture/test-fixture.html">
+	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
+	<link rel="import" href="../cosmoz-omnitable.html">
+	<link rel="import" href="../cosmoz-omnitable-templatize-mixin.html">
+	<link rel="import" href="./helpers/fixtures/basic-column.html">
+</head>
+<body>
+	<test-fixture id="basic">
+		<template strip-whitespace>
+			<basic-column value-path="id"></basic-column>
+			<basic-column>
+				<template class="cell" strip-whitespace>
+					<span>ID: [[ item.id ]]</span>
+				</template>
+			</basic-column>
+		</template>
+	</test-fixture>
+
+	<script>
+	(function () {
+		'use strict';
+
+		describe('OmnitableTemplatizeMixin', () => {
+			describe('getTemplateInstance', () => {
+				it('creates new template instances by type');
+				it('initializes the instance with props');
+				it('supports overriding templates by type');
+				it('sets up instances so that host property changes are forwarded');
+				it('re-uses recycled instances');
+				it('properly updates the re-used instance props');
+			});
+
+			describe('recycleInstance', () => {
+				it('marks an instance for re-use');
+			});
+
+			describe('isRecycledInstance', () => {
+				it('tests whether the instance is marked for re-use');
+			});
+
+			describe('disconnectedCallback', () => {
+				it('cleans up references to recycled instances');
+			});
+		});
+	})();
+	</script>
+</html>
