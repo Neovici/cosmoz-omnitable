@@ -6,15 +6,15 @@
 
 		static get template() {
 			return Polymer.html`
-					<template class="cell">
+					<template class="cell" strip-whitespace>
 						<span class="basic-column-cell">[[ getString(item, valuePath) ]]</span>
 					</template>
 
-					<template class="edit-cell">
+					<template class="edit-cell" strip-whitespace>
 						<span class="basic-column-cell">Edit: [[ getString(item, valuePath) ]]</span>
 					</template>
 
-					<template class="header">
+					<template class="header" strip-whitespace>
 						<span class="basic-column-header">Header</span>
 					</template>
 			`;

@@ -66,7 +66,7 @@
 		 */
 		stopTrackingColumns() {
 			if (!this._columnsObserver) {
-				throw new Error('The columns were not tracked.');
+				throw new Error('The columns are not tracked.');
 			}
 
 			this._removePropertyEffect('columns', this.PROPERTY_EFFECT_TYPES.OBSERVE, this._columnsObserver);
