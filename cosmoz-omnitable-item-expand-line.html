@@ -18,6 +18,7 @@
 				white-space: nowrap;
 				flex: initial;
 				@apply --cosmoz-omnitable-item-expand-label;
+				align-self: start;
 			}
 
 			.item-expand-value {
@@ -29,7 +30,7 @@
 			}
 
 		</style>
-		<div class="itm-expand-label" title="[[ column.title ]]">[[ column.title ]]</div>
+		<div class="item-expand-label" title="[[ column.title ]]">[[ column.title ]]</div>
 		<div class="item-expand-value">
 			<slot></slot>
 		</div>
