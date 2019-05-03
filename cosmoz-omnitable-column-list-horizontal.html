@@ -158,6 +158,18 @@
 
 				return value.join(', ');
 			}
+
+			toXlsxValue(item, valuePath = this.valuePath) {
+				const textProp = this.textProperty,
+					value = super.getString.apply(this, arguments);
+				if (!valuePath || !Array.isArray(value) || value.length === 0) {
+					return '';
+				}
+				if (textProp != null) {
+					return value.map(val => this.get(textProp, val)).filter(Boolean).join(', ');
+				}
+				return this.getString(item, valuePath);
+			}
 		}
 
 		customElements.define(
