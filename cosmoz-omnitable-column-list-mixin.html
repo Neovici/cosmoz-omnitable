@@ -33,6 +33,7 @@
 			return values
 				.map(value => this.textProperty ? this.get(this.textProperty, value) : value)
 				.filter((value, index, array) => array.indexOf(value) === index)
+				.filter(Boolean)
 				.join(', ');
 		}
 	});
