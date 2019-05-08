@@ -53,8 +53,8 @@
 		/**
 		 * @polymer
 		 * @customElement
-		 * @appliesMixin Cosmoz.OmnitableColumnMixin
 		 * @appliesMixin Cosmoz.ListColumnMixin
+		 * @appliesMixin Cosmoz.OmnitableColumnMixin
 		 */
 		class OmnitableColumnListHorizontal extends	Cosmoz.ListColumnMixin(Cosmoz.OmnitableColumnMixin(
 			Polymer.mixinBehaviors([Cosmoz.TranslatableBehavior], Polymer.Element)
@@ -143,10 +143,6 @@
 
 			_getDefaultFilter() {
 				return [];
-			}
-
-			toXlsxValue(item, valuePath = this.valuePath) {
-				return this.getString(item, valuePath);
 			}
 		}
 
