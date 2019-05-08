@@ -36,5 +36,10 @@
 				.filter(Boolean)
 				.join(', ');
 		}
+
+		toXlsxValue(item, valuePath = this.valuePath) {
+			return this.getString(item, valuePath);
+		}
+
 	});
 </script>
