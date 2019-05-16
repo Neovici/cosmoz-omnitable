@@ -47,9 +47,11 @@
 		 * @appliesMixin Cosmoz.DateColumnMixin
 		 * @appliesMixin Cosmoz.OmnitableColumnMixin
 		 */
-		class OmnitableColumnTime extends Cosmoz.DateColumnMixin(Cosmoz.OmnitableColumnMixin(
-			Polymer.mixinBehaviors([Cosmoz.TranslatableBehavior], Polymer.Element)
-		)) {
+		class OmnitableColumnTime extends Cosmoz.DateColumnMixin(
+			Cosmoz.OmnitableColumnMixin(
+				Cosmoz.Mixins.translatable(Polymer.Element)
+			)
+		) {
 			static get is() {
 				return 'cosmoz-omnitable-column-time';
 			}

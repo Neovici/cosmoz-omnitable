@@ -49,9 +49,13 @@
 		 * @appliesMixin Cosmoz.RangeColumnMixin
 		 * @appliesMixin Cosmoz.OmnitableColumnMixin
 		 */
-		class OmnitableColumnNumber extends Cosmoz.RangeColumnMixin(Cosmoz.OmnitableColumnMixin(
-			Polymer.mixinBehaviors([Cosmoz.TranslatableBehavior], Polymer.Element)
-		)) {
+		class OmnitableColumnNumber extends Cosmoz.RangeColumnMixin(
+			Cosmoz.OmnitableColumnMixin(
+				Cosmoz.Mixins.translatable(
+					Polymer.Element
+				)
+			)
+		) {
 			static get is() {
 				return 'cosmoz-omnitable-column-number';
 			}
