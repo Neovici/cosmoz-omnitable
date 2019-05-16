@@ -17,7 +17,7 @@
 	<link rel="import" href="../../neon-animation/web-animations.html">
 	<link rel="import" href="../cosmoz-omnitable.html">
 
-	<link rel="import" href="table-demo-behavior.html">
+	<link rel="import" href="table-demo-helper.html">
 
 	<custom-style>
 		<style is="custom-style" include="iron-flex iron-flex-alignment iron-positioning"></style>
@@ -121,7 +121,6 @@
 			},
 
 			behaviors: [
-				Cosmoz.TableDemoBehavior,
 				Cosmoz.TranslatableBehavior
 			],
 
@@ -134,11 +133,11 @@
 			},
 
 			attached() {
-				this.data = this.generateTableDemoData(20, 25, 25);
+				this.data = Cosmoz.Demo.generateTableDemoData(20, 25, 25);
 			},
 
 			changeData() {
-				this.data = this.generateTableDemoData(20, 25, 10);
+				this.data = Cosmoz.Demo.generateTableDemoData(20, 25, 10);
 			},
 
 			_computeLabel(text, count) {
@@ -158,7 +157,7 @@
 			},
 
 			_itemNameChanged(event) {
-				var item = event.model.item,
+				const item = event.model.item,
 					oldValue = item.name;
 				this.$.omnitable.setItemValue(item, 'name', event.target.value);
 				this.$.nameCol._fireItemChangeEvent(item, 'name', oldValue);
@@ -172,7 +171,7 @@
 			},
 
 			_itemChanged(e) {
-				var change = e.detail;
+				const change = e.detail;
 				this.info = `Column ${e.target.name}: Item ${change.valuePath} changed from "${change.oldValue}" to "${change.value}"`;
 			}
 		});

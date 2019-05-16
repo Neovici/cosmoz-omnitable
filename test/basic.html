@@ -15,7 +15,7 @@
 	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
 	<link rel="import" href="../cosmoz-omnitable.html">
 	<link rel="import" href="../cosmoz-omnitable-columns.html">
-	<link rel="import" href="../demo/table-demo-behavior.html">
+	<link rel="import" href="../demo/table-demo-helper.html">
 </head>
 
 <body>
@@ -60,11 +60,11 @@
 			sinon.assert.expose(chai.assert, { prefix: '' });
 
 			suite('basic', () => {
-				var omnitable,
+				let omnitable,
 					data;
 
 				setup(done => {
-					data = Cosmoz.TableDemoBehavior.generateTableDemoData(10, 11, 25);
+					data = Cosmoz.Demo.generateTableDemoData(10, 11, 25);
 					omnitable = setupOmnitableFixture('basic', data, () => done());
 				});
 
@@ -87,7 +87,7 @@
 				});
 
 				test('sets column groupOn property to valuePath when group-on attribute is missing', () => {
-					var column = omnitable.columns.find(col => {
+					const column = omnitable.columns.find(col => {
 						return col.name === 'columnWithoutGroupOn';
 					});
 
@@ -95,7 +95,7 @@
 				});
 
 				test('sets column groupOn property to group-on attribute', () => {
-					var column = omnitable.columns.find(col => {
+					const column = omnitable.columns.find(col => {
 						return col.name === 'columnWithGroupOn';
 					});
 
@@ -103,14 +103,14 @@
 				});
 
 				test('sets column sortOn property to valuePath when sort-on attribute is missing', () => {
-					var column = omnitable.columns.find(col => {
+					const column = omnitable.columns.find(col => {
 						return col.name === 'columnWithoutSortOn';
 					});
 
 					assert.equal(column.sortOn, 'valuePath');
 				});
 				test('sets column sortOn property to sort-on attribute', () => {
-					var column = omnitable.columns.find(col => {
+					const column = omnitable.columns.find(col => {
 						return col.name === 'columnWithSortOn';
 					});
 
@@ -186,14 +186,14 @@
 			});
 
 			suite('it logs unnamed column', () => {
-				var omnitable,
+				let omnitable,
 					data,
 					consoleErrorStub;
 
 				setup(done => {
 					// We must stub console.error otherwise the test will fail
 					consoleErrorStub = sinon.stub(window.console, 'error');
-					data = Cosmoz.TableDemoBehavior.generateTableDemoData(10, 11, 25);
+					data = Cosmoz.Demo.generateTableDemoData(10, 11, 25);
 					omnitable = setupOmnitableFixture('column-setup', data, () => done());
 				});
 
