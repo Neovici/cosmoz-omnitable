@@ -79,6 +79,11 @@
 				};
 			}
 
+			isEmpty() {
+				// FIXME: remove this when TemplateHelperBehavior is a 2.x mixin
+				return Cosmoz.TemplateHelperBehavior.isEmpty.apply(this, arguments);
+			}
+
 			_firstItem(items) {
 				if (items !== undefined && items !== null && items.length > 0) {
 					return items[0];
