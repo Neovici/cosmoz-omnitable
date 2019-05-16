@@ -9,7 +9,7 @@
 <link rel="import" href="../../../paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../../../cosmoz-viewinfo/cosmoz-viewinfo.html">
 <link rel="import" href="../../cosmoz-omnitable.html">
-<link rel="import" href="../table-demo-behavior.html">
+<link rel="import" href="../table-demo-helper.html">
 <link rel="import" href="cosmoz-translations.html">
 
 <dom-module id="x-page">
@@ -146,12 +146,11 @@
 			},
 
 			behaviors: [
-				Cosmoz.TableDemoBehavior,
 				Cosmoz.TranslatableBehavior
 			],
 
 			attached() {
-				var data = this.generateTableDemoData(10, 11, 25);
+				const data = Cosmoz.Demo.generateTableDemoData(10, 11, 25);
 				// Used to test filtering and sorting when a row has an undefined or null amount or number
 				data[0].amount = undefined;
 				data[1].value = undefined;
@@ -163,11 +162,11 @@
 			},
 
 			changeData() {
-				this.data = this.generateTableDemoData(10, 11, 10);
+				this.data = Cosmoz.Demo.generateTableDemoData(10, 11, 10);
 			},
 
 			changeSmallData() {
-				this.data = this.generateTableDemoData(2, 2, 10);
+				this.data = Cosmoz.Demo.generateTableDemoData(2, 2, 10);
 			},
 
 			emptyData() {

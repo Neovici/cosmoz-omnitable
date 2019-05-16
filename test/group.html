@@ -14,7 +14,7 @@
 	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
 	<link rel="import" href="../cosmoz-omnitable.html">
 	<link rel="import" href="../cosmoz-omnitable-columns.html">
-	<link rel="import" href="../demo/table-demo-behavior.html">
+	<link rel="import" href="../demo/table-demo-helper.html">
 </head>
 <body>
 	<test-fixture id="id">
@@ -79,7 +79,7 @@
 				data;
 
 			setup(done => {
-				data = Cosmoz.TableDemoBehavior.generateTableDemoData(10, 11, 25);
+				data = Cosmoz.Demo.generateTableDemoData(10, 11, 25);
 				omnitable = setupOmnitableFixture('id', data, () => done());
 			});
 
@@ -120,7 +120,7 @@
 				data;
 
 			setup(done => {
-				data = Cosmoz.TableDemoBehavior.generateTableDemoData(10, 11, 25);
+				data = Cosmoz.Demo.generateTableDemoData(10, 11, 25);
 				omnitable = setupOmnitableFixture('bool', data, () => done());
 			});
 
@@ -147,7 +147,7 @@
 				data;
 
 			setup(done => {
-				data = Cosmoz.TableDemoBehavior.generateTableDemoData(10, 11, 25);
+				data = Cosmoz.Demo.generateTableDemoData(10, 11, 25);
 				omnitable = setupOmnitableFixture('amount', data, () => done());
 			});
 

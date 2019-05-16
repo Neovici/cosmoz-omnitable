@@ -17,7 +17,7 @@
 	<link rel="import" href="../cosmoz-omnitable.html">
 	<link rel="import" href="multi-filter-column.html">
 
-	<link rel="import" href="table-demo-behavior.html">
+	<link rel="import" href="table-demo-helper.html">
 
 	<custom-style>
 		<style is="custom-style" include="iron-flex iron-flex-alignment iron-positioning"></style>
@@ -99,20 +99,16 @@
 				}
 			},
 
-			behaviors: [
-				Cosmoz.TableDemoBehavior
-			],
-
 			ready() {
 				//this.changeData();
 			},
 
 			attached() {
-				this.data = this.generateTableDemoData(20, 25, 25);
+				this.data = Cosmoz.Demo.generateTableDemoData(20, 25, 25);
 			},
 
 			changeData() {
-				this.data = this.generateTableDemoData(20, 25, 10);
+				this.data = Cosmoz.Demo.generateTableDemoData(20, 25, 10);
 			},
 
 			_computeLabel(text, count) {
