@@ -14,12 +14,12 @@
 	 * @polymer
 	 * @customElement
 	 * @appliesMixin Polymer.IronResizableBehavior
-	 * @appliesMixin Cosmoz.TranslatableBehavior
 	 */
-	class Omnitable extends Polymer.mixinBehaviors([
-		Polymer.IronResizableBehavior,
-		Cosmoz.TranslatableBehavior
-	], Polymer.Element) {
+	class Omnitable extends Cosmoz.Mixins.translatable(
+		Polymer.mixinBehaviors([
+			Polymer.IronResizableBehavior
+		], Polymer.Element)
+	) {
 		static get is() {
 			return 'cosmoz-omnitable';
 		}
@@ -251,14 +251,6 @@
 			 */
 				_allSelected: {
 					type: Boolean
-				},
-
-				// FIXME: remove when TranslatableBehavior is a 2.x mixin
-				t: {
-					type: Object,
-					value() {
-						return {};
-					}
 				}
 			};
 		}
@@ -269,16 +261,6 @@
 				'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
 				' _selectedItemsChanged(selectedItems.*)'
 			];
-		}
-
-		_() {
-			// FIXME: remove this when TranslatableBehavior is a 2.x mixin
-			return Cosmoz.TranslatableBehavior._.apply(this, arguments);
-		}
-
-		ngettext() {
-			// FIXME: remove this when TranslatableBehavior is a 2.x mixin
-			return Cosmoz.TranslatableBehavior.ngettext.apply(this, arguments);
 		}
 
 		constructor() {

@@ -46,12 +46,8 @@
 	<script>
 		window.Cosmoz = window.Cosmoz || {};
 
-		class OmnitableColumnListData extends Polymer.mixinBehaviors(
-			[
-				Cosmoz.TemplateHelperBehavior,
-				Cosmoz.TranslatableBehavior
-			],
-			Polymer.Element
+		class OmnitableColumnListData extends Cosmoz.Mixins.translatable(
+			Polymer.mixinBehaviors([Cosmoz.TemplateHelperBehavior], Polymer.Element)
 		) {
 			static get is() {
 				return 'cosmoz-omnitable-column-list-data';
@@ -86,11 +82,6 @@
 			isEmpty() {
 				// FIXME: remove this when TemplateHelperBehavior is a 2.x mixin
 				return Cosmoz.TemplateHelperBehavior.isEmpty.apply(this, arguments);
-			}
-
-			_() {
-				// FIXME: remove this when TranslatableBehavior is a 2.x mixin
-				return Cosmoz.TranslatableBehavior._.apply(this, arguments);
 			}
 
 			_firstItem(items) {

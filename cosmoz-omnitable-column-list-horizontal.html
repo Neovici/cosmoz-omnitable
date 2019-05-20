@@ -56,9 +56,13 @@
 		 * @appliesMixin Cosmoz.ListColumnMixin
 		 * @appliesMixin Cosmoz.OmnitableColumnMixin
 		 */
-		class OmnitableColumnListHorizontal extends	Cosmoz.ListColumnMixin(Cosmoz.OmnitableColumnMixin(
-			Polymer.mixinBehaviors([Cosmoz.TranslatableBehavior], Polymer.Element)
-		)) {
+		class OmnitableColumnListHorizontal extends	Cosmoz.ListColumnMixin(
+			Cosmoz.OmnitableColumnMixin(
+				Cosmoz.Mixins.translatable(
+					Polymer.Element
+				)
+			)
+		) {
 			static get is() {
 				return 'cosmoz-omnitable-column-list-horizontal';
 			}

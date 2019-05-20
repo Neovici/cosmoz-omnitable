@@ -36,7 +36,7 @@
 		"paper-listbox": "PolymerElements/paper-listbox#^2.1.1",
 		"paper-spinner": "PolymerElements/paper-spinner#^2.1.0",
 		"cosmoz-grouped-list": "Neovici/cosmoz-grouped-list#^2.0.4",
-		"cosmoz-i18next": "Neovici/cosmoz-i18next#^2.0.0",
+		"cosmoz-i18next": "Neovici/cosmoz-i18next#^2.0.1",
 		"cosmoz-bottom-bar": "neovici/cosmoz-bottom-bar#^2.2.1",
 		"cosmoz-behaviors": "neovici/cosmoz-behaviors#^2.0.0",
 		"cosmoz-page-router": "Neovici/cosmoz-page-router#^2.1.1",
