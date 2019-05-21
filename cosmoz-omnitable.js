@@ -193,6 +193,14 @@
 					value: 0
 				},
 
+				// FIXME: remove when TranslatableBehavior is a 2.x mixin
+				t: {
+					type: Object,
+					value() {
+						return {};
+					}
+				},
+
 				_groupsCount: {
 					type: Number,
 					value: 0
@@ -274,6 +282,12 @@
 			this._filterItems = this._filterItems.bind(this);
 			this._groupItems = this._groupItems.bind(this);
 			this._sortFilteredGroupedItems = this._sortFilteredGroupedItems.bind(this);
+		}
+
+
+		_() {
+			// FIXME: remove this when TranslatableBehavior is a 2.x mixin
+			return Cosmoz.TranslatableBehavior._.apply(this, arguments);
 		}
 
 		connectedCallback() {
@@ -373,6 +387,11 @@
 
 		_computeShowCheckboxes(dataIsValid, hasActions) {
 			return dataIsValid && hasActions;
+		}
+
+		ngettext() {
+			// FIXME: remove this when TranslatableBehavior is a 2.x mixin
+			return Cosmoz.TranslatableBehavior.ngettext.apply(this, arguments);
 		}
 
 		visibleChanged(turnedVisible) {
