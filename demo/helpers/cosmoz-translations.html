@@ -11,54 +11,55 @@
 		</cosmoz-i18next>
 	</template>
 	<script>
-		(function () {
-			'use strict';
+		/*global Polymer*/
 
-			Polymer({
-				is: 'cosmoz-translations',
+		class CosmozTranslations extends Cosmoz.Mixins.translatable(Polymer.Element) {
+			static get is() {
+				return 'cosmoz-translations';
+			}
 
-				_getTranslations(locale) {
-					if (locale === 'sv') {
-						return {
-							'Ascending': 'stigande',
-							'Descending': 'fallande',
-							'Amount': 'Belopp',
-							'Group': 'Grupp',
-							'{0} group': '{0} grupp',
-							'{0} group_plural': '{0} grupper',
-							'{0} row': '{0} rad',
-							'{0} row_plural': '{0} rader',
-							'{0} selected item': '{0} valt objekt',
-							'{0} selected item_plural': '{0} valda objekt',
-							'Group on': 'Gruppera på',
-							'Sort on': 'Sortera på',
-							'No grouping': 'Ingen gruppering',
-							'No sorting': 'Ingen sortering'
-						};
+			_getTranslations(locale) {
+				if (locale === 'sv') {
+					return {
+						'Amount': 'Belopp',
+						'Ascending': 'stigande',
+						'Descending': 'fallande',
+						'Group on': 'Gruppera på',
+						'Group': 'Grupp',
+						'No grouping': 'Ingen gruppering',
+						'No sorting': 'Ingen sortering',
+						'Sort on': 'Sortera på',
+						'{0} group': '{0} grupp',
+						'{0} group_plural': '{0} grupper',
+						'{0} row': '{0} rad',
+						'{0} row_plural': '{0} rader',
+						'{0} selected item': '{0} valt objekt',
+						'{0} selected item_plural': '{0} valda objekt'
+					};
 
-					} else if (locale === 'fr') {
-						return {
-							'Ascending': 'croissant',
-							'Descending': 'décroissant',
-							'Amount': 'Montant',
-							'Save as CSV': 'Eporter en CSV',
-							'Group': 'Groupe',
-							'{0} group': '{0} groupe',
-							'{0} group_plural': '{0} groupes',
-							'{0} row': '{0} ligne',
-							'{0} row_plural': '{0} lignes',
-							'{0} selected item': '{0} élément sélectionné',
-							'{0} selected item_plural': '{0} éléments sélectionnés',
-							'Group on': 'Grouper sur',
-							'Sort on': 'Trier sur',
-							'No grouping': 'Pas de groupement',
-							'No sorting': 'Pas de tri'
-						};
-					}
-
-					return {};
+				} else if (locale === 'fr') {
+					return {
+						'Amount': 'Montant',
+						'Ascending': 'croissant',
+						'Descending': 'décroissant',
+						'Group on': 'Grouper sur',
+						'Group': 'Groupe',
+						'No grouping': 'Pas de groupement',
+						'No sorting': 'Pas de tri',
+						'Save as CSV': 'Eporter en CSV',
+						'Sort on': 'Trier sur',
+						'{0} group': '{0} groupe',
+						'{0} group_plural': '{0} groupes',
+						'{0} row': '{0} ligne',
+						'{0} row_plural': '{0} lignes',
+						'{0} selected item': '{0} élément sélectionné',
+						'{0} selected item_plural': '{0} éléments sélectionnés'
+					};
 				}
-			});
-		}());
+
+				return {};
+			}
+		}
+		customElements.define(CosmozTranslations.is, CosmozTranslations);
 	</script>
 </dom-module>
