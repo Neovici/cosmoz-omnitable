@@ -7,7 +7,7 @@
 	<title>Cosmoz Omnitable demo</title>
 
 	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-	<link rel="import" href="../../polymer/polymer.html">
+	<link rel="import" href="../../polymer/polymer-element.html">
 	<link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
 	<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
 	<link rel="import" href="../../iron-icons/editor-icons.html">
@@ -87,60 +87,57 @@
 	</x-page>
 
 	<script type="text/javascript">
-	(function () {
-		'use strict';
+		/*global Polymer*/
 
-		Polymer({
-			is: 'x-page',
+		class XPage extends Cosmoz.Mixins.translatable(Polymer.Element) {
+			static get is() {
+				return 'x-page';
+			}
+			static get properties() {
+				return {
+					data: {
+						type: Array
+					},
+					selectedItems: {
+						type: Array
+					},
+					locale: {
+						type: String,
+						value: null
+					},
+					customDataTemplate: {
+						type: Object
+					}
+				};
+			}
 
-			properties: {
-				data: {
-					type: Array
-				},
-				selectedItems: {
-					type: Array
-				},
-				locale: {
-					type: String,
-					value: null
-				},
-				customDataTemplate: {
-					type: Object
-				}
-			},
-
-			ready() {
-				//this.changeData();
-			},
-
-			attached() {
+			connectedCallback() {
+				super.connectedCallback();
 				const data = Cosmoz.Demo.generateTableDemoData(10, 11, 25);
 				this.async(() => {
 					this.data = data;
 				}, 100);
 				this.customDataTemplate = Polymer.dom(this).querySelector('#customDataTemplate');
 
-			},
+			}
 
 			changeData() {
 				this.data = Cosmoz.Demo.generateTableDemoData(10, 11, 10);
-			},
+			}
 
 			emptyData() {
 				this.data = [];
-			},
+			}
 
 			onTap(event) {
 				console.log('onTap', event);
-			},
+			}
 
 			_customFunction(item) {
 				return 'bla ' + item.id + ' bla';
 			}
-
-		});
-	}());
-
+		}
+		customElements.define(XPage.is, XPage);
 	</script>
 </body>
 </html>

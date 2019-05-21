@@ -100,13 +100,14 @@
 	<x-page class="fit"></x-page>
 
 	<script type="text/javascript">
-		(function () {
-			'use strict';
+		/*global Polymer*/
 
-			Polymer({
-				is: 'x-page',
-
-				properties: {
+		class XPage extends Polymer.Element {
+			static get is() {
+				return 'x-page';
+			}
+			static get properties() {
+				return {
 					data: {
 						type: Array
 					},
@@ -121,36 +122,38 @@
 						type: String,
 						value: 'group'
 					}
-				},
+				};
+			}
 
-				attached() {
-					this.data = Cosmoz.Demo.generateTableDemoData(20, 25, 25);
-				},
+			connectedCallback() {
+				super.connectedCallback();
+				this.data = Cosmoz.Demo.generateTableDemoData(20, 25, 25);
+			}
 
-				changeData() {
-					this.data = Cosmoz.Demo.generateTableDemoData(20, 25, 10);
-				},
+			changeData() {
+				this.data = Cosmoz.Demo.generateTableDemoData(20, 25, 10);
+			}
 
-				_localeChanged(locale, oldLocale) {
-					console.log('_localeChanged', locale, oldLocale);
-				},
+			_localeChanged(locale, oldLocale) {
+				console.log('_localeChanged', locale, oldLocale);
+			}
 
-				_computeLabel(text, count) {
-					return text + ' ' + count + ' items';
-				},
+			_computeLabel(text, count) {
+				return text + ' ' + count + ' items';
+			}
 
-				updateSelectedRows(event, detail) {
-					detail.items.forEach(item => {
-						this.$.omnitable.setItemValue(item, 'randomString3', 'blablablalbal');
-					}, this);
-				},
+			updateSelectedRows(event, detail) {
+				detail.items.forEach(item => {
+					this.$.omnitable.setItemValue(item, 'randomString3', 'blablablalbal');
+				}, this);
+			}
 
-				removeItems(event, detail) {
-					console.log('runAction', detail.items, event, detail, detail.items);
-					detail.omnitable.removeItems(detail.items);
-				}
-			});
-		}());
+			removeItems(event, detail) {
+				console.log('runAction', detail.items, event, detail, detail.items);
+				detail.omnitable.removeItems(detail.items);
+			}
+		}
+		customElements.define(XPage.is, XPage);
 	</script>
 </body>
 </html>
