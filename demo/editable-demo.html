@@ -7,7 +7,7 @@
 	<title>Cosmoz Omnitable demo</title>
 
 	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-	<link rel="import" href="../../polymer/polymer.html">
+	<link rel="import" href="../../polymer/polymer-element.html">
 	<link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
 	<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
 	<link rel="import" href="../../iron-icons/editor-icons.html">
@@ -98,84 +98,77 @@
 	<x-page class="fit"></x-page>
 
 	<script type="text/javascript">
-	(function () {
-		'use strict';
+		/*global Polymer*/
 
+		class XPage extends Cosmoz.Mixins.translatable(Polymer.Element) {
+			static get is() {
+				return 'x-page';
+			}
+			static get properties() {
+				return {
 
-		Polymer({
-			is: 'x-page',
+					data: {
+						type: Array
+					},
 
-			properties: {
-				data: {
-					type: Array
-				},
+					selectedItems: {
+						type: Array
+					},
 
-				selectedItems: {
-					type: Array
-				},
+					info: {
+						type: String,
+						observer: function () { // eslint-disable-line object-shorthand
+							this.$.info.setAttribute('active', true);
+							window.setTimeout(() => {
+								this.$.info.removeAttribute('active');
+							}, 4000);
+						}
+					}
+				};
+			}
 
-				info: {
-					type: String,
-					observer: '_infoChanged'
-				}
-			},
-
-			behaviors: [
-				Cosmoz.TranslatableBehavior
-			],
-
-			listeners: {
-				'column-item-changed': '_itemChanged'
-			},
-
-			ready() {
-				//this.changeData();
-			},
-
-			attached() {
+			connectedCallback() {
+				super.connectedCallback();
+				window.addEventListener('column-item-changed', this._itemChanged);
 				this.data = Cosmoz.Demo.generateTableDemoData(20, 25, 25);
-			},
+			}
 
 			changeData() {
 				this.data = Cosmoz.Demo.generateTableDemoData(20, 25, 10);
-			},
+			}
 
 			_computeLabel(text, count) {
 				return text + ' ' + count + ' items';
-			},
+			}
+
+			disconnectedCallback() {
+				window.removeEventListener('column-item-changed', this._itemChanged);
+			}
 
 			updateSelectedRows(event, detail) {
 				detail.items.forEach(function (item) {
 					this.$.omnitable.setItemValue(item, 'randomString3', 'blablablalbal');
 				}, this);
-
-			},
+			}
 
 			removeItems(event, detail) {
 				console.log('runAction', detail.items, event, detail, detail.items);
 				detail.omnitable.removeItems(detail.items);
-			},
+			}
 
 			_itemNameChanged(event) {
 				const item = event.model.item,
 					oldValue = item.name;
 				this.$.omnitable.setItemValue(item, 'name', event.target.value);
 				this.$.nameCol._fireItemChangeEvent(item, 'name', oldValue);
-			},
-
-			_infoChanged() {
-				this.$.info.setAttribute('active', true);
-				this.async(() => {
-					this.$.info.removeAttribute('active');
-				}, 4000);
-			},
+			}
 
 			_itemChanged(e) {
 				const change = e.detail;
 				this.info = `Column ${e.target.name}: Item ${change.valuePath} changed from "${change.oldValue}" to "${change.value}"`;
 			}
-		});
-	}());
+		}
+		customElements.define(XPage.is, XPage);
 	</script>
 </body>
 </html>

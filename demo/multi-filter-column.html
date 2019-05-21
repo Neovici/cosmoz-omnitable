@@ -21,29 +21,28 @@
 
 	</template>
 	<script>
-		Polymer({
-			is: 'multi-filter-column',
+		/*global Cosmoz,Polymer*/
 
-			properties: {
-				filters: {
-					type: String,
-					observer: '_filtersChanged'
-				}
-			},
-
-			behaviors: [
-				Cosmoz.OmnitableColumnMixin
-			],
-
-			_filtersChanged(newFilters) {
-				if (newFilters && newFilters !== '') {
-					var filterArray = newFilters.split(',');
-					this.filter = filterArray.filter(elem => {
-						return elem !== '';
-					});
-				}
+		class MultiFilterColumn extends Polymer.mixinBehaviors([Cosmoz.OmnitableColumnMixin], Polymer.Element) {
+			static get is() {
+				return 'multi-filter-column';
 			}
-
-		});
+			static get properties() {
+				return {
+					filters: {
+						type: String,
+						observer: function (newFilters) { // eslint-disable-line object-shorthand
+							if (newFilters && newFilters !== '') {
+								var filterArray = newFilters.split(',');
+								this.filter = filterArray.filter(elem => {
+									return elem !== '';
+								});
+							}
+						}
+					}
+				};
+			}
+		}
+		customElements.define(MultiFilterColumn.is, MultiFilterColumn);
 	</script>
 </dom-module>
