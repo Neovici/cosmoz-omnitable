@@ -31,7 +31,7 @@
 				return {
 					filters: {
 						type: String,
-						observer: function(newFilters) { // eslint-disable-line object-shorthand
+						observer: function (newFilters) { // eslint-disable-line object-shorthand
 							if (newFilters && newFilters !== '') {
 								var filterArray = newFilters.split(',');
 								this.filter = filterArray.filter(elem => {
