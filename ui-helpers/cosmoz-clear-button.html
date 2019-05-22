@@ -39,21 +39,27 @@
 		<iron-icon icon="clear"></iron-icon>
 	</template>
 	<script type="text/javascript">
-		Polymer({
-			is: 'cosmoz-clear-button',
-			properties: {
-				visible: {
-					type: Boolean,
-					value: false,
-					reflectToAttribute: true
-				},
+		/*global Polymer*/
 
-				light: {
-					type: Boolean,
-					reflectToAttribute: true,
-					value: false
-				}
+		class CosmozClearButton extends Polymer.Element {
+			static get is() {
+				return 'cosmoz-clear-button';
 			}
-		});
+			static get properties() {
+				return {
+					light: {
+						reflectToAttribute: true,
+						type: Boolean,
+						value: false
+					},
+					visible: {
+						reflectToAttribute: true,
+						type: Boolean,
+						value: false
+					}
+				};
+			}
+		}
+		customElements.define(CosmozClearButton.is, CosmozClearButton);
 	</script>
 </dom-module>

@@ -3,6 +3,10 @@
 
 	'use strict';
 
+	window.Cosmoz = window.Cosmoz || {};
+
+	Cosmoz.Mixins = Cosmoz.Mixins || {};
+
 	const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending', 'groupOnDescending'];
 	const {
 		FlattenedNodesObserver,
