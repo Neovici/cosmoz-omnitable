@@ -69,21 +69,8 @@
 					_othersCount: {
 						type: Number,
 						computed: '_computeOthersCount(items)'
-					},
-
-					// FIXME: remove when TranslatableBehavior is a 2.x mixin
-					t: {
-						type: Object,
-						value() {
-							return {};
-						}
 					}
 				};
-			}
-
-			_() {
-				// FIXME: remove this when TranslatableBehavior is a 2.x mixin
-				return Cosmoz.TranslatableBehavior._.apply(this, arguments);
 			}
 
 			isEmpty() {
