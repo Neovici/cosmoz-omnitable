@@ -18,6 +18,7 @@
 	 * @polymer
 	 * @customElement
 	 * @appliesMixin Polymer.IronResizableBehavior
+	 * @appliesMixin Cosmoz.Mixins.translatable
 	 */
 	class Omnitable extends Cosmoz.Mixins.translatable(
 		Polymer.mixinBehaviors([
