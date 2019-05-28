@@ -48,6 +48,11 @@
 
 		Cosmoz.Mixins = Cosmoz.Mixins || {};
 
+		/**
+		 * @polymer
+		 * @customElement
+		 * @appliesMixin Cosmoz.Mixins.translatable
+		 */
 		class OmnitableColumnListData extends Cosmoz.Mixins.translatable(
 			Polymer.mixinBehaviors([Cosmoz.TemplateHelperBehavior], Polymer.Element)
 		) {
