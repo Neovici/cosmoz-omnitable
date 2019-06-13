@@ -1,7 +1,8 @@
-import '../../../cosmoz-omnitable-column-mixin.js';
-import { html } from '../../../../@polymer/polymer/lib/utils/html-tag.js';
-import { PolymerElement } from '../../../../@polymer/polymer/polymer-element.js';
-class BasicColumn extends Cosmoz.OmnitableColumnMixin(PolymerElement) {
+import { columnMixin } from '../../../cosmoz-omnitable-column-mixin';
+import { html } from '@polymer/polymer/lib/utils/html-tag';
+import { PolymerElement } from '@polymer/polymer/polymer-element';
+
+class BasicColumn extends columnMixin(PolymerElement) {
 	static get is() {
 		return 'basic-column';
 	}

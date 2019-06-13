@@ -31,7 +31,6 @@ import './cosmoz-omnitable-columns';
 import { NullXlsx } from '@neovici/nullxlsx';
 
 import 'file-saver/src/FileSaver';
-const { saveAs } = window;
 
 import { timeOut, animationFrame } from '@polymer/polymer/lib/utils/async';
 import { Debouncer } from '@polymer/polymer/lib/utils/debounce';
@@ -1202,7 +1201,7 @@ class Omnitable extends translatable(
 
 		rows.unshift(header);
 
-		saveAs(new File(rows, this.csvFilename, {
+		window.saveAs(new File(rows, this.csvFilename, {
 			type: 'text/csv;charset=utf-8'
 		}));
 	}
@@ -1233,7 +1232,7 @@ class Omnitable extends translatable(
 		const data = this._prepareXlsxData(),
 			xlsx = new NullXlsx(this.xlsxFilename).addSheetFromData(data, this.xlsxSheetname).generate();
 
-		saveAs(new File([xlsx], this.xlsxFilename, {
+		window.saveAs(new File([xlsx], this.xlsxFilename, {
 			type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 		}));
 	}

@@ -5,15 +5,15 @@
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 	<title>cosmoz-omnitable list test</title>
 
-	<script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-	<script src="../../../wct-browser-legacy/browser.js"></script>
-	<script src="../../../@polymer/test-fixture/test-fixture-mocha.js"></script>
-	<script src="../helpers/utils.js"></script>
+	<script src="/components/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+	<script src="/components/mocha/mocha.js"></script>
+	<script src="/components/wct-mocha/wct-mocha.js"></script>
+	<script src="/components/chai/chai.js"></script>
+	<script src="/components/@polymer/test-fixture/test-fixture-mocha.js"></script>
 
-	<script type="module" src="../../../@polymer/test-fixture/test-fixture.js"></script>
-	<script type="module" src="../../../@polymer/iron-test-helpers/iron-test-helpers.js"></script>
+	<script type="module" src="/components/@polymer/test-fixture/test-fixture.js"></script>
+	<script type="module" src="/components/@polymer/iron-test-helpers/iron-test-helpers.js"></script>
 	<script type="module" src="../../cosmoz-omnitable.js"></script>
-	<script type="module" src="../../cosmoz-omnitable-templatize-mixin.js"></script>
 	<script type="module" src="../helpers/fixtures/basic-column.js"></script>
 </head>
 <body>
@@ -41,12 +41,8 @@
 	</test-fixture>
 
 	<script type="module">
-import '../../../@polymer/test-fixture/test-fixture.js';
-import '../../../@polymer/iron-test-helpers/iron-test-helpers.js';
-import '../../cosmoz-omnitable.js';
-import '../../cosmoz-omnitable-templatize-mixin.js';
-import '../helpers/fixtures/basic-column.js';
-import { flush as flush$0 } from '../../../@polymer/polymer/lib/utils/flush.js';
+import { setupOmnitableFixture } from '../helpers/utils';
+import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
 
 describe('Basic omnitable functionality', () => {
 	let omnitable;
@@ -58,7 +54,7 @@ describe('Basic omnitable functionality', () => {
 			{id: 3, name: 'item 3', list: ['a', 'b', 'c'], bool: true}
 		];
 		omnitable = setupOmnitableFixture('basic', data, () => {
-			flush$0();
+			polymerFlush();
 			done();
 		});
 	});
@@ -86,6 +82,7 @@ describe('Basic omnitable functionality', () => {
 
 		omnitable.flush();
 		flush(() => {
+			polymerFlush();
 			const cells = Array.from(omnitable.shadowRoot.querySelectorAll('.basic-column-cell, .overriden-column-cell'));
 			expect(cells.map(c => c.innerText)).to.deep.equal(['item 4', 'Overriden item 4', 'item 5', 'Overriden item 5', 'item 6', 'Overriden item 6']);
 			done();
@@ -93,7 +90,10 @@ describe('Basic omnitable functionality', () => {
 	});
 
 	it('should use editable template when the column is editable', done => {
-		omnitable.columns.forEach(c => c.editable = true);
+		omnitable.columns.forEach(c => {
+			c.editable = true;
+		});
+
 		flush(() => {
 			const cells = Array.from(omnitable.shadowRoot.querySelectorAll('.basic-column-cell'));
 			expect(cells.map(c => c.innerText)).to.deep.equal(['Edit: item 1', 'Edit: item 1', 'Edit: item 2', 'Edit: item 2', 'Edit: item 3', 'Edit: item 3']);

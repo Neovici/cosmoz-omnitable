@@ -1,14 +1,9 @@
-import '../../../cosmoz-omnitable-repeater-mixin.js';
-import { html } from '../../../../@polymer/polymer/lib/utils/html-tag.js';
-import { PolymerElement } from '../../../../@polymer/polymer/polymer-element.js';
-window.Cosmoz = window.Cosmoz || {};
+import { repeaterMixin } from '../../../cosmoz-omnitable-repeater-mixin';
+import { EDIT_TEMPLATE, CELL_TEMPLATE } from '../../../cosmoz-omnitable-templatize-mixin';
+import { html } from '@polymer/polymer/lib/utils/html-tag';
+import { PolymerElement } from '@polymer/polymer/polymer-element';
 
-/**
- * @polymer
- * @customElement
- * @appliesMixin Cosmoz.OmnitableRepeaterMixin
- */
-class BasicRow extends Cosmoz.OmnitableRepeaterMixin(PolymerElement) {
+class BasicRow extends repeaterMixin(PolymerElement) {
 	static get is() {
 		return 'basic-row';
 	}
@@ -53,8 +48,8 @@ class BasicRow extends Cosmoz.OmnitableRepeaterMixin(PolymerElement) {
 	_getTemplateInstance(column) {
 		return column.getTemplateInstance(
 			column.editable
-				? Cosmoz.OmnitableTemplatizeMixin.EDIT_TEMPLATE
-				: Cosmoz.OmnitableTemplatizeMixin.CELL_TEMPLATE,
+				? EDIT_TEMPLATE
+				: CELL_TEMPLATE,
 			{item: this.item}
 		);
 	}
@@ -64,5 +59,3 @@ class BasicRow extends Cosmoz.OmnitableRepeaterMixin(PolymerElement) {
 	}
 }
 customElements.define(BasicRow.is, BasicRow);
-
-Cosmoz.BasicRow = BasicRow;
