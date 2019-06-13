@@ -5,16 +5,16 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-		<script src="../../web-component-tester/browser.js"></script>
-		<script src="../../test-fixture/test-fixture-mocha.js"></script>
+		<script src="../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+		<script src="../../wct-browser-legacy/browser.js"></script>
+		<script src="../../@polymer/test-fixture/test-fixture-mocha.js"></script>
 		<script src="./helpers/utils.js"></script>
 
-		<link rel="import" href="../../test-fixture/test-fixture.html">
-		<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-		<link rel="import" href="../cosmoz-omnitable.html">
-		<link rel="import" href="../cosmoz-omnitable-column-autocomplete.html">
-		<link rel="import" href="../cosmoz-omnitable-column.html">
+		<script type="module" src="../../@polymer/test-fixture/test-fixture.js"></script>
+		<script type="module" src="../../@polymer/iron-test-helpers/iron-test-helpers.js"></script>
+		<script type="module" src="../cosmoz-omnitable.js"></script>
+		<script type="module" src="../cosmoz-omnitable-column-autocomplete.js"></script>
+		<script type="module" src="../cosmoz-omnitable-column.js"></script>
 	</head>
 	<body>
 		<test-fixture id="basic">
@@ -35,130 +35,132 @@
 				</cosmoz-omnitable>
 			</template>
 		</test-fixture>
-		<script>
-		(function () {
-			'use strict';
+		<script type="module">
+import '../../@polymer/test-fixture/test-fixture.js';
+import '../../@polymer/iron-test-helpers/iron-test-helpers.js';
+import '../cosmoz-omnitable.js';
+import '../cosmoz-omnitable-column-autocomplete.js';
+import '../cosmoz-omnitable-column.js';
 
-			let omnitable;
-			const data = [
-				{ id: 0, group: 'group0', name: 'Item 0' },
-				{ id: 1, group: 'group0', name: 'Item 1' },
-				{ id: 2, group: 'group1', name: 'Item 2' },
-				{ id: 3, group: 'group1', name: 'Item 3' }
-			];
+let omnitable;
+const data = [
+	{ id: 0, group: 'group0', name: 'Item 0' },
+	{ id: 1, group: 'group0', name: 'Item 1' },
+	{ id: 2, group: 'group1', name: 'Item 2' },
+	{ id: 3, group: 'group1', name: 'Item 3' }
+];
 
-			suite('fit-dropdowns', () => {
-				let omnitable;
+suite('fit-dropdowns', () => {
+	let omnitable;
 
-				setup(done => omnitable = setupOmnitableFixture('basic', data.slice(0), () => done()));
+	setup(done => omnitable = setupOmnitableFixture('basic', data.slice(0), () => done()));
 
-				test('sets iron-dropdown fitInto property', () => {
-					[
-						omnitable.$.groupOnSelector,
-						omnitable.$.sortOnSelector
-					]
-						.map(d => d.$.menuButton)
-						.concat([omnitable.$.bottomBar.$.menu])
-						.forEach(button => {
-							assert.equal(button.$.dropdown.fitInto, omnitable);
-						});
-				});
+	test('sets iron-dropdown fitInto property', () => {
+		[
+			omnitable.$.groupOnSelector,
+			omnitable.$.sortOnSelector
+		]
+			.map(d => d.$.menuButton)
+			.concat([omnitable.$.bottomBar.$.menu])
+			.forEach(button => {
+				assert.equal(button.$.dropdown.fitInto, omnitable);
 			});
+	});
+});
 
-			suite('autocomplete unit tests', () => {
-				let omnitable,
-					column;
+suite('autocomplete unit tests', () => {
+	let omnitable,
+		column;
 
-				setup(done => omnitable = setupOmnitableFixture('basic', data.slice(0), () => {
-					column = omnitable.columns[0];
-					done();
-				}));
+	setup(done => omnitable = setupOmnitableFixture('basic', data.slice(0), () => {
+		column = omnitable.columns[0];
+		done();
+	}));
 
-				test('getComparableValue returns value converted to String', () => {
-					assert.equal(column.getComparableValue({ id: 14, group: 'group0', name: 'Item 14' }), 14);
-					assert.equal(column.getComparableValue({ id: 345, group: 'group7', name: 'Item 345' }), 345);
-					assert.equal(column.getComparableValue({ id: 27, group: 'group5', name: 'Item 27' }), 27);
-				});
+	test('getComparableValue returns value converted to String', () => {
+		assert.equal(column.getComparableValue({ id: 14, group: 'group0', name: 'Item 14' }), 14);
+		assert.equal(column.getComparableValue({ id: 345, group: 'group7', name: 'Item 345' }), 345);
+		assert.equal(column.getComparableValue({ id: 27, group: 'group5', name: 'Item 27' }), 27);
+	});
 
-				test('getString handles undefined valuePath parameter', () => {
-					assert.equal(column.getString({ id: 70, group: 'group0', name: 'Item 0' }), 70);
-					assert.equal(column.getString({ id: 41, group: 'group4', name: 'Item 41' }), 41);
-					assert.equal(column.getString({ id: 126, group: 'group12', name: 'Item 126' }), 126);
-				});
+	test('getString handles undefined valuePath parameter', () => {
+		assert.equal(column.getString({ id: 70, group: 'group0', name: 'Item 0' }), 70);
+		assert.equal(column.getString({ id: 41, group: 'group4', name: 'Item 41' }), 41);
+		assert.equal(column.getString({ id: 126, group: 'group12', name: 'Item 126' }), 126);
+	});
 
-				test('getString handles itemValue as empty array', () => {
-					assert.equal(column.getString({ id: [], group: 'group0', name: 'Item 0' }), '');
-				});
+	test('getString handles itemValue as empty array', () => {
+		assert.equal(column.getString({ id: [], group: 'group0', name: 'Item 0' }), '');
+	});
 
-				test('getString handles itemValue as array', () => {
-					assert.equal(column.getString({ id: [70, 80], group: 'group0', name: 'Item 0' }), '70, 80');
-					assert.equal(column.getString({ id: [32, 743, -39, 285], group: 'group13', name: 'Item 32' }), '32, 743, -39, 285');
-				});
+	test('getString handles itemValue as array', () => {
+		assert.equal(column.getString({ id: [70, 80], group: 'group0', name: 'Item 0' }), '70, 80');
+		assert.equal(column.getString({ id: [32, 743, -39, 285], group: 'group13', name: 'Item 32' }), '32, 743, -39, 285');
+	});
 
-				test('getString handles itemValue as object', () => {
-					assert.equal(column.getString({ id: { text: '10'}, group: 'group0', name: 'Item 0' }), '10');
-					assert.equal(column.getString({ id: { text: '448'}, group: 'group14', name: 'Item 448' }), '448');
-					assert.equal(column.getString({ id: { text: '11'}, group: 'group11', name: 'Item 11' }), '11');
-				});
+	test('getString handles itemValue as object', () => {
+		assert.equal(column.getString({ id: { text: '10'}, group: 'group0', name: 'Item 0' }), '10');
+		assert.equal(column.getString({ id: { text: '448'}, group: 'group14', name: 'Item 448' }), '448');
+		assert.equal(column.getString({ id: { text: '11'}, group: 'group11', name: 'Item 11' }), '11');
+	});
 
-				test('toXlsxValue handles undefined valuePath', () => {
-					const valuePath = column.valuePath;
-					column.valuePath = null;
-					assert.equal(column.toXlsxValue({ id: 30, group: 'group0', name: 'Item 30' }), '');
-					column.valuePath = valuePath;
-				});
+	test('toXlsxValue handles undefined valuePath', () => {
+		const valuePath = column.valuePath;
+		column.valuePath = null;
+		assert.equal(column.toXlsxValue({ id: 30, group: 'group0', name: 'Item 30' }), '');
+		column.valuePath = valuePath;
+	});
 
-				test('_applySingleFilter filters some string', () => {
-					assert.isTrue(column._applySingleFilter('some', { id: 'some', group: 'group0', name: 'Item 30' }));
-				});
+	test('_applySingleFilter filters some string', () => {
+		assert.isTrue(column._applySingleFilter('some', { id: 'some', group: 'group0', name: 'Item 30' }));
+	});
 
-				test('_applyMultiFilter handles null value', () => {
-					assert.isFalse(column._applyMultiFilter([], {id: null, group: 'group0', name: ' Item id null' }));
-				});
+	test('_applyMultiFilter handles null value', () => {
+		assert.isFalse(column._applyMultiFilter([], {id: null, group: 'group0', name: ' Item id null' }));
+	});
 
-				test('_unique handles undefined values', () => {
-					assert.isUndefined(column._unique());
-				});
+	test('_unique handles undefined values', () => {
+		assert.isUndefined(column._unique());
+	});
 
-				test('_unique handles unique values', () => {
-					const items = [
-						{id: 0, group: 'group0', name: ' Item 0'},
-						{id: 1, group: 'group0', name: ' Item 1'},
-						{id: 2, group: 'group1', name: ' Item 2'}
-					];
-					assert.deepEqual(column._unique(items, 'id'), items);
-				});
+	test('_unique handles unique values', () => {
+		const items = [
+			{id: 0, group: 'group0', name: ' Item 0'},
+			{id: 1, group: 'group0', name: ' Item 1'},
+			{id: 2, group: 'group1', name: ' Item 2'}
+		];
+		assert.deepEqual(column._unique(items, 'id'), items);
+	});
 
-				test('_unique returns unique values', () => {
-					let items = [
-						{id: 0, group: 'group0', name: ' Item 0'},
-						{id: 1, group: 'group0', name: ' Item 1'},
-						{id: 0, group: 'group0', name: ' Item 0'},
-					];
-					assert.deepEqual(column._unique(items, 'id'), [
-						{id: 0, group: 'group0', name: ' Item 0'},
-						{id: 1, group: 'group0', name: ' Item 1'}
-					]);
+	test('_unique returns unique values', () => {
+		let items = [
+			{id: 0, group: 'group0', name: ' Item 0'},
+			{id: 1, group: 'group0', name: ' Item 1'},
+			{id: 0, group: 'group0', name: ' Item 0'},
+		];
+		assert.deepEqual(column._unique(items, 'id'), [
+			{id: 0, group: 'group0', name: ' Item 0'},
+			{id: 1, group: 'group0', name: ' Item 1'}
+		]);
 
-					items = [
-						{id: 0, group: 'group0', name: ' Item 0'},
-						{id: 1, group: 'group0', name: ' Item 1'},
-						{id: 0, group: 'group0', name: ' Item 0'},
-						{id: 1, group: 'group0', name: ' Item 1'},
-						{id: 2, group: 'group1', name: ' Item 2'},
-						{id: 2, group: 'group1', name: ' Item 2'},
-						{id: 3, group: 'group1', name: ' Item 3'},
-						{id: 0, group: 'group0', name: ' Item 0'},
-					];
-					assert.deepEqual(column._unique(items, 'id'), [
-						{id: 0, group: 'group0', name: ' Item 0'},
-						{id: 1, group: 'group0', name: ' Item 1'},
-						{id: 2, group: 'group1', name: ' Item 2'},
-						{id: 3, group: 'group1', name: ' Item 3'}
-					]);
-				});
-			});
-		})();
-		</script>
+		items = [
+			{id: 0, group: 'group0', name: ' Item 0'},
+			{id: 1, group: 'group0', name: ' Item 1'},
+			{id: 0, group: 'group0', name: ' Item 0'},
+			{id: 1, group: 'group0', name: ' Item 1'},
+			{id: 2, group: 'group1', name: ' Item 2'},
+			{id: 2, group: 'group1', name: ' Item 2'},
+			{id: 3, group: 'group1', name: ' Item 3'},
+			{id: 0, group: 'group0', name: ' Item 0'},
+		];
+		assert.deepEqual(column._unique(items, 'id'), [
+			{id: 0, group: 'group0', name: ' Item 0'},
+			{id: 1, group: 'group0', name: ' Item 1'},
+			{id: 2, group: 'group1', name: ' Item 2'},
+			{id: 3, group: 'group1', name: ' Item 3'}
+		]);
+	});
+});
+</script>
 	</body>
 </html>

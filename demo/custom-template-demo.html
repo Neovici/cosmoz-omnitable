@@ -6,25 +6,42 @@
 
 	<title>Cosmoz Omnitable demo</title>
 
-	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-	<link rel="import" href="../../polymer/polymer-element.html">
-	<link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
-	<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
-	<link rel="import" href="../../iron-icons/editor-icons.html">
-	<link rel="import" href="../../iron-icons/iron-icons.html">
-	<link rel="import" href="../../paper-button/paper-button.html">
-	<link rel="import" href="../../cosmoz-i18next/cosmoz-i18next.html">
-	<link rel="import" href="../cosmoz-omnitable.html">
+	<script src="../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+	<script type="module" src="../../@polymer/polymer/polymer-element.js"></script>
+	<script type="module" src="../../@polymer/iron-flex-layout/iron-flex-layout.js"></script>
+	<script type="module" src="../../@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
+	<script type="module" src="../../@polymer/iron-icons/editor-icons.js"></script>
+	<script type="module" src="../../@polymer/iron-icons/iron-icons.js"></script>
+	<script type="module" src="../../@polymer/paper-button/paper-button.js"></script>
+	<script type="module" src="../../cosmoz-i18next/cosmoz-i18next.js"></script>
+	<script type="module" src="../cosmoz-omnitable.js"></script>
 
-	<link rel="import" href="table-demo-helper.html">
+	<script type="module" src="./table-demo-helper.js"></script>
 
-	<custom-style>
+	<!-- FIXME(polymer-modulizer):
+				These imperative modules that innerHTML your HTML are
+				a hacky way to be sure that any mixins in included style
+				modules are ready before any elements that reference them are
+				instantiated, otherwise the CSS @apply mixin polyfill won't be
+				able to expand the underlying CSS custom properties.
+				See: https://github.com/Polymer/polymer-modulizer/issues/154
+				-->
+		<script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<custom-style>
 		<style is="custom-style" include="iron-flex iron-flex-alignment iron-positioning"></style>
-	</custom-style>
+	</custom-style>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
 
 </head>
 <body class="fullbleed">
-	<dom-module id="x-page">
+	<script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<dom-module id="x-page">
 		<template>
 			<style include="iron-flex iron-positioning">
 				:host {
@@ -47,7 +64,7 @@
 						Selected items count: <span>{{selectedItems.length}}</span>
 					</div>
 					<div class="action">
-						<paper-dropdown-menu label="Locale" no-animations>
+						<paper-dropdown-menu label="Locale" no-animations="">
 							<paper-listbox class="dropdown-content" selected="{{ locale }}" attr-for-selected="value">
 								<paper-item value="en">en</paper-item>
 								<paper-item value="fr">fr</paper-item>
@@ -57,7 +74,7 @@
 					</div>
 				</div>
 
-				<cosmoz-omnitable id="omnitable" class="flex" data="[[data]]" selection-enabled selected-items="{{selectedItems}}">
+				<cosmoz-omnitable id="omnitable" class="flex" data="[[data]]" selection-enabled="" selected-items="{{selectedItems}}">
 					<cosmoz-omnitable-column title="Id" name="id" value-path="id" sort-on="id" group-on="id">
 						<template class="cell">
 							<span>
@@ -70,74 +87,92 @@
 					<cosmoz-omnitable-column title="Value" name="value" value-path="value" sort-on="value" group-on="value">
 					</cosmoz-omnitable-column>
 
-					<cosmoz-omnitable-column title="Amount" name="amount" value-path="amount" sort-on="amount" group-on="amount"
-						cell-template="[[customDataTemplate]]">
+					<cosmoz-omnitable-column title="Amount" name="amount" value-path="amount" sort-on="amount" group-on="amount" cell-template="[[customDataTemplate]]">
 					</cosmoz-omnitable-column>
 				</cosmoz-omnitable>
 
 
 			</div>
 		</template>
-	</dom-module>
+	</dom-module>`;
 
-	<x-page class="fit">
+document.body.appendChild($_documentContainer.content);
+</script>
+
+	<script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<x-page class="fit">
 		<template id="customDataTemplate">
 			<span style="background: red;" on-tap="onTap">[[item.amount.amount]]</span>
 		</template>
-	</x-page>
+	</x-page>`;
 
-	<script type="text/javascript">
-		/*global Polymer*/
+document.body.appendChild($_documentContainer.content);
+</script>
 
-		class XPage extends Cosmoz.Mixins.translatable(Polymer.Element) {
-			static get is() {
-				return 'x-page';
+	<script type="module">
+import { PolymerElement } from '../../@polymer/polymer/polymer-element.js';
+import '../../@polymer/iron-flex-layout/iron-flex-layout.js';
+import '../../@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import '../../@polymer/iron-icons/editor-icons.js';
+import '../../@polymer/iron-icons/iron-icons.js';
+import '../../@polymer/paper-button/paper-button.js';
+import { translatable } from '../../cosmoz-i18next/cosmoz-i18next.js';
+import '../cosmoz-omnitable.js';
+import './table-demo-helper.js';
+import { dom } from '../../@polymer/polymer/lib/legacy/polymer.dom.js';
+/*global Polymer*/
+
+class XPage extends translatable(PolymerElement) {
+	static get is() {
+		return 'x-page';
+	}
+	static get properties() {
+		return {
+			data: {
+				type: Array
+			},
+			selectedItems: {
+				type: Array
+			},
+			locale: {
+				type: String,
+				value: null
+			},
+			customDataTemplate: {
+				type: Object
 			}
-			static get properties() {
-				return {
-					data: {
-						type: Array
-					},
-					selectedItems: {
-						type: Array
-					},
-					locale: {
-						type: String,
-						value: null
-					},
-					customDataTemplate: {
-						type: Object
-					}
-				};
-			}
+		};
+	}
 
-			connectedCallback() {
-				super.connectedCallback();
-				const data = Cosmoz.Demo.generateTableDemoData(10, 11, 25);
-				this.async(() => {
-					this.data = data;
-				}, 100);
-				this.customDataTemplate = Polymer.dom(this).querySelector('#customDataTemplate');
+	connectedCallback() {
+		super.connectedCallback();
+		const data = Cosmoz.Demo.generateTableDemoData(10, 11, 25);
+		this.async(() => {
+			this.data = data;
+		}, 100);
+		this.customDataTemplate = dom(this).querySelector('#customDataTemplate');
 
-			}
+	}
 
-			changeData() {
-				this.data = Cosmoz.Demo.generateTableDemoData(10, 11, 10);
-			}
+	changeData() {
+		this.data = Cosmoz.Demo.generateTableDemoData(10, 11, 10);
+	}
 
-			emptyData() {
-				this.data = [];
-			}
+	emptyData() {
+		this.data = [];
+	}
 
-			onTap(event) {
-				console.log('onTap', event);
-			}
+	onTap(event) {
+		console.log('onTap', event);
+	}
 
-			_customFunction(item) {
-				return 'bla ' + item.id + ' bla';
-			}
-		}
-		customElements.define(XPage.is, XPage);
-	</script>
+	_customFunction(item) {
+		return 'bla ' + item.id + ' bla';
+	}
+}
+customElements.define(XPage.is, XPage);
+</script>
 </body>
 </html>

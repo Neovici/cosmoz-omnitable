@@ -6,56 +6,70 @@
 
 	<title>Cosmoz Omnitable demo</title>
 
-	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-	<link rel="import" href="../../polymer/polymer.html">
-	<link rel="import" href="../../iron-ajax/iron-ajax.html">
-	<link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
-	<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
-	<link rel="import" href="../../iron-icons/editor-icons.html">
-	<link rel="import" href="../../iron-icons/iron-icons.html">
-	<link rel="import" href="../../paper-button/paper-button.html">
-	<link rel="import" href="../../cosmoz-i18next/cosmoz-i18next.html">
-	<link rel="import" href="../../cosmoz-viewinfo/cosmoz-viewinfo.html">
-	<link rel="import" href="../cosmoz-omnitable.html">
+	<script src="../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+	<script type="module" src="../../@polymer/polymer/polymer-legacy.js"></script>
+	<script type="module" src="../../@polymer/iron-ajax/iron-ajax.js"></script>
+	<script type="module" src="../../@polymer/iron-flex-layout/iron-flex-layout.js"></script>
+	<script type="module" src="../../@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
+	<script type="module" src="../../@polymer/iron-icons/editor-icons.js"></script>
+	<script type="module" src="../../@polymer/iron-icons/iron-icons.js"></script>
+	<script type="module" src="../../@polymer/paper-button/paper-button.js"></script>
+	<script type="module" src="../../cosmoz-i18next/cosmoz-i18next.js"></script>
+	<script type="module" src="../../cosmoz-viewinfo/cosmoz-viewinfo.js"></script>
+	<script type="module" src="../cosmoz-omnitable.js"></script>
 
-	<link rel="import" href="table-demo-helper.html">
+	<script type="module" src="./table-demo-helper.js"></script>
 
-	<custom-style>
+	<!-- FIXME(polymer-modulizer):
+				These imperative modules that innerHTML your HTML are
+				a hacky way to be sure that any mixins in included style
+				modules are ready before any elements that reference them are
+				instantiated, otherwise the CSS @apply mixin polyfill won't be
+				able to expand the underlying CSS custom properties.
+				See: https://github.com/Polymer/polymer-modulizer/issues/154
+				-->
+		<script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<custom-style>
 		<style is="custom-style" include="iron-flex iron-flex-alignment iron-positioning">
 			body {
 				font-family: sans-serif;
 			}
 		</style>
-	</custom-style>
+	</custom-style>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
 
 </head>
 <body class="fullbleed">
 
-	<cosmoz-i18next
-		interpolation-prefix="{"
-		interpolation-suffix="}">
-	</cosmoz-i18next>
+	<script type="module">
+const $_documentContainer = document.createElement('template');
 
-	<template is="dom-bind" id="t">
+$_documentContainer.innerHTML = `<cosmoz-i18next interpolation-prefix="{" interpolation-suffix="}">
+	</cosmoz-i18next>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
+
+	<script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<template is="dom-bind" id="t">
 
 		<div class="vertical layout fit">
 			<h3>Cosmoz omnitable demo</h3>
-			<iron-ajax auto url="data.json" params="[[ getSearchParams(eyeColorFilter.splices) ]]" last-response="{{ data }}"></iron-ajax>
-			<iron-ajax auto url="eyeColors.json" loading="{{ eyeColorSearching }}" params="[[ getEyeColorSearch(eyeColorQuery) ]]" last-response="{{ eyeColorValues }}"></iron-ajax>
+			<iron-ajax auto="" url="data.json" params="[[ getSearchParams(eyeColorFilter.splices) ]]" last-response="{{ data }}"></iron-ajax>
+			<iron-ajax auto="" url="eyeColors.json" loading="{{ eyeColorSearching }}" params="[[ getEyeColorSearch(eyeColorQuery) ]]" last-response="{{ eyeColorValues }}"></iron-ajax>
 
 			<cosmoz-omnitable id="omnitable" class="flex" data="[[ data ]]">
 				<cosmoz-omnitable-column-autocomplete title="Company" name="company" value-path="company">
 				</cosmoz-omnitable-column-autocomplete>
 				<cosmoz-omnitable-column-boolean title="Is active" name="isactive" value-path="isActive" true-label="Yes" false-label="No">
 				</cosmoz-omnitable-column-boolean>
-				<cosmoz-omnitable-column-autocomplete external-values
-					loading="[[ eyeColorSearching ]]"
-					filter="{{ eyeColorFilter }}"
-					query="{{ eyeColorQuery }}"
-					values="[[ eyeColorValues ]]"
-					title="Eye color"
-					value-path="eyeColor"
-					name="eyecolor">
+				<cosmoz-omnitable-column-autocomplete external-values="" loading="[[ eyeColorSearching ]]" filter="{{ eyeColorFilter }}" query="{{ eyeColorQuery }}" values="[[ eyeColorValues ]]" title="Eye color" value-path="eyeColor" name="eyecolor">
 				</cosmoz-omnitable-column-autocomplete>
 				<cosmoz-omnitable-column-number title="Age" name="age" value-path="age">
 				</cosmoz-omnitable-column-number>
@@ -71,28 +85,39 @@
 				</cosmoz-omnitable-column-autocomplete>
 			</cosmoz-omnitable>
 		</div>
-	</template>
+	</template>`;
 
-	<script type="text/javascript">
-	(function () {
-		'use strict';
-		var t = document.getElementById('t');
+document.body.appendChild($_documentContainer.content);
+</script>
 
-		t.getEyeColorSearch = function (query) {
-			return {
-				q: query
-			};
-		};
+	<script type="module">
+import '../../@polymer/polymer/polymer-legacy.js';
+import '../../@polymer/iron-ajax/iron-ajax.js';
+import '../../@polymer/iron-flex-layout/iron-flex-layout.js';
+import '../../@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import '../../@polymer/iron-icons/editor-icons.js';
+import '../../@polymer/iron-icons/iron-icons.js';
+import '../../@polymer/paper-button/paper-button.js';
+import '../../cosmoz-i18next/cosmoz-i18next.js';
+import '../../cosmoz-viewinfo/cosmoz-viewinfo.js';
+import '../cosmoz-omnitable.js';
+import './table-demo-helper.js';
+var t = document.getElementById('t');
 
-		t.getSearchParams = function (filterSplice) {
-			if (!filterSplice) {
-				return;
-			}
-			return {
-				eyeColor: filterSplice.indexSplices[0].object
-			};
-		};
-	}());
-	</script>
+t.getEyeColorSearch = function (query) {
+	return {
+		q: query
+	};
+};
+
+t.getSearchParams = function (filterSplice) {
+	if (!filterSplice) {
+		return;
+	}
+	return {
+		eyeColor: filterSplice.indexSplices[0].object
+	};
+};
+</script>
 </body>
 </html>

@@ -1,8 +1,6 @@
 {
+	"npm": true,
 	"lint": {
-		"rules": ["polymer-2-hybrid"],
-		"ignoreWarnings": [
-			"content-to-slot-usage-site"
-		]
+		"rules": ["polymer-3"]
 	}
 }

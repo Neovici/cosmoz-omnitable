@@ -1,16 +1,14 @@
-<link rel="import" href="x-page.html">
+<script type="module" src="./x-page.js"></script>
 <dom-bind id="home">
 	<template is="dom-bind">
 		<x-page class="fit" style="height: 100%; width: 100%;" hash-param="full">
 		</x-page>
 	</template>
 </dom-bind>
-<script>
-	(function () {
-		'use strict';
+<script type="module">
+import './x-page.js';
 
-		Cosmoz.TemplateView['home'] = {
+Cosmoz.TemplateView['home'] = {
 
-		};
-	}());
+};
 </script>

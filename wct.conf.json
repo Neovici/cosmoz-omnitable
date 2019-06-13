@@ -11,10 +11,7 @@
 			"dir": "./coverage",
 			"reporters": ["text-summary", "lcov"],
 			"include": [
-				"cosmoz-omnitable.html",
-				"cosmoz-omnitable.js",
-				"cosmoz-omnitable-*.html",
-				"cosmoz-omnitable-*.js"
+				"**/cosmoz-*.js"
 			],
 			"exclude": []
 		},

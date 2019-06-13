@@ -5,16 +5,16 @@
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 	<title>cosmoz-omnitable group test</title>
 
-	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-	<script src="../../web-component-tester/browser.js"></script>
-	<script src="../../test-fixture/test-fixture-mocha.js"></script>
+	<script src="../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+	<script src="../../wct-browser-legacy/browser.js"></script>
+	<script src="../../@polymer/test-fixture/test-fixture-mocha.js"></script>
 	<script src="./helpers/utils.js"></script>
 
-	<link rel="import" href="../../test-fixture/test-fixture.html">
-	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-	<link rel="import" href="../cosmoz-omnitable.html">
-	<link rel="import" href="../cosmoz-omnitable-columns.html">
-	<link rel="import" href="../demo/table-demo-helper.html">
+	<script type="module" src="../../@polymer/test-fixture/test-fixture.js"></script>
+	<script type="module" src="../../@polymer/iron-test-helpers/iron-test-helpers.js"></script>
+	<script type="module" src="../cosmoz-omnitable.js"></script>
+	<script type="module" src="../cosmoz-omnitable-columns.js"></script>
+	<script type="module" src="../demo/table-demo-helper.js"></script>
 </head>
 <body>
 	<test-fixture id="id">
@@ -70,98 +70,99 @@
 		</template>
 	</test-fixture>
 
-	<script>
-	(function () {
-		'use strict';
+	<script type="module">
+import '../../@polymer/test-fixture/test-fixture.js';
+import '../../@polymer/iron-test-helpers/iron-test-helpers.js';
+import '../cosmoz-omnitable.js';
+import '../cosmoz-omnitable-columns.js';
+import '../demo/table-demo-helper.js';
 
-		suite('id', () => {
-			let omnitable,
-				data;
+suite('id', () => {
+	let omnitable,
+		data;
 
-			setup(done => {
-				data = Cosmoz.Demo.generateTableDemoData(10, 11, 25);
-				omnitable = setupOmnitableFixture('id', data, () => done());
-			});
+	setup(done => {
+		data = Cosmoz.Demo.generateTableDemoData(10, 11, 25);
+		omnitable = setupOmnitableFixture('id', data, () => done());
+	});
 
-			test('groupOn id', () => {
-				assert.equal(omnitable.groupOn, 'id');
-				const groupOnColumn = omnitable.groupOnColumn;
-				assert.equal(typeof groupOnColumn, 'object');
-				assert.instanceOf(groupOnColumn, Cosmoz.OmnitableColumn);
-				assert.equal(groupOnColumn.name, 'id', 'Expected "groupOnColumn" to be the column that matches "groupOn" value');
-				assert.equal(groupOnColumn, omnitable.columns[0]);
-			});
+	test('groupOn id', () => {
+		assert.equal(omnitable.groupOn, 'id');
+		const groupOnColumn = omnitable.groupOnColumn;
+		assert.equal(typeof groupOnColumn, 'object');
+		assert.instanceOf(groupOnColumn, Cosmoz.OmnitableColumn);
+		assert.equal(groupOnColumn.name, 'id', 'Expected "groupOnColumn" to be the column that matches "groupOn" value');
+		assert.equal(groupOnColumn, omnitable.columns[0]);
+	});
 
-			test('groupOnDescending true for id column changes order of items', () => {
-				const items = omnitable.sortedFilteredGroupedItems;
-				assert.isArray(items);
-				assert.isObject(items[0]);
+	test('groupOnDescending true for id column changes order of items', () => {
+		const items = omnitable.sortedFilteredGroupedItems;
+		assert.isArray(items);
+		assert.isObject(items[0]);
 
-				const first = items[0],
-					second = items[1],
-					idx = items.length - 1, // index of last item
-					last = items[idx];
+		const first = items[0],
+			second = items[1],
+			idx = items.length - 1, // index of last item
+			last = items[idx];
 
-				assert.equal(first.id, 0);
-				assert.equal(second.id, 1);
-				assert.equal(last.id, idx);
+		assert.equal(first.id, 0);
+		assert.equal(second.id, 1);
+		assert.equal(last.id, idx);
 
-				omnitable.groupOnDescending = true;
-				omnitable.flush();
-				const gItems = omnitable.sortedFilteredGroupedItems;
-				assert.equal(gItems[0].id, idx);
-				assert.equal(gItems[idx - 1].id, 1);
-				assert.equal(gItems[idx].id, 0);
-			});
-		});
+		omnitable.groupOnDescending = true;
+		omnitable.flush();
+		const gItems = omnitable.sortedFilteredGroupedItems;
+		assert.equal(gItems[0].id, idx);
+		assert.equal(gItems[idx - 1].id, 1);
+		assert.equal(gItems[idx].id, 0);
+	});
+});
 
-		suite('bool', () => {
-			let omnitable,
-				data;
+suite('bool', () => {
+	let omnitable,
+		data;
 
-			setup(done => {
-				data = Cosmoz.Demo.generateTableDemoData(10, 11, 25);
-				omnitable = setupOmnitableFixture('bool', data, () => done());
-			});
+	setup(done => {
+		data = Cosmoz.Demo.generateTableDemoData(10, 11, 25);
+		omnitable = setupOmnitableFixture('bool', data, () => done());
+	});
 
-			test('groupOnDescending true for boolean column changes order of items', () => {
-				assert.equal(omnitable.groupOn, 'bool');
-				assert.equal(omnitable.groupOnColumn.name, 'bool');
-				assert.equal(omnitable.groupOnColumn, omnitable.columns[1]);
+	test('groupOnDescending true for boolean column changes order of items', () => {
+		assert.equal(omnitable.groupOn, 'bool');
+		assert.equal(omnitable.groupOnColumn.name, 'bool');
+		assert.equal(omnitable.groupOnColumn, omnitable.columns[1]);
 
-				const first = omnitable.sortedFilteredGroupedItems[0],
-					idx = omnitable.sortedFilteredGroupedItems.length - 1,
-					last = omnitable.sortedFilteredGroupedItems[idx];
-				assert.equal(first.id, true);
-				assert.equal(last.id, false);
+		const first = omnitable.sortedFilteredGroupedItems[0],
+			idx = omnitable.sortedFilteredGroupedItems.length - 1,
+			last = omnitable.sortedFilteredGroupedItems[idx];
+		assert.equal(first.id, true);
+		assert.equal(last.id, false);
 
-				omnitable.groupOnDescending = true;
-				omnitable.flush();
-				assert.equal(omnitable.sortedFilteredGroupedItems[0].id, false);
-				assert.equal(omnitable.sortedFilteredGroupedItems[idx].id, true);
-			});
-		});
+		omnitable.groupOnDescending = true;
+		omnitable.flush();
+		assert.equal(omnitable.sortedFilteredGroupedItems[0].id, false);
+		assert.equal(omnitable.sortedFilteredGroupedItems[idx].id, true);
+	});
+});
 
-		suite('amount', () => {
-			let omnitable,
-				data;
+suite('amount', () => {
+	let omnitable,
+		data;
 
-			setup(done => {
-				data = Cosmoz.Demo.generateTableDemoData(10, 11, 25);
-				omnitable = setupOmnitableFixture('amount', data, () => done());
-			});
+	setup(done => {
+		data = Cosmoz.Demo.generateTableDemoData(10, 11, 25);
+		omnitable = setupOmnitableFixture('amount', data, () => done());
+	});
 
-			test('setting groupOn property to "amount" updates property groupOnColumn', () => {
-				omnitable.groupOn = 'amount';
-				omnitable.flush();
-				const groupOnColumn = omnitable.groupOnColumn;
-				assert.equal(typeof groupOnColumn, 'object');
-				assert.instanceOf(groupOnColumn, Cosmoz.OmnitableColumnAmount);
-				assert.equal(groupOnColumn.name, 'amount', 'Expected "groupOnColumn" to be the column that matches "groupOn" value');
-				assert.equal(groupOnColumn, omnitable.columns[0]);
-			});
-		});
-
-	}());
-	</script>
+	test('setting groupOn property to "amount" updates property groupOnColumn', () => {
+		omnitable.groupOn = 'amount';
+		omnitable.flush();
+		const groupOnColumn = omnitable.groupOnColumn;
+		assert.equal(typeof groupOnColumn, 'object');
+		assert.instanceOf(groupOnColumn, Cosmoz.OmnitableColumnAmount);
+		assert.equal(groupOnColumn.name, 'amount', 'Expected "groupOnColumn" to be the column that matches "groupOn" value');
+		assert.equal(groupOnColumn, omnitable.columns[0]);
+	});
+});
+</script>
 </body></html>

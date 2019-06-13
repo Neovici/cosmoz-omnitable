@@ -6,20 +6,40 @@
 
 	<title>cosmoz-omnitable hash-param demo</title>
 
-	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+	<script src="../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 
-	<link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
-	<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
-	<link rel="import" href="../../cosmoz-page-router/cosmoz-page-router.html">
-	<link rel="import" href="../../cosmoz-page-router/cosmoz-page-route.html">
+	<script type="module" src="../../@polymer/iron-flex-layout/iron-flex-layout.js"></script>
+	<script type="module" src="../../@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
+	<!-- <link rel="import" href="../../cosmoz-page-router/cosmoz-page-router.html"> -->
+	<!-- <link rel="import" href="../../cosmoz-page-router/cosmoz-page-route.html"> -->
 
-	<custom-style>
+	<!-- FIXME(polymer-modulizer):
+				These imperative modules that innerHTML your HTML are
+				a hacky way to be sure that any mixins in included style
+				modules are ready before any elements that reference them are
+				instantiated, otherwise the CSS @apply mixin polyfill won't be
+				able to expand the underlying CSS custom properties.
+				See: https://github.com/Polymer/polymer-modulizer/issues/154
+				-->
+		<script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<custom-style>
 		<style is="custom-style" include="iron-flex iron-flex-alignment iron-positioning"></style>
-	</custom-style>
+	</custom-style>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
 
 </head>
 <body unresolved class="fullbleed">
-	<cosmoz-page-router class="fit" id="appRouter" mode="hash" url-prefix="/">
+	<script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<cosmoz-page-router class="fit" id="appRouter" mode="hash" url-prefix="/">
 		<cosmoz-page-route path="/" import="helpers/hash-param-template.html" template-id="home"></cosmoz-page-route>
-	</cosmoz-page-router>
+	</cosmoz-page-router>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
 </body></html>
