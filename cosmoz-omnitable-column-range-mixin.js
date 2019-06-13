@@ -83,6 +83,7 @@ export const rangeColumnMixin = dedupingMixin(base => // eslint-disable-line max
 
 		disconnectedCallback() {
 			this._limitInputDebouncer.cancel();
+			super.disconnectedCallback();
 		}
 
 		/**

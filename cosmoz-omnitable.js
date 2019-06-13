@@ -48,8 +48,7 @@ const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending', 'groupOnDescend
 /**
  * @polymer
  * @customElement
- * @appliesMixin Polymer.IronResizableBehavior
- * @appliesMixin Cosmoz.Mixins.translatable
+ * @appliesMixin translatable
  * @group Cosmoz Elements
  * @element cosmoz-omnitable
  * @demo demo/index.html

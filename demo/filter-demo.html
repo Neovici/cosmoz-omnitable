@@ -6,42 +6,25 @@
 
 	<title>Cosmoz Omnitable demo</title>
 
-	<script src="../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-	<script type="module" src="../../@polymer/polymer/polymer-element.js"></script>
-	<script type="module" src="../../@polymer/iron-flex-layout/iron-flex-layout.js"></script>
-	<script type="module" src="../../@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
-	<script type="module" src="../../@polymer/iron-icons/editor-icons.js"></script>
-	<script type="module" src="../../@polymer/iron-icons/iron-icons.js"></script>
-	<script type="module" src="../../@polymer/paper-button/paper-button.js"></script>
-	<script type="module" src="../../cosmoz-i18next/cosmoz-i18next.js"></script>
+	<script src="/components/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+	<script src="/components/web-animations-js/web-animations-next-lite.min.js"></script>
+	<script type="module" src="/components/@polymer/polymer/polymer-element.js"></script>
+	<script type="module" src="/components/@polymer/iron-flex-layout/iron-flex-layout.js"></script>
+	<script type="module" src="/components/@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
+	<script type="module" src="/components/@polymer/iron-icons/editor-icons.js"></script>
+	<script type="module" src="/components/@polymer/iron-icons/iron-icons.js"></script>
+	<script type="module" src="/components/@polymer/paper-button/paper-button.js"></script>
 	<script type="module" src="../cosmoz-omnitable.js"></script>
 
 	<script type="module" src="./table-demo-helper.js"></script>
 
-	<!-- FIXME(polymer-modulizer):
-				These imperative modules that innerHTML your HTML are
-				a hacky way to be sure that any mixins in included style
-				modules are ready before any elements that reference them are
-				instantiated, otherwise the CSS @apply mixin polyfill won't be
-				able to expand the underlying CSS custom properties.
-				See: https://github.com/Polymer/polymer-modulizer/issues/154
-				-->
-		<script type="module">
-const $_documentContainer = document.createElement('template');
-
-$_documentContainer.innerHTML = `<custom-style>
+	<custom-style>
 		<style is="custom-style" include="iron-flex iron-flex-alignment iron-positioning"></style>
-	</custom-style>`;
-
-document.body.appendChild($_documentContainer.content);
-</script>
+	</custom-style>
 
 </head>
 <body class="fullbleed">
-	<script type="module">
-const $_documentContainer = document.createElement('template');
-
-$_documentContainer.innerHTML = `<dom-module id="x-page">
+	<dom-module id="x-page">
 		<template>
 			<style include="iron-flex iron-positioning">
 				:host {
@@ -93,91 +76,76 @@ $_documentContainer.innerHTML = `<dom-module id="x-page">
 				</cosmoz-omnitable>
 			</div>
 		</template>
-	</dom-module>`;
+	</dom-module>
 
-document.body.appendChild($_documentContainer.content);
-</script>
-
-	<script type="module">
-const $_documentContainer = document.createElement('template');
-$_documentContainer.innerHTML = `<x-page class="fit"></x-page>`;
-document.body.appendChild($_documentContainer.content);
-</script>
+	<x-page class="fit"></x-page>
 
 	<script type="module">
-import { PolymerElement } from '../../@polymer/polymer/polymer-element.js';
-import '../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import '../../@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-import '../../@polymer/iron-icons/editor-icons.js';
-import '../../@polymer/iron-icons/iron-icons.js';
-import '../../@polymer/paper-button/paper-button.js';
-import '../../cosmoz-i18next/cosmoz-i18next.js';
-import '../cosmoz-omnitable.js';
-import './table-demo-helper.js';
-/*global Polymer*/
+		import { PolymerElement } from '../../@polymer/polymer/polymer-element.js';
+		import { generateTableDemoData } from './table-demo-helper';
 
-class XPage extends PolymerElement {
-	static get is() {
-		return 'x-page';
-	}
-	static get properties() {
-		return {
-			data: {
-				type: Array
-			},
-			selectedItems: {
-				type: Array
-			},
-			nameFilter: {
-				type: String
-			},
-			boolFilter: {
-				type: Boolean
+		class XPage extends PolymerElement {
+			static get is() {
+				return 'x-page';
 			}
-		};
-	}
-	connectedCallback() {
-		super.connectedCallback();
-		this.data = Cosmoz.Demo.generateTableDemoData(20, 25, 25);
+			static get properties() {
+				return {
+					data: {
+						type: Array
+					},
+					selectedItems: {
+						type: Array
+					},
+					nameFilter: {
+						type: String
+					},
+					boolFilter: {
+						type: Boolean
+					}
+				};
+			}
+			connectedCallback() {
+				super.connectedCallback();
+				this.data = generateTableDemoData(20, 25, 25);
 
-		// Test
-		// set filters to display first item
+				// Test
+				// set filters to display first item
 
-		this.nameFilter = this.data[0].name;
-		this.amountFilter = {
-			minValue: this.data[0].amount.amount,
-			maxValue: this.data[0].amount.amount
-		};
+				this.nameFilter = this.data[0].name;
+				this.amountFilter = {
+					minValue: this.data[0].amount.amount,
+					maxValue: this.data[0].amount.amount
+				};
 
-		this.dateFilter = this.data[0].dateJSON;
-		this.boolFilter = this.data[0].bool;
-		this.numberFilter = {
-			minValue: this.data[0].value - 1,
-			maxValue: this.data[0].value + 1
-		};
-	}
+				this.dateFilter = this.data[0].dateJSON;
+				this.boolFilter = this.data[0].bool;
+				this.numberFilter = {
+					minValue: this.data[0].value - 1,
+					maxValue: this.data[0].value + 1
+				};
+			}
 
-	changeData() {
-		this.data = Cosmoz.Demo.generateTableDemoData(20, 25, 10);
-	}
+			changeData() {
+				this.data = generateTableDemoData(20, 25, 10);
+			}
 
-	_computeLabel(text, count) {
-		return text + ' ' + count + ' items';
-	}
+			_computeLabel(text, count) {
+				return text + ' ' + count + ' items';
+			}
 
-	updateSelectedRows(event, detail) {
-		detail.items.forEach(function (item) {
-			this.$.omnitable.setItemValue(item, 'randomString3', 'blablablalbal');
-		}, this);
+			updateSelectedRows(event, detail) {
+				detail.items.forEach(function (item) {
+					this.$.omnitable.setItemValue(item, 'randomString3', 'blablablalbal');
+				}, this);
 
-	}
+			}
 
-	removeItems(event, detail) {
-		console.log('runAction', detail.items, event, detail, detail.items);
-		detail.omnitable.removeItems(detail.items);
-	}
-}
-customElements.define(XPage.is, XPage);
-</script>
+			removeItems(event, detail) {
+				console.log('runAction', detail.items, event, detail, detail.items);
+				detail.omnitable.removeItems(detail.items);
+			}
+		}
+		customElements.define(XPage.is, XPage);
+	</script>
 </body>
 </html>

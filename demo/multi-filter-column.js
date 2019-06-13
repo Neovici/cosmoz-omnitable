@@ -1,10 +1,9 @@
-import '../cosmoz-omnitable-column-mixin.js';
-import { html } from '../../@polymer/polymer/lib/utils/html-tag.js';
-import { mixinBehaviors } from '../../@polymer/polymer/lib/legacy/class.js';
-import { PolymerElement } from '../../@polymer/polymer/polymer-element.js';
-/*global Cosmoz,Polymer*/
+// TODO: fix or drop
+import { columnMixin } from '../cosmoz-omnitable-column-mixin';
+import { html } from '@polymer/polymer/lib/utils/html-tag';
+import { PolymerElement } from '@polymer/polymer/polymer-element';
 
-class MultiFilterColumn extends mixinBehaviors([Cosmoz.OmnitableColumnMixin], PolymerElement) {
+class MultiFilterColumn extends columnMixin(PolymerElement) {
 	static get template() {
 		return html`
 		<cosmoz-omnitable-templatizer id="data-templatizer">
@@ -34,7 +33,7 @@ class MultiFilterColumn extends mixinBehaviors([Cosmoz.OmnitableColumnMixin], Po
 				type: String,
 				observer: function (newFilters) { // eslint-disable-line object-shorthand
 					if (newFilters && newFilters !== '') {
-						var filterArray = newFilters.split(',');
+						const filterArray = newFilters.split(',');
 						this.filter = filterArray.filter(elem => {
 							return elem !== '';
 						});

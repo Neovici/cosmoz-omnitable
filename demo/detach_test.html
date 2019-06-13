@@ -6,43 +6,23 @@
 
 	<title>Cosmoz Omnitable demo</title>
 
-	<script src="../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-	<script type="module" src="../../@polymer/polymer/polymer-element.js"></script>
-	<script type="module" src="../../@polymer/iron-flex-layout/iron-flex-layout.js"></script>
-	<script type="module" src="../../@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
-	<script type="module" src="../../@polymer/iron-icons/editor-icons.js"></script>
-	<script type="module" src="../../@polymer/iron-icons/iron-icons.js"></script>
-	<script type="module" src="../../@polymer/paper-button/paper-button.js"></script>
-	<script type="module" src="../../cosmoz-i18next/cosmoz-i18next.js"></script>
-	<script type="module" src="../../cosmoz-viewinfo/cosmoz-viewinfo.js"></script>
+	<script src="/components/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+	<script src="/components/web-animations-js/web-animations-next-lite.min.js"></script>
+	<script type="module" src="/components/@polymer/polymer/polymer-element.js"></script>
+	<script type="module" src="/components/@polymer/iron-flex-layout/iron-flex-layout.js"></script>
+	<script type="module" src="/components/@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
+	<script type="module" src="/components/@polymer/iron-icons/editor-icons.js"></script>
+	<script type="module" src="/components/@polymer/iron-icons/iron-icons.js"></script>
+	<script type="module" src="/components/@polymer/paper-button/paper-button.js"></script>
+
 	<script type="module" src="../cosmoz-omnitable.js"></script>
 
-	<script type="module" src="./table-demo-helper.js"></script>
-
-	<!-- FIXME(polymer-modulizer):
-				These imperative modules that innerHTML your HTML are
-				a hacky way to be sure that any mixins in included style
-				modules are ready before any elements that reference them are
-				instantiated, otherwise the CSS @apply mixin polyfill won't be
-				able to expand the underlying CSS custom properties.
-				See: https://github.com/Polymer/polymer-modulizer/issues/154
-				-->
-		<script type="module">
-const $_documentContainer = document.createElement('template');
-
-$_documentContainer.innerHTML = `<custom-style>
+	<custom-style>
 		<style is="custom-style" include="iron-flex iron-flex-alignment iron-positioning"></style>
-	</custom-style>`;
-
-document.body.appendChild($_documentContainer.content);
-</script>
-
+	</custom-style>
 </head>
 <body class="fullbleed">
-	<script type="module">
-const $_documentContainer = document.createElement('template');
-
-$_documentContainer.innerHTML = `<dom-module id="x-container">
+	<dom-module id="x-container">
 		<template>
 			<style>
 				:host {
@@ -72,15 +52,9 @@ $_documentContainer.innerHTML = `<dom-module id="x-container">
 				</div>
 			</template>
 		</template>
-	</dom-module>`;
+	</dom-module>
 
-document.body.appendChild($_documentContainer.content);
-</script>
-
-	<script type="module">
-const $_documentContainer = document.createElement('template');
-
-$_documentContainer.innerHTML = `<dom-module id="x-page">
+	<dom-module id="x-page">
 		<template>
 			<style include="iron-flex iron-positioning">
 				:host {
@@ -172,109 +146,90 @@ $_documentContainer.innerHTML = `<dom-module id="x-page">
 
 			</cosmoz-viewinfo>
 		</template>
-	</dom-module>`;
+	</dom-module>
 
-document.body.appendChild($_documentContainer.content);
-</script>
-
-	<script type="module">
-const $_documentContainer = document.createElement('template');
-
-$_documentContainer.innerHTML = `<x-page class="fit">
-	</x-page>`;
-
-document.body.appendChild($_documentContainer.content);
-</script>
+	<x-page class="fit"></x-page>
 
 	<script type="module">
-import { PolymerElement } from '../../@polymer/polymer/polymer-element.js';
-import '../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import '../../@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-import '../../@polymer/iron-icons/editor-icons.js';
-import '../../@polymer/iron-icons/iron-icons.js';
-import '../../@polymer/paper-button/paper-button.js';
-import '../../cosmoz-i18next/cosmoz-i18next.js';
-import '../../cosmoz-viewinfo/cosmoz-viewinfo.js';
-import '../cosmoz-omnitable.js';
-import './table-demo-helper.js';
-/*global Polymer*/
+		import { PolymerElement } from '@polymer/polymer/polymer-element';
+		import { generateTableDemoData } from './table-demo-helper';
 
-class XContainer extends PolymerElement {
-	static get is() {
-		return 'x-container';
-	}
-	static get properties() {
-		return {
-			showContent2: {
-				type: Boolean,
-				value: false
+		class XContainer extends PolymerElement {
+			static get is() {
+				return 'x-container';
 			}
-		};
-	}
-	toggleSlot() {
-		this.showContent2 = !this.showContent2;
-	}
-}
-
-customElements.define(XContainer.is, XContainer);
-
-class XPage extends PolymerElement {
-	static get is() {
-		return 'x-page';
-	}
-	static get properties() {
-		return {
-			data: {
-				type: Array
-			},
-			selectedItems: {
-				type: Array
-			},
-			locale: {
-				type: String,
-				value: null
+			static get properties() {
+				return {
+					showContent2: {
+						type: Boolean,
+						value: false
+					}
+				};
 			}
-		};
-	}
+			toggleSlot() {
+				this.showContent2 = !this.showContent2;
+			}
+		}
 
-	connectedCallback() {
-		super.connectedCallback();
-		const data = Cosmoz.Demo.generateTableDemoData(10, 11, 25);
-		// Used to test filtering and sorting when a row has an undefined or null amount or number
-		data[0].amount = undefined;
-		data[1].value = undefined;
-		data[2].amount = null;
-		data[3].value = null;
-		window.setTimeout(() => {
-			this.data = data;
-		}, 100);
-	}
+		customElements.define(XContainer.is, XContainer);
 
-	changeData() {
-		this.data = Cosmoz.Demo.generateTableDemoData(10, 11, 10);
-	}
+		class XPage extends PolymerElement {
+			static get is() {
+				return 'x-page';
+			}
+			static get properties() {
+				return {
+					data: {
+						type: Array
+					},
+					selectedItems: {
+						type: Array
+					},
+					locale: {
+						type: String,
+						value: 'en'
+					}
+				};
+			}
 
-	emptyData() {
-		this.data = [];
-	}
+			connectedCallback() {
+				super.connectedCallback();
+				const data = generateTableDemoData(10, 11, 25);
+				// Used to test filtering and sorting when a row has an undefined or null amount or number
+				data[0].amount = undefined;
+				data[1].value = undefined;
+				data[2].amount = null;
+				data[3].value = null;
+				window.setTimeout(() => {
+					this.data = data;
+				}, 100);
+			}
 
-	updateSelectedRows(event, detail) {
-		detail.items.forEach(function (item) {
-			this.$.omnitable.setItemValue(item, 'name', 'blablablalbal');
-		}, this);
+			changeData() {
+				this.data = generateTableDemoData(10, 11, 10);
+			}
 
-	}
+			emptyData() {
+				this.data = [];
+			}
 
-	removeItems(event, detail) {
-		console.log('runAction', detail.items, event, detail, detail.items);
-		detail.omnitable.removeItems(detail.items);
-	}
+			updateSelectedRows(event, detail) {
+				detail.items.forEach(function (item) {
+					this.$.omnitable.setItemValue(item, 'name', 'blablablalbal');
+				}, this);
 
-	onTap(event) {
-		console.log('onTap', event);
-	}
-}
-customElements.define(XPage.is, XPage);
-</script>
+			}
+
+			removeItems(event, detail) {
+				console.log('runAction', detail.items, event, detail, detail.items);
+				detail.omnitable.removeItems(detail.items);
+			}
+
+			onTap(event) {
+				console.log('onTap', event);
+			}
+		}
+		customElements.define(XPage.is, XPage);
+	</script>
 </body>
 </html>

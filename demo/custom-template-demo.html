@@ -6,42 +6,23 @@
 
 	<title>Cosmoz Omnitable demo</title>
 
-	<script src="../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-	<script type="module" src="../../@polymer/polymer/polymer-element.js"></script>
-	<script type="module" src="../../@polymer/iron-flex-layout/iron-flex-layout.js"></script>
-	<script type="module" src="../../@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
-	<script type="module" src="../../@polymer/iron-icons/editor-icons.js"></script>
-	<script type="module" src="../../@polymer/iron-icons/iron-icons.js"></script>
-	<script type="module" src="../../@polymer/paper-button/paper-button.js"></script>
-	<script type="module" src="../../cosmoz-i18next/cosmoz-i18next.js"></script>
+	<script src="/components/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+	<script src="/components/web-animations-js/web-animations-next-lite.min.js"></script>
+	<script type="module" src="/components/@polymer/polymer/polymer-element.js"></script>
+	<script type="module" src="/components/@polymer/iron-flex-layout/iron-flex-layout.js"></script>
+	<script type="module" src="/components/@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
+	<script type="module" src="/components/@polymer/iron-icons/editor-icons.js"></script>
+	<script type="module" src="/components/@polymer/iron-icons/iron-icons.js"></script>
+	<script type="module" src="/components/@polymer/paper-button/paper-button.js"></script>
+
 	<script type="module" src="../cosmoz-omnitable.js"></script>
 
-	<script type="module" src="./table-demo-helper.js"></script>
-
-	<!-- FIXME(polymer-modulizer):
-				These imperative modules that innerHTML your HTML are
-				a hacky way to be sure that any mixins in included style
-				modules are ready before any elements that reference them are
-				instantiated, otherwise the CSS @apply mixin polyfill won't be
-				able to expand the underlying CSS custom properties.
-				See: https://github.com/Polymer/polymer-modulizer/issues/154
-				-->
-		<script type="module">
-const $_documentContainer = document.createElement('template');
-
-$_documentContainer.innerHTML = `<custom-style>
+	<custom-style>
 		<style is="custom-style" include="iron-flex iron-flex-alignment iron-positioning"></style>
-	</custom-style>`;
-
-document.body.appendChild($_documentContainer.content);
-</script>
-
+	</custom-style>
 </head>
 <body class="fullbleed">
-	<script type="module">
-const $_documentContainer = document.createElement('template');
-
-$_documentContainer.innerHTML = `<dom-module id="x-page">
+	<dom-module id="x-page">
 		<template>
 			<style include="iron-flex iron-positioning">
 				:host {
@@ -87,42 +68,24 @@ $_documentContainer.innerHTML = `<dom-module id="x-page">
 					<cosmoz-omnitable-column title="Value" name="value" value-path="value" sort-on="value" group-on="value">
 					</cosmoz-omnitable-column>
 
-					<cosmoz-omnitable-column title="Amount" name="amount" value-path="amount" sort-on="amount" group-on="amount" cell-template="[[customDataTemplate]]">
+					<cosmoz-omnitable-column title="Amount" name="amount" value-path="amount" sort-on="amount" group-on="amount">
+						<template class="cell">
+							<span style="background: red;" on-tap="onTap">[[item.amount.amount]]</span>
+						</template>
 					</cosmoz-omnitable-column>
 				</cosmoz-omnitable>
 
 
 			</div>
 		</template>
-	</dom-module>`;
+	</dom-module>
 
-document.body.appendChild($_documentContainer.content);
-</script>
-
-	<script type="module">
-const $_documentContainer = document.createElement('template');
-
-$_documentContainer.innerHTML = `<x-page class="fit">
-		<template id="customDataTemplate">
-			<span style="background: red;" on-tap="onTap">[[item.amount.amount]]</span>
-		</template>
-	</x-page>`;
-
-document.body.appendChild($_documentContainer.content);
-</script>
+	<x-page class="fit"></x-page>
 
 	<script type="module">
-import { PolymerElement } from '../../@polymer/polymer/polymer-element.js';
-import '../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import '../../@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-import '../../@polymer/iron-icons/editor-icons.js';
-import '../../@polymer/iron-icons/iron-icons.js';
-import '../../@polymer/paper-button/paper-button.js';
-import { translatable } from '../../cosmoz-i18next/cosmoz-i18next.js';
-import '../cosmoz-omnitable.js';
-import './table-demo-helper.js';
-import { dom } from '../../@polymer/polymer/lib/legacy/polymer.dom.js';
-/*global Polymer*/
+import { PolymerElement } from '@polymer/polymer/polymer-element';
+import { translatable } from '@neovici/cosmoz-i18next';
+import { generateTableDemoData } from './table-demo-helper';
 
 class XPage extends translatable(PolymerElement) {
 	static get is() {
@@ -139,25 +102,20 @@ class XPage extends translatable(PolymerElement) {
 			locale: {
 				type: String,
 				value: null
-			},
-			customDataTemplate: {
-				type: Object
 			}
 		};
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		const data = Cosmoz.Demo.generateTableDemoData(10, 11, 25);
-		this.async(() => {
+		const data = generateTableDemoData(10, 11, 25);
+		setTimeout(() => {
 			this.data = data;
 		}, 100);
-		this.customDataTemplate = dom(this).querySelector('#customDataTemplate');
-
 	}
 
 	changeData() {
-		this.data = Cosmoz.Demo.generateTableDemoData(10, 11, 10);
+		this.data = generateTableDemoData(10, 11, 10);
 	}
 
 	emptyData() {

@@ -12,7 +12,7 @@ window.Cosmoz = window.Cosmoz || {};
 /**
  * @polymer
  * @customElement
- * @appliesMixin Cosmoz.Mixins.translatable
+ * @appliesMixin translatable
  */
 class OmnitableColumnListData extends translatable(mixin(Template, PolymerElement)) {
 	static get template() {

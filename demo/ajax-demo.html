@@ -6,63 +6,36 @@
 
 	<title>Cosmoz Omnitable demo</title>
 
-	<script src="../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-	<script type="module" src="../../@polymer/polymer/polymer-legacy.js"></script>
-	<script type="module" src="../../@polymer/iron-ajax/iron-ajax.js"></script>
-	<script type="module" src="../../@polymer/iron-flex-layout/iron-flex-layout.js"></script>
-	<script type="module" src="../../@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
-	<script type="module" src="../../@polymer/iron-icons/editor-icons.js"></script>
-	<script type="module" src="../../@polymer/iron-icons/iron-icons.js"></script>
-	<script type="module" src="../../@polymer/paper-button/paper-button.js"></script>
-	<script type="module" src="../../cosmoz-i18next/cosmoz-i18next.js"></script>
-	<script type="module" src="../../cosmoz-viewinfo/cosmoz-viewinfo.js"></script>
+	<script src="/components/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+	<script src="/components/web-animations-js/web-animations-next-lite.min.js"></script>
+	<script type="module" src="/components/@polymer/polymer/polymer-legacy.js"></script>
+	<script type="module" src="/components/@polymer/iron-ajax/iron-ajax.js"></script>
+	<script type="module" src="/components/@polymer/iron-flex-layout/iron-flex-layout.js"></script>
+	<script type="module" src="/components/@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
+	<script type="module" src="/components/@polymer/iron-icons/editor-icons.js"></script>
+	<script type="module" src="/components/@polymer/iron-icons/iron-icons.js"></script>
+	<script type="module" src="/components/@polymer/paper-button/paper-button.js"></script>
 	<script type="module" src="../cosmoz-omnitable.js"></script>
 
-	<script type="module" src="./table-demo-helper.js"></script>
-
-	<!-- FIXME(polymer-modulizer):
-				These imperative modules that innerHTML your HTML are
-				a hacky way to be sure that any mixins in included style
-				modules are ready before any elements that reference them are
-				instantiated, otherwise the CSS @apply mixin polyfill won't be
-				able to expand the underlying CSS custom properties.
-				See: https://github.com/Polymer/polymer-modulizer/issues/154
-				-->
-		<script type="module">
-const $_documentContainer = document.createElement('template');
-
-$_documentContainer.innerHTML = `<custom-style>
+	<custom-style>
 		<style is="custom-style" include="iron-flex iron-flex-alignment iron-positioning">
 			body {
 				font-family: sans-serif;
 			}
 		</style>
-	</custom-style>`;
-
-document.body.appendChild($_documentContainer.content);
-</script>
+	</custom-style>
 
 </head>
 <body class="fullbleed">
+	<cosmoz-i18next interpolation-prefix="{" interpolation-suffix="}">
+	</cosmoz-i18next>
 
-	<script type="module">
-const $_documentContainer = document.createElement('template');
-
-$_documentContainer.innerHTML = `<cosmoz-i18next interpolation-prefix="{" interpolation-suffix="}">
-	</cosmoz-i18next>`;
-
-document.body.appendChild($_documentContainer.content);
-</script>
-
-	<script type="module">
-const $_documentContainer = document.createElement('template');
-
-$_documentContainer.innerHTML = `<template is="dom-bind" id="t">
+	<template is="dom-bind" id="t">
 
 		<div class="vertical layout fit">
 			<h3>Cosmoz omnitable demo</h3>
-			<iron-ajax auto="" url="data.json" params="[[ getSearchParams(eyeColorFilter.splices) ]]" last-response="{{ data }}"></iron-ajax>
-			<iron-ajax auto="" url="eyeColors.json" loading="{{ eyeColorSearching }}" params="[[ getEyeColorSearch(eyeColorQuery) ]]" last-response="{{ eyeColorValues }}"></iron-ajax>
+			<iron-ajax auto url="data.json" params="[[ getSearchParams(eyeColorFilter.splices) ]]" last-response="{{ data }}"></iron-ajax>
+			<iron-ajax auto url="eyeColors.json" loading="{{ eyeColorSearching }}" params="[[ getEyeColorSearch(eyeColorQuery) ]]" last-response="{{ eyeColorValues }}"></iron-ajax>
 
 			<cosmoz-omnitable id="omnitable" class="flex" data="[[ data ]]">
 				<cosmoz-omnitable-column-autocomplete title="Company" name="company" value-path="company">
@@ -85,39 +58,26 @@ $_documentContainer.innerHTML = `<template is="dom-bind" id="t">
 				</cosmoz-omnitable-column-autocomplete>
 			</cosmoz-omnitable>
 		</div>
-	</template>`;
-
-document.body.appendChild($_documentContainer.content);
-</script>
+	</template>
 
 	<script type="module">
-import '../../@polymer/polymer/polymer-legacy.js';
-import '../../@polymer/iron-ajax/iron-ajax.js';
-import '../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import '../../@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-import '../../@polymer/iron-icons/editor-icons.js';
-import '../../@polymer/iron-icons/iron-icons.js';
-import '../../@polymer/paper-button/paper-button.js';
-import '../../cosmoz-i18next/cosmoz-i18next.js';
-import '../../cosmoz-viewinfo/cosmoz-viewinfo.js';
-import '../cosmoz-omnitable.js';
-import './table-demo-helper.js';
-var t = document.getElementById('t');
+		// TODO broken! fix or drop
+		const t = document.getElementById('t');
 
-t.getEyeColorSearch = function (query) {
-	return {
-		q: query
-	};
-};
+		t.getEyeColorSearch = function (query) {
+			return {
+				q: query
+			};
+		};
 
-t.getSearchParams = function (filterSplice) {
-	if (!filterSplice) {
-		return;
-	}
-	return {
-		eyeColor: filterSplice.indexSplices[0].object
-	};
-};
-</script>
+		t.getSearchParams = function (filterSplice) {
+			if (!filterSplice) {
+				return;
+			}
+			return {
+				eyeColor: filterSplice.indexSplices[0].object
+			};
+		};
+	</script>
 </body>
 </html>
