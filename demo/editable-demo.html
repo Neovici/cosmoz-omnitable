@@ -68,23 +68,23 @@
 					</div>
 				</div>
 
-				<cosmoz-omnitable id="omnitable" data="[[data]]" class="flex" selection-enabled="" selected-items="{{selectedItems}}">
+				<cosmoz-omnitable id="omnitable" data="[[data]]" class="flex" selection-enabled selected-items="{{selectedItems}}">
 					<cosmoz-omnitable-column title="Id" name="id" value-path="id"></cosmoz-omnitable-column>
-					<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" editable="">
+					<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" editable>
 					</cosmoz-omnitable-column-number>
 
-					<cosmoz-omnitable-column-boolean title="Boolean" name="bool" value-path="bool" true-label="Yes" false-label="No" editable=""></cosmoz-omnitable-column-boolean>
+					<cosmoz-omnitable-column-boolean title="Boolean" name="bool" value-path="bool" true-label="Yes" false-label="No" editable></cosmoz-omnitable-column-boolean>
 
-					<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount" editable=""></cosmoz-omnitable-column-amount>
-					<cosmoz-omnitable-column-date title="Date" name="date" value-path="date" editable=""></cosmoz-omnitable-column-date>
-					<cosmoz-omnitable-column-datetime title="Datetime" name="datetime" value-path="date" editable=""></cosmoz-omnitable-column-datetime>
-					<cosmoz-omnitable-column-time title="Time" name="time" value-path="date" editable=""></cosmoz-omnitable-column-time>
-					<cosmoz-omnitable-column title="Sub-property" name="subproperty" value-path="sub.subProp" editable=""></cosmoz-omnitable-column>
-					<cosmoz-omnitable-column title="Random String" name="randomstring" value-path="randomString" editable=""></cosmoz-omnitable-column>
+					<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount" editable></cosmoz-omnitable-column-amount>
+					<cosmoz-omnitable-column-date title="Date" name="date" value-path="date" editable></cosmoz-omnitable-column-date>
+					<cosmoz-omnitable-column-datetime title="Datetime" name="datetime" value-path="date" editable></cosmoz-omnitable-column-datetime>
+					<cosmoz-omnitable-column-time title="Time" name="time" value-path="date" editable></cosmoz-omnitable-column-time>
+					<cosmoz-omnitable-column title="Sub-property" name="subproperty" value-path="sub.subProp" editable></cosmoz-omnitable-column>
+					<cosmoz-omnitable-column title="Random String" name="randomstring" value-path="randomString" editable></cosmoz-omnitable-column>
 					<!-- sample column that overrides edit-cell -->
-					<cosmoz-omnitable-column id="nameCol" title="Name" name="name" value-path="name" editable="">
+					<cosmoz-omnitable-column id="nameCol" title="Name" name="name" value-path="name" editable>
 						<template class="edit-cell">
-							<paper-input no-label-float="" type="text" on-change="_itemNameChanged" value="[[item.name]]"></paper-input>
+							<paper-input no-label-float type="text" on-change="_itemNameChanged" value="[[item.name]]"></paper-input>
 						</template>
 					</cosmoz-omnitable-column>
 				</cosmoz-omnitable>

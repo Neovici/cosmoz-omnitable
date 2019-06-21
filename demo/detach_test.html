@@ -39,13 +39,13 @@
 			</style>
 
 			<button on-tap="toggleSlot">Change slot</button>
-			<template is="dom-if" if="[[ !showContent2 ]]" restamp="">
+			<template is="dom-if" if="[[ !showContent2 ]]" restamp>
 				<h1>Content1</h1>
 				<div id="content1">
 					<slot></slot>
 				</div>
 			</template>
-			<template is="dom-if" if="[[ showContent2 ]]" restamp="">
+			<template is="dom-if" if="[[ showContent2 ]]" restamp>
 				<h1>Content2</h1>
 				<div id="content2">
 					<slot></slot>
@@ -81,7 +81,7 @@
 						Selected items count: <span>[[ selectedItems.length ]]</span>
 					</div>
 					<div class="action">
-						<paper-dropdown-menu label="Locale" no-animations="">
+						<paper-dropdown-menu label="Locale" no-animations>
 							<paper-listbox class="dropdown-content" selected="{{ locale }}" attr-for-selected="value">
 								<paper-item value="en">en</paper-item>
 								<paper-item value="fr">fr</paper-item>
@@ -91,7 +91,7 @@
 					</div>
 				</div>
 				<x-container class="flex">
-					<cosmoz-omnitable id="omnitable" class="fit" data="[[ data ]]" selection-enabled="" selected-items="{{ selectedItems }}">
+					<cosmoz-omnitable id="omnitable" class="fit" data="[[ data ]]" selection-enabled selected-items="{{ selectedItems }}">
 						<cosmoz-omnitable-column-autocomplete title="Id" name="id" value-path="id" sort-on="id" group-on="id">
 							<template class="cell">
 								<span on-tap="onTap">

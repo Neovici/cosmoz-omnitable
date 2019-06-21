@@ -28,8 +28,8 @@ class OmnitableColumnAmount extends rangeColumnMixin(columnMixin(translatable(
 		</template>
 
 		<template class="edit-cell">
-			<paper-input no-label-float="" type="number" on-change="_amountValueChanged" value="[[ getInputString(item, valuePath) ]]">
-				<div suffix="">[[ getCurrency(item, valuePath) ]]</div>
+			<paper-input no-label-float type="number" on-change="_amountValueChanged" value="[[ getInputString(item, valuePath) ]]">
+				<div suffix>[[ getCurrency(item, valuePath) ]]</div>
 			</paper-input>
 		</template>
 
@@ -42,12 +42,12 @@ class OmnitableColumnAmount extends rangeColumnMixin(columnMixin(translatable(
 					<paper-input type="number" label="[[ _('Min amount', t) ]]"
 						title="[[ _('Minimum amount', t) ]]" value="{{ _filterInput.min }}"
 						min="[[ _toInputStringAmount(_limit.fromMin) ]]" max="[[ _toInputStringAmount(_limit.fromMax) ]]">
-						<div slot="suffix" suffix="">[[ filter.min.currency ]]</div>
+						<div slot="suffix" suffix>[[ filter.min.currency ]]</div>
 					</paper-input>
 					<paper-input type="number" label="[[ _('Max amount', t) ]]"
 						title="[[ _('Maximum amount', t) ]]" value="{{ _filterInput.max }}"
 						min="[[ _toInputStringAmount(_limit.toMin) ]]" max="[[ _toInputStringAmount(_limit.toMax) ]]">
-						<div slot="suffix" suffix="">[[ filter.max.currency ]]</div>
+						<div slot="suffix" suffix>[[ filter.max.currency ]]</div>
 					</paper-input>
 				</div>
 			</paper-dropdown-menu>

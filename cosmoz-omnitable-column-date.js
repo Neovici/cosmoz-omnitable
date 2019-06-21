@@ -28,7 +28,7 @@ class OmnitableColumnDate extends dateColumnMixin(columnMixin(translatable(
 		</template>
 
 		<template class="edit-cell">
-			<paper-input no-label-float="" type="date" on-change="_dateValueChanged" value="[[ getInputString(item, valuePath) ]]">
+			<paper-input no-label-float type="date" on-change="_dateValueChanged" value="[[ getInputString(item, valuePath) ]]">
 			</paper-input>
 		</template>
 

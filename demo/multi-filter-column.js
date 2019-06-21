@@ -12,7 +12,7 @@ class MultiFilterColumn extends columnMixin(PolymerElement) {
 
 		<cosmoz-omnitable-templatizer id="edit-data-templatizer">
 			<template>
-				<paper-input no-label-float="" type="text" on-change="_valueChanged" value="[[renderDefaultValue(item, valuePath)]]"></paper-input>
+				<paper-input no-label-float type="text" on-change="_valueChanged" value="[[renderDefaultValue(item, valuePath)]]"></paper-input>
 			</template>
 		</cosmoz-omnitable-templatizer>
 

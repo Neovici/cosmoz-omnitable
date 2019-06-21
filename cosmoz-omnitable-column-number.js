@@ -32,7 +32,7 @@ class OmnitableColumnNumber extends rangeColumnMixin(
 		</template>
 
 		<template class="edit-cell">
-			<paper-input no-label-float="" type="number" on-change="_valueChanged" value="[[ getInputString(item, valuePath) ]]"></paper-input>
+			<paper-input no-label-float type="number" on-change="_valueChanged" value="[[ getInputString(item, valuePath) ]]"></paper-input>
 		</template>
 
 		<template class="header">

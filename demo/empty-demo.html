@@ -55,7 +55,7 @@
 					</div>
 				</div>
 
-				<cosmoz-omnitable id="omnitable" class="flex" data="[[data]]" selection-enabled="" selected-items="{{selectedItems}}">
+				<cosmoz-omnitable id="omnitable" class="flex" data="[[data]]" selection-enabled selected-items="{{selectedItems}}">
 					<cosmoz-omnitable-column title="Id" name="id" value-path="id" sort-on="id" group-on="id">
 						<template class="cell">
 							<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.id]]</a>
@@ -65,7 +65,7 @@
 					</cosmoz-omnitable-column-boolean>
 					<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" locale="{{locale}}" sort-on="value" group-on="value">
 					</cosmoz-omnitable-column-number>
-					<cosmoz-omnitable-column title="Group" name="group" value-path="group" bind-values="" sort-on="group" group-on="group">
+					<cosmoz-omnitable-column title="Group" name="group" value-path="group" bind-values sort-on="group" group-on="group">
 					</cosmoz-omnitable-column>
 					<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount" sort-on="amount" group-on="amount">
 					</cosmoz-omnitable-column-amount>
@@ -75,7 +75,7 @@
 					</cosmoz-omnitable-column-date>
 					<cosmoz-omnitable-column title="Sub-property" name="subproperty" value-path="sub.subProp" sort-on="sub.subProp" group-on="sub.subProp">
 					</cosmoz-omnitable-column>
-					<cosmoz-omnitable-column title="Name" name="name" value-path="name" bind-values="" sort-on="name" group-on="name">
+					<cosmoz-omnitable-column title="Name" name="name" value-path="name" bind-values sort-on="name" group-on="name">
 					<template class="cell">
 							<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.name]]</a>
 						</template>

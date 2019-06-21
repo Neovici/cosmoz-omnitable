@@ -44,7 +44,7 @@ class XPage extends translatable(PolymerElement) {
 					Selected items count: <span>[[ selectedItems.length ]]</span>
 				</div>
 				<div class="action">
-					<paper-dropdown-menu label="Locale" no-animations="">
+					<paper-dropdown-menu label="Locale" no-animations>
 						<paper-listbox class="dropdown-content" slot="dropdown-content" selected="{{ locale }}" attr-for-selected="value">
 							<paper-item value="en">en</paper-item>
 							<paper-item value="fr">fr</paper-item>
@@ -57,7 +57,7 @@ class XPage extends translatable(PolymerElement) {
 			</div>
 
 			<cosmoz-omnitable loading="[[ loading ]]" id="omnitable" class="flex"
-				data="[[ data ]]" selection-enabled="" selected-items="{{ selectedItems }}"
+				data="[[ data ]]" selection-enabled selected-items="{{ selectedItems }}"
 				hash-param="[[ hashParam ]]">
 				<cosmoz-omnitable-column-date title="Date" name="date" value-path="date" sort-on="date" group-on="date" locale="[[ locale ]]">
 				</cosmoz-omnitable-column-date>
@@ -74,7 +74,7 @@ class XPage extends translatable(PolymerElement) {
 				</cosmoz-omnitable-column-autocomplete>
 				<cosmoz-omnitable-column-autocomplete title="[[ _('Object', t) ]]"
 					name="object" value-path="object" value-property="value"
-					text-property="label" flex="0" width="125px" overflow="">
+					text-property="label" flex="0" width="125px" overflow>
 				</cosmoz-omnitable-column-autocomplete>
 				<cosmoz-omnitable-column-date title="DateJSON" name="datejson" value-path="dateJSON" sort-on="dateJSON" group-on="dateJSON" locale="{{ locale }}">
 				</cosmoz-omnitable-column-date>

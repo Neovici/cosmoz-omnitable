@@ -31,7 +31,7 @@ class OmnitableColumnTime extends
 		</template>
 
 		<template class="edit-cell">
-			<paper-input no-label-float="" type="time" on-change="_timeValueChanged" value="[[ getInputString(item, valuePath) ]]">
+			<paper-input no-label-float type="time" on-change="_timeValueChanged" value="[[ getInputString(item, valuePath) ]]">
 			</paper-input>
 		</template>
 

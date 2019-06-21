@@ -45,7 +45,7 @@
 						Selected items count: <span>{{selectedItems.length}}</span>
 					</div>
 					<div class="action">
-						<paper-dropdown-menu label="Locale" no-animations="">
+						<paper-dropdown-menu label="Locale" no-animations>
 							<paper-listbox class="dropdown-content" selected="{{ locale }}" attr-for-selected="value">
 								<paper-item value="en">en</paper-item>
 								<paper-item value="fr">fr</paper-item>
@@ -55,7 +55,7 @@
 					</div>
 				</div>
 
-				<cosmoz-omnitable id="omnitable" class="flex" data="[[data]]" selection-enabled="" selected-items="{{selectedItems}}">
+				<cosmoz-omnitable id="omnitable" class="flex" data="[[data]]" selection-enabled selected-items="{{selectedItems}}">
 					<cosmoz-omnitable-column title="Id" name="id" value-path="id" sort-on="id" group-on="id">
 						<template class="cell">
 							<span>

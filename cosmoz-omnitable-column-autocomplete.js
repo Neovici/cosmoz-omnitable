@@ -21,7 +21,7 @@ class OmnitableColumnAutocomplete extends columnMixin(PolymerElement) {
 		</template>
 
 		<template class="edit-cell">
-			<paper-input no-label-float="" type="text" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]"></paper-input>
+			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]"></paper-input>
 		</template>
 
 		<template class="header">
@@ -29,8 +29,8 @@ class OmnitableColumnAutocomplete extends columnMixin(PolymerElement) {
 				source="[[ _unique(values, valueProperty) ]]" label="[[ title ]]"
 				selected-items="{{ filter }}" text-property="[[ textProperty ]]"
 				value-property="[[ valueProperty ]]" focused="{{ headerFocused }}"
-				show-results-on-focus="">
-				<paper-spinner-lite style="width: 20px; height: 20px;" suffix="" slot="suffix" active="[[ loading ]]" hidden="[[ !loading ]]"></paper-spinner-lite>
+				show-results-on-focus>
+				<paper-spinner-lite style="width: 20px; height: 20px;" suffix slot="suffix" active="[[ loading ]]" hidden="[[ !loading ]]"></paper-spinner-lite>
 			</paper-autocomplete-chips>
 		</template>
 `;

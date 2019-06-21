@@ -30,7 +30,7 @@ class OmnitableColumnDatetime extends
 		</template>
 
 		<template class="edit-cell">
-			<cosmoz-datetime-input no-label-float="" type="cosmoz-datetime-input" on-change="_dateValueChanged" value="[[ getInputString(item, valuePath) ]]">
+			<cosmoz-datetime-input no-label-float type="cosmoz-datetime-input" on-change="_dateValueChanged" value="[[ getInputString(item, valuePath) ]]">
 			</cosmoz-datetime-input>
 		</template>
 

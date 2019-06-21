@@ -21,13 +21,13 @@ class OmnitableColumn extends columnMixin(PolymerElement) {
 		</template>
 
 		<template class="edit-cell">
-			<paper-input no-label-float="" type="text" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]">
+			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]">
 			</paper-input>
 		</template>
 
 		<template class="header">
 			<paper-input label="[[ title ]]" value="{{ filter }}" focused="{{ headerFocused }}">
-				<cosmoz-clear-button suffix="" slot="suffix" visible="[[ hasFilter(filter.*) ]]" light="" on-click="resetFilter"></cosmoz-clear-button>
+				<cosmoz-clear-button suffix slot="suffix" visible="[[ hasFilter(filter.*) ]]" light on-click="resetFilter"></cosmoz-clear-button>
 			</paper-input>
 		</template>
 `;

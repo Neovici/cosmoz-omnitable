@@ -48,12 +48,12 @@ class OmnitableColumnListHorizontal extends listColumnMixin(
 		</template>
 
 		<template class="edit-cell">
-			<paper-input no-label-float="" type="text" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]"></paper-input>
+			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]"></paper-input>
 		</template>
 
 		<template class="header">
 			<paper-autocomplete-chips source="[[ _computeAutocompleteItems(values) ]]"
-				label="[[ title ]]" selected-items="{{ filter }}" text-property="[[ textProperty ]]" value-property="[[ valueProperty ]]" show-results-on-focus="">
+				label="[[ title ]]" selected-items="{{ filter }}" text-property="[[ textProperty ]]" value-property="[[ valueProperty ]]" show-results-on-focus>
 			</paper-autocomplete-chips>
 		</template>
 `;
