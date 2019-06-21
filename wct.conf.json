@@ -19,7 +19,7 @@
 			"browsers": [{
 				"browserName": "chrome",
 				"platform": "Windows 10",
-				"version": "beta",
+				"version": "latest",
 				"timeZone": "Stockholm"
 			}, {
 				"browserName": "firefox",
