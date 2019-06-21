@@ -103,7 +103,7 @@ class OmnitableColumnList extends	listColumnMixin(columnMixin(translatable(
 				}
 				if (valueProperty) {
 					const value = this.get(valueProperty, item);
-					if (used.indexOf(value) !== -1) {
+					if (used.includes(value)) {
 						return false;
 					}
 					used.push(value);
@@ -119,7 +119,7 @@ class OmnitableColumnList extends	listColumnMixin(columnMixin(translatable(
 			itemValues = [itemValues];
 		}
 		if (!this.valueProperty) {
-			return filters.some(filter => itemValues.indexOf(filter) > -1);
+			return filters.some(filter => itemValues.includes(filter));
 		}
 		return filters
 			.map(filter => filter[this.valueProperty])

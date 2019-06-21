@@ -95,13 +95,11 @@ export const columnMixin = dedupingMixin(base => class extends templatizeMixin(b
 			},
 
 			sortOn: {
-				type: String,
-				value: null // need a default value for compatibility with Polymer 1.x, to trigger _pathsChanged observer
+				type: String
 			},
 
 			groupOn: {
-				type: String,
-				value: null // need a default value for compatibility with Polymer 1.x, to trigger _pathsChanged observer
+				type: String
 			},
 
 			/**

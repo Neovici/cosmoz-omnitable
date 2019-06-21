@@ -141,8 +141,6 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 
 	/** OVERRIDES */
 
-	/** cosmoz-omnitable-column-behavior */
-
 	_valueChanged(e) {
 		const value = e.target.selected === 'true',
 			item = e.model.item,
@@ -166,8 +164,16 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 
 	_deserializeFilter(obj) {
 		const value = this._deserializeValue(obj, String);
-		// eslint-disable-next-line no-nested-ternary
-		return value === 'true' ? true : value === 'false' ? false : null;
+
+		if (value === 'true') {
+			return true;
+		}
+
+		if (value === 'false') {
+			return false;
+		}
+
+		return null;
 	}
 
 	toXlsxValue(item, valuePath = this.valuePath) {
