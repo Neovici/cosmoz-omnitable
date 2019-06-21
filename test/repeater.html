@@ -5,17 +5,20 @@
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 	<title>cosmoz-omnitable repeater mixin test</title>
 
-	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-	<script src="../../web-component-tester/browser.js"></script>
-	<script src="../../test-fixture/test-fixture-mocha.js"></script>
-	<script src="./helpers/utils.js"></script>
+	<script src="/components/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+	<script src="/components/mocha/mocha.js"></script>
+	<script src="/components/wct-mocha/wct-mocha.js"></script>
+	<script src="/components/chai/chai.js"></script>
+	<script src="/components/sinon/pkg/sinon.js"></script>
+	<script src="/components/@polymer/test-fixture/test-fixture-mocha.js"></script>
 
-	<link rel="import" href="../../test-fixture/test-fixture.html">
-	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-	<link rel="import" href="../cosmoz-omnitable.html">
-	<link rel="import" href="../cosmoz-omnitable-templatize-mixin.html">
-	<link rel="import" href="./helpers/fixtures/basic-column.html">
-	<link rel="import" href="./helpers/fixtures/basic-row.html">
+	<script type="module" src="/components/@polymer/test-fixture/test-fixture.js"></script>
+	<script type="module" src="/components/@polymer/iron-test-helpers/iron-test-helpers.js"></script>
+
+	<script type="module" src="../cosmoz-omnitable.js"></script>
+	<script type="module" src="../cosmoz-omnitable-templatize-mixin.js"></script>
+	<script type="module" src="./helpers/fixtures/basic-column.js"></script>
+	<script type="module" src="./helpers/fixtures/basic-row.js"></script>
 </head>
 <body>
 	<test-fixture id="basic">
@@ -35,10 +38,7 @@
 		</template>
 	</test-fixture>
 
-	<script>
-	(function () {
-		'use strict';
-
+	<script type="module">
 		describe('OmnitableRepeaterMixin', () => {
 			context('columns configuration is missing', () => {
 				it('does not render anything', () => {
@@ -216,6 +216,6 @@
 				});
 			});
 		});
-	})();
 	</script>
+</body>
 </html>

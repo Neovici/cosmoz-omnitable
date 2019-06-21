@@ -11,10 +11,7 @@
 			"dir": "./coverage",
 			"reporters": ["text-summary", "lcov"],
 			"include": [
-				"cosmoz-omnitable.html",
-				"cosmoz-omnitable.js",
-				"cosmoz-omnitable-*.html",
-				"cosmoz-omnitable-*.js"
+				"**/cosmoz-*.js"
 			],
 			"exclude": []
 		},
@@ -22,7 +19,7 @@
 			"browsers": [{
 				"browserName": "chrome",
 				"platform": "Windows 10",
-				"version": "beta",
+				"version": "latest",
 				"timeZone": "Stockholm"
 			}, {
 				"browserName": "firefox",

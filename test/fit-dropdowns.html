@@ -5,16 +5,19 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-		<script src="../../web-component-tester/browser.js"></script>
-		<script src="../../test-fixture/test-fixture-mocha.js"></script>
-		<script src="./helpers/utils.js"></script>
+		<script src="/components/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+		<script src="/components/mocha/mocha.js"></script>
+		<script src="/components/wct-mocha/wct-mocha.js"></script>
+		<script src="/components/chai/chai.js"></script>
+		<script src="/components/sinon/pkg/sinon.js"></script>
+		<script src="/components/@polymer/test-fixture/test-fixture-mocha.js"></script>
 
-		<link rel="import" href="../../test-fixture/test-fixture.html">
-		<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-		<link rel="import" href="../cosmoz-omnitable.html">
-		<link rel="import" href="../cosmoz-omnitable-column-autocomplete.html">
-		<link rel="import" href="../cosmoz-omnitable-column.html">
+		<script type="module" src="/components/@polymer/test-fixture/test-fixture.js"></script>
+		<script type="module" src="/components/@polymer/iron-test-helpers/iron-test-helpers.js"></script>
+
+		<script type="module" src="../cosmoz-omnitable.js"></script>
+		<script type="module" src="../cosmoz-omnitable-column-autocomplete.js"></script>
+		<script type="module" src="../cosmoz-omnitable-column.js"></script>
 	</head>
 	<body>
 		<test-fixture id="basic">
@@ -35,11 +38,8 @@
 				</cosmoz-omnitable>
 			</template>
 		</test-fixture>
-		<script>
-		(function () {
-			'use strict';
-
-			let omnitable;
+		<script type="module">
+			import { setupOmnitableFixture } from './helpers/utils';
 			const data = [
 				{ id: 0, group: 'group0', name: 'Item 0' },
 				{ id: 1, group: 'group0', name: 'Item 1' },
@@ -50,7 +50,9 @@
 			suite('fit-dropdowns', () => {
 				let omnitable;
 
-				setup(done => omnitable = setupOmnitableFixture('basic', data.slice(0), () => done()));
+				setup(done => {
+					omnitable = setupOmnitableFixture('basic', data.slice(0), () => done());
+				});
 
 				test('sets iron-dropdown fitInto property', () => {
 					[
@@ -69,10 +71,12 @@
 				let omnitable,
 					column;
 
-				setup(done => omnitable = setupOmnitableFixture('basic', data.slice(0), () => {
-					column = omnitable.columns[0];
-					done();
-				}));
+				setup(done => {
+					omnitable = setupOmnitableFixture('basic', data.slice(0), () => {
+						column = omnitable.columns[0];
+						done();
+					});
+				});
 
 				test('getComparableValue returns value converted to String', () => {
 					assert.equal(column.getComparableValue({ id: 14, group: 'group0', name: 'Item 14' }), 14);
@@ -133,7 +137,7 @@
 					let items = [
 						{id: 0, group: 'group0', name: ' Item 0'},
 						{id: 1, group: 'group0', name: ' Item 1'},
-						{id: 0, group: 'group0', name: ' Item 0'},
+						{id: 0, group: 'group0', name: ' Item 0'}
 					];
 					assert.deepEqual(column._unique(items, 'id'), [
 						{id: 0, group: 'group0', name: ' Item 0'},
@@ -148,7 +152,7 @@
 						{id: 2, group: 'group1', name: ' Item 2'},
 						{id: 2, group: 'group1', name: ' Item 2'},
 						{id: 3, group: 'group1', name: ' Item 3'},
-						{id: 0, group: 'group0', name: ' Item 0'},
+						{id: 0, group: 'group0', name: ' Item 0'}
 					];
 					assert.deepEqual(column._unique(items, 'id'), [
 						{id: 0, group: 'group0', name: ' Item 0'},
@@ -158,7 +162,6 @@
 					]);
 				});
 			});
-		})();
 		</script>
 	</body>
 </html>

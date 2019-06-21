@@ -1,16 +1,17 @@
-<link rel="import" href="x-page.html">
-<dom-bind id="home">
-	<template is="dom-bind">
+<dom-module id="demo-home">
+	<template>
 		<x-page class="fit" style="height: 100%; width: 100%;" hash-param="full">
 		</x-page>
 	</template>
-</dom-bind>
-<script>
-	(function () {
-		'use strict';
+	<script type="module">
+		import { PolymerElement } from '@polymer/polymer/polymer-element';
+		import './x-page.js';
 
-		Cosmoz.TemplateView['home'] = {
-
-		};
-	}());
-</script>
+		class DemoHome extends PolymerElement {
+			static get is() {
+				return 'demo-home';
+			}
+		}
+		customElements.define(DemoHome.is, DemoHome);
+	</script>
+</dom-module>

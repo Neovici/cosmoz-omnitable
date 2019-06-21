@@ -6,16 +6,18 @@
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 	<title>cosmoz-omnitable basic test</title>
 
-	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-	<script src="../../web-component-tester/browser.js"></script>
-	<script src="../../test-fixture/test-fixture-mocha.js"></script>
-	<script src="./helpers/utils.js"></script>
+	<script src="/components/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+	<script src="/components/mocha/mocha.js"></script>
+	<script src="/components/wct-mocha/wct-mocha.js"></script>
+	<script src="/components/chai/chai.js"></script>
+	<script src="/components/sinon/pkg/sinon.js"></script>
+	<script src="/components/@polymer/test-fixture/test-fixture-mocha.js"></script>
 
-	<link rel="import" href="../../test-fixture/test-fixture.html">
-	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-	<link rel="import" href="../cosmoz-omnitable.html">
-	<link rel="import" href="../cosmoz-omnitable-columns.html">
-	<link rel="import" href="../demo/table-demo-helper.html">
+	<script type="module" src="/components/@polymer/test-fixture/test-fixture.js"></script>
+	<script type="module" src="/components/@polymer/iron-test-helpers/iron-test-helpers.js"></script>
+
+	<script type="module" src="../cosmoz-omnitable.js"></script>
+	<script type="module" src="../cosmoz-omnitable-columns.js"></script>
 </head>
 
 <body>
@@ -53,167 +55,165 @@
 		</template>
 	</test-fixture>
 
-	<script>
-		(function () {
-			'use strict';
+	<script type="module">
+		import { setupOmnitableFixture } from './helpers/utils';
+		import { generateTableDemoData } from '../demo/table-demo-helper';
 
-			sinon.assert.expose(chai.assert, { prefix: '' });
+		sinon.assert.expose(chai.assert, { prefix: '' });
 
-			suite('basic', () => {
-				let omnitable,
-					data;
+		suite('basic', () => {
+			let omnitable,
+				data;
 
-				setup(done => {
-					data = Cosmoz.Demo.generateTableDemoData(10, 11, 25);
-					omnitable = setupOmnitableFixture('basic', data, () => done());
-				});
-
-				test('it retrieves column by name', () => {
-					var date = omnitable.querySelector('#date1');
-					assert.equal(date, omnitable._getColumn('date1'));
-				});
-
-				test('it updates visibleColumns', () => {
-					assert.deepEqual(omnitable.visibleColumns, omnitable.columns);
-
-					omnitable.groupOn = 'date2';
-					omnitable.flush();
-					assert.deepEqual(omnitable.visibleColumns, omnitable.columns);
-
-					omnitable.groupOn = '';
-					omnitable.flush();
-					assert.deepEqual(omnitable.visibleColumns, omnitable.columns);
-
-				});
-
-				test('sets column groupOn property to valuePath when group-on attribute is missing', () => {
-					const column = omnitable.columns.find(col => {
-						return col.name === 'columnWithoutGroupOn';
-					});
-
-					assert.equal(column.groupOn, 'valuePath');
-				});
-
-				test('sets column groupOn property to group-on attribute', () => {
-					const column = omnitable.columns.find(col => {
-						return col.name === 'columnWithGroupOn';
-					});
-
-					assert.equal(column.groupOn, 'groupOnValuePath');
-				});
-
-				test('sets column sortOn property to valuePath when sort-on attribute is missing', () => {
-					const column = omnitable.columns.find(col => {
-						return col.name === 'columnWithoutSortOn';
-					});
-
-					assert.equal(column.sortOn, 'valuePath');
-				});
-				test('sets column sortOn property to sort-on attribute', () => {
-					const column = omnitable.columns.find(col => {
-						return col.name === 'columnWithSortOn';
-					});
-
-					assert.equal(column.sortOn, 'sortOnValuePath');
-				});
-
-				test('_serializeFilter returns filter', () => {
-					const column = omnitable.columns.find(col => {
-							return col.name === 'columnWithGroupOn';
-						}),
-						filter = { key: 'value' };
-					assert.deepEqual(column._serializeFilter(filter), filter);
-				});
-
-				test('_serializeFilter uses default filter', () => {
-					const column = omnitable.columns.find(col => {
-						return col.name === 'columnWithGroupOn';
-					});
-					assert.isNull(column.filter);
-					column.filter = { key: 'value' };
-					assert.deepEqual(column._serializeFilter(), column.filter);
-				});
-
-				test('_serializeFilter handles null filter', () => {
-					const column = omnitable.columns.find(col => {
-						return col.name === 'columnWithGroupOn';
-					});
-					assert.isNull(column.filter);
-					assert.isNull(column._serializeFilter());
-				});
-
-				test('_deserializeFilter returns object', () => {
-					const column = omnitable.columns.find(col => {
-						return col.name === 'columnWithGroupOn';
-					});
-					assert.deepEqual(column._deserializeFilter({ key: 'value' }), { key: 'value' });
-				});
-
-				test('_deserializeFilter handles null', () => {
-					const column = omnitable.columns.find(col => {
-						return col.name === 'columnWithGroupOn';
-					});
-					assert.isNull(column._deserializeFilter());
-				});
-
-				test('resetFilter resets filter to null', () => {
-					const column = omnitable.columns.find(col => {
-						return col.name === 'columnWithGroupOn';
-					});
-					column.filter = { key: 'value' };
-					column.resetFilter();
-					assert.isNull(column.filter);
-				});
-
-				// Column Behavior unit tests for more coverage
-				test('_hiddenChanged fires cosmoz-column-hidden-changed', () => {
-					const column = omnitable.columns[3],
-						hiddenSpy = sinon.spy();
-					assert.isUndefined(column.hidden);
-					column.addEventListener('cosmoz-column-hidden-changed', hiddenSpy);
-					column.hidden = true;
-					assert.calledOnce(hiddenSpy);
-					column.removeEventListener('cosmoz-column-hidden-changed', hiddenSpy);
-				});
-
-				test('_applyMultiFilter works with an simple test filter', () => {
-					const column = omnitable.columns[3];
-					let filter = ['a', 'b'];
-					assert.isTrue(column._applyMultiFilter(filter, { valuePath: 'abc' }));
-					filter = ['x', 'y'];
-					assert.isFalse(column._applyMultiFilter(filter, { valuePath: 'abc' }));
-				});
+			setup(done => {
+				data = generateTableDemoData(10, 11, 25);
+				omnitable = setupOmnitableFixture('basic', data, () => done());
 			});
 
-			suite('it logs unnamed column', () => {
-				let omnitable,
-					data,
-					consoleErrorStub;
-
-				setup(done => {
-					// We must stub console.error otherwise the test will fail
-					consoleErrorStub = sinon.stub(window.console, 'error');
-					data = Cosmoz.Demo.generateTableDemoData(10, 11, 25);
-					omnitable = setupOmnitableFixture('column-setup', data, () => done());
-				});
-
-				test('Un-named column get value-path as name if unique', () => {
-					var date2 = omnitable.querySelector('#date2'),
-						date3 = omnitable.querySelector('#date3');
-
-					// Async needed so that omnitable can process the data
-					sinon.assert.calledTwice(console.error);
-					expect(date2.name).to.be.equal(date2.valuePath);
-					// Test if only unique value-paths are taken as a fallback name attribute
-					expect(date3.name).to.be.an('undefined');
-				});
-
-				teardown(() => {
-					consoleErrorStub.restore();
-				});
+			test('it retrieves column by name', () => {
+				const date = omnitable.querySelector('#date1');
+				assert.equal(date, omnitable._getColumn('date1'));
 			});
-		}());
 
+			test('it updates visibleColumns', () => {
+				assert.deepEqual(omnitable.visibleColumns, omnitable.columns);
+
+				omnitable.groupOn = 'date2';
+				omnitable.flush();
+				assert.deepEqual(omnitable.visibleColumns, omnitable.columns);
+
+				omnitable.groupOn = '';
+				omnitable.flush();
+				assert.deepEqual(omnitable.visibleColumns, omnitable.columns);
+
+			});
+
+			test('sets column groupOn property to valuePath when group-on attribute is missing', () => {
+				const column = omnitable.columns.find(col => {
+					return col.name === 'columnWithoutGroupOn';
+				});
+
+				assert.equal(column.groupOn, 'valuePath');
+			});
+
+			test('sets column groupOn property to group-on attribute', () => {
+				const column = omnitable.columns.find(col => {
+					return col.name === 'columnWithGroupOn';
+				});
+
+				assert.equal(column.groupOn, 'groupOnValuePath');
+			});
+
+			test('sets column sortOn property to valuePath when sort-on attribute is missing', () => {
+				const column = omnitable.columns.find(col => {
+					return col.name === 'columnWithoutSortOn';
+				});
+
+				assert.equal(column.sortOn, 'valuePath');
+			});
+			test('sets column sortOn property to sort-on attribute', () => {
+				const column = omnitable.columns.find(col => {
+					return col.name === 'columnWithSortOn';
+				});
+
+				assert.equal(column.sortOn, 'sortOnValuePath');
+			});
+
+			test('_serializeFilter returns filter', () => {
+				const column = omnitable.columns.find(col => {
+						return col.name === 'columnWithGroupOn';
+					}),
+					filter = { key: 'value' };
+				assert.deepEqual(column._serializeFilter(filter), filter);
+			});
+
+			test('_serializeFilter uses default filter', () => {
+				const column = omnitable.columns.find(col => {
+					return col.name === 'columnWithGroupOn';
+				});
+				assert.isNull(column.filter);
+				column.filter = { key: 'value' };
+				assert.deepEqual(column._serializeFilter(), column.filter);
+			});
+
+			test('_serializeFilter handles null filter', () => {
+				const column = omnitable.columns.find(col => {
+					return col.name === 'columnWithGroupOn';
+				});
+				assert.isNull(column.filter);
+				assert.isNull(column._serializeFilter());
+			});
+
+			test('_deserializeFilter returns object', () => {
+				const column = omnitable.columns.find(col => {
+					return col.name === 'columnWithGroupOn';
+				});
+				assert.deepEqual(column._deserializeFilter({ key: 'value' }), { key: 'value' });
+			});
+
+			test('_deserializeFilter handles null', () => {
+				const column = omnitable.columns.find(col => {
+					return col.name === 'columnWithGroupOn';
+				});
+				assert.isNull(column._deserializeFilter());
+			});
+
+			test('resetFilter resets filter to null', () => {
+				const column = omnitable.columns.find(col => {
+					return col.name === 'columnWithGroupOn';
+				});
+				column.filter = { key: 'value' };
+				column.resetFilter();
+				assert.isNull(column.filter);
+			});
+
+			// Column Behavior unit tests for more coverage
+			test('_hiddenChanged fires cosmoz-column-hidden-changed', () => {
+				const column = omnitable.columns[3],
+					hiddenSpy = sinon.spy();
+				assert.isUndefined(column.hidden);
+				column.addEventListener('cosmoz-column-hidden-changed', hiddenSpy);
+				column.hidden = true;
+				assert.calledOnce(hiddenSpy);
+				column.removeEventListener('cosmoz-column-hidden-changed', hiddenSpy);
+			});
+
+			test('_applyMultiFilter works with an simple test filter', () => {
+				const column = omnitable.columns[3];
+				let filter = ['a', 'b'];
+				assert.isTrue(column._applyMultiFilter(filter, { valuePath: 'abc' }));
+				filter = ['x', 'y'];
+				assert.isFalse(column._applyMultiFilter(filter, { valuePath: 'abc' }));
+			});
+		});
+
+		suite('it logs unnamed column', () => {
+			let omnitable,
+				data,
+				consoleErrorStub;
+
+			setup(done => {
+				// We must stub console.error otherwise the test will fail
+				consoleErrorStub = sinon.stub(window.console, 'error');
+				data = generateTableDemoData(10, 11, 25);
+				omnitable = setupOmnitableFixture('column-setup', data, () => done());
+			});
+
+			test('Un-named column get value-path as name if unique', () => {
+				const date2 = omnitable.querySelector('#date2'),
+					date3 = omnitable.querySelector('#date3');
+
+				// Async needed so that omnitable can process the data
+				sinon.assert.calledTwice(console.error);
+				expect(date2.name).to.be.equal(date2.valuePath);
+				// Test if only unique value-paths are taken as a fallback name attribute
+				expect(date3.name).to.be.an('undefined');
+			});
+
+			teardown(() => {
+				consoleErrorStub.restore();
+			});
+		});
 	</script>
 </body>
 

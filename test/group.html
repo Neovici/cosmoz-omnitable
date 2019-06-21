@@ -5,16 +5,17 @@
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 	<title>cosmoz-omnitable group test</title>
 
-	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-	<script src="../../web-component-tester/browser.js"></script>
-	<script src="../../test-fixture/test-fixture-mocha.js"></script>
-	<script src="./helpers/utils.js"></script>
+	<script src="/components/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+	<script src="/components/mocha/mocha.js"></script>
+	<script src="/components/wct-mocha/wct-mocha.js"></script>
+	<script src="/components/chai/chai.js"></script>
+	<script src="/components/sinon/pkg/sinon.js"></script>
+	<script src="/components/@polymer/test-fixture/test-fixture-mocha.js"></script>
 
-	<link rel="import" href="../../test-fixture/test-fixture.html">
-	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-	<link rel="import" href="../cosmoz-omnitable.html">
-	<link rel="import" href="../cosmoz-omnitable-columns.html">
-	<link rel="import" href="../demo/table-demo-helper.html">
+	<script type="module" src="/components/@polymer/test-fixture/test-fixture.js"></script>
+	<script type="module" src="/components/@polymer/iron-test-helpers/iron-test-helpers.js"></script>
+	<script type="module" src="../cosmoz-omnitable.js"></script>
+	<script type="module" src="../cosmoz-omnitable-columns.js"></script>
 </head>
 <body>
 	<test-fixture id="id">
@@ -70,16 +71,16 @@
 		</template>
 	</test-fixture>
 
-	<script>
-	(function () {
-		'use strict';
+	<script type="module">
+		import { setupOmnitableFixture } from './helpers/utils';
+		import { generateTableDemoData } from '../demo/table-demo-helper';
 
 		suite('id', () => {
 			let omnitable,
 				data;
 
 			setup(done => {
-				data = Cosmoz.Demo.generateTableDemoData(10, 11, 25);
+				data = generateTableDemoData(10, 11, 25);
 				omnitable = setupOmnitableFixture('id', data, () => done());
 			});
 
@@ -87,7 +88,7 @@
 				assert.equal(omnitable.groupOn, 'id');
 				const groupOnColumn = omnitable.groupOnColumn;
 				assert.equal(typeof groupOnColumn, 'object');
-				assert.instanceOf(groupOnColumn, Cosmoz.OmnitableColumn);
+				assert.equal(groupOnColumn.constructor.name, 'OmnitableColumn');
 				assert.equal(groupOnColumn.name, 'id', 'Expected "groupOnColumn" to be the column that matches "groupOn" value');
 				assert.equal(groupOnColumn, omnitable.columns[0]);
 			});
@@ -120,7 +121,7 @@
 				data;
 
 			setup(done => {
-				data = Cosmoz.Demo.generateTableDemoData(10, 11, 25);
+				data = generateTableDemoData(10, 11, 25);
 				omnitable = setupOmnitableFixture('bool', data, () => done());
 			});
 
@@ -147,7 +148,7 @@
 				data;
 
 			setup(done => {
-				data = Cosmoz.Demo.generateTableDemoData(10, 11, 25);
+				data = generateTableDemoData(10, 11, 25);
 				omnitable = setupOmnitableFixture('amount', data, () => done());
 			});
 
@@ -156,12 +157,10 @@
 				omnitable.flush();
 				const groupOnColumn = omnitable.groupOnColumn;
 				assert.equal(typeof groupOnColumn, 'object');
-				assert.instanceOf(groupOnColumn, Cosmoz.OmnitableColumnAmount);
+				assert.equal(groupOnColumn.constructor.name, 'OmnitableColumnAmount');
 				assert.equal(groupOnColumn.name, 'amount', 'Expected "groupOnColumn" to be the column that matches "groupOn" value');
 				assert.equal(groupOnColumn, omnitable.columns[0]);
 			});
 		});
-
-	}());
 	</script>
 </body></html>

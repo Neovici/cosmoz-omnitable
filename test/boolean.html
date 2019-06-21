@@ -5,16 +5,17 @@
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 	<title>cosmoz-omnitable boolean test</title>
 
-	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-	<script src="../../web-component-tester/browser.js"></script>
-	<script src="../../test-fixture/test-fixture-mocha.js"></script>
-	<script src="./helpers/utils.js"></script>
+	<script src="/components/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+	<script src="/components/mocha/mocha.js"></script>
+	<script src="/components/wct-mocha/wct-mocha.js"></script>
+	<script src="/components/chai/chai.js"></script>
+	<script src="/components/sinon/pkg/sinon.js"></script>
+	<script src="/components/@polymer/test-fixture/test-fixture-mocha.js"></script>
 
-	<link rel="import" href="../../test-fixture/test-fixture.html">
-	<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-	<link rel="import" href="../cosmoz-omnitable.html">
-	<link rel="import" href="../cosmoz-omnitable-columns.html">
-	<link rel="import" href="../demo/table-demo-helper.html">
+	<script type="module" src="/components/@polymer/test-fixture/test-fixture.js"></script>
+	<script type="module" src="/components/@polymer/iron-test-helpers/iron-test-helpers.js"></script>
+	<script type="module" src="../cosmoz-omnitable.js"></script>
+	<script type="module" src="../cosmoz-omnitable-columns.js"></script>
 </head>
 <body>
 	<test-fixture id="basic">
@@ -28,13 +29,11 @@
 		</template>
 	</test-fixture>
 
-	<script>
-	(function () {
-		'use strict';
+	<script type="module">
+		import { setupOmnitableFixture } from './helpers/utils';
 
 		suite('basic', () => {
-			let omnitable,
-				column,
+			let column,
 				column2,
 				data;
 
@@ -47,7 +46,7 @@
 					{ boolean: 'invalid' },
 					{ boolean: 'true' }
 				];
-				omnitable = setupOmnitableFixture('basic', data, o => {
+				setupOmnitableFixture('basic', data, o => {
 					column = o.columns[0];
 					column2 = o.columns[1];
 					done();
@@ -55,7 +54,7 @@
 			});
 
 			test('initializes boolean column', () => {
-				assert.instanceOf(column, Cosmoz.OmnitableColumnBoolean);
+				assert.equal(column.constructor.name, 'OmnitableColumnBoolean');
 			});
 
 			test('_getDefaultFilter is null', () => {
@@ -187,6 +186,6 @@
 				assert.isNull(column._deserializeFilter('some invalid string'));
 			});
 		});
-	})();
 	</script>
+</body>
 </html>

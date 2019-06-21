@@ -5,16 +5,16 @@
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 	<title>cosmoz-omnitable list test</title>
 
-	<script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
-	<script src="../../../web-component-tester/browser.js"></script>
-	<script src="../../../test-fixture/test-fixture-mocha.js"></script>
-	<script src="../helpers/utils.js"></script>
+	<script src="/components/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+	<script src="/components/mocha/mocha.js"></script>
+	<script src="/components/wct-mocha/wct-mocha.js"></script>
+	<script src="/components/chai/chai.js"></script>
+	<script src="/components/@polymer/test-fixture/test-fixture-mocha.js"></script>
 
-	<link rel="import" href="../../../test-fixture/test-fixture.html">
-	<link rel="import" href="../../../iron-test-helpers/iron-test-helpers.html">
-	<link rel="import" href="../../cosmoz-omnitable.html">
-	<link rel="import" href="../../cosmoz-omnitable-templatize-mixin.html">
-	<link rel="import" href="../helpers/fixtures/basic-column.html">
+	<script type="module" src="/components/@polymer/test-fixture/test-fixture.js"></script>
+	<script type="module" src="/components/@polymer/iron-test-helpers/iron-test-helpers.js"></script>
+	<script type="module" src="../../cosmoz-omnitable.js"></script>
+	<script type="module" src="../helpers/fixtures/basic-column.js"></script>
 </head>
 <body>
 	<test-fixture id="basic">
@@ -40,65 +40,68 @@
 		</template>
 	</test-fixture>
 
-	<script>
-	(function () {
-		'use strict';
+	<script type="module">
+import { setupOmnitableFixture } from '../helpers/utils';
+import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
 
-		describe('Basic omnitable functionality', () => {
-			let omnitable;
+describe('Basic omnitable functionality', () => {
+	let omnitable;
 
-			beforeEach(done => {
-				const data = [
-					{id: 1, name: 'item 1', list: ['a', 'b', 'c'], bool: true},
-					{id: 2, name: 'item 2', list: ['a', 'b', 'c'], bool: false},
-					{id: 3, name: 'item 3', list: ['a', 'b', 'c'], bool: true}
-				];
-				omnitable = setupOmnitableFixture('basic', data, () => {
-					Polymer.flush();
-					done();
-				});
-			});
-
-			it('should display headers as configured', () => {
-				const headers = Array.from(omnitable.shadowRoot.querySelectorAll('.basic-column-header, .overriden-column-header'));
-				expect(headers).to.not.be.empty;
-				expect(headers.length).to.equal(2);
-				expect(headers.map(i => i.innerText)).to.deep.equal(['Header', 'Overriden Header']);
-			});
-
-			it('should display cells as configured', () => {
-				const cells = Array.from(omnitable.shadowRoot.querySelectorAll('.basic-column-cell, .overriden-column-cell'));
-				expect(cells).to.not.be.empty;
-				expect(cells.length).to.equal(6);
-				expect(cells.map(c => c.innerText)).to.deep.equal(['item 1', 'Overriden item 1', 'item 2', 'Overriden item 2', 'item 3', 'Overriden item 3']);
-			});
-
-			it('forwards changes to the data', done => {
-				omnitable.data = [
-					{id: 4, name: 'item 4'},
-					{id: 5, name: 'item 5'},
-					{id: 6, name: 'item 6'}
-				];
-
-				omnitable.flush();
-				flush(() => {
-					const cells = Array.from(omnitable.shadowRoot.querySelectorAll('.basic-column-cell, .overriden-column-cell'));
-					expect(cells.map(c => c.innerText)).to.deep.equal(['item 4', 'Overriden item 4', 'item 5', 'Overriden item 5', 'item 6', 'Overriden item 6']);
-					done();
-				});
-			});
-
-			it('should use editable template when the column is editable', done => {
-				omnitable.columns.forEach(c => c.editable = true);
-				flush(() => {
-					const cells = Array.from(omnitable.shadowRoot.querySelectorAll('.basic-column-cell'));
-					expect(cells.map(c => c.innerText)).to.deep.equal(['Edit: item 1', 'Edit: item 1', 'Edit: item 2', 'Edit: item 2', 'Edit: item 3', 'Edit: item 3']);
-					done();
-				});
-			});
-
-			it('should detach all template instances when omnitable is detached');
+	beforeEach(done => {
+		const data = [
+			{id: 1, name: 'item 1', list: ['a', 'b', 'c'], bool: true},
+			{id: 2, name: 'item 2', list: ['a', 'b', 'c'], bool: false},
+			{id: 3, name: 'item 3', list: ['a', 'b', 'c'], bool: true}
+		];
+		omnitable = setupOmnitableFixture('basic', data, () => {
+			polymerFlush();
+			done();
 		});
-	})();
-	</script>
+	});
+
+	it('should display headers as configured', () => {
+		const headers = Array.from(omnitable.shadowRoot.querySelectorAll('.basic-column-header, .overriden-column-header'));
+		expect(headers).to.not.be.empty;
+		expect(headers.length).to.equal(2);
+		expect(headers.map(i => i.innerText)).to.deep.equal(['Header', 'Overriden Header']);
+	});
+
+	it('should display cells as configured', () => {
+		const cells = Array.from(omnitable.shadowRoot.querySelectorAll('.basic-column-cell, .overriden-column-cell'));
+		expect(cells).to.not.be.empty;
+		expect(cells.length).to.equal(6);
+		expect(cells.map(c => c.innerText)).to.deep.equal(['item 1', 'Overriden item 1', 'item 2', 'Overriden item 2', 'item 3', 'Overriden item 3']);
+	});
+
+	it('forwards changes to the data', done => {
+		omnitable.data = [
+			{id: 4, name: 'item 4'},
+			{id: 5, name: 'item 5'},
+			{id: 6, name: 'item 6'}
+		];
+
+		omnitable.flush();
+		flush(() => {
+			polymerFlush();
+			const cells = Array.from(omnitable.shadowRoot.querySelectorAll('.basic-column-cell, .overriden-column-cell'));
+			expect(cells.map(c => c.innerText)).to.deep.equal(['item 4', 'Overriden item 4', 'item 5', 'Overriden item 5', 'item 6', 'Overriden item 6']);
+			done();
+		});
+	});
+
+	it('should use editable template when the column is editable', done => {
+		omnitable.columns.forEach(c => {
+			c.editable = true;
+		});
+
+		flush(() => {
+			const cells = Array.from(omnitable.shadowRoot.querySelectorAll('.basic-column-cell'));
+			expect(cells.map(c => c.innerText)).to.deep.equal(['Edit: item 1', 'Edit: item 1', 'Edit: item 2', 'Edit: item 2', 'Edit: item 3', 'Edit: item 3']);
+			done();
+		});
+	});
+
+	it('should detach all template instances when omnitable is detached');
+});
+</script>
 </html>

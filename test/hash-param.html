@@ -6,16 +6,19 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-		<script src="../../web-component-tester/browser.js"></script>
-		<script src="../../test-fixture/test-fixture-mocha.js"></script>
-		<script src="./helpers/utils.js"></script>
+		<script src="/components/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+		<script src="/components/mocha/mocha.js"></script>
+		<script src="/components/wct-mocha/wct-mocha.js"></script>
+		<script src="/components/chai/chai.js"></script>
+		<script src="/components/sinon/pkg/sinon.js"></script>
+		<script src="/components/@polymer/test-fixture/test-fixture-mocha.js"></script>
 
-		<link rel="import" href="../../test-fixture/test-fixture.html">
-		<link rel="import" href="../../iron-test-helpers/iron-test-helpers.html">
-		<link rel="import" href="../cosmoz-omnitable.html">
-		<link rel="import" href="../cosmoz-omnitable-column-autocomplete.html">
-		<link rel="import" href="../cosmoz-omnitable-column.html">
+		<script type="module" src="/components/@polymer/test-fixture/test-fixture.js"></script>
+		<script type="module" src="/components/@polymer/iron-test-helpers/iron-test-helpers.js"></script>
+
+		<script type="module" src="../cosmoz-omnitable.js"></script>
+		<script type="module" src="../cosmoz-omnitable-column-autocomplete.js"></script>
+		<script type="module" src="../cosmoz-omnitable-column.js"></script>
 	</head>
 
 	<body>
@@ -38,131 +41,129 @@
 		</template>
 	</test-fixture>
 
-	<script>
-		(function () {
-			'use strict';
+	<script type="module">
+		import { setupOmnitableFixture } from './helpers/utils';
 
-			let omnitable;
-			const data = [
-					{ id: 0, group: 'group0', name: 'Item 0' },
-					{ id: 1, group: 'group0', name: 'Item 1' },
-					{ id: 2, group: 'group1', name: 'Item 2' },
-					{ id: 3, group: 'group1', name: 'Item 3' }
-				],
-				location = window.location,
-				instantiate = function (done) {
-					omnitable = setupOmnitableFixture('basic', data, () => done());
-				};
+		let omnitable;
+		const data = [
+				{ id: 0, group: 'group0', name: 'Item 0' },
+				{ id: 1, group: 'group0', name: 'Item 1' },
+				{ id: 2, group: 'group1', name: 'Item 2' },
+				{ id: 3, group: 'group1', name: 'Item 3' }
+			],
+			location = window.location,
+			instantiate = function (done) {
+				omnitable = setupOmnitableFixture('basic', data, () => done());
+			};
 
-			suite('basic-read', () => {
-				teardown(done => {
-					location.hash = '';
+		suite('basic-read', () => {
+			teardown(done => {
+				location.hash = '';
+				done();
+			});
+			test('updates sortOn from url hash', done => {
+				location.hash = '#/#test-sortOn=id';
+				instantiate(() => {
+					assert.equal(omnitable.sortOn, 'id');
+					assert.isFalse(omnitable.descending);
 					done();
-				});
-				test('updates sortOn from url hash', done => {
-					location.hash = '#/#test-sortOn=id';
-					instantiate(() => {
-						assert.equal(omnitable.sortOn, 'id');
-						assert.isFalse(omnitable.descending);
-						done();
-					});
-				});
-
-				test('updates groupOn from url hash', done => {
-					location.hash = '#/#test-groupOn=group';
-					instantiate(() => {
-						assert.equal(omnitable.groupOn, 'group');
-						assert.isFalse(omnitable.descending);
-						done();
-					});
-				});
-
-				test('updates groupOn, sortOn and descending from url hash', done => {
-					location.hash = '#/#test-groupOn=id&test-sortOn=name&test-descending';
-					instantiate(() => {
-						assert.equal(omnitable.groupOn, 'id');
-						assert.equal(omnitable.sortOn, 'name');
-						assert.isTrue(omnitable.descending);
-						done();
-					});
-				});
-
-				test('updates filter from url hash', done => {
-					location.hash = '#/#test-filter--id=["1"]';
-					instantiate(() => {
-						assert.isArray(omnitable.columns[0].filter);
-						assert.lengthOf(omnitable.columns[0].filter, 1);
-						assert.include(omnitable.columns[0].filter, '1');
-						done();
-					});
 				});
 			});
 
-			suite('basic-write', () => {
-				setup(instantiate);
-				teardown(done => {
-					location.hash = '';
+			test('updates groupOn from url hash', done => {
+				location.hash = '#/#test-groupOn=group';
+				instantiate(() => {
+					assert.equal(omnitable.groupOn, 'group');
+					assert.isFalse(omnitable.descending);
 					done();
 				});
-				test('updates _routeHash with defaults', () => {
-					const hash = omnitable._routeHash;
-					assert.equal(hash['test-sortOn'], '');
-					assert.equal(hash['test-groupOn'], '');
-					assert.isUndefined(hash['test-descending']);
-				});
-
-				test('updates _routeHash from sortOn', () => {
-					const hash = omnitable._routeHash;
-
-					omnitable.sortOn = 'name';
-					omnitable.debouncers._sortItemsDebouncer.flush();
-					assert.equal(hash['test-sortOn'], 'name');
-
-					omnitable.sortOn = '';
-					omnitable.debouncers._sortItemsDebouncer.flush();
-					assert.equal(hash['test-sortOn'], '');
-				});
-
-				test('updates _routeHash from groupOn', () => {
-					const hash = omnitable._routeHash;
-
-					omnitable.groupOn = 'name';
-					omnitable.debouncers._groupItemsDebouncer.flush();
-					assert.equal(hash['test-groupOn'], 'name');
-
-					omnitable.groupOn = '';
-					omnitable.debouncers._groupItemsDebouncer.flush();
-					assert.equal(hash['test-groupOn'], '');
-				});
-
-				test('updates _routeHash from descending', () => {
-					const hash = omnitable._routeHash;
-					assert.isUndefined(hash['test-descending']);
-
-					omnitable.descending = true;
-					omnitable.flush();
-					assert.equal(hash['test-descending'], '');
-
-					omnitable.descending = false;
-					omnitable.flush();
-					assert.isNull(hash['test-descending']);
-				});
-
-				test('updates _routeHash from filter', () => {
-					const column = omnitable.columns[0],
-						hash = omnitable._routeHash;
-
-					column.filter = [0, 1];
-					omnitable.flush();
-					assert.equal(hash['test-filter--id'], '[0,1]');
-
-					column.resetFilter();
-					omnitable.flush();
-					assert.equal(hash['test-filter--id'], null);
-				});
-
 			});
-		})();
+
+			test('updates groupOn, sortOn and descending from url hash', done => {
+				location.hash = '#/#test-groupOn=id&test-sortOn=name&test-descending';
+				instantiate(() => {
+					assert.equal(omnitable.groupOn, 'id');
+					assert.equal(omnitable.sortOn, 'name');
+					assert.isTrue(omnitable.descending);
+					done();
+				});
+			});
+
+			test('updates filter from url hash', done => {
+				location.hash = '#/#test-filter--id=["1"]';
+				instantiate(() => {
+					assert.isArray(omnitable.columns[0].filter);
+					assert.lengthOf(omnitable.columns[0].filter, 1);
+					assert.include(omnitable.columns[0].filter, '1');
+					done();
+				});
+			});
+		});
+
+		suite('basic-write', () => {
+			setup(instantiate);
+			teardown(done => {
+				location.hash = '';
+				done();
+			});
+			test('updates _routeHash with defaults', () => {
+				const hash = omnitable._routeHash;
+				assert.equal(hash['test-sortOn'], '');
+				assert.equal(hash['test-groupOn'], '');
+				assert.isUndefined(hash['test-descending']);
+			});
+
+			test('updates _routeHash from sortOn', () => {
+				const hash = omnitable._routeHash;
+
+				omnitable.sortOn = 'name';
+				omnitable.debouncers._sortItemsDebouncer.flush();
+				assert.equal(hash['test-sortOn'], 'name');
+
+				omnitable.sortOn = '';
+				omnitable.debouncers._sortItemsDebouncer.flush();
+				assert.equal(hash['test-sortOn'], '');
+			});
+
+			test('updates _routeHash from groupOn', () => {
+				const hash = omnitable._routeHash;
+
+				omnitable.groupOn = 'name';
+				omnitable.debouncers._groupItemsDebouncer.flush();
+				assert.equal(hash['test-groupOn'], 'name');
+
+				omnitable.groupOn = '';
+				omnitable.debouncers._groupItemsDebouncer.flush();
+				assert.equal(hash['test-groupOn'], '');
+			});
+
+			test('updates _routeHash from descending', () => {
+				const hash = omnitable._routeHash;
+				assert.isUndefined(hash['test-descending']);
+
+				omnitable.descending = true;
+				omnitable.flush();
+				assert.equal(hash['test-descending'], '');
+
+				omnitable.descending = false;
+				omnitable.flush();
+				assert.isNull(hash['test-descending']);
+			});
+
+			test('updates _routeHash from filter', () => {
+				const column = omnitable.columns[0],
+					hash = omnitable._routeHash;
+
+				column.filter = [0, 1];
+				omnitable.flush();
+				assert.equal(hash['test-filter--id'], '[0,1]');
+
+				column.resetFilter();
+				omnitable.flush();
+				assert.equal(hash['test-filter--id'], null);
+			});
+
+		});
 	</script>
 </body>
 
