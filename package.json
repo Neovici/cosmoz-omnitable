@@ -32,7 +32,7 @@
 		"@neovici/cosmoz-grouped-list": "neovici/cosmoz-grouped-list#semver:^3.0.0",
 		"@neovici/cosmoz-i18next": "neovici/cosmoz-i18next#semver:^3.0.0",
 		"@neovici/cosmoz-page-router": "neovici/cosmoz-page-router#semver:^3.0.0",
-		"@neovici/cosmoz-utils": "neovici/cosmoz-behaviors#semver:^3.0.0",
+		"@neovici/cosmoz-utils": "neovici/cosmoz-behaviors#semver:^3.0.1",
 		"@neovici/nullxlsx": "neovici/nullxlsx#semver:^3.0.0",
 		"@neovici/paper-autocomplete-chips": "neovici/paper-autocomplete-chips#semver:^3.0.0",
 		"@polymer/iron-flex-layout": "^3.0.0",
