@@ -1,21 +1,8 @@
 import '@webcomponents/shadycss/entrypoints/apply-shim';
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin';
+import { toLocalISOString } from '@neovici/cosmoz-utils/lib/date';
 
 import { rangeColumnMixin } from './cosmoz-omnitable-column-range-mixin';
-
-const toLocalISOString = date => {
-	if (!(date instanceof Date)) {
-		return null;
-	}
-	const pad = number => number < 10 ? '0' + number : number;
-	return date.getFullYear() +
-	'-' + pad(date.getMonth() + 1) +
-	'-' + pad(date.getDate()) +
-	'T' + pad(date.getHours()) +
-	':' + pad(date.getMinutes()) +
-	':' + pad(date.getSeconds()) +
-	'.' + (date.getMilliseconds() / 1000).toFixed(3).slice(2, 5);
-};
 
 /**
 * @polymer
