@@ -540,9 +540,9 @@
     "@polymer/neon-animation" "^3.0.0"
     "@polymer/polymer" "^3.0.0"
 
-"@neovici/cosmoz-utils@github:neovici/cosmoz-behaviors#semver:^3.0.4":
+"@neovici/cosmoz-utils@github:neovici/cosmoz-utils#semver:^3.0.4":
   version "3.0.4"
-  resolved "https://codeload.github.com/neovici/cosmoz-behaviors/tar.gz/9efc764cb62dd4f026e3601c61ebf0fa644a33ff"
+  resolved "https://codeload.github.com/neovici/cosmoz-utils/tar.gz/9efc764cb62dd4f026e3601c61ebf0fa644a33ff"
   dependencies:
     "@polymer/polymer" "^3.0.0"
     moment "^2.24.0"
