@@ -34,7 +34,7 @@
 		"@neovici/cosmoz-grouped-list": "github:neovici/cosmoz-grouped-list#semver:^3.0.1",
 		"@neovici/cosmoz-i18next": "github:neovici/cosmoz-i18next#semver:^3.0.1",
 		"@neovici/cosmoz-page-router": "github:neovici/cosmoz-page-router#semver:^3.0.3",
-		"@neovici/cosmoz-utils": "github:neovici/cosmoz-behaviors#semver:^3.0.4",
+		"@neovici/cosmoz-utils": "github:neovici/cosmoz-utils#semver:^3.0.4",
 		"@neovici/nullxlsx": "github:neovici/nullxlsx#semver:^3.0.1",
 		"@neovici/paper-autocomplete-chips": "github:neovici/paper-autocomplete-chips#semver:^3.0.2",
 		"@polymer/iron-flex-layout": "^3.0.0",
