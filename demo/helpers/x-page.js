@@ -64,7 +64,7 @@ class XPage extends translatable(PolymerElement) {
 				<cosmoz-omnitable-column-autocomplete flex="0" width="40px" title="Id" name="id" value-path="id" sort-on="id" group-on="id">
 					<template class="cell">
 						<span on-tap="onTap">
-							<a href\$="[[ _getItemLink(item) ]]">[[ item.id ]]</a>
+							<a href$="[[ _getItemLink(item) ]]">[[ item.id ]]</a>
 						</span>
 					</template>
 				</cosmoz-omnitable-column-autocomplete>

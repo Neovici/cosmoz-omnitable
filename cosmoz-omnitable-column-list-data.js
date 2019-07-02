@@ -36,11 +36,11 @@ class OmnitableColumnListData extends translatable(mixin(Template, PolymerElemen
 			}
 		</style>
 
-		<ul hidden\$="[[ isEmpty(items) ]]">
+		<ul hidden$="[[ isEmpty(items) ]]">
 			<li>
 				<span>[[ _firstItem(items) ]]</span>
 			</li>
-			<li class="see-more" hidden\$="[[_hideExpand(items, _expanded)]]">
+			<li class="see-more" hidden$="[[_hideExpand(items, _expanded)]]">
 				<a href="#" on-tap="_toggleExpand">[[ _('and {0} more', _othersCount, t) ]]</a>
 			</li>
 			<template is="dom-repeat" items="[[ _otherItems(items, _expanded) ]]" as="item">
@@ -48,7 +48,7 @@ class OmnitableColumnListData extends translatable(mixin(Template, PolymerElemen
 					<span class="item">[[ item ]]</span>
 				</li>
 			</template>
-			<li class="see-less" hidden\$="[[ _hideCollapse(items, _expanded) ]]">
+			<li class="see-less" hidden$="[[ _hideCollapse(items, _expanded) ]]">
 				<a href="#" on-tap="_toggleExpand">[[ _('See less', t) ]]</a>
 			</li>
 		</ul>
