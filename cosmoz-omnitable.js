@@ -69,8 +69,8 @@ class Omnitable extends translatable(
 
 		<div class="mainContainer">
 			<div class="header" id="header">
-				<div class="selectAllCheckbox" hidden\$="[[ !_showCheckboxes ]]">
-					<paper-checkbox checked\$="{{ _allSelected }}" on-change="_onAllCheckboxChange" hidden\$="[[ !_dataIsValid ]]">
+				<div class="selectAllCheckbox" hidden$="[[ !_showCheckboxes ]]">
+					<paper-checkbox checked$="{{ _allSelected }}" on-change="_onAllCheckboxChange" hidden$="[[ !_dataIsValid ]]">
 					</paper-checkbox>
 				</div>
 				<cosmoz-omnitable-header-row columns="[[ visibleColumns ]]" group-on-column="[[ groupOnColumn ]]"></cosmoz-omnitable-header-row>
@@ -107,8 +107,8 @@ class Omnitable extends translatable(
 						selected-items="{{ selectedItems }}" highlighted-items="{{ highlightedItems }}" display-empty-groups="[[ displayEmptyGroups ]]">
 							<template slot="templates" data-type="item">
 								<div class="item-row-wrapper">
-									<div selected\$="[[selected]]" class="itemRow" highlighted\$="[[highlighted]]">
-										<div class="selectItemCheckbox" hidden\$="[[ !_showCheckboxes ]]">
+									<div selected$="[[selected]]" class="itemRow" highlighted$="[[highlighted]]">
+										<div class="selectItemCheckbox" hidden$="[[ !_showCheckboxes ]]">
 											<paper-checkbox checked="{{ selected }}" on-change="_onItemCheckboxChange"></paper-checkbox>
 										</div>
 										<cosmoz-omnitable-item-row columns="[[ visibleColumns ]]"
@@ -124,8 +124,8 @@ class Omnitable extends translatable(
 								</div>
 							</template>
 							<template slot="templates" data-type="group">
-								<div class\$="[[ _getGroupRowClasses(folded) ]]">
-									<div class="selectGroupCheckbox" hidden\$="[[ !_showCheckboxes ]]">
+								<div class$="[[ _getGroupRowClasses(folded) ]]">
+									<div class="selectGroupCheckbox" hidden$="[[ !_showCheckboxes ]]">
 										<paper-checkbox checked="{{ selected }}" on-change="_onGroupCheckboxChange"></paper-checkbox>
 									</div>
 
@@ -149,8 +149,8 @@ class Omnitable extends translatable(
 							<paper-listbox class="dropdown-content menu" slot="dropdown-content" selected="{{ groupOn }}" attr-for-selected="data-group-on">
 								<cosmoz-omnitable-item data-group-on style="font-style: italic" label="[[ _('No grouping', t) ]]"></cosmoz-omnitable-item>
 								<template is="dom-repeat" items="[[ columns ]]" as="column">
-									<cosmoz-omnitable-item data-group-on\$="[[ column.name ]]"
-										hidden\$="[[ !column.groupOn ]]" label="[[ column.title ]]" on-tap="_applySortingDirection">
+									<cosmoz-omnitable-item data-group-on$="[[ column.name ]]"
+										hidden$="[[ !column.groupOn ]]" label="[[ column.title ]]" on-tap="_applySortingDirection">
 									</cosmoz-omnitable-item>
 								</template>
 							</paper-listbox>
@@ -162,8 +162,8 @@ class Omnitable extends translatable(
 							<paper-listbox slot="dropdown-content" class="dropdown-content menu" attr-for-selected="data-name" selected="{{ sortOn }}">
 								<cosmoz-omnitable-item data-name label="[[ _('No sorting', t) ]]"></cosmoz-omnitable-item>
 								<template is="dom-repeat" items="[[ columns ]]" as="column">
-									<cosmoz-omnitable-item hidden\$="[[ !column.sortOn ]]"
-										data-name\$="[[ column.name ]]" label="[[ column.title ]]" on-tap="_applySortingDirection">
+									<cosmoz-omnitable-item hidden$="[[ !column.sortOn ]]"
+										data-name$="[[ column.name ]]" label="[[ column.title ]]" on-tap="_applySortingDirection">
 									</cosmoz-omnitable-item>
 								</template>
 							</paper-listbox>
@@ -175,7 +175,7 @@ class Omnitable extends translatable(
 					<span>[[ ngettext('{0} row', '{0} rows', filteredItems.length, t) ]]</span>
 				</div>
 				<cosmoz-bottom-bar id="bottomBar" class="footer-actionBar" match-parent
-					has-actions="{{ hasActions }}" on-action="_onAction" active\$="[[ !_isEmpty(selectedItems.length) ]]" computed-bar-height="{{ computedBarHeight }}">
+					has-actions="{{ hasActions }}" on-action="_onAction" active$="[[ !_isEmpty(selectedItems.length) ]]" computed-bar-height="{{ computedBarHeight }}">
 					<div slot="info">[[ ngettext('{0} selected item', '{0} selected items', selectedItems.length, t) ]]</div>
 					<slot name="actions" id="actions"></slot>
 					<!-- These slots are neened by cosmoz-bottom-bar

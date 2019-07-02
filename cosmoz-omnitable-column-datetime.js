@@ -41,10 +41,10 @@ class OmnitableColumnDatetime extends
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
 					<cosmoz-datetime-input date-label="[[ _('From date', t) ]]" time-label="[[ _('From time', t) ]]"
-						min="[[ _toInputString(_limit.fromMin) ]]" max="[[ _toInputString(_limit.fromMax) ]]" value="{{ _filterInput.min }}" step\$="[[ filterStep ]]">
+						min="[[ _toInputString(_limit.fromMin) ]]" max="[[ _toInputString(_limit.fromMax) ]]" value="{{ _filterInput.min }}" step$="[[ filterStep ]]">
 					</cosmoz-datetime-input>
 					<cosmoz-datetime-input date-label="[[ _('To date', t) ]]" time-label="[[ _('To time', t) ]]"
-						min="[[ _toInputString(_limit.toMin) ]]" max="[[ _toInputString(_limit.toMax) ]]" value="{{ _filterInput.max }}" step\$="[[ filterStep ]]">
+						min="[[ _toInputString(_limit.toMin) ]]" max="[[ _toInputString(_limit.toMax) ]]" value="{{ _filterInput.max }}" step$="[[ filterStep ]]">
 					</cosmoz-datetime-input>
 				</div>
 			</paper-dropdown-menu>
