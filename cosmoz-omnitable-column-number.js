@@ -27,15 +27,15 @@ class OmnitableColumnNumber extends rangeColumnMixin(
 ) {
 	static get template() {
 		return html`
-		<template class="cell">
+		<template class="cell" strip-whitespace>
 			<div class="omnitable-cell-number">[[ getString(item, valuePath, formatter) ]]</div>
 		</template>
 
-		<template class="edit-cell">
+		<template class="edit-cell" strip-whitespace>
 			<paper-input no-label-float type="number" on-change="_valueChanged" value="[[ getInputString(item, valuePath) ]]"></paper-input>
 		</template>
 
-		<template class="header">
+		<template class="header" strip-whitespace>
 			<cosmoz-clear-button on-click="resetFilter" visible="[[ hasFilter(filter.*) ]]"></cosmoz-clear-button>
 			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]"
 				title="[[ _tooltip ]]" horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">

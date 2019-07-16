@@ -22,16 +22,16 @@ class OmnitableColumnList extends	listColumnMixin(columnMixin(translatable(
 ))) {
 	static get template() {
 		return html`
-		<template class="cell">
+		<template class="cell" strip-whitespace>
 			<cosmoz-omnitable-column-list-data items="[[ getTexts(valuePath, item, textProperty) ]]">
 			</cosmoz-omnitable-column-list-data>
 		</template>
 
-		<template class="edit-cell">
+		<template class="edit-cell" strip-whitespace>
 			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]"></paper-input>
 		</template>
 
-		<template class="header">
+		<template class="header" strip-whitespace>
 			<paper-autocomplete-chips source="[[ autocompleteItems ]]" label="[[ title ]]"
 				selected-items="{{ filter }}" text-property="[[ textProperty ]]" value-property="[[ valueProperty ]]" show-results-on-focus>
 			</paper-autocomplete-chips>

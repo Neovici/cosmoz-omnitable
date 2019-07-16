@@ -16,16 +16,16 @@ import { html } from '@polymer/polymer/lib/utils/html-tag';
 class OmnitableColumn extends columnMixin(PolymerElement) {
 	static get template() {
 		return html`
-		<template class="cell">
+		<template class="cell" strip-whitespace>
 			<span class="default-column">[[ getString(item, valuePath) ]]</span>
 		</template>
 
-		<template class="edit-cell">
+		<template class="edit-cell" strip-whitespace>
 			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]">
 			</paper-input>
 		</template>
 
-		<template class="header">
+		<template class="header" strip-whitespace>
 			<paper-input label="[[ title ]]" value="{{ filter }}" focused="{{ headerFocused }}">
 				<cosmoz-clear-button suffix slot="suffix" visible="[[ hasFilter(filter.*) ]]" light on-click="resetFilter"></cosmoz-clear-button>
 			</paper-input>

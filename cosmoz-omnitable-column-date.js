@@ -23,16 +23,16 @@ class OmnitableColumnDate extends dateColumnMixin(columnMixin(translatable(
 ))) {
 	static get template() {
 		return html`
-		<template class="cell">
+		<template class="cell" strip-whitespace>
 			[[ getString(item, valuePath, formatter) ]]
 		</template>
 
-		<template class="edit-cell">
+		<template class="edit-cell" strip-whitespace>
 			<paper-input no-label-float type="date" on-change="_dateValueChanged" value="[[ getInputString(item, valuePath) ]]">
 			</paper-input>
 		</template>
 
-		<template class="header">
+		<template class="header" strip-whitespace>
 			<cosmoz-clear-button on-click="resetFilter" visible="[[ hasFilter(filter.*) ]]"></cosmoz-clear-button>
 			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]"
 				title="[[ _tooltip ]]" horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
