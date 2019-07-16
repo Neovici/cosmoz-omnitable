@@ -23,17 +23,17 @@ class OmnitableColumnAmount extends rangeColumnMixin(columnMixin(translatable(
 ))) {
 	static get template() {
 		return html`
-		<template class="cell">
+		<template class="cell" strip-whitespace>
 			<span>[[ getString(item, valuePath, locale) ]]</span>
 		</template>
 
-		<template class="edit-cell">
+		<template class="edit-cell" strip-whitespace>
 			<paper-input no-label-float type="number" on-change="_amountValueChanged" value="[[ getInputString(item, valuePath) ]]">
 				<div suffix>[[ getCurrency(item, valuePath) ]]</div>
 			</paper-input>
 		</template>
 
-		<template class="header">
+		<template class="header" strip-whitespace>
 			<cosmoz-clear-button on-click="resetFilter" visible="[[ hasFilter(filter.*) ]]"></cosmoz-clear-button>
 			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]"
 				title="[[ _tooltip ]]" horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">

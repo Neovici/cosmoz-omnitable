@@ -24,7 +24,7 @@ class OmnitableColumnListHorizontal extends listColumnMixin(
 ) {
 	static get template() {
 		return html`
-		<template class="cell">
+		<template class="cell" strip-whitespace>
 			<style>
 				ul {
 					display: inline;
@@ -47,11 +47,11 @@ class OmnitableColumnListHorizontal extends listColumnMixin(
 			</ul>
 		</template>
 
-		<template class="edit-cell">
+		<template class="edit-cell" strip-whitespace>
 			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]"></paper-input>
 		</template>
 
-		<template class="header">
+		<template class="header" strip-whitespace>
 			<paper-autocomplete-chips source="[[ _computeAutocompleteItems(values) ]]"
 				label="[[ title ]]" selected-items="{{ filter }}" text-property="[[ textProperty ]]" value-property="[[ valueProperty ]]" show-results-on-focus>
 			</paper-autocomplete-chips>

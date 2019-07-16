@@ -60,7 +60,7 @@ class Omnitable extends translatable(
 ) {
 	/* eslint-disable-next-line max-lines-per-function */
 	static get template() {
-		return html`
+		const template = html`
 		<style include="cosmoz-omnitable-styles iron-flex">
 			/* polymer-cli v1.7.x linter breaks with empty line */
 		</style>
@@ -201,6 +201,8 @@ class Omnitable extends translatable(
 			<slot id="columnsSlot"></slot>
 		</div>
 `;
+		template.setAttribute('strip-whitespace', '');
+		return template;
 	}
 
 	static get is() {

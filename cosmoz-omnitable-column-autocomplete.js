@@ -16,15 +16,15 @@ import { columnMixin } from './cosmoz-omnitable-column-mixin.js';
 class OmnitableColumnAutocomplete extends columnMixin(PolymerElement) {
 	static get template() {
 		return html`
-		<template class="cell">
+		<template class="cell" strip-whitespace>
 			<span class="default-column">[[ getString(item, valuePath) ]]</span>
 		</template>
 
-		<template class="edit-cell">
+		<template class="edit-cell" strip-whitespace>
 			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]"></paper-input>
 		</template>
 
-		<template class="header">
+		<template class="header" strip-whitespace>
 			<paper-autocomplete-chips text="{{ query }}"
 				source="[[ _unique(values, valueProperty) ]]" label="[[ title ]]"
 				selected-items="{{ filter }}" text-property="[[ textProperty ]]"

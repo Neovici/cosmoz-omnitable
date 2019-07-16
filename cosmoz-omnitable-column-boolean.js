@@ -16,11 +16,11 @@ import { columnMixin } from './cosmoz-omnitable-column-mixin';
 class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 	static get template() {
 		return html`
-		<template class="cell">
+		<template class="cell" strip-whitespace>
 			[[ getString(item, valuePath) ]]
 		</template>
 
-		<template class="edit-cell">
+		<template class="edit-cell" strip-whitespace>
 			<paper-dropdown-menu>
 				<paper-listbox class="dropdown-content" slot="dropdown-content"
 					attr-for-selected="value" selected="[[ _computeSelected(item, valuePath) ]]" on-selected-item-changed="_valueChanged">
@@ -30,7 +30,7 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 			</paper-dropdown-menu>
 		</template>
 
-		<template class="header">
+		<template class="header" strip-whitespace>
 			<paper-dropdown-menu label="[[ title ]]" horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
 				<paper-listbox class="dropdown-content" slot="dropdown-content" attr-for-selected="value" selected="{{ _textFilter }}">
 					<paper-item value></paper-item>
