@@ -5,6 +5,11 @@ import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
 import { timeOut } from '@polymer/polymer/lib/utils/async.js';
 import { enqueueDebouncer } from '@polymer/polymer/lib/utils/flush.js';
 
+const getCloseableParent = el =>
+	typeof el.close === 'function'
+		? el
+		: getCloseableParent(el.parentElement);
+
 /**
  * @polymer
  * @mixinFunction
@@ -42,6 +47,11 @@ export const rangeColumnMixin = dedupingMixin(base => // eslint-disable-line max
 					value: null
 				},
 
+				autoupdate: {
+					type: String,
+					value: true
+				},
+
 				locale: {
 					type: String,
 					value: null
@@ -70,20 +80,36 @@ export const rangeColumnMixin = dedupingMixin(base => // eslint-disable-line max
 				_tooltip: {
 					type: String,
 					computed: '_computeTooltip(title, _filterText)'
+				},
+
+				_fromClasses: {
+					type: String,
+					computed: '_computeInputClasses(_filterInput.min)'
+				},
+
+				_toClasses: {
+					type: String,
+					computed: '_computeInputClasses(_filterInput.max)'
 				}
 			};
 		}
 
 		static get observers() {
 			return [
-				'_filterInputChanged(_filterInput.*)',
+				'_filterInputChanged(_filterInput.*, autoupdate)',
 				'_filterChanged(filter.*)'
 			];
 		}
 
 		disconnectedCallback() {
-			this._limitInputDebouncer.cancel();
+			if (this._limitInputDebouncer) {
+				this._limitInputDebouncer.cancel();
+			}
 			super.disconnectedCallback();
+		}
+
+		_computeInputClasses(value) {
+			return value != null && value !== '' ? 'has-value' : '';
 		}
 
 		/**
@@ -280,19 +306,87 @@ export const rangeColumnMixin = dedupingMixin(base => // eslint-disable-line max
 		 * Observes changes of _filterInput, saves the path, debounces _limitInput.
 		 *
 		 * @param	 {Object} change '_filterInput' property changes
+		 * @param	 {Boolean} autoupdate whether to auto-update on value changes
 		 * @returns {void}
 		 */
-		_filterInputChanged(change) {
+		_filterInputChanged(change, autoupdate) {
 			const path = change.path.split('.')[1];
 			this.__inputChangePath = path || null;
+
+			if (!autoupdate) {
+				return;
+			}
 
 			this._limitInputDebouncer = Debouncer.debounce(
 				this._limitInputDebouncer,
 				timeOut.after(600),
-				() => this._limitInput()
+				() => {
+					this._limitInput();
+					this._updateFilter();
+				}
 			);
 			enqueueDebouncer(this._limitInputDebouncer);
 		}
+
+		_clearFrom() {
+			this.set('_filterInput.min', null);
+			this._updateFilter();
+		}
+
+		_clearTo() {
+			this.set('_filterInput.max', null);
+			this._updateFilter();
+		}
+
+		_onBlur() {
+			this._limitInput();
+			this._updateFilter();
+		}
+
+		_onKeyDown(event) {
+			const input = event.currentTarget,
+				inputs = Array.from(input.parentElement.querySelectorAll('paper-input')),
+				nextInput = inputs[inputs.findIndex(i => i === input) + 1],
+				isLastInput = !nextInput,
+				isFirstInput = inputs[0] === input;
+
+			switch (event.keyCode) {
+			case 13: // Enter
+				event.preventDefault();
+
+				if (!isLastInput) {
+					nextInput.focus();
+				} else {
+					// if this is the last input, update the filter
+					const limited = this._limitInput();
+					this._updateFilter();
+					// and close the dropdown if the value was not out of bounds
+					if (!limited) {
+						this._closeParent(input);
+					}
+				}
+				break;
+
+			case 9: // Tab
+				if (isLastInput && !event.shiftKey || isFirstInput && event.shiftKey) {
+					this._closeParent(input);
+				}
+			}
+		}
+
+		_closeParent(input) {
+			getCloseableParent(input).close();
+		}
+
+		_onDropdownOpenedChanged({currentTarget, detail: {value}}) {
+			if (!value) {
+				return;
+			}
+
+			// focus the first input after the dropdown is visible
+			setTimeout(() => currentTarget.querySelector('paper-input').focus(), 100);
+		}
+
 
 		/**
 		 * Debounced function called by `_filterInputChanged` when `_filterInput` changes.
@@ -307,7 +401,7 @@ export const rangeColumnMixin = dedupingMixin(base => // eslint-disable-line max
 
 			if (value == null) {
 				//Don't limit a null value
-				return this._updateFilter();
+				return false;
 			}
 
 			const limit = this._limit,
@@ -320,10 +414,13 @@ export const rangeColumnMixin = dedupingMixin(base => // eslint-disable-line max
 			if (this.getComparableValue(value) !== this.getComparableValue(limitedValue)) {
 				//set value without debouncing _limitInput again.
 				this.set(['_filterInput', path], this._toInputString(limitedValue, path));
-				this._limitInputDebouncer.cancel();
+				if (this._limitInputDebouncer) {
+					this._limitInputDebouncer.cancel();
+				}
+				return true;
 			}
 
-			this._updateFilter();
+			return false;
 		}
 
 		_updateFilter() {
@@ -360,7 +457,9 @@ export const rangeColumnMixin = dedupingMixin(base => // eslint-disable-line max
 				min: this._toInputString(filter.min),
 				max: this._toInputString(filter.max)
 			});
-			this._limitInputDebouncer.cancel();
+			if (this._limitInputDebouncer) {
+				this._limitInputDebouncer.cancel();
+			}
 		}
 
 		hasFilter() {
