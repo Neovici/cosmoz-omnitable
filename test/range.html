@@ -103,6 +103,7 @@
 			setup(done => {
 				omnitable = setupOmnitableFixture('range', data, o => {
 					column = o.columns[0];
+					column.autoupdate = true;
 					done();
 				});
 			});
@@ -187,6 +188,21 @@
 				assert.equal(column.filter.min, 17);
 			});
 
+			test('when autoupdate is off, changing _filterInput does not update filter', () => {
+				column.autoupdate = false;
+				assert.isNull(column._filterInput.min);
+				assert.isNull(column._filterInput.max);
+				column._filterInput = {
+					min: -10,
+					max: 15
+				};
+				assert.equal(column.filter.min, null);
+				assert.equal(column.filter.max, null);
+				column._updateFilter();
+				assert.equal(column.filter.min, -10);
+				assert.equal(column.filter.max, 15);
+			});
+
 			test('filter comparision uses maximumFractionDigits; item age outside the range', () => {
 				assert.isNull(column._filterInput.min);
 				assert.isNull(column._filterInput.max);
@@ -255,6 +271,7 @@
 			setup(done => {
 				setupOmnitableFixture('range', data, o => {
 					column = o.columns[1];
+					column.autoupdate = true;
 					done();
 				});
 			});
@@ -394,6 +411,7 @@
 				]);
 				omnitable = setupOmnitableFixture('rates', newData, o => {
 					column = o.columns[0];
+					column.autoupdate = true;
 					column.rates = { 'EUR': 1, 'USD': 0.8169982616, 'AUD': 0.6529827192, 'SEK': 0.1019271438, 'GBP': 1.1347079368 };
 					done();
 				});
@@ -486,6 +504,7 @@
 			setup(done => {
 				setupOmnitableFixture('currency', data, omnitable => {
 					column = omnitable.columns[0];
+					column.autoupdate = true;
 					column.rates = { 'EUR': 1, 'USD': 0.8169982616, 'AUD': 0.6529827192, 'SEK': 0.1019271438, 'GBP': 1.1347079368 };
 					done();
 				});
@@ -517,6 +536,7 @@
 					{ age: 20 }
 				], o => {
 					column = o.columns[0];
+					column.autoupdate = true;
 					done();
 				});
 			});
