@@ -118,6 +118,7 @@ class OmnitableColumnAmount extends rangeColumnMixin(columnMixin(translatable(
 				type: String,
 				value: 'amount-header-cell'
 			},
+			// trigger filter updates manually
 			autoupdate: {
 				type: String,
 				value: false

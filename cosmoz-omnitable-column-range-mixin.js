@@ -48,6 +48,9 @@ export const rangeColumnMixin = dedupingMixin(base => // eslint-disable-line max
 					value: null
 				},
 
+				/**
+				 * If true, _limitInput and _updateFilter will be called after each value change
+				 */
 				autoupdate: {
 					type: String,
 					value: true
