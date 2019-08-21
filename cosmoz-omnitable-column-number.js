@@ -104,6 +104,7 @@ class OmnitableColumnNumber extends rangeColumnMixin(
 				type: Object,
 				computed: '_computeFormatter(locale, minimumFractionDigits, maximumFractionDigits)'
 			},
+			// trigger filter updates manually
 			autoupdate: {
 				type: String,
 				value: false
