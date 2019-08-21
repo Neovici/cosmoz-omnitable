@@ -53,11 +53,15 @@ class OmnitableColumnNumber extends rangeColumnMixin(
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
 					<paper-input class$="[[ _fromClasses ]]" type="number" label="[[ _('From', t) ]]" value="{{ _filterInput.min }}"
-						on-input="onBadInputFloatLabel" on-blur="_onBlur" on-keydown="_onKeyDown" min="[[ _toInputString(_limit.fromMin) ]]" max="[[ _toInputString(_limit.fromMax) ]]">
+						on-input="onBadInputFloatLabel"
+						on-blur="_onBlur" on-keydown="_onKeyDown"
+						min="[[ _toInputString(_limit.fromMin) ]]" max="[[ _toInputString(_limit.fromMax) ]]">
 						<iron-icon icon="clear" slot="suffix" on-tap="_clearFrom"></iron-icon>
 					</paper-input>
 					<paper-input class$="[[ _toClasses ]]" type="number" label="[[ _('To', t) ]]" value="{{ _filterInput.max }}"
-						on-input="onBadInputFloatLabel" on-blur="_onBlur" on-keydown="_onKeyDown" min="[[ _toInputString(_limit.toMin) ]]" max="[[ _toInputString(_limit.toMax) ]]">
+						on-input="onBadInputFloatLabel"
+						on-blur="_onBlur" on-keydown="_onKeyDown"
+						min="[[ _toInputString(_limit.toMin) ]]" max="[[ _toInputString(_limit.toMax) ]]">
 						<iron-icon icon="clear" slot="suffix" on-tap="_clearTo"></iron-icon>
 					</paper-input>
 				</div>

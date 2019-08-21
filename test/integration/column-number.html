@@ -47,8 +47,7 @@
 		];
 
 		suite('cosmoz-omnitable-column-number', () => {
-			let omnitable,
-				column;
+			let omnitable;
 
 			const getHeaderMenu = () =>
 				omnitable.shadowRoot.querySelector('cosmoz-omnitable-header-row paper-dropdown-menu');
@@ -72,10 +71,7 @@
 			};
 
 			setup(done => {
-				omnitable = setupOmnitableFixture('number', data, o => {
-					column = o.columns[0];
-					setTimeout(done, 10);
-				});
+				omnitable = setupOmnitableFixture('number', data, () => setTimeout(done, 10));
 			});
 
 			test('filters the table', async () => {

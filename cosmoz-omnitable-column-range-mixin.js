@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import '@webcomponents/shadycss/entrypoints/apply-shim.js';
 
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
@@ -22,7 +23,7 @@ export const rangeColumnMixin = dedupingMixin(base => // eslint-disable-line max
 	 * @mixinClass
 	 */
 	class extends base {
-		static get properties() {
+		static get properties() { // eslint-disable-line max-lines-per-function
 			return {
 				bindValues: {
 					type: Boolean,
