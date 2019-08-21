@@ -34,20 +34,34 @@ class OmnitableColumnAmount extends rangeColumnMixin(columnMixin(translatable(
 		</template>
 
 		<template class="header" strip-whitespace>
+			<style>
+			paper-input > div > iron-icon {
+				display: none;
+				cursor: pointer;
+			}
+
+			paper-input.has-value > div > iron-icon {
+				display: inline-block;
+			}
+			</style>
 			<cosmoz-clear-button on-click="resetFilter" visible="[[ hasFilter(filter.*) ]]"></cosmoz-clear-button>
 			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]"
-				title="[[ _tooltip ]]" horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
+				title="[[ _tooltip ]]" horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}"
+				on-opened-changed="_onDropdownOpenedChanged">
 				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 150px;">
 					<h3 style="margin: 0;">[[ title ]]</h3>
-					<paper-input type="number" label="[[ _('Min amount', t) ]]"
+					<paper-input class$="[[ _fromClasses ]]" type="number" label="[[ _('Min amount', t) ]]"
 						title="[[ _('Minimum amount', t) ]]" value="{{ _filterInput.min }}"
+						on-blur="_onBlur" on-keydown="_onKeyDown"
 						min="[[ _toInputStringAmount(_limit.fromMin) ]]" max="[[ _toInputStringAmount(_limit.fromMax) ]]">
-						<div slot="suffix" suffix>[[ filter.min.currency ]]</div>
+						<div slot="suffix" suffix>[[ filter.min.currency ]]<iron-icon icon="clear" on-tap="_clearFrom"></iron-icon></div>
+
 					</paper-input>
-					<paper-input type="number" label="[[ _('Max amount', t) ]]"
+					<paper-input class$="[[ _toClasses ]]" type="number" label="[[ _('Max amount', t) ]]"
 						title="[[ _('Maximum amount', t) ]]" value="{{ _filterInput.max }}"
+						on-blur="_onBlur" on-keydown="_onKeyDown"
 						min="[[ _toInputStringAmount(_limit.toMin) ]]" max="[[ _toInputStringAmount(_limit.toMax) ]]">
-						<div slot="suffix" suffix>[[ filter.max.currency ]]</div>
+						<div slot="suffix" suffix>[[ filter.max.currency ]]<iron-icon icon="clear" on-tap="_clearTo"></iron-icon></div>
 					</paper-input>
 				</div>
 			</paper-dropdown-menu>
@@ -103,6 +117,10 @@ class OmnitableColumnAmount extends rangeColumnMixin(columnMixin(translatable(
 			headerCellClass: {
 				type: String,
 				value: 'amount-header-cell'
+			},
+			autoupdate: {
+				type: String,
+				value: false
 			},
 			_filterText: {
 				type: String,

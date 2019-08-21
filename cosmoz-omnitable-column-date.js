@@ -98,7 +98,7 @@ class OmnitableColumnDate extends dateColumnMixin(columnMixin(translatable(
 		return localDate;
 	}
 
-	_filterInputChanged(change) {
+	_filterInputChanged(change, autoupdate) {
 		const path = change.path.split('.')[1],
 			value = path && change.value;
 
@@ -107,7 +107,7 @@ class OmnitableColumnDate extends dateColumnMixin(columnMixin(translatable(
 			this._limitInputDebouncer.cancel();
 			return;
 		}
-		super._filterInputChanged(change);
+		super._filterInputChanged(change, autoupdate);
 	}
 }
 customElements.define(OmnitableColumnDate.is, OmnitableColumnDate);
