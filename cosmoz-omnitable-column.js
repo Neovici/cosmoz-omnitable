@@ -26,7 +26,7 @@ class OmnitableColumn extends columnMixin(PolymerElement) {
 		</template>
 
 		<template class="header" strip-whitespace>
-			<paper-input label="[[ title ]]" value="{{ filter }}" focused="{{ headerFocused }}">
+			<paper-input label="[[ title ]]" value="{{ inputValue }}" focused="{{ headerFocused }}" on-keydown="_onKeyDown" on-blur="_onBlur">
 				<cosmoz-clear-button suffix slot="suffix" visible="[[ hasFilter(filter.*) ]]" light on-click="resetFilter"></cosmoz-clear-button>
 			</paper-input>
 		</template>
@@ -61,6 +61,7 @@ class OmnitableColumn extends columnMixin(PolymerElement) {
 
 	resetFilter() {
 		this.filter = null;
+		this.filterCandidate = null;
 	}
 }
 customElements.define(OmnitableColumn.is, OmnitableColumn);
