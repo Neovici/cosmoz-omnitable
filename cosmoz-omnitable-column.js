@@ -61,7 +61,7 @@ class OmnitableColumn extends columnMixin(PolymerElement) {
 
 	resetFilter() {
 		this.filter = null;
-		this.filterCandidate = null;
+		this.inputValue = null;
 	}
 }
 customElements.define(OmnitableColumn.is, OmnitableColumn);
