@@ -7,6 +7,9 @@ import './ui-helpers/cosmoz-clear-button';
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
+import { timeOut } from '@polymer/polymer/lib/utils/async.js';
+import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
+import { enqueueDebouncer } from '@polymer/polymer/lib/utils/flush.js';
 
 /**
  * @polymer
@@ -47,6 +50,15 @@ class OmnitableColumn extends columnMixin(PolymerElement) {
 			editMinWidth: {
 				type: String,
 				value: '55px'
+			},
+
+			inputValue: {
+				type: Object,
+				notify: true,
+				value() {
+					return this._getDefaultFilter();
+				},
+				observer: '_inputValueValueChanged'
 			}
 		};
 	}
@@ -62,6 +74,32 @@ class OmnitableColumn extends columnMixin(PolymerElement) {
 	resetFilter() {
 		this.filter = null;
 		this.inputValue = null;
+	}
+
+	_onBlur() {
+		this.filter = this.inputValue;
+	}
+
+	_onKeyDown(event) {
+		switch (event.keyCode) {
+		case 13: // Enter
+			event.preventDefault();
+			this.filter = this.inputValue;
+			break;
+		}
+	}
+
+	_inputValueValueChanged() {
+		if (this.inputValue === '') {
+			this.filter = this.inputValue;
+			return;
+		}
+		this._debouncer = Debouncer.debounce(this._debouncer,
+			timeOut.after(1000),
+			() => {
+				this.filter = this.inputValue;
+			});
+		enqueueDebouncer(this._debouncer);
 	}
 }
 customElements.define(OmnitableColumn.is, OmnitableColumn);

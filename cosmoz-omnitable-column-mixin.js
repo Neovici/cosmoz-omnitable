@@ -1,9 +1,6 @@
 import '@webcomponents/shadycss/entrypoints/apply-shim';
 import { templatizeMixin } from './cosmoz-omnitable-templatize-mixin';
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin';
-import { timeOut } from '@polymer/polymer/lib/utils/async.js';
-import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
-import { enqueueDebouncer } from '@polymer/polymer/lib/utils/flush.js';
 
 /**
  * @polymer
@@ -54,14 +51,6 @@ export const columnMixin = dedupingMixin(base => class extends templatizeMixin(b
 				value() {
 					return this._getDefaultFilter();
 				}
-			},
-
-			inputValue: {
-				type: Object,
-				value() {
-					return this._getDefaultFilter();
-				},
-				observer: '_inputValueValueChanged'
 			},
 
 			/**
@@ -329,7 +318,6 @@ export const columnMixin = dedupingMixin(base => class extends templatizeMixin(b
 
 	resetFilter() {
 		this.filter = this._getDefaultFilter();
-		this.inputValue = this._getDefaultFilter();
 	}
 
 	/**
@@ -429,32 +417,6 @@ export const columnMixin = dedupingMixin(base => class extends templatizeMixin(b
 			return [];
 		}
 		return super._deserializeValue(obj, type);
-	}
-
-	_onBlur() {
-		this.filter = this.inputValue;
-	}
-
-	_onKeyDown(event) {
-		switch (event.keyCode) {
-		case 13: // Enter
-			event.preventDefault();
-			this.filter = this.inputValue;
-			break;
-		}
-	}
-
-	_inputValueValueChanged() {
-		if (this.inputValue === '') {
-			this.filter = this.inputValue;
-			return;
-		}
-		this._debouncer = Debouncer.debounce(this._debouncer,
-			timeOut.after(1000),
-			() => {
-				this.filter = this.inputValue;
-			});
-		enqueueDebouncer(this._debouncer);
 	}
 
 });
