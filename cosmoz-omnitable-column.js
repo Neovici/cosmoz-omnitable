@@ -59,6 +59,11 @@ class OmnitableColumn extends columnMixin(PolymerElement) {
 					return this._getDefaultFilter();
 				},
 				observer: '_inputValueValueChanged'
+			},
+
+			_timeForNoInput: {
+				type: Number,
+				value: 1000
 			}
 		};
 	}
@@ -95,7 +100,7 @@ class OmnitableColumn extends columnMixin(PolymerElement) {
 			return;
 		}
 		this._debouncer = Debouncer.debounce(this._debouncer,
-			timeOut.after(1000),
+			timeOut.after(this._timeForNoInput),
 			() => {
 				this.filter = this.inputValue;
 			});

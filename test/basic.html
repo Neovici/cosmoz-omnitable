@@ -38,6 +38,8 @@
 				</cosmoz-omnitable-column>
 				<cosmoz-omnitable-column name="columnWithoutSortOn" value-path="valuePath">
 				</cosmoz-omnitable-column>
+				<cosmoz-omnitable-column name="columnWithFilter" value-path="valuePath">
+				</cosmoz-omnitable-column>
 			</cosmoz-omnitable>
 		</template>
 	</test-fixture>
@@ -58,6 +60,7 @@
 	<script type="module">
 		import { setupOmnitableFixture } from './helpers/utils';
 		import { generateTableDemoData } from '../demo/table-demo-helper';
+		import { flush as flush$0 } from '@polymer/polymer/lib/utils/flush';
 
 		sinon.assert.expose(chai.assert, { prefix: '' });
 
@@ -117,6 +120,27 @@
 				});
 
 				assert.equal(column.sortOn, 'sortOnValuePath');
+			});
+
+			test('changing inputValue updates filter eventually', () => {
+				const column = omnitable.columns.find(col => {
+					return col.name === 'columnWithFilter';
+				});
+				assert.isNull(column.filter);
+				assert.isNull(column.inputValue);
+				column.inputValue = 'test';
+				flush$0();
+				assert.equal(column.filter, 'test');
+			});
+
+			test('changing inputValue to empty updates filter instantly', () => {
+				const column = omnitable.columns.find(col => {
+					return col.name === 'columnWithFilter';
+				});
+				assert.isNull(column.filter);
+				assert.isNull(column.inputValue);
+				column.inputValue = '';
+				assert.equal(column.filter, '');
 			});
 
 			test('_serializeFilter returns filter', () => {
