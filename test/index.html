@@ -8,6 +8,8 @@
 	<script src="/components/wct-mocha/wct-mocha.js"></script>
 </head>
 <body>
+	<!-- If running tests interactively, some tests may fail if the window is not focused during the tests.
+		 This because chrome ignores blur/focus events when the browser window is not focused. 	-->
 	<script>
 		WCT.loadSuites([
 			'basic.html',
