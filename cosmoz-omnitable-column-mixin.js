@@ -418,4 +418,5 @@ export const columnMixin = dedupingMixin(base => class extends templatizeMixin(b
 		}
 		return super._deserializeValue(obj, type);
 	}
+
 });

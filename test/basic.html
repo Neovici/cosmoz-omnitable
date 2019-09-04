@@ -38,6 +38,8 @@
 				</cosmoz-omnitable-column>
 				<cosmoz-omnitable-column name="columnWithoutSortOn" value-path="valuePath">
 				</cosmoz-omnitable-column>
+				<cosmoz-omnitable-column name="columnWithFilter" value-path="valuePath">
+				</cosmoz-omnitable-column>
 			</cosmoz-omnitable>
 		</template>
 	</test-fixture>
@@ -58,6 +60,7 @@
 	<script type="module">
 		import { setupOmnitableFixture } from './helpers/utils';
 		import { generateTableDemoData } from '../demo/table-demo-helper';
+		import { flush } from '@polymer/polymer/lib/utils/flush';
 
 		sinon.assert.expose(chai.assert, { prefix: '' });
 
@@ -89,79 +92,72 @@
 			});
 
 			test('sets column groupOn property to valuePath when group-on attribute is missing', () => {
-				const column = omnitable.columns.find(col => {
-					return col.name === 'columnWithoutGroupOn';
-				});
-
+				const column = omnitable.columns.find(col => col.name === 'columnWithoutGroupOn');
 				assert.equal(column.groupOn, 'valuePath');
 			});
 
 			test('sets column groupOn property to group-on attribute', () => {
-				const column = omnitable.columns.find(col => {
-					return col.name === 'columnWithGroupOn';
-				});
-
+				const column = omnitable.columns.find(col => col.name === 'columnWithGroupOn');
 				assert.equal(column.groupOn, 'groupOnValuePath');
 			});
 
 			test('sets column sortOn property to valuePath when sort-on attribute is missing', () => {
-				const column = omnitable.columns.find(col => {
-					return col.name === 'columnWithoutSortOn';
-				});
-
+				const column = omnitable.columns.find(col => col.name === 'columnWithoutSortOn');
 				assert.equal(column.sortOn, 'valuePath');
 			});
 			test('sets column sortOn property to sort-on attribute', () => {
-				const column = omnitable.columns.find(col => {
-					return col.name === 'columnWithSortOn';
-				});
-
+				const column = omnitable.columns.find(col => col.name === 'columnWithSortOn');
 				assert.equal(column.sortOn, 'sortOnValuePath');
 			});
 
+			test('changing inputValue updates filter eventually', () => {
+				const column = omnitable.columns.find(col => col.name === 'columnWithFilter');
+				assert.isNull(column.filter);
+				assert.isNull(column.inputValue);
+				column.inputValue = 'test';
+				flush();
+				assert.equal(column.filter, 'test');
+			});
+
+			test('changing inputValue to empty updates filter instantly', () => {
+				const column = omnitable.columns.find(col => col.name === 'columnWithFilter');
+				assert.isNull(column.filter);
+				assert.isNull(column.inputValue);
+				column.inputValue = '';
+				assert.equal(column.filter, '');
+			});
+
 			test('_serializeFilter returns filter', () => {
-				const column = omnitable.columns.find(col => {
-						return col.name === 'columnWithGroupOn';
-					}),
+				const column = omnitable.columns.find(col => col.name === 'columnWithGroupOn'),
 					filter = { key: 'value' };
 				assert.deepEqual(column._serializeFilter(filter), filter);
 			});
 
 			test('_serializeFilter uses default filter', () => {
-				const column = omnitable.columns.find(col => {
-					return col.name === 'columnWithGroupOn';
-				});
+				const column = omnitable.columns.find(col => col.name === 'columnWithGroupOn');
 				assert.isNull(column.filter);
 				column.filter = { key: 'value' };
 				assert.deepEqual(column._serializeFilter(), column.filter);
 			});
 
 			test('_serializeFilter handles null filter', () => {
-				const column = omnitable.columns.find(col => {
-					return col.name === 'columnWithGroupOn';
-				});
+				const column = omnitable.columns.find(col => col.name === 'columnWithGroupOn');
 				assert.isNull(column.filter);
 				assert.isNull(column._serializeFilter());
 			});
 
 			test('_deserializeFilter returns object', () => {
-				const column = omnitable.columns.find(col => {
-					return col.name === 'columnWithGroupOn';
-				});
+				const column = omnitable.columns.find(col => col.name === 'columnWithGroupOn');
 				assert.deepEqual(column._deserializeFilter({ key: 'value' }), { key: 'value' });
 			});
 
 			test('_deserializeFilter handles null', () => {
-				const column = omnitable.columns.find(col => {
-					return col.name === 'columnWithGroupOn';
-				});
+				const column = omnitable.columns.find(col => col.name === 'columnWithGroupOn');
 				assert.isNull(column._deserializeFilter());
 			});
 
 			test('resetFilter resets filter to null', () => {
-				const column = omnitable.columns.find(col => {
-					return col.name === 'columnWithGroupOn';
-				});
+				const column = omnitable.columns.find(col => col.name === 'columnWithGroupOn');
 				column.filter = { key: 'value' };
 				column.resetFilter();
 				assert.isNull(column.filter);
