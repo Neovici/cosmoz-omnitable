@@ -32,8 +32,12 @@ class OmnitableColumnList extends	listColumnMixin(columnMixin(translatable(
 		</template>
 
 		<template class="header" strip-whitespace>
-			<paper-autocomplete-chips source="[[ autocompleteItems ]]" label="[[ title ]]"
-				selected-items="{{ filter }}" text-property="[[ textProperty ]]" value-property="[[ valueProperty ]]" show-results-on-focus>
+			<paper-autocomplete-chips text="{{ query }}"
+				source="[[ _unique(values, valueProperty) ]]" label="[[ title ]]"
+				selected-items="{{ filter }}" text-property="[[ textProperty ]]"
+				value-property="[[ valueProperty ]]" focused="{{ headerFocused }}"
+				show-results-on-focus>
+				<paper-spinner-lite style="width: 20px; height: 20px;" suffix slot="suffix" active="[[ loading ]]" hidden="[[ !loading ]]"></paper-spinner-lite>
 			</paper-autocomplete-chips>
 		</template>
 `;
@@ -66,6 +70,11 @@ class OmnitableColumnList extends	listColumnMixin(columnMixin(translatable(
 				value() {
 					return this._getDefaultFilter();
 				}
+			},
+
+			query: {
+				type: String,
+				notify: true
 			},
 
 			textProperty: {
@@ -132,6 +141,26 @@ class OmnitableColumnList extends	listColumnMixin(columnMixin(translatable(
 
 	_getDefaultFilter() {
 		return [];
+	}
+
+	_unique(values, valueProperty) {
+		if (!Array.isArray(values)) {
+				return;
+		}
+		const used = [];
+		return values.filter((item, index, array) => {
+			if (array.indexOf(item) !== index) {
+					return false;
+			}
+			if (valueProperty) {
+				const value = this.get(valueProperty, item);
+				if (used.indexOf(value) !== -1) {
+						return false;
+				}
+				used.push(value);
+			}
+			return true;
+		});
 	}
 }
 customElements.define(OmnitableColumnList.is, OmnitableColumnList);
