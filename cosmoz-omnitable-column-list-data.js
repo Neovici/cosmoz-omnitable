@@ -31,16 +31,13 @@ class OmnitableColumnListData extends translatable(mixin(Template, PolymerElemen
 			}
 
 			ul {
+				list-style-type: none;
 				margin: 0.3em 0;
 				padding-left: 1em;
 			}
-
-			ul.noItemBullets {
-				list-style-type: none;
-			}
 		</style>
 
-		<ul class$="[[ ifElse(noItemBullets, 'noItemBullets', '') ]]" hidden$="[[ isEmpty(items) ]]">
+		<ul hidden$="[[ isEmpty(items) ]]">
 			<li>
 				<span>[[ _firstItem(items) ]]</span>
 			</li>
@@ -70,11 +67,6 @@ class OmnitableColumnListData extends translatable(mixin(Template, PolymerElemen
 			},
 
 			_expanded: {
-				type: Boolean,
-				value: false
-			},
-
-			noItemBullets: {
 				type: Boolean,
 				value: false
 			},

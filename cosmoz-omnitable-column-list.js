@@ -23,8 +23,7 @@ class OmnitableColumnList extends	listColumnMixin(columnMixin(translatable(
 	static get template() {
 		return html`
 		<template class="cell" strip-whitespace>
-			<cosmoz-omnitable-column-list-data items="[[ getTexts(valuePath, item, textProperty) ]]"
-				no-item-bullets="[[ noItemBullets ]]">
+			<cosmoz-omnitable-column-list-data items="[[ getTexts(valuePath, item, textProperty) ]]">
 			</cosmoz-omnitable-column-list-data>
 		</template>
 
@@ -67,11 +66,6 @@ class OmnitableColumnList extends	listColumnMixin(columnMixin(translatable(
 				value() {
 					return this._getDefaultFilter();
 				}
-			},
-
-			noItemBullets: {
-				type: Boolean,
-				value: false
 			},
 
 			textProperty: {
