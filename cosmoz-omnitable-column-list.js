@@ -145,17 +145,17 @@ class OmnitableColumnList extends	listColumnMixin(columnMixin(translatable(
 
 	_unique(values, valueProperty) {
 		if (!Array.isArray(values)) {
-				return;
+			return;
 		}
 		const used = [];
 		return values.filter((item, index, array) => {
 			if (array.indexOf(item) !== index) {
-					return false;
+				return false;
 			}
 			if (valueProperty) {
 				const value = this.get(valueProperty, item);
 				if (used.indexOf(value) !== -1) {
-						return false;
+					return false;
 				}
 				used.push(value);
 			}
