@@ -195,9 +195,6 @@ export const dateColumnMixin = dedupingMixin(base => // eslint-disable-line max-
 				item = event.model.item,
 				oldValue = this.get(this.valuePath, item),
 				date = this._fromInputString(value);
-			if (date == null) {
-				return;
-			}
 			this.set(this.valuePath, date, item);
 			this._fireItemChangeEvent(item, this.valuePath, oldValue, this.renderValue.bind(this));
 		}
