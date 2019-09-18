@@ -262,7 +262,25 @@ export const columnMixin = dedupingMixin(base => class extends templatizeMixin(b
 		}
 		return this.get(valuePath, item);
 	}
-
+	_unique(values, valueProperty) {
+		if (!Array.isArray(values)) {
+			return;
+		}
+		const used = [];
+		return values.filter((item, index, array) => {
+			if (array.indexOf(item) !== index) {
+				return false;
+			}
+			if (valueProperty) {
+				const value = this.get(valueProperty, item);
+				if (used.indexOf(value) !== -1) {
+					return false;
+				}
+				used.push(value);
+			}
+			return true;
+		});
+	}
 	_pathsChanged(valuePath, groupOn, sortOn) {
 		if (valuePath == null) {
 			return;
