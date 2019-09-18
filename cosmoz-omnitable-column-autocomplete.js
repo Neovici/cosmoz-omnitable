@@ -151,26 +151,6 @@ class OmnitableColumnAutocomplete extends columnMixin(PolymerElement) {
 			.indexOf(value) !== -1;
 	}
 
-	_unique(values, valueProperty) {
-		if (!Array.isArray(values)) {
-			return;
-		}
-		const used = [];
-		return values.filter((item, index, array) => {
-			if (array.indexOf(item) !== index) {
-				return false;
-			}
-			if (valueProperty) {
-				const value = this.get(valueProperty, item);
-				if (used.indexOf(value) !== -1) {
-					return false;
-				}
-				used.push(value);
-			}
-			return true;
-		});
-	}
-
 	_getDefaultFilter() {
 		return [];
 	}
