@@ -23,8 +23,8 @@
 	"scripts": {
 		"analyze": "polymer analyze --input cosmoz-*.js > analysis.json",
 		"lint": "eslint --cache --ext .js,.html . && polymer lint cosmoz-*.js",
-		"pristine": "rm -rf node_modules yarn.lock && yarn",
-		"preversion": "npm run pristine && git add yarn.lock && npm run lint && npm run test -- --skip-plugin sauce",
+		"pristine": "rm -rf node_modules package-lock.json && npm install",
+		"preversion": "npm run lint && npm run test -- --skip-plugin sauce",
 		"postversion": "git push && git push --tags",
 		"start": "polymer serve -o",
 		"test": "polymer test"
