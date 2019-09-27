@@ -187,6 +187,7 @@ export const repeaterMixin = dedupingMixin(base => class extends base { // eslin
 			this._addElements(index, 1);
 		} else if (path !== 'columns.length') {
 			// column property change
+			// eslint-disable-next-line no-console
 			console.warn('column property change', path);
 		}
 	}
