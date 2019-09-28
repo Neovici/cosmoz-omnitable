@@ -18,11 +18,11 @@ class CosmozTranslations extends translatable(PolymerElement) {
 	_getTranslations(locale) {
 		if (locale === 'sv') {
 			return {
-				'Amount': 'Belopp',
-				'Ascending': 'stigande',
-				'Descending': 'fallande',
+				Amount: 'Belopp',
+				Ascending: 'stigande',
+				Descending: 'fallande',
 				'Group on': 'Gruppera på',
-				'Group': 'Grupp',
+				Group: 'Grupp',
 				'No grouping': 'Ingen gruppering',
 				'No sorting': 'Ingen sortering',
 				'Sort on': 'Sortera på',
@@ -36,11 +36,11 @@ class CosmozTranslations extends translatable(PolymerElement) {
 
 		} else if (locale === 'fr') {
 			return {
-				'Amount': 'Montant',
-				'Ascending': 'croissant',
-				'Descending': 'décroissant',
+				Amount: 'Montant',
+				Ascending: 'croissant',
+				Descending: 'décroissant',
 				'Group on': 'Grouper sur',
-				'Group': 'Groupe',
+				Group: 'Groupe',
 				'No grouping': 'Pas de groupement',
 				'No sorting': 'Pas de tri',
 				'Save as CSV': 'Eporter en CSV',

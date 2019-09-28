@@ -742,6 +742,7 @@ class Omnitable extends translatable(
 			.filter(column => {
 				const name = column.name;
 				if (!name) {
+					// eslint-disable-next-line no-console
 					console.error('The name attribute needs to be set on all columns! Missing on column', column.title, column);
 					return false;
 				}
@@ -749,6 +750,7 @@ class Omnitable extends translatable(
 			});
 
 		columnsMissingNameAttribute.forEach(column => {
+			// eslint-disable-next-line no-console
 			console.error('The name attribute needs to be unique among all columns! Not unique on column', column.title, column);
 		});
 
@@ -773,6 +775,7 @@ class Omnitable extends translatable(
 			}
 
 			if (!column.valuePath) {
+				// eslint-disable-next-line no-console
 				console.error('value path is not defined for column', column, 'with bindValues');
 				return;
 			}
@@ -797,6 +800,7 @@ class Omnitable extends translatable(
 		}
 		const column = columns.find(column => column[attribute] === attributeValue);
 		if (!column) {
+			// eslint-disable-next-line no-console
 			console.warn(`Cannot find column with ${attribute} ${attributeValue}`);
 		}
 		return column;
@@ -945,6 +949,7 @@ class Omnitable extends translatable(
 			return a ? -1 : 1;
 		}
 
+		// eslint-disable-next-line no-console
 		console.warn('unsupported sort', typeof a, a, typeof b, b);
 		return 0;
 	}
@@ -1405,6 +1410,7 @@ class Omnitable extends translatable(
 		const column = this.columns.find(c => c.name === key);
 
 		if (!column) {
+			// eslint-disable-next-line no-console
 			console.warn('column with name', name, 'for param', key, 'not found!');
 			return;
 		}

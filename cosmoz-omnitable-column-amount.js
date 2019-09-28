@@ -201,9 +201,8 @@ class OmnitableColumnAmount extends rangeColumnMixin(columnMixin(translatable(
 		// calculate value and limit amounts with rates
 		const rates = this.rates || {},
 			valAmount = amount.amount * (rates[amount.currency] || 1),
-			limAmount = lAmount.amount * (rates[lAmount.currency] || 1);
-
-		const lNumber = this.toNumber(valAmount, limAmount, limitFunc);
+			limAmount = lAmount.amount * (rates[lAmount.currency] || 1),
+			lNumber = this.toNumber(valAmount, limAmount, limitFunc);
 		return lNumber === valAmount ? amount : lAmount;
 	}
 
@@ -254,8 +253,8 @@ class OmnitableColumnAmount extends rangeColumnMixin(columnMixin(translatable(
 	}
 
 	getFormatter(currency, locale) {
-		const id = locale ? locale : '';
-		const key = currency + id || '',
+		const id = locale ? locale : '',
+			key = currency + id || '',
 			formatters = this._formatters = this._formatters || {};
 		if (formatters[key]) {
 			return formatters[key];
@@ -288,9 +287,8 @@ class OmnitableColumnAmount extends rangeColumnMixin(columnMixin(translatable(
 		const input = event.target,
 			value = input.value,
 			item = event.model.item,
-			originalValue = this.get(this.valuePath, item);
-
-		const amountValue = Number(value),
+			originalValue = this.get(this.valuePath, item),
+			amountValue = Number(value),
 			newValue = {
 				amount: amountValue,
 				currency: originalValue.currency

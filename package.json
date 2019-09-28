@@ -23,8 +23,8 @@
 	"scripts": {
 		"analyze": "polymer analyze --input cosmoz-*.js > analysis.json",
 		"lint": "eslint --cache --ext .js,.html . && polymer lint cosmoz-*.js",
-		"pristine": "rm -rf node_modules yarn.lock && yarn",
-		"preversion": "npm run pristine && git add yarn.lock && npm run lint && npm run test -- --skip-plugin sauce",
+		"pristine": "rm -rf node_modules package-lock.json && npm install",
+		"preversion": "npm run lint && npm run test -- --skip-plugin sauce",
 		"postversion": "git push && git push --tags",
 		"start": "polymer serve -o",
 		"test": "polymer test"
@@ -34,7 +34,7 @@
 		"@neovici/cosmoz-datetime-input": "github:neovici/cosmoz-datetime-input#semver:^3.0.1",
 		"@neovici/cosmoz-grouped-list": "github:neovici/cosmoz-grouped-list#semver:^3.0.1",
 		"@neovici/cosmoz-i18next": "github:neovici/cosmoz-i18next#semver:^3.0.1",
-		"@neovici/cosmoz-page-router": "github:neovici/cosmoz-page-router#semver:^3.0.3",
+		"@neovici/cosmoz-page-router": "github:neovici/cosmoz-page-router#semver:^4.0.0",
 		"@neovici/cosmoz-utils": "github:neovici/cosmoz-utils#semver:^3.0.4",
 		"@neovici/nullxlsx": "github:neovici/nullxlsx#semver:^3.0.1",
 		"@neovici/paper-autocomplete-chips": "github:neovici/paper-autocomplete-chips#semver:^3.0.2",

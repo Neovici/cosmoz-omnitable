@@ -35,40 +35,38 @@
 	<script type="module">
 		/* eslint-disable max-lines */
 		import { setupOmnitableFixture } from '../helpers/utils';
-		const wait = time => new Promise(resolve => setTimeout(resolve, time));
-
-		const data = [
-			{age: 17 },
-			{age: 11, amount: { amount: 678, currency: 'AUD' }},
-			{age: 9, amount: { amount: -8, currency: 'EUR' }},
-			{age: 5, amount: { amount: '3450', currency: 'DKK' }},
-			{age: 46.7511 },
-			{age: 46.768 }
-		];
+		const wait = time => new Promise(resolve => setTimeout(resolve, time)),
+			data = [
+				{age: 17 },
+				{age: 11, amount: { amount: 678, currency: 'AUD' }},
+				{age: 9, amount: { amount: -8, currency: 'EUR' }},
+				{age: 5, amount: { amount: '3450', currency: 'DKK' }},
+				{age: 46.7511 },
+				{age: 46.768 }
+			];
 
 		suite('cosmoz-omnitable-column-number', () => {
 			let omnitable;
 
 			const getHeaderMenu = () =>
-				omnitable.shadowRoot.querySelector('cosmoz-omnitable-header-row paper-dropdown-menu');
+					omnitable.shadowRoot.querySelector('cosmoz-omnitable-header-row paper-dropdown-menu'),
+				openHeaderMenu = async () => {
+					getHeaderMenu().click();
+					await wait(100);
+				},
 
-			const openHeaderMenu = async () => {
-				getHeaderMenu().click();
-				await wait(100);
-			};
+				getInputs = () =>
+					omnitable.shadowRoot.querySelectorAll('cosmoz-omnitable-header-row paper-dropdown-menu paper-input'),
 
-			const getInputs = () =>
-				omnitable.shadowRoot.querySelectorAll('cosmoz-omnitable-header-row paper-dropdown-menu paper-input');
+				getFocusedInput = () =>
+					omnitable.shadowRoot.querySelector('cosmoz-omnitable-header-row paper-dropdown-menu paper-input:focus-within'),
 
-			const getFocusedInput = () =>
-				omnitable.shadowRoot.querySelector('cosmoz-omnitable-header-row paper-dropdown-menu paper-input:focus-within');
-
-			const setInputValue = async (inputNo, value) => {
-				const input = getInputs()[inputNo];
-				input.focus();
-				await wait(10);
-				input.value = value;
-			};
+				setInputValue = async (inputNo, value) => {
+					const input = getInputs()[inputNo];
+					input.focus();
+					await wait(10);
+					input.value = value;
+				};
 
 			setup(done => {
 				omnitable = setupOmnitableFixture('number', data, () => setTimeout(done, 10));

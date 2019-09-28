@@ -251,6 +251,7 @@ export const columnMixin = dedupingMixin(base => class extends templatizeMixin(b
 	}
 	getString(item, valuePath = this.valuePath) {
 		if (valuePath === undefined) {
+			// eslint-disable-next-line no-console
 			console.error(this, 'has undefined valuePath arg', valuePath, 'for item', item);
 			return;
 		}

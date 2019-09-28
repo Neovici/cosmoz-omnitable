@@ -200,6 +200,7 @@
 					date3 = omnitable.querySelector('#date3');
 
 				// Async needed so that omnitable can process the data
+				// eslint-disable-next-line no-console
 				sinon.assert.calledTwice(console.error);
 				expect(date2.name).to.be.equal(date2.valuePath);
 				// Test if only unique value-paths are taken as a fallback name attribute

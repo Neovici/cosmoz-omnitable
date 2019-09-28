@@ -96,6 +96,7 @@ class OmnitableColumnAutocomplete extends columnMixin(PolymerElement) {
 
 	getString(item, valuePath = this.valuePath) {
 		if (valuePath === undefined) {
+			// eslint-disable-next-line no-console
 			console.error(this, 'has undefined valuePath', valuePath, 'for item', item);
 			return;
 		}
