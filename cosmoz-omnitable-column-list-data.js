@@ -33,7 +33,7 @@ class OmnitableColumnListData extends translatable(mixin(Template, PolymerElemen
 			ul {
 				list-style-type: none;
 				margin: 0.3em 0;
-				padding-left: 1em;
+				padding-left: 0;
 			}
 		</style>
 
