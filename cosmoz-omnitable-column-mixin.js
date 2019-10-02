@@ -270,10 +270,7 @@ export const columnMixin = dedupingMixin(base => class extends templatizeMixin(b
 		const used = [];
 		return values.reduce((acc, cur) => {
 			if (Array.isArray(cur)) {
-				cur.forEach(subcur => {
-					acc.push(subcur);
-				});
-				return acc;
+				return acc.concat(cur);
 			}
 			acc.push(cur);
 			return acc;
