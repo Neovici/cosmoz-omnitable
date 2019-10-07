@@ -81,6 +81,13 @@ class OmnitableColumn extends columnMixin(PolymerElement) {
 		this.inputValue = null;
 	}
 
+	__filterChanged(change) {
+		super.__filterChanged(change)
+		if (change.value != null && change.value !== this.inputValue) {
+			this.inputValue = change.value;
+		}
+	}
+
 	_onBlur() {
 		this.filter = this.inputValue;
 	}
