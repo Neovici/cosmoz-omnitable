@@ -98,6 +98,22 @@
 					done();
 				});
 			});
+
+			test('updates filter from url hash (text column)', done => {
+				location.hash = '#/#test-filter--name=john';
+				instantiate(() => {
+					assert.equal(omnitable.columns[2].filter, 'john');
+					assert.equal(
+						omnitable
+							.shadowRoot
+							.querySelector('.header-cell[title=Name]')
+							.querySelector('paper-input')
+							.value,
+						'john'
+					);
+					done();
+				});
+			});
 		});
 
 		suite('basic-write', () => {
