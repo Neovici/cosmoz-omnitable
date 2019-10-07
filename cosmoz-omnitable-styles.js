@@ -34,6 +34,10 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				@apply --layout-end;
 			}
 
+			[hidden] {
+				display: none;
+			}
+
 			.header > cosmoz-omnitable-header-row {
 				@apply --layout-flex;
 			}
