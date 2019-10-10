@@ -1,3 +1,10 @@
+## [3.0.14](https://github.com/neovici/cosmoz-omnitable/compare/v3.0.13...v3.0.14) (2019-10-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependencies ([aaffdee](https://github.com/neovici/cosmoz-omnitable/commit/aaffdee))
+
 ## [3.0.13](https://github.com/neovici/cosmoz-omnitable/compare/v3.0.12...v3.0.13) (2019-10-07)
 
 
