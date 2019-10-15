@@ -82,7 +82,7 @@
 		"@commitlint/config-conventional": "^8.2.0",
 		"@neovici/cosmoz-viewinfo": "^3.0.2",
 		"@neovici/eslint-config": "^1.1.7",
-		"@neovici/github-actions-eslint-annotator": "^0.2.0",
+		"@neovici/github-actions-eslint-annotator": "^0.3.0",
 		"@polymer/iron-component-page": "^4.0.0",
 		"@polymer/iron-demo-helpers": "^3.0.0",
 		"@polymer/iron-test-helpers": "^3.0.0",
