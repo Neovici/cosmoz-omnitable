@@ -30,7 +30,7 @@ import './cosmoz-omnitable-columns';
 
 import { NullXlsx } from '@neovici/nullxlsx';
 
-import 'file-saver/src/FileSaver';
+import { saveAs } from 'file-saver';
 
 import { timeOut, animationFrame } from '@polymer/polymer/lib/utils/async';
 import { Debouncer } from '@polymer/polymer/lib/utils/debounce';
@@ -1207,7 +1207,7 @@ class Omnitable extends translatable(
 
 		rows.unshift(header);
 
-		window.saveAs(new File(rows, this.csvFilename, {
+		this._saveAs(new File(rows, this.csvFilename, {
 			type: 'text/csv;charset=utf-8'
 		}));
 	}
@@ -1238,7 +1238,7 @@ class Omnitable extends translatable(
 		const data = this._prepareXlsxData(),
 			xlsx = new NullXlsx(this.xlsxFilename).addSheetFromData(data, this.xlsxSheetname).generate();
 
-		window.saveAs(new File([xlsx], this.xlsxFilename, {
+		this._saveAs(new File([xlsx], this.xlsxFilename, {
 			type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 		}));
 	}
@@ -1505,6 +1505,10 @@ class Omnitable extends translatable(
 
 	_debounce(name, fn, asyncModule = timeOut.after(0)) {
 		this.debouncers[name] = Debouncer.debounce(this.debouncers[name], asyncModule, fn);
+	}
+
+	_saveAs() {
+		return saveAs.apply(window, arguments);
 	}
 }
 customElements.define(Omnitable.is, Omnitable);

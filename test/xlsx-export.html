@@ -94,10 +94,7 @@
 
 		test('is exporting as xlsx file', () => {
 			const spyXlsx = sinon.spy(omnitable, '_saveAsXlsxAction'),
-				oSaveAs = window.saveAs,
-				spySaveAs = sinon.spy();
-
-			window.saveAs = spySaveAs;
+				spySaveAs = sinon.spy(omnitable, '_saveAs');
 
 			omnitable.selectItem(data[0]);
 			omnitable.selectItem(data[1]);
@@ -114,15 +111,12 @@
 			assert.equal(args.type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 
 			spyXlsx.restore();
-			window.saveAs = oSaveAs;
+			spySaveAs.restore();
 		});
 
 		test('click twice creates two files', () => {
 			const spyXlsx = sinon.spy(omnitable, '_saveAsXlsxAction'),
-				oSaveAs = window.saveAs,
-				spySaveAs = sinon.spy();
-
-			window.saveAs = spySaveAs;
+				spySaveAs = sinon.spy(omnitable, '_saveAs');
 
 			for (let i = 0; i < data.length; i++) {
 				omnitable.selectItem(data[i]);
@@ -140,7 +134,7 @@
 			assert.equal(args.type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 
 			spyXlsx.restore();
-			window.saveAs = oSaveAs;
+			spySaveAs.restore();
 		});
 	});
 
