@@ -92,50 +92,6 @@
 			assert.equal(headers.length, omnitable.columns.length);
 		});
 
-		test('is exporting as xlsx file', () => {
-			const spyXlsx = sinon.spy(omnitable, '_saveAsXlsxAction'),
-				spySaveAs = sinon.spy(omnitable, '_saveAs');
-
-			omnitable.selectItem(data[0]);
-			omnitable.selectItem(data[1]);
-
-			// click on Export as XLSX paper-button
-			tap(omnitable.$.dropdownExtra.queryAllEffectiveChildren('paper-button')[1]);
-			assert.calledOnce(spyXlsx);
-			assert.calledOnce(spySaveAs);
-
-			const args =	spySaveAs.lastCall.args[0];
-			// verify params of SaveAs; name and type of file to be created
-
-			assert.equal(args.name, 'Test.xlsx');
-			assert.equal(args.type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-
-			spyXlsx.restore();
-			spySaveAs.restore();
-		});
-
-		test('click twice creates two files', () => {
-			const spyXlsx = sinon.spy(omnitable, '_saveAsXlsxAction'),
-				spySaveAs = sinon.spy(omnitable, '_saveAs');
-
-			for (let i = 0; i < data.length; i++) {
-				omnitable.selectItem(data[i]);
-			}
-			const button = omnitable.$.dropdownExtra.queryAllEffectiveChildren('paper-button')[1];
-
-			tap(button);
-			tap(button);
-			assert.calledTwice(spyXlsx);
-			assert.calledTwice(spySaveAs);
-
-			const args =	spySaveAs.lastCall.args[0];
-
-			assert.equal(args.name, 'Test.xlsx');
-			assert.equal(args.type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-
-			spyXlsx.restore();
-			spySaveAs.restore();
-		});
 	});
 
 	suite('toXlsx range tests', () => {
