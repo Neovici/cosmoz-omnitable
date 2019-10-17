@@ -1,3 +1,10 @@
+## [3.0.15](https://github.com/neovici/cosmoz-omnitable/compare/v3.0.14...v3.0.15) (2019-10-17)
+
+
+### Bug Fixes
+
+* **omnitable:** make saveAs import explicit ([ad7413c](https://github.com/neovici/cosmoz-omnitable/commit/ad7413c))
+
 ## [3.0.14](https://github.com/neovici/cosmoz-omnitable/compare/v3.0.13...v3.0.14) (2019-10-10)
 
 
