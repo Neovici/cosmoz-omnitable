@@ -1207,7 +1207,7 @@ class Omnitable extends translatable(
 
 		rows.unshift(header);
 
-		this._saveAs(new File(rows, this.csvFilename, {
+		saveAs(new File(rows, this.csvFilename, {
 			type: 'text/csv;charset=utf-8'
 		}));
 	}
@@ -1238,7 +1238,7 @@ class Omnitable extends translatable(
 		const data = this._prepareXlsxData(),
 			xlsx = new NullXlsx(this.xlsxFilename).addSheetFromData(data, this.xlsxSheetname).generate();
 
-		this._saveAs(new File([xlsx], this.xlsxFilename, {
+		saveAs(new File([xlsx], this.xlsxFilename, {
 			type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 		}));
 	}
@@ -1505,10 +1505,6 @@ class Omnitable extends translatable(
 
 	_debounce(name, fn, asyncModule = timeOut.after(0)) {
 		this.debouncers[name] = Debouncer.debounce(this.debouncers[name], asyncModule, fn);
-	}
-
-	_saveAs() {
-		return saveAs.apply(window, arguments);
 	}
 }
 customElements.define(Omnitable.is, Omnitable);
