@@ -445,7 +445,7 @@ class Omnitable extends translatable(
 		return [
 			'_dataChanged(data.*)',
 			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
-			' _selectedItemsChanged(selectedItems.*)'
+			'_selectedItemsChanged(selectedItems.*)'
 		];
 	}
 
@@ -1311,7 +1311,7 @@ class Omnitable extends translatable(
 
 	_selectedItemsChanged(change) {
 		if (change.path === 'selectedItems' || change.path === 'selectedItems.splices') {
-			this._allSelected = this.data && change.base.length === this.data.length;
+			this._allSelected = this.data && this.data.length > 0 && change.base.length === this.data.length;
 		}
 	}
 
