@@ -1,3 +1,10 @@
+## [3.0.16](https://github.com/neovici/cosmoz-omnitable/compare/v3.0.15...v3.0.16) (2019-10-30)
+
+
+### Bug Fixes
+
+* `all selected` checkbox is checked ([1112844](https://github.com/neovici/cosmoz-omnitable/commit/1112844))
+
 ## [3.0.15](https://github.com/neovici/cosmoz-omnitable/compare/v3.0.14...v3.0.15) (2019-10-17)
 
 
