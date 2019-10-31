@@ -1,3 +1,10 @@
+## [3.0.17](https://github.com/neovici/cosmoz-omnitable/compare/v3.0.16...v3.0.17) (2019-10-31)
+
+
+### Bug Fixes
+
+* make sure spinner in autocomplete is properly hidden ([1825223](https://github.com/neovici/cosmoz-omnitable/commit/1825223))
+
 ## [3.0.16](https://github.com/neovici/cosmoz-omnitable/compare/v3.0.15...v3.0.16) (2019-10-30)
 
 
