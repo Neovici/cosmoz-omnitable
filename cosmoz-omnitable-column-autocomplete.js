@@ -25,12 +25,22 @@ class OmnitableColumnAutocomplete extends columnMixin(PolymerElement) {
 		</template>
 
 		<template class="header" strip-whitespace>
+			<style>
+				paper-spinner-lite {
+					width: 20px;
+					height: 20px;
+				}
+				paper-spinner-lite[aria-hidden] {
+					display: none !important;
+				}
+			</style>
+
 			<paper-autocomplete-chips text="{{ query }}"
 				source="[[ _unique(values, valueProperty) ]]" label="[[ title ]]"
 				selected-items="{{ filter }}" text-property="[[ textProperty ]]"
 				value-property="[[ valueProperty ]]" focused="{{ headerFocused }}"
 				show-results-on-focus>
-				<paper-spinner-lite style="width: 20px; height: 20px;" suffix slot="suffix" active="[[ loading ]]" hidden="[[ !loading ]]"></paper-spinner-lite>
+				<paper-spinner-lite suffix slot="suffix" active="[[ loading ]]" hidden$="[[ !loading ]]"></paper-spinner-lite>
 			</paper-autocomplete-chips>
 		</template>
 `;
