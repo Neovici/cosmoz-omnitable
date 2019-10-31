@@ -16,6 +16,7 @@
 			"exclude": []
 		},
 		"sauce": {
+			"jobName": "cosmoz-omnitable",
 			"browsers": [{
 				"browserName": "chrome",
 				"platform": "Windows 10",
@@ -24,7 +25,7 @@
 			}, {
 				"browserName": "firefox",
 				"platform": "Windows 10",
-				"version": "69",
+				"version": "latest-1",
 				"timeZone": "Stockholm"
 			}, {
 				"browserName": "safari",
