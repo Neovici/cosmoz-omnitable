@@ -25,7 +25,7 @@
 			}, {
 				"browserName": "firefox",
 				"platform": "Windows 10",
-				"version": "latest-1",
+				"version": "latest",
 				"timeZone": "Stockholm"
 			}, {
 				"browserName": "safari",
