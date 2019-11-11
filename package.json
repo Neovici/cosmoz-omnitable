@@ -73,7 +73,7 @@
 		"@polymer/paper-item": "^3.0.0",
 		"@polymer/paper-listbox": "^3.0.0",
 		"@polymer/paper-spinner": "^3.0.0",
-		"@polymer/polymer": "^3.0.0",
+		"@polymer/polymer": "^3.3.1",
 		"@webcomponents/shadycss": "^1.9.1",
 		"file-saver": "github:plumelo/FileSaver.js"
 	},
@@ -89,7 +89,7 @@
 		"@polymer/paper-toggle-button": "^3.0.0",
 		"@polymer/test-fixture": "^4.0.2",
 		"@semantic-release/changelog": "^3.0.5",
-		"@semantic-release/git": "^7.0.17",
+		"@semantic-release/git": "^7.0.18",
 		"@webcomponents/webcomponentsjs": "^2.0.0",
 		"babel-eslint": "^10.0.2",
 		"chai": "^4.2.0",
