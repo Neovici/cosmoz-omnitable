@@ -104,7 +104,7 @@ class Omnitable extends translatable(
 				</template>
 				<div class="tableContent-scroller" id="scroller">
 					<cosmoz-grouped-list id="groupedList" data="{{ sortedFilteredGroupedItems }}"
-						selected-items="{{ selectedItems }}" highlighted-items="{{ highlightedItems }}" display-empty-groups="[[ displayEmptyGroups ]]">
+						selected-items="{{ selectedItems }}" highlighted-items="{{ highlightedItems }}" display-empty-groups="[[ displayEmptyGroups ]]" compare-items-fn="[[ compareItemsFn ]]">
 							<template slot="templates" data-type="item">
 								<div class="item-row-wrapper">
 									<div selected$="[[selected]]" class="itemRow" highlighted$="[[highlighted]]">
@@ -243,6 +243,11 @@ class Omnitable extends translatable(
 			data: {
 				type: Array
 			},
+
+			/**
+			 * This function is used to determine which items are kept selected across data updates
+			 */
+			compareItemsFn: Function,
 
 			/**
 		 * True if data is a valid and not empty array.

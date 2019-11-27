@@ -54,7 +54,7 @@
 	"dependencies": {
 		"@neovici/cosmoz-bottom-bar": "^3.0.5",
 		"@neovici/cosmoz-datetime-input": "^3.0.3",
-		"@neovici/cosmoz-grouped-list": "^3.0.5",
+		"@neovici/cosmoz-grouped-list": "^3.1.0",
 		"@neovici/cosmoz-i18next": "^3.0.2",
 		"@neovici/cosmoz-page-router": "^4.0.1",
 		"@neovici/cosmoz-utils": "^3.1.3",
