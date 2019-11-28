@@ -1,3 +1,10 @@
+# [3.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v3.0.17...v3.1.0) (2019-11-28)
+
+
+### Features
+
+* **selection:** support cosmoz-grouped-list compareItemsFn ([#334](https://github.com/neovici/cosmoz-omnitable/issues/334)) ([af184e7](https://github.com/neovici/cosmoz-omnitable/commit/af184e7))
+
 ## [3.0.17](https://github.com/neovici/cosmoz-omnitable/compare/v3.0.16...v3.0.17) (2019-10-31)
 
 
