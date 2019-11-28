@@ -103,41 +103,46 @@ class Omnitable extends translatable(
 					</div>
 				</template>
 				<div class="tableContent-scroller" id="scroller">
-					<cosmoz-grouped-list id="groupedList" data="{{ sortedFilteredGroupedItems }}"
-						selected-items="{{ selectedItems }}" highlighted-items="{{ highlightedItems }}" display-empty-groups="[[ displayEmptyGroups ]]">
-							<template slot="templates" data-type="item">
-								<div class="item-row-wrapper">
-									<div selected$="[[selected]]" class="itemRow" highlighted$="[[highlighted]]">
-										<div class="selectItemCheckbox" hidden$="[[ !_showCheckboxes ]]">
-											<paper-checkbox checked="{{ selected }}" on-change="_onItemCheckboxChange"></paper-checkbox>
-										</div>
-										<cosmoz-omnitable-item-row columns="[[ visibleColumns ]]"
-											selected="{{ selected }}" expanded="{{ expanded }}" item="[[ item ]]" group-on-column="[[ groupOnColumn ]]">
-										</cosmoz-omnitable-item-row>
-										<div class="item-expander" hidden="[[ _isEmpty(disabledColumns.length) ]]">
-											<paper-icon-button icon="[[ _getFoldIcon(expanded) ]]" on-tap="_toggleItem"></paper-icon-button>
-										</div>
+					<cosmoz-grouped-list id="groupedList"
+						data="{{ sortedFilteredGroupedItems }}"
+						selected-items="{{ selectedItems }}"
+						highlighted-items="{{ highlightedItems }}"
+						display-empty-groups="[[ displayEmptyGroups ]]"
+						compare-items-fn="[[ compareItemsFn ]]"
+					>
+						<template slot="templates" data-type="item">
+							<div class="item-row-wrapper">
+								<div selected$="[[selected]]" class="itemRow" highlighted$="[[highlighted]]">
+									<div class="selectItemCheckbox" hidden$="[[ !_showCheckboxes ]]">
+										<paper-checkbox checked="{{ selected }}" on-change="_onItemCheckboxChange"></paper-checkbox>
 									</div>
-									<cosmoz-omnitable-item-expand columns="[[ disabledColumns ]]"
-										item="[[item]]" selected="{{ selected }}" expanded="{{ expanded }}" group-on-column="[[ groupOnColumn ]]">
-									</cosmoz-omnitable-item-expand>
+									<cosmoz-omnitable-item-row columns="[[ visibleColumns ]]"
+										selected="{{ selected }}" expanded="{{ expanded }}" item="[[ item ]]" group-on-column="[[ groupOnColumn ]]">
+									</cosmoz-omnitable-item-row>
+									<div class="item-expander" hidden="[[ _isEmpty(disabledColumns.length) ]]">
+										<paper-icon-button icon="[[ _getFoldIcon(expanded) ]]" on-tap="_toggleItem"></paper-icon-button>
+									</div>
 								</div>
-							</template>
-							<template slot="templates" data-type="group">
-								<div class$="[[ _getGroupRowClasses(folded) ]]">
-									<div class="selectGroupCheckbox" hidden$="[[ !_showCheckboxes ]]">
-										<paper-checkbox checked="{{ selected }}" on-change="_onGroupCheckboxChange"></paper-checkbox>
-									</div>
+								<cosmoz-omnitable-item-expand columns="[[ disabledColumns ]]"
+									item="[[item]]" selected="{{ selected }}" expanded="{{ expanded }}" group-on-column="[[ groupOnColumn ]]">
+								</cosmoz-omnitable-item-expand>
+							</div>
+						</template>
+						<template slot="templates" data-type="group">
+							<div class$="[[ _getGroupRowClasses(folded) ]]">
+								<div class="selectGroupCheckbox" hidden$="[[ !_showCheckboxes ]]">
+									<paper-checkbox checked="{{ selected }}" on-change="_onGroupCheckboxChange"></paper-checkbox>
+								</div>
 
-									<h3 class="groupRow-label">
-										<div><span>[[ groupOnColumn.title ]]</span>: &nbsp;</div>
-										<cosmoz-omnitable-group-row column="[[ groupOnColumn ]]" item="[[ item.items.0 ]]" selected="[[ selected ]]" folded="[[ folded ]]">
-										</cosmoz-omnitable-group-row>
-									</h3>
-									<div>[[ item.items.length ]]</div>
-									<paper-icon-button icon="[[ _getFoldIcon(folded) ]]" on-tap="_toggleGroup"></paper-icon-button>
-								</div>
-							</template>
+								<h3 class="groupRow-label">
+									<div><span>[[ groupOnColumn.title ]]</span>: &nbsp;</div>
+									<cosmoz-omnitable-group-row column="[[ groupOnColumn ]]" item="[[ item.items.0 ]]" selected="[[ selected ]]" folded="[[ folded ]]">
+									</cosmoz-omnitable-group-row>
+								</h3>
+								<div>[[ item.items.length ]]</div>
+								<paper-icon-button icon="[[ _getFoldIcon(folded) ]]" on-tap="_toggleGroup"></paper-icon-button>
+							</div>
+						</template>
 					</cosmoz-grouped-list>
 				</div>
 			</div>
@@ -243,6 +248,11 @@ class Omnitable extends translatable(
 			data: {
 				type: Array
 			},
+
+			/**
+			 * This function is used to determine which items are kept selected across data updates
+			 */
+			compareItemsFn: Function,
 
 			/**
 		 * True if data is a valid and not empty array.
