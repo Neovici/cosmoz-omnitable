@@ -141,7 +141,7 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 						const notNull = i => i != null;
 						return datasource.filter(notNull)
 							.map(item => {
-								let
+								const
 									text = item['text'],
 									value = item['value'];
 
@@ -328,8 +328,8 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 
 	/**
 	* Get a list of suggestions for the column header.
-	* @param {array} values Suggestion values.
-	* @param {object} collator Language sensitive string comparison object.
+	* @param {string} trueLabel True label.
+	* @param {string} falseLabel False label.
 	* @returns {array} Suggestions remapped for the column header.
 	*/
 	_computeSuggestionList(trueLabel, falseLabel) {
