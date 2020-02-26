@@ -82,9 +82,9 @@
 
 			test('filterChanged observer converts boolean to string', () => {
 				column.filter = true;
-				assert.equal(column._textFilter, 'true');
+				assert.equal(column._textFilter, 'True');
 				column.filter = false;
-				assert.equal(column._textFilter, 'false');
+				assert.equal(column._textFilter, 'False');
 			});
 
 			test('getString uses this.valuePath as default', () => {
