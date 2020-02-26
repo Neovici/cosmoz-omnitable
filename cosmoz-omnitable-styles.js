@@ -205,7 +205,7 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				border-bottom-width: 1px;
 				border-bottom-style: var(--cosmoz-omnitable-item-row-border-bottom-style, solid);
 				/* set a min-height for rows so that rows with empty values are visible */
-				min-height: var(--item-row-min-height, 24px);
+				min-height: 24px;
 				padding-right: 8px;
 				@apply --layout-horizontal;
 				@apply --layout-center;
