@@ -27,7 +27,7 @@
 			<cosmoz-omnitable id="omnitable" class="flex">
 				<cosmoz-omnitable-column-number title="Age" name="age" value-path="age" maximum-fraction-digits=2>
 				</cosmoz-omnitable-column-number>
-				<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount">
+				<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount" locale="en-US">
 				</cosmoz-omnitable-column-amount>
 			</cosmoz-omnitable>
 		</template>
@@ -344,7 +344,7 @@
 				flush(() => {
 					const formatters = column._formatters;
 					Object.keys(formatters).forEach(el => {
-						assert.include(['SEK', 'USD', 'AUD', 'EUR', 'DKK'], el);
+						assert.include(['SEKen-US', 'USDen-US', 'AUDen-US', 'EURen-US', 'DKKen-US'], el);
 					});
 					done();
 				});
