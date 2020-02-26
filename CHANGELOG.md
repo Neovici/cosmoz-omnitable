@@ -1,3 +1,10 @@
+# [3.2.0](https://github.com/neovici/cosmoz-omnitable/compare/v3.1.0...v3.2.0) (2020-02-26)
+
+
+### Features
+
+* adding item-row-min-height custom property [#22270](https://github.com/neovici/cosmoz-omnitable/issues/22270) ([26bd0dc](https://github.com/neovici/cosmoz-omnitable/commit/26bd0dc))
+
 # [3.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v3.0.17...v3.1.0) (2019-11-28)
 
 
