@@ -205,13 +205,7 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 			return;
 		}
 		this._filterChangedFromAbove = true;
-		if (filter === true) {
-			this._textFilter = this.trueLabel;
-		} else if (filter === false) {
-			this._textFilter = this.falseLabel;
-		} else {
-			this._textFilter = null;
-		}
+		this._textFilter = typeof filter === 'boolean' ? filter.toString() : null;
 	}
 
 	/**
@@ -253,17 +247,12 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 			return falseLabel;
 		}
 	}
-
 	_computeSelected(item, valuePath) {
 		const value = this.get(valuePath || this.valuePath, item);
-		if (value === true) {
-			return 'true';
-		} else if (value === false) {
-			return 'false';
+		if (value != null) {
+			return value.toString();
 		}
-		return value;
 	}
-
 	_computeText(item, valuePath, trueLabel, falseLabel) {
 		const value = this.get(valuePath || this.valuePath, item);
 		if (value === true) {
