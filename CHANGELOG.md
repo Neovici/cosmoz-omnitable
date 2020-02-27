@@ -1,3 +1,10 @@
+## [3.2.2](https://github.com/neovici/cosmoz-omnitable/compare/v3.2.1...v3.2.2) (2020-02-27)
+
+
+### Bug Fixes
+
+* rework boolean column [#315](https://github.com/neovici/cosmoz-omnitable/issues/315) ([#340](https://github.com/neovici/cosmoz-omnitable/issues/340)) ([9025c27](https://github.com/neovici/cosmoz-omnitable/commit/9025c274295589d9e41ee690dbfad12e67cf3228))
+
 ## [3.2.1](https://github.com/neovici/cosmoz-omnitable/compare/v3.2.0...v3.2.1) (2020-02-26)
 
 
