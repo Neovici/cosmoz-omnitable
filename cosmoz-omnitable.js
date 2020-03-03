@@ -195,6 +195,7 @@ class Omnitable extends translatable(
 							<span id="listboxSizer"></span>
 							<paper-button on-click="_saveAsCsvAction">[[ _('Save as CSV', t) ]]</paper-button>
 							<paper-button on-click="_saveAsXlsxAction">[[ _('Save as XLSX', t) ]]</paper-button>
+							<slot name="download-menu"></slot>
 						</paper-listbox>
 					</paper-menu-button>
 
