@@ -290,7 +290,7 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				cursor: not-allowed;
 			}
 
-			#dropdownExtra paper-button {
+			#dropdownExtra paper-button, #dropdownExtra ::slotted(paper-button) {
 				display: flex;
 				@apply --layout-center;
 				@apply --layout-horizontal;
