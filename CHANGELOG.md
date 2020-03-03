@@ -1,3 +1,10 @@
+# [3.3.0](https://github.com/neovici/cosmoz-omnitable/compare/v3.2.2...v3.3.0) (2020-03-03)
+
+
+### Features
+
+* adds download-menu slot ([ef4a4bd](https://github.com/neovici/cosmoz-omnitable/commit/ef4a4bdb4a8db1e50b4ad52b6122894ab302260b))
+
 ## [3.2.2](https://github.com/neovici/cosmoz-omnitable/compare/v3.2.1...v3.2.2) (2020-02-27)
 
 
