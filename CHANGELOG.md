@@ -1,3 +1,10 @@
+## [3.3.1](https://github.com/neovici/cosmoz-omnitable/compare/v3.3.0...v3.3.1) (2020-03-04)
+
+
+### Bug Fixes
+
+* style paper-button in download-menu slot ([902151a](https://github.com/neovici/cosmoz-omnitable/commit/902151a106c4c0864ea65923257f5afb0b638bae))
+
 # [3.3.0](https://github.com/neovici/cosmoz-omnitable/compare/v3.2.2...v3.3.0) (2020-03-03)
 
 
