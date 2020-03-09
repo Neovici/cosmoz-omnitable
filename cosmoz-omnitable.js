@@ -732,9 +732,8 @@ class Omnitable extends translatable(
 		}
 
 		this.columns = columns;
-		this.visibleColumns = columns.slice();
-
 		this._updateParamsFromHash();
+		this.visibleColumns = columns.slice();
 
 		if (Array.isArray(this.data)) {
 			this._debounceFilterItems();
