@@ -1,3 +1,10 @@
+## [3.3.2](https://github.com/neovici/cosmoz-omnitable/compare/v3.3.1...v3.3.2) (2020-03-10)
+
+
+### Bug Fixes
+
+* filters are lost after refresh ([d4b90af](https://github.com/neovici/cosmoz-omnitable/commit/d4b90af7c5915cee7b31aca307246cfecd26cff3)), closes [#23129](https://github.com/neovici/cosmoz-omnitable/issues/23129)
+
 ## [3.3.1](https://github.com/neovici/cosmoz-omnitable/compare/v3.3.0...v3.3.1) (2020-03-04)
 
 
