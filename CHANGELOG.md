@@ -1,3 +1,10 @@
+## [3.3.3](https://github.com/neovici/cosmoz-omnitable/compare/v3.3.2...v3.3.3) (2020-03-15)
+
+
+### Bug Fixes
+
+* adjustColumns handles empty cells ([ae01e2f](https://github.com/neovici/cosmoz-omnitable/commit/ae01e2f4569077c25ed43680293fa2799b3b5893))
+
 ## [3.3.2](https://github.com/neovici/cosmoz-omnitable/compare/v3.3.1...v3.3.2) (2020-03-10)
 
 
