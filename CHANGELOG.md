@@ -1,3 +1,10 @@
+# [3.4.0](https://github.com/neovici/cosmoz-omnitable/compare/v3.3.3...v3.4.0) (2020-03-16)
+
+
+### Features
+
+* upgrade to cosmoz-page-router@^6.0.0 ([213bff8](https://github.com/neovici/cosmoz-omnitable/commit/213bff8d938d683fd941b9adb82ddfaedb4e3bd4))
+
 ## [3.3.3](https://github.com/neovici/cosmoz-omnitable/compare/v3.3.2...v3.3.3) (2020-03-15)
 
 
