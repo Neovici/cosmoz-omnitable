@@ -20,6 +20,10 @@
 	"directories": {
 		"test": "test"
 	},
+	"files": [
+		"cosmoz-*.js",
+		"ui-helpers"
+	],
 	"scripts": {
 		"analyze": "polymer analyze --input cosmoz-*.js > analysis.json",
 		"lint": "eslint --cache --ext .js,.html . && polymer lint cosmoz-*.js",
