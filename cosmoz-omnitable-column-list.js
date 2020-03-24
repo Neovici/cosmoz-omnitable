@@ -33,6 +33,7 @@ class OmnitableColumnList extends	listColumnMixin(columnMixin(translatable(
 
 		<template class="header" strip-whitespace>
 			<paper-autocomplete-chips text="{{ query }}"
+				class$="external-values-[[ externalValues ]]"
 				source="[[ _unique(values, valueProperty) ]]" label="[[ title ]]"
 				selected-items="{{ filter }}" text-property="[[ textProperty ]]"
 				value-property="[[ valueProperty ]]" focused="{{ headerFocused }}"

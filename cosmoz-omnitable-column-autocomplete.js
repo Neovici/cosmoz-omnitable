@@ -36,6 +36,7 @@ class OmnitableColumnAutocomplete extends columnMixin(PolymerElement) {
 			</style>
 
 			<paper-autocomplete-chips text="{{ query }}"
+				class$="external-values-[[ externalValues ]]"
 				source="[[ _unique(values, valueProperty) ]]" label="[[ title ]]"
 				selected-items="{{ filter }}" text-property="[[ textProperty ]]"
 				value-property="[[ valueProperty ]]" focused="{{ headerFocused }}"
