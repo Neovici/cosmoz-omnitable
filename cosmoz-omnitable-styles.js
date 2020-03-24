@@ -38,6 +38,14 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				display: none;
 			}
 
+			cosmoz-omnitable-header-row .external-values-false {
+				--paper-input-container-color: var(--cosmoz-omnitable-local-filter-header-color);
+			}
+
+			cosmoz-omnitable-header-row .external-values-true {
+				--paper-input-container-color: var(--cosmoz-omnitable-remote-filter-header-color);
+			}
+
 			.header > cosmoz-omnitable-header-row {
 				@apply --layout-flex;
 			}

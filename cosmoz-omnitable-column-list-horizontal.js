@@ -53,6 +53,7 @@ class OmnitableColumnListHorizontal extends listColumnMixin(
 
 		<template class="header" strip-whitespace>
 			<paper-autocomplete-chips source="[[ _computeAutocompleteItems(values) ]]"
+				class$="external-values-[[ externalValues ]]"
 				label="[[ title ]]" selected-items="{{ filter }}" text-property="[[ textProperty ]]" value-property="[[ valueProperty ]]" show-results-on-focus>
 			</paper-autocomplete-chips>
 		</template>
