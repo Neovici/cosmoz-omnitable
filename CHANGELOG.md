@@ -1,3 +1,10 @@
+# [3.5.0](https://github.com/neovici/cosmoz-omnitable/compare/v3.4.1...v3.5.0) (2020-03-25)
+
+
+### Features
+
+* allow objects as autocomplete values ([a83defe](https://github.com/neovici/cosmoz-omnitable/commit/a83defe70077919e6db526c9ca5572b6554be048))
+
 ## [3.4.1](https://github.com/neovici/cosmoz-omnitable/compare/v3.4.0...v3.4.1) (2020-03-25)
 
 
