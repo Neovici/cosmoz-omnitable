@@ -1,3 +1,10 @@
+## [3.4.1](https://github.com/neovici/cosmoz-omnitable/compare/v3.4.0...v3.4.1) (2020-03-25)
+
+
+### Bug Fixes
+
+* enable styling of local/remote column header suggestions ([8d188e2](https://github.com/neovici/cosmoz-omnitable/commit/8d188e2bb32c1ce34f8f085f5ddd9bfd403285d0))
+
 # [3.4.0](https://github.com/neovici/cosmoz-omnitable/compare/v3.3.3...v3.4.0) (2020-03-16)
 
 
