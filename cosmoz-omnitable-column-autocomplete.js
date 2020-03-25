@@ -37,7 +37,7 @@ class OmnitableColumnAutocomplete extends columnMixin(PolymerElement) {
 
 			<paper-autocomplete-chips text="{{ query }}"
 				class$="external-values-[[ externalValues ]]"
-				source="[[ _unique(values, valueProperty) ]]" label="[[ title ]]"
+				source="[[ getValueList(values, valueProperty, textProperty) ]]" label="[[ title ]]"
 				selected-items="{{ filter }}" text-property="[[ textProperty ]]"
 				value-property="[[ valueProperty ]]" focused="{{ headerFocused }}"
 				show-results-on-focus>
@@ -120,6 +120,19 @@ class OmnitableColumnAutocomplete extends columnMixin(PolymerElement) {
 			return this.get(textProp, itemValue);
 		}
 		return itemValue;
+	}
+
+	getValueList(values, valueProperty, textProperty) {
+		if (values == null) {
+			return;
+		}
+		if (Array.isArray(values)) {
+			return this._unique(values, valueProperty);
+		}
+		return Object.entries(values).map(([key, value]) => ({
+			[valueProperty]: key,
+			[textProperty]: value
+		}));
 	}
 
 	toXlsxValue(item, valuePath = this.valuePath) {
