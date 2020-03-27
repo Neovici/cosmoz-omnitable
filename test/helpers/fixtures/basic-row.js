@@ -1,13 +1,12 @@
-import { repeaterMixin } from '../../../cosmoz-omnitable-repeater-mixin';
-import { EDIT_TEMPLATE, CELL_TEMPLATE } from '../../../cosmoz-omnitable-templatize-mixin';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 
-class BasicRow extends repeaterMixin(PolymerElement) {
-	static get is() {
-		return 'basic-row';
-	}
+import { repeaterMixin } from '../../../cosmoz-omnitable-repeater-mixin';
+import {
+	EDIT_TEMPLATE, CELL_TEMPLATE
+} from '../../../cosmoz-omnitable-templatize-mixin';
 
+class BasicRow extends repeaterMixin(PolymerElement) {
 	static get properties() {
 		return {
 			item: {
@@ -50,7 +49,7 @@ class BasicRow extends repeaterMixin(PolymerElement) {
 			column.editable
 				? EDIT_TEMPLATE
 				: CELL_TEMPLATE,
-			{item: this.item}
+			{ item: this.item }
 		);
 	}
 
@@ -58,4 +57,4 @@ class BasicRow extends repeaterMixin(PolymerElement) {
 		this.forwardPathChange(changeRecord);
 	}
 }
-customElements.define(BasicRow.is, BasicRow);
+customElements.define('basic-row', BasicRow);
