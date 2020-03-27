@@ -1,12 +1,9 @@
-import { columnMixin } from '../../../cosmoz-omnitable-column-mixin';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 
-class BasicColumn extends columnMixin(PolymerElement) {
-	static get is() {
-		return 'basic-column';
-	}
+import { columnMixin } from '../../../cosmoz-omnitable-column-mixin';
 
+class BasicColumn extends columnMixin(PolymerElement) {
 	static get template() {
 		return html`
 				<template class="cell" strip-whitespace>
@@ -23,4 +20,4 @@ class BasicColumn extends columnMixin(PolymerElement) {
 		`;
 	}
 }
-customElements.define(BasicColumn.is, BasicColumn);
+customElements.define('basic-column', BasicColumn);
