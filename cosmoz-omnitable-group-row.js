@@ -83,7 +83,12 @@ class OmnitableGroupRow extends repeaterMixin(PolymerElement) {
 	_getTemplateInstance(column) {
 		return column.getTemplateInstance(
 			CELL_TEMPLATE,
-			{item: this.item, selected: this.selected, expanded: this.expanded}
+			{
+				expanded: this.expanded,
+				grouped: true, // used in the cell templates to adjust the layout accordingly
+				item: this.item,
+				selected: this.selected
+			}
 		);
 	}
 

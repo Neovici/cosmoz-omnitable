@@ -143,5 +143,24 @@ class OmnitableColumnList extends	listColumnMixin(columnMixin(translatable(
 	_getDefaultFilter() {
 		return [];
 	}
+
+	/**
+	 * Get the comparable value of an item.
+	 *
+	 * @param {Object} item Item to be processed
+	 * @param {String} valuePath Property path
+	 * @returns {String|void} Valid value or void
+	 */
+	getComparableValue(item, valuePath) {
+		const value = super.getComparableValue(item, valuePath);
+		if (this.valueProperty == null) {
+			return value;
+		}
+		const subValues = value.reduce((acc, subItem) => {
+			acc.push(this.get(this.valueProperty, subItem));
+			return acc;
+		}, []);
+		return subValues.sort().join(' ');
+	}
 }
 customElements.define(OmnitableColumnList.is, OmnitableColumnList);
