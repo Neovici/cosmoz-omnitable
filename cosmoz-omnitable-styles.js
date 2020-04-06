@@ -245,7 +245,6 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				background-color: #efefef;
 				font-weight: 400;
 				color: #48515b;
-				height: 44px;
 				border-bottom: solid 1px #d6d6d6;
 			}
 
@@ -256,6 +255,8 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 			.groupRow-label {
 				@apply --layout-flex;
 				@apply --layout-horizontal;
+				align-items: center;
+				flex-wrap: wrap;
 				padding-left: 8px;
 				margin: 0;
 				font-size: 1.15em;
