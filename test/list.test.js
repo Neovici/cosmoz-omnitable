@@ -113,4 +113,9 @@ suite('horizontal', () => {
 		column.textProperty = null;
 		assert.equal(column.getString({ list: ['123', '345', '678']}), '123, 345, 678');
 	});
+
+	test('returns the value of an item', () => {
+		column.valueProperty='id';
+		assert.strictEqual(column.getComparableValue({ id: 13 }, 'id'), 13);
+	});
 });
