@@ -674,6 +674,7 @@ class Omnitable extends mixin({
 			}
 			const itemsReplaced = splice.type === 'splice' && splice.addedCount === splice.removed.length;
 			if (!itemsReplaced) {
+				acc.refilter = true;
 				return acc;
 			}
 			const filterFunctions = this.columns
