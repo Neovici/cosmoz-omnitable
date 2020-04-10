@@ -32,7 +32,9 @@ import { NullXlsx } from '@neovici/nullxlsx';
 
 import { saveAs } from 'file-saver';
 
-import { timeOut, animationFrame } from '@polymer/polymer/lib/utils/async';
+import {
+	timeOut, animationFrame
+} from '@polymer/polymer/lib/utils/async';
 import { Debouncer } from '@polymer/polymer/lib/utils/debounce';
 import { FlattenedNodesObserver } from '@polymer/polymer/lib/utils/flattened-nodes-observer';
 
@@ -556,7 +558,7 @@ class Omnitable extends translatable(
 
 	/** ELEMENT BEHAVIOR */
 
-	_computeDataValidity({base: data} = {}) {
+	_computeDataValidity({ base: data } = {}) {
 		return data && Array.isArray(data) && data.length > 0;
 	}
 
@@ -585,7 +587,7 @@ class Omnitable extends translatable(
 	}
 
 	_onUpdateItemSize(event) {
-		const {detail} = event;
+		const { detail } = event;
 		if (detail && detail.item) {
 			this.$.groupedList.updateSize(detail.item);
 		}
@@ -613,7 +615,7 @@ class Omnitable extends translatable(
 
 	_onColumnEditableChanged(event) {
 		event.stopPropagation();
-		const {detail: {column}} = event,
+		const { detail: { column }} = event,
 			{ visibleColumns: columns } = this;
 
 		if (!Array.isArray(columns) || columns.length === 0) {
@@ -818,7 +820,7 @@ class Omnitable extends translatable(
 		return columnsMissingNameAttribute.length === 0;
 	}
 
-	_onColumnValuesUpdate({detail}) {
+	_onColumnValuesUpdate({ detail }) {
 		if (detail == null || detail.column == null) {
 			return;
 		}
@@ -867,7 +869,7 @@ class Omnitable extends translatable(
 		return column;
 	}
 
-	_filterChanged({detail}) {
+	_filterChanged({ detail }) {
 		if (!Array.isArray(this.columns) || this.columns.length < 1 || this.columns.indexOf(detail.column) < 0) {
 			return;
 		}
@@ -949,7 +951,11 @@ class Omnitable extends translatable(
 
 			let group = array.find(g => g.id === gval);
 			if (!group) {
-				group = { id: gval, name: gval, items: [] };
+				group = {
+					id: gval,
+					name: gval,
+					items: []
+				};
 				array.push(group);
 			}
 			group.items.push(item);
@@ -1339,7 +1345,11 @@ class Omnitable extends translatable(
 	 */
 	_toggleGroup(event) {
 		const firstRow = this.$.groupedList.getFirstVisibleItemElement(),
-			{ model: { folded, item } } = event;
+			{
+				model: {
+					folded, item
+				}
+			} = event;
 
 		this.$.groupedList.toggleFold(item);
 

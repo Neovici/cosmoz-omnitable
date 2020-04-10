@@ -91,7 +91,10 @@ export const repeaterMixin = dedupingMixin(base => class extends base { // eslin
 	 * @return {void}
 	 */
 	forwardChange(property, value) {
-		this.forwardPathChange({path: property, value});
+		this.forwardPathChange({
+			path: property,
+			value
+		});
 	}
 
 	/**
@@ -164,7 +167,9 @@ export const repeaterMixin = dedupingMixin(base => class extends base { // eslin
 		element.setAttribute('slot', this._slotName);
 	}
 
-	_columnsChanged({ path, base, value }) {
+	_columnsChanged({
+		path, base, value
+	}) {
 		const reMatch = editableRegex.exec(path);
 
 		if (path === 'columns') {
