@@ -44,6 +44,8 @@ import { html } from '@polymer/polymer/lib/utils/html-tag';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class';
 import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior';
 import { translatable } from '@neovici/cosmoz-i18next';
+import { mixin } from '@neovici/cosmoz-utils';
+import { isEmpty } from '@neovici/cosmoz-utils/lib/template.js';
 
 const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending', 'groupOnDescending'];
 
@@ -56,11 +58,13 @@ const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending', 'groupOnDescend
  * @demo demo/index.html
  */
 
-class Omnitable extends translatable(
+class Omnitable extends mixin({
+	isEmpty
+}, translatable(
 	mixinBehaviors([
 		IronResizableBehavior
 	], PolymerElement)
-) {
+)) {
 	/* eslint-disable-next-line max-lines-per-function */
 	static get template() {
 		const template = html`
@@ -122,7 +126,7 @@ class Omnitable extends translatable(
 									<cosmoz-omnitable-item-row columns="[[ visibleColumns ]]"
 										selected="{{ selected }}" expanded="{{ expanded }}" item="[[ item ]]" group-on-column="[[ groupOnColumn ]]">
 									</cosmoz-omnitable-item-row>
-									<div class="item-expander" hidden="[[ _isEmpty(disabledColumns.length) ]]">
+									<div class="item-expander" hidden="[[ isEmpty(disabledColumns.length) ]]">
 										<paper-icon-button icon="[[ _getFoldIcon(expanded) ]]" on-tap="_toggleItem"></paper-icon-button>
 									</div>
 								</div>
@@ -183,7 +187,7 @@ class Omnitable extends translatable(
 					<span>[[ ngettext('{0} row', '{0} rows', filteredItems.length, t) ]]</span>
 				</div>
 				<cosmoz-bottom-bar id="bottomBar" class="footer-actionBar" match-parent
-					has-actions="{{ hasActions }}" on-action="_onAction" active$="[[ !_isEmpty(selectedItems.length) ]]" computed-bar-height="{{ computedBarHeight }}">
+					has-actions="{{ hasActions }}" on-action="_onAction" active$="[[ !isEmpty(selectedItems.length) ]]" computed-bar-height="{{ computedBarHeight }}">
 					<div slot="info">[[ ngettext('{0} selected item', '{0} selected items', selectedItems.length, t) ]]</div>
 					<slot name="actions" id="actions"></slot>
 					<!-- These slots are neened by cosmoz-bottom-bar
@@ -1221,30 +1225,6 @@ class Omnitable extends translatable(
 		this.splice('visibleColumns', columnIndex, 0, column);
 
 		this._debounceAdjustColumns();
-	}
-	//TODO: Use cosmoz-behaviors
-	/**
-	 * Helper method for Polymer 1.0+ templates - check if variable
-	 * is undefined, null, empty Array list or empty String.
-	 * @param	 {Object}	 obj variable
-	 * @return {Boolean}	true if "empty", false otherwise
-	 * ^memberOf element/cz-omnitable
-	 */
-	_isEmpty(obj) {
-		if (obj === undefined || obj === null) {
-			return true;
-		}
-		if (obj instanceof Array && obj.length === 0) {
-			return true;
-		}
-		const objType = typeof obj;
-		if (objType === 'string' && obj.length === 0) {
-			return true;
-		}
-		if (objType === 'number' && obj === 0) {
-			return true;
-		}
-		return false;
 	}
 
 	_makeCsvField(str) {
