@@ -3,7 +3,9 @@ import '@webcomponents/shadycss/entrypoints/apply-shim';
 import '@polymer/iron-flex-layout/iron-flex-layout';
 
 import { translatable } from '@neovici/cosmoz-i18next';
-import { mixin, Template } from '@neovici/cosmoz-utils';
+import {
+	mixin, Template
+} from '@neovici/cosmoz-utils';
 
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
@@ -116,7 +118,7 @@ class OmnitableColumnListData extends translatable(mixin(Template, PolymerElemen
 		this._expanded = !this._expanded;
 		event.stopPropagation();
 		event.preventDefault();
-		this.dispatchEvent(new CustomEvent('iron-resize', {bubbles: true}));
+		this.dispatchEvent(new CustomEvent('iron-resize', { bubbles: true }));
 	}
 }
 

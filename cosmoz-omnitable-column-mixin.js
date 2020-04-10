@@ -329,7 +329,10 @@ export const columnMixin = dedupingMixin(base => class extends templatizeMixin(b
 				oldValue: formatFn ? formatFn(oldValue) : oldValue
 			};
 
-		this.dispatchEvent(new CustomEvent('column-item-changed', {bubbles: true, detail: change}));
+		this.dispatchEvent(new CustomEvent('column-item-changed', {
+			bubbles: true,
+			detail: change
+		}));
 	}
 
 	getFilterFn() {
@@ -398,22 +401,37 @@ export const columnMixin = dedupingMixin(base => class extends templatizeMixin(b
 	}
 
 	_titleChanged() {
-		this.dispatchEvent(new CustomEvent('cosmoz-column-title-changed', {bubbles: true, detail: { column: this }}));
+		this.dispatchEvent(new CustomEvent('cosmoz-column-title-changed', {
+			bubbles: true,
+			detail: { column: this }
+		}));
 	}
 
 	_hiddenChanged() {
-		this.dispatchEvent(new CustomEvent('cosmoz-column-hidden-changed', {bubbles: true, detail: { column: this }}));
+		this.dispatchEvent(new CustomEvent('cosmoz-column-hidden-changed', {
+			bubbles: true,
+			detail: { column: this }
+		}));
 	}
 	_disabledChanged() {
-		this.dispatchEvent(new CustomEvent('cosmoz-column-disabled-changed', {bubbles: true, detail: { column: this }}));
+		this.dispatchEvent(new CustomEvent('cosmoz-column-disabled-changed', {
+			bubbles: true,
+			detail: { column: this }
+		}));
 	}
 
 	_editableChanged() {
-		this.dispatchEvent(new CustomEvent('cosmoz-column-editable-changed', {bubbles: true, detail: { column: this }}));
+		this.dispatchEvent(new CustomEvent('cosmoz-column-editable-changed', {
+			bubbles: true,
+			detail: { column: this }
+		}));
 	}
 
 	__filterChanged() {
-		this.dispatchEvent(new CustomEvent('cosmoz-column-filter-changed', {bubbles: true, detail: { column: this }}));
+		this.dispatchEvent(new CustomEvent('cosmoz-column-filter-changed', {
+			bubbles: true,
+			detail: { column: this }
+		}));
 	}
 
 	_serializeFilter(obj = this.filter) {

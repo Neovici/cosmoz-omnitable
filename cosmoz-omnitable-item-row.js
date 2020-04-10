@@ -4,7 +4,9 @@ import '@polymer/iron-flex-layout/iron-flex-layout';
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
 
-import { EDIT_TEMPLATE, CELL_TEMPLATE } from './cosmoz-omnitable-templatize-mixin';
+import {
+	EDIT_TEMPLATE, CELL_TEMPLATE
+} from './cosmoz-omnitable-templatize-mixin';
 import { repeaterMixin } from './cosmoz-omnitable-repeater-mixin';
 
 /**
@@ -89,7 +91,11 @@ class OmnitableItemRow extends repeaterMixin(PolymerElement) {
 			column.editable
 				? EDIT_TEMPLATE
 				: CELL_TEMPLATE,
-			{item: this.item, selected: this.selected, expanded: this.expanded}
+			{
+				item: this.item,
+				selected: this.selected,
+				expanded: this.expanded
+			}
 		);
 	}
 

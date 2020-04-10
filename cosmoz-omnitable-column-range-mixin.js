@@ -64,7 +64,10 @@ export const rangeColumnMixin = dedupingMixin(base => // eslint-disable-line max
 				_filterInput: {
 					type: Object,
 					value() {
-						return { min: null, max: null };
+						return {
+							min: null,
+							max: null
+						};
 					}
 				},
 
@@ -383,7 +386,9 @@ export const rangeColumnMixin = dedupingMixin(base => // eslint-disable-line max
 			getCloseableParent(input).close();
 		}
 
-		_onDropdownOpenedChanged({currentTarget, detail: {value}}) {
+		_onDropdownOpenedChanged({
+			currentTarget, detail: { value }
+		}) {
 			if (!value) {
 				return;
 			}
@@ -440,7 +445,10 @@ export const rangeColumnMixin = dedupingMixin(base => // eslint-disable-line max
 				return;
 			}
 
-			this.set('filter', { min, max });
+			this.set('filter', {
+				min,
+				max
+			});
 		}
 
 		_filterChanged(change) {
