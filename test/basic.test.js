@@ -235,6 +235,17 @@ suite('item update effects', () => {
 		assert.isTrue(sortSpy.called, 'resorted');
 	});
 
+	test('dropping an item causes refiltering', () => {
+		assert.isFalse(filterSpy.called, 'not filtered');
+		assert.isFalse(groupSpy.called, 'not grouped');
+		assert.isFalse(sortSpy.called, 'not sorted');
+		omnitable.splice('data', 0, 1);
+		omnitable.flush();
+		assert.isTrue(filterSpy.called, 'refiltered');
+		assert.isTrue(groupSpy.called, 'regrouped');
+		assert.isTrue(sortSpy.called, 'resorted');
+	});
+
 	test('replacing an item with updated groupon-property causes regrouping', () => {
 		assert.isFalse(filterSpy.called, 'not filtered');
 		assert.isFalse(groupSpy.called, 'not grouped');
