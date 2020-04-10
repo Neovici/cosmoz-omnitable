@@ -184,3 +184,86 @@ suite('it logs unnamed column', () => {
 		consoleErrorStub.restore();
 	});
 });
+
+suite('item update effects', () => {
+	let omnitable,
+		consoleErrorStub,
+		filterSpy,
+		groupSpy,
+		sortSpy;
+
+	setup(async () => {
+		// We must stub console.error otherwise the test will fail
+		consoleErrorStub = sinon.stub(window.console, 'error');
+		omnitable = await setupOmnitableFixture(html`
+			<cosmoz-omnitable id="omnitable" class="flex" selection-enabled group-on="date1" sort-on="date2">
+				<cosmoz-omnitable-column-date id="date1" name="date1" value-path="date">
+				</cosmoz-omnitable-column-date>
+				<cosmoz-omnitable-column-date id="date2" name="date2" value-path="dateJson">
+				</cosmoz-omnitable-column-date>
+				<cosmoz-omnitable-column-boolean id="bool" value-path="bool" filter="true">
+				</cosmoz-omnitable-column-boolean>
+			</cosmoz-omnitable>
+		`, generateTableDemoData(10, 11, 25));
+		filterSpy = sinon.spy(omnitable, '_filterItems');
+		groupSpy = sinon.spy(omnitable, '_groupItems');
+		sortSpy = sinon.spy(omnitable, '_sortFilteredGroupedItems');
+	});
+
+	test('replacing an identical item doesn\'t cause effects', () => {
+		assert.isFalse(filterSpy.called, 'not filtered');
+		assert.isFalse(groupSpy.called, 'not grouped');
+		assert.isFalse(sortSpy.called, 'not sorted');
+		omnitable.replaceItemAtIndex(0, { ...omnitable.data[0] });
+		omnitable.flush();
+		assert.isFalse(filterSpy.called, 'not refiltered');
+		assert.isFalse(groupSpy.called, 'not regrouped');
+		assert.isFalse(sortSpy.called, 'not resorted');
+	});
+
+	test('replacing an item with updated filter-property causes refiltering', () => {
+		assert.isFalse(filterSpy.called, 'not filtered');
+		assert.isFalse(groupSpy.called, 'not grouped');
+		assert.isFalse(sortSpy.called, 'not sorted');
+		omnitable.replaceItemAtIndex(0, {
+			...omnitable.data[0],
+			bool: !omnitable.data[0].bool
+		});
+		omnitable.flush();
+		assert.isTrue(filterSpy.called, 'refiltered');
+		assert.isTrue(groupSpy.called, 'regrouped');
+		assert.isTrue(sortSpy.called, 'resorted');
+	});
+
+	test('replacing an item with updated groupon-property causes regrouping', () => {
+		assert.isFalse(filterSpy.called, 'not filtered');
+		assert.isFalse(groupSpy.called, 'not grouped');
+		assert.isFalse(sortSpy.called, 'not sorted');
+		omnitable.replaceItemAtIndex(0, {
+			...omnitable.data[0],
+			date: new Date()
+		});
+		omnitable.flush();
+		assert.isFalse(filterSpy.called, 'not refiltered');
+		assert.isTrue(groupSpy.called, 'regrouped');
+		assert.isTrue(sortSpy.called, 'resorted');
+	});
+
+	test('replacing an item with updated sorton-property causes resorting', () => {
+		assert.isFalse(filterSpy.called, 'not filtered');
+		assert.isFalse(groupSpy.called, 'not grouped');
+		assert.isFalse(sortSpy.called, 'not sorted');
+		omnitable.replaceItemAtIndex(0, {
+			...omnitable.data[0],
+			dateJson: JSON.stringify(new Date())
+		});
+		omnitable.flush();
+		assert.isFalse(filterSpy.called, 'not refiltered');
+		assert.isFalse(groupSpy.called, 'not regrouped');
+		assert.isTrue(sortSpy.called, 'resorted');
+	});
+
+	teardown(() => {
+		consoleErrorStub.restore();
+	});
+});
