@@ -53,6 +53,7 @@ const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending', 'groupOnDescend
  * @element cosmoz-omnitable
  * @demo demo/index.html
  */
+
 class Omnitable extends translatable(
 	mixinBehaviors([
 		IronResizableBehavior
@@ -660,12 +661,62 @@ class Omnitable extends translatable(
 		this._debounceAdjustColumns();
 	}
 
-	_dataChanged() {
-		if (!Array.isArray(this.columns)) {
+	_getItemUpdateEffects(splices) {
+		return splices.reduce((acc, splice) => {
+			if (acc.refilter) {
+				return acc;
+			}
+			const itemsReplaced = splice.type === 'splice' && splice.addedCount === splice.removed.length;
+			if (!itemsReplaced) {
+				return acc;
+			}
+			const filterFunctions = this.columns
+					.map(col => col.getFilterFn())
+					.filter(fn => fn !== undefined),
+				comparer = (oldItem, newItem, path) =>
+					this.get(path, oldItem) !== this.get(path, newItem);
+
+			splice.removed.some((oldItem, index) => {
+				const newItem = splice.object[splice.index + index];
+				if (!acc.refilter) {
+					const wasFiltered = this.filteredItems.includes(oldItem),
+						isFiltered = filterFunctions.every(filterFn => filterFn(newItem));
+					acc.refilter = wasFiltered !== isFiltered;
+					if (acc.refilter) {
+						return true;
+					}
+				}
+				acc.regroup = acc.regroup || comparer(oldItem, newItem, this.groupOn);
+				acc.resort = acc.regroup || acc.resort || comparer(oldItem, newItem, this.sortOn);
+				return false;
+			});
+			return acc;
+		}, {
+			refilter: false,
+			regroup: false,
+			resort: false
+		});
+	}
+
+	_dataChanged(notify) {
+		if (!Array.isArray(this.columns) || notify == null || notify.path === 'data.length') {
 			return;
 		}
+		if (notify.path !== 'data.splices') {
+			this._setColumnValues();
+			this._debounceFilterItems();
+			return;
+		}
+
 		this._setColumnValues();
-		this._debounceFilterItems();
+		const effects = this._getItemUpdateEffects(notify.value.splices);
+		if (effects.refilter) {
+			this._debounceFilterItems();
+		} else if (effects.regroup) {
+			this._debounceGroupItems();
+		} else if (effects.resort) {
+			this._debounceSortItems();
+		}
 	}
 
 	_debounceUpdateColumns() {
@@ -1365,6 +1416,15 @@ class Omnitable extends translatable(
 		if (Array.isArray(removed) && removed.length > 0) {
 			return removed[0];
 		}
+	}
+	replaceItem(oldItem, newItem) {
+		const itemIndex = this.data.indexOf(oldItem);
+		if (itemIndex > -1) {
+			return this.replaceItemAtIndex(itemIndex, newItem);
+		}
+	}
+	replaceItemAtIndex(index, newItem) {
+		this.splice('data', index, 1, newItem);
 	}
 	/**
 	 * Convenience method for setting a value to an item's path and notifying any

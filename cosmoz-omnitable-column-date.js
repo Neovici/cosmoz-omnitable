@@ -12,12 +12,6 @@ import { translatable } from '@neovici/cosmoz-i18next';
 import { dateColumnMixin } from './cosmoz-omnitable-column-date-mixin';
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 
-/**
- * @polymer
- * @customElement
- * @appliesMixin dateColumnMixin
- * @appliesMixin columnMixin
- */
 class OmnitableColumnDate extends dateColumnMixin(columnMixin(translatable(
 	PolymerElement
 ))) {
