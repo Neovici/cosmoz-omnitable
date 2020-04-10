@@ -708,13 +708,12 @@ class Omnitable extends mixin({
 		if (!Array.isArray(this.columns) || notify == null || notify.path === 'data.length') {
 			return;
 		}
+		this._setColumnValues();
+
 		if (notify.path !== 'data.splices') {
-			this._setColumnValues();
 			this._debounceFilterItems();
 			return;
 		}
-
-		this._setColumnValues();
 		const effects = this._getItemUpdateEffects(notify.value.indexSplices);
 		if (effects.refilter) {
 			this._debounceFilterItems();
