@@ -688,8 +688,8 @@ class Omnitable extends translatable(
 						return true;
 					}
 				}
-				acc.regroup = acc.regroup || comparer(oldItem, newItem, this.groupOn);
-				acc.resort = acc.regroup || acc.resort || comparer(oldItem, newItem, this.sortOn);
+				acc.regroup = acc.regroup || comparer(oldItem, newItem, this.groupOnColumn.valuePath);
+				acc.resort = acc.regroup || acc.resort || comparer(oldItem, newItem, this.sortOnColumn.valuePath);
 				return false;
 			});
 			return acc;
@@ -711,7 +711,7 @@ class Omnitable extends translatable(
 		}
 
 		this._setColumnValues();
-		const effects = this._getItemUpdateEffects(notify.value.splices);
+		const effects = this._getItemUpdateEffects(notify.value.indexSplices);
 		if (effects.refilter) {
 			this._debounceFilterItems();
 		} else if (effects.regroup) {
