@@ -1,3 +1,19 @@
+# [3.6.0](https://github.com/neovici/cosmoz-omnitable/compare/v3.5.0...v3.6.0) (2020-04-11)
+
+
+### Bug Fixes
+
+* refilter if the splice update is something else than replace ([7d93d6c](https://github.com/neovici/cosmoz-omnitable/commit/7d93d6cf040a4d4bfda66d6527a9a33e44f8a777))
+* reflow logic to reuse call ([4cb9ed2](https://github.com/neovici/cosmoz-omnitable/commit/4cb9ed2e86e9290a5286ef5719858b2ae5a596b6))
+* use column objects instread of groupOn/sortOn ([50a64aa](https://github.com/neovici/cosmoz-omnitable/commit/50a64aad0acf96227642164cc9c7875fa432133d))
+* use isEmpty implementation from cosmoz-utils ([2388001](https://github.com/neovici/cosmoz-omnitable/commit/23880013a346f2bdcf12c35f2fb950af74d100f4))
+
+
+### Features
+
+* adjust effects according to item updates ([cd0d3ae](https://github.com/neovici/cosmoz-omnitable/commit/cd0d3ae65b14b651d95f508f840334f27feb4a5b))
+* list column value property groupon ([07ef494](https://github.com/neovici/cosmoz-omnitable/commit/07ef4946ff1f98437d56088cb4851f077d3a361e))
+
 # [3.5.0](https://github.com/neovici/cosmoz-omnitable/compare/v3.4.1...v3.5.0) (2020-03-25)
 
 
