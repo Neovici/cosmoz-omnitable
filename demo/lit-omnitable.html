@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Cosmoz Omnitable demo</title>
+
+	<script src="/components/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+	<script src="/components/web-animations-js/web-animations-next-lite.min.js"></script>
+	<script type="module" src="/components/@polymer/iron-flex-layout/iron-flex-layout.js"></script>
+	<script type="module" src="/components/@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
+
+	<custom-style>
+		<style is="custom-style" include="iron-flex iron-flex-alignment iron-positioning"></style>
+	</custom-style>
+
+</head>
+
+<body class="fullbleed">
+	<lit-omnitable id="omnitable"></lit-omnitable>
+	<script type="module">import '../lit-omnitable.js';
+		import { generateTableDemoData } from './table-demo-helper.js';
+
+		const tbl = document.getElementById('omnitable');
+
+		tbl.config = {
+			amount: {
+				type: Object,
+				label: 'Amount'
+			},
+			bool: {
+				type: Boolean,
+				label: 'Boolean'
+			},
+			date: {
+				type: Date,
+				label: 'Date'
+			},
+			dateJSON: {
+				type: String,
+				label: 'DateJSON'
+			},
+			group: {
+				type: String,
+				label: 'Group'
+			},
+			id: {
+				type: Number,
+				label: 'Id'
+			},
+			list: {
+				type: Array,
+				label: 'List'
+			},
+			name: {
+				type: String,
+				label: 'Name'
+			},
+			object: {
+				type: Number,
+				label: 'Object'
+			},
+			objectList: {
+				type: Array,
+				label: 'Object list'
+			},
+			randomString: {
+				type: String,
+				label: 'randomString'
+			},
+			randomString2: {
+				type: String,
+				label: 'randomString2'
+			},
+			randomString3: {
+				type: String,
+				label: 'randomString3'
+			},
+			randomString4: {
+				type: String,
+				label: 'randomString4'
+			},
+			sub: {
+				type: Object,
+				label: 'Sub-property'
+			},
+			value: {
+				type: Number,
+				label: 'Value'
+			}
+		};
+
+		const numItems = 20;
+		tbl.data = generateTableDemoData(
+			Math.sqrt(numItems),
+			Math.sqrt(numItems),
+			1000
+		);
+
+	</script>
+</body>
+
+</html>
