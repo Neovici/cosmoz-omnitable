@@ -117,6 +117,7 @@ suite('horizontal', () => {
 	test('returns the value of an item', () => {
 		column.valueProperty = 'id';
 		assert.strictEqual(column.getComparableValue({ id: 13 }, 'id'), 13);
+		assert.strictEqual(column.getComparableValue({ items: [{ id: 13 }, { id: 14 }, { id: 15 }] }, 'items'), '13 14 15');
 		assert.isUndefined(column.getComparableValue({}, 'nonexisting-path'));
 	});
 });
