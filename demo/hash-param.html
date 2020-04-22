@@ -6,13 +6,11 @@
 
 	<title>cosmoz-omnitable hash-param demo</title>
 
-	<script src="/components/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-	<script src="/components/web-animations-js/web-animations-next-lite.min.js"></script>
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 
-	<script type="module" src="/components/@polymer/iron-flex-layout/iron-flex-layout.js"></script>
-	<script type="module" src="/components/@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
-	<script type="module" src="/components/@neovici/cosmoz-page-router/cosmoz-page-router.js"></script>
-	<script type="module" src="/components/@neovici/cosmoz-page-router/cosmoz-page-route.js"></script>
+	<script type="module" src="/node_modules/@polymer/iron-flex-layout/iron-flex-layout.js"></script>
+	<script type="module" src="/node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
+	<script type="module" src="/node_modules/@neovici/cosmoz-page-router/cosmoz-page-router.js"></script>
 
 	<custom-style>
 		<style is="custom-style" include="iron-flex iron-flex-alignment iron-positioning"></style>
@@ -20,7 +18,22 @@
 
 </head>
 <body unresolved class="fullbleed">
-	<cosmoz-page-router class="fit" id="appRouter" mode="hash" url-prefix="/">
-		<cosmoz-page-route path="/" import="helpers/hash-param-template.html" template-id="demo-home"></cosmoz-page-route>
-	</cosmoz-page-router>
+	<demo-router class="fit" id="appRouter" />
+	<script type="module">
+		import { html } from 'lit-html';
+		import { component } from 'haunted';
+		import { hashbang } from '@neovici/cosmoz-page-router/lib/match.js';
+
+		const routes = [
+				{
+					rule: hashbang(/^\/$/u),
+					handle: () => import('./helpers/x-page.js').then(() =>
+						html`<x-page class="fit" style="height: 100%; width: 100%;" hash-param="full" />`)
+				}
+		],
+		DemoRouter = () => {
+				return html`<cosmoz-page-router .routes=${routes} />`;
+		};
+		customElements.define('demo-router', component(DemoRouter));
+	</script>
 </body></html>

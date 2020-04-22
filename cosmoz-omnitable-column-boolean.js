@@ -8,8 +8,8 @@ import { html } from '@polymer/polymer/lib/utils/html-tag';
 
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 
-import '@neovici/paper-autocomplete';
 import '@polymer/paper-spinner/paper-spinner-lite';
+import '@neovici/cosmoz-autocomplete';
 
 /**
  * @polymer
@@ -24,61 +24,60 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 		</template>
 
 		<template class="edit-cell" strip-whitespace>
-			<paper-autocomplete
-				label="[[ title ]]"
+			<cosmoz-autocomplete-ui
 				min-length="0"
 				no-label-float
+				label="[[ title ]]"
+				title="[[ _computeItemTooltip(title, item, valuePath) ]]"
+				source="[[ _source ]]"
+				text-property="[[ _textProperty ]]"
+				value="[[ _computeItemValue(item, valuePath) ]]"
 				on-select="_valueChanged"
-				query-fn="[[ queryFn ]]"
-				show-results-on-focus="[[ _showResultsOnFocus ]]"
-				source="[[ _computeSuggestionList(trueLabel, falseLabel) ]]"
-				text="[[ _computeText(item, valuePath, trueLabel, falseLabel) }}"
-				title="[[ _tooltip ]]"
-				value="[[ _computeSelected(item, valuePath) ]]">
-				<paper-spinner-lite style="width: 20px; height: 20px;" suffix slot="suffix" active="[[ loading ]]" hidden="[[ !loading ]]"></paper-spinner-lite>
-				<template slot="autocomplete-custom-template">
-					<paper-item id$="[[ _getSuggestionId(index) ]]" role="option" aria-selected="false" on-tap="_onSelect">
-						<div inner-h-t-m-l="[[ item.html ]]"></div>
-						<paper-ripple></paper-ripple>
-					</paper-item>
-				</template>
-			</paper-autocomplete>
+			>
+				<paper-spinner-lite
+					style="width: 20px; height: 20px;"
+					suffix
+					slot="suffix"
+					active="[[ loading ]]"
+					hidden="[[ !loading ]]"
+				></paper-spinner-lite>
+			</cosmoz-autocomplete-ui>
 		</template>
 
 		<template class="header" strip-whitespace>
-			<paper-autocomplete
+			<cosmoz-autocomplete-ui
 				label="[[ title ]]"
-				min-length="0"
-				query-fn="[[ queryFn ]]"
 				show-results-on-focus="[[ _showResultsOnFocus ]]"
-				source="[[ _computeSuggestionList(trueLabel, falseLabel) ]]"
-				text="{{ _computeHeaderText(filter, trueLabel, falseLabel) }}"
-				title="[[ _tooltip ]]"
-				value="{{ filter }}">
-				<paper-spinner-lite style="width: 20px; height: 20px;" suffix slot="suffix" active="[[ loading ]]" hidden="[[ !loading ]]"></paper-spinner-lite>
-				<template slot="autocomplete-custom-template">
-					<paper-item id$="[[ _getSuggestionId(index) ]]" role="option" aria-selected="false" on-tap="_onSelect">
-						<div inner-h-t-m-l="[[ item.html ]]"></div>
-						<paper-ripple></paper-ripple>
-					</paper-item>
-				</template>
-			</paper-autocomplete>
+				title="[[ _computeItemTooltip(title, filter) ]]"
+				source="[[ _source ]]"
+				text-property="[[ _textProperty ]]"
+				value="[[ _computeValue(filter) ]]"
+				on-change="_headerValueChanged"
+				limit="[[ _limit ]]"
+			>
+				<paper-spinner-lite
+					style="width: 20px; height: 20px;"
+					suffix
+					slot="suffix"
+					active="[[ loading ]]"
+					hidden="[[ !loading ]]"
+				></paper-spinner-lite>
+			</cosmoz-autocomplete-ui>
 		</template>
-`;
+		`;
 	}
 
 	static get is() {
 		return 'cosmoz-omnitable-column-boolean';
 	}
 
-	static get properties() { // eslint-disable-line max-lines-per-function
+	static get properties() {
+		// eslint-disable-line max-lines-per-function
 		return {
 			filter: {
 				type: Boolean,
 				notify: true,
-				value() {
-					return this._getDefaultFilter();
-				}
+				value: undefined
 			},
 
 			trueLabel: {
@@ -91,14 +90,9 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 				value: 'False'
 			},
 
-			_textFilter: {
-				type: String,
-				observer: '_textFilterChanged'
-			},
-
-			_tooltip: {
-				type: String,
-				computed: '_computeTooltip(title, filter)'
+			_source: {
+				type: Array,
+				computed: '_computeSource(trueLabel, falseLabel)'
 			},
 
 			templatetemplateWidth: {
@@ -115,114 +109,28 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 				value: '0'
 			},
 
-			/**
-			* The value of the `paper-autocomplete` input.
-			*/
-			query: {
-				type: String,
-				notify: true
+			_textProperty: {
+				value: 'text'
 			},
-
-			_showResultsOnFocus: {
-				type: Boolean,
-				value: true,
-				computed: '_computeShowResultsOnFocus(filter)'
-			},
-
-			/**
-			* Function used to filter available items.
-			* This function is actually used by `paper-autocomplete`,
-			* it is also exposed here so it is possible to provide a custom queryFn.
-			*/
-			queryFn: {
-				type: Function,
-				value: () => {
-					return function (datasource, query) {
-						const notNull = i => i != null;
-						return datasource.filter(notNull)
-							.map(item => {
-								const
-									text = item['text'],
-									value = item['value'];
-
-								if (text == null) {
-									return undefined;
-								}
-
-								// if there is text search for indexOf query
-								if (query == null) {
-									return {
-										text,
-										value,
-										html: text
-									};
-								}
-
-								if (text.toLowerCase().indexOf(query) < 0) {
-									return undefined;
-								}
-
-								// Highlight matches
-								return {
-									text,
-									value,
-									html: text.replace(new RegExp('(' + query + ')', 'igu'), '<b>$1</b>')
-								};
-
-							}).filter(notNull);
-					};
-				}
-			}
+			_limit: { value: 1 }
 		};
 	}
 
-	static get observers() {
-		return [
-			'_filterChanged(filter)'
-		];
-	}
-
-	// TODO(pasleq): same questions as for cosmoz-omnitable-column-date
-
-	_textFilterChanged(textFilter) {
-		if (this._filterChangedFromAbove) {
-			this._filterChangedFromAbove = false;
-			return;
-		}
-		this._filterChangedFromInput = true;
-		if (textFilter === 'true') {
-			this.set('filter', true);
-		} else if (textFilter === 'false') {
-			this.set('filter', false);
-		} else {
-			this.set('filter', null);
-		}
-	}
-
-	_filterChanged(filter) {
-		if (this._filterChangedFromInput) {
-			this._filterChangedFromInput = false;
-			return;
-		}
-		this._filterChangedFromAbove = true;
-		this._textFilter = typeof filter === 'boolean' ? filter.toString() : null;
-	}
-
 	/**
-	* Get column represented as a string.
-	* @param {object} item Column data.
-	* @param {string} valuePath Value path in column data.
-	* @returns {void|string} Column in string format.
-	*/
+	 * Get column represented as a string.
+	 * @param {object} item Column data.
+	 * @param {string} valuePath Value path in column data.
+	 * @returns {void|string} Column in string format.
+	 */
 	getString(item, valuePath) {
 		const value = this.get(valuePath || this.valuePath, item);
 		return value ? this.trueLabel : this.falseLabel;
 	}
 
 	/**
-	* Get a filter function for the column.
-	* @returns {void|function} Filter function.
-	*/
+	 * Get a filter function for the column.
+	 * @returns {void|function} Filter function.
+	 */
 	getFilterFn() {
 		if (this.filter == null) {
 			return;
@@ -231,43 +139,21 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 	}
 
 	/**
-	* Determine if a filter should be enabled or not.
-	* @param {string} filter Filter text.
-	* @param {object} item Column data.
-	* @returns {boolean} Whether the filter should be enabled or not.
-	*/
+	 * Determine if a filter should be enabled or not.
+	 * @param {string} filter Filter text.
+	 * @param {object} item Column data.
+	 * @returns {boolean} Whether the filter should be enabled or not.
+	 */
 	_applySingleFilter(filter, item) {
 		return this.get(this.valuePath, item) === filter;
 	}
 
-	_computeHeaderText(value, trueLabel, falseLabel) {
-		if (value === true) {
-			return trueLabel;
-		} else if (value === false) {
-			return falseLabel;
-		}
-	}
-	_computeSelected(item, valuePath) {
-		const value = this.get(valuePath || this.valuePath, item);
-		if (value != null) {
-			return value.toString();
-		}
-	}
-	_computeText(item, valuePath, trueLabel, falseLabel) {
-		const value = this.get(valuePath || this.valuePath, item);
-		if (value === true) {
-			return trueLabel;
-		} else if (value === false) {
-			return falseLabel;
-		}
-	}
-
 	/** OVERRIDES */
 
-	_valueChanged(e) {
-		const value = e.target.selected === 'true',
-			item = e.model.item,
-			oldValue = this.get(this.valuePath, item),
+	_valueChanged({
+		detail: { value: { value } = {}}, model: { item }
+	}) {
+		const oldValue = this.get(this.valuePath, item),
 			formatFn = value => {
 				return value ? this.trueLabel : this.falseLabel;
 			};
@@ -275,7 +161,12 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 			return;
 		}
 		this.set(this.valuePath, value, item);
-		this._fireItemChangeEvent(item, this.valuePath, oldValue, formatFn.bind(this));
+		this._fireItemChangeEvent(
+			item,
+			this.valuePath,
+			oldValue,
+			formatFn.bind(this)
+		);
 	}
 
 	_serializeFilter(filter = this.filter) {
@@ -307,43 +198,51 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 	}
 
 	/**
-	* Determine if results should be shown on focus or not.
-	* @param {string} filter Filter text.
-	* @returns {boolean} Whether results should be shown on focus or not.
-	*/
-	_computeShowResultsOnFocus(filter) {
-		return !filter;
+	 * Get a list of suggestions for the column header.
+	 * @param {string} trueLabel True label.
+	 * @param {string} falseLabel False label.
+	 * @returns {array} Suggestions remapped for the column header.
+	 */
+	_computeSource(trueLabel, falseLabel) {
+		return [
+			{
+				text: trueLabel,
+				value: true
+			},
+			{
+				text: falseLabel,
+				value: false
+			}
+		];
 	}
 
-	/**
-	* Get a list of suggestions for the column header.
-	* @param {string} trueLabel True label.
-	* @param {string} falseLabel False label.
-	* @returns {array} Suggestions remapped for the column header.
-	*/
-	_computeSuggestionList(trueLabel, falseLabel) {
-		return [{
-			text: trueLabel,
-			value: true
-		}, {
-			text: falseLabel,
-			value: false
-		}];
+	_computeValue(value, source = this._source) {
+		return source.find(({ value: valueProp }) => value === valueProp);
 	}
 
-	/**
-	* Get a tooltip text for the column.
-	* @param {string} title Column title.
-	* @param {string} filter Filter text.
-	* @returns {string} Tooltip text.
-	*/
-	_computeTooltip(title, filter) {
-		if (filter === true) {
-			return this.trueLabel;
-		} else if (filter === false) {
-			return this.falseLabel;
-		}
-		return title;
+	_computeItemValue(item, valuePath = this.valuePath, source) {
+		return this._computeValue(
+			this.get(valuePath, item),
+			source
+		);
 	}
+
+	_computeTooltip(title, value, source = this._source) {
+		const val = this._computeValue(value, source);
+		return val ? val.text : title;
+	}
+
+	_computeItemTooltip(title, item, valuePath, source) {
+		return this._computeTooltip(
+			title,
+			this.get(valuePath || this.valuePath, item),
+			source
+		);
+	}
+
+	_headerValueChanged({ detail: { value: { value } = {}}}) {
+		this.filter = value;
+	}
+
 }
 customElements.define(OmnitableColumnBoolean.is, OmnitableColumnBoolean);
