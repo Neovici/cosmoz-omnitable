@@ -68,23 +68,6 @@ class OmnitableColumnListHorizontal extends listColumnMixin(
 		return {
 			autocompleteSelectedItems: {
 				type: Array
-			},
-
-			/**
-			 * Ask for a list of values
-			 */
-			bindValues: {
-				type: Boolean,
-				readOnly: true,
-				value: true
-			},
-
-			filter: {
-				type: Array,
-				notify: true,
-				value() {
-					return this._getDefaultFilter();
-				}
 			}
 		};
 	}
@@ -142,9 +125,6 @@ class OmnitableColumnListHorizontal extends listColumnMixin(
 			.some(val => filterArray.indexOf(val) >= 0);
 	}
 
-	_getDefaultFilter() {
-		return [];
-	}
 }
 
 customElements.define(

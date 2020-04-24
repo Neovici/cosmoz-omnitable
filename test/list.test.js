@@ -58,6 +58,7 @@ suite('basic', () => {
 		assert.isTrue(column._applyMultiFilter([123, 456], { list: [123, 345, 678]}));
 	});
 });
+
 suite('horizontal', () => {
 	let column,
 		data;

@@ -8,6 +8,23 @@ import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin';
 export const listColumnMixin = dedupingMixin(base =>	class extends base {
 	static get properties() {
 		return {
+			/**
+			 * Ask for a list of values
+			 */
+			bindValues: {
+				type: Boolean,
+				readOnly: true,
+				value: true
+			},
+
+			filter: {
+				type: Array,
+				notify: true,
+				value() {
+					return this._getDefaultFilter();
+				}
+			},
+
 			textProperty: {
 				type: String,
 				value: 'label'
@@ -38,4 +55,7 @@ export const listColumnMixin = dedupingMixin(base =>	class extends base {
 		return this.getString(item, valuePath);
 	}
 
+	_getDefaultFilter() {
+		return [];
+	}
 });
