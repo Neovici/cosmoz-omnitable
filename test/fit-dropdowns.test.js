@@ -138,12 +138,12 @@ suite('autocomplete unit tests', () => {
 			id: { text: '448' },
 			group: 'group14',
 			name: 'Item 448'
-		},undefined, 'text'), '448');
+		}, undefined, 'text'), '448');
 		assert.equal(column.getString({
 			id: { text: '11' },
 			group: 'group11',
 			name: 'Item 11'
-		},undefined, 'text'), '11');
+		}, undefined, 'text'), '11');
 	});
 
 	test('toXlsxValue handles undefined valuePath', () => {
