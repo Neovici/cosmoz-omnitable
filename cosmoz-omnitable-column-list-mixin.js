@@ -44,19 +44,13 @@ export const listColumnMixin = dedupingMixin(base =>	class extends base {
 	}
 
 	getString(item, valuePath = this.valuePath, textProperty = this.textProperty) {
-		if (valuePath === undefined) {
-			// eslint-disable-next-line no-console
-			console.error(this, 'has undefined valuePath', valuePath, 'for item', item);
-			return;
-		}
-		return array(this.get(valuePath, item))
-			.map(prop(textProperty))
+		return this.getTexts(item, valuePath, textProperty)
 			.filter(Boolean)
 			.join(', ');
 	}
 
-	getTexts(valuePath, item, textProperty = this.textProperty) {
-		return array(this.get(valuePath, item)).map(prop(textProperty));
+	getTexts(item, valuePath = this.valuePath, textProperty = this.textProperty) {
+		return array(valuePath && this.get(valuePath, item)).map(prop(textProperty));
 	}
 
 	toXlsxValue(item, valuePath = this.valuePath) {
@@ -70,7 +64,7 @@ export const listColumnMixin = dedupingMixin(base =>	class extends base {
 	 * @param {String} valuePath Property path
 	 * @returns {String|void} Valid value or void
 	 */
-	getComparableValue(item, valuePath) {
+	getComparableValue(item, valuePath = this.valuePath) {
 		const value = super.getComparableValue(item, valuePath);
 		if (this.valueProperty == null) {
 			return value;

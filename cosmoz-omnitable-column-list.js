@@ -23,7 +23,7 @@ class OmnitableColumnList extends listColumnMixin(
 		return html`
 			<template class="cell" strip-whitespace>
 				<cosmoz-omnitable-column-list-data
-					items="[[ getTexts(valuePath, item, textProperty) ]]"
+					items="[[ getTexts(item,valuePath, textProperty) ]]"
 				>
 				</cosmoz-omnitable-column-list-data>
 			</template>
