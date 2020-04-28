@@ -44,6 +44,11 @@ export const listColumnMixin = dedupingMixin(base =>	class extends base {
 	}
 
 	getString(item, valuePath = this.valuePath, textProperty = this.textProperty) {
+		if (valuePath === undefined) {
+			// eslint-disable-next-line no-console
+			console.error(this, 'has undefined valuePath', valuePath, 'for item', item);
+			return;
+		}
 		return array(this.get(valuePath, item))
 			.map(prop(textProperty))
 			.filter(Boolean)

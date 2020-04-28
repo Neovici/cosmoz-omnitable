@@ -1,6 +1,6 @@
 import '@webcomponents/shadycss/entrypoints/apply-shim';
 
-import '@neovici/paper-autocomplete-chips';
+import '@neovici/cosmoz-autocomplete';
 
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
