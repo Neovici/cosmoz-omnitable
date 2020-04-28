@@ -46,6 +46,7 @@ class OmnitableColumnList extends listColumnMixin(
 					value="[[  _computeValue(filter) ]]"
 					focused="{{ headerFocused }}"
 					on-change="_headerValueChanged"
+					suggestions-width="[[ suggestionsWidth ]]"
 				>
 					<paper-spinner-lite
 						style="width: 20px; height: 20px;"

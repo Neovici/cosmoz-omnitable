@@ -36,6 +36,10 @@ export const listColumnMixin = dedupingMixin(base =>	class extends base {
 				type: String
 			},
 
+			suggestionsWidth: {
+				type: String
+			},
+
 			_source: {
 				type: Array,
 				computed: '_computeSource(values, valueProperty, textProperty)'
