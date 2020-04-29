@@ -1,6 +1,6 @@
 import '@webcomponents/shadycss/entrypoints/apply-shim';
 
-import '@neovici/paper-autocomplete-chips';
+import '@neovici/cosmoz-autocomplete';
 
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
@@ -41,7 +41,7 @@ class OmnitableColumnListHorizontal extends listColumnMixin(
 				}
 			</style>
 			<ul>
-				<template is="dom-repeat" items="[[ get(valuePath, item) ]]" as="listitem">
+				<template is="dom-repeat" items="[[ getTexts(valuePath, item, textProperty) ]]" as="listitem">
 					<li>[[ listitem ]]</li>
 				</template>
 			</ul>
@@ -52,10 +52,24 @@ class OmnitableColumnListHorizontal extends listColumnMixin(
 		</template>
 
 		<template class="header" strip-whitespace>
-			<paper-autocomplete-chips source="[[ _computeAutocompleteItems(values) ]]"
+			<cosmoz-autocomplete-ui
 				class$="external-values-[[ externalValues ]]"
-				label="[[ title ]]" selected-items="{{ filter }}" text-property="[[ textProperty ]]" value-property="[[ valueProperty ]]" show-results-on-focus>
-			</paper-autocomplete-chips>
+				label="[[ title ]]"
+				source="[[ _source ]]"
+				text-property="[[ textProperty ]]"
+				value="[[  _computeValue(filter) ]]"
+				focused="{{ headerFocused }}"
+				on-change="_headerValueChanged"
+				suggestions-width="[[ suggestionsWidth ]]"
+			>
+				<paper-spinner-lite
+					style="width: 20px; height: 20px;"
+					suffix
+					slot="suffix"
+					active="[[ loading ]]"
+					hidden="[[ !loading ]]"
+				></paper-spinner-lite>
+			</cosmoz-autocomplete-ui>
 		</template>
 `;
 	}
@@ -64,87 +78,6 @@ class OmnitableColumnListHorizontal extends listColumnMixin(
 		return 'cosmoz-omnitable-column-list-horizontal';
 	}
 
-	static get properties() {
-		return {
-			autocompleteSelectedItems: {
-				type: Array
-			},
-
-			/**
-			 * Ask for a list of values
-			 */
-			bindValues: {
-				type: Boolean,
-				readOnly: true,
-				value: true
-			},
-
-			filter: {
-				type: Array,
-				notify: true,
-				value() {
-					return this._getDefaultFilter();
-				}
-			}
-		};
-	}
-
-	_computeAutocompleteItems(values = this.values) {
-		const unique = [];
-		return values
-			.reduce((acc, val) => acc.concat(val), [])
-			// Make the item list unique
-			.filter((value, index, array) => {
-				if (array.indexOf(value) !== index) {
-					return false;
-				}
-				const val = this.valueProperty ? this.get(this.valueProperty, value) : value,
-					hasVal = unique.indexOf(val) !== -1;
-
-				if (hasVal) {
-					return false;
-				}
-				unique.push(val);
-				return true;
-			})
-			.sort();
-	}
-
-	_getLabelForValue(value) {
-		if (value == null) {
-			return null;
-		}
-		return value.toString();
-	}
-
-	_applySingleFilter(filterString, item) {
-		const value = this.get(this.valuePath, item);
-		if (value == null) {
-			return false;
-		}
-		return value.toString().toLowerCase() === filterString;
-	}
-
-	_applyMultiFilter(filter, item) {
-		const valueFilter = element => {
-				const value = this.valueProperty ? this.get(this.valueProperty, element) : element;
-				return value ? value.toString().toLowerCase() : null;
-			},
-			filterArray = filter.map(valueFilter),
-			listValue = this.get(this.valuePath, item);
-
-		if (listValue == null) {
-			return filter.length === 0;
-		}
-
-		return listValue
-			.map(valueFilter)
-			.some(val => filterArray.indexOf(val) >= 0);
-	}
-
-	_getDefaultFilter() {
-		return [];
-	}
 }
 
 customElements.define(

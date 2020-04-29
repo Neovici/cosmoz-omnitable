@@ -50,16 +50,6 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				@apply --layout-flex;
 			}
 
-			.header paper-autocomplete,
-			.header paper-autocomplete-chips {
-				--suggestions-item: {
-					white-space: nowrap;
-				};
-				--paper-autocomplete-suggestions-wrapper: {
-					width: auto;
-					min-width: 100%;
-				};
-			}
 			.header-cell > * {
 				width: 100%;
 			}

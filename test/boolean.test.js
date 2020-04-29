@@ -2,12 +2,13 @@ import {
 	assert, html
 } from '@open-wc/testing';
 
+import { spy } from 'sinon';
 import { setupOmnitableFixture } from './helpers/utils';
 
 import '../cosmoz-omnitable.js';
 import '../cosmoz-omnitable-columns.js';
 
-suite('basic', () => {
+suite('boolen', () => {
 	let column,
 		column2,
 		data;
@@ -36,34 +37,8 @@ suite('basic', () => {
 		assert.equal(column.constructor.name, 'OmnitableColumnBoolean');
 	});
 
-	test('_getDefaultFilter is null', () => {
-		assert.isNull(column.filter);
-	});
-
-	test('_textFilterChanged updates filter', () => {
-		assert.isNull(column.filter);
-		column._textFilterChanged('true');
-		assert.isTrue(column.filter);
-	});
-
-	test('_textFilterChanged updates filter as false', () => {
-		assert.isNull(column.filter);
-		column._textFilterChanged('false');
-		assert.isFalse(column.filter);
-	});
-
-	test('_textFilterChanged updates filter as null', () => {
-		column.filter = 'true';
-		column._filterChangedFromAbove = false;
-		column._textFilterChanged();
-		assert.isNull(column.filter);
-	});
-
-	test('filterChanged observer converts boolean to string', () => {
-		column.filter = true;
-		assert.equal(column._textFilter, 'true');
-		column.filter = false;
-		assert.equal(column._textFilter, 'false');
+	test('filter is undefined by default', () => {
+		assert.isUndefined(column.filter);
 	});
 
 	test('getString uses this.valuePath as default', () => {
@@ -76,14 +51,21 @@ suite('basic', () => {
 		assert.equal(column2.getString(data[1]), 'default false label');
 	});
 
-	test('_computeSelected returns boolean to string', () => {
-		assert.equal(column._computeSelected(data[0]), 'true');
-		assert.equal(column._computeSelected(data[1]), 'false');
+	test('_computeItemValue returns correct value', () => {
+		assert.deepEqual(column._computeItemValue(data[0]), {
+			text: 'True',
+			value: true
+		});
+		assert.deepEqual(column._computeItemValue(data[1]), {
+			text: 'False',
+			value: false
+		});
 	});
 
 	test('toXlsxValue converts boolean to string', () => {
 		assert.equal(column.toXlsxValue(data[0]), 'True');
 		assert.equal(column.toXlsxValue(data[1]), 'False');
+		assert.equal(column.toXlsxValue(data[1], ''), '');
 	});
 
 	test('toXlsxValue converts boolean to string', () => {
@@ -91,34 +73,38 @@ suite('basic', () => {
 		assert.equal(column2.toXlsxValue(data[1]), 'default false label');
 	});
 
-	test('_valueChanged updates _valuePath', done => {
+	test('_valueChanged updates _valuePath', () => {
 		const item = { boolean: false },
-			el = document.createElement('div');
-		el.selected = 'true';
-		el.addEventListener('click', e => {
-			column._valueChanged(e);
-			assert.equal(item.boolean, true);
-			done();
-		});
-		const e = new Event('click');
-		e.model = {};
-		e.model.item = item;
-		el.dispatchEvent(e);
+			e = new CustomEvent('change', {
+				detail: { value: { value: true }}
+			}),
+			changeSpy = spy(column, '_fireItemChangeEvent');
+		e.model = { item };
+		column._valueChanged(e);
+		assert.equal(item.boolean, true);
+		assert.isTrue(changeSpy.calledOnce);
+		changeSpy.restore();
 	});
 
-	test('_valueChanged does not update _valuePath if value is equal to oldValue', done => {
+	test('_valueChanged does not update _valuePath if value is equal to oldValue', () => {
 		const item = { boolean: true },
-			el = document.createElement('div');
-		el.selected = 'true';
-		el.addEventListener('click', e => {
-			column._valueChanged(e);
-			assert.equal(item.boolean, true);
-			done();
-		});
-		const e = new Event('click');
-		e.model = {};
-		e.model.item = item;
-		el.dispatchEvent(e);
+			e = new CustomEvent('change', {
+				detail: { value: { value: true }}
+			}),
+			changeSpy = spy(column, '_fireItemChangeEvent');
+
+		e.model = { item };
+		column._valueChanged(e);
+		assert.equal(item.boolean, true);
+		assert.isFalse(changeSpy.calledOnce);
+		changeSpy.restore();
+	});
+
+	test('_headerValueChanged updates filter', () => {
+		column._headerValueChanged(new CustomEvent('chnage', {
+			detail: { value: { value: true }}
+		}));
+		assert.equal(column.filter, true);
 	});
 
 	test('_serializeFilter handles null', () => {

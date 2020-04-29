@@ -58,6 +58,7 @@ suite('basic', () => {
 		assert.isTrue(column._applyMultiFilter([123, 456], { list: [123, 345, 678]}));
 	});
 });
+
 suite('horizontal', () => {
 	let column,
 		data;
@@ -105,7 +106,7 @@ suite('horizontal', () => {
 	});
 
 	test('_applyMultiFilter works', () => {
-		assert.isTrue(column._applyMultiFilter([123, 456], { list: ['123', '345', '678']}));
+		assert.isFalse(column._applyMultiFilter([123, 456], { list: ['123', '345', '678']}));
 	});
 
 	test('getString returns values', () => {
