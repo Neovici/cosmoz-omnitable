@@ -40,29 +40,33 @@
 		const tbl = document.getElementById('omnitable');
 
 		tbl.config = {
-			amount: {
-				type: Object,
-				label: 'Amount'
+			date: {
+				type: Date,
+				label: 'Date'
+			},
+			id: {
+				type: Number,
+				label: 'Id'
 			},
 			bool: {
 				type: Boolean,
 				label: 'Boolean'
 			},
-			date: {
-				type: Date,
-				label: 'Date'
+			group: {
+				type: String,
+				label: 'Group'
+			},
+			object: {
+				type: Number,
+				label: 'Object'
 			},
 			dateJSON: {
 				type: String,
 				label: 'DateJSON'
 			},
-			group: {
-				type: String,
-				label: 'Group'
-			},
-			id: {
-				type: Number,
-				label: 'Id'
+			amount: {
+				type: Object,
+				label: 'Amount'
 			},
 			list: {
 				type: Array,
@@ -71,10 +75,6 @@
 			name: {
 				type: String,
 				label: 'Name'
-			},
-			object: {
-				type: Number,
-				label: 'Object'
 			},
 			objectList: {
 				type: Array,

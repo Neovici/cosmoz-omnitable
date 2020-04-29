@@ -1129,6 +1129,7 @@ class Omnitable extends mixin({
 			return;
 		}
 
+		debugger;
 		const scroller = this.$.scroller,
 			currentWidth = this.$.tableContent.clientWidth,
 			itemRow = firstRow.querySelector('cosmoz-omnitable-item-row'),

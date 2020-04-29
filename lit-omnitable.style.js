@@ -5,7 +5,8 @@ export const style = `
   }
 
   .header, .row {
-    display: flex;
+		display: flex;
+		width: 100%;
   }
 
   .content {
@@ -16,6 +17,7 @@ export const style = `
   }
 
   .cell {
-    flex-basis: 125px;
+		flex-basis: 125px;
+		flex: 1;
   }
 `;
