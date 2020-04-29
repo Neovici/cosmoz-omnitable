@@ -1,3 +1,10 @@
+# [3.7.0](https://github.com/neovici/cosmoz-omnitable/compare/v3.6.0...v3.7.0) (2020-04-29)
+
+
+### Features
+
+* replace paper-autocomplete with cosmoz-autocomplete ([ee80629](https://github.com/neovici/cosmoz-omnitable/commit/ee806290f51a1abe8f189334750f405ccd3db1b0))
+
 # [3.6.0](https://github.com/neovici/cosmoz-omnitable/compare/v3.5.0...v3.6.0) (2020-04-11)
 
 
