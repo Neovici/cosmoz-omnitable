@@ -82,6 +82,7 @@
 		"@webcomponents/shadycss": "^1.9.6",
 		"file-saver": "github:plumelo/FileSaver.js",
 		"haunted": "^4.7.0",
+		"lit-virtualizer": "^0.4.2",
 		"web-animations-js": "^2.3.2"
 	},
 	"devDependencies": {

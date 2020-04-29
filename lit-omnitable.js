@@ -5,6 +5,7 @@ import {
 import {
 	useGroupFilterSort, SORT_DESCENDING, SORT_ASCENDING
 } from './lib/use-group-filter-sort';
+import { scroll } from 'lit-virtualizer';
 
 const
 	headerCell = (config, onClick) => column => html`<div class="cell" @click=${onClick} data-column="${column}">${config[column].label}</div>`,
@@ -35,7 +36,7 @@ const
 		const columns = Object.keys(config);
 		const sortByColumn = useCallback(event => {
 			const newSortBy = event.target.dataset.column;
-			debugger;
+
 			if (sortBy === newSortBy) {
 				setSortDirection(sortDirection === SORT_ASCENDING ? SORT_DESCENDING : SORT_ASCENDING);
 				return;
@@ -43,19 +44,27 @@ const
 
 			setSortBy(newSortBy);
 			setSortDirection(SORT_ASCENDING);
-		}, [setSortBy, setSortDirection]);
-
+		}, [sortBy, sortDirection, setSortBy, setSortDirection]);
+		/* eslint-disable indent */
 		return html`
-		<style>
-			.header, .row {
-				display: flex;
-			}
-		</style>
-		<div>SortBy: ${sortBy}</div>
-		<div>SortDirection: ${sortDirection}</div>
-		<div class="header">${ columns.map(headerCell(config, sortByColumn)) }</div>
-		<div class="content">${ visibleItems.map(row(config)) }</div>
-	`;
+			<style>
+				.header, .row {
+					display: flex;
+				}
+
+				.cell {
+					flex-basis: 125px;
+				}
+			</style>
+			<div>SortBy: ${sortBy}</div>
+			<div>SortDirection: ${sortDirection}</div>
+			<div class="header">${ columns.map(headerCell(config, sortByColumn)) }</div>
+			<div class="content">${scroll({
+				items: visibleItems,
+				scrollTarget: window,
+				renderItem: row(config)
+			})}</div>
+		`;
 	};
 
 customElements.define('lit-omnitable', component(Omnitable));
