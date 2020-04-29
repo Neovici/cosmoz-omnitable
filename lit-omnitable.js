@@ -6,6 +6,7 @@ import {
 	useGroupFilterSort, SORT_DESCENDING, SORT_ASCENDING
 } from './lib/use-group-filter-sort';
 import { scroll } from 'lit-virtualizer';
+import { style } from './lit-omnitable.style.js';
 
 const
 	headerCell = (config, onClick) => column => html`<div class="cell" @click=${onClick} data-column="${column}">${config[column].label}</div>`,
@@ -47,21 +48,12 @@ const
 		}, [sortBy, sortDirection, setSortBy, setSortDirection]);
 		/* eslint-disable indent */
 		return html`
-			<style>
-				.header, .row {
-					display: flex;
-				}
-
-				.cell {
-					flex-basis: 125px;
-				}
-			</style>
+			<style>${style}</style>
 			<div>SortBy: ${sortBy}</div>
 			<div>SortDirection: ${sortDirection}</div>
 			<div class="header">${ columns.map(headerCell(config, sortByColumn)) }</div>
 			<div class="content">${scroll({
 				items: visibleItems,
-				scrollTarget: window,
 				renderItem: row(config)
 			})}</div>
 		`;
