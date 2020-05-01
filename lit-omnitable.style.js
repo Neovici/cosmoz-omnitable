@@ -15,9 +15,4 @@ export const style = `
 		overflow-y: auto;
 		flex: 1;
   }
-
-  .cell {
-		flex-basis: 125px;
-		flex: 1;
-  }
 `;
