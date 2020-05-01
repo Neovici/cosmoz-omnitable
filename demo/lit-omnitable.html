@@ -42,15 +42,19 @@
 		tbl.config = {
 			date: {
 				type: Date,
-				label: 'Date'
+				label: 'Date',
+				dropThreshold: 100,
+				priority: -1
 			},
 			id: {
 				type: Number,
-				label: 'Id'
+				label: 'Id',
+				priority: 1
 			},
 			bool: {
 				type: Boolean,
-				label: 'Boolean'
+				label: 'Boolean',
+				priority: -1
 			},
 			group: {
 				type: String,

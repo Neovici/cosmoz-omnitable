@@ -3,10 +3,6 @@ import {
 	html,
 	useState,
 	useCallback,
-	useRef,
-	useLayoutEffect,
-	useReducer,
-	useEffect,
 	useMemo,
 } from "haunted";
 import {
@@ -41,7 +37,6 @@ const cellStyle = (width) =>
 	Omnitable = function ({ data, config }) {
 		const [sortBy, setSortBy] = useState(undefined);
 		const [sortDirection, setSortDirection] = useState(SORT_ASCENDING);
-		const layouter = useRef(null);
 
 		const { visibleItems, configError } = useGroupFilterSort({
 			config,
@@ -79,7 +74,6 @@ const cellStyle = (width) =>
 		const [layout, setLayout] = useState(undefined);
 		const onLayout = useCallback((event) => setLayout(event.detail), []);
 		const lStyle = useMemo(() => layoutStyle(layout), [layout]);
-		useMemo(() => console.log(layout), [layout]);
 
 		/* eslint-disable indent */
 		return html`
