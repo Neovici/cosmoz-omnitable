@@ -83,6 +83,7 @@ const cellStyle = (width) =>
 			</style>
 			<div>SortBy: ${sortBy}</div>
 			<div>SortDirection: ${sortDirection}</div>
+			<div>visibleItems: ${visibleItems.length}</div>
 			<div class="header">${
 				layout == null
 					? nothing
@@ -91,7 +92,6 @@ const cellStyle = (width) =>
 			<div class="content">
 				<lit-omnitable-layout-helper
 					.config="${config}"
-					.item="${visibleItems[0]}"
 					@layout="${onLayout}"
 				></lit-omnitable-layout-helper>
 				${

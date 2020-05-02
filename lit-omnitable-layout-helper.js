@@ -4,19 +4,19 @@ import { ref } from './lib/directives/ref.js';
 import { useColumnAdjust } from './lib/use-column-adjust.js'
 
 const
-	cell = (item, column, config, hide) =>
+	cell = (column, hide) =>
 		html`<div
 			class="cell"
 			data-id="${column}"
 			style="${hide ? "display: none" : ""}"
-		>${item[column]}</div>`,
+		>&nbsp;</div>`,
 
-	layoutRow = (config, hiddenColumns, item) =>
-		Object.entries(config).map(([column, config]) =>
-			cell(item, column, config, hiddenColumns.includes(column))
+	layoutRow = (columns, hiddenColumns) =>
+		columns.map((column) =>
+			cell(column, hiddenColumns.includes(column))
 		),
 
-	LayoutHelper = function ({ config, item }) {
+	LayoutHelper = function ({ config }) {
 		const container = useRef();
 		const dispatchEvent = useCallback((event) => this.dispatchEvent(event), []);
 		const dropConfig = useMemo(
@@ -32,6 +32,7 @@ const
 				),
 			[config]
 		);
+
 		const { reset, dimensions, hiddenColumns } = useColumnAdjust(
 			container,
 			dropConfig
@@ -70,9 +71,8 @@ const
 			</style>
 			<div class="row" ref="${ref(container)}">
 				${layoutRow(
-					config,
-					hiddenColumns,
-					item
+					Object.keys(config),
+					hiddenColumns
 				)}
 			</div>
 		`;
