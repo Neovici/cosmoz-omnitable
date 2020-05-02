@@ -4,16 +4,18 @@ import { ref } from './lib/directives/ref.js';
 import { useColumnAdjust } from './lib/use-column-adjust.js'
 
 const
-	cell = (column, hide) =>
+	cellStyle = ({width = 'auto', flex = 1}) => `flex: ${flex} 0 ${width}`,
+
+	cell = (column, columnConfig, hide) =>
 		html`<div
 			class="cell"
 			data-id="${column}"
-			style="${hide ? "display: none" : ""}"
+			style="${hide ? "display: none" : cellStyle(columnConfig)}"
 		>&nbsp;</div>`,
 
-	layoutRow = (columns, hiddenColumns) =>
-		columns.map((column) =>
-			cell(column, hiddenColumns.includes(column))
+	layoutRow = (config, hiddenColumns) =>
+		Object.entries(config).map(([column, columnConfig]) =>
+			cell(column, columnConfig, hiddenColumns.includes(column))
 		),
 
 	LayoutHelper = function ({ config }) {
@@ -59,19 +61,10 @@ const
 					display: flex;
 					background: red;
 				}
-
-				.row > .cell {
-					flex: 1;
-					flex-basis: 125px;
-				}
-
-				.cell:first-child {
-					flex-basis: 300px;
-				}
 			</style>
 			<div class="row" ref="${ref(container)}">
 				${layoutRow(
-					Object.keys(config),
+					config,
 					hiddenColumns
 				)}
 			</div>
