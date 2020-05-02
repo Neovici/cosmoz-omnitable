@@ -4,7 +4,7 @@ import { ref } from './lib/directives/ref.js';
 import { useColumnAdjust } from './lib/use-column-adjust.js'
 
 const
-	cellStyle = ({width = 'auto', flex = 1}) => `flex: ${flex} 0 ${width}`,
+	cellStyle = ({width = '55px', flex = 1}) => `flex: ${flex} 0 ${width}`,
 
 	cell = (column, columnConfig, hide) =>
 		html`<div

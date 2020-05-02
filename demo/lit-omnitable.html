@@ -44,7 +44,7 @@
 				type: Date,
 				label: 'Date',
 				width: '300px',
-				dropThreshold: 100,
+				dropThreshold: 200,
 				priority: -1
 			},
 			id: {
@@ -57,19 +57,25 @@
 			bool: {
 				type: Boolean,
 				label: 'Boolean',
-				priority: -1
+				priority: -1,
+				flex: 0
 			},
 			group: {
 				type: String,
-				label: 'Group'
+				label: 'Group',
+				flex: 0,
+				width: "125px"
 			},
 			object: {
 				type: Number,
-				label: 'Object'
+				label: 'Object',
+				flex: 0
 			},
 			dateJSON: {
 				type: String,
-				label: 'DateJSON'
+				label: 'DateJSON',
+				flex: 0,
+				width: '100px'
 			},
 			amount: {
 				type: Object,
