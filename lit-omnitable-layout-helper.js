@@ -27,7 +27,7 @@ const
 					Object.entries(config).map(([column, config]) => [
 						column,
 						{
-							dropThreshold: config.dropThreshold || 100,
+							dropThreshold: config.dropThreshold || config.width,
 							priority: config.priority || 0
 						}
 					])
