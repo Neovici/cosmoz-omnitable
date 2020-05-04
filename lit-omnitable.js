@@ -18,12 +18,14 @@ import { nothing } from "lit-html";
 const cellStyle = (width) =>
 		width > 0 ? `width: ${width}px;` : "display: none;",
 	layoutStyle = (layout = {}) =>
-		Object.entries(layout).map(([column, width]) => `
+		Object.entries(layout).map(
+			([column, width]) => `
 		.header > .cell[data-column="${column}"],
 		.content > .row > .cell[data-column="${column}"] {
 			${cellStyle(width)}
 		}
-	`),
+	`
+		),
 	headerCell = (config, onClick) => (column) =>
 		html`<div class="cell" @click=${onClick} data-column="${column}">
 			${config[column].label}
@@ -84,24 +86,22 @@ const cellStyle = (width) =>
 			<div>SortBy: ${sortBy}</div>
 			<div>SortDirection: ${sortDirection}</div>
 			<div>visibleItems: ${visibleItems.length}</div>
-			<div class="header">${
-				layout == null
+			<div class="header">
+				${layout == null
 					? nothing
-					:	columns.map(headerCell(config, sortByColumn))
-			}</div>
+					: columns.map(headerCell(config, sortByColumn))}
+			</div>
 			<div class="content">
 				<lit-omnitable-layout-helper
 					.config="${config}"
 					@layout="${onLayout}"
 				></lit-omnitable-layout-helper>
-				${
-					layout == null
-						? nothing
-						: scroll({
+				${layout == null
+					? nothing
+					: scroll({
 							items: visibleItems,
 							renderItem,
-						})
-					}
+					  })}
 			</div>
 		`;
 	};

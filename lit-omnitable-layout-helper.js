@@ -4,14 +4,14 @@ import { ref } from './lib/directives/ref.js';
 import { useColumnAdjust } from './lib/use-column-adjust.js'
 
 const
-	cellStyle = ({width = '55px', flex = 1}) => `flex: ${flex} 0 ${width}`,
+	cellStyle = ({width = '100px', flex = 1}) => `flex: ${flex} 1 ${width}`,
 
 	cell = (column, columnConfig, hide) =>
 		html`<div
 			class="cell"
 			data-id="${column}"
 			style="${hide ? "display: none" : cellStyle(columnConfig)}"
-		>&nbsp;</div>`,
+		>&nbsp;xxx</div>`,
 
 	layoutRow = (config, hiddenColumns) =>
 		Object.entries(config).map(([column, columnConfig]) =>
@@ -27,7 +27,7 @@ const
 					Object.entries(config).map(([column, config]) => [
 						column,
 						{
-							dropThreshold: config.dropThreshold || config.width,
+							dropThreshold: config.dropThreshold || config.width || 100,
 							priority: config.priority || 0
 						}
 					])
@@ -53,8 +53,8 @@ const
 			<style>
 				:host {
 					display: block;
-					height: 0;
-					overflow: hidden;
+					/* height: 0;
+					overflow: hidden; */
 				}
 
 				.row {
