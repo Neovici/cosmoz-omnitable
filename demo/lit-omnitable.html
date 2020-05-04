@@ -35,6 +35,7 @@
 <body class="fullbleed">
 	<lit-omnitable id="omnitable"></lit-omnitable>
 	<script type="module">import '../lit-omnitable.js';
+		import { input as inputHeader } from '../lib/headers/input';
 		import { generateTableDemoData } from './table-demo-helper.js';
 
 		const tbl = document.getElementById('omnitable');
@@ -45,77 +46,93 @@
 				label: 'Date',
 				width: '300px',
 				dropThreshold: 200,
-				priority: -1
+				priority: -1,
+				headerRenderer: inputHeader
 			},
 			id: {
 				type: Number,
 				flex: 0,
-				width: '40px',
+				width: '55px',
 				label: 'Id',
-				priority: 1
+				priority: 1,
+				headerRenderer: inputHeader
 			},
 			bool: {
 				type: Boolean,
 				label: 'Boolean',
 				priority: -1,
-				flex: 0
+				flex: 0,
+				headerRenderer: inputHeader
 			},
 			group: {
 				type: String,
 				label: 'Group',
 				flex: 0,
-				width: "125px"
+				width: '125px',
+				headerRenderer: inputHeader
 			},
 			object: {
 				type: Number,
 				label: 'Object',
-				flex: 0
+				flex: 0,
+				headerRenderer: inputHeader
 			},
 			dateJSON: {
 				type: String,
 				label: 'DateJSON',
 				flex: 0,
-				width: '100px'
+				width: '100px',
+				headerRenderer: inputHeader
 			},
 			amount: {
 				type: Object,
-				label: 'Amount'
+				label: 'Amount',
+				headerRenderer: inputHeader
 			},
 			list: {
 				type: Array,
-				label: 'List'
+				label: 'List',
+				headerRenderer: inputHeader
 			},
 			name: {
 				type: String,
-				label: 'Name'
+				label: 'Name',
+				headerRenderer: inputHeader
 			},
 			objectList: {
 				type: Array,
-				label: 'Object list'
+				label: 'Object list',
+				headerRenderer: inputHeader
 			},
 			randomString: {
 				type: String,
-				label: 'randomString'
+				label: 'randomString',
+				headerRenderer: inputHeader
 			},
 			randomString2: {
 				type: String,
-				label: 'randomString2'
+				label: 'randomString2',
+				headerRenderer: inputHeader
 			},
 			randomString3: {
 				type: String,
-				label: 'randomString3'
+				label: 'randomString3',
+				headerRenderer: inputHeader
 			},
 			randomString4: {
 				type: String,
-				label: 'randomString4'
+				label: 'randomString4',
+				headerRenderer: inputHeader
 			},
 			sub: {
 				type: Object,
-				label: 'Sub-property'
+				label: 'Sub-property',
+				headerRenderer: inputHeader
 			},
 			value: {
 				type: Number,
-				label: 'Value'
+				label: 'Value',
+				headerRenderer: inputHeader
 			}
 		};
 

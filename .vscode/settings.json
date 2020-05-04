@@ -8,5 +8,5 @@
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": true
 	},
-	"eslint.enable": false
+	"eslint.enable": true
 }

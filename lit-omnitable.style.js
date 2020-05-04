@@ -22,5 +22,7 @@ export const style = `
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
+		box-sizing: border-box;
+		padding: 0 1.5px;
 	}
 `;
