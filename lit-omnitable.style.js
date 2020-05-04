@@ -7,6 +7,7 @@ export const style = `
   .header, .row {
 		display: flex;
 		width: 100%;
+		overflow: hidden;
   }
 
   .content {

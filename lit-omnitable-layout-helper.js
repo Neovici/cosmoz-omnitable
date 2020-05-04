@@ -2,7 +2,7 @@ import { component, useRef, useCallback, useEffect, useMemo } from "haunted";
 import { html } from "lit-html";
 import { ref } from './lib/directives/ref.js';
 import { useColumnAdjust } from './lib/use-column-adjust.js'
-import { useDebounce } from "./lib/use-debounce.js";
+import { useDebounceRaf } from "./lib/use-debounce-raf.js";
 
 const
 	cellStyle = ({width = '100px', flex = 1}) => `flex: ${flex} 1 ${width}`,
@@ -42,7 +42,7 @@ const
 		);
 
 		useEffect(reset, [reset, config]);
-  	const debouncedDimensions = useDebounce(dimensions, 10);
+  	const debouncedDimensions = useDebounceRaf(dimensions);
 
 		useEffect(() => {
 			if (Object.keys(debouncedDimensions).length === 0) {
