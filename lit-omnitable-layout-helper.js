@@ -12,7 +12,7 @@ const
 			class="cell"
 			data-id="${column}"
 			style="${hide ? "display: none" : cellStyle(columnConfig)}"
-		>&nbsp;xxx</div>`,
+		>&nbsp;</div>`,
 
 	layoutRow = (config, hiddenColumns) =>
 		Object.entries(config).map(([column, columnConfig]) =>
@@ -55,13 +55,12 @@ const
 			<style>
 				:host {
 					display: block;
-					/* height: 0;
-					overflow: hidden; */
+					height: 0;
+					overflow: hidden;
 				}
 
 				.row {
 					display: flex;
-					background: red;
 				}
 			</style>
 			<div class="row" ref="${ref(container)}">

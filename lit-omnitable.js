@@ -36,7 +36,7 @@ const cellStyle = (width) =>
 	row = (item, config) =>
 		html`<div class="row">${Object.entries(config).map(cell(item))}</div>`,
 	// eslint-disable-next-line max-lines-per-function
-	Omnitable = function ({ data, config }) {
+	Omnitable = function ({ data, config, filters }) {
 		const [sortBy, setSortBy] = useState(undefined);
 		const [sortDirection, setSortDirection] = useState(SORT_ASCENDING);
 
@@ -45,6 +45,7 @@ const cellStyle = (width) =>
 			items: data,
 			sortBy,
 			sortDirection,
+			filters,
 		});
 
 		if (configError) {
