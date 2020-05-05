@@ -1,3 +1,10 @@
+## [3.7.1](https://github.com/neovici/cosmoz-omnitable/compare/v3.7.0...v3.7.1) (2020-05-05)
+
+
+### Bug Fixes
+
+* **autocomplete:** handle autocomplete onFocusChange ([b03d95e](https://github.com/neovici/cosmoz-omnitable/commit/b03d95e3b51f7f214c053750e6ec6a49d9ddbd21))
+
 # [3.7.0](https://github.com/neovici/cosmoz-omnitable/compare/v3.6.0...v3.7.0) (2020-04-29)
 
 
