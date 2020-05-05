@@ -38,7 +38,24 @@
 		import { input as inputHeader } from '../lib/headers/input';
 		import { generateTableDemoData } from './table-demo-helper.js';
 
-		const tbl = document.getElementById('omnitable');
+		const tbl = document.getElementById('omnitable'),
+			filters = {},
+			onFilterInput = event => {
+				const {
+					value,
+					column
+				} = event.detail;
+
+				if (value !== null && value !== '') {
+					filters[column] = item => item[column].toString().includes(value);
+				} else {
+					delete filters[column];
+				}
+
+				tbl.filters = Object.values(filters);
+			},
+
+			headerRenderer = inputHeader(onFilterInput);
 
 		tbl.config = {
 			date: {
@@ -47,7 +64,7 @@
 				width: '300px',
 				dropThreshold: 200,
 				priority: -1,
-				headerRenderer: inputHeader
+				headerRenderer
 			},
 			id: {
 				type: Number,
@@ -55,88 +72,88 @@
 				width: '55px',
 				label: 'Id',
 				priority: 1,
-				headerRenderer: inputHeader
+				headerRenderer
 			},
 			bool: {
 				type: Boolean,
 				label: 'Boolean',
 				priority: -1,
 				flex: 0,
-				headerRenderer: inputHeader
+				headerRenderer
 			},
 			group: {
 				type: String,
 				label: 'Group',
 				flex: 0,
 				width: '125px',
-				headerRenderer: inputHeader
+				headerRenderer
 			},
 			object: {
 				type: Number,
 				label: 'Object',
 				flex: 0,
-				headerRenderer: inputHeader
+				headerRenderer
 			},
 			dateJSON: {
 				type: String,
 				label: 'DateJSON',
 				flex: 0,
 				width: '100px',
-				headerRenderer: inputHeader
+				headerRenderer
 			},
 			amount: {
 				type: Object,
 				label: 'Amount',
-				headerRenderer: inputHeader
+				headerRenderer
 			},
 			list: {
 				type: Array,
 				label: 'List',
-				headerRenderer: inputHeader
+				headerRenderer
 			},
 			name: {
 				type: String,
 				label: 'Name',
-				headerRenderer: inputHeader
+				headerRenderer
 			},
 			objectList: {
 				type: Array,
 				label: 'Object list',
-				headerRenderer: inputHeader
+				headerRenderer
 			},
 			randomString: {
 				type: String,
 				label: 'randomString',
-				headerRenderer: inputHeader
+				headerRenderer
 			},
 			randomString2: {
 				type: String,
 				label: 'randomString2',
-				headerRenderer: inputHeader
+				headerRenderer
 			},
 			randomString3: {
 				type: String,
 				label: 'randomString3',
-				headerRenderer: inputHeader
+				headerRenderer
 			},
 			randomString4: {
 				type: String,
 				label: 'randomString4',
-				headerRenderer: inputHeader
+				headerRenderer
 			},
 			sub: {
 				type: Object,
 				label: 'Sub-property',
-				headerRenderer: inputHeader
+				headerRenderer
 			},
 			value: {
 				type: Number,
 				label: 'Value',
-				headerRenderer: inputHeader
+				headerRenderer
 			}
 		};
 
-		const numItems = 2000;
+		const numItems = 20000;
 		tbl.data = generateTableDemoData(
 			Math.sqrt(numItems),
 			Math.sqrt(numItems),
