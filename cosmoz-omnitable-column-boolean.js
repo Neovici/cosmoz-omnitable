@@ -53,6 +53,7 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 				text-property="[[ _textProperty ]]"
 				value="[[ _computeValue(filter) ]]"
 				on-change="_headerValueChanged"
+				on-focus-change="[[ _onFocusChange ]]"
 				limit="[[ _limit ]]"
 			>
 				<paper-spinner-lite
@@ -114,6 +115,11 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 			},
 			_limit: { value: 1 }
 		};
+	}
+
+	constructor() {
+		super();
+		this._onFocusChange = this._onFocusChange.bind(this);
 	}
 
 	/**
@@ -242,6 +248,10 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 
 	_headerValueChanged({ detail: { value: { value } = {}}}) {
 		this.filter = value;
+	}
+
+	_onFocusChange(focused) {
+		this.headerFocused = focused;
 	}
 
 }
