@@ -12,6 +12,9 @@ import { scroll } from 'lit-virtualizer';
 import { style } from './lit-omnitable.style.js';
 import './lit-omnitable-layout-helper.js';
 import { nothing } from 'lit-html';
+import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
+import '@polymer/paper-listbox';
+import '@polymer/paper-item';
 
 const
 	cellStyle = width => width > 0 ? `width: ${width}px;` : 'display: none;',
@@ -87,6 +90,33 @@ const
 							items: visibleItems,
 							renderItem
 						})}
+			</div>
+
+			<div class="footer">
+				<div class="footer-controls">
+					<div class="footer-control">
+						<paper-dropdown-menu
+							vertical-align="bottom"
+							horizontal-align="left"
+							@value-changed=${event => console.log(event)}
+						>
+							<paper-listbox class="dropdown-content" slot="dropdown-content">${
+								columns.map(column => html`<paper-item>${ column }</paper-item>`)
+							}</paper-listbox>
+						</paper-dropdown-menu>
+					</div>
+					<div class="footer-control">
+						<paper-dropdown-menu vertical-align="bottom" horizontal-align="right">
+							<paper-listbox class="dropdown-content" slot="dropdown-content">${
+								columns.map(column => html`<paper-item>${column}</paper-item>`)
+							}</paper-listbox>
+						</paper-dropdown-menu>
+					</div>
+				</div>
+				<div class="footer-tableStats">
+					<span>0 groups</span>
+					<span>${visibleItems.length} rows</span>
+				</div>
 			</div>
 		`;
 	};
