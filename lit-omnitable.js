@@ -6,15 +6,12 @@ import {
 	useMemo
 } from 'haunted';
 import {
-	useGroupFilterSort,
-	SORT_DESCENDING,
-	SORT_ASCENDING
+	useGroupFilterSort
 } from './lib/use-group-filter-sort';
 import { scroll } from 'lit-virtualizer';
 import { style } from './lit-omnitable.style.js';
 import './lit-omnitable-layout-helper.js';
 import { nothing } from 'lit-html';
-import { render } from 'lit-html/lib/shady-render';
 
 const
 	cellStyle = width => width > 0 ? `width: ${width}px;` : 'display: none;',
@@ -46,39 +43,21 @@ const
 	Omnitable = function ({
 		data, config, filters
 	}) {
-		const [sortBy, setSortBy] = useState(undefined),
-			[sortDirection, setSortDirection] = useState(SORT_ASCENDING),
-			{
-				visibleItems, configError
-			} = useGroupFilterSort({
-				config,
-				items: data,
-				sortBy,
-				sortDirection,
-				filters
-			});
+		const {
+			visibleItems,
+			configError
+		} = useGroupFilterSort({
+			config,
+			items: data,
+			filters
+		});
 
 		if (configError) {
 			return html`<p>${configError}</p>`;
 		}
 
-		const columns = Object.keys(config),
-			// sortByColumn = useCallback(
-			// 	event => {
-			// 		const newSortBy = event.target.dataset.column;
-
-			// 		if (sortBy === newSortBy) {
-			// 			setSortDirection(
-			// 				sortDirection === SORT_ASCENDING ? SORT_DESCENDING : SORT_ASCENDING
-			// 			);
-			// 			return;
-			// 		}
-
-			// 		setSortBy(newSortBy);
-			// 		setSortDirection(SORT_ASCENDING);
-			// 	},
-			// 	[sortBy, sortDirection, setSortBy, setSortDirection]
-			// ),
+		const
+			columns = Object.keys(config),
 
 			// BUG: lit-virtualizer does not support changing renderItem at runtime (https://github.com/PolymerLabs/uni-virtualizer/issues/34)
 			// this means that config changes will be ignored
@@ -93,8 +72,6 @@ const
 				${style}
 				${lStyle}
 			</style>
-			<div>SortBy: ${sortBy}</div>
-			<div>SortDirection: ${sortDirection}</div>
 			<div>visibleItems: ${visibleItems.length}</div>
 			<div class="header">
 				${layout == null ? nothing : columns.map(column => headerCell(column, config[column]))}
@@ -109,7 +86,7 @@ const
 					: scroll({
 							items: visibleItems,
 							renderItem
-					  })}
+						})}
 			</div>
 		`;
 	};
