@@ -58,7 +58,7 @@ class OmnitableColumnListHorizontal extends listColumnMixin(
 				source="[[ _source ]]"
 				text-property="[[ textProperty ]]"
 				value="[[  _computeValue(filter) ]]"
-				focused="{{ headerFocused }}"
+				on-focus-change="[[ _onFocusChange ]]"
 				on-change="_headerValueChanged"
 				suggestions-width="[[ suggestionsWidth ]]"
 			>

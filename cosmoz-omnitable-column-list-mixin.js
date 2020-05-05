@@ -47,6 +47,11 @@ export const listColumnMixin = dedupingMixin(base =>	class extends base {
 		};
 	}
 
+	constructor() {
+		super();
+		this._onFocusChange = this._onFocusChange.bind(this);
+	}
+
 	getString(item, valuePath = this.valuePath, textProperty = this.textProperty) {
 		return this.getTexts(item, valuePath, textProperty)
 			.filter(Boolean)
@@ -105,6 +110,10 @@ export const listColumnMixin = dedupingMixin(base =>	class extends base {
 
 	_headerValueChanged({ detail: { value }}) {
 		this.filter = value.map(prop(this.valueProperty));
+	}
+
+	_onFocusChange(focused) {
+		this.headerFocused = focused;
 	}
 });
 
