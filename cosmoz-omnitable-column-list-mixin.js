@@ -36,6 +36,11 @@ export const listColumnMixin = dedupingMixin(base =>	class extends base {
 				type: String
 			},
 
+			query: {
+				type: String,
+				notify: true
+			},
+
 			suggestionsWidth: {
 				type: String
 			},
@@ -46,10 +51,11 @@ export const listColumnMixin = dedupingMixin(base =>	class extends base {
 			}
 		};
 	}
-
 	constructor() {
 		super();
-		this._onFocusChange = this._onFocusChange.bind(this);
+		this._onFocus = this._onFocus.bind(this);
+		this._onChange = this._onChange.bind(this);
+		this._onText = this._onText.bind(this);
 	}
 
 	getString(item, valuePath = this.valuePath, textProperty = this.textProperty) {
@@ -108,12 +114,16 @@ export const listColumnMixin = dedupingMixin(base =>	class extends base {
 		);
 	}
 
-	_headerValueChanged({ detail: { value }}) {
+	_onChange(value) {
 		this.filter = value.map(prop(this.valueProperty));
 	}
 
-	_onFocusChange(focused) {
+	_onFocus(focused) {
 		this.headerFocused = focused;
+	}
+
+	_onText(text) {
+		this.query = text;
 	}
 });
 

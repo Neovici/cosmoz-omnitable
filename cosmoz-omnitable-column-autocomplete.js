@@ -32,8 +32,10 @@ class OmnitableColumnAutocomplete extends listColumnMixin(columnMixin(PolymerEle
 				source="[[ _source ]]"
 				text-property="[[ textProperty ]]"
 				value="[[  _computeValue(filter) ]]"
-				on-focus-change="[[ _onFocusChange ]]"
-				on-change="_headerValueChanged"
+				text="[[ query ]]"
+				on-change="[[ _onChange ]]"
+				on-focus="[[ _onFocus ]]"
+				on-text="[[ _onText ]]"
 				suggestions-width="[[ suggestionsWidth ]]"
 			>
 				<paper-spinner-lite
