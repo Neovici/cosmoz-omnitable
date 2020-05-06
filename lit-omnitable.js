@@ -1,3 +1,13 @@
+/**
+ * TODO:
+ * * extract omnitable function - should have a single return line with the lit-html
+ * * extract Omnitable function - the main hook, that receives the data, config,
+ * sort, sort direction, filters, group, group sort direction, the onXChanged callbacks, and does the grouping, filtering, sorting
+ * * create the cosmoz-omnitable-ui component - combines the omnitable and Omnitable
+ * functions
+ * * create the cosmoz-omnitable standalone component - which sets up state for sort,
+ * filters and group values and uses the cosmoz-omnitable-ui in it.
+ */
 import {
 	component,
 	html,
