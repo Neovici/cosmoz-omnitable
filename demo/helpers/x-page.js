@@ -74,7 +74,7 @@ class XPage extends translatable(PolymerElement) {
 				</cosmoz-omnitable-column-autocomplete>
 				<cosmoz-omnitable-column-autocomplete title="[[ _('Object', t) ]]"
 					name="object" value-path="object" value-property="value"
-					text-property="label" flex="0" width="125px" overflow suggestions-width="180px">
+					text-property="label" flex="0" width="125px" overflow>
 				</cosmoz-omnitable-column-autocomplete>
 				<cosmoz-omnitable-column-date title="DateJSON" name="datejson" value-path="dateJSON" sort-on="dateJSON" group-on="dateJSON" locale="{{ locale }}">
 				</cosmoz-omnitable-column-date>
