@@ -36,6 +36,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(columnMixin(PolymerEle
 				on-change="[[ _onChange ]]"
 				on-focus="[[ _onFocus ]]"
 				on-text="[[ _onText ]]"
+				external="[[ externalValues ]]"
 			>
 				<paper-spinner-lite
 					style="width: 20px; height: 20px;"
