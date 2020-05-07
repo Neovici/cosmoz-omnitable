@@ -73,37 +73,27 @@ suite('boolen', () => {
 		assert.equal(column2.toXlsxValue(data[1]), 'default false label');
 	});
 
-	test('_valueChanged updates _valuePath', () => {
+	test('item change updates valuePath', () => {
 		const item = { boolean: false },
-			e = new CustomEvent('change', {
-				detail: { value: { value: true }}
-			}),
 			changeSpy = spy(column, '_fireItemChangeEvent');
-		e.model = { item };
-		column._valueChanged(e);
+		column._computeItemChange(item)([{ value: true }]);
 		assert.equal(item.boolean, true);
 		assert.isTrue(changeSpy.calledOnce);
 		changeSpy.restore();
 	});
 
-	test('_valueChanged does not update _valuePath if value is equal to oldValue', () => {
+	test('item change does not update valuePath if value is equal to oldValue', () => {
 		const item = { boolean: true },
-			e = new CustomEvent('change', {
-				detail: { value: { value: true }}
-			}),
 			changeSpy = spy(column, '_fireItemChangeEvent');
 
-		e.model = { item };
-		column._valueChanged(e);
+		column._computeItemChange(item)([{ value: true }]);
 		assert.equal(item.boolean, true);
 		assert.isFalse(changeSpy.calledOnce);
 		changeSpy.restore();
 	});
 
-	test('_headerValueChanged updates filter', () => {
-		column._headerValueChanged(new CustomEvent('chnage', {
-			detail: { value: { value: true }}
-		}));
+	test('_onChange updates filter', () => {
+		column._onChange([{ value: true }]);
 		assert.equal(column.filter, true);
 	});
 

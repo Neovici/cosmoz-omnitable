@@ -24,7 +24,7 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 		</template>
 
 		<template class="edit-cell" strip-whitespace>
-			<cosmoz-autocomplete-ui
+			<cosmoz-autocomplete
 				min-length="0"
 				no-label-float
 				label="[[ title ]]"
@@ -32,7 +32,8 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 				source="[[ _source ]]"
 				text-property="[[ _textProperty ]]"
 				value="[[ _computeItemValue(item, valuePath) ]]"
-				on-select="_valueChanged"
+				on-change="[[ _computeItemChange(item, valuePath) ]]"
+				limit="[[ _limit ]]"
 			>
 				<paper-spinner-lite
 					style="width: 20px; height: 20px;"
@@ -52,8 +53,10 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 				source="[[ _source ]]"
 				text-property="[[ _textProperty ]]"
 				value="[[ _computeValue(filter) ]]"
-				on-change="_headerValueChanged"
-				on-focus-change="[[ _onFocusChange ]]"
+				text="[[ query ]]"
+				on-change="[[ _onChange ]]"
+				on-focus="[[ _onFocus ]]"
+				on-text="[[ _onText ]]"
 				limit="[[ _limit ]]"
 			>
 				<paper-spinner-lite
@@ -109,17 +112,27 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 				type: String,
 				value: '0'
 			},
+			/**
+			* The value of the `cosmoz-autocomplete` input.
+			*/
+			query: {
+				type: String,
+				notify: true
+			},
 
 			_textProperty: {
 				value: 'text'
 			},
+
 			_limit: { value: 1 }
 		};
 	}
 
 	constructor() {
 		super();
-		this._onFocusChange = this._onFocusChange.bind(this);
+		this._onFocus = this._onFocus.bind(this);
+		this._onChange = this._onChange.bind(this);
+		this._onText = this._onText.bind(this);
 	}
 
 	/**
@@ -152,27 +165,6 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 	 */
 	_applySingleFilter(filter, item) {
 		return this.get(this.valuePath, item) === filter;
-	}
-
-	/** OVERRIDES */
-
-	_valueChanged({
-		detail: { value: { value } = {}}, model: { item }
-	}) {
-		const oldValue = this.get(this.valuePath, item),
-			formatFn = value => {
-				return value ? this.trueLabel : this.falseLabel;
-			};
-		if (value === oldValue) {
-			return;
-		}
-		this.set(this.valuePath, value, item);
-		this._fireItemChangeEvent(
-			item,
-			this.valuePath,
-			oldValue,
-			formatFn.bind(this)
-		);
 	}
 
 	_serializeFilter(filter = this.filter) {
@@ -246,12 +238,36 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 		);
 	}
 
-	_headerValueChanged({ detail: { value: { value } = {}}}) {
-		this.filter = value;
+	_computeItemChange(item, valuePath = this.valuePath) {
+		return selection => {
+			const value = selection?.[0]?.value,
+				oldValue = this.get(valuePath, item),
+				formatFn = value => {
+					return value ? this.trueLabel : this.falseLabel;
+				};
+			if (value === oldValue) {
+				return;
+			}
+			this.set(valuePath, value, item);
+			this._fireItemChangeEvent(
+				item,
+				this.valuePath,
+				oldValue,
+				formatFn.bind(this)
+			);
+		};
 	}
 
-	_onFocusChange(focused) {
+	_onChange(selection) {
+		this.filter = selection?.[0]?.value;
+	}
+
+	_onFocus(focused) {
 		this.headerFocused = focused;
+	}
+
+	_onText(text) {
+		this.query = text;
 	}
 
 }

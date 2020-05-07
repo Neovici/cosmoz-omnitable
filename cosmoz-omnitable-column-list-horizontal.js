@@ -58,9 +58,11 @@ class OmnitableColumnListHorizontal extends listColumnMixin(
 				source="[[ _source ]]"
 				text-property="[[ textProperty ]]"
 				value="[[  _computeValue(filter) ]]"
-				on-focus-change="[[ _onFocusChange ]]"
-				on-change="_headerValueChanged"
-				suggestions-width="[[ suggestionsWidth ]]"
+				text="[[ query ]]"
+				on-change="[[ _onChange ]]"
+				on-focus="[[ _onFocus ]]"
+				on-text="[[ _onText ]]"
+				external="[[ externalValues ]]"
 			>
 				<paper-spinner-lite
 					style="width: 20px; height: 20px;"
