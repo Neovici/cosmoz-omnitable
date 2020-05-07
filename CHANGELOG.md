@@ -1,3 +1,12 @@
+## [3.7.2](https://github.com/neovici/cosmoz-omnitable/compare/v3.7.1...v3.7.2) (2020-05-07)
+
+
+### Bug Fixes
+
+* autocomplete external filtered columns ([ce2ea40](https://github.com/neovici/cosmoz-omnitable/commit/ce2ea40b627da5ff8fe8bfdfac80e197f15e3e68))
+* autosize autocomplete columns ([9bcd02d](https://github.com/neovici/cosmoz-omnitable/commit/9bcd02dabbb3e347b411085c10cb0a423f05707c))
+* update props for autocomplete columns ([23ddb7f](https://github.com/neovici/cosmoz-omnitable/commit/23ddb7f629cd0d752c92890da34437bd81a0430e))
+
 ## [3.7.1](https://github.com/neovici/cosmoz-omnitable/compare/v3.7.0...v3.7.1) (2020-05-05)
 
 
