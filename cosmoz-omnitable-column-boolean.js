@@ -31,7 +31,7 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 				title="[[ _computeItemTooltip(title, item, valuePath) ]]"
 				source="[[ _source ]]"
 				text-property="[[ _textProperty ]]"
-				value="[[ _computeItemValue(item, valuePath) ]]"
+				value="[[ _computeItemValue(item, valuePath, _source) ]]"
 				on-change="[[ _computeItemChange(item, valuePath) ]]"
 				limit="[[ _limit ]]"
 			>
@@ -52,7 +52,7 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 				title="[[ _computeItemTooltip(title, filter) ]]"
 				source="[[ _source ]]"
 				text-property="[[ _textProperty ]]"
-				value="[[ _computeValue(filter) ]]"
+				value="[[ _computeValue(filter, _source) ]]"
 				text="[[ query ]]"
 				on-change="[[ _onChange ]]"
 				on-focus="[[ _onFocus ]]"
