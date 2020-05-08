@@ -96,22 +96,27 @@ export const listColumnMixin = dedupingMixin(base =>	class extends base {
 	}
 
 	_applyMultiFilter(filters, item) {
-		const values = array(this.get(this.valuePath, item)).map(prop(this.valueProperty));
-		return filters.some(filter => values.includes(filter));
-	}
-
-	_computeValue(
-		filter,
-		source = this._source || [],
-		valueProperty = this.valueProperty
-	) {
-		return source.filter(item =>
-			filter.includes(prop(valueProperty)(item))
+		const valuation = prop(this.valueProperty);
+		return filters.some(filter =>
+			array(this.get(this.valuePath, item)).some(value => valuation(value) === valuation(filter))
 		);
 	}
 
+	_computeValue(
+		filters,
+		source = [],
+		valueProperty = this.valueProperty
+	) {
+		if ((filters?.length || 0) < 1) {
+			return;
+		}
+		const valuation = prop(valueProperty),
+			sourced = source.filter(item => filters.some(filter => valuation(filter) === valuation(item)));
+		return filters.map(filter => sourced.find(item => valuation(item) === valuation(filter)) || filter);
+	}
+
 	_onChange(value) {
-		this.filter = value.map(prop(this.valueProperty));
+		this.filter = value;
 	}
 
 	_onFocus(focused) {
