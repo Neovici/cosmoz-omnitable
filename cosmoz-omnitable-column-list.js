@@ -43,7 +43,7 @@ class OmnitableColumnList extends listColumnMixin(
 					label="[[ title ]]"
 					source="[[ _source ]]"
 					text-property="[[ textProperty ]]"
-					value="[[  _computeValue(filter) ]]"
+					value="[[  _computeValue(filter, _source) ]]"
 					text="[[ query ]]"
 					on-change="[[ _onChange ]]"
 					on-focus="[[ _onFocus ]]"
