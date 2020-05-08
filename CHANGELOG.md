@@ -1,3 +1,11 @@
+## [3.7.3](https://github.com/neovici/cosmoz-omnitable/compare/v3.7.2...v3.7.3) (2020-05-08)
+
+
+### Bug Fixes
+
+* depend on source in computeValue ([f0660a7](https://github.com/neovici/cosmoz-omnitable/commit/f0660a73d18384625c4ac1c8b65a34d20c96d8d8))
+* restore omnitable list column  filter behavior ([c50db01](https://github.com/neovici/cosmoz-omnitable/commit/c50db01af3255657619f8dabf29041b3b691174d))
+
 ## [3.7.2](https://github.com/neovici/cosmoz-omnitable/compare/v3.7.1...v3.7.2) (2020-05-07)
 
 
