@@ -572,7 +572,7 @@ class Omnitable extends mixin({
 
 	_computeSortDirection(descending) {
 		const direction = descending ? this._('Descending') : this._('Ascending');
-		return `(${direction})`;
+		return `(${ direction })`;
 	}
 
 	_computeShowCheckboxes(dataIsValid, hasActions) {
@@ -868,7 +868,7 @@ class Omnitable extends mixin({
 		const column = columns.find(column => column[attribute] === attributeValue);
 		if (!column) {
 			// eslint-disable-next-line no-console
-			console.warn(`Cannot find column with ${attribute} ${attributeValue}`);
+			console.warn(`Cannot find column with ${ attribute } ${ attributeValue }`);
 		}
 		return column;
 	}

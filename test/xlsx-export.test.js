@@ -244,7 +244,7 @@ suite('toXlsx range tests', () => {
 			.slice(1)
 			.forEach((value, index) => {
 				const date	= column.toValue(data[index].date);
-				assert.isOk(date, `date at index: ${index}`);
+				assert.isOk(date, `date at index: ${ index }`);
 				date.setHours(0, 0, 0);
 				assert.equal(column.toValue(value).getTime(), date.getTime());
 			});
