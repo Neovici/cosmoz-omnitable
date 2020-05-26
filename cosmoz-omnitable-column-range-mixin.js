@@ -288,7 +288,7 @@ export const rangeColumnMixin = dedupingMixin(base => // eslint-disable-line max
 			if (text == null) {
 				return title;
 			}
-			return `${title}: ${text}`;
+			return `${ title }: ${ text }`;
 		}
 
 		_fromInputString(value) {

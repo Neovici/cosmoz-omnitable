@@ -310,6 +310,10 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				color: var(--cosmoz-bottom-bar-menubutton-color, var(--light-primary-color));
 				background-color: var(--cosmoz-bottom-bar-menubutton-background-color, var(--dark-primary-color));
 			}
+
+			.boolean-cell[editable] {
+				overflow: initial;
+			}
 		</style>
 	</template>
 </dom-module>`;

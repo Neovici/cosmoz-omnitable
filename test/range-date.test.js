@@ -185,8 +185,8 @@ suite('date', () => {
 			day = new Date(value).getDate();
 
 		column._filterInput = {
-			min: `2017-12-${day}`,
-			max: `2017-12-${day + 1}`
+			min: `2017-12-${ day }`,
+			max: `2017-12-${ day + 1 }`
 		};
 		column._filterInput = {
 			min: '2017-12-22',
@@ -201,8 +201,8 @@ suite('date', () => {
 			day = new Date(value).getDate();
 
 		column._filterInput = {
-			min: `2017-12-${day}`,
-			max: `2017-12-${day}`
+			min: `2017-12-${ day }`,
+			max: `2017-12-${ day }`
 		};
 
 		omnitable.flush();

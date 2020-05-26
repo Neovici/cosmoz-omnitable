@@ -120,6 +120,11 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 				notify: true
 			},
 
+			cellClass: {
+				type: String,
+				value: 'boolean-cell'
+			},
+
 			_textProperty: {
 				value: 'text'
 			},

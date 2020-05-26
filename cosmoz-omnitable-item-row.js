@@ -108,6 +108,7 @@ class OmnitableItemRow extends repeaterMixin(PolymerElement) {
 		element.style.minWidth = column.editable ? column.editMinWidth : column.minWidth;
 		element.style.flexGrow = column.flex;
 		element.style.minHeight = '0.5px';
+		element.toggleAttribute('editable', column.editable);
 		element.setAttribute('title', this._getCellTitle(column, this.item));
 		element.setAttribute('class', this._computeItemRowCellClasses(column));
 	}
