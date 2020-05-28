@@ -1,3 +1,11 @@
+## [3.7.4](https://github.com/neovici/cosmoz-omnitable/compare/v3.7.3...v3.7.4) (2020-05-28)
+
+
+### Bug Fixes
+
+* don't overflow editable boolean column ([93a3fa7](https://github.com/neovici/cosmoz-omnitable/commit/93a3fa735c27b2ec2a0780803874d10422b37179))
+* toggle editable attribute for item row element ([e08d703](https://github.com/neovici/cosmoz-omnitable/commit/e08d70357dd36db8d5bfa8e5ed85fe426404d8e6))
+
 ## [3.7.3](https://github.com/neovici/cosmoz-omnitable/compare/v3.7.2...v3.7.3) (2020-05-08)
 
 
