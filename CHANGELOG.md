@@ -1,3 +1,10 @@
+## [3.7.5](https://github.com/neovici/cosmoz-omnitable/compare/v3.7.4...v3.7.5) (2020-06-03)
+
+
+### Bug Fixes
+
+* restore internal suggestion filtering for autocomplete columns ([62103e7](https://github.com/neovici/cosmoz-omnitable/commit/62103e759401ae77be2d5c189399141e40659498))
+
 ## [3.7.4](https://github.com/neovici/cosmoz-omnitable/compare/v3.7.3...v3.7.4) (2020-05-28)
 
 
