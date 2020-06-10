@@ -80,7 +80,7 @@ export const listColumnMixin = dedupingMixin(base =>	class extends base {
 		if (this.valueProperty == null) {
 			return value;
 		}
-		const subValues = value.reduce((acc, subItem) => {
+		const subValues = array(value).reduce((acc, subItem) => {
 			acc.push(this.get(this.valueProperty, subItem));
 			return acc;
 		}, []);
