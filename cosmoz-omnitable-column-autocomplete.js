@@ -70,6 +70,8 @@ class OmnitableColumnAutocomplete extends listColumnMixin(columnMixin(PolymerEle
 			}
 		};
 	}
-
+	getComparableValue(item, valuePath = this.valuePath) {
+		return this.getString(item, valuePath);
+	}
 }
 customElements.define(OmnitableColumnAutocomplete.is, OmnitableColumnAutocomplete);
