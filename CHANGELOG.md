@@ -1,3 +1,10 @@
+## [3.7.7](https://github.com/neovici/cosmoz-omnitable/compare/v3.7.6...v3.7.7) (2020-06-11)
+
+
+### Bug Fixes
+
+* autocomplete string comparable value ([432e87e](https://github.com/neovici/cosmoz-omnitable/commit/432e87e0fc1402d9e5f6f7aaa635133ed3756a0a))
+
 ## [3.7.6](https://github.com/neovici/cosmoz-omnitable/compare/v3.7.5...v3.7.6) (2020-06-10)
 
 
