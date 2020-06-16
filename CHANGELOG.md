@@ -1,3 +1,10 @@
+## [3.7.8](https://github.com/neovici/cosmoz-omnitable/compare/v3.7.7...v3.7.8) (2020-06-16)
+
+
+### Bug Fixes
+
+* suppress scroll reset on item replace ([9cc4d0c](https://github.com/neovici/cosmoz-omnitable/commit/9cc4d0cf6f9e5a40a0ab0b9053581432793d0f33))
+
 ## [3.7.7](https://github.com/neovici/cosmoz-omnitable/compare/v3.7.6...v3.7.7) (2020-06-11)
 
 
