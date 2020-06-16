@@ -451,10 +451,13 @@ class Omnitable extends mixin({
 			},
 
 			/**
-		 * True when all items are selected.
-		 */
+			 * True when all items are selected.
+			 */
 			_allSelected: {
 				type: Boolean
+			},
+			computedBarHeight: {
+				type: Number
 			}
 		};
 	}
@@ -1380,6 +1383,18 @@ class Omnitable extends mixin({
 
 	/** PUBLIC */
 
+	suppressNextScrollReset() {
+		const list = this.$.groupedList.$.list;
+		// HACK: Replace _resetScrollPosition for one call to maintain scroll position
+		if (list._scrollTop > 0) {
+			const reset = list._resetScrollPosition;
+			list._resetScrollPosition = () => {
+				// restore hack
+				list._resetScrollPosition = reset;
+			};
+		}
+	}
+
 	/**
 	 * Remove multiple items from `data`
 	 * @param {Array} items Array of items to remove
@@ -1414,6 +1429,7 @@ class Omnitable extends mixin({
 		}
 	}
 	replaceItemAtIndex(index, newItem) {
+		this.suppressNextScrollReset();
 		this.splice('data', index, 1, newItem);
 	}
 	/**
