@@ -1,3 +1,11 @@
+## [3.7.9](https://github.com/neovici/cosmoz-omnitable/compare/v3.7.8...v3.7.9) (2020-06-19)
+
+
+### Bug Fixes
+
+* make sure we only evaluate regrouping if actually grouped ([ca3a19e](https://github.com/neovici/cosmoz-omnitable/commit/ca3a19e1e38d356fbbc0d09eec7bc50f2691bb1f))
+* only evaluate resorting if sorted ([286928e](https://github.com/neovici/cosmoz-omnitable/commit/286928e9f00f9b550f6acbad482061e1f1b495e5))
+
 ## [3.7.8](https://github.com/neovici/cosmoz-omnitable/compare/v3.7.7...v3.7.8) (2020-06-16)
 
 
