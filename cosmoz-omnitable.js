@@ -1430,7 +1430,7 @@ class Omnitable extends mixin({
 	}
 	replaceItemAtIndex(index, newItem) {
 		this.suppressNextScrollReset();
-		this.splice('data', index, 1, newItem);
+		this.set(['data', index], newItem);
 	}
 	/**
 	 * Convenience method for setting a value to an item's path and notifying any
