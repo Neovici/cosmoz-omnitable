@@ -697,7 +697,7 @@ class Omnitable extends mixin({
 					}
 				}
 				acc.regroup = acc.regroup || !!this.groupOnColumn && comparer(oldItem, newItem, this.groupOnColumn.valuePath);
-				acc.resort = acc.regroup || acc.resort || comparer(oldItem, newItem, this.sortOnColumn.valuePath);
+				acc.resort = acc.regroup || acc.resort || !!this.sortOnColumn && comparer(oldItem, newItem, this.sortOnColumn.valuePath);
 				return false;
 			});
 			return acc;
