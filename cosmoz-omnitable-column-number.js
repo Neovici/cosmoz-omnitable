@@ -45,6 +45,10 @@ class OmnitableColumnNumber extends rangeColumnMixin(
 			paper-input.has-value > iron-icon {
 				display: block;
 			}
+
+			paper-dropdown-menu {
+				--iron-icon-width: 0;
+			}
 			</style>
 			<cosmoz-clear-button on-click="resetFilter" visible="[[ hasFilter(filter.*) ]]"></cosmoz-clear-button>
 			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]"
