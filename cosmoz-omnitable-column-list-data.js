@@ -37,6 +37,11 @@ class OmnitableColumnListData extends translatable(mixin(Template, PolymerElemen
 				margin: 0.3em 0;
 				padding-left: 0;
 			}
+
+			li {
+				text-overflow: ellipsis;
+				overflow: hidden;
+			}
 		</style>
 
 		<ul hidden$="[[ isEmpty(items) ]]">
