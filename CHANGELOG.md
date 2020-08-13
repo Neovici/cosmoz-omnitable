@@ -1,3 +1,10 @@
+## [3.7.10](https://github.com/neovici/cosmoz-omnitable/compare/v3.7.9...v3.7.10) (2020-08-13)
+
+
+### Bug Fixes
+
+* hide dropdown menu icons [#22545](https://github.com/neovici/cosmoz-omnitable/issues/22545) ([baf9ed2](https://github.com/neovici/cosmoz-omnitable/commit/baf9ed2d911ce8e9fd870f936a7930990cab6e5b))
+
 ## [3.7.9](https://github.com/neovici/cosmoz-omnitable/compare/v3.7.8...v3.7.9) (2020-06-19)
 
 
