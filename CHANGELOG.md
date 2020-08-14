@@ -1,3 +1,10 @@
+## [3.7.11](https://github.com/neovici/cosmoz-omnitable/compare/v3.7.10...v3.7.11) (2020-08-14)
+
+
+### Bug Fixes
+
+* **column-list-data:** add ellipses to overflow ([21335e3](https://github.com/neovici/cosmoz-omnitable/commit/21335e37ed353eac6e73dd6187ff40d1f6a40c0b))
+
 ## [3.7.10](https://github.com/neovici/cosmoz-omnitable/compare/v3.7.9...v3.7.10) (2020-08-13)
 
 
