@@ -27,6 +27,11 @@ class OmnitableColumnDate extends dateColumnMixin(columnMixin(translatable(
 		</template>
 
 		<template class="header" strip-whitespace>
+			<style>
+				paper-dropdown-menu {
+					--iron-icon-width: 0;
+				}
+			</style>
 			<cosmoz-clear-button on-click="resetFilter" visible="[[ hasFilter(filter.*) ]]"></cosmoz-clear-button>
 			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]"
 				class$="external-values-[[ externalValues ]]"
