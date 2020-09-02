@@ -8,7 +8,8 @@ import {
  * @polymer
  * @mixinFunction
  */
-export const listColumnMixin = dedupingMixin(base =>	class extends base {
+// eslint-disable-next-line max-lines-per-function
+export const listColumnMixin = dedupingMixin(base => class extends base {
 	static get properties() {
 		return {
 			/**
@@ -91,7 +92,32 @@ export const listColumnMixin = dedupingMixin(base =>	class extends base {
 		return [];
 	}
 
-	_computeSource(values, valueProperty) {
+	_computeSource(values, valueProperty = this.valueProperty, textProperty = this.textProperty) {
+		if (!Array.isArray(values) && typeof values === 'object') {
+			const valProp = valueProperty ?? 'id',
+				textProp = textProperty ?? 'label';
+			if (valueProperty == null) {
+				this.valueProperty = valProp;
+			}
+			if (textProperty == null) {
+				this.textProperty = textProp;
+			}
+			return Object
+				.entries(values)
+				.map(([id, label]) => ({
+					[valProp]: id,
+					[textProp]: label
+				}))
+				.sort((a, b) => {
+					if (a[textProp] < b[textProp]) {
+						return -1;
+					}
+					if (a[textProp] > b[textProp]) {
+						return 1;
+					}
+					return 0;
+				});
+		}
 		return this._unique(values, valueProperty) || [];
 	}
 
@@ -102,11 +128,7 @@ export const listColumnMixin = dedupingMixin(base =>	class extends base {
 		);
 	}
 
-	_computeValue(
-		filters,
-		source = [],
-		valueProperty = this.valueProperty
-	) {
+	_computeValue(filters, source = [], valueProperty = this.valueProperty) {
 		if ((filters?.length || 0) < 1) {
 			return;
 		}
