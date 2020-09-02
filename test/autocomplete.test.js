@@ -42,26 +42,6 @@ const data = [{
 	</cosmoz-omnitable>
 `;
 
-suite('fit-dropdowns', () => {
-	let omnitable;
-
-	setup(async () => {
-		omnitable = await setupOmnitableFixture(basicFixture, data.slice(0));
-	});
-
-	test('sets iron-dropdown fitInto property', () => {
-		[
-			omnitable.$.groupOnSelector,
-			omnitable.$.sortOnSelector
-		]
-			.map(d => d.$.menuButton)
-			.concat([omnitable.$.bottomBar.$.menu])
-			.forEach(button => {
-				assert.equal(button.$.dropdown.fitInto, omnitable);
-			});
-	});
-});
-
 suite('autocomplete unit tests', () => {
 	let omnitable,
 		column;
@@ -272,5 +252,54 @@ suite('autocomplete unit tests', () => {
 			group: 'group1',
 			name: ' Item 3'
 		}]);
+	});
+	test('values based on data', () => {
+		assert.deepEqual(column.values, [0, 1, 2, 3]);
+		assert.deepEqual(column.values, column._source);
+	});
+	test('overridden values', () => {
+		column.externalValues = true;
+		column.values = [1, 2, 3, 4];
+		assert.deepEqual(column.values, column._source);
+		column.externalValues = false;
+	});
+	test('overridden key/value values', () => {
+		column.externalValues = true;
+		column.values = {
+			id2: 2,
+			id1: 1,
+			id3: 2
+		};
+		assert.deepEqual(column._source, [{
+			id: 'id1',
+			label: 1
+		}, {
+			id: 'id2',
+			label: 2
+		}, {
+			id: 'id3',
+			label: 2
+		}]);
+		column.externalValues = false;
+	});
+});
+
+suite('fit-dropdowns', () => {
+	let omnitable;
+
+	setup(async () => {
+		omnitable = await setupOmnitableFixture(basicFixture, data.slice(0));
+	});
+
+	test('sets iron-dropdown fitInto property', () => {
+		[
+			omnitable.$.groupOnSelector,
+			omnitable.$.sortOnSelector
+		]
+			.map(d => d.$.menuButton)
+			.concat([omnitable.$.bottomBar.$.menu])
+			.forEach(button => {
+				assert.equal(button.$.dropdown.fitInto, omnitable);
+			});
 	});
 });
