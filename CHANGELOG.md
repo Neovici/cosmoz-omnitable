@@ -1,3 +1,15 @@
+# [3.8.0](https://github.com/neovici/cosmoz-omnitable/compare/v3.7.12...v3.8.0) (2020-09-02)
+
+
+### Bug Fixes
+
+* add autocomplete tests for external values, key/value values ([e9dbe8e](https://github.com/neovici/cosmoz-omnitable/commit/e9dbe8e6c6a9dc8a79538a0104f94e960bf34e85))
+
+
+### Features
+
+* autocomplete: allow key/value object suggestions source ([9206a2f](https://github.com/neovici/cosmoz-omnitable/commit/9206a2f80ef7e34d406bf2a94d3ca0ed9d1cf265))
+
 ## [3.7.12](https://github.com/neovici/cosmoz-omnitable/compare/v3.7.11...v3.7.12) (2020-08-18)
 
 
