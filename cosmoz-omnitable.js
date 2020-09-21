@@ -74,11 +74,13 @@ class Omnitable extends mixin({ isEmpty }, translatable(PolymerElement)) {
 			<div class="tableContent" id="tableContent">
 				<template is="dom-if" if="[[ !_dataIsValid ]]">
 					<div class="tableContent-empty">
-						<iron-icon icon="icons:announcement"></iron-icon>
-						<div>
-							<h3>[[ _('Working set empty', t) ]]</h3>
-							<p>[[ _('No data to display', t) ]]</p>
-						</div>
+						<slot name="empty-set-message">
+							<iron-icon icon="icons:announcement"></iron-icon>
+							<div class="tableContent-empty-message">
+								<h3>[[ _('Working set empty', t) ]]</h3>
+								<p>[[ _('No data to display', t) ]]</p>
+							</div>
+						</slot>
 					</div>
 				</template>
 				<template is="dom-if" if="[[ _filterIsTooStrict ]]">

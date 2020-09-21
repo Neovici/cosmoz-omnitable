@@ -121,6 +121,16 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				padding-bottom: 0;
 			}
 
+			.tableContent-empty div.tableContent-empty-message {
+				@apply --layout-vertical;
+				@apply --layout-center-justified;
+				padding-bottom: 24px;
+			}
+
+			.tableContent-empty.overlay div.tableContent-empty-message {
+				padding-bottom: 0;
+			}
+
 			.tableContent-empty p {
 				font-size: 15px;
 				color: #ddd;
