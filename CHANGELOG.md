@@ -1,3 +1,10 @@
+## [3.8.1](https://github.com/neovici/cosmoz-omnitable/compare/v3.8.0...v3.8.1) (2020-09-21)
+
+
+### Bug Fixes
+
+* autocomplete, only render spinner when loading [#24260](https://github.com/neovici/cosmoz-omnitable/issues/24260) ([2461b1a](https://github.com/neovici/cosmoz-omnitable/commit/2461b1a19f7b6f9a33979bb78a7907a4da16f9b0))
+
 # [3.8.0](https://github.com/neovici/cosmoz-omnitable/compare/v3.7.12...v3.8.0) (2020-09-02)
 
 
