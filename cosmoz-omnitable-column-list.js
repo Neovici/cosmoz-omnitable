@@ -49,13 +49,14 @@ class OmnitableColumnList extends listColumnMixin(
 					on-focus="[[ _onFocus ]]"
 					on-text="[[ _onText ]]"
 				>
-					<paper-spinner-lite
-						style="width: 20px; height: 20px;"
-						suffix
-						slot="suffix"
-						active="[[ loading ]]"
-						hidden="[[ !loading ]]"
-					></paper-spinner-lite>
+					<template is="dom-if" if="[[ loading ]]">
+						<paper-spinner-lite
+							style="width: 20px; height: 20px;"
+							suffix
+							slot="suffix"
+							active="[[ loading ]]"
+						></paper-spinner-lite>
+					</template>
 				</cosmoz-autocomplete-ui>
 			</template>
 		`;
