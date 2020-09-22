@@ -1,3 +1,10 @@
+## [3.8.2](https://github.com/neovici/cosmoz-omnitable/compare/v3.8.1...v3.8.2) (2020-09-22)
+
+
+### Bug Fixes
+
+* list, only render spinner when loading [#24260](https://github.com/neovici/cosmoz-omnitable/issues/24260) ([213860f](https://github.com/neovici/cosmoz-omnitable/commit/213860f19767b9b41b0faa2399c8bf6bf1ca8a9a))
+
 ## [3.8.1](https://github.com/neovici/cosmoz-omnitable/compare/v3.8.0...v3.8.1) (2020-09-21)
 
 
