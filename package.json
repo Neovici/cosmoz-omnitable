@@ -58,7 +58,7 @@
 	},
 	"dependencies": {
 		"@neovici/cosmoz-autocomplete": "^2.4.6",
-		"@neovici/cosmoz-bottom-bar": "^3.0.10",
+		"@neovici/cosmoz-bottom-bar": "^3.1.4",
 		"@neovici/cosmoz-datetime-input": "^3.0.3",
 		"@neovici/cosmoz-grouped-list": "^3.1.0",
 		"@neovici/cosmoz-i18next": "^3.1.1",
@@ -69,7 +69,6 @@
 		"@polymer/iron-icon": "^3.0.0",
 		"@polymer/iron-icons": "^3.0.0",
 		"@polymer/iron-label": "^3.0.0",
-		"@polymer/iron-resizable-behavior": "^3.0.0",
 		"@polymer/paper-button": "^3.0.0",
 		"@polymer/paper-checkbox": "^3.0.0",
 		"@polymer/paper-dropdown-menu": "^3.1.0",
