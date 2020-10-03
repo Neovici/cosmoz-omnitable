@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+	<title>Cosmoz Omnitable demo</title>
+
+	<script src="/components/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+	<script src="/components/web-animations-js/web-animations-next-lite.min.js"></script>
+	<script type="module" src="/components/@polymer/iron-flex-layout/iron-flex-layout.js"></script>
+	<script type="module" src="/components/@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
+
+	<custom-style>
+		<style is="custom-style" include="iron-flex iron-flex-alignment iron-positioning">
+			html, body {
+				height: 100%;
+				margin: 0;
+			}
+
+			body {
+				display: flex;
+				flex-direction: column;
+			}
+
+			#omnitable {
+				flex: 1;
+			}
+		</style>
+	</custom-style>
+
+</head>
+
+<body class="fullbleed">
+	<lit-omnitable id="omnitable"></lit-omnitable>
+	<script type="module">import '../lit-omnitable.js';
+		import { input as inputHeader } from '../lib/headers/input';
+		import { generateTableDemoData } from './table-demo-helper.js';
+
+		const tbl = document.getElementById('omnitable'),
+			filters = {},
+			onFilterInput = event => {
+				const {
+					value,
+					column
+				} = event.detail;
+
+				if (value !== null && value !== '') {
+					filters[column] = item => item[column].toString().includes(value);
+				} else {
+					delete filters[column];
+				}
+
+				tbl.filters = Object.values(filters);
+			},
+
+			headerRenderer = inputHeader(onFilterInput);
+
+		tbl.config = {
+			date: {
+				type: Date,
+				label: 'Date',
+				width: '300px',
+				dropThreshold: 200,
+				priority: -1,
+				headerRenderer
+			},
+			id: {
+				type: Number,
+				flex: 0,
+				width: '55px',
+				label: 'Id',
+				priority: 1,
+				headerRenderer
+			},
+			bool: {
+				type: Boolean,
+				label: 'Boolean',
+				priority: -1,
+				flex: 0,
+				headerRenderer
+			},
+			group: {
+				type: String,
+				label: 'Group',
+				flex: 0,
+				width: '125px',
+				headerRenderer
+			},
+			object: {
+				type: Number,
+				label: 'Object',
+				flex: 0,
+				headerRenderer
+			},
+			dateJSON: {
+				type: String,
+				label: 'DateJSON',
+				flex: 0,
+				width: '100px',
+				headerRenderer
+			},
+			amount: {
+				type: Object,
+				label: 'Amount',
+				headerRenderer
+			},
+			list: {
+				type: Array,
+				label: 'List',
+				headerRenderer
+			},
+			name: {
+				type: String,
+				label: 'Name',
+				headerRenderer
+			},
+			objectList: {
+				type: Array,
+				label: 'Object list',
+				headerRenderer
+			},
+			randomString: {
+				type: String,
+				label: 'randomString',
+				headerRenderer
+			},
+			randomString2: {
+				type: String,
+				label: 'randomString2',
+				headerRenderer
+			},
+			randomString3: {
+				type: String,
+				label: 'randomString3',
+				headerRenderer
+			},
+			randomString4: {
+				type: String,
+				label: 'randomString4',
+				headerRenderer
+			},
+			sub: {
+				type: Object,
+				label: 'Sub-property',
+				headerRenderer
+			},
+			value: {
+				type: Number,
+				label: 'Value',
+				headerRenderer
+			}
+		};
+
+		const numItems = 20000;
+		tbl.data = generateTableDemoData(
+			Math.sqrt(numItems),
+			Math.sqrt(numItems),
+			1000
+		);
+
+	</script>
+</body>
+
+</html>

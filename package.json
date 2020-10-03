@@ -80,6 +80,8 @@
 		"@polymer/polymer": "^3.3.1",
 		"@webcomponents/shadycss": "^1.10.0",
 		"file-saver": "github:plumelo/FileSaver.js",
+		"haunted": "^4.7.0",
+		"lit-virtualizer": "^0.4.2",
 		"web-animations-js": "^2.3.2"
 	},
 	"devDependencies": {
