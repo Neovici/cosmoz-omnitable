@@ -1,3 +1,10 @@
+## [3.8.3](https://github.com/neovici/cosmoz-omnitable/compare/v3.8.2...v3.8.3) (2020-10-03)
+
+
+### Bug Fixes
+
+* replace iron-resizable-behavior with a ResizeObserver ([3254986](https://github.com/neovici/cosmoz-omnitable/commit/3254986971a45d696e55ec1e9c4bcba7f05b3c90))
+
 ## [3.8.2](https://github.com/neovici/cosmoz-omnitable/compare/v3.8.1...v3.8.2) (2020-09-22)
 
 
