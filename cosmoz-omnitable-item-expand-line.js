@@ -1,6 +1,3 @@
-import '@webcomponents/shadycss/entrypoints/apply-shim';
-import '@polymer/iron-flex-layout/iron-flex-layout';
-
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
 
@@ -9,10 +6,10 @@ class OmnitableItemExpandLine extends PolymerElement {
 		return html`
 		<style>
 			:host {
-				@apply --layout-horizontal;
-				@apply --layout-center;
-				@apply --layout-wrap;
-			}
+				display: flex;
+				align-items: center;
+				flex-wrap: wrap;
+		}
 
 			.item-expand-label {
 				overflow: hidden;

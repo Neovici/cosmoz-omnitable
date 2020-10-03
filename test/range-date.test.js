@@ -50,7 +50,7 @@ const data = [{
 		time: '00:00:00'
 	}],
 	rangeFixture = html`
-		<cosmoz-omnitable id="omnitable" class="flex">
+		<cosmoz-omnitable id="omnitable">
 			<cosmoz-omnitable-column-number title="Age" name="age" value-path="age">
 			</cosmoz-omnitable-column-number>
 			<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount">

@@ -18,7 +18,7 @@ suite('basic', () => {
 
 	setup(async () => {
 		omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable id="omnitable" class="flex" selection-enabled>
+			<cosmoz-omnitable id="omnitable" selection-enabled>
 				<cosmoz-omnitable-column-date id="date1" name="date1" value-path="date">
 				</cosmoz-omnitable-column-date>
 				<cosmoz-omnitable-column-date id="date2" name="date2" value-path="dateJson">
@@ -157,7 +157,7 @@ suite('it logs unnamed column', () => {
 		// We must stub console.error otherwise the test will fail
 		consoleErrorStub = sinon.stub(window.console, 'error');
 		omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable id="omnitable" class="flex" selection-enabled>
+			<cosmoz-omnitable id="omnitable" selection-enabled>
 				<cosmoz-omnitable-column-date id="date1" name="date1" value-path="date">
 				</cosmoz-omnitable-column-date>
 				<cosmoz-omnitable-column-date id="date2" value-path="dateJson">
@@ -196,7 +196,7 @@ suite('item update effects', () => {
 		// We must stub console.error otherwise the test will fail
 		consoleErrorStub = sinon.stub(window.console, 'error');
 		omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable id="omnitable" class="flex" selection-enabled group-on="date1" sort-on="date2">
+			<cosmoz-omnitable id="omnitable" selection-enabled group-on="date1" sort-on="date2">
 				<cosmoz-omnitable-column-date id="date1" name="date1" value-path="date">
 				</cosmoz-omnitable-column-date>
 				<cosmoz-omnitable-column-date id="date2" name="date2" value-path="dateJson">

@@ -1,8 +1,6 @@
 /* eslint-disable max-lines */
 import '@webcomponents/shadycss/entrypoints/apply-shim';
 
-import '@polymer/iron-flex-layout/iron-flex-layout';
-import '@polymer/iron-flex-layout/iron-flex-layout-classes';
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-icon/iron-icon';
 import '@polymer/iron-label/iron-label';
@@ -59,7 +57,7 @@ class Omnitable extends mixin({ isEmpty }, translatable(PolymerElement)) {
 	/* eslint-disable-next-line max-lines-per-function */
 	static get template() {
 		const template = html`
-		<style include="cosmoz-omnitable-styles iron-flex">
+		<style include="cosmoz-omnitable-styles">
 			/* polymer-cli v1.7.x linter breaks with empty line */
 		</style>
 

@@ -18,7 +18,8 @@ class OmnitableItemExpand extends repeaterMixin(PolymerElement) {
 		return html`
 		<style>
 			:host([expanded]) {
-				@apply --layout-vertical;
+				display: flex;
+				flex-direction: column;
 				padding: 5px 4%;
 				line-height: 1.3em;
 				border-bottom: solid 1px #e2e2e2;

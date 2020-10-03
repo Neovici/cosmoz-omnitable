@@ -15,7 +15,7 @@ suite('id', () => {
 	setup(async () => {
 		data = generateTableDemoData(10, 11, 25);
 		omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable class="flex" group-on="id">
+			<cosmoz-omnitable group-on="id">
 				<cosmoz-omnitable-column title="Id" name="id" value-path="id" sort-on="id">
 					<template class="cell">
 						<a href="#!/purchase/suppliers/view?id=[[ item.id ]]">[[ item.id ]]</a>
@@ -64,7 +64,7 @@ suite('bool', () => {
 	setup(async () => {
 		data = generateTableDemoData(10, 11, 25);
 		omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable class="flex" group-on="bool">
+			<cosmoz-omnitable group-on="bool">
 				<cosmoz-omnitable-column title="Id" name="id" value-path="id" sort-on="id">
 					<template class="cell">
 						<a href="#!/purchase/suppliers/view?id=[[ item.id ]]">[[ item.id ]]</a>
@@ -104,7 +104,7 @@ suite('amount', () => {
 	setup(async () => {
 		data = generateTableDemoData(10, 11, 25);
 		omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable class="flex" group-on="amount">
+			<cosmoz-omnitable group-on="amount">
 				<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount" sort-on="amount">
 				</cosmoz-omnitable-column-amount>
 			</cosmoz-omnitable>

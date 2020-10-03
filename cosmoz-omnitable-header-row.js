@@ -16,12 +16,11 @@ class OmnitableHeaderRow extends repeaterMixin(PolymerElement) {
 		return html`
 		<style>
 			:host {
-				@apply --layout-horizontal;
-				@apply --layout-end;
+				display: flex;
+				align-items: flex-end;
 			}
-
 			:host > ::slotted(*) {
-				@apply --layout-flex;
+				flex: 1 0.000000001px;
 				padding: 0 3px;
 				white-space: nowrap;
 				text-overflow: ellipsis;

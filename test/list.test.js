@@ -16,7 +16,7 @@ suite('basic', () => {
 			{ list: ['item 1', 'item 2', 'item 3']}
 		];
 		const omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable id="omnitable" class="flex" selection-enabled>
+			<cosmoz-omnitable id="omnitable" selection-enabled>
 				<cosmoz-omnitable-column-list name="list" value-path="list">
 				</cosmoz-omnitable-column-list>
 			</cosmoz-omnitable>
@@ -68,7 +68,7 @@ suite('horizontal', () => {
 			{ list: ['item 1', 'item 2', 'item 3']}
 		];
 		const omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable id="omnitable" class="flex" selection-enabled>
+			<cosmoz-omnitable id="omnitable" selection-enabled>
 				<cosmoz-omnitable-column-list-horizontal name="list" value-path="list">
 				</cosmoz-omnitable-column-list-horizontal>
 			</cosmoz-omnitable>

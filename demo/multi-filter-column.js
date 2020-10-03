@@ -21,6 +21,7 @@ class MultiFilterColumn extends columnMixin(PolymerElement) {
 				<paper-input label="[[title]]" value="{{filters}}"></paper-input>
 			</template>
 		</cosmoz-omnitable-templatizer>
+
 `;
 	}
 

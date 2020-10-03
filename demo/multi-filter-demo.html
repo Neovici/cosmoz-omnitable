@@ -6,48 +6,55 @@
 
 	<title>Cosmoz Omnitable demo</title>
 
-	<script src="/components/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-	<script src="/components/web-animations-js/web-animations-next-lite.min.js"></script>
-	<script type="module" src="/components/@polymer/polymer/polymer-element.js"></script>
-	<script type="module" src="/components/@polymer/iron-flex-layout/iron-flex-layout.js"></script>
-	<script type="module" src="/components/@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
-	<script type="module" src="/components/@polymer/iron-icons/editor-icons.js"></script>
-	<script type="module" src="/components/@polymer/iron-icons/iron-icons.js"></script>
-	<script type="module" src="/components/@polymer/paper-button/paper-button.js"></script>
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+	<script src="/node_modules/web-animations-js/web-animations-next-lite.min.js"></script>
+	<script type="module" src="/node_modules/@polymer/polymer/polymer-element.js"></script>
+	<script type="module" src="/node_modules/@polymer/iron-icons/editor-icons.js"></script>
+	<script type="module" src="/node_modules/@polymer/iron-icons/iron-icons.js"></script>
+	<script type="module" src="/node_modules/@polymer/paper-button/paper-button.js"></script>
 	<script type="module" src="../cosmoz-omnitable.js"></script>
 	<script type="module" src="./multi-filter-column.js"></script>
 
 	<script type="module" src="./table-demo-helper.js"></script>
 
-	<custom-style>
-		<style is="custom-style" include="iron-flex iron-flex-alignment iron-positioning"></style>
-	</custom-style>
+	<style>
+		body, x-page { margin: 0; height: 100vh; }
+	</style>
 
 </head>
-<body class="fullbleed">
+<body>
 	<dom-module id="x-page">
 		<template>
-			<style include="iron-flex iron-positioning">
+			<style>
 				:host {
-					display: block;
+					display: flex;
+					flex-direction: column;
 					position: relative;
 				}
+
+				#container {
+					display: flex;
+					flex-direction: column;
+					flex: 1;
+				}
+
+				cosmoz-omnitable { flex: auto; }
 
 				.action {
 					padding: 5px;
 					margin: 5px 5px 10px 5px;
 				}
 			</style>
-			<div class="layout vertical fit">
+			<div id="container">
 				<h3>Cosmoz omnitable multi value filter demo</h3>
 
-				<div class="layout horizontal center">
+				<div style="display: flex; align-items: center">
 					<button class="action" on-tap="changeData">Generate a new data set</button>
 					<div class="action">
 						Selected items count: <span>{{selectedItems.length}}</span>
 					</div>
 				</div>
-				<div class="layout vertical">
+				<div style="display: flex; flex-direction: column;">
 					<div>Id filters</div>
 					<ul>
 						<template is="dom-repeat" items="{{idFilters}}">
@@ -56,7 +63,7 @@
 					</ul>
 				</div>
 
-				<cosmoz-omnitable id="omnitable" data="[[data]]" class="flex" selection-enabled selected-items="{{selectedItems}}">
+				<cosmoz-omnitable id="omnitable" data="[[data]]" selection-enabled selected-items="{{selectedItems}}">
 					<multi-filter-column title="Id" name="id" value-path="id" filter="{{idFilters}}">
 					</multi-filter-column>
 					<cosmoz-omnitable-column-boolean title="Boolean" name="bool" value-path="bool" filter="{{boolFilter}}" true-label="Yes" false-label="No"></cosmoz-omnitable-column-boolean>
@@ -71,7 +78,7 @@
 		</template>
 	</dom-module>
 
-	<x-page class="fit"></x-page>
+	<x-page></x-page>
 
 	<script type="module">
 		import { PolymerElement } from '@polymer/polymer/polymer-element';

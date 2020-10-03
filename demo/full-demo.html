@@ -8,15 +8,12 @@
 
 	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 	<script src="/node_modules/web-animations-js/web-animations-next-lite.min.js"></script>
-	<script type="module" src="/node_modules/@polymer/iron-flex-layout/iron-flex-layout.js"></script>
-	<script type="module" src="/node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
 	<script type="module" src="./helpers/x-page.js"></script>
-
-	<custom-style>
-		<style is="custom-style" include="iron-flex iron-flex-alignment iron-positioning"></style>
-	</custom-style>
+	<style>
+		body, x-page { margin: 0;  height: 100vh; }
+	</style>
 
 </head>
-<body class="fullbleed">
-	<x-page class="fit" />
+<body>
+	<x-page></x-page>
 </body></html>

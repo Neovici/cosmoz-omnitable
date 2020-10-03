@@ -1,6 +1,3 @@
-import '@webcomponents/shadycss/entrypoints/apply-shim';
-
-import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import './ui-helpers/cosmoz-clear-button';

@@ -10,26 +10,31 @@
 	<script src="/node_modules/web-animations-js/web-animations-next-lite.min.js"></script>
 
 	<script type="module" src="/node_modules/@polymer/polymer/polymer-element.js"></script>
-	<script type="module" src="/node_modules/@polymer/iron-flex-layout/iron-flex-layout.js"></script>
-	<script type="module" src="/node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
 	<script type="module" src="/node_modules/@polymer/iron-icons/editor-icons.js"></script>
 	<script type="module" src="/node_modules/@polymer/iron-icons/iron-icons.js"></script>
 	<script type="module" src="/node_modules/@polymer/paper-button/paper-button.js"></script>
 	<script type="module" src="../cosmoz-omnitable.js"></script>
-
-	<custom-style>
-		<style is="custom-style" include="iron-flex iron-flex-alignment iron-positioning"></style>
-	</custom-style>
-
+	<style>
+		body, x-page { margin: 0; height: 100vh; }
+	</style>
 </head>
-<body class="fullbleed">
+<body>
 	<dom-module id="x-page">
 		<template>
-			<style include="iron-flex iron-positioning">
+			<style>
 				:host {
-					display: block;
+					display: flex;
+					flex-direction: column;
 					position: relative;
 				}
+
+				#container {
+					display: flex;
+					flex-direction: column;
+					flex: 1;
+				}
+
+				cosmoz-omnitable { flex: auto; }
 
 				.action {
 					padding: 5px;
@@ -56,19 +61,19 @@
 					opacity: 1;
 				}
 			</style>
-			<div class="layout vertical fit">
+			<div id="container">
 				<h3>Cosmoz omnitable demo</h3>
 
 				<div id="info"><span>[[info]]</span></div>
 
-				<div class="layout horizontal center">
+				<div style="display: flex; align-items: center">
 					<button class="action" on-tap="changeData">Generate a new data set</button>
 					<div class="action">
 						Selected items count: <span>{{selectedItems.length}}</span>
 					</div>
 				</div>
 
-				<cosmoz-omnitable id="omnitable" data="[[data]]" class="flex" selection-enabled selected-items="{{selectedItems}}">
+				<cosmoz-omnitable id="omnitable" data="[[data]]" selection-enabled selected-items="{{selectedItems}}">
 					<cosmoz-omnitable-column title="Id" name="id" value-path="id"></cosmoz-omnitable-column>
 					<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" editable>
 					</cosmoz-omnitable-column-number>
@@ -92,7 +97,7 @@
 		</template>
 	</dom-module>
 
-	<x-page class="fit"></x-page>
+	<x-page></x-page>
 
 	<script type="module">
 import { PolymerElement } from '@polymer/polymer/polymer-element';
@@ -164,7 +169,7 @@ class XPage extends translatable(PolymerElement) {
 
 	_itemChanged(e) {
 		const change = e.detail;
-		this.info = `Column ${e.target.name}: Item ${change.valuePath} changed from "${change.oldValue}" to "${change.value}"`;
+		this.info = `Column ${ e.target.name }: Item ${ change.valuePath } changed from "${ change.oldValue }" to "${ change.value }"`;
 	}
 }
 customElements.define(XPage.is, XPage);

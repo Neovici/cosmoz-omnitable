@@ -1,5 +1,4 @@
 import '@webcomponents/shadycss/entrypoints/apply-shim';
-import '@polymer/iron-flex-layout/iron-flex-layout';
 
 const container = document.createElement('template');
 
@@ -7,8 +6,9 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 	<template>
 		<style>
 			:host {
-				@apply --layout-vertical;
-				@apply --layout-relative;
+				display: flex;
+				flex-direction: column;
+				position: relative;
 				overflow: hidden;
 			}
 
@@ -19,9 +19,9 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 			/* The wrapping div that contains the header, the table content and the footer */
 			.mainContainer {
 				background-color: #fff;
-				@apply --layout-vertical;
-				@apply --layout-flex;
-
+				display: flex;
+				flex-direction: column;
+				flex: auto;
 			}
 
 			#columns {
@@ -29,9 +29,9 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 			}
 
 			.header {
-				@apply --layout-relative;
-				@apply --layout-horizontal;
-				@apply --layout-end;
+				position: relative;
+				display: flex;
+				align-items: flex-end;
 			}
 
 			[hidden] {
@@ -47,7 +47,7 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 			}
 
 			.header > cosmoz-omnitable-header-row {
-				@apply --layout-flex;
+				flex: auto;
 			}
 
 			.header-cell > * {
@@ -65,18 +65,23 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 			.tableContent {
 				overflow-y: auto;
 				min-height: 90px;
-				@apply --layout-vertical;
-				@apply --layout-flex;
-				@apply --layout-relative;
+				display: flex;
+				flex-direction: column;
+				position: relative;
+				flex: auto;
 			}
 
 			/* Empty data set styling */
 
 			.tableContent-empty {
-				@apply --layout-fit;
-				@apply --layout-horizontal;
-				@apply --layout-center;
-				@apply --layout-center-justified;
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				display: flex;
+				align-items: center;
+				justify-content: center;
 				color: #ccc;
 			}
 
@@ -106,8 +111,9 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 			}
 
 			.tableContent-empty > div {
-				@apply --layout-vertical;
-				@apply --layout-center-justified;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
 				padding-bottom: 24px;
 			}
 
@@ -130,19 +136,23 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 
 
 			.tableContent-scroller {
-				@apply --layout-flex;
+				flex: auto;
 				position: relative;
 				overflow: auto;
 				will-change: transform;
 			}
 
 			#groupedList {
-				@apply --layout-fit;
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
 			}
 
 			.footer {
-				@apply --layout-horizontal;
-				@apply --layout-center;
+				display: flex;
+				align-items: center;
 				border-top: solid 1px #e8e8e8;
 				background-color: #f5f5f5;
 				min-height: 25px;
@@ -151,20 +161,21 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 			}
 
 			.footer-controls {
-				@apply --layout-horizontal;
-				@apply --layout-flex;
-				@apply --layout-center;
+				display: flex;
+				align-items: center;
+				flex: auto;
 			}
 
 			.footer-control {
 				margin-left: 3%;
-				@apply --layout-horizontal;
-				@apply --layout-center;
+				display: flex;
+				align-items: center;
 			}
 
 			.footer-tableStats {
-				@apply --layout-vertical;
-				@apply --layout-end;
+				display: flex;
+				flex-direction: column;
+				align-items: flex-end;
 				margin-right: 3%;
 			}
 
@@ -205,8 +216,8 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				/* set a min-height for rows so that rows with empty values are visible */
 				min-height: var(--item-row-min-height, 24px);
 				padding-right: 8px;
-				@apply --layout-horizontal;
-				@apply --layout-center;
+				display: flex;
+				align-items: center;
 			}
 
 			.itemRow[selected] {
@@ -230,8 +241,8 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 			}
 
 			.groupRow {
-				@apply --layout-horizontal;
-				@apply --layout-center;
+				display: flex;
+				align-items: center;
 				background-color: #efefef;
 				font-weight: 400;
 				color: #48515b;
@@ -243,8 +254,8 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 			}
 
 			.groupRow-label {
-				@apply --layout-flex;
-				@apply --layout-horizontal;
+				display: flex;
+				flex: auto;
 				align-items: center;
 				flex-wrap: wrap;
 				padding-left: 8px;
@@ -257,7 +268,7 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 			}
 
 			.groupRow-label > cosmoz-omnitable-group-row {
-				@apply --layout-flex;
+				flex: auto;
 			}
 
 			.rtl {
@@ -291,8 +302,8 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 
 			#dropdownExtra paper-button, #dropdownExtra ::slotted(paper-button) {
 				display: flex;
-				@apply --layout-center;
-				@apply --layout-horizontal;
+				flex-direction: row;
+				align-items: center;
 				position: relative;
 				@apply --cosmoz-bottom-bar-menu-item;
 			}

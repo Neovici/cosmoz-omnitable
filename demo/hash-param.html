@@ -7,18 +7,14 @@
 	<title>cosmoz-omnitable hash-param demo</title>
 
 	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-
-	<script type="module" src="/node_modules/@polymer/iron-flex-layout/iron-flex-layout.js"></script>
-	<script type="module" src="/node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
 	<script type="module" src="/node_modules/@neovici/cosmoz-page-router/cosmoz-page-router.js"></script>
 
-	<custom-style>
-		<style is="custom-style" include="iron-flex iron-flex-alignment iron-positioning"></style>
-	</custom-style>
-
+	<style>
+		body, demo-router { margin: 0; height: 100vh; }
+	</style>
 </head>
-<body unresolved class="fullbleed">
-	<demo-router class="fit" id="appRouter" />
+<body>
+	<demo-router id="appRouter" />
 	<script type="module">
 		import { html } from 'lit-html';
 		import { component } from 'haunted';
@@ -28,7 +24,7 @@
 				{
 					rule: hashbang(/^\/$/u),
 					handle: () => import('./helpers/x-page.js').then(() =>
-						html`<x-page class="fit" style="height: 100%; width: 100%;" hash-param="full" />`)
+						html`<x-page style="height: 100%; width: 100%;" hash-param="full" />`)
 				}
 		],
 		DemoRouter = () => {

@@ -1,7 +1,3 @@
-import '@webcomponents/shadycss/entrypoints/apply-shim';
-
-import '@polymer/iron-flex-layout/iron-flex-layout';
-
 import { translatable } from '@neovici/cosmoz-i18next';
 import {
 	mixin, Template
