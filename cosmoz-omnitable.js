@@ -37,12 +37,9 @@ import {
 } from '@polymer/polymer/lib/utils/async';
 import { Debouncer } from '@polymer/polymer/lib/utils/debounce';
 import { FlattenedNodesObserver } from '@polymer/polymer/lib/utils/flattened-nodes-observer';
-
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
 
-import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class';
-import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior';
 import { translatable } from '@neovici/cosmoz-i18next';
 import { mixin } from '@neovici/cosmoz-utils';
 import { isEmpty } from '@neovici/cosmoz-utils/lib/template.js';
@@ -58,13 +55,7 @@ const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending', 'groupOnDescend
  * @demo demo/index.html
  */
 
-class Omnitable extends mixin({
-	isEmpty
-}, translatable(
-	mixinBehaviors([
-		IronResizableBehavior
-	], PolymerElement)
-)) {
+class Omnitable extends mixin({ isEmpty }, translatable(PolymerElement)) {
 	/* eslint-disable-next-line max-lines-per-function */
 	static get template() {
 		const template = html`
@@ -481,6 +472,7 @@ class Omnitable extends mixin({
 		this._filterItems = this._filterItems.bind(this);
 		this._groupItems = this._groupItems.bind(this);
 		this._sortFilteredGroupedItems = this._sortFilteredGroupedItems.bind(this);
+		this._resizeObserver = new ResizeObserver(this._onResize.bind(this));
 	}
 
 	connectedCallback() {
@@ -506,13 +498,13 @@ class Omnitable extends mixin({
 		this.addEventListener('cosmoz-column-hidden-changed', this._debounceUpdateColumns);
 		this.addEventListener('cosmoz-column-disabled-changed', this._debounceUpdateColumns);
 
-		this.addEventListener('iron-resize', this._onResize);
 		this.addEventListener('update-item-size', this._onUpdateItemSize);
 		this.addEventListener('cosmoz-column-title-changed', this._onColumnTitleChanged);
 		this.addEventListener('cosmoz-column-filter-changed', this._filterChanged);
 		this.addEventListener('cosmoz-column-editable-changed', this._onColumnEditableChanged);
 		this.addEventListener('cosmoz-column-values-update', this._onColumnValuesUpdate);
 		this._fitDropdowns();
+		this._resizeObserver.observe(this);
 	}
 
 	disconnectedCallback() {
@@ -527,12 +519,12 @@ class Omnitable extends mixin({
 		// Just in case we get detached before a planned debouncer has not run yet.
 		this._cancelDebouncers();
 
-		this.removeEventListener('iron-resize', this._onResize);
 		this.removeEventListener('update-item-size', this._onUpdateItemSize);
 		this.removeEventListener('cosmoz-column-title-changed', this._onColumnTitleChanged);
 		this.removeEventListener('cosmoz-column-filter-changed', this._filterChanged);
 		this.removeEventListener('cosmoz-column-editable-changed', this._onColumnEditableChanged);
 		this.removeEventListener('cosmoz-column-values-update', this._onColumnValuesUpdate);
+		this._resizeObserver.unobserve(this);
 	}
 
 	flush() {
@@ -665,8 +657,12 @@ class Omnitable extends mixin({
 		this.highlight(item, this.isItemHighlighted(item));
 	}
 
-	_onResize() {
-		this._setVisible(this.offsetParent != null);
+	_onResize([entry]) {
+		const hidden = entry.borderBoxSize?.[0]?.blockSize === 0 || entry.contentRect?.height === 0;
+		this._setVisible(!hidden);
+		if (hidden) {
+			return;
+		}
 		this._debounceAdjustColumns();
 	}
 
@@ -744,7 +740,7 @@ class Omnitable extends mixin({
 			return;
 		}
 
-		let columns = this.getEffectiveChildren().filter((child, index) => {
+		let columns = Array.from(this.children).filter((child, index) => {
 				child.__index = index;
 				// filter only omnitable columns
 				return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn
@@ -1475,7 +1471,7 @@ class Omnitable extends mixin({
 	}
 
 	_routeHashPropertyChanged(key, value) {
-		const deserialized = this.deserialize(value, Omnitable.properties[key].type);
+		const deserialized = this._deserializeValue(value, Omnitable.properties[key].type);
 		if (deserialized === this.get(key)) {
 			return;
 		}
@@ -1546,7 +1542,7 @@ class Omnitable extends mixin({
 		const path = ['_routeHash', this.hashParam + '-' + key],
 			hashValue = this.get(path),
 			value = this.get(key),
-			serialized = this.serialize(value, Omnitable.properties[key].type);
+			serialized = this._serializeValue(value, Omnitable.properties[key].type);
 
 		if (serialized === hashValue) {
 			return;
