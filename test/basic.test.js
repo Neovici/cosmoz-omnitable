@@ -1,5 +1,5 @@
 import {
-	assert, expect, html
+	assert, expect, html, nextFrame
 } from '@open-wc/testing';
 
 import sinon from 'sinon';
@@ -278,3 +278,43 @@ suite('item update effects', () => {
 		consoleErrorStub.restore();
 	});
 });
+
+suite('visible', () => {
+	test('adjusts columns when visible', async () => {
+		const omnitable = await setupOmnitableFixture(html`
+			<cosmoz-omnitable style="display:none" selection-enabled>
+				<cosmoz-omnitable-column-date id="date1" name="date1" value-path="date">
+				</cosmoz-omnitable-column-date>
+				<cosmoz-omnitable-column-date id="date2" name="date2" value-path="dateJson">
+				</cosmoz-omnitable-column-date>
+				<cosmoz-omnitable-column-date id="date3" name="date3" value-path="date">
+				</cosmoz-omnitable-column-date>
+				<cosmoz-omnitable-column name="columnWithGroupOn" value-path="valuePath" group-on="groupOnValuePath">
+				</cosmoz-omnitable-column>
+				<cosmoz-omnitable-column name="columnWithoutGroupOn" value-path="valuePath">
+				</cosmoz-omnitable-column>
+				<cosmoz-omnitable-column name="columnWithSortOn" value-path="valuePath" sort-on="sortOnValuePath">
+				</cosmoz-omnitable-column>
+				<cosmoz-omnitable-column name="columnWithoutSortOn" value-path="valuePath">
+				</cosmoz-omnitable-column>
+				<cosmoz-omnitable-column name="columnWithFilter" value-path="valuePath">
+				</cosmoz-omnitable-column>
+			</cosmoz-omnitable>
+		`, generateTableDemoData(10, 11, 25));
+
+		assert.isUndefined(omnitable.visibleColumns);
+		assert.isFalse(omnitable.visible);
+
+		omnitable.style.display = '';
+		omnitable.flush();
+		await nextFrame();
+		assert.deepEqual(omnitable.visibleColumns, omnitable.columns);
+		assert.isTrue(omnitable.visible);
+
+		omnitable.style.display = 'none';
+		omnitable.flush();
+		assert.isFalse(omnitable.visible);
+
+	});
+});
+
