@@ -25,8 +25,7 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 
 		<template class="edit-cell" strip-whitespace>
 			<cosmoz-autocomplete
-				min-length="0"
-				no-label-float
+				min-length="0" no-label-float
 				label="[[ title ]]"
 				title="[[ _computeItemTooltip(title, item, valuePath) ]]"
 				source="[[ _source ]]"

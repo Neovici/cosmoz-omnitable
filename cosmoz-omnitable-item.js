@@ -1,6 +1,5 @@
 import '@webcomponents/shadycss/entrypoints/apply-shim';
 
-import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/paper-item/paper-item-shared-styles';
 
 import { PolymerElement } from '@polymer/polymer/polymer-element';
@@ -14,8 +13,8 @@ class OmnitableItem extends PolymerElement {
 		</style>
 		<style>
 			:host {
-				@apply --layout-horizontal;
-				@apply --layout-center;
+				display: flex;
+				align-items: center;
 				@apply --paper-font-subhead;
 
 				@apply --paper-item;

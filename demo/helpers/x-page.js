@@ -1,5 +1,3 @@
-import '@polymer/iron-flex-layout/iron-flex-layout';
-import '@polymer/iron-flex-layout/iron-flex-layout-classes';
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu-light';
 import '@polymer/iron-icons/editor-icons';
 import '@polymer/iron-icons/iron-icons';
@@ -19,24 +17,35 @@ class XPage extends translatable(PolymerElement) {
 	/* eslint-disable-next-line max-lines-per-function */
 	static get template() {
 		return html`
-		<style include="iron-flex iron-positioning">
+		<style>
 			:host {
 				display: block;
 				position: relative;
 				font-family: sans-serif;
 			}
-
+			cosmoz-viewinfo {
+				display: flex;
+				flex-direction: column;
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 0;
+				bottom: 0;
+			}
+			cosmoz-omnitable {
+				flex: auto;
+			}
 			.action {
 				padding: 5px;
 				margin: 5px 5px 10px 5px;
 			}
 		</style>
 
-		<cosmoz-viewinfo class="layout vertical fit">
+		<cosmoz-viewinfo>
 			<h3>Cosmoz omnitable demo</h3>
 
 			<cosmoz-translations locale="[[ locale ]]"></cosmoz-translations>
-			<div class="layout horizontal center">
+			<div style="display: flex; align-items: center">
 				<button class="action" on-tap="changeData">Generate a new data set</button>
 				<button class="action" on-tap="changeSmallData">Generate a new small data set</button>
 				<button class="action" on-tap="emptyData">Generate an empty data set</button>
@@ -56,7 +65,7 @@ class XPage extends translatable(PolymerElement) {
 				<paper-toggle-button checked="{{ loading }}"> Loading</paper-toggle-button>
 			</div>
 
-			<cosmoz-omnitable loading="[[ loading ]]" id="omnitable" class="flex"
+			<cosmoz-omnitable loading="[[ loading ]]" id="omnitable"
 				data="[[ data ]]" selection-enabled selected-items="{{ selectedItems }}"
 				hash-param="[[ hashParam ]]">
 				<cosmoz-omnitable-column-date title="Date" name="date" value-path="date" sort-on="date" group-on="date" locale="[[ locale ]]">

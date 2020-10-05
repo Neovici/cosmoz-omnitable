@@ -58,7 +58,7 @@ const data = [{
 		}
 	}],
 	rangeFixture = html`
-		<cosmoz-omnitable id="omnitable" class="flex">
+		<cosmoz-omnitable id="omnitable">
 			<cosmoz-omnitable-column-number title="Age" name="age" value-path="age" maximum-fraction-digits=2>
 			</cosmoz-omnitable-column-number>
 			<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount" locale="en-US">
@@ -494,7 +494,7 @@ suite('currency rates', () => {
 			}
 		}]);
 		omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable class="flex">
+			<cosmoz-omnitable>
 				<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount" autodetect>
 				</cosmoz-omnitable-column-amount>
 			</cosmoz-omnitable>
@@ -760,7 +760,7 @@ suite('default currency', () => {
 
 	setup(async () => {
 		const omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable class="flex">
+			<cosmoz-omnitable>
 				<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount" currency="SEK">
 				</cosmoz-omnitable-column-amount>
 			</cosmoz-omnitable>
@@ -797,7 +797,7 @@ suite('external values', () => {
 	let column;
 	setup(async () => {
 		const omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable class="flex">
+			<cosmoz-omnitable>
 				<cosmoz-omnitable-column-number title="Age" name="age" value-path="age" maximum-fraction-digits=2 external-values>
 				</cosmoz-omnitable-column-number>
 			</cosmoz-omnitable>

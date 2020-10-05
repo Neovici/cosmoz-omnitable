@@ -1,6 +1,3 @@
-import '@webcomponents/shadycss/entrypoints/apply-shim';
-import '@polymer/iron-flex-layout/iron-flex-layout';
-
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
 
@@ -19,9 +16,9 @@ class OmnitableItemRow extends repeaterMixin(PolymerElement) {
 		return html`
 		<style>
 			:host {
-				@apply --layout-horizontal;
-				@apply --layout-flex;
-				@apply --layout-center;
+				display: flex;
+				flex: 1 0.000000001px;
+				align-items: center;
 				min-width: 0;
 			}
 

@@ -1,7 +1,3 @@
-import '@webcomponents/shadycss/entrypoints/apply-shim';
-
-import '@polymer/iron-flex-layout/iron-flex-layout';
-
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
 

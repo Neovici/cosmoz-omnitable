@@ -52,7 +52,7 @@ suite('xlsx-export-omnitable', () => {
 
 	setup(async () => {
 		omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable id="omnitable" class="flex" selection-enabled xlsx-filename="Test.xlsx">
+			<cosmoz-omnitable id="omnitable" selection-enabled xlsx-filename="Test.xlsx">
 				<cosmoz-omnitable-column-autocomplete id="id" name="id" title="ID" value-path="id">
 				</cosmoz-omnitable-column-autocomplete>
 				<cosmoz-omnitable-column id="first-name" name="first-name" title="First Name" value-path="first-name">
@@ -194,7 +194,7 @@ suite('toXlsx range tests', () => {
 
 	setup(async () => {
 		omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable id="omnitable" class="flex" selection-enabled xlsx-filename="ToXlsx.xlsx">
+			<cosmoz-omnitable id="omnitable" selection-enabled xlsx-filename="ToXlsx.xlsx">
 				<cosmoz-omnitable-column-number name="number" title="number" value-path="number">
 				</cosmoz-omnitable-column-number>
 				<cosmoz-omnitable-column-amount name="amount" title="Amount" value-path="amount" locale="en-US">

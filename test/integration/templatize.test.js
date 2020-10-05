@@ -13,7 +13,7 @@ suite('Basic omnitable functionality', () => {
 
 	setup(async () => {
 		omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable id="omnitable" class="flex" selection-enabled style="min-height: 500px;">
+			<cosmoz-omnitable id="omnitable" selection-enabled style="min-height: 500px;">
 				<basic-column name="basic" value-path="name"></basic-column>
 				<basic-column name="override" value-path="name">
 					<template class="header">

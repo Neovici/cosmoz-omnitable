@@ -22,7 +22,7 @@ suite('boolen', () => {
 			{ boolean: 'true' }
 		];
 		const omnitable = await setupOmnitableFixture(html`
-					<cosmoz-omnitable id="omnitable" class="flex" selection-enabled>
+					<cosmoz-omnitable id="omnitable" selection-enabled>
 						<cosmoz-omnitable-column-boolean name="boolean" value-path="boolean">
 						</cosmoz-omnitable-column-boolean>
 						<cosmoz-omnitable-column-boolean name="boolean2" value-path="boolean" true-label="default true label" false-label="default false label">
