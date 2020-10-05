@@ -1,3 +1,10 @@
+## [3.8.4](https://github.com/neovici/cosmoz-omnitable/compare/v3.8.3...v3.8.4) (2020-10-05)
+
+
+### Bug Fixes
+
+* replace iron-flex-layout with css ([5ff1de8](https://github.com/neovici/cosmoz-omnitable/commit/5ff1de8aef6b88b15d2b79061ac902d89946bb0c))
+
 ## [3.8.3](https://github.com/neovici/cosmoz-omnitable/compare/v3.8.2...v3.8.3) (2020-10-03)
 
 
