@@ -1,3 +1,10 @@
+## [3.8.5](https://github.com/neovici/cosmoz-omnitable/compare/v3.8.4...v3.8.5) (2020-10-07)
+
+
+### Bug Fixes
+
+* cosmoz-omnitable, adding empty set message slot [#23679](https://github.com/neovici/cosmoz-omnitable/issues/23679) ([62be7d9](https://github.com/neovici/cosmoz-omnitable/commit/62be7d9a622b85245bc9514974489c8873c910b2))
+
 ## [3.8.4](https://github.com/neovici/cosmoz-omnitable/compare/v3.8.3...v3.8.4) (2020-10-05)
 
 
