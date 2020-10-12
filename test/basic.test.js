@@ -274,6 +274,23 @@ suite('item update effects', () => {
 		assert.isTrue(sortSpy.called, 'resorted');
 	});
 
+	test('removeItem removes a given item from the table', () => {
+		const
+			numItems = omnitable.data.length,
+			item = omnitable.data[2];
+
+		assert.equal(omnitable.data.indexOf(item), 2);
+
+		omnitable.removeItem(item);
+		assert.equal(omnitable.data.length, numItems - 1);
+		assert.equal(omnitable.data.indexOf(item), -1);
+	});
+
+	test('removeItem gracefully fails to remove a non-existing item from the table', () => {
+		assert.equal(omnitable.removeItem({}), null);
+		assert.equal(omnitable.removeItem(), null);
+	});
+
 	teardown(() => {
 		consoleErrorStub.restore();
 	});
