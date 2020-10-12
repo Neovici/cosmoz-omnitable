@@ -1,3 +1,10 @@
+## [3.8.6](https://github.com/neovici/cosmoz-omnitable/compare/v3.8.5...v3.8.6) (2020-10-12)
+
+
+### Bug Fixes
+
+* **render:** grouped list renders old items ([c16e761](https://github.com/neovici/cosmoz-omnitable/commit/c16e7618835c1f935b243f77481c9586ec7f5a70)), closes [#24702](https://github.com/neovici/cosmoz-omnitable/issues/24702)
+
 ## [3.8.5](https://github.com/neovici/cosmoz-omnitable/compare/v3.8.4...v3.8.5) (2020-10-07)
 
 
