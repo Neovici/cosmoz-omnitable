@@ -663,6 +663,7 @@ class Omnitable extends mixin({ isEmpty }, translatable(PolymerElement)) {
 		if (hidden) {
 			return;
 		}
+		this.$.groupedList.$.list._render();
 		this._debounceAdjustColumns();
 	}
 
