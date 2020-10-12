@@ -1414,7 +1414,13 @@ class Omnitable extends mixin({ isEmpty }, translatable(PolymerElement)) {
 	 * @return {Object} item removed
 	 */
 	removeItem(item) {
-		const removed = this.arrayDelete('data', item);
+		const index = this.data.indexOf(item);
+
+		if (index < 0) {
+			return null;
+		}
+
+		const removed = this.splice('data', index, 1);
 		if (Array.isArray(removed) && removed.length > 0) {
 			return removed[0];
 		}
