@@ -1,3 +1,10 @@
+## [3.8.7](https://github.com/neovici/cosmoz-omnitable/compare/v3.8.6...v3.8.7) (2020-10-13)
+
+
+### Bug Fixes
+
+* **remove-item:** arrayDelete is undefined ([2432988](https://github.com/neovici/cosmoz-omnitable/commit/2432988eb6ffe1fdd07dfd9f899d7e187ea6341a))
+
 ## [3.8.6](https://github.com/neovici/cosmoz-omnitable/compare/v3.8.5...v3.8.6) (2020-10-12)
 
 
