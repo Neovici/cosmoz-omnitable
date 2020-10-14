@@ -178,7 +178,7 @@ class Omnitable extends mixin({ isEmpty }, translatable(PolymerElement)) {
 					<span>[[ ngettext('{0} row', '{0} rows', filteredItems.length, t) ]]</span>
 				</div>
 				<cosmoz-bottom-bar id="bottomBar" class="footer-actionBar" match-parent
-					has-actions="{{ hasActions }}" on-action="_onAction" active$="[[ !isEmpty(selectedItems.length) ]]" computed-bar-height="{{ computedBarHeight }}">
+					on-action="_onAction" active$="[[ !isEmpty(selectedItems.length) ]]" computed-bar-height="{{ computedBarHeight }}">
 					<div slot="info">[[ ngettext('{0} selected item', '{0} selected items', selectedItems.length, t) ]]</div>
 					<slot name="actions" id="actions"></slot>
 					<!-- These slots are neened by cosmoz-bottom-bar
@@ -299,7 +299,7 @@ class Omnitable extends mixin({ isEmpty }, translatable(PolymerElement)) {
 		 */
 			_showCheckboxes: {
 				type: Boolean,
-				computed: '_computeShowCheckboxes(_dataIsValid, hasActions)'
+				computed: '_computeShowCheckboxes(_dataIsValid)'
 			},
 
 			/**
@@ -570,8 +570,8 @@ class Omnitable extends mixin({ isEmpty }, translatable(PolymerElement)) {
 		return `(${ direction })`;
 	}
 
-	_computeShowCheckboxes(dataIsValid, hasActions) {
-		return dataIsValid && hasActions;
+	_computeShowCheckboxes(dataIsValid) {
+		return dataIsValid;
 	}
 
 	visibleChanged(turnedVisible) {
