@@ -1,3 +1,11 @@
+## [3.8.8](https://github.com/neovici/cosmoz-omnitable/compare/v3.8.7...v3.8.8) (2020-10-14)
+
+
+### Bug Fixes
+
+* always selectable if data is valid ([cb8a63e](https://github.com/neovici/cosmoz-omnitable/commit/cb8a63e852242c191e11c79d17780df2230fc117))
+* removes _showCheckboxes ([22991e7](https://github.com/neovici/cosmoz-omnitable/commit/22991e74a5f4bd740e91e570ea62a0fe9e14965e))
+
 ## [3.8.7](https://github.com/neovici/cosmoz-omnitable/compare/v3.8.6...v3.8.7) (2020-10-13)
 
 
