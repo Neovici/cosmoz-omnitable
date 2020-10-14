@@ -3,8 +3,8 @@
 with import
   (
     builtins.fetchTarball {
-      url = "https://github.com/NixOS/nixpkgs/archive/daaa0e33505082716beb52efefe3064f0332b521.tar.gz";
-      sha256 = "15vprzpbllp9hy5md36ch1llzhxhd44d291kawcslgrzibw51f95";
+      url = "https://github.com/NixOS/nixpkgs/archive/41c0f4968100.tar.gz";
+      sha256 = "0ahi76lb38fcnbzl40k53yjr5vcc75kqg0ddcw6bbc6ckz0z27kg";
     }
   )
 { };

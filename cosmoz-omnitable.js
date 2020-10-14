@@ -65,7 +65,7 @@ class Omnitable extends mixin({ isEmpty }, translatable(PolymerElement)) {
 
 		<div class="mainContainer">
 			<div class="header" id="header">
-				<div class="selectAllCheckbox" hidden$="[[ !_showCheckboxes ]]">
+				<div class="selectAllCheckbox" hidden$="[[ !_dataIsValid ]]">
 					<paper-checkbox checked$="{{ _allSelected }}" on-change="_onAllCheckboxChange" hidden$="[[ !_dataIsValid ]]">
 					</paper-checkbox>
 				</div>
@@ -111,7 +111,7 @@ class Omnitable extends mixin({ isEmpty }, translatable(PolymerElement)) {
 						<template slot="templates" data-type="item">
 							<div class="item-row-wrapper">
 								<div selected$="[[selected]]" class="itemRow" highlighted$="[[highlighted]]">
-									<div class="selectItemCheckbox" hidden$="[[ !_showCheckboxes ]]">
+									<div class="selectItemCheckbox" hidden$="[[ !_dataIsValid ]]">
 										<paper-checkbox checked="{{ selected }}" on-change="_onItemCheckboxChange"></paper-checkbox>
 									</div>
 									<cosmoz-omnitable-item-row columns="[[ visibleColumns ]]"
@@ -128,7 +128,7 @@ class Omnitable extends mixin({ isEmpty }, translatable(PolymerElement)) {
 						</template>
 						<template slot="templates" data-type="group">
 							<div class$="[[ _getGroupRowClasses(folded) ]]">
-								<div class="selectGroupCheckbox" hidden$="[[ !_showCheckboxes ]]">
+								<div class="selectGroupCheckbox" hidden$="[[ !_dataIsValid ]]">
 									<paper-checkbox checked="{{ selected }}" on-change="_onGroupCheckboxChange"></paper-checkbox>
 								</div>
 
@@ -178,7 +178,7 @@ class Omnitable extends mixin({ isEmpty }, translatable(PolymerElement)) {
 					<span>[[ ngettext('{0} row', '{0} rows', filteredItems.length, t) ]]</span>
 				</div>
 				<cosmoz-bottom-bar id="bottomBar" class="footer-actionBar" match-parent
-					has-actions="{{ hasActions }}" on-action="_onAction" active$="[[ !isEmpty(selectedItems.length) ]]" computed-bar-height="{{ computedBarHeight }}">
+					on-action="_onAction" active$="[[ !isEmpty(selectedItems.length) ]]" computed-bar-height="{{ computedBarHeight }}">
 					<div slot="info">[[ ngettext('{0} selected item', '{0} selected items', selectedItems.length, t) ]]</div>
 					<slot name="actions" id="actions"></slot>
 					<!-- These slots are neened by cosmoz-bottom-bar
@@ -292,14 +292,6 @@ class Omnitable extends mixin({ isEmpty }, translatable(PolymerElement)) {
 			loading: {
 				type: Boolean,
 				value: false
-			},
-
-			/**
-		 * Whether to show checkboxes to perform bottom-bar actions on
-		 */
-			_showCheckboxes: {
-				type: Boolean,
-				computed: '_computeShowCheckboxes(_dataIsValid, hasActions)'
 			},
 
 			/**
@@ -568,10 +560,6 @@ class Omnitable extends mixin({ isEmpty }, translatable(PolymerElement)) {
 	_computeSortDirection(descending) {
 		const direction = descending ? this._('Descending') : this._('Ascending');
 		return `(${ direction })`;
-	}
-
-	_computeShowCheckboxes(dataIsValid, hasActions) {
-		return dataIsValid && hasActions;
 	}
 
 	visibleChanged(turnedVisible) {
