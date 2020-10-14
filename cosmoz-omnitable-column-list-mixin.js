@@ -93,7 +93,7 @@ export const listColumnMixin = dedupingMixin(base => class extends base {
 	}
 
 	_computeSource(values, valueProperty = this.valueProperty, textProperty = this.textProperty) {
-		if (!Array.isArray(values) && typeof values === 'object') {
+		if (values != null && !Array.isArray(values) && typeof values === 'object') {
 			const valProp = valueProperty ?? 'id',
 				textProp = textProperty ?? 'label';
 			if (valueProperty == null) {
