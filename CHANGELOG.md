@@ -1,3 +1,10 @@
+## [3.8.9](https://github.com/neovici/cosmoz-omnitable/compare/v3.8.8...v3.8.9) (2020-10-14)
+
+
+### Bug Fixes
+
+* handles null values in list columns ([9089556](https://github.com/neovici/cosmoz-omnitable/commit/9089556809f14d03d1330dce3e65046702862e48))
+
 ## [3.8.8](https://github.com/neovici/cosmoz-omnitable/compare/v3.8.7...v3.8.8) (2020-10-14)
 
 
