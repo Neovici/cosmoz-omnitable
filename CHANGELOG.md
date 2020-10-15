@@ -1,3 +1,17 @@
+# [4.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v3.8.9...v4.0.0) (2020-10-15)
+
+
+### Bug Fixes
+
+* upgrade to latest bottom-bar ([952ebee](https://github.com/neovici/cosmoz-omnitable/commit/952ebee6da48c316d8f414e881a0ef317714ae94)), closes [#24802](https://github.com/neovici/cosmoz-omnitable/issues/24802)
+
+
+### BREAKING CHANGES
+
+* If your component allows adding content to the omnitable via the actions slot,
+then you have to also make sure you also export `bottom-bar-toolbar` and `bottom-bar-menu`,
+otherwise the actions will not show up.
+
 ## [3.8.9](https://github.com/neovici/cosmoz-omnitable/compare/v3.8.8...v3.8.9) (2020-10-14)
 
 
