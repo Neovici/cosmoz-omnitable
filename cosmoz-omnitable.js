@@ -37,6 +37,7 @@ import { Debouncer } from '@polymer/polymer/lib/utils/debounce';
 import { FlattenedNodesObserver } from '@polymer/polymer/lib/utils/flattened-nodes-observer';
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
+import { html as litHtml } from 'lit-html';
 
 import { translatable } from '@neovici/cosmoz-i18next';
 import { mixin } from '@neovici/cosmoz-utils';
@@ -181,10 +182,10 @@ class Omnitable extends mixin({ isEmpty }, translatable(PolymerElement)) {
 					on-action="_onAction" active$="[[ !isEmpty(selectedItems.length) ]]" computed-bar-height="{{ computedBarHeight }}">
 					<div slot="info">[[ ngettext('{0} selected item', '{0} selected items', selectedItems.length, t) ]]</div>
 					<slot name="actions" id="actions"></slot>
-					<!-- These slots are neened by cosmoz-bottom-bar
+					<!-- These slots are needed by cosmoz-bottom-bar
 						as it might change the slot of the actions to distribute them in the menu -->
-					<slot name="bottom-bar-toolbar"></slot>
-					<slot name="bottom-bar-menu"></slot>
+					<slot name="bottom-bar-toolbar" slot="bottom-bar-toolbar"></slot>
+					<slot name="bottom-bar-menu" slot="bottom-bar-menu"></slot>
 					<paper-menu-button id="extraMenu" slot="extra" no-animations
 						vertical-offset="[[ computedBarHeight ]]" vertical-align="bottom" horizontal-align="right">
 						<paper-icon-button id="dropdownExtraButton" class="dropdown-trigger" slot="dropdown-trigger" icon="file-download" toggles raised>
@@ -1575,3 +1576,13 @@ class Omnitable extends mixin({ isEmpty }, translatable(PolymerElement)) {
 	}
 }
 customElements.define(Omnitable.is, Omnitable);
+
+const tmplt = `
+	<slot name="actions" slot="actions"></slot>
+	<slot name="bottom-bar-toolbar" slot="bottom-bar-toolbar"></slot>
+	<slot name="bottom-bar-menu" slot="bottom-bar-menu"></slot>
+`;
+
+export const
+	actionSlots = litHtml([tmplt]),
+	actionSlotsPolymer = html([tmplt]);
