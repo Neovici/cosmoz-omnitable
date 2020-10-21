@@ -49,6 +49,11 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 			.header > cosmoz-omnitable-header-row {
 				flex: auto;
 			}
+			.header-cell {
+				 --paper-input-container: {
+					padding-top: 0;
+				 }
+			}
 
 			.header-cell > * {
 				width: 100%;
