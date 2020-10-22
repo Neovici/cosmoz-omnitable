@@ -1,3 +1,11 @@
+## [4.0.1](https://github.com/neovici/cosmoz-omnitable/compare/v4.0.0...v4.0.1) (2020-10-22)
+
+
+### Bug Fixes
+
+* remove extra padding for header inputs ([3cc4fba](https://github.com/neovici/cosmoz-omnitable/commit/3cc4fba45120b5390f7e18f59c44838a53be1e3c))
+* upgrade cosmoz-autocomplete to 2.4.10 ([95b02cb](https://github.com/neovici/cosmoz-omnitable/commit/95b02cb6ce73cb667dfb7d908bd69518fc237e90))
+
 # [4.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v3.8.9...v4.0.0) (2020-10-15)
 
 
