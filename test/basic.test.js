@@ -330,6 +330,7 @@ suite('visible', () => {
 
 		omnitable.style.display = 'none';
 		omnitable.flush();
+		await nextFrame();
 		assert.isFalse(omnitable.visible);
 
 	});
