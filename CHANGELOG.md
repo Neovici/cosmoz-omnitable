@@ -1,3 +1,10 @@
+## [4.0.2](https://github.com/neovici/cosmoz-omnitable/compare/v4.0.1...v4.0.2) (2020-11-02)
+
+
+### Bug Fixes
+
+* **column-boolean:** notify when clearing ([3ff469b](https://github.com/neovici/cosmoz-omnitable/commit/3ff469b02279499efda27570ea058e03e4424750))
+
 ## [4.0.1](https://github.com/neovici/cosmoz-omnitable/compare/v4.0.0...v4.0.1) (2020-10-22)
 
 
