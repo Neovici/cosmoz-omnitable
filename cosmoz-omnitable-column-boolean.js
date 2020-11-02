@@ -263,7 +263,7 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 	}
 
 	_onChange(selection) {
-		this.filter = selection?.[0]?.value;
+		this.filter = selection?.[0]?.value ?? null;
 	}
 
 	_onFocus(focused) {
