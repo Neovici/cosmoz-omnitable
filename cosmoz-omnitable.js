@@ -42,6 +42,7 @@ import { html as litHtml } from 'lit-html';
 import { translatable } from '@neovici/cosmoz-i18next';
 import { mixin } from '@neovici/cosmoz-utils';
 import { isEmpty } from '@neovici/cosmoz-utils/lib/template.js';
+import { getEffectiveChildrenLegacyMixin } from './get-effective-children-legacy-mixin';
 
 const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending', 'groupOnDescending'];
 
@@ -54,7 +55,7 @@ const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending', 'groupOnDescend
  * @demo demo/index.html
  */
 
-class Omnitable extends mixin({ isEmpty }, translatable(PolymerElement)) {
+class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(translatable(PolymerElement))) {
 	/* eslint-disable-next-line max-lines-per-function */
 	static get template() {
 		const template = html`
@@ -730,7 +731,8 @@ class Omnitable extends mixin({ isEmpty }, translatable(PolymerElement)) {
 			return;
 		}
 
-		let columns = Array.from(this.children).filter((child, index) => {
+		// NOTE: it's important to get all children, including those projected in slots
+		let columns = this.getEffectiveChildren().filter((child, index) => {
 				child.__index = index;
 				// filter only omnitable columns
 				return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn
