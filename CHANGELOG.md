@@ -1,3 +1,10 @@
+## [4.0.3](https://github.com/neovici/cosmoz-omnitable/compare/v4.0.2...v4.0.3) (2020-12-03)
+
+
+### Bug Fixes
+
+* **update-columns:** slotted columns are not displayed ([ba6c1a8](https://github.com/neovici/cosmoz-omnitable/commit/ba6c1a8f044be1d6c31d825f0ea840d074ab966c))
+
 ## [4.0.2](https://github.com/neovici/cosmoz-omnitable/compare/v4.0.1...v4.0.2) (2020-11-02)
 
 
