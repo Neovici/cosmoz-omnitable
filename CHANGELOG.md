@@ -1,3 +1,10 @@
+## [4.0.4](https://github.com/neovici/cosmoz-omnitable/compare/v4.0.3...v4.0.4) (2020-12-03)
+
+
+### Bug Fixes
+
+* **pkg:** include all files in package ([4e6b94e](https://github.com/neovici/cosmoz-omnitable/commit/4e6b94e0cfbb31d12bacc0117c50e06441b042c3))
+
 ## [4.0.3](https://github.com/neovici/cosmoz-omnitable/compare/v4.0.2...v4.0.3) (2020-12-03)
 
 
