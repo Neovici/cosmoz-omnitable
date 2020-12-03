@@ -21,6 +21,7 @@
 	},
 	"files": [
 		"cosmoz-*.js",
+		"get-effective-children-legacy-mixin.js",
 		"ui-helpers"
 	],
 	"scripts": {
