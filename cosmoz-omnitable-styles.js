@@ -301,6 +301,7 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 			cosmoz-bottom-bar {
 				background-color: var(--cosmoz-omnitable-bottom-bar-color, #5f5a92);
 				color: white;
+				overflow: hidden;
 			}
 
 			cosmoz-bottom-bar::slotted(*) {
