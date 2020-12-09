@@ -1,3 +1,10 @@
+## [4.0.5](https://github.com/neovici/cosmoz-omnitable/compare/v4.0.4...v4.0.5) (2020-12-09)
+
+
+### Bug Fixes
+
+* **bar:** overflow bar to prevent auto scrolling ([183247c](https://github.com/neovici/cosmoz-omnitable/commit/183247c4c3f3b08dd9a0d05476219374ecbe4997))
+
 ## [4.0.4](https://github.com/neovici/cosmoz-omnitable/compare/v4.0.3...v4.0.4) (2020-12-03)
 
 
