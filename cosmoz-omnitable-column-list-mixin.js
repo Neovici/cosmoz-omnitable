@@ -42,9 +42,16 @@ export const listColumnMixin = dedupingMixin(base => class extends base {
 				notify: true
 			},
 
+			emptyLabel: {
+				type: String
+			},
+			emptyValue: {
+				type: Object
+			},
+
 			_source: {
 				type: Array,
-				computed: '_computeSource(values, valueProperty, textProperty)'
+				computed: '_computeSource(values, valueProperty, textProperty, emptyLabel, emptyValue)'
 			}
 		};
 	}
@@ -92,7 +99,7 @@ export const listColumnMixin = dedupingMixin(base => class extends base {
 		return [];
 	}
 
-	_computeSource(values, valueProperty = this.valueProperty, textProperty = this.textProperty) {
+	_getSource(values, valueProperty = this.valueProperty, textProperty = this.textProperty) {
 		if (values != null && !Array.isArray(values) && typeof values === 'object') {
 			const valProp = valueProperty ?? 'id',
 				textProp = textProperty ?? 'label';
@@ -121,10 +128,23 @@ export const listColumnMixin = dedupingMixin(base => class extends base {
 		return this._unique(values, valueProperty) || [];
 	}
 
+	_computeSource(values, valueProperty, textProperty, emptyLabel, emptyValue) {
+		const source = this._getSource(values, valueProperty, textProperty);
+		if (!emptyLabel || emptyValue === undefined || source.length < 0) {
+			return source;
+		}
+		return [{
+			[this.textProperty]: emptyLabel,
+			[this.valueProperty]: emptyValue
+		}, ...source];
+	}
+
+
 	_applyMultiFilter(filters, item) {
-		const valuation = prop(this.valueProperty);
-		return filters.some(filter =>
-			array(this.get(this.valuePath, item)).some(value => valuation(value) === valuation(filter))
+		const val = prop(this.valueProperty),
+			values = array(this.get(this.valuePath, item));
+		return filters.some(
+			filter => values.length === 0 && val(filter) === this.emptyValue || values.some(value => val(value) === val(filter))
 		);
 	}
 
@@ -132,9 +152,9 @@ export const listColumnMixin = dedupingMixin(base => class extends base {
 		if ((filters?.length || 0) < 1) {
 			return;
 		}
-		const valuation = prop(valueProperty),
-			sourced = source.filter(item => filters.some(filter => valuation(filter) === valuation(item)));
-		return filters.map(filter => sourced.find(item => valuation(item) === valuation(filter)) || filter);
+		const val = prop(valueProperty),
+			sourced = source.filter(item => filters.some(filter => val(filter) === val(item)));
+		return filters.map(filter => sourced.find(item => val(item) === val(filter)) || filter);
 	}
 
 	_onChange(value) {
@@ -149,4 +169,3 @@ export const listColumnMixin = dedupingMixin(base => class extends base {
 		this.query = text;
 	}
 });
-
