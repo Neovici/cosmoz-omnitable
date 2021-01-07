@@ -1,3 +1,10 @@
+# [4.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v4.0.5...v4.1.0) (2021-01-07)
+
+
+### Features
+
+* adds emptyLabel and emptyValue to list columns ([1eba46c](https://github.com/neovici/cosmoz-omnitable/commit/1eba46ccdf299d3a398910ea04d90316a506d9bf)), closes [#406](https://github.com/neovici/cosmoz-omnitable/issues/406)
+
 ## [4.0.5](https://github.com/neovici/cosmoz-omnitable/compare/v4.0.4...v4.0.5) (2020-12-09)
 
 
