@@ -1,3 +1,10 @@
+## [4.1.1](https://github.com/neovici/cosmoz-omnitable/compare/v4.1.0...v4.1.1) (2021-01-27)
+
+
+### Bug Fixes
+
+* **column-autocomplete:** handle numbers in getComparableValue ([1989daa](https://github.com/neovici/cosmoz-omnitable/commit/1989daa56dc7cc6b3f6ae165cffe0a5580122115))
+
 # [4.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v4.0.5...v4.1.0) (2021-01-07)
 
 
