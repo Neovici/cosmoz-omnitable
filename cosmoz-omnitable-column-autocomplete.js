@@ -8,6 +8,9 @@ import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 
 import { columnMixin } from './cosmoz-omnitable-column-mixin.js';
 import { listColumnMixin } from './cosmoz-omnitable-column-list-mixin';
+import {
+	prop, strProp, array
+} from '@neovici/cosmoz-autocomplete/lib/utils';
 
 /**
  * @polymer
@@ -72,7 +75,9 @@ class OmnitableColumnAutocomplete extends listColumnMixin(columnMixin(PolymerEle
 		};
 	}
 	getComparableValue(item, valuePath = this.valuePath) {
-		return this.getString(item, valuePath);
+		const property = this.textProperty ? strProp(this.textProperty) : prop(this.valueProperty),
+			values = array(valuePath && this.get(valuePath, item)).map(property);
+		return values.length > 1 ? values.filter(Boolean).join(',') : values[0];
 	}
 }
 customElements.define(OmnitableColumnAutocomplete.is, OmnitableColumnAutocomplete);
