@@ -181,7 +181,7 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 				</div>
 				<cosmoz-bottom-bar id="bottomBar" class="footer-actionBar" match-parent
 					on-action="_onAction" active$="[[ !isEmpty(selectedItems.length) ]]" computed-bar-height="{{ computedBarHeight }}">
-					<div slot="info">[[ ngettext('{0} selected item', '{0} selected items', selectedItems.length, t) ]]</div>
+					<slot name="info" slot="info">[[ ngettext('{0} selected item', '{0} selected items', selectedItems.length, t) ]]</slot>
 					<slot name="actions" id="actions"></slot>
 					<!-- These slots are needed by cosmoz-bottom-bar
 						as it might change the slot of the actions to distribute them in the menu -->
