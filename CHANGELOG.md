@@ -1,3 +1,10 @@
+# [4.2.0](https://github.com/neovici/cosmoz-omnitable/compare/v4.1.1...v4.2.0) (2021-01-27)
+
+
+### Features
+
+* expose bottom-bar info slot ([e4fcc70](https://github.com/neovici/cosmoz-omnitable/commit/e4fcc70c7258bcad24e0566b3e273014d0cd85a7))
+
 ## [4.1.1](https://github.com/neovici/cosmoz-omnitable/compare/v4.1.0...v4.1.1) (2021-01-27)
 
 
