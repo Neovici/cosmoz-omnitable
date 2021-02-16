@@ -58,6 +58,10 @@ class OmnitableHeaderRow extends repeaterMixin(PolymerElement) {
 		return column.getTemplateInstance(HEADER_TEMPLATE);
 	}
 
+	_getRenderFn(column) {
+		return column.renderHeader;
+	}
+
 	/**
 	 * @inheritdoc
 	 */

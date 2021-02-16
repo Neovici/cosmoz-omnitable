@@ -77,6 +77,9 @@
 					<cosmoz-omnitable-column title="Id" name="id" value-path="id"></cosmoz-omnitable-column>
 					<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" editable>
 					</cosmoz-omnitable-column-number>
+					<cosmoz-omnitable-column-number title="Lit Value" name="litvalue" value-path="value" editable
+						render-edit-cell="[[ renderEditValue ]]">
+					</cosmoz-omnitable-column-number>
 
 					<cosmoz-omnitable-column-boolean title="Boolean" name="bool" value-path="bool" true-label="Yes" false-label="No" editable></cosmoz-omnitable-column-boolean>
 
@@ -103,6 +106,7 @@
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { translatable } from '@neovici/cosmoz-i18next';
 import { generateTableDemoData } from './table-demo-helper';
+import { html } from 'lit-html';
 
 class XPage extends translatable(PolymerElement) {
 	static get is() {
@@ -170,6 +174,11 @@ class XPage extends translatable(PolymerElement) {
 	_itemChanged(e) {
 		const change = e.detail;
 		this.info = `Column ${ e.target.name }: Item ${ change.valuePath } changed from "${ change.oldValue }" to "${ change.value }"`;
+	}
+
+	renderEditValue(column, { item }) {
+		const onChange = event => column._valueChanged(Object.assign(event, { model: { item }}));
+		return html`<paper-input no-label-float type="number" @change=${ onChange } .value=${ column.getInputString(item, column.valuePath) }></paper-input>`;
 	}
 }
 customElements.define(XPage.is, XPage);

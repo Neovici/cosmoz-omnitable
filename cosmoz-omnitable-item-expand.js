@@ -99,6 +99,10 @@ class OmnitableItemExpand extends repeaterMixin(PolymerElement) {
 		);
 	}
 
+	_getRenderFn(column) {
+		return column.renderCell;
+	}
+
 	/**
 	 * @inheritdoc
 	 */

@@ -1,5 +1,7 @@
 import '@webcomponents/shadycss/entrypoints/apply-shim';
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin';
+import { render } from 'lit-html';
+import { set } from '@polymer/polymer/lib/utils/path';
 
 /**
  * Allows manipulation of elements.
@@ -146,6 +148,15 @@ export const repeaterMixin = dedupingMixin(base => class extends base { // eslin
 	 */
 	_getTemplateInstance(column) {}
 
+	/**
+	 * Get a render function for the specified column
+	 * Must be defined in implementors.
+	 * @abstract
+	 * @param {OmnitableColumnMixin} column - The column.
+	 * @return {Function} - The render function.
+	 */
+	_getRenderFn(column) {}
+
 	/* eslint-enable no-empty-function, no-unused-vars */
 
 	/**
@@ -165,6 +176,17 @@ export const repeaterMixin = dedupingMixin(base => class extends base { // eslin
 		}
 
 		element.setAttribute('slot', this._slotName);
+
+		// TODO: cleanup when templatizer is dropped
+		if (instance.render) {
+			column.addEventListener('cosmoz-column-prop-changed', instance.render);
+		}
+
+		element.__cleanup = () => {
+			element.__column.recycleInstance(element.__instance);
+			element.__instance = element.__column = element.column = null;
+			column.removeEventListener('cosmoz-column-prop-changed', instance.render);
+		};
 	}
 
 	_columnsChanged({
@@ -208,16 +230,42 @@ export const repeaterMixin = dedupingMixin(base => class extends base { // eslin
 		});
 	}
 
+	_getLitInstance(updateFn) {
+		const state = {
+			item: this.item,
+			selected: this.selected,
+			expanded: this.expanded
+		};
+		updateFn(state);
+
+		return {
+			_setPendingPropertyOrPath(path, value) {
+				set(state, path, value);
+			},
+			_flushProperties() {
+				updateFn(state);
+			},
+			render() {
+				updateFn(state);
+			}
+		};
+	}
+
 	_addElements(start, count) {
 		const end = start + count;
 		for (let i = start; i < end; i++) {
 			const element = document.createElement(this._elementType),
 				column = this.columns[i],
-				instance = this._getTemplateInstance(column);
+				renderFn = this._getRenderFn?.(column);
 
-			this._configureElement(element, column, instance);
-
-			element.appendChild(instance.root);
+			if (renderFn) {
+				const instance = this._getLitInstance(state => render(renderFn(column, state), element));
+				this._configureElement(element, column, instance);
+			} else {
+				const instance = this._getTemplateInstance(column);
+				this._configureElement(element, column, instance);
+				element.appendChild(instance.root);
+			}
 
 			if (i < this._elements.length) {
 				this.insertBefore(element, this._elements[i]);
@@ -233,8 +281,7 @@ export const repeaterMixin = dedupingMixin(base => class extends base { // eslin
 		this._elements
 			.splice(start, removedColumns.length)
 			.forEach(element => {
-				element.__column.recycleInstance(element.__instance);
-				element.__instance = element.__column = element.column = null;
+				element.__cleanup();
 				this.removeChild(element);
 			});
 	}
