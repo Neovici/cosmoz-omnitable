@@ -1,3 +1,10 @@
+## [4.2.1](https://github.com/neovici/cosmoz-omnitable/compare/v4.2.0...v4.2.1) (2021-02-17)
+
+
+### Bug Fixes
+
+* **deps:** replace file saver ([#414](https://github.com/neovici/cosmoz-omnitable/issues/414)) ([ccbb5b8](https://github.com/neovici/cosmoz-omnitable/commit/ccbb5b8bd6404a28adf161b9da9b5fc8a58a4996))
+
 # [4.2.0](https://github.com/neovici/cosmoz-omnitable/compare/v4.1.1...v4.2.0) (2021-01-27)
 
 
