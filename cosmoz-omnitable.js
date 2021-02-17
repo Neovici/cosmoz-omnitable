@@ -28,7 +28,7 @@ import './cosmoz-omnitable-columns';
 
 import { NullXlsx } from '@neovici/nullxlsx';
 
-import { saveAs } from 'file-saver';
+import { saveAs } from 'file-saver-es';
 
 import {
 	timeOut, animationFrame
