@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import {
 	assert, expect, html, nextFrame
 } from '@open-wc/testing';
@@ -10,6 +11,7 @@ import { flush } from '@polymer/polymer/lib/utils/flush';
 
 import '../cosmoz-omnitable.js';
 import '../cosmoz-omnitable-columns.js';
+import '@polymer/paper-toggle-button';
 
 sinon.assert.expose(chai.assert, { prefix: '' });
 
@@ -333,6 +335,124 @@ suite('visible', () => {
 		await nextFrame();
 		assert.isFalse(omnitable.visible);
 
+	});
+});
+
+suite('render cell function', () => {
+	let omnitable;
+
+	setup(async () => {
+		const renderCustom = (column, {
+			item, selected
+		}) => html`${ column.valuePath } - ${ selected } - ${ column.getString(item) }`;
+
+		omnitable = await setupOmnitableFixture(html`
+				<cosmoz-omnitable selection-enabled>
+					<cosmoz-omnitable-column name="custom" value-path="object.label" .renderCell=${ renderCustom }>
+					</cosmoz-omnitable-column>
+				</cosmoz-omnitable>
+			`, generateTableDemoData(10, 11, 25));
+
+		flush();
+		omnitable.flush();
+		await nextFrame();
+	});
+
+	test('renders custom cell template with access to data from the column, row AND item', async () => {
+		const firstItem = omnitable.data[0];
+		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent, 'object.label - false - ' + firstItem.object.label);
+	});
+
+	test('re-renders when row info changes', async () => {
+		const firstItem = omnitable.data[0];
+
+		omnitable.selectItem(omnitable.data[0]);
+		await nextFrame();
+		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent, 'object.label - true - ' + firstItem.object.label);
+
+		omnitable.deselectItem(omnitable.data[0]);
+		await nextFrame();
+		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent, 'object.label - false - ' + firstItem.object.label);
+	});
+
+	test('re-renders when an item is updated', async () => {
+		const firstItem = omnitable.data[0];
+
+		omnitable.replaceItemAtIndex(0, {
+			...firstItem,
+			object: {
+				...firstItem.object,
+				label: 'EDITED'
+			}
+		});
+		flush();
+		await nextFrame();
+
+		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent, 'object.label - false - EDITED');
+	});
+
+	test('re-renders when the column setup is updated', async () => {
+		const firstItem = omnitable.data[0];
+
+		omnitable.firstElementChild.valuePath = 'name';
+		flush();
+		await nextFrame();
+
+		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent, 'name - false - ' + firstItem.name);
+	});
+});
+
+suite('render header function', () => {
+	let omnitable;
+
+	const getRows = () => Array.from(omnitable.shadowRoot.querySelectorAll('cosmoz-omnitable-item-row')),
+		toggle = async () => {
+			omnitable.shadowRoot.querySelector('.header-cell').querySelector('paper-toggle-button').click();
+			await nextFrame();
+			await nextFrame();
+			await nextFrame();
+			await nextFrame();
+			flush();
+			omnitable.flush();
+		};
+
+	setup(async () => {
+		const renderCustomHeader = column => {
+			const onChecked = event => {
+				column.filter = {
+					min: event.detail.value ? 9000 : 0,
+					max: undefined
+				};
+			};
+			return html`<paper-toggle-button @checked-changed=${ onChecked }>Only large numbers</paper-toggle-button>`;
+		};
+
+		omnitable = await setupOmnitableFixture(html`
+				<cosmoz-omnitable selection-enabled>
+					<cosmoz-omnitable-column-number name="custom" value-path="value" .renderHeader=${ renderCustomHeader } locale="en-US">
+					</cosmoz-omnitable-column-number>
+				</cosmoz-omnitable>
+			`, generateTableDemoData(10, 11, 25));
+
+		flush();
+		omnitable.flush();
+		await nextFrame();
+	});
+
+	test('renders custom header template', async () => {
+		const header = omnitable.shadowRoot.querySelector('.header-cell');
+
+		assert.exists(header.querySelector('paper-toggle-button'));
+	});
+
+	test('custom headers can set filters', async () => {
+		assert.isFalse(getRows().every(row => parseInt(row.textContent.replace(',', ''), 10) >= 9000));
+
+		await toggle();
+		assert.isTrue(getRows().every(row => parseInt(row.textContent.replace(',', ''), 10) >= 9000));
+
+		await toggle();
+		assert.isFalse(getRows().every(row => parseInt(row.textContent.replace(',', ''), 10) >= 9000));
 	});
 });
 

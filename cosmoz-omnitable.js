@@ -712,6 +712,14 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 			this._debounceGroupItems();
 		} else if (effects.resort) {
 			this._debounceSortItems();
+		} else if (notify.value.indexSplices.length === 1 && notify.value.indexSplices[0].addedCount === 1 && notify.value.indexSplices[0].removed.length === 1) {
+			// one item was replaced, but it did not affect the filtering, grouping and sorting
+			// replace the old item in the sortedFilteredGroupedItems directly
+			const indexInVisibleData = this.sortedFilteredGroupedItems.indexOf(notify.value.indexSplices[0].removed[0]);
+			if (indexInVisibleData === -1) {
+				return;
+			}
+			this.splice('sortedFilteredGroupedItems', indexInVisibleData, 1, notify.value.indexSplices[0].object[notify.value.indexSplices[0].index]);
 		}
 	}
 

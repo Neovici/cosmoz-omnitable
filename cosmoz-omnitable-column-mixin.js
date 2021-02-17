@@ -213,6 +213,18 @@ export const columnMixin = dedupingMixin(base => class extends templatizeMixin(b
 			preferredDropdownHorizontalAlign: {
 				type: String,
 				computed: '_computePreferredDropdownHorizontalAlign(columnIndex)'
+			},
+
+			renderHeader: {
+				type: Function
+			},
+
+			renderCell: {
+				type: Function
+			},
+
+			renderEditCell: {
+				type: Function
 			}
 		};
 	}
@@ -432,6 +444,12 @@ export const columnMixin = dedupingMixin(base => class extends templatizeMixin(b
 			bubbles: true,
 			detail: { column: this }
 		}));
+	}
+
+	_propertiesChanged(currentProps, changedProps, oldProps) {
+		super._propertiesChanged(currentProps, changedProps, oldProps);
+		// let the repeaters know that this column has been updated and that it needs to re-render the templates
+		this.dispatchEvent(new CustomEvent('cosmoz-column-prop-changed'));
 	}
 
 	_serializeFilter(obj = this.filter) {

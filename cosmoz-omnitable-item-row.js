@@ -96,6 +96,12 @@ class OmnitableItemRow extends repeaterMixin(PolymerElement) {
 		);
 	}
 
+	_getRenderFn(column) {
+		return column.editable
+			? column.renderEditCell
+			: column.renderCell;
+	}
+
 	/**
 	 * @inheritdoc
 	 */
