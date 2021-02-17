@@ -1,3 +1,15 @@
+# [4.3.0](https://github.com/neovici/cosmoz-omnitable/compare/v4.2.1...v4.3.0) (2021-02-17)
+
+
+### Bug Fixes
+
+* table is not re-rendered when item is replaced ([4719efb](https://github.com/neovici/cosmoz-omnitable/commit/4719efb254a7b6c59024417803cf89804168f83d))
+
+
+### Features
+
+* support custom templates via lit render functions ([079c192](https://github.com/neovici/cosmoz-omnitable/commit/079c192a80c23c9cb73ec3dc837cdab69be80984)), closes [#398](https://github.com/neovici/cosmoz-omnitable/issues/398)
+
 ## [4.2.1](https://github.com/neovici/cosmoz-omnitable/compare/v4.2.0...v4.2.1) (2021-02-17)
 
 
