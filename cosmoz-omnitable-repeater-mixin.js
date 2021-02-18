@@ -234,7 +234,8 @@ export const repeaterMixin = dedupingMixin(base => class extends base { // eslin
 		const state = {
 			item: this.item,
 			selected: this.selected,
-			expanded: this.expanded
+			expanded: this.expanded,
+			folded: this.folded
 		};
 		updateFn(state);
 
