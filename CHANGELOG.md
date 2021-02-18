@@ -1,3 +1,10 @@
+## [4.3.1](https://github.com/neovici/cosmoz-omnitable/compare/v4.3.0...v4.3.1) (2021-02-18)
+
+
+### Bug Fixes
+
+* support render functions in group rows ([#415](https://github.com/neovici/cosmoz-omnitable/issues/415)) ([b1584cd](https://github.com/neovici/cosmoz-omnitable/commit/b1584cdd0e66cae893dd82d42080dfa85c6a454b))
+
 # [4.3.0](https://github.com/neovici/cosmoz-omnitable/compare/v4.2.1...v4.3.0) (2021-02-17)
 
 
