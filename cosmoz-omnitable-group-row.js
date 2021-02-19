@@ -89,7 +89,7 @@ class OmnitableGroupRow extends repeaterMixin(PolymerElement) {
 	}
 
 	_getRenderFn(column) {
-		return column.renderCell;
+		return column.renderGroup ?? column.renderCell;
 	}
 
 	_itemUpdated(changeRecord) {
