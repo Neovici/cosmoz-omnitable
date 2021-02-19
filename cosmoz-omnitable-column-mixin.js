@@ -225,6 +225,10 @@ export const columnMixin = dedupingMixin(base => class extends templatizeMixin(b
 
 			renderEditCell: {
 				type: Function
+			},
+
+			renderGroup: {
+				type: Function
 			}
 		};
 	}

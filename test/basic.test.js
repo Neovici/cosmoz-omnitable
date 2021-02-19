@@ -456,3 +456,31 @@ suite('render header function', () => {
 	});
 });
 
+
+
+suite('render group function', () => {
+	let omnitable;
+
+	setup(async () => {
+		const renderGroup = (column, {
+				item, folded
+			}) => html`${ column.name } - ${ folded } - ${ item.value }`,
+			data = generateTableDemoData(10, 11, 25);
+		data[0].value = 0;
+		omnitable = await setupOmnitableFixture(html`
+				<cosmoz-omnitable selection-enabled group-on="custom">
+					<cosmoz-omnitable-column-number name="custom" value-path="value" .renderGroup=${ renderGroup } locale="en-US">
+					</cosmoz-omnitable-column-number>
+				</cosmoz-omnitable>
+			`, data);
+
+		flush();
+		omnitable.flush();
+		await nextFrame();
+	});
+
+	test('renders custom group template', async () => {
+		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-group-row').textContent, 'custom - false - 0');
+	});
+});
+
