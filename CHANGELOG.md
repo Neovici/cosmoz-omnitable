@@ -1,3 +1,10 @@
+# [4.4.0](https://github.com/neovici/cosmoz-omnitable/compare/v4.3.1...v4.4.0) (2021-02-19)
+
+
+### Features
+
+* custom render group function ([69347e4](https://github.com/neovici/cosmoz-omnitable/commit/69347e48022e934e5cbae0ef4f6665579cc9404d)), closes [#65](https://github.com/neovici/cosmoz-omnitable/issues/65)
+
 ## [4.3.1](https://github.com/neovici/cosmoz-omnitable/compare/v4.3.0...v4.3.1) (2021-02-18)
 
 
