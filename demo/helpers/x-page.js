@@ -70,15 +70,12 @@ class XPage extends translatable(PolymerElement) {
 			<cosmoz-omnitable loading="[[ loading ]]" id="omnitable"
 				data="[[ data ]]" selection-enabled selected-items="{{ selectedItems }}"
 				hash-param="[[ hashParam ]]">
-				<cosmoz-omnitable-column title="Lit Name" name="litname" value-path="name" sort-on="name" group-on="name" flex="2"
-					render-cell="[[ renderNameCell ]]"
-					render-header="[[ renderNameHeader ]]">
+				<cosmoz-omnitable-column title="Name" name="name" value-path="name" sort-on="name" group-on="name" flex="2" render-cell="[[ renderNameCell ]]">
 				</cosmoz-omnitable-column>
-				<cosmoz-omnitable-column title="Name" name="name" value-path="name" sort-on="name" group-on="name" flex="2">
-					<template class="cell">
-						<a href="#!/purchase/suppliers/view?id=[[ item.id ]]">[[ item.name ]]</a>
-					</template>
-				</cosmoz-omnitable-column>
+				<cosmoz-omnitable-column-amount title="[[ _('Amount', t) ]]" name="amount"
+					value-path="amount" sort-on="amount" group-on="amount"
+					locale="[[ locale ]]" rates="{&quot;EUR&quot;: 1, &quot;USD&quot;:0.8169982616, &quot;AUD&quot;:0.6529827192, &quot;SEK&quot;: 0.1019271438}">
+				</cosmoz-omnitable-column-amount>
 				<cosmoz-omnitable-column-date title="Date" name="date" value-path="date" sort-on="date" group-on="date" locale="[[ locale ]]">
 				</cosmoz-omnitable-column-date>
 				<cosmoz-omnitable-column-autocomplete flex="0" width="40px" title="Id" name="id" value-path="id" sort-on="id" group-on="id">
@@ -115,10 +112,6 @@ class XPage extends translatable(PolymerElement) {
 				</cosmoz-omnitable-column>
 				<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" sort-on="value" group-on="value" locale="[[ locale ]]">
 				</cosmoz-omnitable-column-number>
-				<cosmoz-omnitable-column-amount title="[[ _('Amount', t) ]]" name="amount"
-					value-path="amount" sort-on="amount" group-on="amount"
-					locale="[[ locale ]]" rates="{&quot;EUR&quot;: 1, &quot;USD&quot;:0.8169982616, &quot;AUD&quot;:0.6529827192, &quot;SEK&quot;: 0.1019271438}">
-				</cosmoz-omnitable-column-amount>
 
 				<template is="dom-repeat" items="[[ _getRowItems(selectedItems.length) ]]">
 					<paper-button slot="actions">[[ item ]]</paper-button>
@@ -217,31 +210,6 @@ class XPage extends translatable(PolymerElement) {
 
 	renderNameCell(column, { item }) {
 		return lit`<a href="#!/purchase/suppliers/view?id=${ item.id }">${ item.name }</a>`;
-	}
-
-	renderNameHeader(column) {
-		const {
-				title, inputValue
-			} = column,
-			onChanged = event => {
-				column.inputValue = event.target.value;
-			},
-			onFocusedChanged = event => {
-				column.headerFocused = event.detail.value;
-			};
-
-		return lit`
-			<paper-input
-				.label=${ title }
-				.value=${ inputValue }
-				@keydown=${ column._onKeyDown }
-				@blur=${ column._onBlur }
-				@value-changed=${ onChanged }
-				@focused-changed=${ onFocusedChanged }
-			>
-				<cosmoz-clear-button suffix slot="suffix" ?visible=${ column.hasFilter() } light @click=${ column.resetFilter.bind(column) }></cosmoz-clear-button>
-			</paper-input>
-		`;
 	}
 }
 customElements.define(XPage.is, XPage);
