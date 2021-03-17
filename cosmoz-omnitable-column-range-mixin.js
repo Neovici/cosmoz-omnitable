@@ -265,7 +265,7 @@ export const rangeColumnMixin = dedupingMixin(base => // eslint-disable-line max
 
 		_computeFilterText(change) {
 			if (change.base == null) {
-				return null;
+				return undefined;
 			}
 			const filter = change.base,
 				min = this.toValue(filter.min),
@@ -279,7 +279,7 @@ export const rangeColumnMixin = dedupingMixin(base => // eslint-disable-line max
 			if (max != null) {
 				text.push(this.renderValue(max));
 			}
-			return text.length > 1 ? text.join('') : null;
+			return text.length > 1 ? text.join('') : undefined;
 		}
 
 		_computeTooltip(title, text) {
