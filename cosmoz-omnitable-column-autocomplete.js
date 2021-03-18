@@ -4,7 +4,9 @@ import '@polymer/paper-spinner/paper-spinner-lite.js';
 import '@neovici/cosmoz-autocomplete';
 
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import {
+	html, nothing
+} from 'lit-html';
 
 import { columnMixin } from './cosmoz-omnitable-column-mixin.js';
 import { listColumnMixin } from './cosmoz-omnitable-column-list-mixin';
@@ -18,44 +20,10 @@ import {
  * @appliesMixin columnMixin
  */
 class OmnitableColumnAutocomplete extends listColumnMixin(columnMixin(PolymerElement)) {
-	static get template() {
-		return html`
-		<template class="cell" strip-whitespace>
-			<span class="default-column">[[ getString(item, valuePath) ]]</span>
-		</template>
-
-		<template class="edit-cell" strip-whitespace>
-			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]"></paper-input>
-		</template>
-
-		<template class="header" strip-whitespace>
-			<cosmoz-autocomplete-ui
-				class$="external-values-[[ externalValues ]]"
-				label="[[ title ]]"
-				source="[[ _source ]]"
-				text-property="[[ textProperty ]]"
-				value="[[  _computeValue(filter, _source) ]]"
-				text="[[ query ]]"
-				on-change="[[ _onChange ]]"
-				on-focus="[[ _onFocus ]]"
-				on-text="[[ _onText ]]"
-			>
-				<template is="dom-if" if="[[ loading ]]">
-					<paper-spinner-lite
-						style="width: 20px; height: 20px;"
-						suffix
-						slot="suffix"
-						active="[[ loading ]]"
-					></paper-spinner-lite>
-				</template>
-			</cosmoz-autocomplete-ui>
-		</template>
-`;
-	}
-
 	static get is() {
 		return 'cosmoz-omnitable-column-autocomplete';
 	}
+
 	static get properties() {
 		return {
 			headerCellClass: {
@@ -74,6 +42,42 @@ class OmnitableColumnAutocomplete extends listColumnMixin(columnMixin(PolymerEle
 			}
 		};
 	}
+
+	renderCell(column, { item }) {
+		return html`<span class="default-column">${ column.getString(item, column.valuePath) }</span>`;
+	}
+
+	renderEditCell(column, { item }) {
+		const onChange = event => {
+			event.model = { item };
+			return column._valueChanged(event);
+		};
+		return html`<paper-input
+			no-label-float
+			type="text"
+			@change=${ onChange }
+			.value=${ column.getString(item, column.valuePath) }
+		></paper-input>`;
+	}
+
+	renderHeader(column) {
+		const spinner = column.loading
+			? html`<paper-spinner-lite style="width: 20px; height: 20px;" suffix slot="suffix" active></paper-spinner-lite>`
+			: nothing;
+
+		return html`<cosmoz-autocomplete-ui
+			class="external-values-${ column.externalValues }"
+			.label=${ column.title }
+			.source=${ column._source }
+			.textProperty=${ column.textProperty }
+			.value=${ column._computeValue(column.filter, column._source) }
+			.text=${ column.query }
+			.onChange=${ column._onChange }
+			.onFocus=${ column._onFocus }
+			.onText=${ column._onText }
+		>${ spinner }</cosmoz-autocomplete-ui>`;
+	}
+
 	getComparableValue(item, valuePath = this.valuePath) {
 		const property = this.textProperty ? strProp(this.textProperty) : prop(this.valueProperty),
 			values = array(valuePath && this.get(valuePath, item)).map(property);
