@@ -1,7 +1,7 @@
 import 'web-animations-js/web-animations-next.min.js';
 import { flush } from '@polymer/polymer/lib/utils/flush';
 import {
-	expect, html, aTimeout, oneEvent
+	expect, html, oneEvent
 } from '@open-wc/testing';
 
 import {
@@ -12,32 +12,31 @@ import '../../cosmoz-omnitable.js';
 import '../../cosmoz-omnitable-column-number.js';
 import { setupOmnitableFixture } from '../helpers/utils';
 
-const wait = time => new Promise(resolve => setTimeout(resolve, time)),
-	data = [{
-		age: 17
-	}, {
-		age: 11,
-		amount: {
-			amount: 678,
-			currency: 'AUD'
-		}
-	}, {
-		age: 9,
-		amount: {
-			amount: -8,
-			currency: 'EUR'
-		}
-	}, {
-		age: 5,
-		amount: {
-			amount: '3450',
-			currency: 'DKK'
-		}
-	}, {
-		age: 46.7511
-	}, {
-		age: 46.768
-	}];
+const data = [{
+	age: 17
+}, {
+	age: 11,
+	amount: {
+		amount: 678,
+		currency: 'AUD'
+	}
+}, {
+	age: 9,
+	amount: {
+		amount: -8,
+		currency: 'EUR'
+	}
+}, {
+	age: 5,
+	amount: {
+		amount: '3450',
+		currency: 'DKK'
+	}
+}, {
+	age: 46.7511
+}, {
+	age: 46.768
+}];
 
 suite('cosmoz-omnitable-column-number', () => {
 	let omnitable;
