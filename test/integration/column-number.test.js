@@ -1,7 +1,7 @@
 import 'web-animations-js/web-animations-next.min.js';
-
+import { flush } from '@polymer/polymer/lib/utils/flush';
 import {
-	expect, html
+	expect, html, aTimeout, oneEvent
 } from '@open-wc/testing';
 
 import {
@@ -42,11 +42,12 @@ const wait = time => new Promise(resolve => setTimeout(resolve, time)),
 suite('cosmoz-omnitable-column-number', () => {
 	let omnitable;
 
-	const getHeaderMenu = () =>
-			omnitable.shadowRoot.querySelector('cosmoz-omnitable-header-row paper-dropdown-menu'),
+	const getHeaderMenu = () => omnitable.shadowRoot.querySelector('cosmoz-omnitable-header-row paper-dropdown-menu'),
 		openHeaderMenu = async () => {
-			getHeaderMenu().click();
-			await wait(100);
+			const header = getHeaderMenu();
+			header.noAnimations = true;
+			header.click();
+			await oneEvent(header.querySelector('paper-input'), 'focus');
 		},
 
 		getInputs = () =>
@@ -58,7 +59,6 @@ suite('cosmoz-omnitable-column-number', () => {
 		setInputValue = async (inputNo, value) => {
 			const input = getInputs()[inputNo];
 			input.focus();
-			await wait(10);
 			input.value = value;
 		};
 
@@ -69,6 +69,9 @@ suite('cosmoz-omnitable-column-number', () => {
 				</cosmoz-omnitable-column-number>
 			</cosmoz-omnitable>
 		`, data);
+
+		flush();
+		omnitable.flush();
 	});
 
 	test('filters the table', async () => {

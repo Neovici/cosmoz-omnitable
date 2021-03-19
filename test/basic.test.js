@@ -56,7 +56,6 @@ suite('basic', () => {
 		omnitable.groupOn = '';
 		omnitable.flush();
 		assert.deepEqual(omnitable.visibleColumns, omnitable.columns);
-
 	});
 
 	test('sets column groupOn property to valuePath when group-on attribute is missing', () => {
@@ -408,12 +407,9 @@ suite('render header function', () => {
 	const getRows = () => Array.from(omnitable.shadowRoot.querySelectorAll('cosmoz-omnitable-item-row')),
 		toggle = async () => {
 			omnitable.shadowRoot.querySelector('.header-cell').querySelector('paper-toggle-button').click();
-			await nextFrame();
-			await nextFrame();
-			await nextFrame();
-			await nextFrame();
 			flush();
 			omnitable.flush();
+			flush();
 		};
 
 	setup(async () => {
