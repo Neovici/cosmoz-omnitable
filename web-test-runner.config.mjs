@@ -12,7 +12,7 @@ export default {
 		exclude: ['test/**/*.js', 'demo/*.js', 'ui-helpers/*.js'],
 		threshold: {
 			statements: 70,
-			branches: 70,
+			branches: 60,
 			functions: 80,
 			lines: 70
 		}
