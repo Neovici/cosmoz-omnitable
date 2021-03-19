@@ -8,7 +8,7 @@ import {
 import sinon from 'sinon';
 
 import { setupOmnitableFixture } from './helpers/utils';
-import { flush as flush$0 } from '@polymer/polymer/lib/utils/flush';
+import { flush } from '@polymer/polymer/lib/utils/flush';
 
 import '../cosmoz-omnitable.js';
 import '../cosmoz-omnitable-columns.js';
@@ -129,14 +129,14 @@ suite('number', () => {
 			min: -10,
 			max: 15
 		};
-		flush$0();
+		flush();
 		assert.equal(column.filter.min, -10);
 		assert.equal(column.filter.max, 15);
 	});
 
 	test('changing only _filterInput min updates filter min', () => {
 		column.set('_filterInput.min', -21);
-		flush$0();
+		flush();
 		assert.equal(column.filter.min, -11);
 	});
 
@@ -148,7 +148,7 @@ suite('number', () => {
 			min: -11,
 			max: 17
 		};
-		flush$0();
+		flush();
 
 		assert.equal(column._filterInput.min, -11);
 		assert.equal(column._filterInput.max, 17);
@@ -156,7 +156,7 @@ suite('number', () => {
 		assert.equal(column.filter.max, 17);
 
 		column.set('_filterInput.min', 20);
-		flush$0();
+		flush();
 
 		assert.equal(column.filter.min, 17);
 	});
@@ -184,7 +184,7 @@ suite('number', () => {
 			min: 46.75,
 			max: 46.76
 		};
-		flush$0();
+		flush();
 		omnitable.flush();
 
 		const items = omnitable.sortedFilteredGroupedItems;
@@ -200,7 +200,7 @@ suite('number', () => {
 			min: 46.75,
 			max: 46.76
 		};
-		flush$0();
+		flush();
 		omnitable.flush();
 
 		const items = omnitable.sortedFilteredGroupedItems;
@@ -215,28 +215,29 @@ suite('number', () => {
 		assert.include(['46.77', '46,77'], column.getString({ age: 46.768 }));
 	});
 
-	test('float label on invalid input', done => {
+	test('float label on invalid input', () => {
 		const numberHeader = omnitable.root.querySelector('.number-header-cell'),
 			filterMenu = numberHeader.querySelector('paper-dropdown-menu'),
-			menuContent = numberHeader.querySelector('.dropdown-content'),
 			isFloating = element => element.$.container.$.labelAndInputContainer.classList.contains('label-is-floating'),
-			isVisible = element => element.offsetWidth > 0 && element.offsetHeight > 0,
 			inputEvent = new InputEvent('input');
-		assert.isFalse(isVisible(menuContent));
+
+		filterMenu.noAnimations = true;
+		assert.isFalse(filterMenu.opened);
 		filterMenu.click();
 		const [from, to] = filterMenu.querySelectorAll('paper-input');
 		assert.isFalse(isFloating(from));
 		assert.isFalse(isFloating(to));
 		from.value = 'e';
 		to.value = 'e';
-		setTimeout(() => { // needed for native input to appear
-			from.dispatchEvent(inputEvent);
-			to.dispatchEvent(inputEvent);
-			assert.isTrue(isVisible(menuContent));
-			assert.isTrue(isFloating(from));
-			assert.isTrue(isFloating(to));
-			done();
-		}, 50);
+
+		flush();
+		omnitable.flush();
+
+		assert.isTrue(filterMenu.opened);
+		from.dispatchEvent(inputEvent);
+		to.dispatchEvent(inputEvent);
+		assert.isTrue(isFloating(from));
+		assert.isTrue(isFloating(to));
 	});
 
 	test('make sure onBadInputFloatLabel doesn\'t explode', () => {
@@ -426,14 +427,14 @@ suite('amount', () => {
 			min: 1,
 			max: 15
 		};
-		flush$0();
+		flush();
 		assert.equal(column.filter.min.amount, 1);
 		assert.equal(column.filter.max.amount, 15);
 	});
 
 	test('changing only _filterInput min updates filter min', () => {
 		column.set('_filterInput.min', -2317);
-		flush$0();
+		flush();
 		assert.equal(column.filter.min.amount, -8);
 	});
 
@@ -445,14 +446,14 @@ suite('amount', () => {
 			min: 7,
 			max: 77
 		};
-		flush$0();
+		flush();
 		assert.equal(column._filterInput.min, 7);
 		assert.equal(column._filterInput.max, 77);
 		assert.equal(column.filter.min.amount, 7);
 		assert.equal(column.filter.max.amount, 77);
 
 		column.set('_filterInput.min', 9992);
-		flush$0();
+		flush();
 		assert.equal(column.filter.min.amount, 77);
 	});
 });
@@ -787,7 +788,7 @@ suite('default currency', () => {
 			min: 105,
 			max: 150
 		};
-		flush$0();
+		flush();
 		assert.equal(column.filter.min.amount, 105);
 		assert.equal(column.filter.max.amount, 150);
 	});
@@ -811,7 +812,7 @@ suite('external values', () => {
 	});
 	test('changing _filterInput min on column with external values updates filter min correctly', () => {
 		column.set('_filterInput.min', -1);
-		flush$0();
+		flush();
 		assert.equal(column.filter.min, -1);
 	});
 });

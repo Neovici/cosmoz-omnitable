@@ -1,4 +1,3 @@
-import '@webcomponents/shadycss/entrypoints/apply-shim';
 import { templatizeMixin } from './cosmoz-omnitable-templatize-mixin';
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin';
 

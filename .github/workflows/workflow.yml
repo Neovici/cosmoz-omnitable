@@ -14,12 +14,20 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
 
-    - name: Use Node.js 12.x
+    - name: Use Node.js 14.x
       uses: actions/setup-node@v1
       with:
-        node-version: 12.x
+        node-version: 14.x
+
+    - name: Restore npm cache
+      id: node-cache
+      uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node-0-${{ hashFiles('**/package-lock.json') }}
 
     - name: Install
+      if: steps.node-cache.outputs.cache-hit != 'true'
       run: npm ci
 
     - name: Lint commit messages
@@ -43,6 +51,11 @@ jobs:
         echo "::add-matcher::.github/karma-problem-matcher.json"
         npm test
         $NEO_CC after-build --exit-code $?
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
 
     - name: Semantic release
       run: npx semantic-release

@@ -1,5 +1,3 @@
-import '@webcomponents/shadycss/entrypoints/apply-shim';
-
 import './cosmoz-omnitable-column-list-data';
 
 import { PolymerElement } from '@polymer/polymer/polymer-element';

@@ -1,7 +1,7 @@
 import 'web-animations-js/web-animations-next.min.js';
-
+import { flush } from '@polymer/polymer/lib/utils/flush';
 import {
-	expect, html
+	expect, html, oneEvent
 } from '@open-wc/testing';
 
 import {
@@ -12,41 +12,41 @@ import '../../cosmoz-omnitable.js';
 import '../../cosmoz-omnitable-column-number.js';
 import { setupOmnitableFixture } from '../helpers/utils';
 
-const wait = time => new Promise(resolve => setTimeout(resolve, time)),
-	data = [{
-		age: 17
-	}, {
-		age: 11,
-		amount: {
-			amount: 678,
-			currency: 'AUD'
-		}
-	}, {
-		age: 9,
-		amount: {
-			amount: -8,
-			currency: 'EUR'
-		}
-	}, {
-		age: 5,
-		amount: {
-			amount: '3450',
-			currency: 'DKK'
-		}
-	}, {
-		age: 46.7511
-	}, {
-		age: 46.768
-	}];
+const data = [{
+	age: 17
+}, {
+	age: 11,
+	amount: {
+		amount: 678,
+		currency: 'AUD'
+	}
+}, {
+	age: 9,
+	amount: {
+		amount: -8,
+		currency: 'EUR'
+	}
+}, {
+	age: 5,
+	amount: {
+		amount: '3450',
+		currency: 'DKK'
+	}
+}, {
+	age: 46.7511
+}, {
+	age: 46.768
+}];
 
 suite('cosmoz-omnitable-column-number', () => {
 	let omnitable;
 
-	const getHeaderMenu = () =>
-			omnitable.shadowRoot.querySelector('cosmoz-omnitable-header-row paper-dropdown-menu'),
+	const getHeaderMenu = () => omnitable.shadowRoot.querySelector('cosmoz-omnitable-header-row paper-dropdown-menu'),
 		openHeaderMenu = async () => {
-			getHeaderMenu().click();
-			await wait(100);
+			const header = getHeaderMenu();
+			header.noAnimations = true;
+			header.click();
+			await oneEvent(header.querySelector('paper-input'), 'focus');
 		},
 
 		getInputs = () =>
@@ -58,7 +58,6 @@ suite('cosmoz-omnitable-column-number', () => {
 		setInputValue = async (inputNo, value) => {
 			const input = getInputs()[inputNo];
 			input.focus();
-			await wait(10);
 			input.value = value;
 		};
 
@@ -69,6 +68,9 @@ suite('cosmoz-omnitable-column-number', () => {
 				</cosmoz-omnitable-column-number>
 			</cosmoz-omnitable>
 		`, data);
+
+		flush();
+		omnitable.flush();
 	});
 
 	test('filters the table', async () => {

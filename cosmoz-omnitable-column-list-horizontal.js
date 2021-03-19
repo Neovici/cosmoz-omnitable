@@ -1,5 +1,3 @@
-import '@webcomponents/shadycss/entrypoints/apply-shim';
-
 import '@neovici/cosmoz-autocomplete';
 
 import { PolymerElement } from '@polymer/polymer/polymer-element';

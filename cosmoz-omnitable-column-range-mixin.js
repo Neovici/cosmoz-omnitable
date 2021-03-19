@@ -1,6 +1,4 @@
 /* eslint-disable max-lines */
-import '@webcomponents/shadycss/entrypoints/apply-shim.js';
-
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
 import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
 import { timeOut } from '@polymer/polymer/lib/utils/async.js';

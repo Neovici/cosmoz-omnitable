@@ -1,5 +1,3 @@
-import '@webcomponents/shadycss/entrypoints/apply-shim.js';
-
 import '@polymer/paper-spinner/paper-spinner-lite.js';
 import '@neovici/cosmoz-autocomplete';
 

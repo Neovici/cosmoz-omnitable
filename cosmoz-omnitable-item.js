@@ -1,5 +1,3 @@
-import '@webcomponents/shadycss/entrypoints/apply-shim';
-
 import '@polymer/paper-item/paper-item-shared-styles';
 
 import { PolymerElement } from '@polymer/polymer/polymer-element';

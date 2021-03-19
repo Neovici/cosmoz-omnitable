@@ -1,6 +1,4 @@
 /* eslint-disable max-lines */
-import '@webcomponents/shadycss/entrypoints/apply-shim';
-
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-icon/iron-icon';
 import '@polymer/iron-label/iron-label';
