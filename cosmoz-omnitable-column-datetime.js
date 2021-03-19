@@ -1,5 +1,3 @@
-import '@webcomponents/shadycss/entrypoints/apply-shim';
-
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import '@neovici/cosmoz-datetime-input';
 import './ui-helpers/cosmoz-clear-button';

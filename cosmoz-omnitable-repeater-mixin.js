@@ -1,4 +1,3 @@
-import '@webcomponents/shadycss/entrypoints/apply-shim';
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin';
 import { render } from 'lit-html';
 import { set } from '@polymer/polymer/lib/utils/path';

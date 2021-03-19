@@ -1,5 +1,3 @@
-import '@webcomponents/shadycss/entrypoints/apply-shim';
-
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 

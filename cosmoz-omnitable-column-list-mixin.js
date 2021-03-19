@@ -1,4 +1,3 @@
-import '@webcomponents/shadycss/entrypoints/apply-shim';
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin';
 import {
 	prop, array
