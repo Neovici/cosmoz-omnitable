@@ -26,7 +26,7 @@
 	],
 	"scripts": {
 		"lint": "eslint --cache --ext .js .",
-		"start": "es-dev-server",
+		"start": "wds",
 		"test": "karma start --coverage",
 		"test:watch": "karma start --auto-watch=true --single-run=false",
 		"test:update-snapshots": "karma start --update-snapshots",
@@ -95,8 +95,8 @@
 		"@polymer/paper-toggle-button": "^3.0.0",
 		"@semantic-release/changelog": "^5.0.1",
 		"@semantic-release/git": "^9.0.0",
+		"@web/dev-server": "^0.1.10",
 		"deepmerge": "^4.2.2",
-		"es-dev-server": "^1.57.0",
 		"eslint": "^7.8.0",
 		"husky": "^4.3.0",
 		"karma": "^5.2.0",
