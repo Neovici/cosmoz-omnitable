@@ -3,11 +3,14 @@ import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import './ui-helpers/cosmoz-clear-button';
 
 import { PolymerElement } from '@polymer/polymer/polymer-element';
-import { html } from '@polymer/polymer/lib/utils/html-tag';
+import { html } from 'lit-html';
 
-import { translatable } from '@neovici/cosmoz-i18next';
+import {
+	translatable, _
+} from '@neovici/cosmoz-i18next';
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 import { rangeColumnMixin } from './cosmoz-omnitable-column-range-mixin';
+import { ifDefined } from 'lit-html/directives/if-defined';
 
 /**
  * @polymer
@@ -22,56 +25,6 @@ class OmnitableColumnNumber extends rangeColumnMixin(
 		)
 	)
 ) {
-	static get template() {
-		return html`
-		<template class="cell" strip-whitespace>
-			<div class="omnitable-cell-number">[[ getString(item, valuePath, formatter) ]]</div>
-		</template>
-
-		<template class="edit-cell" strip-whitespace>
-			<paper-input no-label-float type="number" on-change="_valueChanged" value="[[ getInputString(item, valuePath) ]]"></paper-input>
-		</template>
-
-		<template class="header" strip-whitespace>
-			<style>
-			paper-input > iron-icon {
-				display: none;
-				cursor: pointer;
-			}
-
-			paper-input.has-value > iron-icon {
-				display: block;
-			}
-
-			paper-dropdown-menu {
-				--iron-icon-width: 0;
-			}
-			</style>
-			<cosmoz-clear-button on-click="resetFilter" visible="[[ hasFilter(filter.*) ]]"></cosmoz-clear-button>
-			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]"
-				class$="external-values-[[ externalValues ]]"
-				title="[[ _tooltip ]]" horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}"
-				on-opened-changed="_onDropdownOpenedChanged">
-				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
-					<h3 style="margin: 0;">[[ title ]]</h3>
-					<paper-input class$="[[ _fromClasses ]]" type="number" label="[[ _('From', t) ]]" value="{{ _filterInput.min }}"
-						on-input="onBadInputFloatLabel"
-						on-blur="_onBlur" on-keydown="_onKeyDown"
-						min="[[ _toInputString(_limit.fromMin) ]]" max="[[ _toInputString(_limit.fromMax) ]]">
-						<iron-icon icon="clear" slot="suffix" on-tap="_clearFrom"></iron-icon>
-					</paper-input>
-					<paper-input class$="[[ _toClasses ]]" type="number" label="[[ _('To', t) ]]" value="{{ _filterInput.max }}"
-						on-input="onBadInputFloatLabel"
-						on-blur="_onBlur" on-keydown="_onKeyDown"
-						min="[[ _toInputString(_limit.toMin) ]]" max="[[ _toInputString(_limit.toMax) ]]">
-						<iron-icon icon="clear" slot="suffix" on-tap="_clearTo"></iron-icon>
-					</paper-input>
-				</div>
-			</paper-dropdown-menu>
-		</template>
-`;
-	}
-
 	static get is() {
 		return 'cosmoz-omnitable-column-number';
 	}
@@ -184,6 +137,86 @@ class OmnitableColumnNumber extends rangeColumnMixin(
 			return;
 		}
 		return formatter.format(number);
+	}
+
+	renderCell(column, { item }) {
+		return html`<div class="omnitable-cell-number">${ column.getString(item, column.valuePath, column.formatter) }</div>`;
+	}
+
+	renderEditCell(column, { item }) {
+		const onChange = event => {
+			event.model = { item };
+			return column._valueChanged(event);
+		};
+
+		return html`<paper-input no-label-float type="number" @change=${ onChange } .value=${ column.getInputString(item, column.valuePath) }></paper-input>`;
+	}
+
+	// eslint-disable-next-line max-lines-per-function
+	renderHeader(column) {
+		const onOpenedChanged = event => {
+			column.headerFocused = event.detail.value;
+			column._onDropdownOpenedChanged(event);
+		};
+
+		return html`
+			<style>
+				paper-input > iron-icon {
+					display: none;
+					cursor: pointer;
+				}
+
+				paper-input.has-value > iron-icon {
+					display: block;
+				}
+
+				paper-dropdown-menu {
+					--iron-icon-width: 0;
+				}
+			</style>
+			<cosmoz-clear-button @click=${ event => column.resetFilter(event) } ?visible=${ column.hasFilter() }></cosmoz-clear-button>
+			<paper-dropdown-menu
+				label=${ column.title }
+				placeholder=${ ifDefined(column._filterText) }
+				class="external-values-${ column.externalValues }"
+				title=${ column._tooltip }
+				horizontal-align=${ column.preferredDropdownHorizontalAlign }
+				?opened=${ column.headerFocused }
+				@opened-changed=${ onOpenedChanged }
+			>
+				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
+					<h3 style="margin: 0;">${ column.title }</h3>
+					<paper-input
+						class=${ column._fromClasses }
+						type="number"
+						label=${ _('From') }
+						.value=${ column._filterInput.min }
+						@value-changed=${ event => column.set('_filterInput.min', event.detail.value) }
+						@input=${ event => column.onBadInputFloatLabel(event) }
+						@blur=${ event => column._onBlur(event) }
+						@keydown=${ event => column._onKeyDown(event) }
+						min=${ column._toInputString(column._limit.fromMin) }
+						max=${ column._toInputString(column._limit.fromMax) }
+					>
+						<iron-icon icon="clear" slot="suffix" @tap=${ event => column._clearFrom(event) }></iron-icon>
+					</paper-input>
+					<paper-input
+						class=${ column._toClasses }
+						type="number"
+						label=${ _('To') }
+						.value=${ column._filterInput.max }
+						@value-changed=${ event => column.set('_filterInput.max', event.detail.value) }
+						@input=${ event => column.onBadInputFloatLabel(event) }
+						@blur=${ event => column._onBlur(event) }
+						@keydown=${ event => column._onKeyDown(event) }
+						min=${ column._toInputString(column._limit.toMin) }
+						max=${ column._toInputString(column._limit.toMax) }
+					>
+						<iron-icon icon="clear" slot="suffix" @tap=${ event => column._clearTo(event) }></iron-icon>
+					</paper-input>
+				</div>
+			</paper-dropdown-menu>
+		`;
 	}
 }
 customElements.define(OmnitableColumnNumber.is, OmnitableColumnNumber);
