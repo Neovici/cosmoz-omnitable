@@ -63,7 +63,7 @@ export const listColumnMixin = dedupingMixin(base => class extends base {
 
 	getString(item, valuePath = this.valuePath, textProperty = this.textProperty) {
 		return this.getTexts(item, valuePath, textProperty)
-			.filter(Boolean)
+			.filter(i => i != null)
 			.join(', ');
 	}
 
