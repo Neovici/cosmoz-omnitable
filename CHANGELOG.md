@@ -1,3 +1,10 @@
+# [4.5.0](https://github.com/neovici/cosmoz-omnitable/compare/v4.4.0...v4.5.0) (2021-03-23)
+
+
+### Features
+
+* **cosmoz-omnitable:** renders totalAvailable in row stats ([63ac024](https://github.com/neovici/cosmoz-omnitable/commit/63ac024171fba89d35ef52911ff86a1e6a9d2545))
+
 # [4.4.0](https://github.com/neovici/cosmoz-omnitable/compare/v4.3.1...v4.4.0) (2021-02-19)
 
 
