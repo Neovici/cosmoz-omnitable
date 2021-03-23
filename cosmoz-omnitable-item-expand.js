@@ -4,7 +4,6 @@ import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
 
 import { repeaterMixin } from './cosmoz-omnitable-repeater-mixin';
-import { CELL_TEMPLATE } from './cosmoz-omnitable-templatize-mixin';
 
 /**
  * @polymer
@@ -81,20 +80,6 @@ class OmnitableItemExpand extends repeaterMixin(PolymerElement) {
 
 	get _slotName() {
 		return 'item-expand-line';
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	_getTemplateInstance(column) {
-		return column.getTemplateInstance(
-			CELL_TEMPLATE,
-			{
-				item: this.item,
-				selected: this.selected,
-				expanded: this.expanded
-			}
-		);
 	}
 
 	_getRenderFn(column) {

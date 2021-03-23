@@ -2,9 +2,6 @@ import { html } from '@polymer/polymer/lib/utils/html-tag';
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 
 import { repeaterMixin } from '../../../cosmoz-omnitable-repeater-mixin';
-import {
-	EDIT_TEMPLATE, CELL_TEMPLATE
-} from '../../../cosmoz-omnitable-templatize-mixin';
 
 class BasicRow extends repeaterMixin(PolymerElement) {
 	static get properties() {
@@ -45,18 +42,6 @@ class BasicRow extends repeaterMixin(PolymerElement) {
 		return column.editable
 			? column.renderEditCell
 			: column.renderCell;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	_getTemplateInstance(column) {
-		return column.getTemplateInstance(
-			column.editable
-				? EDIT_TEMPLATE
-				: CELL_TEMPLATE,
-			{ item: this.item }
-		);
 	}
 
 	_itemUpdated(changeRecord) {

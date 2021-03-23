@@ -1,7 +1,6 @@
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
 
-import { HEADER_TEMPLATE } from './cosmoz-omnitable-templatize-mixin';
 import { repeaterMixin } from './cosmoz-omnitable-repeater-mixin';
 
 /**
@@ -47,13 +46,6 @@ class OmnitableHeaderRow extends repeaterMixin(PolymerElement) {
 	constructor() {
 		super();
 		this.trackColumns();
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	_getTemplateInstance(column) {
-		return column.getTemplateInstance(HEADER_TEMPLATE);
 	}
 
 	_getRenderFn(column) {
