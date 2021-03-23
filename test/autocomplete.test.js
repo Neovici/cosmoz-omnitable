@@ -3,6 +3,7 @@ import {
 } from '@open-wc/testing';
 
 import { setupOmnitableFixture } from './helpers/utils';
+import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
 
 import '../cosmoz-omnitable.js';
 import '../cosmoz-omnitable-column-autocomplete.js';
@@ -43,6 +44,13 @@ suite('autocomplete unit tests', () => {
 	setup(async () => {
 		omnitable = await setupOmnitableFixture(basicFixture, data.slice(0));
 		column = omnitable.columns[0];
+	});
+
+	test('basic render test', () => {
+		polymerFlush();
+		const cells = Array.from(omnitable.shadowRoot.querySelectorAll('.default-column'));
+		assert.lengthOf(cells, 12);
+		assert.deepEqual(cells.map(cell => cell.innerText), ['0', 'group0', 'Item 0', '1', 'group0', 'Item 1', '2', 'group1', 'Item 2', '3', 'group1', 'Item 3']);
 	});
 
 	test('getComparableValue returns value converted to String', () => {
