@@ -480,3 +480,13 @@ suite('render group function', () => {
 	});
 });
 
+suite('render row stats', () => {
+	test('renders totalAvailable', async () => {
+		const omnitable = await setupOmnitableFixture(html`
+			<cosmoz-omnitable .totalAvailable=${ 2000 }>
+				<cosmoz-omnitable-column name="name" value-path="name">
+				</cosmoz-omnitable-column>
+			</cosmoz-omnitable>`, generateTableDemoData(10, 10, 25));
+		assert.equal(omnitable.shadowRoot.querySelector('.footer-tableStats span:last-child').textContent, '{0} / {1} rows');
+	});
+});
