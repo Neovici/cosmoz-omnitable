@@ -62,21 +62,13 @@
 				</div>
 
 				<cosmoz-omnitable id="omnitable" data="[[data]]" selection-enabled selected-items="{{selectedItems}}">
-					<cosmoz-omnitable-column title="Id" value-path="id" name="id">
-						<template class="cell">
-							<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.id]]</a>
-						</template>
-					</cosmoz-omnitable-column>
+					<cosmoz-omnitable-column title="Id" value-path="id" name="id"></cosmoz-omnitable-column>
 					<cosmoz-omnitable-column-boolean title="Boolean" name="bool" value-path="bool" filter="{{boolFilter}}" true-label="Yes" false-label="No"></cosmoz-omnitable-column-boolean>
 					<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" locale="{{locale}}" filter="{{numberFilter}}"></cosmoz-omnitable-column-number>
 					<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount" filter="{{amountFilter}}"></cosmoz-omnitable-column-amount>
 					<cosmoz-omnitable-column-date title="Date" name="datejson" value-path="dateJSON" locale="sv" filter="{{dateFilter}}"></cosmoz-omnitable-column-date>
 					<cosmoz-omnitable-column title="Sub-property" name="subproperty" value-path="sub.subProp"></cosmoz-omnitable-column>
-					<cosmoz-omnitable-column title="Name" name="name" value-path="name" filter="{{nameFilter}}">
-						<template class="cell">
-							<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.name]]</a>
-						</template>
-					</cosmoz-omnitable-column>
+					<cosmoz-omnitable-column title="Name" name="name" value-path="name" filter="{{nameFilter}}"></cosmoz-omnitable-column>
 				</cosmoz-omnitable>
 			</div>
 		</template>

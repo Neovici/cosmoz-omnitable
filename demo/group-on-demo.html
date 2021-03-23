@@ -70,9 +70,6 @@
 
 				<cosmoz-omnitable id="omnitable" data="[[ data ]]" selection-enabled selected-items="{{ selectedItems }}" group-on="{{ group }}">
 					<cosmoz-omnitable-column title="Id" name="id" value-path="id" sort-on="id">
-						<template class="cell">
-							<a href="#!/purchase/suppliers/view?id=[[ item.id ]]">[[ item.id ]]</a>
-						</template>
 					</cosmoz-omnitable-column>
 					<cosmoz-omnitable-column-boolean title="Boolean" name="bool" value-path="bool" sort-on="bool" group-on="bool" true-label="Yes" false-label="No">
 					</cosmoz-omnitable-column-boolean>
@@ -89,9 +86,6 @@
 					<cosmoz-omnitable-column title="Sub-property" name="subproperty" value-path="sub.subProp" sort-on="sub.subProp" group-on="sub.subProp">
 					</cosmoz-omnitable-column>
 					<cosmoz-omnitable-column title="Name" name="name" value-path="name" bind-values sort-on="name">
-						<template class="cell">
-							<a href="#!/purchase/suppliers/view?id=[[ item.id ]]">[[ item.name ]]</a>
-						</template>
 					</cosmoz-omnitable-column>
 				</cosmoz-omnitable>
 			</div>

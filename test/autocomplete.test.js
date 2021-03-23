@@ -28,16 +28,10 @@ const data = [{
 	basicFixture = html`
 	<cosmoz-omnitable hash-param="test" style='height:300px'>
 		<cosmoz-omnitable-column-autocomplete width="40px" title="Id" name="id" value-path="id" sort-on="id" group-on="id">
-			<template class="cell">
-				<span>[[ item.id ]]</span>
-			</template>
 		</cosmoz-omnitable-column-autocomplete>
 		<cosmoz-omnitable-column-autocomplete title="Group" name="group" value-path="group" flex="0" width="125px">
 		</cosmoz-omnitable-column-autocomplete>
 		<cosmoz-omnitable-column title="Name" name="name" value-path="name" sort-on="name" group-on="name" flex="2">
-			<template class="cell">
-				<span>[[ item.name ]]</span>
-			</template>
 		</cosmoz-omnitable-column>
 	</cosmoz-omnitable>
 `;

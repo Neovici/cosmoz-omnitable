@@ -49,9 +49,7 @@ the column.
 The `cosmoz-omnitable-column` element uses the following template to render a column data cell
 
 ```html
-<template>
-   <span class="default-column">[[renderDefaultValue(item, valuePath)]]</span>
-</template>
+<span class="default-column">${ column.renderDefaultValue(item, column.valuePath) }</span
 ```
 
 In this template, all properties and public methods from `Cosmoz.OmnitableColumnBehavior` are available,
@@ -69,43 +67,9 @@ renderDefaultValue: function (item, valuePath) {
 > get() is a function of Polymer.Base
 > https://www.polymer-project.org/1.0/docs/api/Polymer.Base#method-get)
 
-#### Custom data templates in light dom
+#### Custom templates
 
-It is possible to change this default template, by specifying another template in the column
-light dom, for example:
-
-```html
-<cosmoz-omnitable-column name="name" title="Id" value-path="id">
-   <template class="cell">
-      <span><b>[[item.id]]</b></span>
-   </template>
-</cosmoz-omnitable-column>
-```
-
-It is also simple to add a link to a data cell:
-
-```html
-<cosmoz-omnitable-column name="name" title="Id" value-path="id">
-   <template class="cell">
-      <span><a href="path/to/view?id=[[item.id]]&otherparam=[[item.otherProp]]">[[item.id]]</a></span>
-   </template>
-</cosmoz-omnitable-column>
-```
-#### Custom data templates defined elsewhere
-
-It is also possible to specify a cell template for a column using the `cell-template`
-attribute:
-
-```html
-<cosmoz-omnitable-column name="name" title="Id" value-path="id" cell-template="[[myDataTemplate]]">
-</cosmoz-omnitable-column>
-```
-
-In your code, you need to set `myDataTemplate` to the template you want to use:
-
-```js
-this.myDataTemplate = Polymer.dom(...).querySelector(another template);
-```
+TBD
 
 ### Sorting and grouping
 

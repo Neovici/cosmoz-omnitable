@@ -41,6 +41,12 @@ class BasicRow extends repeaterMixin(PolymerElement) {
 		this.__slotName = value;
 	}
 
+	_getRenderFn(column) {
+		return column.editable
+			? column.renderEditCell
+			: column.renderCell;
+	}
+
 	/**
 	 * @inheritdoc
 	 */

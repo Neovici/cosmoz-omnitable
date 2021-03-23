@@ -16,11 +16,7 @@ suite('id', () => {
 		data = generateTableDemoData(10, 11, 25);
 		omnitable = await setupOmnitableFixture(html`
 			<cosmoz-omnitable group-on="id">
-				<cosmoz-omnitable-column title="Id" name="id" value-path="id" sort-on="id">
-					<template class="cell">
-						<a href="#!/purchase/suppliers/view?id=[[ item.id ]]">[[ item.id ]]</a>
-					</template>
-				</cosmoz-omnitable-column>
+				<cosmoz-omnitable-column title="Id" name="id" value-path="id" sort-on="id"></cosmoz-omnitable-column>
 			</cosmoz-omnitable>
 		`, data);
 	});
@@ -66,9 +62,6 @@ suite('bool', () => {
 		omnitable = await setupOmnitableFixture(html`
 			<cosmoz-omnitable group-on="bool">
 				<cosmoz-omnitable-column title="Id" name="id" value-path="id" sort-on="id">
-					<template class="cell">
-						<a href="#!/purchase/suppliers/view?id=[[ item.id ]]">[[ item.id ]]</a>
-					</template>
 				</cosmoz-omnitable-column>
 				<cosmoz-omnitable-column-boolean title="Boolean" name="bool" value-path="bool" sort-on="bool" group-on="bool"
 					true-label="Yes" false-label="No">
