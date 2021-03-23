@@ -1585,7 +1585,7 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 
 	_renderRowStats(numRows, totalAvailable) {
 		if (Number.isInteger(totalAvailable) && totalAvailable > numRows) {
-			return this.ngettext('{0} / {1} row', '{0} / {1} rows', numRows, totalAvailable);
+			return this.ngettext('{1} / {0} row', '{1} / {0} rows', totalAvailable, numRows);
 		}
 		return this.ngettext('{0} row', '{0} rows', numRows);
 	}
