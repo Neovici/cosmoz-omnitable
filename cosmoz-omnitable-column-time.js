@@ -1,14 +1,18 @@
+/* eslint-disable no-return-assign */
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import '@polymer/paper-input/paper-input';
 
 import './ui-helpers/cosmoz-clear-button';
 
 import { PolymerElement } from '@polymer/polymer/polymer-element';
-import { html } from '@polymer/polymer/lib/utils/html-tag';
+import { html } from 'lit-html';
 
-import { translatable } from '@neovici/cosmoz-i18next';
+import {
+	translatable, _
+} from '@neovici/cosmoz-i18next';
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 import { dateColumnMixin } from './cosmoz-omnitable-column-date-mixin';
+import { ifDefined } from 'lit-html/directives/if-defined';
 
 /**
  * @polymer
@@ -22,34 +26,6 @@ class OmnitableColumnTime extends
 			translatable(PolymerElement)
 		)
 	) {
-	static get template() {
-		return html`
-		<template class="cell" strip-whitespace>
-			[[ getString(item, valuePath, formatter) ]]
-		</template>
-
-		<template class="edit-cell" strip-whitespace>
-			<paper-input no-label-float type="time" on-change="_timeValueChanged" value="[[ getInputString(item, valuePath) ]]">
-			</paper-input>
-		</template>
-
-		<template class="header" strip-whitespace>
-			<cosmoz-clear-button on-click="resetFilter" visible="[[ hasFilter(filter.*) ]]"></cosmoz-clear-button>
-			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]"
-				class$="external-values-[[ externalValues ]]"
-				title="[[ _tooltip ]]" horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
-				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
-					<h3 style="margin: 0;">[[ title ]]</h3>
-					<paper-input type="time" label="[[ _('From time', t) ]]" step="[[ filterStep ]]" value="{{ _filterInput.min }}">
-					</paper-input>
-					<paper-input type="time" label="[[ _('Until time', t) ]]" step="[[ filterStep ]]" value="{{ _filterInput.max }}">
-					</paper-input>
-				</div>
-			</paper-dropdown-menu>
-		</template>
-`;
-	}
-
 	static get is() {
 		return 'cosmoz-omnitable-column-time';
 	}
@@ -81,6 +57,57 @@ class OmnitableColumnTime extends
 				value: '63px'
 			}
 		};
+	}
+
+	renderCell(column, { item }) {
+		return column.getString(item, column.valuePath, column.formatter);
+	}
+
+	renderEditCell(column, { item }) {
+		const onChange = event => {
+			event.model = { item };
+			return column._timeValueChanged(event);
+		};
+
+		return html`<paper-input
+			no-label-float
+			type="time"
+			@change=${ onChange }
+			.value=${ column.getInputString(item, column.valuePath) }
+		></paper-input>`;
+	}
+
+	renderHeader(column) {
+		return html`
+			<cosmoz-clear-button @click=${ event => column.resetFilter(event) } ?visible=${ column.hasFilter() }></cosmoz-clear-button>
+			<paper-dropdown-menu
+				label=${ column.title }
+				placeholder=${ ifDefined(column._filterText) }
+				class="external-values-${ column.externalValues }"
+				title=${ column._tooltip }
+				horizontal-align=${ column.preferredDropdownHorizontalAlign }
+				?opened=${ column.headerFocused }
+				@opened-changed=${ event => column.headerFocused = event.detail.value }>
+			>
+				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
+					<h3 style="margin: 0;">${ column.title }</h3>
+					<paper-input
+						type="time"
+						label=${ _('From time') }
+						step=${ column.filterStep }
+						.value=${ column._filterInput.min }
+						@value-changed=${ event => column.set('_filterInput.min', event.detail.value) }
+					></paper-input>
+					<paper-input
+						type="time"
+						label=${ _('Until time') }
+						step=${ column.filterStep }
+						.value=${ column._filterInput.max }
+						@value-changed=${ event => column.set('_filterInput.max', event.detail.value) }
+					></paper-input>
+				</div>
+			</paper-dropdown-menu>
+		`;
 	}
 
 	get _fixedDate() {
