@@ -175,7 +175,7 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 				</div>
 				<div class="footer-tableStats">
 					<span>[[ ngettext('{0} group', '{0} groups', _groupsCount, t) ]]</span>
-					<span>[[ ngettext('{0} row', '{0} rows', filteredItems.length, t) ]]</span>
+					<span>[[ _renderRowStats(filteredItems.length, totalAvailable, t) ]]</span>
 				</div>
 				<cosmoz-bottom-bar id="bottomBar" class="footer-actionBar" match-parent
 					on-action="_onAction" active$="[[ !isEmpty(selectedItems.length) ]]" computed-bar-height="{{ computedBarHeight }}">
@@ -1581,6 +1581,13 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 
 	_debounce(name, fn, asyncModule = timeOut.after(0)) {
 		this.debouncers[name] = Debouncer.debounce(this.debouncers[name], asyncModule, fn);
+	}
+
+	_renderRowStats(numRows, totalAvailable) {
+		if (Number.isInteger(totalAvailable) && totalAvailable > numRows) {
+			return this.ngettext('{0} / {1} row', '{0} / {1} rows', numRows, totalAvailable);
+		}
+		return this.ngettext('{0} row', '{0} rows', numRows);
 	}
 }
 customElements.define(Omnitable.is, Omnitable);
