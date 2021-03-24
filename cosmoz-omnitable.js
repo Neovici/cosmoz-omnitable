@@ -1158,7 +1158,7 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 
 	_adjustHeadersWidth(cells) {
 		const headerRow = this.$.header.querySelector('cosmoz-omnitable-header-row'),
-			headers = Array.from(headerRow.children);
+			headers = Array.from(headerRow.querySelectorAll('.header-cell'));
 
 		cells.forEach((cell, index) => {
 			const header = headers[index];

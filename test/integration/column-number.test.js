@@ -1,7 +1,7 @@
 import 'web-animations-js/web-animations-next.min.js';
 import { flush } from '@polymer/polymer/lib/utils/flush';
 import {
-	expect, html, oneEvent
+	expect, html, nextFrame, oneEvent
 } from '@open-wc/testing';
 
 import {
@@ -150,6 +150,8 @@ suite('cosmoz-omnitable-column-number', () => {
 		// when I move to the next input
 		pressEnter(getFocusedInput());
 
+		await nextFrame();
+
 		// then the value is replaced with the minimum value
 		expect(inputs[0].value).to.equal(5);
 
@@ -161,6 +163,8 @@ suite('cosmoz-omnitable-column-number', () => {
 
 		// when I hit enter
 		pressEnter(getFocusedInput());
+
+		await nextFrame();
 
 		// then the value is replace with the maximum value
 		expect(inputs[1].value).to.equal(46.768);

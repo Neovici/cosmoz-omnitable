@@ -2,7 +2,7 @@
 import 'web-animations-js/web-animations-next.min.js';
 
 import {
-	assert, html
+	assert, html, nextFrame
 } from '@open-wc/testing';
 
 import sinon from 'sinon';
@@ -215,7 +215,8 @@ suite('number', () => {
 		assert.include(['46.77', '46,77'], column.getString({ age: 46.768 }));
 	});
 
-	test('float label on invalid input', () => {
+	test('float label on invalid input', async () => {
+		await nextFrame(); // give lit time to render the columns
 		const numberHeader = omnitable.root.querySelector('.number-header-cell'),
 			filterMenu = numberHeader.querySelector('paper-dropdown-menu'),
 			isFloating = element => element.$.container.$.labelAndInputContainer.classList.contains('label-is-floating'),
@@ -227,9 +228,9 @@ suite('number', () => {
 		const [from, to] = filterMenu.querySelectorAll('paper-input');
 		assert.isFalse(isFloating(from));
 		assert.isFalse(isFloating(to));
+
 		from.value = 'e';
 		to.value = 'e';
-
 		flush();
 		omnitable.flush();
 

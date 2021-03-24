@@ -473,20 +473,20 @@ suite('fit columns behaviour', () => {
 		await nextFrame();
 	});
 
-	test('renders custom group template', async () => {
-		assert.lengthOf(omnitable.shadowRoot.querySelectorAll('[slot="header-cell"]'), 5);
+	test('it adjusts the visible columns based on the available width', async () => {
+		assert.lengthOf(omnitable.shadowRoot.querySelectorAll('.header-cell'), 5);
 
 		omnitable.style.width = '500px';
 		await nextFrame();
 		await nextFrame();
 
-		assert.lengthOf(omnitable.shadowRoot.querySelectorAll('[slot="header-cell"]'), 3);
+		assert.lengthOf(omnitable.shadowRoot.querySelectorAll('.header-cell'), 3);
 
 		omnitable.style.width = '800px';
 		await nextFrame();
 		await nextFrame();
 
-		assert.lengthOf(omnitable.shadowRoot.querySelectorAll('[slot="header-cell"]'), 5);
+		assert.lengthOf(omnitable.shadowRoot.querySelectorAll('.header-cell'), 5);
 	});
 });
 
