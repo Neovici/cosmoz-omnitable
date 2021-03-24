@@ -2,7 +2,6 @@ import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
 
 import { repeaterMixin } from './cosmoz-omnitable-repeater-mixin';
-import { CELL_TEMPLATE } from './cosmoz-omnitable-templatize-mixin';
 
 /**
  * @polymer
@@ -71,21 +70,6 @@ class OmnitableGroupRow extends repeaterMixin(PolymerElement) {
 			return;
 		}
 		this.columns = [newColumn];
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	_getTemplateInstance(column) {
-		return column.getTemplateInstance(
-			CELL_TEMPLATE,
-			{
-				expanded: this.expanded,
-				grouped: true, // used in the cell templates to adjust the layout accordingly
-				item: this.item,
-				selected: this.selected
-			}
-		);
 	}
 
 	_getRenderFn(column) {

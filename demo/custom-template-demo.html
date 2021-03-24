@@ -6,7 +6,6 @@
 
 	<title>Cosmoz Omnitable demo</title>
 
-	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 	<script src="/node_modules/web-animations-js/web-animations-next-lite.min.js"></script>
 	<script type="module" src="/node_modules/@polymer/polymer/polymer-element.js"></script>
 	<script type="module" src="/node_modules/@polymer/iron-icons/editor-icons.js"></script>
@@ -63,22 +62,13 @@
 				</div>
 
 				<cosmoz-omnitable id="omnitable" data="[[data]]" selection-enabled selected-items="{{ selectedItems }}">
-					<cosmoz-omnitable-column title="Id" name="id" value-path="id" sort-on="id" group-on="id">
-						<template class="cell">
-							<span>
-								<span>[[_customFunction(item)]]</span>
-								<a href="#!/purchase/suppliers/view?id=[[item.id]]">[[item.id]]</a>
-							</span>
-						</template>
+					<cosmoz-omnitable-column title="Id" name="id" value-path="id" sort-on="id" group-on="id" render-cell="[[ renderIdCell ]]">
 					</cosmoz-omnitable-column>
 
 					<cosmoz-omnitable-column title="Value" name="value" value-path="value" sort-on="value" group-on="value">
 					</cosmoz-omnitable-column>
 
-					<cosmoz-omnitable-column title="Amount" name="amount" value-path="amount" sort-on="amount" group-on="amount">
-						<template class="cell">
-							<span style="background: red;" on-tap="onTap">[[item.amount.amount]]</span>
-						</template>
+					<cosmoz-omnitable-column title="Amount" name="amount" value-path="amount" sort-on="amount" group-on="amount" render-cell="[[renderAmountCell]]">
 					</cosmoz-omnitable-column>
 				</cosmoz-omnitable>
 
@@ -93,6 +83,11 @@
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { translatable } from '@neovici/cosmoz-i18next';
 import { generateTableDemoData } from './table-demo-helper';
+import { html } from 'lit-html';
+
+const
+	_customFunction = item => 'bla ' + item.id + ' bla',
+	onTap = event => console.log('onTap', event);
 
 class XPage extends translatable(PolymerElement) {
 	static get is() {
@@ -129,12 +124,15 @@ class XPage extends translatable(PolymerElement) {
 		this.data = [];
 	}
 
-	onTap(event) {
-		console.log('onTap', event);
+	renderIdCell(column, { item }) {
+		return html`
+			<span>${ _customFunction(item) }</span>
+			<a href="#!/purchase/suppliers/view?id=${ item.id }">${ item.id }</a>
+		`;
 	}
 
-	_customFunction(item) {
-		return 'bla ' + item.id + ' bla';
+	renderAmountCell(column, { item }) {
+		return html`<span style="background: red;" @tap=${ onTap }>${ item.amount.amount }</span>`;
 	}
 }
 customElements.define(XPage.is, XPage);

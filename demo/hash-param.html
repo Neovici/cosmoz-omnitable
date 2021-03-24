@@ -6,7 +6,6 @@
 
 	<title>cosmoz-omnitable hash-param demo</title>
 
-	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 	<script type="module" src="/node_modules/@neovici/cosmoz-page-router/cosmoz-page-router.js"></script>
 
 	<style>
@@ -26,10 +25,10 @@
 					handle: () => import('./helpers/x-page.js').then(() =>
 						html`<x-page style="height: 100%; width: 100%;" hash-param="full" />`)
 				}
-		],
-		DemoRouter = () => {
-				return html`<cosmoz-page-router .routes=${routes} />`;
-		};
+	],
+	DemoRouter = () => {
+				return html`<cosmoz-page-router .routes=${ routes } />`;
+	};
 		customElements.define('demo-router', component(DemoRouter));
 	</script>
 </body></html>

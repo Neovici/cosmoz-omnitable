@@ -1,9 +1,6 @@
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
 
-import {
-	EDIT_TEMPLATE, CELL_TEMPLATE
-} from './cosmoz-omnitable-templatize-mixin';
 import { repeaterMixin } from './cosmoz-omnitable-repeater-mixin';
 
 /**
@@ -78,22 +75,6 @@ class OmnitableItemRow extends repeaterMixin(PolymerElement) {
 	constructor() {
 		super();
 		this.trackColumns();
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	_getTemplateInstance(column) {
-		return column.getTemplateInstance(
-			column.editable
-				? EDIT_TEMPLATE
-				: CELL_TEMPLATE,
-			{
-				item: this.item,
-				selected: this.selected,
-				expanded: this.expanded
-			}
-		);
 	}
 
 	_getRenderFn(column) {

@@ -3,6 +3,7 @@ import {
 } from '@open-wc/testing';
 
 import { setupOmnitableFixture } from './helpers/utils';
+import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
 
 import '../cosmoz-omnitable.js';
 import '../cosmoz-omnitable-columns.js';
@@ -60,20 +61,32 @@ suite('basic', () => {
 });
 
 suite('horizontal', () => {
-	let column,
+	let
+		omnitable,
+		column,
 		data;
 
 	setup(async () => {
 		data = [
 			{ list: ['item 1', 'item 2', 'item 3']}
 		];
-		const omnitable = await setupOmnitableFixture(html`
+		omnitable = await setupOmnitableFixture(html`
 			<cosmoz-omnitable id="omnitable" selection-enabled>
 				<cosmoz-omnitable-column-list-horizontal name="list" value-path="list">
+				</cosmoz-omnitable-column-list-horizontal>
+				<cosmoz-omnitable-column-list-horizontal name="list-editable" value-path="list" editable>
 				</cosmoz-omnitable-column-list-horizontal>
 			</cosmoz-omnitable>
 		`, data);
 		column = omnitable.columns[0];
+	});
+
+	test('basic render', async () => {
+		polymerFlush();
+
+		const cells = Array.from(omnitable.shadowRoot.querySelectorAll('[slot="item-cell"]'));
+		assert.lengthOf(cells, 2);
+		assert.equal(cells[0].innerText, 'item 1item 2item 3');
 	});
 
 	test('initializes list column', () => {

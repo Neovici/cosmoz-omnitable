@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import {
 	assert, html
 } from '@open-wc/testing';
@@ -50,7 +51,7 @@ const data = [{
 		time: '00:00:00'
 	}],
 	rangeFixture = html`
-		<cosmoz-omnitable id="omnitable">
+		<cosmoz-omnitable id="omnitable" style="width: 800px">
 			<cosmoz-omnitable-column-number title="Age" name="age" value-path="age">
 			</cosmoz-omnitable-column-number>
 			<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount">
@@ -65,6 +66,17 @@ const data = [{
 	`;
 
 sinon.assert.expose(chai.assert, { prefix: '' });
+
+suite('render', () => {
+	test('basic render', async () => {
+		const omnitable = await setupOmnitableFixture(rangeFixture, data);
+		polymerFlush();
+
+		const cells = Array.from(omnitable.shadowRoot.querySelectorAll('[slot="item-cell"]'));
+		assert.isAtLeast(cells.length, 20);
+		assert.equal(cells[0].innerText, '17');
+	});
+});
 
 suite('date', () => {
 	let omnitable,

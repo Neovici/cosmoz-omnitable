@@ -3,12 +3,14 @@ import '@polymer/paper-listbox/paper-listbox';
 import '@polymer/paper-item/paper-item';
 
 import { PolymerElement } from '@polymer/polymer/polymer-element';
-import { html } from '@polymer/polymer/lib/utils/html-tag';
 
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 
 import '@polymer/paper-spinner/paper-spinner-lite';
 import '@neovici/cosmoz-autocomplete';
+import {
+	html, nothing
+} from 'lit-html';
 
 /**
  * @polymer
@@ -16,59 +18,6 @@ import '@neovici/cosmoz-autocomplete';
  * @appliesMixin columnMixin
  */
 class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
-	static get template() {
-		return html`
-		<template class="cell" strip-whitespace>
-			[[ getString(item, valuePath) ]]
-		</template>
-
-		<template class="edit-cell" strip-whitespace>
-			<cosmoz-autocomplete
-				min-length="0" no-label-float
-				label="[[ title ]]"
-				title="[[ _computeItemTooltip(title, item, valuePath) ]]"
-				source="[[ _source ]]"
-				text-property="[[ _textProperty ]]"
-				value="[[ _computeItemValue(item, valuePath, _source) ]]"
-				on-change="[[ _computeItemChange(item, valuePath) ]]"
-				limit="[[ _limit ]]"
-			>
-				<paper-spinner-lite
-					style="width: 20px; height: 20px;"
-					suffix
-					slot="suffix"
-					active="[[ loading ]]"
-					hidden="[[ !loading ]]"
-				></paper-spinner-lite>
-			</cosmoz-autocomplete-ui>
-		</template>
-
-		<template class="header" strip-whitespace>
-			<cosmoz-autocomplete-ui
-				label="[[ title ]]"
-				show-results-on-focus="[[ _showResultsOnFocus ]]"
-				title="[[ _computeItemTooltip(title, filter) ]]"
-				source="[[ _source ]]"
-				text-property="[[ _textProperty ]]"
-				value="[[ _computeValue(filter, _source) ]]"
-				text="[[ query ]]"
-				on-change="[[ _onChange ]]"
-				on-focus="[[ _onFocus ]]"
-				on-text="[[ _onText ]]"
-				limit="[[ _limit ]]"
-			>
-				<paper-spinner-lite
-					style="width: 20px; height: 20px;"
-					suffix
-					slot="suffix"
-					active="[[ loading ]]"
-					hidden="[[ !loading ]]"
-				></paper-spinner-lite>
-			</cosmoz-autocomplete-ui>
-		</template>
-		`;
-	}
-
 	static get is() {
 		return 'cosmoz-omnitable-column-boolean';
 	}
@@ -136,6 +85,46 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 		this._onFocus = this._onFocus.bind(this);
 		this._onChange = this._onChange.bind(this);
 		this._onText = this._onText.bind(this);
+	}
+
+	renderCell(column, { item }) {
+		return column.getString(item, column.valuePath);
+	}
+
+	renderEditCell(column, { item }) {
+		const spinner = column.loading
+			? html`<paper-spinner-lite style="width: 20px; height: 20px;" suffix slot="suffix" active></paper-spinner-lite>`
+			: nothing;
+
+		return html`<cosmoz-autocomplete
+				no-label-float
+				.label=${ column.title }
+				.title=${ column._computeItemTooltip(column.title, item, column.valuePath) }
+				.source=${ column._source }
+				.textProperty=${ column._textProperty }
+				.value=${ column._computeItemValue(item, column.valuePath, column._source) }
+				.onChange=${ column._computeItemChange(item, column.valuePath) }
+				.limit=${ column._limit }
+			>${ spinner }</cosmoz-autocomplete-ui>`;
+	}
+
+	renderHeader(column) {
+		const spinner = column.loading
+			? html`<paper-spinner-lite style="width: 20px; height: 20px;" suffix slot="suffix" active></paper-spinner-lite>`
+			: nothing;
+
+		return html`<cosmoz-autocomplete-ui
+			.label=${ column.title }
+			.title=${ column._computeItemTooltip(column.title, column.filter) }
+			.source=${ column._source }
+			.textProperty=${ column._textProperty }
+			.value=${ column._computeValue(column.filter, column._source) }
+			.text=${ column.query }
+			.onChange=${ column._onChange }
+			.onFocus=${ column._onFocus }
+			.onText=${ column._onText }
+			.limit=${ column._limit }
+		>${ spinner }</cosmoz-autocomplete-ui>`;
 	}
 
 	/**

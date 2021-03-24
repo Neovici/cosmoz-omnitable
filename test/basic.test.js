@@ -453,7 +453,42 @@ suite('render header function', () => {
 	});
 });
 
+suite('fit columns behaviour', () => {
+	let omnitable;
 
+	setup(async () => {
+		const data = generateTableDemoData(10, 11, 25);
+		omnitable = await setupOmnitableFixture(html`
+				<cosmoz-omnitable selection-enabled style="width: 800px">
+					<cosmoz-omnitable-column name="column1" title="column1" value-path="name"></cosmoz-omnitable-column>
+					<cosmoz-omnitable-column name="column2" title="column2" value-path="name"></cosmoz-omnitable-column>
+					<cosmoz-omnitable-column name="column3" title="column3" value-path="name"></cosmoz-omnitable-column>
+					<cosmoz-omnitable-column name="column4" title="column4" value-path="name"></cosmoz-omnitable-column>
+					<cosmoz-omnitable-column name="column5" title="column5" value-path="name"></cosmoz-omnitable-column>
+				</cosmoz-omnitable>
+			`, data);
+
+		flush();
+		omnitable.flush();
+		await nextFrame();
+	});
+
+	test('renders custom group template', async () => {
+		assert.lengthOf(omnitable.shadowRoot.querySelectorAll('[slot="header-cell"]'), 5);
+
+		omnitable.style.width = '500px';
+		await nextFrame();
+		await nextFrame();
+
+		assert.lengthOf(omnitable.shadowRoot.querySelectorAll('[slot="header-cell"]'), 3);
+
+		omnitable.style.width = '800px';
+		await nextFrame();
+		await nextFrame();
+
+		assert.lengthOf(omnitable.shadowRoot.querySelectorAll('[slot="header-cell"]'), 5);
+	});
+});
 
 suite('render group function', () => {
 	let omnitable;

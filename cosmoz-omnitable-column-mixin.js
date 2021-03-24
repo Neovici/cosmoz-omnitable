@@ -1,4 +1,3 @@
-import { templatizeMixin } from './cosmoz-omnitable-templatize-mixin';
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin';
 
 /**
@@ -6,7 +5,7 @@ import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin';
  * @mixinFunction
  * @appliesMixin templatizeMixin
  */
-export const columnMixin = dedupingMixin(base => class extends templatizeMixin(base) { // eslint-disable-line max-lines-per-function
+export const columnMixin = dedupingMixin(base => class extends base { // eslint-disable-line max-lines-per-function
 	static get properties() { // eslint-disable-line max-lines-per-function
 		return {
 			title: {

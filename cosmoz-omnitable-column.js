@@ -1,13 +1,14 @@
+/* eslint-disable no-return-assign */
 import '@polymer/iron-icon/iron-icon';
 import '@polymer/paper-input/paper-input';
 import './ui-helpers/cosmoz-clear-button';
 
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 import { PolymerElement } from '@polymer/polymer/polymer-element';
-import { html } from '@polymer/polymer/lib/utils/html-tag';
 import { timeOut } from '@polymer/polymer/lib/utils/async.js';
 import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
 import { enqueueDebouncer } from '@polymer/polymer/lib/utils/flush.js';
+import { html } from 'lit-html';
 
 /**
  * @polymer
@@ -15,25 +16,6 @@ import { enqueueDebouncer } from '@polymer/polymer/lib/utils/flush.js';
  * @appliesMixin columnMixin
  */
 class OmnitableColumn extends columnMixin(PolymerElement) {
-	static get template() {
-		return html`
-		<template class="cell" strip-whitespace>
-			<span class="default-column">[[ getString(item, valuePath) ]]</span>
-		</template>
-
-		<template class="edit-cell" strip-whitespace>
-			<paper-input no-label-float type="text" on-change="_valueChanged" value="[[ getString(item, valuePath) ]]">
-			</paper-input>
-		</template>
-
-		<template class="header" strip-whitespace>
-			<paper-input label="[[ title ]]" value="{{ inputValue }}" focused="{{ headerFocused }}" on-keydown="_onKeyDown" on-blur="_onBlur">
-				<cosmoz-clear-button suffix slot="suffix" visible="[[ hasFilter(filter.*) ]]" light on-click="resetFilter"></cosmoz-clear-button>
-			</paper-input>
-		</template>
-`;
-	}
-
 	static get is() {
 		return 'cosmoz-omnitable-column';
 	}
@@ -64,6 +46,32 @@ class OmnitableColumn extends columnMixin(PolymerElement) {
 				value: 1000
 			}
 		};
+	}
+
+	renderCell(column, { item }) {
+		return html`<span class="default-column">${ column.getString(item, column.valuePath) }</span>`;
+	}
+
+	renderEditCell(column, { item }) {
+		const onChange = event => {
+			event.model = { item };
+			return column._valueChanged(event);
+		};
+		return html`<paper-input no-label-float type="text" @change=${ onChange } .value=${ column.getString(item, column.valuePath) }></paper-input>`;
+	}
+
+	renderHeader(column) {
+		return html`<paper-input
+			label=${ column.title }
+			.value=${ column.inputValue }
+			@value-changed=${ event => column.inputValue = event.target.value }
+			focused=${ column.headerFocused }
+			@focused-changed=${ event => column.headerFocused = event.detail.value }
+			@keydown=${ column._onKeyDown }
+			@blur=${ column._onBlur }
+		>
+			<cosmoz-clear-button suffix slot="suffix" ?visible=${ column.hasFilter() } light @click=${ () => column.resetFilter() }></cosmoz-clear-button>
+		</paper-input>`;
 	}
 
 	_serializeFilter(filter = this.filter) {

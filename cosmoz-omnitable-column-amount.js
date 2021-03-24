@@ -1,13 +1,18 @@
+/* eslint-disable no-return-assign */
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import './ui-helpers/cosmoz-clear-button';
 
 import { PolymerElement } from '@polymer/polymer/polymer-element';
-import { html } from '@polymer/polymer/lib/utils/html-tag';
+import { html } from 'lit-html';
+import { ifDefined } from 'lit-html/directives/if-defined';
 
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 import { rangeColumnMixin } from './cosmoz-omnitable-column-range-mixin';
-import { translatable } from '@neovici/cosmoz-i18next';
+import {
+	translatable, _
+} from '@neovici/cosmoz-i18next';
+
 
 /**
  * @polymer
@@ -19,55 +24,6 @@ import { translatable } from '@neovici/cosmoz-i18next';
 class OmnitableColumnAmount extends rangeColumnMixin(columnMixin(translatable(
 	PolymerElement
 ))) {
-	static get template() {
-		return html`
-		<template class="cell" strip-whitespace>
-			<span>[[ getString(item, valuePath, locale) ]]</span>
-		</template>
-
-		<template class="edit-cell" strip-whitespace>
-			<paper-input no-label-float type="number" on-change="_amountValueChanged" value="[[ getInputString(item, valuePath) ]]">
-				<div suffix>[[ getCurrency(item, valuePath) ]]</div>
-			</paper-input>
-		</template>
-
-		<template class="header" strip-whitespace>
-			<style>
-			paper-input > div > iron-icon {
-				display: none;
-				cursor: pointer;
-			}
-
-			paper-input.has-value > div > iron-icon {
-				display: inline-block;
-			}
-			</style>
-			<cosmoz-clear-button on-click="resetFilter" visible="[[ hasFilter(filter.*) ]]"></cosmoz-clear-button>
-			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]"
-				class$="external-values-[[ externalValues ]]"
-				title="[[ _tooltip ]]" horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}"
-				on-opened-changed="_onDropdownOpenedChanged">
-				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 150px;">
-					<h3 style="margin: 0;">[[ title ]]</h3>
-					<paper-input class$="[[ _fromClasses ]]" type="number" label="[[ _('Min amount', t) ]]"
-						title="[[ _('Minimum amount', t) ]]" value="{{ _filterInput.min }}"
-						on-blur="_onBlur" on-keydown="_onKeyDown"
-						min="[[ _toInputStringAmount(_limit.fromMin) ]]" max="[[ _toInputStringAmount(_limit.fromMax) ]]">
-						<div slot="suffix" suffix>[[ filter.min.currency ]]<iron-icon icon="clear" on-tap="_clearFrom"></iron-icon></div>
-
-					</paper-input>
-					<paper-input class$="[[ _toClasses ]]" type="number" label="[[ _('Max amount', t) ]]"
-						title="[[ _('Maximum amount', t) ]]" value="{{ _filterInput.max }}"
-						on-blur="_onBlur" on-keydown="_onKeyDown"
-						min="[[ _toInputStringAmount(_limit.toMin) ]]" max="[[ _toInputStringAmount(_limit.toMax) ]]">
-						<div slot="suffix" suffix>[[ filter.max.currency ]]<iron-icon icon="clear" on-tap="_clearTo"></iron-icon></div>
-					</paper-input>
-				</div>
-			</paper-dropdown-menu>
-		</template>
-`;
-	}
-
 	static get is() {
 		return 'cosmoz-omnitable-column-amount';
 	}
@@ -127,6 +83,69 @@ class OmnitableColumnAmount extends rangeColumnMixin(columnMixin(translatable(
 				computed: '_computeFilterText(filter.*, _formatters)'
 			}
 		};
+	}
+
+	renderCell(column, { item }) {
+		return html`<span>${ column.getString(item, column.valuePath, column.locale) }</span>`;
+	}
+
+	renderEditCell(column, { item }) {
+		const onChange = event => {
+			event.model = { item };
+			return column._amountValueChanged(event);
+		};
+		return html`<paper-input no-label-float type="number" @change=${ onChange } .value=${ column.getInputString(item, column.valuePath) }>
+			<div suffix>${ column.getCurrency(item, column.valuePath) }</div>
+		</paper-input>`;
+	}
+
+	// eslint-disable-next-line max-lines-per-function
+	renderHeader(column) {
+		const onOpenedChanged = event => {
+			column.headerFocused = event.detail.value;
+			column._onDropdownOpenedChanged(event);
+		};
+
+		return html`
+			<cosmoz-clear-button @click=${ () => column.resetFilter() } ?visible=${ column.hasFilter() }></cosmoz-clear-button>
+			<paper-dropdown-menu
+				label=${ column.title }
+				placeholder=${ ifDefined(column._filterText) }
+				class="external-values-${ column.externalValues }"
+				title=${ column._tooltip }
+				horizontal-align=${ column.preferredDropdownHorizontalAlign }
+				?opened=${ column.headerFocused }
+				@opened-changed=${ onOpenedChanged }
+			>
+				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 150px;">
+					<h3 style="margin: 0;">${ column.title }</h3>
+					<paper-input
+						class=${ column._fromClasses }
+						type="number"
+						label=${ _('Min amount') }
+						title=${ _('Minimum amount') }
+						.value=${ column._filterInput.min }
+						@value-changed=${ event => column.set('_filterInput.min', event.detail.value) }
+						@blur=${ event => column._onBlur(event) }
+						@keydown=${ event => column._onKeyDown(event) }
+						min=${ column._toInputStringAmount(column._limit.fromMin) }
+						max=${ column._toInputStringAmount(column._limit.fromMax) }
+					><div slot="suffix" suffix>${ column.filter.min?.currency }</div></paper-input>
+					<paper-input
+						class=${ column._toClasses }
+						type="number"
+						label=${ _('Max amount') }
+						title=${ _('Maximum amount') }
+						.value=${ column._filterInput.max }
+						@value-changed=${ event => column.set('_filterInput.max', event.detail.value) }
+						@blur=${ event => column._onBlur(event) }
+						@keydown=${ event => column._onKeyDown(event) }
+						min=${ column._toInputStringAmount(column._limit.toMin) }
+						max=${ column._toInputStringAmount(column._limit.toMax) }
+					><div slot="suffix" suffix>${ column.filter.max?.currency }</div></paper-input>
+				</div>
+			</paper-dropdown-menu>
+		`;
 	}
 
 	/**

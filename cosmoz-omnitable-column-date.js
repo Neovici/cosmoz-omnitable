@@ -1,53 +1,22 @@
+/* eslint-disable no-return-assign */
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 
 import './ui-helpers/cosmoz-clear-button';
 
 import { PolymerElement } from '@polymer/polymer/polymer-element';
-import { html } from '@polymer/polymer/lib/utils/html-tag';
+import { html } from 'lit-html';
 
-import { translatable } from '@neovici/cosmoz-i18next';
+import {
+	translatable, _
+} from '@neovici/cosmoz-i18next';
 import { dateColumnMixin } from './cosmoz-omnitable-column-date-mixin';
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
+import { ifDefined } from 'lit-html/directives/if-defined';
 
 class OmnitableColumnDate extends dateColumnMixin(columnMixin(translatable(
 	PolymerElement
 ))) {
-	static get template() {
-		return html`
-		<template class="cell" strip-whitespace>
-			[[ getString(item, valuePath, formatter) ]]
-		</template>
-
-		<template class="edit-cell" strip-whitespace>
-			<paper-input no-label-float type="date" on-change="_dateValueChanged" value="[[ getInputString(item, valuePath) ]]">
-			</paper-input>
-		</template>
-
-		<template class="header" strip-whitespace>
-			<style>
-				paper-dropdown-menu {
-					--iron-icon-width: 0;
-				}
-			</style>
-			<cosmoz-clear-button on-click="resetFilter" visible="[[ hasFilter(filter.*) ]]"></cosmoz-clear-button>
-			<paper-dropdown-menu label="[[ title ]]" placeholder="[[ _filterText ]]"
-				class$="external-values-[[ externalValues ]]"
-				title="[[ _tooltip ]]" horizontal-align="[[ preferredDropdownHorizontalAlign ]]" opened="{{ headerFocused }}">
-				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
-					<h3 style="margin: 0;">[[ title ]]</h3>
-					<paper-input type="date" label="[[ _('From date', t) ]]"
-						min="[[ _toInputString(_limit.fromMin) ]]" max="[[ _toInputString(_limit.fromMax) ]]" value="{{ _filterInput.min }}">
-					</paper-input>
-					<paper-input type="date" label="[[ _('Until date', t) ]]"
-						min="[[ _toInputString(_limit.toMin) ]]" max="[[ _toInputString(_limit.toMax) ]]" value="{{ _filterInput.max }}">
-					</paper-input>
-				</div>
-			</paper-dropdown-menu>
-		</template>
-`;
-	}
-
 	static get is() {
 		return 'cosmoz-omnitable-column-date';
 	}
@@ -67,6 +36,58 @@ class OmnitableColumnDate extends dateColumnMixin(columnMixin(translatable(
 				value: '82px'
 			}
 		};
+	}
+
+	renderCell(column, { item }) {
+		return column.getString(item, column.valuePath, column.formatter);
+	}
+
+	renderEditCell(column, { item }) {
+		const onChange = event => {
+			event.model = { item };
+			return column._dateValueChanged(event);
+		};
+
+		return html`<paper-input
+			no-label-float
+			type="date"
+			@change=${ onChange }
+			.value=${ column.getInputString(item, column.valuePath) }
+		></paper-input>`;
+	}
+
+	renderHeader(column) {
+		return html`
+			<cosmoz-clear-button @click=${ event => column.resetFilter(event) } ?visible=${ column.hasFilter() }></cosmoz-clear-button>
+			<paper-dropdown-menu
+				label=${ column.title }
+				placeholder=${ ifDefined(column._filterText) }
+				class="external-values-${ column.externalValues }"
+				title=${ column._tooltip }
+				horizontal-align=${ column.preferredDropdownHorizontalAlign }
+				?opened=${ column.headerFocused }
+				@opened-changed=${ event => column.headerFocused = event.detail.value }>
+				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
+					<h3 style="margin: 0;">${ column.title }</h3>
+					<paper-input
+						type="date"
+						label=${ _('From date') }
+						min=${ column._toInputString(column._limit.fromMin) }
+						max=${ column._toInputString(column._limit.fromMax) }
+						.value=${ column._filterInput.min }
+						@value-changed=${ event => column.set('_filterInput.min', event.detail.value) }
+					></paper-input>
+					<paper-input
+						type="date"
+						label=${ _('Until date') }
+						min=${ column._toInputString(column._limit.toMin) }
+						max=${ column._toInputString(column._limit.toMax) }
+						.value=${ column._filterInput.max }
+						@value-changed=${ event => column.set('_filterInput.max', event.detail.value) }
+					></paper-input>
+				</div>
+			</paper-dropdown-menu>
+		`;
 	}
 
 	_fromInputString(value, property) {

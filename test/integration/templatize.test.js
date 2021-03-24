@@ -15,14 +15,12 @@ suite('Basic omnitable functionality', () => {
 		omnitable = await setupOmnitableFixture(html`
 			<cosmoz-omnitable id="omnitable" selection-enabled style="min-height: 500px;">
 				<basic-column name="basic" value-path="name"></basic-column>
-				<basic-column name="override" value-path="name">
-					<template class="header">
-						<span class="overriden-column-header">Overriden Header</span>
-					</template>
-					<template class="cell">
-						<span class="overriden-column-cell">Overriden [[ item.name ]]</span>
-					</template>
-				</basic-column>
+				<basic-column
+					name="override"
+					value-path="name"
+					.renderCell=${ (column, { item }) => html`<span class="overriden-column-cell">Overriden ${ item.name }</span>` }
+					.renderHeader=${ () => html`<span class="overriden-column-header">Overriden Header</span>` }
+				></basic-column>
 				<!-- this column requires that host props are properly forwarded to the cell templates -->
 				<cosmoz-omnitable-column-list title="List" name="list" value-path="list">
 				</cosmoz-omnitable-column-list>

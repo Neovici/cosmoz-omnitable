@@ -139,15 +139,6 @@ export const repeaterMixin = dedupingMixin(base => class extends base { // eslin
 	}
 
 	/**
-	 * Get a template instance for the specified column
-	 * Must be defined in implementors.
-	 * @abstract
-	 * @param {OmnitableColumnMixin} column - The column.
-	 * @return {Object} - The instance.
-	 */
-	_getTemplateInstance(column) {}
-
-	/**
 	 * Get a render function for the specified column
 	 * Must be defined in implementors.
 	 * @abstract
@@ -176,13 +167,9 @@ export const repeaterMixin = dedupingMixin(base => class extends base { // eslin
 
 		element.setAttribute('slot', this._slotName);
 
-		// TODO: cleanup when templatizer is dropped
-		if (instance.render) {
-			column.addEventListener('cosmoz-column-prop-changed', instance.render);
-		}
+		column.addEventListener('cosmoz-column-prop-changed', instance.render);
 
 		element.__cleanup = () => {
-			element.__column.recycleInstance(element.__instance);
 			element.__instance = element.__column = element.column = null;
 			column.removeEventListener('cosmoz-column-prop-changed', instance.render);
 		};
@@ -229,7 +216,7 @@ export const repeaterMixin = dedupingMixin(base => class extends base { // eslin
 		});
 	}
 
-	_getLitInstance(updateFn) {
+	_getInstance(updateFn) {
 		const state = {
 			item: this.item,
 			selected: this.selected,
@@ -256,16 +243,10 @@ export const repeaterMixin = dedupingMixin(base => class extends base { // eslin
 		for (let i = start; i < end; i++) {
 			const element = document.createElement(this._elementType),
 				column = this.columns[i],
-				renderFn = this._getRenderFn?.(column);
+				renderFn = this._getRenderFn(column),
+				instance = this._getInstance(state => render(renderFn(column, state), element));
 
-			if (renderFn) {
-				const instance = this._getLitInstance(state => render(renderFn(column, state), element));
-				this._configureElement(element, column, instance);
-			} else {
-				const instance = this._getTemplateInstance(column);
-				this._configureElement(element, column, instance);
-				element.appendChild(instance.root);
-			}
+			this._configureElement(element, column, instance);
 
 			if (i < this._elements.length) {
 				this.insertBefore(element, this._elements[i]);
