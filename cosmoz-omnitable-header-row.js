@@ -1,65 +1,43 @@
-import { PolymerElement } from '@polymer/polymer/polymer-element';
-import { html } from '@polymer/polymer/lib/utils/html-tag';
+/* eslint-disable object-curly-newline */
+import { component } from 'haunted';
+import {
+	html, nothing
+} from 'lit-html';
+import { repeat } from 'lit-html/directives/repeat';
+import { useRenderOnColumnUpdates } from './lib/use-render-on-column-updates';
 
-import { repeaterMixin } from './cosmoz-omnitable-repeater-mixin';
+const
+	style = html`<style>
+		cosmoz-omnitable-header-row {
+			display: flex;
+			align-items: flex-end;
+		}
+		cosmoz-omnitable-header-row > div {
+			flex: 1 0.000000001px;
+			padding: 0 3px;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+		cosmoz-omnitable-header-row > div[hidden] {
+			display: none !important;
+		}
+	</style>`,
 
-/**
- * @polymer
- * @customElement
- * @appliesMixin repeaterMixin
- */
-class OmnitableHeaderRow extends repeaterMixin(PolymerElement) {
-	static get template() {
-		return html`
-		<style>
-			:host {
-				display: flex;
-				align-items: flex-end;
-			}
-			:host > ::slotted(*) {
-				flex: 1 0.000000001px;
-				padding: 0 3px;
-				white-space: nowrap;
-				text-overflow: ellipsis;
-			}
-			:host > ::slotted([hidden]),
-			:host [hidden] {
-				display: none !important;
-			}
-		</style>
-		<slot name="header-cell"></slot>
-`;
-	}
+	renderHeaderRow = (columns, groupOnColumn) => [
+		style,
+		repeat(columns, column => column.name, column => html`<div
+			class="${ column.headerCellClass } header-cell"
+			?hidden=${ column === groupOnColumn }
+			title=${ column.title }
+		>${ column.renderHeader(column) }</div>`)
+	],
 
-	static get is() {
-		return 'cosmoz-omnitable-header-row';
-	}
+	HeaderRow = ({ columns, groupOnColumn }) => {
+		useRenderOnColumnUpdates(columns);
 
-	get _elementType() {
-		return 'div';
-	}
+		return columns == null
+			? nothing
+			: renderHeaderRow(columns, groupOnColumn);
+	};
 
-	get _slotName() {
-		return 'header-cell';
-	}
-
-	constructor() {
-		super();
-		this.trackColumns();
-	}
-
-	_getRenderFn(column) {
-		return column.renderHeader;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	_configureElement(element, column, instance) {
-		super._configureElement(element, column, instance);
-		element.classList.toggle(column.headerCellClass, true);
-		element.classList.toggle('header-cell', true);
-		element.setAttribute('title', column.title);
-	}
-}
-customElements.define(OmnitableHeaderRow.is, OmnitableHeaderRow);
+customElements.define('cosmoz-omnitable-header-row', component(HeaderRow, { useShadowDOM: false }));
