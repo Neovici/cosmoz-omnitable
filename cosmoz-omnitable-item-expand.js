@@ -100,6 +100,7 @@ class OmnitableItemExpand extends repeaterMixin(PolymerElement) {
 			// Notify omnitable that this item is expanded and my need individual resize
 			this.dispatchEvent(new CustomEvent('update-item-size', {
 				bubbles: true,
+				composed: true,
 				detail: { item: this.item }
 			}));
 		}
