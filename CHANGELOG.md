@@ -1,3 +1,31 @@
+# [5.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v4.5.0...v5.0.0) (2021-03-24)
+
+
+* feat!: migrate all columns to lit-html render functions ([32d6940](https://github.com/neovici/cosmoz-omnitable/commit/32d6940d3cb916ea90dbf2e7c222ba8161445ba9))
+
+
+### Bug Fixes
+
+* autocomplete columns don't display 0 value ([7a1ecf2](https://github.com/neovici/cosmoz-omnitable/commit/7a1ecf2e068fcca96dd54c53b27527fcc5459ab9))
+* update docs, tests ([25993fb](https://github.com/neovici/cosmoz-omnitable/commit/25993fbadccf5b69d835a3f32101d848ab0fe90c))
+* webcomponents-bundle is not installed anymore ([64e8d2f](https://github.com/neovici/cosmoz-omnitable/commit/64e8d2f21864d2026e4c8dbd9d083cfa3bc827b0))
+* **column:** migrate templates to render functions ([aa17708](https://github.com/neovici/cosmoz-omnitable/commit/aa1770843b08f8a483db0f6fcf64404116230a82))
+* **column-amount:** migrate templates to render functions ([7261def](https://github.com/neovici/cosmoz-omnitable/commit/7261def611aac619110d9bd508c3a392c51a5d35))
+* **column-autocomplete:** migrate templates to render functions ([84d747f](https://github.com/neovici/cosmoz-omnitable/commit/84d747ffec399ff183aa059653315903c6e45bae))
+* **column-boolean:** migrate templates to render functions ([021609d](https://github.com/neovici/cosmoz-omnitable/commit/021609d64322e0a9d9efb9575348bd4e4800d1e1))
+* **column-date:** migrate templates to render functions ([2d7d97c](https://github.com/neovici/cosmoz-omnitable/commit/2d7d97ca80a8177410230bd3dbc1a7ec5446a3d7))
+* **column-datetime:** migrate templates to render functions ([8b1ccb0](https://github.com/neovici/cosmoz-omnitable/commit/8b1ccb009dd183633df5ed46d0c50a83eec25209))
+* **column-list:** migrate templates to render functions ([574b02b](https://github.com/neovici/cosmoz-omnitable/commit/574b02b6029a1d1321fbf67c86fc697c21925c39))
+* **column-list-horizontal:** migrate templates to render functions ([55e0835](https://github.com/neovici/cosmoz-omnitable/commit/55e08357abc16b75bddeb7cead666a9ff6f905d0))
+* **column-number:** migrate templates to render functions ([31ac8db](https://github.com/neovici/cosmoz-omnitable/commit/31ac8dbf66ccd6097fad3d605a017155e7130d25))
+* **column-time:** migrate templates to render functions ([20dec3f](https://github.com/neovici/cosmoz-omnitable/commit/20dec3f57a339129af614779995b8652d6326feb))
+* **demo:** migrate to render-cell ([d29290d](https://github.com/neovici/cosmoz-omnitable/commit/d29290dc759628865ebe3c604ce48891699af12e))
+
+
+### BREAKING CHANGES
+
+* dropped support for <template> based customization
+
 # [4.5.0](https://github.com/neovici/cosmoz-omnitable/compare/v4.4.0...v4.5.0) (2021-03-23)
 
 
