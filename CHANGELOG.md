@@ -1,3 +1,10 @@
+## [5.0.1](https://github.com/neovici/cosmoz-omnitable/compare/v5.0.0...v5.0.1) (2021-03-24)
+
+
+### Bug Fixes
+
+* expanded rows don't update size after column changes ([458ccfa](https://github.com/neovici/cosmoz-omnitable/commit/458ccfa6b4d3c52526d296f272f86cb6329379d8))
+
 # [5.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v4.5.0...v5.0.0) (2021-03-24)
 
 
