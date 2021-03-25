@@ -1,3 +1,10 @@
+## [5.0.3](https://github.com/neovici/cosmoz-omnitable/compare/v5.0.2...v5.0.3) (2021-03-25)
+
+
+### Bug Fixes
+
+* include lib in package ([a7351bf](https://github.com/neovici/cosmoz-omnitable/commit/a7351bfa3c73b5a056182baae695820623c66103))
+
 ## [5.0.2](https://github.com/neovici/cosmoz-omnitable/compare/v5.0.1...v5.0.2) (2021-03-25)
 
 
