@@ -1,3 +1,10 @@
+## [5.0.2](https://github.com/neovici/cosmoz-omnitable/compare/v5.0.1...v5.0.2) (2021-03-25)
+
+
+### Bug Fixes
+
+* migrate header-row to haunted ([a719438](https://github.com/neovici/cosmoz-omnitable/commit/a719438c9f37589d94ddd0c8758e6fbf04a78270))
+
 ## [5.0.1](https://github.com/neovici/cosmoz-omnitable/compare/v5.0.0...v5.0.1) (2021-03-24)
 
 
