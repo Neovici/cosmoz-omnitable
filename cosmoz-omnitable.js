@@ -107,41 +107,9 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 						highlighted-items="{{ highlightedItems }}"
 						display-empty-groups="[[ displayEmptyGroups ]]"
 						compare-items-fn="[[ compareItemsFn ]]"
-					>
-						<template slot="templates" data-type="item">
-							<div class="item-row-wrapper">
-								<div selected$="[[selected]]" class="itemRow" highlighted$="[[highlighted]]">
-									<div class="selectItemCheckbox" hidden$="[[ !_dataIsValid ]]">
-										<paper-checkbox checked="{{ selected }}" on-change="_onItemCheckboxChange"></paper-checkbox>
-									</div>
-									<cosmoz-omnitable-item-row columns="[[ visibleColumns ]]"
-										selected="{{ selected }}" expanded="{{ expanded }}" item="[[ item ]]" group-on-column="[[ groupOnColumn ]]">
-									</cosmoz-omnitable-item-row>
-									<div class="item-expander" hidden="[[ isEmpty(disabledColumns.length) ]]">
-										<paper-icon-button icon="[[ _getFoldIcon(expanded) ]]" on-tap="_toggleItem"></paper-icon-button>
-									</div>
-								</div>
-								<cosmoz-omnitable-item-expand columns="[[ disabledColumns ]]"
-									item="[[item]]" selected="{{ selected }}" expanded="{{ expanded }}" group-on-column="[[ groupOnColumn ]]">
-								</cosmoz-omnitable-item-expand>
-							</div>
-						</template>
-						<template slot="templates" data-type="group">
-							<div class$="[[ _getGroupRowClasses(folded) ]]">
-								<div class="selectGroupCheckbox" hidden$="[[ !_dataIsValid ]]">
-									<paper-checkbox checked="{{ selected }}" on-change="_onGroupCheckboxChange"></paper-checkbox>
-								</div>
-
-								<h3 class="groupRow-label">
-									<div><span>[[ groupOnColumn.title ]]</span>: &nbsp;</div>
-									<cosmoz-omnitable-group-row column="[[ groupOnColumn ]]" item="[[ item.items.0 ]]" selected="[[ selected ]]" folded="[[ folded ]]">
-									</cosmoz-omnitable-group-row>
-								</h3>
-								<div>[[ item.items.length ]]</div>
-								<paper-icon-button icon="[[ _getFoldIcon(folded) ]]" on-tap="_toggleGroup"></paper-icon-button>
-							</div>
-						</template>
-					</cosmoz-grouped-list>
+						render-item-row="[[ renderItemRow ]]"
+						render-group-row="[[ renderGroupRow ]]"
+					></cosmoz-grouped-list>
 				</div>
 			</div>
 			<div class="footer">
@@ -207,6 +175,53 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 `;
 		template.setAttribute('strip-whitespace', '');
 		return template;
+	}
+
+	renderItemRow(item, {
+		selected, expanded
+	}) {
+		return litHtml`<div class="item-row-wrapper">
+			<div ?selected=${ selected } class="itemRow" ?highlighted=${ false /*highlighted*/ }>
+				<div class="selectItemCheckbox" ?hidden=${ !this._dataIsValid }>
+					<paper-checkbox ?checked=${ selected } xon-checked-change on-change="_onItemCheckboxChange"></paper-checkbox>
+				</div>
+				<cosmoz-omnitable-item-row
+					.columns=${ this.visibleColumns }
+					?selected=${ selected }
+					?expanded=${ expanded }
+					.item=${ item }
+					.groupOnColumn=${ this.groupOnColumn }
+				></cosmoz-omnitable-item-row>
+				<div class="item-expander" ?hidden=${ isEmpty(this.disabledColumns.length) }>
+					<paper-icon-button icon=${ this._getFoldIcon(expanded) } on-tap="_toggleItem"></paper-icon-button>
+				</div>
+			</div>
+			<cosmoz-omnitable-item-expand
+				.columns=${ this.disabledColumns }
+				.item=${ item }
+				selected="{{ selected }}"
+				?expanded=${ expanded }
+				xon-expanded-change
+				.groupOnColumn=${ this.groupOnColumn }
+			></cosmoz-omnitable-item-expand>
+		</div>`;
+	}
+
+	renderGroupRow() {
+		return litHtml`<div class$="[[ _getGroupRowClasses(folded) ]]">
+			<div class="selectGroupCheckbox" hidden$="[[ !_dataIsValid ]]">
+				<paper-checkbox checked="{{ selected }}" on-change="_onGroupCheckboxChange"></paper-checkbox>
+			</div>
+
+			<h3 class="groupRow-label">
+				<div><span>[[ groupOnColumn.title ]]</span>: &nbsp;</div>
+				<cosmoz-omnitable-group-row column="[[ groupOnColumn ]]" item="[[ item.items.0 ]]" selected="[[ selected ]]"
+					folded="[[ folded ]]">
+				</cosmoz-omnitable-group-row>
+			</h3>
+			<div>[[ item.items.length ]]</div>
+			<paper-icon-button icon="[[ _getFoldIcon(folded) ]]" on-tap="_toggleGroup"></paper-icon-button>
+		</div>`;
 	}
 
 	static get is() {
@@ -465,6 +480,8 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 		this._groupItems = this._groupItems.bind(this);
 		this._sortFilteredGroupedItems = this._sortFilteredGroupedItems.bind(this);
 		this._resizeObserver = new ResizeObserver(this._onResize.bind(this));
+		this.renderItemRow = this.renderItemRow.bind(this);
+		this.renderGroupRow = this.renderGroupRow.bind(this);
 	}
 
 	connectedCallback() {
