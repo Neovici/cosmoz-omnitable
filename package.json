@@ -96,7 +96,7 @@
 		"@web/dev-server": "^0.1.10",
 		"@web/test-runner": "^0.12.17",
 		"@web/test-runner-selenium": "^0.5.1",
-		"eslint": "^7.22.0",
+		"eslint": "^7.23.0",
 		"husky": "^4.3.0",
 		"semantic-release": "^17.4.0",
 		"sinon": "^9.2.0",
