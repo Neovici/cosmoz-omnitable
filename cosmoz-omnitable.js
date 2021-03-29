@@ -42,6 +42,7 @@ import { mixin } from '@neovici/cosmoz-utils';
 import { isEmpty } from '@neovici/cosmoz-utils/lib/template.js';
 import { getEffectiveChildrenLegacyMixin } from './get-effective-children-legacy-mixin';
 
+
 const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending', 'groupOnDescending'];
 
 /**
@@ -58,7 +59,39 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 	static get template() {
 		const template = html`
 		<style include="cosmoz-omnitable-styles">
-			/* polymer-cli v1.7.x linter breaks with empty line */
+			cosmoz-omnitable-header-row {
+				display: flex;
+				align-items: flex-end;
+			}
+			cosmoz-omnitable-header-row > div {
+				flex: 1 0.000000001px;
+				padding: 0 3px;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+			cosmoz-omnitable-header-row > div[hidden] {
+				display: none !important;
+			}
+
+			cosmoz-omnitable-item-row {
+				display: flex;
+				flex: 1 0.000000001px;
+				align-items: center;
+				min-width: 0;
+			}
+
+			cosmoz-omnitable-item-row > div {
+				flex: 1 0 auto;
+				padding: 0 3px;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			cosmoz-omnitable-item-row > div[hidden],
+			cosmoz-omnitable-item-row [hidden] {
+				display: none !important;
+			}
 		</style>
 
 		<cosmoz-page-location id="location" route-hash="{{ _routeHash }}"></cosmoz-page-location>
@@ -104,8 +137,8 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 					<cosmoz-grouped-list id="groupedList"
 						data="{{ sortedFilteredGroupedItems }}"
 						selected-items="{{ selectedItems }}"
-						highlighted-items="{{ highlightedItems }}"
 						display-empty-groups="[[ displayEmptyGroups ]]"
+						visible-columns="[[ visibleColumns ]]"
 						compare-items-fn="[[ compareItemsFn ]]"
 						render-item-row="[[ renderItemRow ]]"
 						render-group-row="[[ renderGroupRow ]]"
@@ -177,50 +210,58 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 		return template;
 	}
 
-	renderItemRow(item, {
-		selected, expanded
-	}) {
+	renderItemRow(item, selectedItems,
+		visibleColumns, {
+			selected, expanded
+		}) {
+		const onChange = event => {
+			event.model = { item };
+			this._onItemCheckboxChange(event);
+		};
 		return litHtml`<div class="item-row-wrapper">
-			<div ?selected=${ selected } class="itemRow" ?highlighted=${ false /*highlighted*/ }>
+			<div ?selected=${ selected } class="itemRow">
 				<div class="selectItemCheckbox" ?hidden=${ !this._dataIsValid }>
-					<paper-checkbox ?checked=${ selected } xon-checked-change on-change="_onItemCheckboxChange"></paper-checkbox>
+					<papier-checkbox ?checked=${ selected } @change=${ onChange }></papier-checkbox>
 				</div>
 				<cosmoz-omnitable-item-row
-					.columns=${ this.visibleColumns }
+					.columns=${ visibleColumns }
 					?selected=${ selected }
 					?expanded=${ expanded }
 					.item=${ item }
 					.groupOnColumn=${ this.groupOnColumn }
 				></cosmoz-omnitable-item-row>
 				<div class="item-expander" ?hidden=${ isEmpty(this.disabledColumns.length) }>
-					<paper-icon-button icon=${ this._getFoldIcon(expanded) } on-tap="_toggleItem"></paper-icon-button>
+					<papier-icon-button icon=${ this._getFoldIcon(expanded) } on-tap="_toggleItem"></papier-icon-button>
 				</div>
 			</div>
-			<cosmoz-omnitable-item-expand
+			<cosmoz-omnitable-item-expandx
 				.columns=${ this.disabledColumns }
 				.item=${ item }
-				selected="{{ selected }}"
+				?selected=${ selected }
 				?expanded=${ expanded }
-				xon-expanded-change
 				.groupOnColumn=${ this.groupOnColumn }
-			></cosmoz-omnitable-item-expand>
+			></cosmoz-omnitable-item-expandx>
 		</div>`;
 	}
 
-	renderGroupRow() {
-		return litHtml`<div class$="[[ _getGroupRowClasses(folded) ]]">
-			<div class="selectGroupCheckbox" hidden$="[[ !_dataIsValid ]]">
-				<paper-checkbox checked="{{ selected }}" on-change="_onGroupCheckboxChange"></paper-checkbox>
+	renderGroupRow(item, selectedItems, {
+		selected, folded
+	}) {
+		const onChange = event => {
+			event.model = { item };
+			this._onGroupCheckboxChange(event);
+		};
+		return litHtml`<div class=${ this._getGroupRowClasses(folded) }>
+			<div class="selectGroupCheckbox" ?hidden=${ !this._dataIsValid }>
+				<papier-checkbox ?checked=${ selected } @change=${ onChange }></papier-checkbox>
 			</div>
-
 			<h3 class="groupRow-label">
-				<div><span>[[ groupOnColumn.title ]]</span>: &nbsp;</div>
-				<cosmoz-omnitable-group-row column="[[ groupOnColumn ]]" item="[[ item.items.0 ]]" selected="[[ selected ]]"
-					folded="[[ folded ]]">
+				<div><span>${ this.groupOnColumn.title }</span>: &nbsp;</div>
+				<cosmoz-omnitable-group-row .column=${ this.groupOnColumn } .item=${ item.items[0] } ?selected=${ selected } ?folded=${ folded }>
 				</cosmoz-omnitable-group-row>
 			</h3>
-			<div>[[ item.items.length ]]</div>
-			<paper-icon-button icon="[[ _getFoldIcon(folded) ]]" on-tap="_toggleGroup"></paper-icon-button>
+			<div>${ item.items.length }</div>
+			<papier-icon-button icon=${ this._getFoldIcon(folded) } @click=${ event => this._toggleGroup(event) }></papier-icon-button>
 		</div>`;
 	}
 
@@ -313,11 +354,6 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 		 * List of selected rows/items in `data`.
 		 */
 			selectedItems: {
-				type: Array,
-				notify: true
-			},
-
-			highlightedItems: {
 				type: Array,
 				notify: true
 			},
@@ -655,11 +691,6 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 
 		event.preventDefault();
 		event.stopPropagation();
-	}
-
-	_itemRowTapped(event) {
-		const item = event.model.item;
-		this.highlight(item, this.isItemHighlighted(item));
 	}
 
 	_onResize([entry]) {
@@ -1473,22 +1504,6 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 
 	isItemSelected(item) {
 		return this.$.groupedList.isItemSelected(item);
-	}
-
-	isItemHighlighted(item) {
-		return this.$.groupedList.isItemHighlighted(item);
-	}
-
-	highlight(items, reverse) {
-		if (!items) {
-			return;
-		}
-		const gl = this.$.groupedList;
-		if (Array.isArray(items)) {
-			items.forEach(item => gl.highlightItem(item, reverse));
-			return;
-		}
-		gl.highlightItem(items, reverse);
 	}
 
 	_routeHashPropertyChanged(key, value) {

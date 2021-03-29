@@ -179,6 +179,7 @@ export const repeaterMixin = dedupingMixin(base => class extends base { // eslin
 		path, base, value
 	}) {
 		const reMatch = editableRegex.exec(path);
+		console.log(path, base, value);
 
 		if (path === 'columns') {
 			if (this._elements && this._elements.length) {
