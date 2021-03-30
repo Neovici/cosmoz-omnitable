@@ -21,7 +21,7 @@ const
 	}),
 
 	renderItemRow = (item, columns, groupOnColumn) =>
-		repeat(columns, column => column.name, column => html`<div
+		columns.map(column => html`<div
 			class=${ cellClasses(column) }
 			style=${ cellStyle(column) }
 			?editable=${ column.editable }

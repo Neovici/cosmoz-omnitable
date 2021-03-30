@@ -1136,7 +1136,7 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 		// 16ms 'magic' number copied from iron-list
 		// But this makes headers change width after the table has completed rendering,
 		// which might look strange.
-		this._debounce('_adjustColumnsDebouncer', this._adjustColumns, animationFrame);
+		// this._debounce('_adjustColumnsDebouncer', this._adjustColumns, animationFrame);
 	}
 	/**
 	 * Enable/disable columns to properly fit in the available space.

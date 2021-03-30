@@ -1,26 +1,19 @@
-import { translatable } from '@neovici/cosmoz-i18next';
 import {
-	mixin, Template
-} from '@neovici/cosmoz-utils';
+	component, html
+} from 'haunted';
+import { nothing } from 'lit-html';
+import { repeat } from 'lit-html/directives/repeat';
+import { _ } from '@neovici/cosmoz-i18next';
+import { useListData } from './lib/use-list-data.js';
 
-import { PolymerElement } from '@polymer/polymer/polymer-element';
-import { html } from '@polymer/polymer/lib/utils/html-tag';
-window.Cosmoz = window.Cosmoz || {};
-
-/**
- * @polymer
- * @customElement
- * @appliesMixin translatable
- */
-class OmnitableColumnListData extends translatable(mixin(Template, PolymerElement)) {
-	static get template() {
-		return html`
+const
+	style = html`
 		<style>
 			:host {
 				display: block;
 			}
 
-			:host a {
+			a[href] {
 				color: var(--primary-link-color, inherit);
 			}
 
@@ -34,93 +27,49 @@ class OmnitableColumnListData extends translatable(mixin(Template, PolymerElemen
 				padding-left: 0;
 			}
 
-			li {
-				text-overflow: ellipsis;
+			ul li {
 				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				max-width: 100%;
 			}
 		</style>
+	`,
 
-		<ul hidden$="[[ isEmpty(items) ]]">
-			<li>
-				<span>[[ _firstItem(items) ]]</span>
-			</li>
-			<li class="see-more" hidden$="[[_hideExpand(items, _expanded)]]">
-				<a href="#" on-tap="_toggleExpand">[[ _('and {0} more', _othersCount, t) ]]</a>
-			</li>
-			<template is="dom-repeat" items="[[ _otherItems(items, _expanded) ]]" as="item">
+	ListData = host => {
+		const
+			{
+				items,
+				expanded,
+				visibleItems,
+				openExpand,
+				closeExpand
+			} = useListData(host);
+
+		if (items == null || items.length < 1) {
+			return nothing;
+		}
+
+		const
+			listItems = repeat(visibleItems, item => html`
 				<li>
-					<span class="item">[[ item ]]</span>
-				</li>
-			</template>
-			<li class="see-less" hidden$="[[ _hideCollapse(items, _expanded) ]]">
-				<a href="#" on-tap="_toggleExpand">[[ _('See less', t) ]]</a>
-			</li>
-		</ul>
-`;
-	}
+					<span>${ item }</span>
+				</li>`),
+			seeMore = html`
+				<li class="see-more">
+					<a href="#" @click=${ openExpand }>${ _('and {0} more', items.length - 1) }</a>
+				</li>`,
+			seeLess = html`
+				<li class="see-less">
+					<a href="#" @click="${ closeExpand }">${ _('See less') }</a>
+				</li>`,
+			button = expanded ? seeLess : seeMore,
+			listContent = [
+				listItems,
+				items.length > 2 ? button : nothing
+			];
 
-	static get is() {
-		return 'cosmoz-omnitable-column-list-data';
-	}
+		return [style, html`<ul>${ listContent }</ul>`];
+	};
 
-	static get properties() {
-		return {
-			items: {
-				type: Array
-			},
-
-			_expanded: {
-				type: Boolean,
-				value: false
-			},
-
-			_othersCount: {
-				type: Number,
-				computed: '_computeOthersCount(items)'
-			}
-		};
-	}
-
-	_firstItem(items) {
-		if (items !== undefined && items !== null && items.length > 0) {
-			return items[0];
-		}
-	}
-
-	_hideExpand(items, expanded) {
-		if (items !== undefined && items.length !== null) {
-			return items.length <= 2 || expanded;
-		}
-		return true;
-	}
-
-	_hideCollapse(items, expanded) {
-		if (items !== undefined && items.length !== null) {
-			return items.length <= 2 || !expanded;
-		}
-		return true;
-	}
-
-	_otherItems(items, expanded) {
-		if (items !== undefined && items !== null) {
-			if (items.length <= 2 || expanded) {
-				return items.slice(1);
-			}
-		}
-	}
-
-	_computeOthersCount(items) {
-		if (items !== undefined && items !== null) {
-			return items.length - 1;
-		}
-	}
-
-	_toggleExpand(event) {
-		this._expanded = !this._expanded;
-		event.stopPropagation();
-		event.preventDefault();
-		this.dispatchEvent(new CustomEvent('iron-resize', { bubbles: true }));
-	}
-}
-
-customElements.define(OmnitableColumnListData.is, OmnitableColumnListData);
+customElements.define('cosmoz-omnitable-column-list-data', component(ListData));
