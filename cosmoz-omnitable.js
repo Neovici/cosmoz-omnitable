@@ -221,7 +221,7 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 		return litHtml`<div class="item-row-wrapper">
 			<div ?selected=${ selected } class="itemRow">
 				<div class="selectItemCheckbox" ?hidden=${ !this._dataIsValid }>
-					<papier-checkbox ?checked=${ selected } @change=${ onChange }></papier-checkbox>
+					<paper-checkbox ?checked=${ selected } @change=${ onChange }></paper-checkbox>
 				</div>
 				<cosmoz-omnitable-item-row
 					.columns=${ visibleColumns }
@@ -256,7 +256,7 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 				<papier-checkbox ?checked=${ selected } @change=${ onChange }></papier-checkbox>
 			</div>
 			<h3 class="groupRow-label">
-				<div><span>${ this.groupOnColumn.title }</span>: &nbsp;</div>
+				<div><span>${ this.groupOnColumn?.title }</span>: &nbsp;</div>
 				<cosmoz-omnitable-group-row .column=${ this.groupOnColumn } .item=${ item.items[0] } ?selected=${ selected } ?folded=${ folded }>
 				</cosmoz-omnitable-group-row>
 			</h3>
@@ -543,7 +543,6 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 		this.addEventListener('cosmoz-column-hidden-changed', this._debounceUpdateColumns);
 		this.addEventListener('cosmoz-column-disabled-changed', this._debounceUpdateColumns);
 
-		this.addEventListener('update-item-size', this._onUpdateItemSize);
 		this.addEventListener('cosmoz-column-title-changed', this._onColumnTitleChanged);
 		this.addEventListener('cosmoz-column-filter-changed', this._filterChanged);
 		this.addEventListener('cosmoz-column-editable-changed', this._onColumnEditableChanged);
@@ -564,7 +563,6 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 		// Just in case we get detached before a planned debouncer has not run yet.
 		this._cancelDebouncers();
 
-		this.removeEventListener('update-item-size', this._onUpdateItemSize);
 		this.removeEventListener('cosmoz-column-title-changed', this._onColumnTitleChanged);
 		this.removeEventListener('cosmoz-column-filter-changed', this._filterChanged);
 		this.removeEventListener('cosmoz-column-editable-changed', this._onColumnEditableChanged);
@@ -624,14 +622,6 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 	_visibleColumnsChanged() {
 		this.disabledColumns = [];
 		this._disabledColumnsIndexes = [];
-	}
-
-	_onUpdateItemSize(event) {
-		const { detail } = event;
-		if (detail && detail.item) {
-			this.$.groupedList.updateSize(detail.item);
-		}
-		event.stopPropagation();
 	}
 
 	_onColumnTitleChanged(event) {
@@ -1136,7 +1126,7 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 		// 16ms 'magic' number copied from iron-list
 		// But this makes headers change width after the table has completed rendering,
 		// which might look strange.
-		// this._debounce('_adjustColumnsDebouncer', this._adjustColumns, animationFrame);
+		this._debounce('_adjustColumnsDebouncer', this._adjustColumns, animationFrame);
 	}
 	/**
 	 * Enable/disable columns to properly fit in the available space.

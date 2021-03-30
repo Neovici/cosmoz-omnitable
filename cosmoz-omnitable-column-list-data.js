@@ -5,6 +5,7 @@ import { nothing } from 'lit-html';
 import { repeat } from 'lit-html/directives/repeat';
 import { _ } from '@neovici/cosmoz-i18next';
 import { useListData } from './lib/use-list-data.js';
+import { guard } from 'lit-html/directives/guard';
 
 const
 	style = html`
@@ -55,14 +56,14 @@ const
 				<li>
 					<span>${ item }</span>
 				</li>`),
-			seeMore = html`
+			seeMore = guard(items.length, () => html`
 				<li class="see-more">
 					<a href="#" @click=${ openExpand }>${ _('and {0} more', items.length - 1) }</a>
-				</li>`,
-			seeLess = html`
+				</li>`),
+			seeLess = guard([], () => html`
 				<li class="see-less">
 					<a href="#" @click="${ closeExpand }">${ _('See less') }</a>
-				</li>`,
+				</li>`),
 			button = expanded ? seeLess : seeMore,
 			listContent = [
 				listItems,
