@@ -12,19 +12,34 @@ class OmnitableItemRow extends repeaterMixin(PolymerElement) {
 	static get template() {
 		return html`
 		<style>
-			:host {
+			:host(:not([fast-layout])) {
 				display: flex;
 				flex: 1 0.000000001px;
 				align-items: center;
 				min-width: 0;
 			}
 
-			:host > ::slotted(*) {
+			:host(:not([fast-layout])) > ::slotted(*) {
 				flex: 1 0 auto;
 				padding: 0 3px;
 				white-space: nowrap;
 				overflow: hidden;
 				text-overflow: ellipsis;
+			}
+
+
+			:host([fast-layout]) {
+				white-space: nowrap;
+			}
+
+			:host([fast-layout]) > ::slotted(*) {
+				display: inline-block;
+				padding: 0 3px;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				box-sizing: border-box;
+				vertical-align: middle;
 			}
 
 			:host > ::slotted([hidden]),
@@ -54,6 +69,11 @@ class OmnitableItemRow extends repeaterMixin(PolymerElement) {
 			expanded: {
 				type: Boolean,
 				observer: '_expandedChanged'
+			},
+
+			fastLayout: {
+				type: Boolean,
+				value: false
 			}
 		};
 	}
@@ -88,13 +108,16 @@ class OmnitableItemRow extends repeaterMixin(PolymerElement) {
 	 */
 	_configureElement(element, column, instance) {
 		super._configureElement(element, column, instance);
-		element.style.flexBasis = column.editable ? column.editWidth : column.width;
-		element.style.minWidth = column.editable ? column.editMinWidth : column.minWidth;
-		element.style.flexGrow = column.flex;
+		if (!this.fastLayout) {
+			element.style.flexBasis = column.editable ? column.editWidth : column.width;
+			element.style.minWidth = column.editable ? column.editMinWidth : column.minWidth;
+			element.style.flexGrow = column.flex;
+		}
 		element.style.minHeight = '0.5px';
 		element.toggleAttribute('editable', column.editable);
 		element.setAttribute('title', this._getCellTitle(column, this.item));
 		element.setAttribute('class', this._computeItemRowCellClasses(column));
+		element.setAttribute('index', column.columnIndex);
 	}
 
 	_itemUpdated(changeRecord) {
@@ -123,7 +146,7 @@ class OmnitableItemRow extends repeaterMixin(PolymerElement) {
 	}
 
 	_computeItemRowCellClasses(column) {
-		return 'itemRow-cell'
+		return 'cell itemRow-cell'
 			+ (column.cellClass ? ' ' + column.cellClass + ' ' : '')
 			+ ' cosmoz-omnitable-column-' + column.__index;
 	}
