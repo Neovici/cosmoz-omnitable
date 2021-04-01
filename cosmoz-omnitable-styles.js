@@ -59,6 +59,32 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				width: 100%;
 			}
 
+			cosmoz-omnitable-header-row[fast-layout] {
+				white-space: nowrap;
+			}
+			cosmoz-omnitable-header-row[fast-layout] > div {
+				display: inline-block;
+				box-sizing: border-box;
+				padding: 0 3px;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				vertical-align: bottom;
+			}
+			cosmoz-omnitable-header-row > div[hidden] {
+				display: none !important;
+			}
+
+			cosmoz-omnitable-header-row:not([fast-layout]) {
+				display: flex;
+				align-items: flex-end;
+			}
+			cosmoz-omnitable-header-row:not([fast-layout]) > div {
+				flex: 1 0.000000001px;
+				padding: 0 3px;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+
 			.time-header-cell,
 			.datetime-header-cell,
 			.date-header-cell,
@@ -252,6 +278,7 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 			.item-expander paper-icon-button {
 				min-height: 24px;
 				max-height: 24px;
+				width: 24px;
 				padding: 0;
 			}
 

@@ -29,18 +29,23 @@ import { NullXlsx } from '@neovici/nullxlsx';
 import { saveAs } from 'file-saver-es';
 
 import {
-	timeOut, animationFrame
+	animationFrame, timeOut
 } from '@polymer/polymer/lib/utils/async';
 import { Debouncer } from '@polymer/polymer/lib/utils/debounce';
 import { FlattenedNodesObserver } from '@polymer/polymer/lib/utils/flattened-nodes-observer';
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
-import { html as litHtml } from 'lit-html';
+import {
+	html as litHtml, render
+} from 'lit-html';
 
 import { translatable } from '@neovici/cosmoz-i18next';
-import { mixin } from '@neovici/cosmoz-utils';
+import {
+	mixin, hauntedPolymer
+} from '@neovici/cosmoz-utils';
 import { isEmpty } from '@neovici/cosmoz-utils/lib/template.js';
 import { getEffectiveChildrenLegacyMixin } from './get-effective-children-legacy-mixin';
+import { useOmnitable } from './lib/use-omnitable';
 
 const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending', 'groupOnDescending'];
 
@@ -53,23 +58,27 @@ const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending', 'groupOnDescend
  * @demo demo/index.html
  */
 
-class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(translatable(PolymerElement))) {
+class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(translatable(PolymerElement)))) {
 	/* eslint-disable-next-line max-lines-per-function */
 	static get template() {
 		const template = html`
 		<style include="cosmoz-omnitable-styles">
-			/* polymer-cli v1.7.x linter breaks with empty line */
 		</style>
+		<div id="layoutStyle"></div>
 
 		<cosmoz-page-location id="location" route-hash="{{ _routeHash }}"></cosmoz-page-location>
 
 		<div class="mainContainer">
 			<div class="header" id="header">
-				<div class="selectAllCheckbox" hidden$="[[ !_dataIsValid ]]">
-					<paper-checkbox checked$="{{ _allSelected }}" on-change="_onAllCheckboxChange" hidden$="[[ !_dataIsValid ]]">
+				<div class="selectAllCheckbox">
+					<paper-checkbox checked$="{{ _allSelected }}" on-change="_onAllCheckboxChange" disabled$="[[ !_dataIsValid ]]">
 					</paper-checkbox>
 				</div>
-				<cosmoz-omnitable-header-row columns="[[ visibleColumns ]]" group-on-column="[[ groupOnColumn ]]"></cosmoz-omnitable-header-row>
+				<cosmoz-omnitable-header-row
+					fast-layout$="[[ fastLayout ]]"
+					columns="[[ visibleColumns ]]"
+					group-on-column="[[ groupOnColumn ]]"
+				></cosmoz-omnitable-header-row>
 			</div>
 			<div class="tableContent" id="tableContent">
 				<template is="dom-if" if="[[ !_dataIsValid ]]">
@@ -111,17 +120,17 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 						<template slot="templates" data-type="item">
 							<div class="item-row-wrapper">
 								<div selected$="[[selected]]" class="itemRow" highlighted$="[[highlighted]]">
-									<div class="selectItemCheckbox" hidden$="[[ !_dataIsValid ]]">
-										<paper-checkbox checked="{{ selected }}" on-change="_onItemCheckboxChange"></paper-checkbox>
+									<div class="selectItemCheckbox">
+										<paper-checkbox checked="{{ selected }}" on-change="_onItemCheckboxChange" disabled$="[[ !_dataIsValid ]]"></paper-checkbox>
 									</div>
-									<cosmoz-omnitable-item-row columns="[[ visibleColumns ]]"
+									<cosmoz-omnitable-item-row fast-layout$="[[ fastLayout ]]" columns="[[ visibleColumns ]]"
 										selected="{{ selected }}" expanded="{{ expanded }}" item="[[ item ]]" group-on-column="[[ groupOnColumn ]]">
 									</cosmoz-omnitable-item-row>
 									<div class="item-expander" hidden="[[ isEmpty(disabledColumns.length) ]]">
 										<paper-icon-button icon="[[ _getFoldIcon(expanded) ]]" on-tap="_toggleItem"></paper-icon-button>
 									</div>
 								</div>
-								<cosmoz-omnitable-item-expand columns="[[ disabledColumns ]]"
+								<cosmoz-omnitable-item-expand fast-layout$="[[ fastLayout ]]" columns="[[ disabledColumns ]]"
 									item="[[item]]" selected="{{ selected }}" expanded="{{ expanded }}" group-on-column="[[ groupOnColumn ]]">
 								</cosmoz-omnitable-item-expand>
 							</div>
@@ -372,6 +381,17 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 				notify: true
 			},
 
+			fastLayout: {
+				type: Boolean,
+				value: false
+			},
+
+			_canvasWidth: {
+				type: Number,
+				value: 0,
+				notify: true
+			},
+
 			/**
 		 * Keep track of width-changes to identify if we go bigger or smaller
 		 */
@@ -449,7 +469,8 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 		return [
 			'_dataChanged(data.*)',
 			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
-			'_selectedItemsChanged(selectedItems.*)'
+			'_selectedItemsChanged(selectedItems.*)',
+			'renderFastLayoutCss(layoutCss, $.layoutStyle)'
 		];
 	}
 
@@ -1088,6 +1109,9 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 		// 16ms 'magic' number copied from iron-list
 		// But this makes headers change width after the table has completed rendering,
 		// which might look strange.
+		if (this.fastLayout) {
+			return;
+		}
 		this._debounce('_adjustColumnsDebouncer', this._adjustColumns, animationFrame);
 	}
 	/**
@@ -1588,6 +1612,10 @@ class Omnitable extends mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(trans
 			return this.ngettext('{1} / {0} row', '{1} / {0} rows', totalAvailable, numRows);
 		}
 		return this.ngettext('{0} row', '{0} rows', numRows);
+	}
+
+	renderFastLayoutCss(layoutCss, outlet) {
+		render(layoutCss, outlet);
 	}
 }
 customElements.define(Omnitable.is, Omnitable);

@@ -69,8 +69,8 @@ class XPage extends translatable(PolymerElement) {
 
 			<cosmoz-omnitable loading="[[ loading ]]" id="omnitable"
 				data="[[ data ]]" selection-enabled selected-items="{{ selectedItems }}"
-				hash-param="[[ hashParam ]]">
-				<cosmoz-omnitable-column title="Name" name="name" value-path="name" sort-on="name" group-on="name" flex="2" render-cell="[[ renderNameCell ]]">
+				hash-param="[[ hashParam ]]" fast-layout>
+				<cosmoz-omnitable-column priority="-1" title="Name" name="name" value-path="name" sort-on="name" group-on="name" flex="2" render-cell="[[ renderNameCell ]]">
 				</cosmoz-omnitable-column>
 				<cosmoz-omnitable-column-amount title="[[ _('Amount', t) ]]" name="amount"
 					value-path="amount" sort-on="amount" group-on="amount"
@@ -99,12 +99,12 @@ class XPage extends translatable(PolymerElement) {
 				</cosmoz-omnitable-column-list>
 				<cosmoz-omnitable-column-list title="Object list" name="objectList" value-path="objectList" value-property="value" text-property="name">
 				</cosmoz-omnitable-column-list>
-				<cosmoz-omnitable-column title="Sub-property" name="sub-property" value-path="sub.subProp" sort-on="sub.subProp" group-on="sub.subProp" flex="5">
+				<cosmoz-omnitable-column priority="3" title="Sub-property" name="sub-property" value-path="sub.subProp" sort-on="sub.subProp" group-on="sub.subProp" flex="5" width="200px">
 				</cosmoz-omnitable-column>
-				<cosmoz-omnitable-column title="Custom template" name="custom-name" value-path="name" sort-on="name" width="50px" flex="2"
+				<cosmoz-omnitable-column priority="3" title="Custom template" name="custom-name" value-path="name" sort-on="name" width="130px" flex="2"
 					render-cell="[[ renderCustomNameCell ]]">
 				</cosmoz-omnitable-column>
-				<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" sort-on="value" group-on="value" locale="[[ locale ]]">
+				<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" sort-on="value" group-on="value" locale="[[ locale ]]" priority="1">
 				</cosmoz-omnitable-column-number>
 
 				<template is="dom-repeat" items="[[ _getRowItems(selectedItems.length) ]]">

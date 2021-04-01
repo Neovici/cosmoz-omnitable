@@ -63,6 +63,11 @@ class OmnitableItemExpand extends repeaterMixin(PolymerElement) {
 			hidden: {
 				type: Boolean,
 				reflectToAttribute: true
+			},
+
+			fastLayout: {
+				type: Boolean,
+				value: false
 			}
 		};
 	}
@@ -96,7 +101,7 @@ class OmnitableItemExpand extends repeaterMixin(PolymerElement) {
 
 	_updateSize(columnsCount) {
 		this.hidden = columnsCount === 0;
-		if (this.expanded) {
+		if (this.expanded && !this.fastLayout) {
 			// Notify omnitable that this item is expanded and my need individual resize
 			this.dispatchEvent(new CustomEvent('update-item-size', {
 				bubbles: true,
