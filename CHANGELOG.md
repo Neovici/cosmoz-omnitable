@@ -1,3 +1,10 @@
+# [5.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v5.0.3...v5.1.0) (2021-04-02)
+
+
+### Features
+
+* fast-layout ([b2b6a17](https://github.com/neovici/cosmoz-omnitable/commit/b2b6a170aab191114f2d0988869bd22ba74a0a8f)), closes [#426](https://github.com/neovici/cosmoz-omnitable/issues/426)
+
 ## [5.0.3](https://github.com/neovici/cosmoz-omnitable/compare/v5.0.2...v5.0.3) (2021-03-25)
 
 
