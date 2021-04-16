@@ -98,7 +98,6 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 
 		return html`<cosmoz-autocomplete
 				no-label-float
-				.label=${ column.title }
 				.title=${ column._computeItemTooltip(column.title, item, column.valuePath) }
 				.source=${ column._source }
 				.textProperty=${ column._textProperty }
