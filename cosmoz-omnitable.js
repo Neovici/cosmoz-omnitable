@@ -56,9 +56,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 	static get template() {
 		const template = html`
 		<style include="cosmoz-omnitable-styles">
-		paper-checkbox {
-			user-select: none;
-		}
 		</style>
 		<div id="layoutStyle"></div>
 
@@ -66,10 +63,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 
 		<div class="mainContainer">
 			<div class="header" id="header">
-				<div class="selectAllCheckbox">
-					<paper-checkbox checked$="{{ _allSelected }}" on-change="_onAllCheckboxChange" disabled$="[[ !_dataIsValid ]]">
-					</paper-checkbox>
-				</div>
+				<input class="checkbox all" type="checkbox" checked="[[ _allSelected ]]" on-input="_onAllCheckboxChange" disabled$="[[ !_dataIsValid ]]" />
 				<cosmoz-omnitable-header-row
 					columns="[[ visibleColumns ]]"
 					group-on-column="[[ groupOnColumn ]]"
@@ -115,9 +109,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 						<template slot="templates" data-type="item">
 							<div class="item-row-wrapper">
 								<div selected$="[[ selected ]]" class="itemRow" highlighted$="[[ highlighted ]]">
-									<div class="selectItemCheckbox">
-										<paper-checkbox checked="[[ selected ]]" on-change="_onCheckboxChange" disabled$="[[ !_dataIsValid ]]"></paper-checkbox>
-									</div>
+									<input class="checkbox" type="checkbox" checked="[[ selected ]]" on-input="_onCheckboxChange" disabled$="[[ !_dataIsValid ]]" />
 									<cosmoz-omnitable-item-row columns="[[ visibleColumns ]]"
 										selected="[[ selected ]]" expanded="{{ expanded }}" item="[[ item ]]" group-on-column="[[ groupOnColumn ]]">
 									</cosmoz-omnitable-item-row>
@@ -133,10 +125,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 						</template>
 						<template slot="templates" data-type="group">
 							<div class$="[[ _getGroupRowClasses(folded) ]]">
-								<div class="selectGroupCheckbox" hidden$="[[ !_dataIsValid ]]">
-									<paper-checkbox checked="[[ selected ]]" on-change="_onCheckboxChange"></paper-checkbox>
-								</div>
-
+								<input class="checkbox" type="checkbox" checked="[[ selected ]]" on-input="_onCheckboxChange" disabled$="[[ !_dataIsValid ]]" />
 								<h3 class="groupRow-label">
 									<div><span>[[ groupOnColumn.title ]]</span>: &nbsp;</div>
 									<cosmoz-omnitable-group-row column="[[ groupOnColumn ]]" item="[[ item.items.0 ]]" selected="[[ selected ]]" folded="[[ folded ]]">
@@ -1219,10 +1208,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 	}
 
 	_onAllCheckboxChange(event) {
-		if (event.target === null) {
-			return;
-		}
-
 		if (event.target.checked) {
 			this.$.groupedList.selectAll();
 		} else {
