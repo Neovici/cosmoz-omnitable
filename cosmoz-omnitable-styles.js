@@ -219,21 +219,6 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				margin-right: 10px;
 			}
 
-			.selectAllCheckbox,
-			.selectItemCheckbox,
-			.selectGroupCheckbox {
-				min-width: 32px;
-				max-width: 32px;
-				width: 32px;
-				padding: 1px 1px 1px 1px;
-				text-align: center;
-				vertical-align: middle;
-				margin-left: 10px;
-			}
-
-			.selectAllCheckbox {
-				padding-bottom: 14px;
-			}
 
 			.item-row-wrapper {
 				display: block;
@@ -259,6 +244,11 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 			.itemRow[highlighted] {
 				background-color: rgba(195, 212, 248, 0.5);
 				@apply --cosmoz-omnitable-hightlighted-row;
+			}
+
+			.itemRow:hover {
+				box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
+				z-index: 2;
 			}
 
 			.tableContent .itemRow-cell paper-dropdown-menu {
@@ -372,6 +362,68 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 			.boolean-cell[editable] {
 				overflow: initial;
 			}
+
+			.itemRow:hover .checkbox:not(:checked) {
+				box-shadow: 0 0 0 2px rgba(0,0,0,1) inset;
+			}
+
+			.checkbox {
+				box-sizing: border-box;
+				width: 18px;
+				height: 18px;
+				background: transparent;
+				border-radius: 4px;
+				appearance: none;
+				outline: none;
+				position: relative;
+				user-select: none;
+				cursor: pointer;
+				display: inline-block;
+				box-shadow: 0 0 0 2px rgba(0,0,0, 0.5) inset;
+				-webkit-tap-highlight-color:rgba(0,0,0,0);
+				vertical-align: middle;
+				transition: background-color 140ms;
+				vertical-align: middle;
+				margin: 1px 12px;
+			}
+			.checkbox:checked {
+			    background-color: var(--paper-checkbox-checked-color, var(--primary-color));
+			    box-shadow: none;
+			}
+			.checkbox:checked::before {
+				content: "";
+				position: absolute;
+				box-sizing: content-box;
+				width: 5px;
+				height: 10px;
+				border: 2.4px solid #fff;
+				border-top: none;
+				border-left: none;
+				transform-origin: 5px 10px;
+				transform: translate(3px) rotate(45deg);
+			}
+
+			.all {
+				margin-bottom: 14px;
+			}
+
+
+			.selectAllCheckbox,
+			.selectItemCheckbox,
+			.selectGroupCheckbox {
+				min-width: 32px;
+				max-width: 32px;
+				width: 32px;
+				padding: 1px 1px 1px 1px;
+				text-align: center;
+				vertical-align: middle;
+				margin-left: 10px;
+			}
+
+			.selectAllCheckbox {
+				padding-bottom: 14px;
+			}
+
 		</style>
 	</template>
 </dom-module>`;
