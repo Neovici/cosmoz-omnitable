@@ -1,3 +1,10 @@
+# [5.2.0](https://github.com/neovici/cosmoz-omnitable/compare/v5.1.0...v5.2.0) (2021-04-16)
+
+
+### Features
+
+* implement multi-select ([98c26cb](https://github.com/neovici/cosmoz-omnitable/commit/98c26cb44b5d97522fde58f62c96a154f9cea8d9)), closes [#177](https://github.com/neovici/cosmoz-omnitable/issues/177)
+
 # [5.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v5.0.3...v5.1.0) (2021-04-02)
 
 
