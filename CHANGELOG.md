@@ -1,3 +1,10 @@
+## [5.2.1](https://github.com/neovici/cosmoz-omnitable/compare/v5.2.0...v5.2.1) (2021-04-16)
+
+
+### Bug Fixes
+
+* **cosmoz-omnitable-column-boolean:** remove label for edit cell ([c842c07](https://github.com/neovici/cosmoz-omnitable/commit/c842c0796a39d38dfa70a0776babc6614ac25942))
+
 # [5.2.0](https://github.com/neovici/cosmoz-omnitable/compare/v5.1.0...v5.2.0) (2021-04-16)
 
 
