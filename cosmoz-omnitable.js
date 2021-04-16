@@ -63,6 +63,9 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 	static get template() {
 		const template = html`
 		<style include="cosmoz-omnitable-styles">
+		paper-checkbox {
+			user-select: none;
+		}
 		</style>
 		<div id="layoutStyle"></div>
 
@@ -119,12 +122,12 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 					>
 						<template slot="templates" data-type="item">
 							<div class="item-row-wrapper">
-								<div selected$="[[selected]]" class="itemRow" highlighted$="[[highlighted]]">
+								<div selected$="[[ selected ]]" class="itemRow" highlighted$="[[ highlighted ]]">
 									<div class="selectItemCheckbox">
-										<paper-checkbox checked="{{ selected }}" on-change="_onItemCheckboxChange" disabled$="[[ !_dataIsValid ]]"></paper-checkbox>
+										<paper-checkbox checked="[[ selected ]]" on-change="_onCheckboxChange" disabled$="[[ !_dataIsValid ]]"></paper-checkbox>
 									</div>
 									<cosmoz-omnitable-item-row fast-layout$="[[ fastLayout ]]" columns="[[ visibleColumns ]]"
-										selected="{{ selected }}" expanded="{{ expanded }}" item="[[ item ]]" group-on-column="[[ groupOnColumn ]]">
+										selected="[[ selected ]]" expanded="{{ expanded }}" item="[[ item ]]" group-on-column="[[ groupOnColumn ]]">
 									</cosmoz-omnitable-item-row>
 									<div class="item-expander" hidden="[[ isEmpty(disabledColumns.length) ]]">
 										<paper-icon-button icon="[[ _getFoldIcon(expanded) ]]" on-tap="_toggleItem"></paper-icon-button>
@@ -138,7 +141,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 						<template slot="templates" data-type="group">
 							<div class$="[[ _getGroupRowClasses(folded) ]]">
 								<div class="selectGroupCheckbox" hidden$="[[ !_dataIsValid ]]">
-									<paper-checkbox checked="{{ selected }}" on-change="_onGroupCheckboxChange"></paper-checkbox>
+									<paper-checkbox checked="[[ selected ]]" on-change="_onCheckboxChange"></paper-checkbox>
 								</div>
 
 								<h3 class="groupRow-label">
@@ -485,6 +488,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 		this._filterItems = this._filterItems.bind(this);
 		this._groupItems = this._groupItems.bind(this);
 		this._sortFilteredGroupedItems = this._sortFilteredGroupedItems.bind(this);
+		this._onKey = this._onKey.bind(this);
 		this._resizeObserver = new ResizeObserver(this._onResize.bind(this));
 	}
 
@@ -516,6 +520,8 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 		this.addEventListener('cosmoz-column-filter-changed', this._filterChanged);
 		this.addEventListener('cosmoz-column-editable-changed', this._onColumnEditableChanged);
 		this.addEventListener('cosmoz-column-values-update', this._onColumnValuesUpdate);
+		window.addEventListener('keydown', this._onKey);
+		window.addEventListener('keyup', this._onKey);
 		this._fitDropdowns();
 		this._resizeObserver.observe(this);
 	}
@@ -538,6 +544,8 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 		this.removeEventListener('cosmoz-column-editable-changed', this._onColumnEditableChanged);
 		this.removeEventListener('cosmoz-column-values-update', this._onColumnValuesUpdate);
 		this._resizeObserver.unobserve(this);
+		window.removeEventListener('keydown', this._onKey);
+		window.removeEventListener('keyup', this._onKey);
 	}
 
 	flush() {
@@ -637,24 +645,21 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 		this.notifyPath(['visibleColumns', index, 'editable']);
 	}
 
-	// Handle selection/deselection of a group
-	_onGroupCheckboxChange(event) {
-		const group = event.model.item,
-			selected = this.$.groupedList.isGroupSelected(group);
-
-		this.$.groupedList.toggleSelectGroup(group, selected);
-
-		event.preventDefault();
-		event.stopPropagation();
+	_onKey(e) {
+		this._shiftKey = e.shiftKey;
+		this._ctrlKey = e.ctrlKey;
 	}
 
-	// Handle selection/deselection of an item
-	_onItemCheckboxChange(event) {
-		const item = event.model.item;
-		if (this.isItemSelected(item)) {
-			this.deselectItem(item);
+	_onCheckboxChange(event) {
+		const item = event.model.item,
+			selected = event.target.checked;
+		if (this._shiftKey) {
+			this.$.groupedList.toggleSelectTo(item, selected);
+		} else if (this._ctrlKey) {
+			event.target.checked = true;
+			this.$.groupedList.selectOnly(item);
 		} else {
-			this.selectItem(item);
+			this.$.groupedList.toggleSelect(item, selected);
 		}
 
 		event.preventDefault();
@@ -1471,11 +1476,11 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 	}
 
 	selectItem(item) {
-		this.$.groupedList.selectItem(item);
+		this.$.groupedList.select(item);
 	}
 
 	deselectItem(item) {
-		this.$.groupedList.deselectItem(item);
+		this.$.groupedList.deselect(item);
 	}
 
 	isItemSelected(item) {
