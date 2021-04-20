@@ -18,7 +18,6 @@ import './cosmoz-omnitable-column';
 import './cosmoz-omnitable-header-row';
 import './cosmoz-omnitable-item-row';
 import './cosmoz-omnitable-item-expand';
-import './cosmoz-omnitable-item-expand-line';
 import './cosmoz-omnitable-group-row';
 import './cosmoz-omnitable-styles';
 import './cosmoz-omnitable-item';
@@ -127,7 +126,8 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 									</div>
 								</div>
 								<cosmoz-omnitable-item-expand columns="[[ disabledColumns ]]"
-									item="[[item]]" selected="{{ selected }}" expanded="{{ expanded }}" group-on-column="[[ groupOnColumn ]]">
+									item="[[item]]" selected="{{ selected }}" expanded$="{{ expanded }}" group-on-column="[[ groupOnColumn ]]"
+									part="item-expand">
 								</cosmoz-omnitable-item-expand>
 							</div>
 						</template>

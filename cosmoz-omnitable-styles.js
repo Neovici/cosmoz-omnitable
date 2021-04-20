@@ -272,6 +272,19 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				padding: 0;
 			}
 
+			cosmoz-omnitable-item-expand[expanded] {
+				display: flex;
+				flex-direction: column;
+				padding: 5px 4%;
+				line-height: 1.3em;
+				border-bottom: solid 1px #e2e2e2;
+				background-color: #fafafa;
+			}
+
+			cosmoz-omnitable-item-expand:not([expanded]) {
+				display: none !important;
+			}
+
 			.groupRow {
 				display: flex;
 				align-items: center;
