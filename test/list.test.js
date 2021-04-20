@@ -86,7 +86,7 @@ suite('horizontal', () => {
 
 		const cells = Array.from(omnitable.shadowRoot.querySelectorAll('[slot="item-cell"]'));
 		assert.lengthOf(cells, 2);
-		assert.equal(cells[0].innerText, 'item 1item 2item 3');
+		assert.include(cells[0].innerText, 'item 1item 2item 3');
 	});
 
 	test('initializes list column', () => {
