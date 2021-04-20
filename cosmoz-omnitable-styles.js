@@ -363,8 +363,10 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				overflow: initial;
 			}
 
-			.itemRow:hover .checkbox:not(:checked) {
-				box-shadow: 0 0 0 2px rgba(0,0,0,1) inset;
+
+			.groupItem:hover .checkbox:not(:checked):not(:hover),
+			.itemRow:hover .checkbox:not(:checked):not(:hover) {
+				box-shadow: 0 0 0 2px rgba(0,0,0,0.54) inset;
 			}
 
 			.checkbox {
@@ -379,13 +381,14 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				user-select: none;
 				cursor: pointer;
 				display: inline-block;
-				box-shadow: 0 0 0 2px rgba(0,0,0, 0.5) inset;
+				box-shadow: 0 0 0 2px rgba(0,0,0, 0.16) inset;
 				-webkit-tap-highlight-color:rgba(0,0,0,0);
 				vertical-align: middle;
 				transition: background-color 140ms;
 				vertical-align: middle;
 				margin: 1px 12px;
 			}
+
 			.checkbox:checked {
 			    background-color: var(--paper-checkbox-checked-color, var(--primary-color));
 			    box-shadow: none;
@@ -403,25 +406,25 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				transform: translate(3px) rotate(45deg);
 			}
 
+			.checkbox::after {
+				content: '';
+				display: block;
+				bottom: -5px;
+				left: -5x;
+				right: -5px;
+				top: -5px;
+			}
+
+			.checkbox:hover {
+				box-shadow: 0 0 0 2px rgba(0,0,0,1) inset, 0 0 2px 6px #2021240f;
+			}
+
+			.checkbox:checked:hover {
+				box-shadow: 0 0 2px 6px #2021240f;
+			}
+
 			.all {
 				margin-bottom: 14px;
-			}
-
-
-			.selectAllCheckbox,
-			.selectItemCheckbox,
-			.selectGroupCheckbox {
-				min-width: 32px;
-				max-width: 32px;
-				width: 32px;
-				padding: 1px 1px 1px 1px;
-				text-align: center;
-				vertical-align: middle;
-				margin-left: 10px;
-			}
-
-			.selectAllCheckbox {
-				padding-bottom: 14px;
 			}
 
 		</style>
