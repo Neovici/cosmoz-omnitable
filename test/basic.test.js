@@ -471,6 +471,7 @@ suite('fit columns behaviour', () => {
 		flush();
 		omnitable.flush();
 		await nextFrame();
+		await nextFrame();
 	});
 
 	test('it adjusts the visible columns based on the available width', async () => {
