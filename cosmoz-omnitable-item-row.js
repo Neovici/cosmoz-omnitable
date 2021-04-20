@@ -12,27 +12,11 @@ class OmnitableItemRow extends repeaterMixin(PolymerElement) {
 	static get template() {
 		return html`
 		<style>
-			:host(:not([fast-layout])) {
-				display: flex;
-				flex: 1 0.000000001px;
-				align-items: center;
-				min-width: 0;
-			}
-
-			:host(:not([fast-layout])) > ::slotted(*) {
-				flex: 1 0 auto;
-				padding: 0 3px;
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
-			}
-
-
-			:host([fast-layout]) {
+			:host {
 				white-space: nowrap;
 			}
 
-			:host([fast-layout]) > ::slotted(*) {
+			:host > ::slotted(*) {
 				display: inline-block;
 				padding: 0 3px;
 				white-space: nowrap;
@@ -69,11 +53,6 @@ class OmnitableItemRow extends repeaterMixin(PolymerElement) {
 			expanded: {
 				type: Boolean,
 				observer: '_expandedChanged'
-			},
-
-			fastLayout: {
-				type: Boolean,
-				value: false
 			}
 		};
 	}
@@ -108,11 +87,6 @@ class OmnitableItemRow extends repeaterMixin(PolymerElement) {
 	 */
 	_configureElement(element, column, instance) {
 		super._configureElement(element, column, instance);
-		if (!this.fastLayout) {
-			element.style.flexBasis = column.editable ? column.editWidth : column.width;
-			element.style.minWidth = column.editable ? column.editMinWidth : column.minWidth;
-			element.style.flexGrow = column.flex;
-		}
 		element.style.minHeight = '0.5px';
 		element.toggleAttribute('editable', column.editable);
 		element.setAttribute('title', this._getCellTitle(column, this.item));
