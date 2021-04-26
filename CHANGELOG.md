@@ -1,3 +1,24 @@
+# [6.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v5.2.1...v6.0.0) (2021-04-26)
+
+
+### Bug Fixes
+
+* prevent ResizeObserver loop completed with undelivered notifications errors ([b7bf18f](https://github.com/neovici/cosmoz-omnitable/commit/b7bf18f211292dd062b80f3a526e62411a04290f))
+
+
+### Features
+
+* migrate item-expand and item-expand-line to haunted ([b543e32](https://github.com/neovici/cosmoz-omnitable/commit/b543e32112da9c42138e43a0af7155af140ae872))
+
+
+* feat!: drop legacy layout algorithm ([4df0960](https://github.com/neovici/cosmoz-omnitable/commit/4df0960de2c960e865f0bda322a45f7cf3d2d061))
+
+
+### BREAKING CHANGES
+
+* layout algorithm has been changed to fast-layout.
+Some differences in rendering will occur.
+
 ## [5.2.1](https://github.com/neovici/cosmoz-omnitable/compare/v5.2.0...v5.2.1) (2021-04-16)
 
 
