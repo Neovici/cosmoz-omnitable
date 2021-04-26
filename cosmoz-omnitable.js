@@ -18,7 +18,6 @@ import './cosmoz-omnitable-column';
 import './cosmoz-omnitable-header-row';
 import './cosmoz-omnitable-item-row';
 import './cosmoz-omnitable-item-expand';
-import './cosmoz-omnitable-item-expand-line';
 import './cosmoz-omnitable-group-row';
 import './cosmoz-omnitable-styles';
 import './cosmoz-omnitable-item';
@@ -28,21 +27,15 @@ import { NullXlsx } from '@neovici/nullxlsx';
 
 import { saveAs } from 'file-saver-es';
 
-import {
-	animationFrame, timeOut
-} from '@polymer/polymer/lib/utils/async';
+import { timeOut } from '@polymer/polymer/lib/utils/async';
 import { Debouncer } from '@polymer/polymer/lib/utils/debounce';
 import { FlattenedNodesObserver } from '@polymer/polymer/lib/utils/flattened-nodes-observer';
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
-import {
-	html as litHtml, render
-} from 'lit-html';
+import { html as litHtml, render } from 'lit-html';
 
 import { translatable } from '@neovici/cosmoz-i18next';
-import {
-	mixin, hauntedPolymer
-} from '@neovici/cosmoz-utils';
+import { mixin, hauntedPolymer } from '@neovici/cosmoz-utils';
 import { isEmpty } from '@neovici/cosmoz-utils/lib/template.js';
 import { getEffectiveChildrenLegacyMixin } from './get-effective-children-legacy-mixin';
 import { useOmnitable } from './lib/use-omnitable';
@@ -78,7 +71,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 					</paper-checkbox>
 				</div>
 				<cosmoz-omnitable-header-row
-					fast-layout$="[[ fastLayout ]]"
 					columns="[[ visibleColumns ]]"
 					group-on-column="[[ groupOnColumn ]]"
 				></cosmoz-omnitable-header-row>
@@ -126,15 +118,16 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 									<div class="selectItemCheckbox">
 										<paper-checkbox checked="[[ selected ]]" on-change="_onCheckboxChange" disabled$="[[ !_dataIsValid ]]"></paper-checkbox>
 									</div>
-									<cosmoz-omnitable-item-row fast-layout$="[[ fastLayout ]]" columns="[[ visibleColumns ]]"
+									<cosmoz-omnitable-item-row columns="[[ visibleColumns ]]"
 										selected="[[ selected ]]" expanded="{{ expanded }}" item="[[ item ]]" group-on-column="[[ groupOnColumn ]]">
 									</cosmoz-omnitable-item-row>
 									<div class="item-expander" hidden="[[ isEmpty(disabledColumns.length) ]]">
 										<paper-icon-button icon="[[ _getFoldIcon(expanded) ]]" on-tap="_toggleItem"></paper-icon-button>
 									</div>
 								</div>
-								<cosmoz-omnitable-item-expand fast-layout$="[[ fastLayout ]]" columns="[[ disabledColumns ]]"
-									item="[[item]]" selected="{{ selected }}" expanded="{{ expanded }}" group-on-column="[[ groupOnColumn ]]">
+								<cosmoz-omnitable-item-expand columns="[[ disabledColumns ]]"
+									item="[[item]]" selected="{{ selected }}" expanded$="{{ expanded }}" group-on-column="[[ groupOnColumn ]]"
+									part="item-expand">
 								</cosmoz-omnitable-item-expand>
 							</div>
 						</template>
@@ -384,11 +377,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 				notify: true
 			},
 
-			fastLayout: {
-				type: Boolean,
-				value: false
-			},
-
 			_canvasWidth: {
 				type: Number,
 				value: 0,
@@ -480,10 +468,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 	constructor() {
 		super();
 
-		this.disabledColumnsIndexes = null;
-
 		this.debouncers = {};
-		this._adjustColumns = this._adjustColumns.bind(this);
 		this._updateColumns = this._updateColumns.bind(this);
 		this._filterItems = this._filterItems.bind(this);
 		this._groupItems = this._groupItems.bind(this);
@@ -551,10 +536,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 	flush() {
 		// NOTE: in some instances flushing a debouncer causes another debouncer
 		// to be set, so we must test each debouncer independently and in this order
-		if (this.debouncers._adjustColumnsDebouncer) {
-			this.debouncers._adjustColumnsDebouncer.flush();
-		}
-
 		if (this.debouncers._updateColumnsDebouncer) {
 			this.debouncers._updateColumnsDebouncer.flush();
 		}
@@ -599,7 +580,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 
 	_visibleColumnsChanged() {
 		this.disabledColumns = [];
-		this._disabledColumnsIndexes = [];
 	}
 
 	_onUpdateItemSize(event) {
@@ -678,7 +658,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 			return;
 		}
 		this.$.groupedList.$.list._render();
-		this._debounceAdjustColumns();
 	}
 
 	_getItemUpdateEffects(splices) {
@@ -1075,7 +1054,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 
 		if (!this.sortOn || !this.sortOnColumn) {
 			this.sortedFilteredGroupedItems = this.filteredGroupedItems;
-			this._debounceAdjustColumns();
 			return;
 		}
 
@@ -1095,7 +1073,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 						items: group.items
 					};
 				}));
-			this._debounceAdjustColumns();
 			return;
 		}
 
@@ -1107,150 +1084,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 		}
 
 		this.set('sortedFilteredGroupedItems', this.filteredGroupedItems.slice());
-		this._debounceAdjustColumns();
-	}
-
-	_debounceAdjustColumns() {
-		// 16ms 'magic' number copied from iron-list
-		// But this makes headers change width after the table has completed rendering,
-		// which might look strange.
-		if (this.fastLayout) {
-			return;
-		}
-		this._debounce('_adjustColumnsDebouncer', this._adjustColumns, animationFrame);
-	}
-	/**
-	 * Enable/disable columns to properly fit in the available space.
-	 * Adjust headers width according to cells width
-	 * @memberOf element/cz-omnitable
-	 * @returns {Boolean} Return
-	 */
-	_adjustColumns() { /* eslint-disable-line max-statements */
-		// Safety check, but should never happen
-		if (!this.isConnected || !this.visible) {
-			return;
-		}
-
-		const firstRow = this.$.groupedList.getFirstVisibleItemElement(),
-			visibleData = this.sortedFilteredGroupedItems,
-			hasVisibleData = Array.isArray(visibleData) && visibleData.length > 0;
-
-		if (!hasVisibleData || !firstRow && this.$.groupedList.hasRenderedData) {
-			// reset headers width
-			const headerRow = this.$.header.querySelector('cosmoz-omnitable-header-row');
-			Array
-				.from(headerRow.children)
-				.forEach(header => {
-					header.style.minWidth = 'auto';
-					header.style.maxWidth = 'none';
-					header.style.width = 'auto';
-				});
-			return;
-		}
-
-		if (!firstRow) {
-			// There is visible data, but nothing rendered in cosmoz-grouped-list yet.
-			// Retry later.
-			this._debounceAdjustColumns();
-			return;
-		}
-
-		const scroller = this.$.scroller,
-			currentWidth = this.$.tableContent.clientWidth,
-			itemRow = firstRow.querySelector('cosmoz-omnitable-item-row'),
-			cells = Array.from(itemRow.children);
-
-		let fits = scroller.scrollWidth <= scroller.clientWidth;
-
-		if (fits) {
-			fits = cells.every(cell => cell.__column &&
-				cell.__column.overflow || cell.scrollWidth <= cell.clientWidth
-			);
-		}
-
-		if (fits) {
-			if (this._canScaleUp(currentWidth)) {
-				this._enableColumn();
-				return;
-			}
-		} else {
-			this._overflowConfig = {
-				columns: this.visibleColumns.length,
-				width: currentWidth
-			};
-			this._disableColumn();
-			return;
-		}
-
-		this._adjustHeadersWidth(cells);
-	}
-
-	_adjustHeadersWidth(cells) {
-		const headerRow = this.$.header.querySelector('cosmoz-omnitable-header-row'),
-			headers = Array.from(headerRow.querySelectorAll('.header-cell'));
-
-		cells.forEach((cell, index) => {
-			const header = headers[index];
-
-			// disabled column headers
-			if (header === undefined) {
-				return;
-			}
-
-			const width = getComputedStyle(cell).getPropertyValue('width');
-			header.style.minWidth = width;
-			header.style.maxWidth = width === 'auto' ? 'none' : width;
-			header.style.width = width;
-		});
-	}
-
-	_canScaleUp(width) {
-		if (!this.disabledColumns || this.disabledColumns.length === 0) {
-			return false;
-		}
-
-		if (!this._overflowConfig) {
-			return true;
-		}
-
-		if (width > this._overflowConfig.width) {
-			return true;
-		}
-
-		if (this.visibleColumns.length + 1 < this._overflowConfig.columns) {
-			return true;
-		}
-
-		return false;
-	}
-
-	_disableColumn() {
-		let disabledColumn,
-			disabledColumnIndex;
-		// disables/hides columns that for example does not fit in the current screen size.
-		this.visibleColumns.forEach((column, index) => {
-			if (disabledColumn === undefined || disabledColumn.priority >= column.priority) {
-				disabledColumn = column;
-				disabledColumnIndex = index;
-			}
-		});
-
-		if (disabledColumn) {
-			this.push('disabledColumns', disabledColumn);
-			this._disabledColumnsIndexes.push(disabledColumnIndex);
-			this.splice('visibleColumns', disabledColumnIndex, 1);
-			this._debounceAdjustColumns();
-		}
-	}
-
-	_enableColumn() {
-		// Columns are disabled by priority, so we can re-enable them
-		const column = this.pop('disabledColumns'),
-			columnIndex = this._disabledColumnsIndexes.pop();
-
-		this.splice('visibleColumns', columnIndex, 0, column);
-
-		this._debounceAdjustColumns();
 	}
 
 	_makeCsvField(str) {
@@ -1350,18 +1183,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 	 * @returns {undefined}
 	 */
 	_toggleGroup(event) {
-		const firstRow = this.$.groupedList.getFirstVisibleItemElement(),
-			{
-				model: {
-					folded, item
-				}
-			} = event;
-
-		this.$.groupedList.toggleFold(item);
-
-		if (!firstRow && folded) {
-			this._debounceAdjustColumns();
-		}
+		this.$.groupedList.toggleFold(event.model.item);
 	}
 
 	_toggleItem(event) {

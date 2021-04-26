@@ -59,10 +59,10 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				width: 100%;
 			}
 
-			cosmoz-omnitable-header-row[fast-layout] {
+			cosmoz-omnitable-header-row {
 				white-space: nowrap;
 			}
-			cosmoz-omnitable-header-row[fast-layout] > div {
+			cosmoz-omnitable-header-row > div {
 				display: inline-block;
 				box-sizing: border-box;
 				padding: 0 3px;
@@ -74,16 +74,6 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				display: none !important;
 			}
 
-			cosmoz-omnitable-header-row:not([fast-layout]) {
-				display: flex;
-				align-items: flex-end;
-			}
-			cosmoz-omnitable-header-row:not([fast-layout]) > div {
-				flex: 1 0.000000001px;
-				padding: 0 3px;
-				white-space: nowrap;
-				text-overflow: ellipsis;
-			}
 
 			.time-header-cell,
 			.datetime-header-cell,
@@ -280,6 +270,19 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				max-height: 24px;
 				width: 24px;
 				padding: 0;
+			}
+
+			cosmoz-omnitable-item-expand[expanded] {
+				display: flex;
+				flex-direction: column;
+				padding: 5px 4%;
+				line-height: 1.3em;
+				border-bottom: solid 1px #e2e2e2;
+				background-color: #fafafa;
+			}
+
+			cosmoz-omnitable-item-expand:not([expanded]) {
+				display: none !important;
 			}
 
 			.groupRow {

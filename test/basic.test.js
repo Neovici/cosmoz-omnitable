@@ -464,49 +464,13 @@ suite('fit columns behaviour', () => {
 					<cosmoz-omnitable-column name="column2" title="column2" value-path="name"></cosmoz-omnitable-column>
 					<cosmoz-omnitable-column name="column3" title="column3" value-path="name"></cosmoz-omnitable-column>
 					<cosmoz-omnitable-column name="column4" title="column4" value-path="name"></cosmoz-omnitable-column>
-					<cosmoz-omnitable-column name="column5" title="column5" value-path="name"></cosmoz-omnitable-column>
-				</cosmoz-omnitable>
-			`, data);
-
-		flush();
-		omnitable.flush();
-		await nextFrame();
-	});
-
-	test('it adjusts the visible columns based on the available width', async () => {
-		assert.lengthOf(omnitable.shadowRoot.querySelectorAll('.header-cell'), 5);
-
-		omnitable.style.width = '400px';
-		await nextFrame();
-		await nextFrame();
-
-		assert.lengthOf(omnitable.shadowRoot.querySelectorAll('.header-cell'), 3);
-
-		omnitable.style.width = '800px';
-		await nextFrame();
-		await nextFrame();
-
-		assert.lengthOf(omnitable.shadowRoot.querySelectorAll('.header-cell'), 5);
-	});
-});
-
-suite('fit columns behaviour - fast-layout', () => {
-	let omnitable;
-
-	setup(async () => {
-		const data = generateTableDemoData(10, 11, 25);
-		omnitable = await setupOmnitableFixture(html`
-				<cosmoz-omnitable selection-enabled style="width: 800px" fast-layout>
-					<cosmoz-omnitable-column name="column1" title="column1" value-path="name"></cosmoz-omnitable-column>
-					<cosmoz-omnitable-column name="column2" title="column2" value-path="name"></cosmoz-omnitable-column>
-					<cosmoz-omnitable-column name="column3" title="column3" value-path="name"></cosmoz-omnitable-column>
-					<cosmoz-omnitable-column name="column4" title="column4" value-path="name"></cosmoz-omnitable-column>
 					<cosmoz-omnitable-column name="column5" title="column5" value-path="name" priority="1"></cosmoz-omnitable-column>
 				</cosmoz-omnitable>
 			`, data);
 
 		flush();
 		omnitable.flush();
+		await nextFrame();
 		await nextFrame();
 	});
 
