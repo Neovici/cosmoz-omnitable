@@ -127,7 +127,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 								</div>
 								<cosmoz-omnitable-item-expand columns="[[ disabledColumns ]]"
 									item="[[item]]" selected="{{ selected }}" expanded$="{{ expanded }}" group-on-column="[[ groupOnColumn ]]"
-									part="item-expand">
+									part="item-expand" on-expanded="onExpanded">
 								</cosmoz-omnitable-item-expand>
 							</div>
 						</template>
@@ -657,7 +657,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 		if (hidden) {
 			return;
 		}
-		this.$.groupedList.$.list._render();
+		requestAnimationFrame(() => requestAnimationFrame(() => this.$.groupedList.$.list._render()));
 	}
 
 	_getItemUpdateEffects(splices) {
@@ -1189,6 +1189,10 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 	_toggleItem(event) {
 		const item = event.model.item;
 		this.$.groupedList.toggleCollapse(item);
+	}
+
+	onExpanded() {
+		requestAnimationFrame(() => this.$.groupedList.$.list._render());
 	}
 	/**
 	 * Turn an `action` event into a `run` event

@@ -281,6 +281,7 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				background-color: #fafafa;
 			}
 
+			cosmoz-omnitable-item-expand[hidden],
 			cosmoz-omnitable-item-expand:not([expanded]) {
 				display: none !important;
 			}
