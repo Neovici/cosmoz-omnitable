@@ -1,3 +1,11 @@
+## [6.0.1](https://github.com/neovici/cosmoz-omnitable/compare/v6.0.0...v6.0.1) (2021-04-28)
+
+
+### Bug Fixes
+
+* expand columns arrow always shows up when table is grouped ([37032cd](https://github.com/neovici/cosmoz-omnitable/commit/37032cd634350709cddc6200501fc61fc7927ebe)), closes [#432](https://github.com/neovici/cosmoz-omnitable/issues/432)
+* rendering issues when resizing or scrolling with expanded rows ([2491024](https://github.com/neovici/cosmoz-omnitable/commit/24910248271811ac774a0fb3a36ab48fdaba54e4))
+
 # [6.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v5.2.1...v6.0.0) (2021-04-26)
 
 
