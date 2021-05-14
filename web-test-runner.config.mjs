@@ -9,7 +9,7 @@ export default {
 	nodeResolve: true,
 	coverageConfig: {
 		reportDir: 'coverage',
-		exclude: ['test/**/*.js', 'demo/*.js', 'ui-helpers/*.js'],
+		exclude: ['test/**/*.js', 'demo/*.js', 'ui-helpers/*.js', 'node_modules/**'],
 		threshold: {
 			statements: 70,
 			branches: 60,
