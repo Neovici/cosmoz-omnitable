@@ -113,9 +113,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 									<cosmoz-omnitable-item-row columns="[[ visibleColumns ]]"
 										selected="[[ selected ]]" expanded="{{ expanded }}" item="[[ item ]]" group-on-column="[[ groupOnColumn ]]">
 									</cosmoz-omnitable-item-row>
-									<div class="item-expander" hidden="[[ isEmpty(disabledColumns.length) ]]">
-										<paper-icon-button icon="[[ _getFoldIcon(expanded) ]]" on-tap="_toggleItem"></paper-icon-button>
-									</div>
+									<paper-icon-button class="expand" hidden="[[ isEmpty(disabledColumns.length) ]]" icon="[[ _getFoldIcon(expanded) ]]" on-tap="_toggleItem"></paper-icon-button>
 								</div>
 								<cosmoz-omnitable-item-expand columns="[[ disabledColumns ]]"
 									item="[[item]]" selected="{{ selected }}" expanded$="{{ expanded }}" group-on-column="[[ groupOnColumn ]]"
@@ -132,7 +130,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 									</cosmoz-omnitable-group-row>
 								</h3>
 								<div>[[ item.items.length ]]</div>
-								<paper-icon-button icon="[[ _getFoldIcon(folded) ]]" on-tap="_toggleGroup"></paper-icon-button>
+								<paper-icon-button class="fold" icon="[[ _getFoldIcon(folded) ]]" on-tap="_toggleGroup"></paper-icon-button>
 							</div>
 						</template>
 					</cosmoz-grouped-list>
