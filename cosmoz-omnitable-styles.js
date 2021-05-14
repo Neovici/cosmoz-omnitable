@@ -246,21 +246,11 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				@apply --cosmoz-omnitable-hightlighted-row;
 			}
 
-			.itemRow:hover {
-				box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
-				z-index: 2;
-			}
 
 			.tableContent .itemRow-cell paper-dropdown-menu {
 				margin-top:-20px;
 			}
 
-			.item-expander paper-icon-button {
-				min-height: 24px;
-				max-height: 24px;
-				width: 24px;
-				padding: 0;
-			}
 
 			cosmoz-omnitable-item-expand[expanded] {
 				display: flex;
@@ -363,10 +353,16 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				overflow: initial;
 			}
 
-
-			.groupItem:hover .checkbox:not(:checked):not(:hover),
+			.itemRow:hover {
+				box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
+			}
+			.groupRow:hover .checkbox:not(:checked):not(:hover),
 			.itemRow:hover .checkbox:not(:checked):not(:hover) {
-				box-shadow: 0 0 0 2px rgba(0,0,0,0.54) inset;
+				box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.54) inset;
+			}
+			.groupRow:hover .fold:not(:hover),
+			.itemRow:hover .expand:not(:hover) {
+				color: rgba(0, 0, 0, 0.54);
 			}
 
 			.checkbox {
@@ -382,10 +378,9 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				cursor: pointer;
 				display: inline-block;
 				box-shadow: 0 0 0 2px rgba(0,0,0, 0.16) inset;
-				-webkit-tap-highlight-color:rgba(0,0,0,0);
+				-webkit-tap-highlight-color: rgba(0,0,0,0);
 				vertical-align: middle;
 				transition: background-color 140ms;
-				vertical-align: middle;
 				margin: 1px 12px;
 			}
 
@@ -410,13 +405,13 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				content: '';
 				display: block;
 				bottom: -5px;
-				left: -5x;
+				left: -5px;
 				right: -5px;
 				top: -5px;
 			}
 
 			.checkbox:hover {
-				box-shadow: 0 0 0 2px rgba(0,0,0,1) inset, 0 0 2px 6px #2021240f;
+				box-shadow: 0 0 0 2px rgba(0, 0, 0, 1) inset, 0 0 2px 6px #2021240f;
 			}
 
 			.checkbox:checked:hover {
@@ -427,6 +422,20 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				margin-bottom: 14px;
 			}
 
+			.expand {
+				width: 24px;
+				height: 24px;
+				padding: 0;
+				flex: none;
+			}
+
+			.expand, .fold {
+				color:rgba(0, 0, 0, 0.16);
+			}
+
+			.expand:hover, .fold:hover {
+				color: #000;
+			}
 		</style>
 	</template>
 </dom-module>`;
