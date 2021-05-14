@@ -1,3 +1,16 @@
+# [6.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v6.0.1...v6.1.0) (2021-05-14)
+
+
+### Bug Fixes
+
+* improve hover on groupRow ([cf7e810](https://github.com/neovici/cosmoz-omnitable/commit/cf7e810dfa6d00d80cb8e222df38f49664e1ea19))
+
+
+### Features
+
+* checkboxes/hover ([ed975a7](https://github.com/neovici/cosmoz-omnitable/commit/ed975a780ea5746d0d29b1611688e8791759580e))
+* replace hover & checkbox ([ab12245](https://github.com/neovici/cosmoz-omnitable/commit/ab12245f27d5ad0bb36e2385471e22a9de8055f7))
+
 ## [6.0.1](https://github.com/neovici/cosmoz-omnitable/compare/v6.0.0...v6.0.1) (2021-04-28)
 
 
