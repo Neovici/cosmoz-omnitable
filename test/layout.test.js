@@ -1,6 +1,7 @@
 import { assert } from '@open-wc/testing';
 import { layout } from '../lib/layout';
 
+const toObj = ([basis, minWidth, grow]) => ({ basis, minWidth, grow });
 
 suite('layout algorithm', () => {
 	test('it works', () => {
@@ -14,6 +15,11 @@ suite('layout algorithm', () => {
 				[[100, 50, 1], [100, 50, 1]],
 				200,
 				[100, 100]
+			],
+			[
+				[[100, 50, 1], [0, 0, 0], [100, 50, 1]],
+				200,
+				[100, 0, 100]
 			],
 			[
 				[[50, 50, 1], [50, 50, 1]],
@@ -111,9 +117,8 @@ suite('layout algorithm', () => {
 				[479, 272, 100, 55, 75, 125]
 			]
 		];
-
 		cases.forEach(([columns, container, result]) => {
-			assert.deepEqual(layout(columns, container), result);
+			assert.deepEqual(layout(columns.map(toObj), container), result);
 		});
 	});
 });
