@@ -1,3 +1,10 @@
+## [6.1.1](https://github.com/neovici/cosmoz-omnitable/compare/v6.1.0...v6.1.1) (2021-05-17)
+
+
+### Bug Fixes
+
+* **layout:** layout is broken when grouping ([aa54989](https://github.com/neovici/cosmoz-omnitable/commit/aa549896daf5ee3dfd8927d43125079616800923)), closes [#437](https://github.com/neovici/cosmoz-omnitable/issues/437)
+
 # [6.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v6.0.1...v6.1.0) (2021-05-14)
 
 
