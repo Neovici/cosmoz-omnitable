@@ -285,3 +285,72 @@ suite('autocomplete unit tests', () => {
 		column.externalValues = false;
 	});
 });
+
+suite('values as function', () => {
+	test('displays values from a source function', async () => {
+		const
+			data = [{
+				id: 0,
+				group: {
+					name: 'Grupp 0',
+					value: 'group0'
+				}
+			}, {
+				id: 1,
+				group: {
+					name: 'Grupp 0',
+					value: 'group0'
+				}
+			}, {
+				id: 2,
+				group: {
+					name: 'Grupp 1',
+					value: 'group1'
+				}
+			}, {
+				id: 3,
+				group: {
+					name: 'Grupp 1',
+					value: 'group1'
+				}
+			}],
+			idSource = () => [0, 1, 2, 3],
+			groupSource = () => [{
+				name: 'Grupp 0',
+				value: 'group0'
+			}, {
+				name: 'Grupp 1',
+				value: 'group1'
+			}, {
+				name: 'Grupp 2',
+				value: 'group2'
+			}, {
+				name: 'Grupp 3',
+				value: 'group3'
+			}],
+			omnitable = await setupOmnitableFixture(html`
+				<cosmoz-omnitable hash-param="test" style='height:300px'>
+					<cosmoz-omnitable-column-autocomplete width="40px" title="Id" name="id" value-path="id" sort-on="id" group-on="id"
+						external-values
+						.values=${ idSource }
+					></cosmoz-omnitable-column-autocomplete>
+					<cosmoz-omnitable-column-autocomplete title="Group" name="group" value-path="group" flex="0" width="125px"
+						external-values
+						.values=${ groupSource }
+						text-property="name"
+						value-property="value"
+					></cosmoz-omnitable-column-autocomplete>
+				</cosmoz-omnitable>
+			`, data.slice(0)),
+			column = omnitable.columns[1];
+
+		column.filter = [{
+			name: 'Grupp 0',
+			value: 'group0'
+		}];
+
+		omnitable.flush();
+
+		assert.lengthOf(omnitable.sortedFilteredGroupedItems, 2);
+	});
+});
