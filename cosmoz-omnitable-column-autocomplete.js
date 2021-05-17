@@ -68,6 +68,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(columnMixin(PolymerEle
 			.label=${ column.title }
 			.source=${ column._source }
 			.textProperty=${ column.textProperty }
+			.valueProperty=${ column.valueProperty }
 			.value=${ column._computeValue(column.filter, column._source) }
 			.text=${ column.query }
 			.onChange=${ column._onChange }

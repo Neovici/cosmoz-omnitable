@@ -128,6 +128,10 @@ export const listColumnMixin = dedupingMixin(base => class extends base {
 	}
 
 	_computeSource(values, valueProperty, textProperty, emptyLabel, emptyValue) {
+		if (typeof values === 'function') {
+			return values;
+		}
+
 		const source = this._getSource(values, valueProperty, textProperty);
 		if (!emptyLabel || emptyValue === undefined || source.length < 0) {
 			return source;
@@ -152,7 +156,7 @@ export const listColumnMixin = dedupingMixin(base => class extends base {
 			return;
 		}
 		const val = prop(valueProperty),
-			sourced = source.filter(item => filters.some(filter => val(filter) === val(item)));
+			sourced = typeof source === 'function' ? [] : source.filter(item => filters.some(filter => val(filter) === val(item)));
 		return filters.map(filter => sourced.find(item => val(item) === val(filter)) || filter);
 	}
 
