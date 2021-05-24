@@ -1,3 +1,10 @@
+## [6.1.2](https://github.com/neovici/cosmoz-omnitable/compare/v6.1.1...v6.1.2) (2021-05-24)
+
+
+### Bug Fixes
+
+* selections overlap columns when double clicking ([f3e61e3](https://github.com/neovici/cosmoz-omnitable/commit/f3e61e30bb5084c9f245032c5a596cb719c9cd66)), closes [#434](https://github.com/neovici/cosmoz-omnitable/issues/434)
+
 ## [6.1.1](https://github.com/neovici/cosmoz-omnitable/compare/v6.1.0...v6.1.1) (2021-05-17)
 
 
