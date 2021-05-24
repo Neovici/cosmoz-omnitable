@@ -13,11 +13,13 @@ class OmnitableItemRow extends repeaterMixin(PolymerElement) {
 		return html`
 		<style>
 			:host {
+				display: flex;
 				white-space: nowrap;
 			}
 
 			:host > ::slotted(*) {
-				display: inline-block;
+				display: block;
+				flex: none;
 				padding: 0 3px;
 				white-space: nowrap;
 				overflow: hidden;
