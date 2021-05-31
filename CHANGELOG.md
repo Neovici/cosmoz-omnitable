@@ -1,3 +1,10 @@
+# [6.2.0](https://github.com/neovici/cosmoz-omnitable/compare/v6.1.2...v6.2.0) (2021-05-31)
+
+
+### Features
+
+* resizable headers prototypeFixes [#440](https://github.com/neovici/cosmoz-omnitable/issues/440) ([8b17ddb](https://github.com/neovici/cosmoz-omnitable/commit/8b17ddbf8b287283eecf63ea5880dc5d0286b1b1))
+
 ## [6.1.2](https://github.com/neovici/cosmoz-omnitable/compare/v6.1.1...v6.1.2) (2021-05-24)
 
 
