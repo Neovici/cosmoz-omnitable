@@ -74,6 +74,21 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				display: none !important;
 			}
 
+			cosmoz-omnitable-resize-nub {
+				display: inline-block;
+				position: absolute;
+				top: 19px;
+				width: 7px;
+				height: 30px;
+				margin-left: -3px;
+
+				background: transparent;
+				cursor: ew-resize;
+				
+				z-index: 1000;
+				user-select: none;
+			}
+
 
 			.time-header-cell,
 			.datetime-header-cell,

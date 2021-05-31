@@ -69,7 +69,7 @@ class XPage extends translatable(PolymerElement) {
 
 			<cosmoz-omnitable loading="[[ loading ]]" id="omnitable"
 				data="[[ data ]]" selection-enabled selected-items="{{ selectedItems }}"
-				hash-param="[[ hashParam ]]">
+				hash-param="[[ hashParam ]]" resizable>
 				<cosmoz-omnitable-column priority="-1" title="Name" name="name" value-path="name" sort-on="name" group-on="name" flex="2" render-cell="[[ renderNameCell ]]">
 				</cosmoz-omnitable-column>
 				<cosmoz-omnitable-column-amount title="[[ _('Amount', t) ]]" name="amount"
