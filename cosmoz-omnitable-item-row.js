@@ -25,7 +25,7 @@ class OmnitableItemRow extends repeaterMixin(PolymerElement) {
 				overflow: hidden;
 				text-overflow: ellipsis;
 				box-sizing: border-box;
-				vertical-align: middle;
+				align-self: center;
 			}
 
 			:host > ::slotted([hidden]),
