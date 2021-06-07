@@ -1,3 +1,10 @@
+## [6.2.1](https://github.com/neovici/cosmoz-omnitable/compare/v6.2.0...v6.2.1) (2021-06-07)
+
+
+### Bug Fixes
+
+* rows are misaligned when cells have different heights ([9ebac4b](https://github.com/neovici/cosmoz-omnitable/commit/9ebac4be72962911deeb0e55f055236799c7d76d)), closes [#442](https://github.com/neovici/cosmoz-omnitable/issues/442)
+
 # [6.2.0](https://github.com/neovici/cosmoz-omnitable/compare/v6.1.2...v6.2.0) (2021-05-31)
 
 
