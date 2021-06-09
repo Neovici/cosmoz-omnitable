@@ -12,13 +12,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
+      with:
+          fetch-depth: 0
 
     - name: Use Node.js 14.x
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2
       with:
         node-version: 14.x
-
+        
     - name: Restore npm cache
       id: node-cache
       uses: actions/cache@v2
@@ -31,7 +33,7 @@ jobs:
       run: npm ci
 
     - name: Lint commit messages
-      run: npx commitlint --from origin/master --to HEAD
+      uses: wagoid/commitlint-github-action@v3
 
     - name: ESLint
       run: npm run lint
@@ -61,5 +63,6 @@ jobs:
       run: npx semantic-release
       if: success()
       env:
+        HUSKY: 0
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
