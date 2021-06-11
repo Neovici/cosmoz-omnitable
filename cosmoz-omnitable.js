@@ -139,32 +139,16 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 			</div>
 			<div class="footer">
 				<div class="footer-controls">
-					<div class="footer-control">
-						<paper-dropdown-menu id="groupOnSelector" vertical-align="bottom"
-							horizontal-align="left" label="[[ _('Group on', t) ]] [[ _computeSortDirection(groupOnDescending, t) ]]">
-							<paper-listbox class="dropdown-content menu" slot="dropdown-content" selected="{{ groupOn }}" attr-for-selected="data-group-on">
-								<cosmoz-omnitable-item data-group-on style="font-style: italic" label="[[ _('No grouping', t) ]]"></cosmoz-omnitable-item>
-								<template is="dom-repeat" items="[[ columns ]]" as="column">
-									<cosmoz-omnitable-item data-group-on$="[[ column.name ]]"
-										hidden$="[[ !column.groupOn ]]" label="[[ column.title ]]" on-tap="_applySortingDirection">
-									</cosmoz-omnitable-item>
-								</template>
-							</paper-listbox>
-						</paper-dropdown-menu>
-					</div>
-					<div class="footer-control">
-						<paper-dropdown-menu id="sortOnSelector" vertical-align="bottom"
-							horizontal-align="right" label="[[_('Sort on', t)]] [[ _computeSortDirection(descending, t) ]]">
-							<paper-listbox slot="dropdown-content" class="dropdown-content menu" attr-for-selected="data-name" selected="{{ sortOn }}">
-								<cosmoz-omnitable-item data-name label="[[ _('No sorting', t) ]]"></cosmoz-omnitable-item>
-								<template is="dom-repeat" items="[[ columns ]]" as="column">
-									<cosmoz-omnitable-item hidden$="[[ !column.sortOn ]]"
-										data-name$="[[ column.name ]]" label="[[ column.title ]]" on-tap="_applySortingDirection">
-									</cosmoz-omnitable-item>
-								</template>
-							</paper-listbox>
-						</paper-dropdown-menu>
-					</div>
+					<cosmoz-autocomplete
+						label="[[ _('Group on', t) ]] [[ _computeSortDirection(groupOnDescending, t) ]]" placeholder="[[ _('No grouping', t) ]]"
+						source="[[ _onCompleteValues(columns, 'groupOn') ]]" value="[[ groupOnColumn ]]" limit="1" text-property="title" always-float-label item-height="48" item-limit="8"
+						class="footer-control" on-change="[[ _onCompleteChange('groupOn') ]]" default-index="-1" show-single show-selection
+					></cosmoz-autocomplete>
+					<cosmoz-autocomplete
+						label="[[ _('Sorn on', t) ]] [[ _computeSortDirection(descending, t) ]]" placeholder="[[ _('No sorting', t) ]]"
+						source="[[ _onCompleteValues(columns, 'sortOn') ]]" value="[[ sortOnColumn ]]" limit="1" text-property="title" always-float-label item-height="48" item-limit="8"
+						class="footer-control" on-change="[[ _onCompleteChange('sortOn') ]]" default-index="-1" show-single show-selection
+					></cosmoz-autocomplete>
 				</div>
 				<div class="footer-tableStats">
 					<span>[[ ngettext('{0} group', '{0} groups', _groupsCount, t) ]]</span>
@@ -500,7 +484,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 		this.addEventListener('cosmoz-column-values-update', this._onColumnValuesUpdate);
 		window.addEventListener('keydown', this._onKey);
 		window.addEventListener('keyup', this._onKey);
-		this._fitDropdowns();
 		this._resizeObserver.observe(this);
 	}
 
@@ -1150,26 +1133,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 	_getFoldIcon(expanded) {
 		return expanded ? 'expand-less' : 'expand-more';
 	}
-
-	/**
-	 * Called if an item from the sortOn dropdown gets tapped.
-	 * Reverses the descending value if the sortOn value did not change.
-	 * @param {Event} e The event with the column model.
-	 * @returns {undefined}
-	 */
-	_applySortingDirection(e) {
-		const column = e.model.column,
-			data = e.target.dataset,
-			isGroup = data.groupOn != null,
-			compareTo = isGroup ? this.groupOnColumn : this.sortOnColumn,
-			property = isGroup ? 'groupOnDescending' : 'descending';
-
-		if (column === compareTo) {
-			this.set(property, !this.get(property));
-			return;
-		}
-		this.set(property, false);
-	}
 	/**
 	 * Toggle folding of a group
 	 * @param	 {Event} event event
@@ -1414,15 +1377,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 		this.set(path, serialized === undefined ? null : serialized);
 	}
 
-	_fitDropdowns() {
-		[this.$.groupOnSelector, this.$.sortOnSelector]
-			.map(d => d.$.menuButton)
-			.concat([this.$.bottomBar.$.menu])
-			.forEach(button => {
-				button.$.dropdown.fitInto = this;
-			});
-	}
-
 	_debounce(name, fn, asyncModule = timeOut.after(0)) {
 		this.debouncers[name] = Debouncer.debounce(this.debouncers[name], asyncModule, fn);
 	}
@@ -1436,6 +1390,19 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 
 	renderFastLayoutCss(layoutCss, outlet) {
 		render(layoutCss, outlet);
+	}
+
+	_onCompleteValues(columns, type) {
+		return columns?.filter?.(c => c[type]);
+	}
+	_onCompleteChange(type) {
+		return (val, close) => {
+			const value = (val[0] ?? val)?.name ?? '',
+				prop = type === 'groupOn' ? 'groupOnDescending' : 'descending';
+			this[prop] = value && value === this[type] ? !this[prop] : false;
+			this[type] = value;
+			value && close();
+		};
 	}
 }
 customElements.define(Omnitable.is, Omnitable);

@@ -84,11 +84,10 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 
 				background: transparent;
 				cursor: ew-resize;
-				
+
 				z-index: 1000;
 				user-select: none;
 			}
-
 
 			.time-header-cell,
 			.datetime-header-cell,
@@ -126,7 +125,6 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				color: #333;
 				z-index: 1;
 			}
-
 
 			.tableContent-empty iron-icon {
 				height: 96px;
@@ -180,7 +178,6 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 
 			/* End of empty data set styling */
 
-
 			.tableContent-scroller {
 				flex: auto;
 				position: relative;
@@ -225,7 +222,6 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				margin-right: 3%;
 			}
 
-
 			.footer-tableStats :first-child {
 				margin-bottom: 5px;
 			}
@@ -233,7 +229,6 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 			.footer-control-label {
 				margin-right: 10px;
 			}
-
 
 			.item-row-wrapper {
 				display: block;
@@ -261,11 +256,9 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				@apply --cosmoz-omnitable-hightlighted-row;
 			}
 
-
 			.tableContent .itemRow-cell paper-dropdown-menu {
 				margin-top:-20px;
 			}
-
 
 			cosmoz-omnitable-item-expand[expanded] {
 				display: flex;
@@ -397,12 +390,14 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				vertical-align: middle;
 				transition: background-color 140ms;
 				margin: 1px 12px;
+				flex: none;
 			}
 
 			.checkbox:checked {
 			    background-color: var(--paper-checkbox-checked-color, var(--primary-color));
 			    box-shadow: none;
 			}
+
 			.checkbox:checked::before {
 				content: "";
 				position: absolute;
@@ -445,12 +440,13 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 			}
 
 			.expand, .fold {
-				color:rgba(0, 0, 0, 0.16);
+				color: rgba(0, 0, 0, 0.16);
 			}
 
 			.expand:hover, .fold:hover {
 				color: #000;
 			}
+
 		</style>
 	</template>
 </dom-module>`;
