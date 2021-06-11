@@ -285,23 +285,3 @@ suite('autocomplete unit tests', () => {
 		column.externalValues = false;
 	});
 });
-
-suite('fit-dropdowns', () => {
-	let omnitable;
-
-	setup(async () => {
-		omnitable = await setupOmnitableFixture(basicFixture, data.slice(0));
-	});
-
-	test('sets iron-dropdown fitInto property', () => {
-		[
-			omnitable.$.groupOnSelector,
-			omnitable.$.sortOnSelector
-		]
-			.map(d => d.$.menuButton)
-			.concat([omnitable.$.bottomBar.$.menu])
-			.forEach(button => {
-				assert.equal(button.$.dropdown.fitInto, omnitable);
-			});
-	});
-});
