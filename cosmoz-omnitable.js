@@ -1391,7 +1391,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 		render(layoutCss, outlet);
 	}
 
-	_onCompleteValues(columns, type, value) {
+	_onCompleteValues(columns, type, value) { /* eslint-disable-next-line no-bitwise */
 		return columns?.filter?.(c => c[type]).sort((a, b) => ((b === value) >> 0) - ((a === value) >> 0));
 	}
 	_onCompleteChange(type) {
@@ -1400,7 +1400,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 				prop = type === 'groupOn' ? 'groupOnDescending' : 'descending';
 			this[prop] = value && value === this[type] ? !this[prop] : false;
 			this[type] = value;
-			value && close();
+			value && close(); /* eslint-disable-line no-unused-expressions */
 		};
 	}
 }
