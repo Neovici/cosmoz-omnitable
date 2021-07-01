@@ -1,3 +1,10 @@
+## [6.3.1](https://github.com/neovici/cosmoz-omnitable/compare/v6.3.0...v6.3.1) (2021-07-01)
+
+
+### Bug Fixes
+
+* typo in `Sort on` ([b312f3d](https://github.com/neovici/cosmoz-omnitable/commit/b312f3dcf9db662316dcf127ffd78415daa0e413))
+
 # [6.3.0](https://github.com/neovici/cosmoz-omnitable/compare/v6.2.1...v6.3.0) (2021-07-01)
 
 
