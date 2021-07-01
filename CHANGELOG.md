@@ -1,3 +1,10 @@
+# [6.3.0](https://github.com/neovici/cosmoz-omnitable/compare/v6.2.1...v6.3.0) (2021-07-01)
+
+
+### Features
+
+* **cosmoz-omnitable:** replace dropdown for sort and group with autocomplete ([a6da707](https://github.com/neovici/cosmoz-omnitable/commit/a6da707f5b16754a950dda41ff55dceb04f4d189))
+
 ## [6.2.1](https://github.com/neovici/cosmoz-omnitable/compare/v6.2.0...v6.2.1) (2021-06-07)
 
 
