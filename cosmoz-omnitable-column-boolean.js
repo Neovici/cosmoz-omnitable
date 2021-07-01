@@ -1,7 +1,3 @@
-import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
-import '@polymer/paper-listbox/paper-listbox';
-import '@polymer/paper-item/paper-item';
-
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 
 import { columnMixin } from './cosmoz-omnitable-column-mixin';

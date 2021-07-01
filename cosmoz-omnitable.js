@@ -20,7 +20,6 @@ import './cosmoz-omnitable-item-row';
 import './cosmoz-omnitable-item-expand';
 import './cosmoz-omnitable-group-row';
 import './cosmoz-omnitable-styles';
-import './cosmoz-omnitable-item';
 import './cosmoz-omnitable-columns';
 
 import { NullXlsx } from '@neovici/nullxlsx';
@@ -141,12 +140,12 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 				<div class="footer-controls">
 					<cosmoz-autocomplete
 						label="[[ _('Group on', t) ]] [[ _computeSortDirection(groupOnDescending, t) ]]" placeholder="[[ _('No grouping', t) ]]"
-						source="[[ _onCompleteValues(columns, 'groupOn') ]]" value="[[ groupOnColumn ]]" limit="1" text-property="title" always-float-label item-height="48" item-limit="8"
+						source="[[ _onCompleteValues(columns, 'groupOn', groupOnColumn) ]]" value="[[ groupOnColumn ]]" limit="1" text-property="title" always-float-label item-height="48" item-limit="8"
 						class="footer-control" on-change="[[ _onCompleteChange('groupOn') ]]" default-index="-1" show-single show-selection
 					></cosmoz-autocomplete>
 					<cosmoz-autocomplete
 						label="[[ _('Sorn on', t) ]] [[ _computeSortDirection(descending, t) ]]" placeholder="[[ _('No sorting', t) ]]"
-						source="[[ _onCompleteValues(columns, 'sortOn') ]]" value="[[ sortOnColumn ]]" limit="1" text-property="title" always-float-label item-height="48" item-limit="8"
+						source="[[ _onCompleteValues(columns, 'sortOn', sortOnColumn) ]]" value="[[ sortOnColumn ]]" limit="1" text-property="title" always-float-label item-height="48" item-limit="8"
 						class="footer-control" on-change="[[ _onCompleteChange('sortOn') ]]" default-index="-1" show-single show-selection
 					></cosmoz-autocomplete>
 				</div>
@@ -1392,8 +1391,8 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 		render(layoutCss, outlet);
 	}
 
-	_onCompleteValues(columns, type) {
-		return columns?.filter?.(c => c[type]);
+	_onCompleteValues(columns, type, value) {
+		return columns?.filter?.(c => c[type]).sort((a, b) => ((b === value) >> 0) - ((a === value) >> 0));
 	}
 	_onCompleteChange(type) {
 		return (val, close) => {

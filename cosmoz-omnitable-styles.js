@@ -343,6 +343,10 @@ container.innerHTML = `<dom-module id="cosmoz-omnitable-styles">
 				@apply --cosmoz-bottom-bar-menu-item;
 			}
 
+			#dropdownExtra paper-button:hover, #dropdownExtra ::slotted(paper-button:hover) {
+				background: #eee;
+			}
+
 			#dropdownExtra {
 				padding: 0;
 			}
