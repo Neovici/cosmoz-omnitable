@@ -1,3 +1,10 @@
+## [6.3.2](https://github.com/neovici/cosmoz-omnitable/compare/v6.3.1...v6.3.2) (2021-08-05)
+
+
+### Bug Fixes
+
+* **date:** hide dropdown icon ([810a239](https://github.com/neovici/cosmoz-omnitable/commit/810a2399c2d4301b1dd82edddd23bb64490ff8ac))
+
 ## [6.3.1](https://github.com/neovici/cosmoz-omnitable/compare/v6.3.0...v6.3.1) (2021-07-01)
 
 
