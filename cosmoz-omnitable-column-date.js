@@ -58,6 +58,11 @@ class OmnitableColumnDate extends dateColumnMixin(columnMixin(translatable(
 
 	renderHeader(column) {
 		return html`
+			<style>
+				paper-dropdown-menu {
+					--iron-icon-width: 0;
+				}
+			</style>
 			<cosmoz-clear-button @click=${ event => column.resetFilter(event) } ?visible=${ column.hasFilter() }></cosmoz-clear-button>
 			<paper-dropdown-menu
 				label=${ column.title }
