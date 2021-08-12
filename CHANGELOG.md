@@ -1,3 +1,10 @@
+# [6.4.0](https://github.com/neovici/cosmoz-omnitable/compare/v6.3.2...v6.4.0) (2021-08-12)
+
+
+### Features
+
+* values as function ([d908b92](https://github.com/neovici/cosmoz-omnitable/commit/d908b922995e164cd0024a00215c5af3100a9fb8))
+
 ## [6.3.2](https://github.com/neovici/cosmoz-omnitable/compare/v6.3.1...v6.3.2) (2021-08-05)
 
 
