@@ -19,8 +19,8 @@ import './cosmoz-omnitable-header-row';
 import './cosmoz-omnitable-item-row';
 import './cosmoz-omnitable-item-expand';
 import './cosmoz-omnitable-group-row';
-import './cosmoz-omnitable-styles';
 import './cosmoz-omnitable-columns';
+import styles from './cosmoz-omnitable-styles';
 
 import { NullXlsx } from '@neovici/nullxlsx';
 
@@ -38,6 +38,7 @@ import { mixin, hauntedPolymer } from '@neovici/cosmoz-utils';
 import { isEmpty } from '@neovici/cosmoz-utils/lib/template.js';
 import { getEffectiveChildrenLegacyMixin } from './get-effective-children-legacy-mixin';
 import { useOmnitable } from './lib/use-omnitable';
+import './lib/cosmoz-omnitable-settings';
 
 const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending', 'groupOnDescending'];
 
@@ -54,8 +55,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 	/* eslint-disable-next-line max-lines-per-function */
 	static get template() {
 		const template = html`
-		<style include="cosmoz-omnitable-styles">
-		</style>
+		${ html([styles]) }
 		<div id="layoutStyle"></div>
 
 		<cosmoz-page-location id="location" route-hash="{{ _routeHash }}"></cosmoz-page-location>
@@ -66,7 +66,8 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 				<cosmoz-omnitable-header-row
 					columns="[[ columns ]]"
 					group-on-column="[[ groupOnColumn ]]"
-				></cosmoz-omnitable-header-row>
+					content="[[ _renderSettings(columns) ]]"
+				>
 			</div>
 			<div class="tableContent" id="tableContent">
 				<template is="dom-if" if="[[ !_dataIsValid ]]">
@@ -1399,6 +1400,10 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 			this[type] = value;
 			value && close(); /* eslint-disable-line no-unused-expressions */
 		};
+	}
+
+	_renderSettings(columns) {
+		return litHtml`<cosmoz-omnitable-settings .columns=${ columns }>`;
 	}
 }
 customElements.define(Omnitable.is, Omnitable);
