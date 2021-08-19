@@ -118,11 +118,6 @@ export const columnMixin = dedupingMixin(base => class extends base { // eslint-
 				value: '75px'
 			},
 
-			resizeWidth: {
-				type: Number,
-				observer: () => { /* HACK: force polymer to listen for `resizeWidth` property changes */ }
-			},
-
 			/**
 			 * Base width of this column when in edit mode.
 			 */
@@ -456,7 +451,7 @@ export const columnMixin = dedupingMixin(base => class extends base { // eslint-
 	_propertiesChanged(currentProps, changedProps, oldProps) {
 		super._propertiesChanged(currentProps, changedProps, oldProps);
 		// let the repeaters know that this column has been updated and that it needs to re-render the templates
-		this.dispatchEvent(new CustomEvent('cosmoz-column-prop-changed', { bubbles: true, detail: { currentProps, changedProps, oldProps }}));
+		this.dispatchEvent(new CustomEvent('cosmoz-column-prop-changed'));
 	}
 
 	_serializeFilter(obj = this.filter) {
