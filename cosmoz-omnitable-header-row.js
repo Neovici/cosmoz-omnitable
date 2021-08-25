@@ -9,7 +9,6 @@ import './lib/cosmoz-omnitable-resize-nub';
 
 const
 	renderHeaderRow = ({ columns, groupOnColumn, resizable }) => {
-		const maxPriority = columns?.reduce((p, column) => Math.max(p, column.priority), -Infinity);
 		return repeat(columns, column => column.name, column => [
 			html`<div
 				class="cell ${ column.headerCellClass } header-cell"
@@ -17,7 +16,12 @@ const
 				?hidden=${ column === groupOnColumn }
 				title=${ column.title }
 			>${ column.renderHeader(column) }</div>`,
-			resizable ? html`<cosmoz-omnitable-resize-nub .column=${ column } .maxPriority=${ maxPriority }></cosmoz-omnitable-resize-nub>` : nothing
+			resizable
+				? html`<cosmoz-omnitable-resize-nub
+				.column=${ column }
+				index="${ column.columnIndex }"
+				></cosmoz-omnitable-resize-nub>`
+				: nothing
 		]);
 	},
 
