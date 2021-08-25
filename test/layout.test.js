@@ -1,5 +1,5 @@
 import { assert } from '@open-wc/testing';
-import { layout } from '../lib/layout';
+import { FORCE_FIT, layout } from '../lib/layout';
 
 const toObj = ([basis, minWidth, grow]) => ({ basis, minWidth, grow });
 
@@ -119,6 +119,20 @@ suite('layout algorithm', () => {
 		];
 		cases.forEach(([columns, container, result]) => {
 			assert.deepEqual(layout(columns.map(toObj), container), result);
+		});
+	});
+
+
+	test('forceFit', () => {
+		const cases = [
+			[
+				[[50, 50, 0], [50, 50, 0]],
+				200,
+				[150, 50]
+			]
+		];
+		cases.forEach(([columns, container, result]) => {
+			assert.deepEqual(layout(columns.map(toObj), container, FORCE_FIT), result);
 		});
 	});
 });
