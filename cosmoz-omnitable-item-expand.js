@@ -30,7 +30,7 @@ const
 			if (host.expanded === true) {
 				host.dispatchEvent(new CustomEvent('expanded'));
 			}
-		}, [host.expanded]);
+		}, [host.columns, host.expanded]);
 
 		return Array.isArray(host.columns) && host.columns.length > 0 && host.expanded
 			? renderExpandList(host)
