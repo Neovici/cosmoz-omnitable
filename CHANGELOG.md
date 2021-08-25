@@ -1,3 +1,20 @@
+# [6.5.0](https://github.com/neovici/cosmoz-omnitable/compare/v6.4.0...v6.5.0) (2021-08-25)
+
+
+### Bug Fixes
+
+* prepare for dropping visibleColumns and renamed collapsedColumns ([13c35c4](https://github.com/neovici/cosmoz-omnitable/commit/13c35c4d7b82acbe73c466cd77a1a71ba565f946))
+* **item-expand:** expanded rows don't resize when columns are collapsed/expanded ([559a319](https://github.com/neovici/cosmoz-omnitable/commit/559a319bc53983261e34db32c5ded93772feb801))
+* **item-row:** editable attribute is set, even if column is not editable ([325c660](https://github.com/neovici/cosmoz-omnitable/commit/325c660c241890caa1daa1c151da8853e365e2cb))
+* clean up prototype resize implementation ([6298f7e](https://github.com/neovici/cosmoz-omnitable/commit/6298f7e6258e3dfb3227e552675a7874485216b9))
+
+
+### Features
+
+* improved resizable columns ([0962e6e](https://github.com/neovici/cosmoz-omnitable/commit/0962e6e4ff1272e32a1ef9346fa505d3d5a98d61))
+* support resizeSpeedFactor to adjust the resize animation speed ([660b158](https://github.com/neovici/cosmoz-omnitable/commit/660b158ee21439948bb806b6e87ac2632564f36e))
+* **layout:** support FORCE_FIT option ([3e96d50](https://github.com/neovici/cosmoz-omnitable/commit/3e96d5055b5ee7eff2a46de0d680ded4d7f7def1))
+
 # [6.4.0](https://github.com/neovici/cosmoz-omnitable/compare/v6.3.2...v6.4.0) (2021-08-12)
 
 
