@@ -64,7 +64,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 			<div class="header" id="header">
 				<input class="checkbox all" type="checkbox" checked="[[ _allSelected ]]" on-input="_onAllCheckboxChange" disabled$="[[ !_dataIsValid ]]" />
 				<cosmoz-omnitable-header-row
-					columns="[[ visibleColumns ]]"
+					columns="[[ columns ]]"
 					group-on-column="[[ groupOnColumn ]]"
 					resizable="[[ resizable ]]"
 				></cosmoz-omnitable-header-row>
@@ -110,12 +110,12 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 							<div class="item-row-wrapper">
 								<div selected$="[[ selected ]]" class="itemRow" highlighted$="[[ highlighted ]]">
 									<input class="checkbox" type="checkbox" checked="[[ selected ]]" on-input="_onCheckboxChange" disabled$="[[ !_dataIsValid ]]" />
-									<cosmoz-omnitable-item-row columns="[[ visibleColumns ]]"
+									<cosmoz-omnitable-item-row columns="[[ columns ]]"
 										selected="[[ selected ]]" expanded="{{ expanded }}" item="[[ item ]]" group-on-column="[[ groupOnColumn ]]">
 									</cosmoz-omnitable-item-row>
-									<paper-icon-button class="expand" hidden="[[ isEmpty(disabledColumns.length) ]]" icon="[[ _getFoldIcon(expanded) ]]" on-tap="_toggleItem"></paper-icon-button>
+									<paper-icon-button class="expand" hidden="[[ isEmpty(collapsedColumns.length) ]]" icon="[[ _getFoldIcon(expanded) ]]" on-tap="_toggleItem"></paper-icon-button>
 								</div>
-								<cosmoz-omnitable-item-expand columns="[[ disabledColumns ]]"
+								<cosmoz-omnitable-item-expand columns="[[ collapsedColumns ]]"
 									item="[[item]]" selected="{{ selected }}" expanded$="{{ expanded }}" group-on-column="[[ groupOnColumn ]]"
 									part="item-expand" on-expanded="onExpanded">
 								</cosmoz-omnitable-item-expand>
@@ -384,14 +384,19 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 			},
 
 			/**
-		 * List of <b>visible</b> columns.
-		 */
+			 * @deprecated
+			 * List of <b>visible</b> columns.
+			 * // TODO: drop with next major release
+			 */
 			visibleColumns: {
 				type: Array,
-				notify: true,
-				observer: '_visibleColumnsChanged'
+				notify: true
 			},
 
+			/**
+			 * @deprecated
+			 * // TODO: drop with next major release
+			 */
 			disabledColumns: {
 				type: Array,
 				notify: true
@@ -553,10 +558,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 		}
 	}
 
-	_visibleColumnsChanged() {
-		this.disabledColumns = [];
-	}
-
 	_onUpdateItemSize(event) {
 		const { detail } = event;
 		if (detail && detail.item) {
@@ -587,7 +588,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 	_onColumnEditableChanged(event) {
 		event.stopPropagation();
 		const { detail: { column }} = event,
-			{ visibleColumns: columns } = this;
+			{ columns } = this;
 
 		if (!Array.isArray(columns) || columns.length === 0) {
 			return;
@@ -597,7 +598,8 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 		if (index < 0) {
 			return;
 		}
-		this.notifyPath(['visibleColumns', index, 'editable']);
+		// TODO: review if this is necessary
+		this.notifyPath(['columns', index, 'editable']);
 	}
 
 	_onKey(e) {
@@ -767,6 +769,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 
 		this.columns = columns;
 		this._updateParamsFromHash();
+		// TODO: drop with next major release
 		this.visibleColumns = columns.slice();
 
 		if (Array.isArray(this.data)) {
