@@ -459,7 +459,7 @@ suite('fit columns behaviour', () => {
 	setup(async () => {
 		const data = generateTableDemoData(10, 11, 25);
 		omnitable = await setupOmnitableFixture(html`
-				<cosmoz-omnitable selection-enabled style="width: 800px">
+				<cosmoz-omnitable selection-enabled style="width: 800px" .resizeSpeedFactor=${ 1 }>
 					<cosmoz-omnitable-column name="column1" title="column1" value-path="name"></cosmoz-omnitable-column>
 					<cosmoz-omnitable-column name="column2" title="column2" value-path="name"></cosmoz-omnitable-column>
 					<cosmoz-omnitable-column name="column3" title="column3" value-path="name"></cosmoz-omnitable-column>
@@ -472,6 +472,7 @@ suite('fit columns behaviour', () => {
 		omnitable.flush();
 		await nextFrame();
 		await nextFrame();
+		await nextFrame();
 	});
 
 	test('it adjusts the visible columns based on the available width', async () => {
@@ -480,10 +481,12 @@ suite('fit columns behaviour', () => {
 		omnitable.style.width = '400px';
 		await nextFrame();
 		await nextFrame();
+		await nextFrame();
 
 		assert.deepEqual(Array.from(omnitable.shadowRoot.querySelectorAll('.header-cell')).map(cell => !!cell.offsetWidth), [true, true, true, false, true]);
 
 		omnitable.style.width = '800px';
+		await nextFrame();
 		await nextFrame();
 		await nextFrame();
 
