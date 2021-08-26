@@ -66,7 +66,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 				<cosmoz-omnitable-header-row
 					columns="[[ columns ]]"
 					group-on-column="[[ groupOnColumn ]]"
-					resizable="[[ resizable ]]"
 				></cosmoz-omnitable-header-row>
 			</div>
 			<div class="tableContent" id="tableContent">
@@ -428,11 +427,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 			},
 			computedBarHeight: {
 				type: Number
-			},
-
-			resizable: {
-				type: Boolean,
-				value: false
 			}
 		};
 	}
