@@ -8,7 +8,7 @@ import { useRenderOnColumnUpdates } from './lib/use-render-on-column-updates';
 import './lib/cosmoz-omnitable-resize-nub';
 
 const
-	renderHeaderRow = ({ columns, groupOnColumn, resizable }) => {
+	renderHeaderRow = ({ columns, groupOnColumn }) => {
 		return repeat(columns, column => column.name, column => [
 			html`<div
 				class="cell ${ column.headerCellClass } header-cell"
@@ -16,21 +16,19 @@ const
 				?hidden=${ column === groupOnColumn }
 				title=${ column.title }
 			>${ column.renderHeader(column) }</div>`,
-			resizable
-				? html`<cosmoz-omnitable-resize-nub
+			html`<cosmoz-omnitable-resize-nub
 				.column=${ column }
 				index="${ column.columnIndex }"
-				></cosmoz-omnitable-resize-nub>`
-				: nothing
+			></cosmoz-omnitable-resize-nub>`
 		]);
 	},
 
-	HeaderRow = ({ columns, groupOnColumn, resizable }) => {
+	HeaderRow = ({ columns, groupOnColumn }) => {
 		useRenderOnColumnUpdates(columns);
 
 		return columns == null
 			? nothing
-			: renderHeaderRow({ columns, groupOnColumn, resizable });
+			: renderHeaderRow({ columns, groupOnColumn });
 	};
 
 customElements.define('cosmoz-omnitable-header-row', component(HeaderRow, { useShadowDOM: false }));
