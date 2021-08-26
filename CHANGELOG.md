@@ -1,3 +1,10 @@
+# [6.6.0](https://github.com/neovici/cosmoz-omnitable/compare/v6.5.0...v6.6.0) (2021-08-26)
+
+
+### Features
+
+* flagless resizable columns ([2b8121f](https://github.com/neovici/cosmoz-omnitable/commit/2b8121fc394a81d43c4dba8394464da7c1f8b3e1))
+
 # [6.5.0](https://github.com/neovici/cosmoz-omnitable/compare/v6.4.0...v6.5.0) (2021-08-25)
 
 
