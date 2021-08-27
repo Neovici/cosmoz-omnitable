@@ -1,3 +1,10 @@
+## [6.6.1](https://github.com/neovici/cosmoz-omnitable/compare/v6.6.0...v6.6.1) (2021-08-27)
+
+
+### Bug Fixes
+
+* **resizable-columns:** undefined priorities break the layout when resizing columns ([7d808be](https://github.com/neovici/cosmoz-omnitable/commit/7d808bef81a9fcd51d3e58a977bb6f94d218efb0))
+
 # [6.6.0](https://github.com/neovici/cosmoz-omnitable/compare/v6.5.0...v6.6.0) (2021-08-26)
 
 
