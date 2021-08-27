@@ -124,7 +124,7 @@ class OmnitableItemRow extends repeaterMixin(PolymerElement) {
 	_computeItemRowCellClasses(column) {
 		return 'cell itemRow-cell'
 			+ (column.cellClass ? ' ' + column.cellClass + ' ' : '')
-			+ ' cosmoz-omnitable-column-' + column.__index;
+			+ ' cosmoz-omnitable-column-' + column.columnIndex;
 	}
 }
 customElements.define(OmnitableItemRow.is, OmnitableItemRow);
