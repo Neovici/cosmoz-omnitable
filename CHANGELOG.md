@@ -1,3 +1,10 @@
+## [6.6.2](https://github.com/neovici/cosmoz-omnitable/compare/v6.6.1...v6.6.2) (2021-08-27)
+
+
+### Bug Fixes
+
+* **resizable-columns:** columns are hidden even if they could fit ([aab5b97](https://github.com/neovici/cosmoz-omnitable/commit/aab5b97af94f1bb3aae7373b939845f6f896777a))
+
 ## [6.6.1](https://github.com/neovici/cosmoz-omnitable/compare/v6.6.0...v6.6.1) (2021-08-27)
 
 
