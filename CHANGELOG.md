@@ -1,3 +1,10 @@
+## [6.6.3](https://github.com/neovici/cosmoz-omnitable/compare/v6.6.2...v6.6.3) (2021-08-31)
+
+
+### Bug Fixes
+
+* **resizable-columns:** you can't resize the last column anymore ([181c1c1](https://github.com/neovici/cosmoz-omnitable/commit/181c1c1c84975ec1c0d879783702e8059a4b4c52)), closes [#453](https://github.com/neovici/cosmoz-omnitable/issues/453)
+
 ## [6.6.2](https://github.com/neovici/cosmoz-omnitable/compare/v6.6.1...v6.6.2) (2021-08-27)
 
 
