@@ -577,7 +577,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 	_onColumnEditableChanged(event) {
 		event.stopPropagation();
 		const { detail: { column }} = event,
-			{ columns } = this;
+			{ visibleColumns: columns } = this;
 
 		if (!Array.isArray(columns) || columns.length === 0) {
 			return;
@@ -588,7 +588,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 			return;
 		}
 		// TODO: review if this is necessary
-		this.notifyPath(['columns', index, 'editable']);
+		this.notifyPath(['visibleColumns', index, 'editable']);
 	}
 
 	_onKey(e) {
