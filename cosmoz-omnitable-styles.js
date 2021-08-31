@@ -1,5 +1,5 @@
 const checkbox = `
-.checkbox {
+	.checkbox {
 		box-sizing: border-box;
 		width: 18px;
 		height: 18px;

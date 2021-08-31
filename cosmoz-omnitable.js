@@ -40,7 +40,7 @@ import './lib/cosmoz-omnitable-settings';
 
 const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending', 'groupOnDescending'],
 
-	normalizeSettings = (columns, settings = []) => {
+	normalizeSettings = (columns = [], settings = []) => {
 		const cols = columns.slice();
 		for (const setting of settings) {
 			const idx = cols.findIndex(c => c.name === setting.name);
@@ -49,7 +49,7 @@ const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending', 'groupOnDescend
 			}
 			cols.splice(idx, 1);
 		}
-		return [...settings, ...cols.map(({ name, title }) => ({ name, title }))];
+		return [...settings, ...cols.map(({ name, title, priority }) => ({ name, title, priority }))];
 	};
 
 /**
@@ -76,7 +76,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 				<cosmoz-omnitable-header-row
 					columns="[[ visibleColumns ]]"
 					group-on-column="[[ groupOnColumn ]]"
-					content="[[ _renderSettings(columns, settings) ]]"
+					content="[[ _renderSettings(columns, settings, collapsedColumns) ]]"
 				>
 			</div>
 			<div class="tableContent" id="tableContent">
@@ -732,7 +732,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 
 		this._verifyColumnSetup(columns, columnNames);
 
-		columns.forEach((column, index) => {
+		columns.forEach(column => {
 			if (!column.name) {
 				// No name set; Try to set name attribute via valuePath
 				if (!valuePathNames) {
@@ -759,9 +759,16 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 
 	_computeVisibleColumns(columns, settings) {
 		return normalizeSettings(columns, settings)
-			.filter(c => !c.disabled)
-			.map(s => columns.find(c => c.name === s.name))
-			.filter(Boolean)
+			.flatMap(s => {
+				if (s.disabled) {
+					return [];
+				}
+				const column = columns.find(c => c.name === s.name);
+				if (!column) {
+					return [];
+				}
+				return [Object.assign(column, { priority: s.priority ?? column.priority })];
+			})
 			.map((c, i) => Object.assign(c, { columnIndex: i }));
 	}
 
@@ -1396,9 +1403,13 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		};
 	}
 
-	_renderSettings(columns, settings) {
+	_renderSettings(columns, settings, collapsed) {
 		const that = this;
-		return litHtml`<cosmoz-omnitable-settings .settings=${ normalizeSettings(columns, settings) } .onSettings=${ s => that.settings = s }>`;
+		return litHtml`<cosmoz-omnitable-settings
+			.settings=${ normalizeSettings(columns, settings) }
+			.onSettings=${ s => that.settings = s /* eslint-disable-line no-return-assign */ }
+			.collapsed=${ collapsed.map(c => c.name) }
+		>`;
 	}
 }
 customElements.define(Omnitable.is, Omnitable);
