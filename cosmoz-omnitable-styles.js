@@ -53,6 +53,16 @@ const checkbox = `
 	.checkbox:checked:hover {
 		box-shadow: 0 0 2px 6px #2021240f;
 	}
+
+	.checkbox:indeterminate::before {
+		content: "";
+		position: absolute;
+		width: 10px;
+		height: 2px;
+		left: 4px;
+		top: 8px;
+	    background-color: var(--paper-checkbox-checked-color, var(--primary-color));
+	}
 `;
 
 export { checkbox };
