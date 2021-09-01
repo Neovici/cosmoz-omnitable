@@ -1,3 +1,22 @@
+# [6.7.0](https://github.com/neovici/cosmoz-omnitable/compare/v6.6.3...v6.7.0) (2021-09-01)
+
+
+### Bug Fixes
+
+* checkbox ([724f4fd](https://github.com/neovici/cosmoz-omnitable/commit/724f4fdd94d0c24feb1f2edd01d27b9d6349b855))
+* **omnitable:** indeterminate priority ([97af759](https://github.com/neovici/cosmoz-omnitable/commit/97af759ffc5557f50c0137509e87291cd5a1c3bb))
+* **omnitable:** propagate editable on visibleColumns ([956f9fc](https://github.com/neovici/cosmoz-omnitable/commit/956f9fc896555d4c597c3f79cae7dd13fdaf8483))
+* **settings:** html syntax ([36b13b3](https://github.com/neovici/cosmoz-omnitable/commit/36b13b3b67db3802cb0834c9f459dcad657e7222))
+* **settings:** max + 1 priority ([72845f7](https://github.com/neovici/cosmoz-omnitable/commit/72845f7b861b85b4afde2d981978322a6c7ad494))
+
+
+### Features
+
+* **omnitable:** enable priority sorting ([c50efe1](https://github.com/neovici/cosmoz-omnitable/commit/c50efe1c382684a5b6cf8e0a8d3458061f9f7fdc))
+* **settings:** initial implementation ([eddd138](https://github.com/neovici/cosmoz-omnitable/commit/eddd13894ba7bc8278c2c0ce25ceca77dfffb878))
+* implement disable and sort persistence ([edd37d1](https://github.com/neovici/cosmoz-omnitable/commit/edd37d1317f1c02168f5f060d1c825804cd4edbe))
+* **settings:** initial implementation ([7f6bcbe](https://github.com/neovici/cosmoz-omnitable/commit/7f6bcbe01f2413dd97918671318b41d828268fc2))
+
 ## [6.6.3](https://github.com/neovici/cosmoz-omnitable/compare/v6.6.2...v6.6.3) (2021-08-31)
 
 
