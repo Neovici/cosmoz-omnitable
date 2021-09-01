@@ -19,8 +19,8 @@ import './cosmoz-omnitable-header-row';
 import './cosmoz-omnitable-item-row';
 import './cosmoz-omnitable-item-expand';
 import './cosmoz-omnitable-group-row';
-import './cosmoz-omnitable-styles';
 import './cosmoz-omnitable-columns';
+import styles from './cosmoz-omnitable-styles';
 
 import { NullXlsx } from '@neovici/nullxlsx';
 
@@ -28,7 +28,6 @@ import { saveAs } from 'file-saver-es';
 
 import { timeOut } from '@polymer/polymer/lib/utils/async';
 import { Debouncer } from '@polymer/polymer/lib/utils/debounce';
-import { FlattenedNodesObserver } from '@polymer/polymer/lib/utils/flattened-nodes-observer';
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
 import { html as litHtml, render } from 'lit-html';
@@ -36,10 +35,22 @@ import { html as litHtml, render } from 'lit-html';
 import { translatable } from '@neovici/cosmoz-i18next';
 import { mixin, hauntedPolymer } from '@neovici/cosmoz-utils';
 import { isEmpty } from '@neovici/cosmoz-utils/lib/template.js';
-import { getEffectiveChildrenLegacyMixin } from './get-effective-children-legacy-mixin';
 import { useOmnitable } from './lib/use-omnitable';
+import './lib/cosmoz-omnitable-settings';
 
-const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending', 'groupOnDescending'];
+const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending', 'groupOnDescending'],
+
+	normalizeSettings = (columns = [], settings = []) => {
+		const cols = columns.slice();
+		for (const setting of settings) {
+			const idx = cols.findIndex(c => c.name === setting.name);
+			if (idx < 0) {
+				continue;
+			}
+			cols.splice(idx, 1);
+		}
+		return [...settings, ...cols.map(({ name, title, priority }) => ({ name, title, priority }))];
+	};
 
 /**
  * @polymer
@@ -50,12 +61,11 @@ const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending', 'groupOnDescend
  * @demo demo/index.html
  */
 
-class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffectiveChildrenLegacyMixin(translatable(PolymerElement)))) {
+class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translatable(PolymerElement))) {
 	/* eslint-disable-next-line max-lines-per-function */
 	static get template() {
 		const template = html`
-		<style include="cosmoz-omnitable-styles">
-		</style>
+		${ html([styles]) }
 		<div id="layoutStyle"></div>
 
 		<cosmoz-page-location id="location" route-hash="{{ _routeHash }}"></cosmoz-page-location>
@@ -64,9 +74,10 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 			<div class="header" id="header">
 				<input class="checkbox all" type="checkbox" checked="[[ _allSelected ]]" on-input="_onAllCheckboxChange" disabled$="[[ !_dataIsValid ]]" />
 				<cosmoz-omnitable-header-row
-					columns="[[ columns ]]"
+					columns="[[ visibleColumns ]]"
 					group-on-column="[[ groupOnColumn ]]"
-				></cosmoz-omnitable-header-row>
+					content="[[ _renderSettings(columns, settings, collapsedColumns) ]]"
+				>
 			</div>
 			<div class="tableContent" id="tableContent">
 				<template is="dom-if" if="[[ !_dataIsValid ]]">
@@ -109,7 +120,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 							<div class="item-row-wrapper">
 								<div selected$="[[ selected ]]" class="itemRow" highlighted$="[[ highlighted ]]">
 									<input class="checkbox" type="checkbox" checked="[[ selected ]]" on-input="_onCheckboxChange" disabled$="[[ !_dataIsValid ]]" />
-									<cosmoz-omnitable-item-row columns="[[ columns ]]"
+									<cosmoz-omnitable-item-row columns="[[ visibleColumns ]]"
 										selected="[[ selected ]]" expanded="{{ expanded }}" item="[[ item ]]" group-on-column="[[ groupOnColumn ]]">
 									</cosmoz-omnitable-item-row>
 									<paper-icon-button class="expand" hidden="[[ isEmpty(collapsedColumns.length) ]]" icon="[[ _getFoldIcon(expanded) ]]" on-tap="_toggleItem"></paper-icon-button>
@@ -177,7 +188,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 		</div>
 
 		<div id="columns">
-			<slot id="columnsSlot"></slot>
+			<slot id="columnsSlot" on-slotchange="_debounceUpdateColumns"></slot>
 		</div>
 `;
 		template.setAttribute('strip-whitespace', '');
@@ -366,14 +377,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 				value: 0
 			},
 
-			/**
-		 * List of columns definition for this table.
-		 */
-			columns: {
-				type: Array,
-				notify: true
-			},
-
 			visible: {
 				type: Boolean,
 				notify: true,
@@ -383,14 +386,26 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 			},
 
 			/**
-			 * @deprecated
-			 * List of <b>visible</b> columns.
-			 * // TODO: drop with next major release
-			 */
-			visibleColumns: {
+		 	 * List of columns definition for this table.
+		 	 */
+			columns: {
 				type: Array,
 				notify: true
 			},
+
+			settings: {
+				type: Object
+			},
+
+			/**
+			 * List of <b>visible</b> columns.
+			 */
+			visibleColumns: {
+				type: Array,
+				notify: true,
+				computed: '_computeVisibleColumns(columns, settings)'
+			},
+
 
 			/**
 			 * @deprecated
@@ -454,22 +469,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 
 	connectedCallback() {
 		super.connectedCallback();
-		/** WARNING: we do not support columns changes yet. */
-		// `isOmnitableColumn` is a property from cosmoz-omnitable-column-behavior
-		this._columnObserver = new FlattenedNodesObserver(this.$.columnsSlot, info => {
-			const colFilter = child => child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn,
-				addedColumns = info.addedNodes.filter(colFilter),
-				removedColumns = info.removedNodes.filter(colFilter),
-				changedColumns = addedColumns.concat(removedColumns);
-
-			if (changedColumns.length === 0) {
-				return;
-			}
-
-			this._setColumnValues(addedColumns);
-
-			this._debounceUpdateColumns();
-		});
 
 		this.$.groupedList.scrollTarget = this.$.scroller;
 		this.addEventListener('cosmoz-column-hidden-changed', this._debounceUpdateColumns);
@@ -487,10 +486,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		if (this._columnObserver) {
-			this._columnObserver.disconnect();
-			this._columnObserver = null;
-		}
 
 		this.removeEventListener('cosmoz-column-hidden-changed', this._debounceUpdateColumns);
 		this.removeEventListener('cosmoz-column-disabled-changed', this._debounceUpdateColumns);
@@ -582,7 +577,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 	_onColumnEditableChanged(event) {
 		event.stopPropagation();
 		const { detail: { column }} = event,
-			{ columns } = this;
+			{ visibleColumns: columns } = this;
 
 		if (!Array.isArray(columns) || columns.length === 0) {
 			return;
@@ -593,7 +588,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 			return;
 		}
 		// TODO: review if this is necessary
-		this.notifyPath(['columns', index, 'editable']);
+		this.notifyPath(['visibleColumns', index, 'editable']);
 	}
 
 	_onKey(e) {
@@ -714,13 +709,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 		}
 
 		// NOTE: it's important to get all children, including those projected in slots
-		let columns = this.getEffectiveChildren().filter((child, index) => {
-				child.__index = index;
-				// filter only omnitable columns
-				return child.nodeType === Node.ELEMENT_NODE && child.isOmnitableColumn
-					// filter out elements that are hidden
-					&& !child.hidden;
-			}),
+		let columns = this.$.columnsSlot.assignedElements({ flatten: true }).filter(child => child.isOmnitableColumn && !child.hidden),
 			valuePathNames;
 
 		const columnNames = columns.map(c => c.name);
@@ -743,7 +732,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 
 		this._verifyColumnSetup(columns, columnNames);
 
-		columns.forEach((column, index) => {
+		columns.forEach(column => {
 			if (!column.name) {
 				// No name set; Try to set name attribute via valuePath
 				if (!valuePathNames) {
@@ -754,7 +743,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 					column.name = column.valuePath;
 				}
 			}
-			column.columnIndex = index;
 		});
 
 		if (!Array.isArray(this.columns) || this.columns.length === 0) {
@@ -763,13 +751,27 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 
 		this.columns = columns;
 		this._updateParamsFromHash();
-		// TODO: drop with next major release
-		this.visibleColumns = columns.slice();
 
 		if (Array.isArray(this.data)) {
 			this._debounceFilterItems();
 		}
 	}
+
+	_computeVisibleColumns(columns, settings) {
+		return normalizeSettings(columns, settings)
+			.flatMap(s => {
+				if (s.disabled) {
+					return [];
+				}
+				const column = columns.find(c => c.name === s.name);
+				if (!column) {
+					return [];
+				}
+				return [Object.assign(column, { priority: s.priority ?? column.priority })];
+			})
+			.map((c, i) => Object.assign(c, { columnIndex: i }));
+	}
+
 	/**
 	 * Checks if the column setup is valid and logs errors.
 	 * As a separate functions to make testing easier.
@@ -1399,6 +1401,15 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, getEffec
 			this[type] = value;
 			value && close(); /* eslint-disable-line no-unused-expressions */
 		};
+	}
+
+	_renderSettings(columns, settings, collapsed) {
+		const that = this;
+		return litHtml`<cosmoz-omnitable-settings
+			.settings=${ normalizeSettings(columns, settings) }
+			.onSettings=${ s => that.settings = s /* eslint-disable-line no-return-assign */ }
+			.collapsed=${ collapsed.map(c => c.name) }
+		>`;
 	}
 }
 customElements.define(Omnitable.is, Omnitable);

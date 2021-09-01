@@ -1,8 +1,5 @@
 /* eslint-disable object-curly-newline */
-import { component } from 'haunted';
-import {
-	html, nothing
-} from 'lit-html';
+import { html, component } from 'haunted';
 import { repeat } from 'lit-html/directives/repeat';
 import { useRenderOnColumnUpdates } from './lib/use-render-on-column-updates';
 import './lib/cosmoz-omnitable-resize-nub';
@@ -23,12 +20,9 @@ const
 		]);
 	},
 
-	HeaderRow = ({ columns, groupOnColumn }) => {
+	HeaderRow = ({ columns, groupOnColumn, content }) => {
 		useRenderOnColumnUpdates(columns);
-
-		return columns == null
-			? nothing
-			: renderHeaderRow({ columns, groupOnColumn });
+		return [columns && renderHeaderRow({ columns, groupOnColumn }), content];
 	};
 
 customElements.define('cosmoz-omnitable-header-row', component(HeaderRow, { useShadowDOM: false }));
