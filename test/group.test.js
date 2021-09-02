@@ -15,7 +15,7 @@ suite('id', () => {
 	setup(async () => {
 		data = generateTableDemoData(10, 11, 25);
 		omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable group-on="id">
+			<cosmoz-omnitable group-on="id" .resizeSpeedFactor=${ 1 }>
 				<cosmoz-omnitable-column title="Id" name="id" value-path="id" sort-on="id"></cosmoz-omnitable-column>
 			</cosmoz-omnitable>
 		`, data);

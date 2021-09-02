@@ -9,13 +9,13 @@ const
 		return repeat(columns, column => column.name, column => [
 			html`<div
 				class="cell ${ column.headerCellClass } header-cell"
-				index="${ column.columnIndex }"
 				?hidden=${ column === groupOnColumn }
 				title=${ column.title }
+				for=${ column.name }
 			>${ column.renderHeader(column) }</div>`,
 			html`<cosmoz-omnitable-resize-nub
 				.column=${ column }
-				index="${ column.columnIndex }"
+				for=${ column.name }
 			></cosmoz-omnitable-resize-nub>`
 		]);
 	},

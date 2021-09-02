@@ -201,16 +201,10 @@ export const columnMixin = dedupingMixin(base => class extends base { // eslint-
 				reflectToAttribute: true,
 				observer: '_hiddenChanged'
 			},
-			/**
-			 * Index of this column in the list of displayed columns (excluding disabled/hidden columns).
-			 */
-			columnIndex: {
-				type: Number
-			},
 
 			preferredDropdownHorizontalAlign: {
 				type: String,
-				computed: '_computePreferredDropdownHorizontalAlign(columnIndex)'
+				value: 'right'
 			},
 
 			renderHeader: {
@@ -260,9 +254,6 @@ export const columnMixin = dedupingMixin(base => class extends base { // eslint-
 	 * Override this in column elements if you need a different default width
 	 */
 
-	_computePreferredDropdownHorizontalAlign(columnIndex) {
-		return columnIndex === 0 ? 'left' : 'right';
-	}
 	getString(item, valuePath = this.valuePath) {
 		if (valuePath === undefined) {
 			// eslint-disable-next-line no-console

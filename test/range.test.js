@@ -58,7 +58,7 @@ const data = [{
 		}
 	}],
 	rangeFixture = html`
-		<cosmoz-omnitable id="omnitable">
+		<cosmoz-omnitable id="omnitable" .resizeSpeedFactor=${ 1 }>
 			<cosmoz-omnitable-column-number title="Age" name="age" value-path="age" maximum-fraction-digits=2>
 			</cosmoz-omnitable-column-number>
 			<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount" locale="en-US">

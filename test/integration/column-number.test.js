@@ -63,7 +63,7 @@ suite('cosmoz-omnitable-column-number', () => {
 
 	setup(async () => {
 		omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable id="omnitable">
+			<cosmoz-omnitable id="omnitable" .resizeSpeedFactor=${ 1 }>
 				<cosmoz-omnitable-column-number title="Age" name="age" value-path="age" maximum-fraction-digits="2">
 				</cosmoz-omnitable-column-number>
 			</cosmoz-omnitable>
@@ -71,6 +71,7 @@ suite('cosmoz-omnitable-column-number', () => {
 
 		flush();
 		omnitable.flush();
+		await nextFrame();
 	});
 
 	test('filters the table', async () => {

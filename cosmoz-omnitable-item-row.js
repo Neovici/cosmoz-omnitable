@@ -93,7 +93,7 @@ class OmnitableItemRow extends repeaterMixin(PolymerElement) {
 		element.toggleAttribute('editable', !!column.editable);
 		element.setAttribute('title', this._getCellTitle(column, this.item));
 		element.setAttribute('class', this._computeItemRowCellClasses(column));
-		element.setAttribute('index', column.columnIndex);
+		element.setAttribute('for', column.name);
 	}
 
 	_itemUpdated(changeRecord) {
@@ -123,8 +123,7 @@ class OmnitableItemRow extends repeaterMixin(PolymerElement) {
 
 	_computeItemRowCellClasses(column) {
 		return 'cell itemRow-cell'
-			+ (column.cellClass ? ' ' + column.cellClass + ' ' : '')
-			+ ' cosmoz-omnitable-column-' + column.columnIndex;
+			+ (column.cellClass ? ' ' + column.cellClass + ' ' : '');
 	}
 }
 customElements.define(OmnitableItemRow.is, OmnitableItemRow);

@@ -1,5 +1,5 @@
 import {
-	expect, html
+	expect, html, nextFrame
 } from '@open-wc/testing';
 
 import { setupOmnitableFixture } from '../helpers/utils';
@@ -13,7 +13,7 @@ suite('Basic omnitable functionality', () => {
 
 	setup(async () => {
 		omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable id="omnitable" selection-enabled style="min-height: 500px;">
+			<cosmoz-omnitable id="omnitable" selection-enabled style="min-height: 500px;" .resizeSpeedFactor=${ 1 }>
 				<basic-column name="basic" value-path="name"></basic-column>
 				<basic-column
 					name="override"
@@ -46,6 +46,7 @@ suite('Basic omnitable functionality', () => {
 			bool: true
 		}]);
 		polymerFlush();
+		await nextFrame();
 	});
 
 	test('should display headers as configured', () => {
@@ -80,10 +81,12 @@ suite('Basic omnitable functionality', () => {
 		expect(cells.map(c => c.innerText)).to.deep.equal(['item 4', 'Overriden item 4', 'item 5', 'Overriden item 5', 'item 6', 'Overriden item 6']);
 	});
 
-	test('should use editable template when the column is editable', () => {
+	test('should use editable template when the column is editable', async () => {
 		omnitable.columns.forEach(c => {
 			c.editable = true;
 		});
+
+		await nextFrame();
 
 		const cells = Array.from(omnitable.shadowRoot.querySelectorAll('.basic-column-cell'));
 		expect(cells.map(c => c.innerText)).to.deep.equal(['Edit: item 1', 'Edit: item 1', 'Edit: item 2', 'Edit: item 2', 'Edit: item 3', 'Edit: item 3']);

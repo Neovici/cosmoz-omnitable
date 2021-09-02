@@ -39,6 +39,10 @@ class OmnitableColumnNumber extends rangeColumnMixin(
 				type: String,
 				value: '30px'
 			},
+			minWidth: {
+				type: String,
+				value: '30px'
+			},
 			editWidth: {
 				type: String,
 				value: '30px'

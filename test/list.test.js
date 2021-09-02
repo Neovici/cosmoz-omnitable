@@ -1,5 +1,5 @@
 import {
-	assert, html
+	assert, html, nextFrame
 } from '@open-wc/testing';
 
 import { setupOmnitableFixture } from './helpers/utils';
@@ -17,7 +17,7 @@ suite('basic', () => {
 			{ list: ['item 1', 'item 2', 'item 3']}
 		];
 		const omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable id="omnitable" selection-enabled>
+			<cosmoz-omnitable id="omnitable" selection-enabled  .resizeSpeedFactor=${ 1 }>
 				<cosmoz-omnitable-column-list name="list" value-path="list">
 				</cosmoz-omnitable-column-list>
 			</cosmoz-omnitable>
@@ -83,6 +83,7 @@ suite('horizontal', () => {
 
 	test('basic render', async () => {
 		polymerFlush();
+		await nextFrame();
 
 		const cells = Array.from(omnitable.shadowRoot.querySelectorAll('[slot="item-cell"]'));
 		assert.lengthOf(cells, 2);
