@@ -47,18 +47,6 @@ suite('basic', () => {
 		assert.equal(date, omnitable._getColumn('date1'));
 	});
 
-	test('it updates visibleColumns', () => {
-		assert.deepEqual(omnitable.visibleColumns, omnitable.columns);
-
-		omnitable.groupOn = 'date2';
-		omnitable.flush();
-		assert.deepEqual(omnitable.visibleColumns, omnitable.columns);
-
-		omnitable.groupOn = '';
-		omnitable.flush();
-		assert.deepEqual(omnitable.visibleColumns, omnitable.columns);
-	});
-
 	test('sets column groupOn property to valuePath when group-on attribute is missing', () => {
 		const column = omnitable.columns.find(col => col.name === 'columnWithoutGroupOn');
 		assert.equal(column.groupOn, 'valuePath');
@@ -321,20 +309,17 @@ suite('visible', () => {
 			</cosmoz-omnitable>
 		`, generateTableDemoData(10, 11, 25));
 
-		assert.isUndefined(omnitable.visibleColumns);
 		assert.isFalse(omnitable.visible);
 
 		omnitable.style.display = '';
 		omnitable.flush();
 		await nextFrame();
-		assert.deepEqual(omnitable.visibleColumns, omnitable.columns);
 		assert.isTrue(omnitable.visible);
 
 		omnitable.style.display = 'none';
 		omnitable.flush();
 		await nextFrame();
 		assert.isFalse(omnitable.visible);
-
 	});
 });
 

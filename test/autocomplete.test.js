@@ -1,5 +1,5 @@
 import {
-	assert, html
+	assert, html, nextFrame
 } from '@open-wc/testing';
 
 import { setupOmnitableFixture } from './helpers/utils';
@@ -27,7 +27,7 @@ const data = [{
 		name: 'Item 3'
 	}],
 	basicFixture = html`
-	<cosmoz-omnitable hash-param="test" style='height:300px'>
+	<cosmoz-omnitable hash-param="test" style='height:300px' .resizeSpeedFactor=${ 1 }>
 		<cosmoz-omnitable-column-autocomplete width="40px" title="Id" name="id" value-path="id" sort-on="id" group-on="id">
 		</cosmoz-omnitable-column-autocomplete>
 		<cosmoz-omnitable-column-autocomplete title="Group" name="group" value-path="group" flex="0" width="125px">
@@ -46,8 +46,9 @@ suite('autocomplete unit tests', () => {
 		column = omnitable.columns[0];
 	});
 
-	test('basic render test', () => {
+	test('basic render test', async () => {
 		polymerFlush();
+		await nextFrame();
 		const cells = Array.from(omnitable.shadowRoot.querySelectorAll('.default-column'));
 		assert.lengthOf(cells, 12);
 		assert.deepEqual(cells.map(cell => cell.innerText), ['0', 'group0', 'Item 0', '1', 'group0', 'Item 1', '2', 'group1', 'Item 2', '3', 'group1', 'Item 3']);

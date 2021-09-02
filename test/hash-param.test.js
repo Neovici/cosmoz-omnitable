@@ -1,5 +1,5 @@
 import {
-	assert, html
+	assert, html, nextFrame
 } from '@open-wc/testing';
 
 import { setupOmnitableFixture } from './helpers/utils';
@@ -29,7 +29,7 @@ const data = [{
 	location = window.location,
 	instantiate = async () => {
 		omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable hash-param="test" style='height:300px'>
+			<cosmoz-omnitable hash-param="test" style='height:300px' .resizeSpeedFactor=${ 1 }>
 				<cosmoz-omnitable-column-autocomplete width="40px" title="Id" name="id" value-path="id" sort-on="id" group-on="id">
 				</cosmoz-omnitable-column-autocomplete>
 				<cosmoz-omnitable-column-autocomplete title="Group" name="group" value-path="group" flex="0" width="125px">
@@ -38,6 +38,7 @@ const data = [{
 				</cosmoz-omnitable-column>
 			</cosmoz-omnitable>
 		`, data);
+		await nextFrame();
 	};
 
 suite('basic-read', () => {

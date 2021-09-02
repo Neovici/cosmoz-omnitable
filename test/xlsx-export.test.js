@@ -52,7 +52,7 @@ suite('xlsx-export-omnitable', () => {
 
 	setup(async () => {
 		omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable id="omnitable" selection-enabled xlsx-filename="Test.xlsx">
+			<cosmoz-omnitable id="omnitable" selection-enabled xlsx-filename="Test.xlsx" .resizeSpeedFactor=${ 1 }>
 				<cosmoz-omnitable-column-autocomplete id="id" name="id" title="ID" value-path="id">
 				</cosmoz-omnitable-column-autocomplete>
 				<cosmoz-omnitable-column id="first-name" name="first-name" title="First Name" value-path="first-name">
