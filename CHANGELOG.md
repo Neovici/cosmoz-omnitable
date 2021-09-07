@@ -1,3 +1,18 @@
+# [7.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v6.7.0...v7.0.0) (2021-09-07)
+
+
+### Bug Fixes
+
+* resize handle misaligned when filters are set ([94766c1](https://github.com/neovici/cosmoz-omnitable/commit/94766c1b74667c8f44fbf73ffd3b61120a95aa7e))
+* **settings:** resize columns and settings UI fixes ([7cf52d5](https://github.com/neovici/cosmoz-omnitable/commit/7cf52d5dd75e432bebc3d7932dea80c953baed87)), closes [#418](https://github.com/neovici/cosmoz-omnitable/issues/418)
+
+
+### BREAKING CHANGES
+
+* **settings:** dropped cosmoz-omnitable-column-{index} classes
+* **settings:** dropped visibleColumns
+* **settings:** dropped disabledColumns
+
 # [6.7.0](https://github.com/neovici/cosmoz-omnitable/compare/v6.6.3...v6.7.0) (2021-09-01)
 
 
