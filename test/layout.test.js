@@ -1,7 +1,7 @@
 import { assert } from '@open-wc/testing';
 import { FORCE_FIT, layout } from '../lib/layout';
 
-const toObj = ([basis, minWidth, grow]) => ({ basis, minWidth, grow });
+const toObj = ([width, minWidth, flex]) => ({ width, minWidth, flex });
 
 suite('layout algorithm', () => {
 	test('it works', () => {
