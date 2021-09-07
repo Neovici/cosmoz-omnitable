@@ -139,7 +139,7 @@ export default `<style>
 	cosmoz-omnitable-resize-nub {
 		display: inline-block;
 		position: absolute;
-		top: 19px;
+		bottom: 2px;
 		width: 7px;
 		height: 30px;
 		margin-left: -3px;
