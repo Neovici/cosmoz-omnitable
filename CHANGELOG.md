@@ -1,3 +1,10 @@
+## [7.0.1](https://github.com/neovici/cosmoz-omnitable/compare/v7.0.0...v7.0.1) (2021-09-08)
+
+
+### Bug Fixes
+
+* **settings:** toggle settings ([940324b](https://github.com/neovici/cosmoz-omnitable/commit/940324b5ccae02f3d9c4a260bdebc15aa6791bfc))
+
 # [7.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v6.7.0...v7.0.0) (2021-09-07)
 
 
