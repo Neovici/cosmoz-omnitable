@@ -93,7 +93,7 @@ class OmnitableItemRow extends repeaterMixin(PolymerElement) {
 		element.toggleAttribute('editable', !!column.editable);
 		element.setAttribute('title', this._getCellTitle(column, this.item));
 		element.setAttribute('class', this._computeItemRowCellClasses(column));
-		element.setAttribute('for', column.name);
+		element.setAttribute('name', column.name);
 	}
 
 	_itemUpdated(changeRecord) {
