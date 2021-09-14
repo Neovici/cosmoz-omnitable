@@ -1,3 +1,10 @@
+## [7.0.2](https://github.com/neovici/cosmoz-omnitable/compare/v7.0.1...v7.0.2) (2021-09-14)
+
+
+### Bug Fixes
+
+* playwright can't locate elements via the for attribute ([2a25384](https://github.com/neovici/cosmoz-omnitable/commit/2a25384a0c3552052a9be73b80c7c72a1a9b514c))
+
 ## [7.0.1](https://github.com/neovici/cosmoz-omnitable/compare/v7.0.0...v7.0.1) (2021-09-08)
 
 
