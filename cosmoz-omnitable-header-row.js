@@ -11,11 +11,11 @@ const
 				class="cell ${ column.headerCellClass } header-cell"
 				?hidden=${ column === groupOnColumn }
 				title=${ column.title }
-				for=${ column.name }
+				name=${ column.name }
 			>${ column.renderHeader(column) }</div>`,
 			html`<cosmoz-omnitable-resize-nub
 				.column=${ column }
-				for=${ column.name }
+				name=${ column.name }
 			></cosmoz-omnitable-resize-nub>`
 		]);
 	},
