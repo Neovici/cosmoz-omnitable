@@ -1,3 +1,10 @@
+## [7.0.3](https://github.com/neovici/cosmoz-omnitable/compare/v7.0.2...v7.0.3) (2021-09-21)
+
+
+### Bug Fixes
+
+* **layout:** error when columns are hidden conditionally ([86942bb](https://github.com/neovici/cosmoz-omnitable/commit/86942bb33d3a901c7a5534c11efea24eeb8e9af6)), closes [#458](https://github.com/neovici/cosmoz-omnitable/issues/458)
+
 ## [7.0.2](https://github.com/neovici/cosmoz-omnitable/compare/v7.0.1...v7.0.2) (2021-09-14)
 
 
