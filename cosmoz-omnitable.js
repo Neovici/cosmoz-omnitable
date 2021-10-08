@@ -418,7 +418,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 
 	static get observers() {
 		return [
-			'_dataChanged(data.*)',
+			'_dataChanged(data.splices)',
 			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
 			'_selectedItemsChanged(selectedItems.*)',
 			'renderFastLayoutCss(layoutCss, $.layoutStyle)'
@@ -596,70 +596,12 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		requestAnimationFrame(() => requestAnimationFrame(() => this.$.groupedList.$.list._render()));
 	}
 
-	_getItemUpdateEffects(splices) {
-		return splices.reduce((acc, splice) => {
-			if (acc.refilter) {
-				return acc;
-			}
-			const itemsReplaced = splice.type === 'splice' && splice.addedCount === splice.removed.length;
-			if (!itemsReplaced) {
-				acc.refilter = true;
-				return acc;
-			}
-			const filterFunctions = this.columns
-					.map(col => col.getFilterFn())
-					.filter(fn => fn !== undefined),
-				comparer = (oldItem, newItem, path) =>
-					this.get(path, oldItem) !== this.get(path, newItem);
-
-			splice.removed.some((oldItem, index) => {
-				const newItem = splice.object[splice.index + index];
-				if (!acc.refilter) {
-					const wasFiltered = this.filteredItems.includes(oldItem),
-						isFiltered = filterFunctions.every(filterFn => filterFn(newItem));
-					acc.refilter = wasFiltered !== isFiltered;
-					if (acc.refilter) {
-						return true;
-					}
-				}
-				acc.regroup = acc.regroup || !!this.groupOnColumn && comparer(oldItem, newItem, this.groupOnColumn.valuePath);
-				acc.resort = acc.regroup || acc.resort || !!this.sortOnColumn && comparer(oldItem, newItem, this.sortOnColumn.valuePath);
-				return false;
-			});
-			return acc;
-		}, {
-			refilter: false,
-			regroup: false,
-			resort: false
-		});
-	}
-
-	_dataChanged(notify) {
-		if (!Array.isArray(this.columns) || notify == null || notify.path === 'data.length') {
+	_dataChanged() {
+		if (!Array.isArray(this.columns)) {
 			return;
 		}
 		this._setColumnValues();
-
-		if (notify.path !== 'data.splices') {
-			this._debounceFilterItems();
-			return;
-		}
-		const effects = this._getItemUpdateEffects(notify.value.indexSplices);
-		if (effects.refilter) {
-			this._debounceFilterItems();
-		} else if (effects.regroup) {
-			this._debounceGroupItems();
-		} else if (effects.resort) {
-			this._debounceSortItems();
-		} else if (notify.value.indexSplices.length === 1 && notify.value.indexSplices[0].addedCount === 1 && notify.value.indexSplices[0].removed.length === 1) {
-			// one item was replaced, but it did not affect the filtering, grouping and sorting
-			// replace the old item in the sortedFilteredGroupedItems directly
-			const indexInVisibleData = this.sortedFilteredGroupedItems.indexOf(notify.value.indexSplices[0].removed[0]);
-			if (indexInVisibleData === -1) {
-				return;
-			}
-			this.splice('sortedFilteredGroupedItems', indexInVisibleData, 1, notify.value.indexSplices[0].object[notify.value.indexSplices[0].index]);
-		}
+		this._debounceFilterItems();
 	}
 
 	_debounceUpdateColumns() {
