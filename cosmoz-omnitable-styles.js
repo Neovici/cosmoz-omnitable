@@ -6,6 +6,7 @@ const checkbox = `
 		background: transparent;
 		border-radius: 4px;
 		appearance: none;
+		-webkit-appearance: none;
 		outline: none;
 		position: relative;
 		user-select: none;
@@ -20,8 +21,8 @@ const checkbox = `
 	}
 
 	.checkbox:checked {
-	    background-color: var(--paper-checkbox-checked-color, var(--primary-color));
-	    box-shadow: none;
+		background-color: var(--paper-checkbox-checked-color, var(--primary-color));
+		box-shadow: none;
 	}
 
 	.checkbox:checked::before {
