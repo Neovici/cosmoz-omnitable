@@ -1,3 +1,10 @@
+## [7.0.4](https://github.com/neovici/cosmoz-omnitable/compare/v7.0.3...v7.0.4) (2021-10-08)
+
+
+### Bug Fixes
+
+* **cosmoz-omnitable-settings:** safari toggle fix ([cbf64aa](https://github.com/neovici/cosmoz-omnitable/commit/cbf64aa70d8f3fca7025d275b056255803c6f4e6))
+
 ## [7.0.3](https://github.com/neovici/cosmoz-omnitable/compare/v7.0.2...v7.0.3) (2021-09-21)
 
 
