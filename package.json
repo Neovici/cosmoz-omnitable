@@ -52,7 +52,7 @@
 		]
 	},
 	"dependencies": {
-		"@neovici/cosmoz-autocomplete": "^2.17.0",
+		"@neovici/cosmoz-autocomplete": "^2.17.1",
 		"@neovici/cosmoz-bottom-bar": "^4.1.0",
 		"@neovici/cosmoz-datetime-input": "^3.0.3",
 		"@neovici/cosmoz-grouped-list": "^3.2.0",
@@ -87,14 +87,14 @@
 		"@polymer/iron-demo-helpers": "^3.0.0",
 		"@polymer/iron-test-helpers": "^3.0.0",
 		"@polymer/paper-toggle-button": "^3.0.0",
-		"@semantic-release/changelog": "^5.0.0",
-		"@semantic-release/git": "^9.0.0",
+		"@semantic-release/changelog": "^6.0.0",
+		"@semantic-release/git": "^10.0.0",
 		"@web/dev-server": "^0.1.10",
 		"@web/test-runner": "^0.13.0",
 		"@web/test-runner-selenium": "^0.5.0",
 		"eslint": "^7.0.0",
 		"husky": "^7.0.0",
-		"semantic-release": "^17.4.0",
+		"semantic-release": "^18.0.0",
 		"sinon": "^11.0.0",
 		"web-animations-js": "^2.3.2"
 	}
