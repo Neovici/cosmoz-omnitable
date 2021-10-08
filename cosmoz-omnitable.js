@@ -301,7 +301,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 			groupOnDescending: {
 				type: Boolean,
 				value: false,
-				observer: '_debounceGroupItems'
+				observer: '_debounceProcessItems'
 			},
 			/**
 		 * The column name to group on.
@@ -327,7 +327,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		 */
 			filteredItems: {
 				type: Array,
-				observer: '_debounceGroupItems',
 				value: () => []
 			},
 
@@ -419,7 +418,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 	static get observers() {
 		return [
 			'_dataChanged(data.splices)',
-			'_debounceSortItems(sortOn, descending, filteredGroupedItems)',
+			'_debounceProcessItems(sortOn, descending)',
 			'_selectedItemsChanged(selectedItems.*)',
 			'renderFastLayoutCss(layoutCss, $.layoutStyle)'
 		];
@@ -430,7 +429,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 
 		this.debouncers = {};
 		this._updateColumns = this._updateColumns.bind(this);
-		this._filterItems = this._filterItems.bind(this);
+		this._processItems = this._processItems.bind(this);
 		this._groupItems = this._groupItems.bind(this);
 		this._sortFilteredGroupedItems = this._sortFilteredGroupedItems.bind(this);
 		this._onKey = this._onKey.bind(this);
@@ -479,16 +478,8 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 			this.debouncers._updateColumnsDebouncer.flush();
 		}
 
-		if (this.debouncers._filterItemsDebouncer) {
-			this.debouncers._filterItemsDebouncer.flush();
-		}
-
-		if (this.debouncers._groupItemsDebouncer) {
-			this.debouncers._groupItemsDebouncer.flush();
-		}
-
-		if (this.debouncers._sortItemsDebouncer) {
-			this.debouncers._sortItemsDebouncer.flush();
+		if (this.debouncers._processItemsDebouncer) {
+			this.debouncers._processItemsDebouncer.flush();
 		}
 	}
 
@@ -601,7 +592,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 			return;
 		}
 		this._setColumnValues();
-		this._debounceFilterItems();
+		this._debounceProcessItems();
 	}
 
 	_debounceUpdateColumns() {
@@ -665,7 +656,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		this._updateParamsFromHash();
 
 		if (Array.isArray(this.data)) {
-			this._debounceFilterItems();
+			this._debounceProcessItems();
 		}
 	}
 
@@ -750,12 +741,26 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		if (!Array.isArray(this.columns) || this.columns.length < 1 || this.columns.indexOf(detail.column) < 0) {
 			return;
 		}
-		this._debounceFilterItems();
+		this._debounceProcessItems();
 		this._filterForRouteChanged(detail.column);
 	}
 
-	_debounceFilterItems() {
-		this._debounce('_filterItemsDebouncer', this._filterItems);
+	_groupOnColumnChanged(column) {
+		if (column && column.hasFilter()) {
+			column.resetFilter();
+		} else {
+			this._debounceProcessItems();
+		}
+	}
+
+	_debounceProcessItems() {
+		this._debounce('_processItemsDebouncer', this._processItems);
+	}
+
+	_processItems() {
+		this._filterItems();
+		this._groupItems();
+		this._sortFilteredGroupedItems();
 	}
 
 	_filterItems() {
@@ -778,21 +783,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 			this.sortedFilteredGroupedItems = [];
 			this._groupsCount = 0;
 		}
-	}
-
-	_groupOnColumnChanged(column) {
-		if (column && column.hasFilter()) {
-			column.resetFilter();
-		} else {
-			this._debounce('_groupItemsDebouncer', this._groupItems);
-		}
-	}
-
-	_debounceGroupItems() {
-		if (!this.isConnected || !Array.isArray(this.filteredItems)) {
-			return;
-		}
-		this._debounce('_groupItemsDebouncer', this._groupItems);
 	}
 
 	/* eslint-disable-next-line max-statements */
@@ -853,14 +843,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		this._groupsCount = groups.length;
 		this.filteredGroupedItems = groups;
 	}
-
-	_debounceSortItems() {
-		if (!Array.isArray(this.data) || this.data.length < 1 || !Array.isArray(this.columns)) {
-			return;
-		}
-		this._debounce('_sortItemsDebouncer', this._sortFilteredGroupedItems);
-	}
-
 
 	/* eslint-disable-next-line max-statements */
 	_genericSorter(a, b) {
@@ -946,7 +928,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 				}));
 			return;
 		}
-
 
 		// No grouping
 		this.filteredGroupedItems.sort(sorter);
