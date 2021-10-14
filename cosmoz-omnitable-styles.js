@@ -270,6 +270,7 @@ export default `<style>
 		display: flex;
 		align-items: center;
 		flex: auto;
+		isolation: isolate;
 	}
 
 	.footer-control {
@@ -384,6 +385,7 @@ export default `<style>
 		background-color: var(--cosmoz-omnitable-bottom-bar-color, #5f5a92);
 		color: white;
 		overflow: hidden;
+		z-index: auto;
 	}
 
 	cosmoz-bottom-bar::slotted(*) {
