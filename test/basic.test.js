@@ -200,17 +200,6 @@ suite('item update effects', () => {
 		sortSpy = sinon.spy(omnitable, '_sortFilteredGroupedItems');
 	});
 
-	test('replacing an identical item doesn\'t cause effects', () => {
-		assert.isFalse(filterSpy.called, 'not filtered');
-		assert.isFalse(groupSpy.called, 'not grouped');
-		assert.isFalse(sortSpy.called, 'not sorted');
-		omnitable.replaceItemAtIndex(0, { ...omnitable.data[0] });
-		omnitable.flush();
-		assert.isFalse(filterSpy.called, 'not refiltered');
-		assert.isFalse(groupSpy.called, 'not regrouped');
-		assert.isFalse(sortSpy.called, 'not resorted');
-	});
-
 	test('replacing an item with updated filter-property causes refiltering', () => {
 		assert.isFalse(filterSpy.called, 'not filtered');
 		assert.isFalse(groupSpy.called, 'not grouped');
@@ -233,34 +222,6 @@ suite('item update effects', () => {
 		omnitable.flush();
 		assert.isTrue(filterSpy.called, 'refiltered');
 		assert.isTrue(groupSpy.called, 'regrouped');
-		assert.isTrue(sortSpy.called, 'resorted');
-	});
-
-	test('replacing an item with updated groupon-property causes regrouping', () => {
-		assert.isFalse(filterSpy.called, 'not filtered');
-		assert.isFalse(groupSpy.called, 'not grouped');
-		assert.isFalse(sortSpy.called, 'not sorted');
-		omnitable.replaceItemAtIndex(0, {
-			...omnitable.data[0],
-			date: new Date()
-		});
-		omnitable.flush();
-		assert.isFalse(filterSpy.called, 'not refiltered');
-		assert.isTrue(groupSpy.called, 'regrouped');
-		assert.isTrue(sortSpy.called, 'resorted');
-	});
-
-	test('replacing an item with updated sorton-property causes resorting', () => {
-		assert.isFalse(filterSpy.called, 'not filtered');
-		assert.isFalse(groupSpy.called, 'not grouped');
-		assert.isFalse(sortSpy.called, 'not sorted');
-		omnitable.replaceItemAtIndex(0, {
-			...omnitable.data[0],
-			dateJson: JSON.stringify(new Date())
-		});
-		omnitable.flush();
-		assert.isFalse(filterSpy.called, 'not refiltered');
-		assert.isFalse(groupSpy.called, 'not regrouped');
 		assert.isTrue(sortSpy.called, 'resorted');
 	});
 
@@ -371,6 +332,7 @@ suite('render cell function', () => {
 			}
 		});
 		flush();
+		await nextFrame();
 		await nextFrame();
 
 		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent, 'object.label - false - EDITED');
