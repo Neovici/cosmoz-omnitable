@@ -1,3 +1,10 @@
+## [7.0.6](https://github.com/neovici/cosmoz-omnitable/compare/v7.0.5...v7.0.6) (2021-10-14)
+
+
+### Bug Fixes
+
+* forced flex column is not always the correct one ([9d87c7d](https://github.com/neovici/cosmoz-omnitable/commit/9d87c7d8f2b61b81c190a0aee53a83070c7a563e))
+
 ## [7.0.5](https://github.com/neovici/cosmoz-omnitable/compare/v7.0.4...v7.0.5) (2021-10-14)
 
 
