@@ -1,3 +1,11 @@
+## [7.0.7](https://github.com/neovici/cosmoz-omnitable/compare/v7.0.6...v7.0.7) (2021-10-14)
+
+
+### Bug Fixes
+
+* _dataChanged optimization is hard to maintain and has little gains ([d31f64a](https://github.com/neovici/cosmoz-omnitable/commit/d31f64a0b020e00b645ebb3809a2ad9354690ed8))
+* item processing is debounced unnecessarily ([cdd9222](https://github.com/neovici/cosmoz-omnitable/commit/cdd92220c579494c35684a9c6d118b436c46fcb8))
+
 ## [7.0.6](https://github.com/neovici/cosmoz-omnitable/compare/v7.0.5...v7.0.6) (2021-10-14)
 
 
