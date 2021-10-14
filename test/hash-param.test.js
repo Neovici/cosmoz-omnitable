@@ -110,11 +110,11 @@ suite('basic-write', () => {
 		const hash = omnitable._routeHash;
 
 		omnitable.sortOn = 'name';
-		omnitable.debouncers._sortItemsDebouncer.flush();
+		omnitable.debouncers._processItemsDebouncer.flush();
 		assert.equal(hash['test-sortOn'], 'name');
 
 		omnitable.sortOn = '';
-		omnitable.debouncers._sortItemsDebouncer.flush();
+		omnitable.debouncers._processItemsDebouncer.flush();
 		assert.equal(hash['test-sortOn'], '');
 	});
 
@@ -122,11 +122,11 @@ suite('basic-write', () => {
 		const hash = omnitable._routeHash;
 
 		omnitable.groupOn = 'name';
-		omnitable.debouncers._groupItemsDebouncer.flush();
+		omnitable.debouncers._processItemsDebouncer.flush();
 		assert.equal(hash['test-groupOn'], 'name');
 
 		omnitable.groupOn = '';
-		omnitable.debouncers._groupItemsDebouncer.flush();
+		omnitable.debouncers._processItemsDebouncer.flush();
 		assert.equal(hash['test-groupOn'], '');
 	});
 
