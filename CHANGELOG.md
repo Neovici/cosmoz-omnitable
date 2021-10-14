@@ -1,3 +1,10 @@
+## [7.0.5](https://github.com/neovici/cosmoz-omnitable/compare/v7.0.4...v7.0.5) (2021-10-14)
+
+
+### Bug Fixes
+
+* **styles:** prevent bottom bar stacking context ([470c295](https://github.com/neovici/cosmoz-omnitable/commit/470c29592354655874201ee657bcb9c064775382))
+
 ## [7.0.4](https://github.com/neovici/cosmoz-omnitable/compare/v7.0.3...v7.0.4) (2021-10-08)
 
 
