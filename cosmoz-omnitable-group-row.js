@@ -1,91 +1,16 @@
-import { PolymerElement } from '@polymer/polymer/polymer-element';
-import { html } from '@polymer/polymer/lib/utils/html-tag';
+import { component, useMemo } from 'haunted';
+import { nothing } from 'lit-html';
+import { useRenderOnColumnUpdates } from './lib/use-render-on-column-updates';
 
-import { repeaterMixin } from './cosmoz-omnitable-repeater-mixin';
+const GroupRow = ({ column, item, selected, folded }) => {
+	const columns = useMemo(() => column ? [column] : [], [column]);
+	useRenderOnColumnUpdates(columns);
 
-/**
- * @polymer
- * @customElement
- * @appliesMixin repeaterMixin
- */
-class OmnitableGroupRow extends repeaterMixin(PolymerElement) {
-	static get template() {
-		return html`
-		<slot name="group-row"></slot>
-`;
+	if (!column) {
+		return nothing;
 	}
 
-	static get is() {
-		return 'cosmoz-omnitable-group-row';
-	}
+	return (column.renderGroup ?? column.renderCell)(column, { item, selected, folded });
+};
 
-	static get properties() {
-		return {
-			column: {
-				type: Object,
-				observer: '_columnChanged'
-			},
-
-			item: {
-				type: Object
-			},
-
-			selected: {
-				type: Boolean,
-				observer: '_selectedChanged'
-			},
-
-			folded: {
-				type: Boolean,
-				observer: '_foldedChanged'
-			}
-		};
-	}
-
-	static get observers() {
-		return [
-			'_itemUpdated(item.*)'
-		];
-	}
-
-	get _elementType() {
-		return 'div';
-	}
-
-	get _slotName() {
-		return 'group-row';
-	}
-
-	constructor() {
-		super();
-		this.trackColumns();
-	}
-
-	_columnChanged(newColumn) {
-		if (!newColumn) {
-			return;
-		}
-		if (this.columns && this.columns.length > 0) {
-			this.splice('columns', 0, 1, newColumn);
-			return;
-		}
-		this.columns = [newColumn];
-	}
-
-	_getRenderFn(column) {
-		return column.renderGroup ?? column.renderCell;
-	}
-
-	_itemUpdated(changeRecord) {
-		this.forwardPathChange(changeRecord);
-	}
-
-	_selectedChanged(selected) {
-		this.forwardChange('selected', selected);
-	}
-
-	_foldedChanged(folded) {
-		this.forwardChange('folded', folded);
-	}
-}
-customElements.define(OmnitableGroupRow.is, OmnitableGroupRow);
+customElements.define('cosmoz-omnitable-group-row', component(GroupRow, { useShadowDOM: false }));
