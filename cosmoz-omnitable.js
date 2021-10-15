@@ -65,7 +65,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 				<cosmoz-omnitable-header-row
 					columns="[[ normalizedColumns ]]"
 					group-on-column="[[ groupOnColumn ]]"
-					content="[[ _renderSettings(normalizedSettings, collapsedColumns, settingsId, hasChangedSettings) ]]"
+					content="[[ _renderSettings(normalizedSettings, collapsedColumns, settingsId, hasChangedSettings, hasHiddenFilter) ]]"
 				>
 			</div>
 			<div class="tableContent" id="tableContent">
@@ -378,7 +378,8 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		 	 */
 			columns: {
 				type: Array,
-				notify: true
+				notify: true,
+				value: () => []
 			},
 
 			settings: {
@@ -456,6 +457,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		window.addEventListener('keydown', this._onKey);
 		window.addEventListener('keyup', this._onKey);
 		this._resizeObserver.observe(this);
+		this._updateParamsFromHash();
 	}
 
 	disconnectedCallback() {
@@ -522,7 +524,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 	}
 
 	_onColumnTitleChanged(event) {
-
 		event.stopPropagation();
 
 		if (!Array.isArray(this.columns)) {
@@ -730,16 +731,11 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 	 * @param {String} attribute The attribute name of the column.
 	 * @returns {Object} The found column.
 	 */
-	_getColumn(attributeValue, attribute = 'name', columns = this.columns) {
+	_getColumn(attributeValue, attribute = 'name', columns) {
 		if (!attributeValue || !columns) {
 			return;
 		}
-		const column = columns.find(column => column[attribute] === attributeValue);
-		if (!column) {
-			// eslint-disable-next-line no-console
-			console.warn(`Cannot find column with ${ attribute } ${ attributeValue }`);
-		}
-		return column;
+		return columns.find(column => column[attribute] === attributeValue);
 	}
 
 	_filterChanged({ detail }) {
@@ -750,12 +746,8 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		this._filterForRouteChanged(detail.column);
 	}
 
-	_groupOnColumnChanged(column) {
-		if (column && column.hasFilter()) {
-			column.resetFilter();
-		} else {
-			this._debounceProcessItems();
-		}
+	_groupOnColumnChanged() {
+		this._debounceProcessItems();
 	}
 
 	_debounceProcessItems() {
@@ -1138,14 +1130,9 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		const column = this.columns.find(c => c.name === key);
 
 		if (!column) {
-			// eslint-disable-next-line no-console
-			console.warn('column with name', name, 'for param', key, 'not found!');
 			return;
 		}
 
-		if (column === this.groupOnColumn) {
-			return;
-		}
 		if (value === column._serializeFilter()) {
 			return;
 		}
@@ -1250,7 +1237,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		};
 	}
 
-	_renderSettings(normalizedSettings, collapsed, settingsId, hasChangedSettings) {
+	_renderSettings(normalizedSettings, collapsed, settingsId, hasChangedSettings, hasHiddenFilter) {
 		return litHtml`<cosmoz-omnitable-settings
 			.settings=${ normalizedSettings }
 			.onSettings=${ this.setSettings }
@@ -1259,6 +1246,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 			.hasChanges=${ hasChangedSettings }
 			.onSave=${ this.onSettingsSave }
 			.onReset=${ this.onSettingsReset }
+			.badge=${ hasHiddenFilter }
 		>`;
 	}
 }

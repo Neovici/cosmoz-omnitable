@@ -42,11 +42,6 @@ suite('basic', () => {
 		`, generateTableDemoData(10, 11, 25));
 	});
 
-	test('it retrieves column by name', () => {
-		const date = omnitable.querySelector('#date1');
-		assert.equal(date, omnitable._getColumn('date1'));
-	});
-
 	test('sets column groupOn property to valuePath when group-on attribute is missing', () => {
 		const column = omnitable.columns.find(col => col.name === 'columnWithoutGroupOn');
 		assert.equal(column.groupOn, 'valuePath');
