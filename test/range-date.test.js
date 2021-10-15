@@ -73,7 +73,7 @@ suite('render', () => {
 		polymerFlush();
 		await nextFrame();
 
-		const cells = Array.from(omnitable.shadowRoot.querySelectorAll('[slot="item-cell"]'));
+		const cells = Array.from(omnitable.shadowRoot.querySelectorAll('.itemRow-cell'));
 		assert.isAtLeast(cells.length, 20);
 		assert.equal(cells[0].innerText, '17');
 	});

@@ -85,7 +85,7 @@ suite('horizontal', () => {
 		polymerFlush();
 		await nextFrame();
 
-		const cells = Array.from(omnitable.shadowRoot.querySelectorAll('[slot="item-cell"]'));
+		const cells = Array.from(omnitable.shadowRoot.querySelectorAll('.itemRow-cell'));
 		assert.lengthOf(cells, 2);
 		assert.include(cells[0].innerText, 'item 1item 2item 3');
 	});

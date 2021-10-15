@@ -1,129 +1,23 @@
-import { PolymerElement } from '@polymer/polymer/polymer-element';
-import { html } from '@polymer/polymer/lib/utils/html-tag';
+import { component, html } from 'haunted';
+import { repeat } from 'lit-html/directives/repeat';
+import { useRenderOnColumnUpdates } from './lib/use-render-on-column-updates';
 
-import { repeaterMixin } from './cosmoz-omnitable-repeater-mixin';
+const
+	renderCell = (column, data) => column.editable
+		? column.renderEditCell(column, data)
+		: column.renderCell(column, data),
+	ItemRow = ({ columns, groupOnColumn, item, selected, expanded }) => {
+		useRenderOnColumnUpdates(columns);
 
-/**
- * @polymer
- * @customElement
- * @appliesMixin repeaterMixin
- */
-class OmnitableItemRow extends repeaterMixin(PolymerElement) {
-	static get template() {
-		return html`
-		<style>
-			:host {
-				display: flex;
-				white-space: nowrap;
-			}
-
-			:host > ::slotted(*) {
-				display: block;
-				flex: none;
-				padding: 0 3px;
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				box-sizing: border-box;
-				align-self: center;
-			}
-
-			:host > ::slotted([hidden]),
-			:host [hidden] {
-				display: none !important;
-			}
-		</style>
-		<slot name="item-cell"></slot>
-`;
-	}
-
-	static get is() {
-		return 'cosmoz-omnitable-item-row';
-	}
-
-	static get properties() {
-		return {
-			item: {
-				type: Object
-			},
-
-			selected: {
-				type: Boolean,
-				observer: '_selectedChanged'
-			},
-
-			expanded: {
-				type: Boolean,
-				observer: '_expandedChanged'
-			}
-		};
-	}
-
-	static get observers() {
-		return [
-			'_itemUpdated(item.*)'
-		];
-	}
-
-	get _elementType() {
-		return 'div';
-	}
-
-	get _slotName() {
-		return 'item-cell';
-	}
-
-	constructor() {
-		super();
-		this.trackColumns();
-	}
-
-	_getRenderFn(column) {
-		return column.editable
-			? column.renderEditCell
-			: column.renderCell;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	_configureElement(element, column, instance) {
-		super._configureElement(element, column, instance);
-		element.style.minHeight = '0.5px';
-		element.toggleAttribute('editable', !!column.editable);
-		element.setAttribute('title', this._getCellTitle(column, this.item));
-		element.setAttribute('class', this._computeItemRowCellClasses(column));
-		element.setAttribute('name', column.name);
-	}
-
-	_itemUpdated(changeRecord) {
-		this.forwardPathChange(changeRecord);
-		this.forEachElement((element, column) => {
-			element.setAttribute('title', this._getCellTitle(column, this.item));
+		return repeat(columns, column => column.name, column => {
+			return html`<div
+				class="cell itemRow-cell ${ column.cellClass ?? '' }"
+				?hidden=${ column === groupOnColumn }
+				?editable=${ column.editable }
+				title=${ column.cellTitleFn(item, column.valuePath) }
+				name=${ column.name }
+			>${ renderCell(column, { item, selected, expanded }) }</div>`;
 		});
-	}
+	};
 
-	_selectedChanged(selected) {
-		this.forwardChange('selected', selected);
-	}
-
-	_expandedChanged(expanded) {
-		this.forwardChange('expanded', expanded);
-	}
-
-	/**
-	 * Get cell title displayed when hovering on the cell.
-	 * @param {object} column Column data.
-	 * @param {object} item Row item.
-	 * @returns {string} Cell title.
-	 */
-	_getCellTitle(column, item) {
-		return column && column.cellTitleFn(item, column.valuePath);
-	}
-
-	_computeItemRowCellClasses(column) {
-		return 'cell itemRow-cell'
-			+ (column.cellClass ? ' ' + column.cellClass + ' ' : '');
-	}
-}
-customElements.define(OmnitableItemRow.is, OmnitableItemRow);
+customElements.define('cosmoz-omnitable-item-row', component(ItemRow, { useShadowDOM: false }));
