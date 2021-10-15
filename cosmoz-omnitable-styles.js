@@ -160,6 +160,27 @@ export default `<style>
 		position: relative;
 	}
 
+
+	cosmoz-omnitable-item-row {
+		display: flex;
+		white-space: nowrap;
+	}
+
+	cosmoz-omnitable-item-row > div {
+		display: block;
+		flex: none;
+		padding: 0 3px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		box-sizing: border-box;
+		align-self: center;
+	}
+
+	cosmoz-omnitable-item-row > div[hidden] {
+		display: none !important;
+	}
+
 	.tableContent {
 		overflow-y: auto;
 		min-height: 90px;

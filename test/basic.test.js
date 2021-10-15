@@ -358,6 +358,7 @@ suite('render header function', () => {
 			flush();
 			omnitable.flush();
 			flush();
+			await nextFrame();
 		};
 
 	setup(async () => {

@@ -63,7 +63,7 @@ suite('Basic omnitable functionality', () => {
 		expect(cells.map(c => c.innerText)).to.deep.equal(['item 1', 'Overriden item 1', 'item 2', 'Overriden item 2', 'item 3', 'Overriden item 3']);
 	});
 
-	test('forwards changes to the data', () => {
+	test('forwards changes to the data', async () => {
 		omnitable.data = [{
 			id: 4,
 			name: 'item 4'
@@ -77,6 +77,7 @@ suite('Basic omnitable functionality', () => {
 
 		omnitable.flush();
 		polymerFlush();
+		await nextFrame();
 		const cells = Array.from(omnitable.shadowRoot.querySelectorAll('.basic-column-cell, .overriden-column-cell'));
 		expect(cells.map(c => c.innerText)).to.deep.equal(['item 4', 'Overriden item 4', 'item 5', 'Overriden item 5', 'item 6', 'Overriden item 6']);
 	});
