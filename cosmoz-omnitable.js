@@ -37,6 +37,7 @@ import { mixin, hauntedPolymer } from '@neovici/cosmoz-utils';
 import { isEmpty } from '@neovici/cosmoz-utils/lib/template.js';
 import { useOmnitable } from './lib/use-omnitable';
 import './lib/cosmoz-omnitable-settings';
+import { genericSorter } from './lib/generic-sorter';
 
 const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending', 'groupOnDescending'];
 
@@ -837,7 +838,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 			const v1 = groupOnColumn.getComparableValue(a.items[0], groupOnColumn.groupOn),
 				v2 = groupOnColumn.getComparableValue(b.items[0], groupOnColumn.groupOn);
 
-			return this._genericSorter(v1, v2);
+			return genericSorter(v1, v2);
 		});
 
 		if (this.groupOnDescending) {
@@ -846,42 +847,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 
 		this._groupsCount = groups.length;
 		this.filteredGroupedItems = groups;
-	}
-
-	/* eslint-disable-next-line max-statements */
-	_genericSorter(a, b) {
-		if (a === b) {
-			return 0;
-		}
-
-		if (a === undefined) {
-			return -1;
-		}
-
-		if (b === undefined) {
-			return 1;
-		}
-
-		if (typeof a === 'object' && typeof b === 'object') {
-			// HACK(pasleq): worst case, compare using values converted to string
-			return a.toString() < b.toString() ? -1 : 1;
-		}
-
-		if (typeof a === 'number' && typeof b === 'number') {
-			return a - b;
-		}
-
-		if (typeof a === 'string' && typeof b === 'string') {
-			return a < b ? -1 : 1;
-		}
-
-		if (typeof a === 'boolean' && typeof b === 'boolean') {
-			return a ? -1 : 1;
-		}
-
-		// eslint-disable-next-line no-console
-		console.warn('unsupported sort', typeof a, a, typeof b, b);
-		return 0;
 	}
 
 	/**
@@ -896,7 +861,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		const v1 = this.sortOnColumn.getComparableValue(a, this.sortOnColumn.sortOn),
 			v2 = this.sortOnColumn.getComparableValue(b, this.sortOnColumn.sortOn);
 
-		return this._genericSorter(v1, v2);
+		return genericSorter(v1, v2);
 	}
 
 	/* eslint-disable-next-line max-statements */
