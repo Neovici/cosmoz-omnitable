@@ -64,7 +64,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 				<cosmoz-omnitable-header-row
 					columns="[[ normalizedColumns ]]"
 					group-on-column="[[ groupOnColumn ]]"
-					content="[[ _renderSettings(normalizedSettings, collapsedColumns) ]]"
+					content="[[ _renderSettings(normalizedSettings, collapsedColumns, settingsId, hasChangedSettings) ]]"
 				>
 			</div>
 			<div class="tableContent" id="tableContent">
@@ -411,6 +411,10 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 			},
 			computedBarHeight: {
 				type: Number
+			},
+			settingsId: {
+				type: String,
+				value: undefined
 			}
 		};
 	}
@@ -1281,11 +1285,15 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		};
 	}
 
-	_renderSettings(normalizedSettings, collapsed) {
+	_renderSettings(normalizedSettings, collapsed, settingsId, hasChangedSettings) {
 		return litHtml`<cosmoz-omnitable-settings
 			.settings=${ normalizedSettings }
 			.onSettings=${ this.setSettings }
-			.collapsed=${ collapsed.map(c => c.name) }
+			.collapsed=${ collapsed?.map(c => c.name) }
+			.settingsId=${ settingsId }
+			.hasChanges=${ hasChangedSettings }
+			.onSave=${ this.onSettingsSave }
+			.onReset=${ this.onSettingsReset }
 		>`;
 	}
 }
