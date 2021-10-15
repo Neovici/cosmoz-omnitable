@@ -301,7 +301,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 			groupOnDescending: {
 				type: Boolean,
 				value: false,
-				observer: '_debounceProcessItems'
+				observer: '_processItems'
 			},
 			/**
 		 * The column name to group on.
@@ -422,7 +422,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 	static get observers() {
 		return [
 			'_dataChanged(data.splices)',
-			'_debounceProcessItems(sortOn, descending)',
+			'_processItems(sortOn, descending)',
 			'_selectedItemsChanged(selectedItems.*)',
 			'renderFastLayoutCss(layoutCss, $.layoutStyle)'
 		];
@@ -476,14 +476,8 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 	}
 
 	flush() {
-		// NOTE: in some instances flushing a debouncer causes another debouncer
-		// to be set, so we must test each debouncer independently and in this order
 		if (this.debouncers._updateColumnsDebouncer) {
 			this.debouncers._updateColumnsDebouncer.flush();
-		}
-
-		if (this.debouncers._processItemsDebouncer) {
-			this.debouncers._processItemsDebouncer.flush();
 		}
 	}
 
@@ -521,7 +515,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 	}
 
 	_onColumnTitleChanged(event) {
-
 		event.stopPropagation();
 
 		if (!Array.isArray(this.columns)) {
@@ -596,7 +589,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 			return;
 		}
 		this._setColumnValues();
-		this._debounceProcessItems();
+		this._processItems();
 	}
 
 	_debounceUpdateColumns() {
@@ -660,7 +653,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		this._updateParamsFromHash();
 
 		if (Array.isArray(this.data)) {
-			this._debounceProcessItems();
+			this._processItems();
 		}
 	}
 
@@ -745,7 +738,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		if (!Array.isArray(this.columns) || this.columns.length < 1 || this.columns.indexOf(detail.column) < 0) {
 			return;
 		}
-		this._debounceProcessItems();
+		this._processItems();
 		this._filterForRouteChanged(detail.column);
 	}
 
@@ -753,12 +746,8 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		if (column && column.hasFilter()) {
 			column.resetFilter();
 		} else {
-			this._debounceProcessItems();
+			this._processItems();
 		}
-	}
-
-	_debounceProcessItems() {
-		this._debounce('_processItemsDebouncer', this._processItems);
 	}
 
 	_processItems() {
