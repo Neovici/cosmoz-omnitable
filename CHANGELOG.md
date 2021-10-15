@@ -1,3 +1,15 @@
+# [7.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v7.0.7...v7.1.0) (2021-10-15)
+
+
+### Bug Fixes
+
+* animation happens when visibility state is toggled ([db61b0d](https://github.com/neovici/cosmoz-omnitable/commit/db61b0dc3bf5494c18c4b55a6322b74d345a0177))
+
+
+### Features
+
+* save settings locally ([d9e8304](https://github.com/neovici/cosmoz-omnitable/commit/d9e8304d741fa588f8169e71f849eb9ed3e81473)), closes [#418](https://github.com/neovici/cosmoz-omnitable/issues/418)
+
 ## [7.0.7](https://github.com/neovici/cosmoz-omnitable/compare/v7.0.6...v7.0.7) (2021-10-14)
 
 
