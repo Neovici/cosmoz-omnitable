@@ -1,3 +1,12 @@
+## [7.1.1](https://github.com/neovici/cosmoz-omnitable/compare/v7.1.0...v7.1.1) (2021-10-18)
+
+
+### Bug Fixes
+
+* migrate group-row to haunted ([5f811d4](https://github.com/neovici/cosmoz-omnitable/commit/5f811d4f521ae671ebf32b0ab52f3a44f63b4b96))
+* migrate item-row to haunted ([a77eef7](https://github.com/neovici/cosmoz-omnitable/commit/a77eef702445d0d4e336451256593d412e9f5d2a))
+* no easy way to reset settings to default ([a0daade](https://github.com/neovici/cosmoz-omnitable/commit/a0daade2a36a5ea015fed8b5a73e066953720ddd))
+
 # [7.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v7.0.7...v7.1.0) (2021-10-15)
 
 
