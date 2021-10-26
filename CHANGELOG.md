@@ -1,3 +1,16 @@
+# [7.2.0](https://github.com/neovici/cosmoz-omnitable/compare/v7.1.1...v7.2.0) (2021-10-26)
+
+
+### Bug Fixes
+
+* extract generic-sorter pure function ([fbc1951](https://github.com/neovici/cosmoz-omnitable/commit/fbc19519437dbda55b95cc503fa538309f05d967))
+* **use-saved-settings:** explicitly pick the relevant information ([9e1b842](https://github.com/neovici/cosmoz-omnitable/commit/9e1b842ab836495adfbe910619360a7af2b96c96))
+
+
+### Features
+
+* allow filtering on the groupOn column ([879b10a](https://github.com/neovici/cosmoz-omnitable/commit/879b10ad3f43d7890fec5bb6292c531e8b14860a))
+
 ## [7.1.1](https://github.com/neovici/cosmoz-omnitable/compare/v7.1.0...v7.1.1) (2021-10-18)
 
 
