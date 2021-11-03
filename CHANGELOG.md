@@ -1,3 +1,10 @@
+## [7.2.1](https://github.com/neovici/cosmoz-omnitable/compare/v7.2.0...v7.2.1) (2021-11-03)
+
+
+### Bug Fixes
+
+* **range-column:** filter out undefined values ([34d4b9c](https://github.com/neovici/cosmoz-omnitable/commit/34d4b9cd230ecd86bc2ebacbf96728c97215afd3))
+
 # [7.2.0](https://github.com/neovici/cosmoz-omnitable/compare/v7.1.1...v7.2.0) (2021-10-26)
 
 
