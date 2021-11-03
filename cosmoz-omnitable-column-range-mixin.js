@@ -248,19 +248,13 @@ export const rangeColumnMixin = dedupingMixin(base => // eslint-disable-line max
 		}
 
 		_applySingleFilter(filter, item) {
-			const value = this.getComparableValue(item, this.valuePath),
-				minValue = this.getComparableValue(filter, 'min'),
-				maxValue = this.getComparableValue(filter, 'max');
-
-			if (value < minValue) {
+			const value = this.getComparableValue(item, this.valuePath);
+			if (value == null) {
 				return false;
 			}
-
-			if (value > maxValue) {
-				return false;
-			}
-
-			return true;
+			const min = this.getComparableValue(filter, 'min'),
+				max = this.getComparableValue(filter, 'max');
+			return !(value < min || value > max);
 		}
 
 		_computeFilterText(change) {
