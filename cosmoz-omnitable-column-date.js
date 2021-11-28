@@ -7,131 +7,118 @@ import './ui-helpers/cosmoz-clear-button';
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from 'lit-html';
 
-import {
-	translatable, _
-} from '@neovici/cosmoz-i18next';
-import { dateColumnMixin } from './cosmoz-omnitable-column-date-mixin';
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
-import { ifDefined } from 'lit-html/directives/if-defined';
+import './lib/cosmoz-omnitable-date-range-input';
+import { valuesFrom } from './lib/utils-data';
+import { getString, getComparableValue, toDate, toHashString, toXlsxValue, applySingleFilter, getInputString, fromInputString } from './lib/utils-date';
 
-class OmnitableColumnDate extends dateColumnMixin(columnMixin(translatable(
-	PolymerElement
-))) {
-	static get is() {
-		return 'cosmoz-omnitable-column-date';
-	}
-
+class OmnitableColumnDate extends columnMixin(PolymerElement) {
 	static get properties() {
 		return {
-			headerCellClass: {
-				type: String,
-				value: 'date-header-cell'
-			},
-			minWidth: {
-				type: String,
-				value: '82px'
-			},
-			editMinWidth: {
-				type: String,
-				value: '82px'
-			}
+			min: { type: Number, value: null, notify: true },
+			max: { type: Number, value: null, notify: true },
+			locale: { type: String, value: null, notify: true },
+			headerCellClass: { type: String, value: 'date-header-cell' },
+			width: { type: String, value: '100px' },
+			minWidth: { type: String, value: '82px' },
+			flex: { type: String, value: '0' }
+		};
+	}
+
+	getFilterFn(column, filter) {
+		const
+			min = getComparableValue(filter, 'min', column),
+			max = getComparableValue(filter, 'max', column);
+
+		if (min == null && max == null) {
+			return;
+		}
+		return applySingleFilter(column, filter);
+	}
+
+	getString(column, item) {
+		return getString(column, item);
+	}
+
+	toXlsxValue(column, item) {
+		return toXlsxValue(column, item);
+	}
+
+	cellTitleFn(column, item) {
+		return getString(column, item);
+	}
+
+	getComparableValue(item, valuePath, column) {
+		return getComparableValue(item, valuePath, column);
+	}
+
+	serializeFilter(column, filter) {
+		if (filter == null) {
+			return;
+		}
+		const min = toDate(filter.min),
+			max = toDate(filter.max);
+
+		if (min == null && max == null) {
+			return;
+		}
+		return toHashString(min) + '~' + toHashString(max);
+	}
+
+	deserializeFilter(column, filter) {
+		if (filter == null || filter === '') {
+			return null;
+		}
+		const matches = filter.match(/^([^~]+)?~([^~]+)?/iu);
+
+		if (!Array.isArray(matches)) {
+			return null;
+		}
+
+		return {
+			min: toDate(matches[1]),
+			max: toDate(matches[2])
 		};
 	}
 
 	renderCell(column, { item }) {
-		return column.getString(item, column.valuePath, column.formatter);
+		return getString(column, item);
 	}
 
-	renderEditCell(column, { item }) {
-		const onChange = event => {
-			event.model = { item };
-			return column._dateValueChanged(event);
-		};
+	renderEditCell(column, { item }, onItemChange) {
+		const onChange = event => onItemChange(fromInputString(event.target.value));
 
 		return html`<paper-input
 			no-label-float
 			type="date"
 			@change=${ onChange }
-			.value=${ column.getInputString(item, column.valuePath) }
+			.value=${ getInputString(column, item) }
 		></paper-input>`;
 	}
 
-	renderHeader(column) {
-		return html`
-			<style>
-				paper-dropdown-menu {
-					--iron-icon-width: 0;
-				}
-			</style>
-			<cosmoz-clear-button @click=${ event => column.resetFilter(event) } ?visible=${ column.hasFilter() }></cosmoz-clear-button>
-			<paper-dropdown-menu
-				label=${ column.title }
-				placeholder=${ ifDefined(column._filterText) }
-				class="external-values-${ column.externalValues }"
-				title=${ column._tooltip }
-				horizontal-align=${ column.preferredDropdownHorizontalAlign }
-				?opened=${ column.headerFocused }
-				@opened-changed=${ event => column.headerFocused = event.detail.value }>
-				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
-					<h3 style="margin: 0;">${ column.title }</h3>
-					<paper-input
-						type="date"
-						label=${ _('From date') }
-						min=${ column._toInputString(column._limit.fromMin) }
-						max=${ column._toInputString(column._limit.fromMax) }
-						.value=${ column._filterInput.min }
-						@value-changed=${ event => column.set('_filterInput.min', event.detail.value) }
-					></paper-input>
-					<paper-input
-						type="date"
-						label=${ _('Until date') }
-						min=${ column._toInputString(column._limit.toMin) }
-						max=${ column._toInputString(column._limit.toMax) }
-						.value=${ column._filterInput.max }
-						@value-changed=${ event => column.set('_filterInput.max', event.detail.value) }
-					></paper-input>
-				</div>
-			</paper-dropdown-menu>
-		`;
+	renderHeader(
+		{ title,
+			min,
+			max,
+			locale },
+		{ filter },
+		setState,
+		source
+	) {
+		return html`<cosmoz-omnitable-date-range-input
+			.title=${ title }
+			.filter=${ filter }
+			.values=${ source }
+			.min=${ min }
+			.max=${ max }
+			.locale=${ locale }
+			@filter-changed=${ ({ detail: { value }}) => setState(state => ({ ...state, filter: value })) }
+			@header-focused-changed=${ ({ detail: { value }}) => setState(state => ({ ...state, headerFocused: value })) }
+		></cosmoz-omnitable-date-range-input>`;
 	}
 
-	_fromInputString(value, property) {
-		const date = this.toDate(value);
-		if (date == null) {
-			return;
-		}
-		if (property === 'min') {
-			date.setHours(0, 0, 0, 0);
-		}
-		if (property === 'max') {
-			date.setHours(23, 59, 59);
-		}
-		return date;
-	}
-
-	toXlsxValue(item, valuePath = this.valuePath) {
-		if (!valuePath) {
-			return '';
-		}
-		const date = this.toValue(this.get(valuePath, item));
-		if (!date) {
-			return '';
-		}
-		const localDate = this.toValue(this._toLocalISOString(date));
-		localDate.setHours(0, 0, 0, 0);
-		return localDate;
-	}
-
-	_filterInputChanged(change, autoupdate) {
-		const path = change.path.split('.')[1],
-			value = path && change.value;
-
-		// don't trigger change when date input begins with 0; Year (starting from 0000) was limited before the needed value was typed.
-		if (value && value.match(/^0+/u)) {
-			this._limitInputDebouncer.cancel();
-			return;
-		}
-		super._filterInputChanged(change, autoupdate);
+	computeSource({ valuePath }, data) {
+		return valuesFrom(data, valuePath);
 	}
 }
-customElements.define(OmnitableColumnDate.is, OmnitableColumnDate);
+customElements.define('cosmoz-omnitable-column-date', OmnitableColumnDate);

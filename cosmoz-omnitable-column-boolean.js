@@ -7,6 +7,69 @@ import '@neovici/cosmoz-autocomplete';
 import {
 	html, nothing
 } from 'lit-html';
+import { get } from '@polymer/polymer/lib/utils/path';
+import { memooize } from './lib/memoize';
+
+const
+	computeValue = (value, source) =>
+		source.find(({ value: valueProp }) => value === valueProp),
+
+	computeTooltip = (title, value, source) => {
+		const val = computeValue(value, source);
+		return val ? val.text : title;
+	},
+
+	computeItemTooltip = (title, item, valuePath, source) => computeTooltip(
+		title,
+		get(item, valuePath),
+		source
+	),
+
+	computeItemValue = ({ valuePath }, item, source) => computeValue(
+		get(item, valuePath),
+		source
+	),
+
+	onChange = setState => selection => {
+		setState(state => ({ ...state, filter: selection?.[0]?.value ?? null }));
+	},
+
+	onFocus = setState => focused => {
+		setState(state => ({ ...state, headerFocused: focused }));
+	},
+
+	onText = setState => text => {
+		setState(state => ({ ...state, query: text }));
+	},
+
+	onEditableChange = onItemChange => selection => onItemChange(selection?.[0]?.value),
+
+	getString = ({ valuePath, trueLabel, falseLabel }, item) => {
+		const value = get(item, valuePath);
+		return value ? trueLabel : falseLabel;
+	},
+
+	applySingleFilter = ({ valuePath }, filter) => item => get(item, valuePath) === filter,
+
+	computeSource = memooize((trueLabel, falseLabel) => [
+		{ text: trueLabel, value: true },
+		{ text: falseLabel, value: false }
+	]),
+
+	toXlsxValue = ({ valuePath, trueLabel, falseLabel }, item) => {
+		if (!valuePath) {
+			return '';
+		}
+		return get(item, valuePath) ? trueLabel : falseLabel;
+	},
+
+	deserializeFilter = (column, filter) => {
+		try {
+			return JSON.parse(filter);
+		} catch (e) {
+			return null;
+		}
+	};
 
 /**
  * @polymer
@@ -14,248 +77,83 @@ import {
  * @appliesMixin columnMixin
  */
 class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
-	static get is() {
-		return 'cosmoz-omnitable-column-boolean';
-	}
-
 	static get properties() {
-		// eslint-disable-line max-lines-per-function
 		return {
-			filter: {
-				type: Boolean,
-				notify: true,
-				value: undefined
-			},
-
-			trueLabel: {
-				type: String,
-				value: 'True'
-			},
-
-			falseLabel: {
-				type: String,
-				value: 'False'
-			},
-
-			_source: {
-				type: Array,
-				computed: '_computeSource(trueLabel, falseLabel)'
-			},
-
-			templatetemplateWidth: {
-				type: String,
-				value: '60px'
-			},
-
-			/**
-			 * No need to grow, as the values in a boolean column should have known fixed width
-			 * @returns {String} Default flex
-			 */
-			flex: {
-				type: String,
-				value: '0'
-			},
-			/**
-			* The value of the `cosmoz-autocomplete` input.
-			*/
-			query: {
-				type: String,
-				notify: true
-			},
-
-			cellClass: {
-				type: String,
-				value: 'boolean-cell'
-			},
-
-			_textProperty: {
-				value: 'text'
-			},
-
-			_limit: { value: 1 }
+			trueLabel: { type: String, value: 'True' },
+			falseLabel: { type: String, value: 'False' },
+			flex: { type: String, value: '0' },
+			cellClass: { type: String, value: 'boolean-cell' }
 		};
 	}
 
-	constructor() {
-		super();
-		this._onFocus = this._onFocus.bind(this);
-		this._onChange = this._onChange.bind(this);
-		this._onText = this._onText.bind(this);
+	getString(column, item) {
+		return getString(column, item);
 	}
 
 	renderCell(column, { item }) {
-		return column.getString(item, column.valuePath);
+		return getString(column, item);
 	}
 
-	renderEditCell(column, { item }) {
-		const spinner = column.loading
-			? html`<paper-spinner-lite style="width: 20px; height: 20px;" suffix slot="suffix" active></paper-spinner-lite>`
-			: nothing;
+	cellTitleFn(column, item) {
+		return getString(column, item);
+	}
+
+	renderEditCell(column, { item }, onItemChange) {
+		const
+			{ trueLabel, falseLabel } = column,
+			spinner = column.loading
+				? html`<paper-spinner-lite style="width: 20px; height: 20px;" suffix slot="suffix" active></paper-spinner-lite>`
+				: nothing;
 
 		return html`<cosmoz-autocomplete
 				no-label-float
-				.title=${ column._computeItemTooltip(column.title, item, column.valuePath) }
-				.source=${ column._source }
-				.textProperty=${ column._textProperty }
-				.value=${ column._computeItemValue(item, column.valuePath, column._source) }
-				.onChange=${ column._computeItemChange(item, column.valuePath) }
-				.limit=${ column._limit }
+				.title=${ computeItemTooltip(column.title, item, column.valuePath, computeSource(trueLabel, falseLabel)) }
+				.source=${ computeSource(trueLabel, falseLabel) }
+				.textProperty=${ 'text' }
+				.value=${ computeItemValue(column, item, computeSource(trueLabel, falseLabel)) }
+				.onChange=${ onEditableChange(onItemChange) }
+				.limit=${ 1 }
 			>${ spinner }</cosmoz-autocomplete-ui>`;
 	}
 
-	renderHeader(column) {
+	renderHeader(column, { filter, query }, setState, source) {
 		const spinner = column.loading
 			? html`<paper-spinner-lite style="width: 20px; height: 20px;" suffix slot="suffix" active></paper-spinner-lite>`
 			: nothing;
 
 		return html`<cosmoz-autocomplete-ui
 			.label=${ column.title }
-			.title=${ column._computeItemTooltip(column.title, column.filter) }
-			.source=${ column._source }
-			.textProperty=${ column._textProperty }
-			.value=${ column._computeValue(column.filter, column._source) }
-			.text=${ column.query }
-			.onChange=${ column._onChange }
-			.onFocus=${ column._onFocus }
-			.onText=${ column._onText }
-			.limit=${ column._limit }
+			.title=${ computeItemTooltip(column.title, filter, column.valuePath, source) }
+			.source=${ source }
+			.textProperty=${ 'text' }
+			.value=${ computeValue(filter, source) }
+			.text=${ query }
+			.onChange=${ onChange(setState) }
+			.onFocus=${ onFocus(setState) }
+			.onText=${ onText(setState) }
+			.limit=${ 1 }
 		>${ spinner }</cosmoz-autocomplete-ui>`;
 	}
 
-	/**
-	 * Get column represented as a string.
-	 * @param {object} item Column data.
-	 * @param {string} valuePath Value path in column data.
-	 * @returns {void|string} Column in string format.
-	 */
-	getString(item, valuePath) {
-		const value = this.get(valuePath || this.valuePath, item);
-		return value ? this.trueLabel : this.falseLabel;
+	computeSource({ trueLabel, falseLabel }) {
+		return computeSource(trueLabel, falseLabel);
 	}
 
-	/**
-	 * Get a filter function for the column.
-	 * @returns {void|function} Filter function.
-	 */
-	getFilterFn() {
-		if (this.filter == null) {
+	getFilterFn(column, filter) {
+		if (filter == null) {
 			return;
 		}
-		return this._applySingleFilter.bind(this, this.filter);
+		return applySingleFilter(column, filter);
 	}
 
-	/**
-	 * Determine if a filter should be enabled or not.
-	 * @param {string} filter Filter text.
-	 * @param {object} item Column data.
-	 * @returns {boolean} Whether the filter should be enabled or not.
-	 */
-	_applySingleFilter(filter, item) {
-		return this.get(this.valuePath, item) === filter;
+	toXlsxValue(column, item) {
+		return toXlsxValue(column, item);
 	}
 
-	_serializeFilter(filter = this.filter) {
-		if (filter == null || filter === '') {
-			return null;
-		}
-		return this._serializeValue(filter ? 'true' : 'false');
+	deserializeFilter(column, filter) {
+		return deserializeFilter(column, filter);
 	}
-
-	_deserializeFilter(obj) {
-		const value = this._deserializeValue(obj, String);
-
-		if (value === 'true') {
-			return true;
-		}
-
-		if (value === 'false') {
-			return false;
-		}
-
-		return null;
-	}
-
-	toXlsxValue(item, valuePath = this.valuePath) {
-		if (!valuePath) {
-			return '';
-		}
-		return this.get(valuePath, item) ? this.trueLabel : this.falseLabel;
-	}
-
-	/**
-	 * Get a list of suggestions for the column header.
-	 * @param {string} trueLabel True label.
-	 * @param {string} falseLabel False label.
-	 * @returns {array} Suggestions remapped for the column header.
-	 */
-	_computeSource(trueLabel, falseLabel) {
-		return [
-			{
-				text: trueLabel,
-				value: true
-			},
-			{
-				text: falseLabel,
-				value: false
-			}
-		];
-	}
-
-	_computeValue(value, source = this._source) {
-		return source.find(({ value: valueProp }) => value === valueProp);
-	}
-
-	_computeItemValue(item, valuePath = this.valuePath, source) {
-		return this._computeValue(
-			this.get(valuePath, item),
-			source
-		);
-	}
-
-	_computeTooltip(title, value, source = this._source) {
-		const val = this._computeValue(value, source);
-		return val ? val.text : title;
-	}
-
-	_computeItemTooltip(title, item, valuePath, source) {
-		return this._computeTooltip(
-			title,
-			this.get(valuePath || this.valuePath, item),
-			source
-		);
-	}
-
-	_computeItemChange(item, valuePath = this.valuePath) {
-		return selection => {
-			const value = selection?.[0]?.value,
-				oldValue = this.get(valuePath, item),
-				formatFn = value => {
-					return value ? this.trueLabel : this.falseLabel;
-				};
-			if (value === oldValue) {
-				return;
-			}
-			this.set(valuePath, value, item);
-			this._fireItemChangeEvent(
-				item,
-				this.valuePath,
-				oldValue,
-				formatFn.bind(this)
-			);
-		};
-	}
-
-	_onChange(selection) {
-		this.filter = selection?.[0]?.value ?? null;
-	}
-
-	_onFocus(focused) {
-		this.headerFocused = focused;
-	}
-
-	_onText(text) {
-		this.query = text;
-	}
-
 }
-customElements.define(OmnitableColumnBoolean.is, OmnitableColumnBoolean);
+customElements.define('cosmoz-omnitable-column-boolean', OmnitableColumnBoolean);
+
+export { getString, computeItemValue, computeSource, toXlsxValue, onChange, deserializeFilter };

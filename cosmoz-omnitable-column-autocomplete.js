@@ -6,11 +6,19 @@ import {
 	html, nothing
 } from 'lit-html';
 
-import { columnMixin } from './cosmoz-omnitable-column-mixin.js';
-import { listColumnMixin } from './cosmoz-omnitable-column-list-mixin';
+import { columnMixin, getString } from './cosmoz-omnitable-column-mixin.js';
+import { computeSource, listColumnMixin, onChange, onFocus, onText, toAutocompleteSource } from './cosmoz-omnitable-column-list-mixin';
 import {
 	prop, strProp, array
 } from '@neovici/cosmoz-autocomplete/lib/utils';
+import { get } from '@polymer/polymer/lib/utils/path';
+
+export const
+	getComparableValue = (item, valuePath, { textProperty, valueProperty } = {}) => {
+		const property = textProperty ? strProp(textProperty) : prop(valueProperty),
+			values = array(valuePath && get(item, valuePath)).map(property);
+		return values.length > 1 ? values.filter(Boolean).join(',') : values[0];
+	};
 
 /**
  * @polymer
@@ -18,69 +26,50 @@ import {
  * @appliesMixin columnMixin
  */
 class OmnitableColumnAutocomplete extends listColumnMixin(columnMixin(PolymerElement)) {
-	static get is() {
-		return 'cosmoz-omnitable-column-autocomplete';
-	}
-
 	static get properties() {
 		return {
-			headerCellClass: {
-				type: String,
-				value: 'autocomplete-header-cell'
-			},
-
-			minWidth: {
-				type: String,
-				value: '55px'
-			},
-
-			editMinWidth: {
-				type: String,
-				value: '55px'
-			}
+			headerCellClass: { type: String, value: 'autocomplete-header-cell' },
+			minWidth: { type: String, value: '55px' },
+			editMinWidth: { type: String, value: '55px' }
 		};
 	}
 
 	renderCell(column, { item }) {
-		return html`<span class="default-column">${ column.getString(item, column.valuePath) }</span>`;
+		return html`<span class="default-column">${ column.getString(column, item) }</span>`;
 	}
 
-	renderEditCell(column, { item }) {
-		const onChange = event => {
-			event.model = { item };
-			return column._valueChanged(event);
-		};
-		return html`<paper-input
-			no-label-float
-			type="text"
-			@change=${ onChange }
-			.value=${ column.getString(item, column.valuePath) }
-		></paper-input>`;
+	renderEditCell(column, { item }, onItemChange) {
+		const onChange = event => onItemChange(event.target.value);
+		return html`<paper-input no-label-float type="text" @change=${ onChange } .value=${ getString(column, item) }></paper-input>`;
 	}
 
-	renderHeader(column) {
-		const spinner = column.loading
-			? html`<paper-spinner-lite style="width: 20px; height: 20px;" suffix slot="suffix" active></paper-spinner-lite>`
-			: nothing;
+	renderHeader(column, { filter, query }, setState, source) {
+		const
+			spinner = column.loading
+				? html`<paper-spinner-lite style="width: 20px; height: 20px;" suffix slot="suffix" active></paper-spinner-lite>`
+				: nothing;
 
 		return html`<cosmoz-autocomplete-ui
 			class="external-values-${ column.externalValues }"
 			.label=${ column.title }
-			.source=${ column._source }
+			.source=${ toAutocompleteSource(source, column.valueProperty, column.textProperty) }
 			.textProperty=${ column.textProperty }
 			.valueProperty=${ column.valueProperty }
-			.value=${ column._computeValue(column.filter, column._source) }
-			.text=${ column.query }
-			.onChange=${ column._onChange }
-			.onFocus=${ column._onFocus }
-			.onText=${ column._onText }
+			.value=${ filter }
+			.text=${ query }
+			.onChange=${ onChange(setState) }
+			.onFocus=${ onFocus(setState) }
+			.onText=${ onText(setState) }
 		>${ spinner }</cosmoz-autocomplete-ui>`;
 	}
 
-	getComparableValue(item, valuePath = this.valuePath) {
-		const property = this.textProperty ? strProp(this.textProperty) : prop(this.valueProperty),
-			values = array(valuePath && this.get(valuePath, item)).map(property);
-		return values.length > 1 ? values.filter(Boolean).join(',') : values[0];
+	getComparableValue(item, valuePath, column) {
+		return getComparableValue(item, valuePath, column);
 	}
+
+	computeSource(column, data) {
+		return computeSource(column, data);
+	}
+
 }
-customElements.define(OmnitableColumnAutocomplete.is, OmnitableColumnAutocomplete);
+customElements.define('cosmoz-omnitable-column-autocomplete', OmnitableColumnAutocomplete);

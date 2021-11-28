@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 const checkbox = `
 	.checkbox {
 		box-sizing: border-box;
@@ -334,11 +335,6 @@ export default `<style>
 	.itemRow[selected] {
 		background-color: rgb(195, 212, 248) !important;
 		@apply --cosmoz-omnitable-selected-row;
-	}
-
-	.itemRow[highlighted] {
-		background-color: rgba(195, 212, 248, 0.5);
-		@apply --cosmoz-omnitable-hightlighted-row;
 	}
 
 	.tableContent .itemRow-cell paper-dropdown-menu {

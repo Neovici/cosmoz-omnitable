@@ -73,27 +73,17 @@
 				</div>
 
 				<cosmoz-omnitable id="omnitable" data="[[data]]" selection-enabled selected-items="{{selectedItems}}">
-					<cosmoz-omnitable-column title="Id" name="id" value-path="id"></cosmoz-omnitable-column>
-					<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" editable>
-					</cosmoz-omnitable-column-number>
-					<cosmoz-omnitable-column-number title="Lit Value" name="litvalue" value-path="value" editable
-						render-edit-cell="[[ renderEditValue ]]">
-					</cosmoz-omnitable-column-number>
-
+					<cosmoz-omnitable-column-autocomplete title="Id" name="id" value-path="id" editable></cosmoz-omnitable-column-autocomplete>
+					<cosmoz-omnitable-column-list title="List" name="list" value-path="list" editable></cosmoz-omnitable-column-list>
+					<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" editable></cosmoz-omnitable-column-number>
+					<cosmoz-omnitable-column-number title="Lit Value" name="litvalue" value-path="value" editable render-edit-cell="[[ renderEditValue ]]"></cosmoz-omnitable-column-number>
 					<cosmoz-omnitable-column-boolean title="Boolean" name="bool" value-path="bool" true-label="Yes" false-label="No" editable></cosmoz-omnitable-column-boolean>
-
 					<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount" editable></cosmoz-omnitable-column-amount>
 					<cosmoz-omnitable-column-date title="Date" name="date" value-path="date" editable></cosmoz-omnitable-column-date>
 					<cosmoz-omnitable-column-datetime title="Datetime" name="datetime" value-path="date" editable></cosmoz-omnitable-column-datetime>
 					<cosmoz-omnitable-column-time title="Time" name="time" value-path="date" editable></cosmoz-omnitable-column-time>
 					<cosmoz-omnitable-column title="Sub-property" name="subproperty" value-path="sub.subProp" editable></cosmoz-omnitable-column>
 					<cosmoz-omnitable-column title="Random String" name="randomstring" value-path="randomString" editable></cosmoz-omnitable-column>
-					<!-- sample column that overrides edit-cell -->
-					<cosmoz-omnitable-column id="nameCol" title="Name" name="name" value-path="name" editable>
-						<template class="edit-cell">
-							<paper-input no-label-float type="text" on-change="_itemNameChanged" value="[[item.name]]"></paper-input>
-						</template>
-					</cosmoz-omnitable-column>
 				</cosmoz-omnitable>
 			</div>
 		</template>
@@ -106,6 +96,7 @@ import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { translatable } from '@neovici/cosmoz-i18next';
 import { generateTableDemoData } from './table-demo-helper';
 import { html } from 'lit-html';
+import { getInputString } from '../lib/utils-number';
 
 class XPage extends translatable(PolymerElement) {
 	static get is() {
@@ -172,12 +163,13 @@ class XPage extends translatable(PolymerElement) {
 
 	_itemChanged(e) {
 		const change = e.detail;
-		this.info = `Column ${ e.target.name }: Item ${ change.valuePath } changed from "${ change.oldValue }" to "${ change.value }"`;
+		this.info = `Column ${ e.detail.column.name }: Item ${ change.valuePath } changed from "${ change.oldValue }" to "${ change.value }"`;
+		console.log(this.info);
 	}
 
-	renderEditValue(column, { item }) {
-		const onChange = event => column._valueChanged(Object.assign(event, { model: { item }}));
-		return html`<paper-input no-label-float type="number" @change=${ onChange } .value=${ column.getInputString(item, column.valuePath) }></paper-input>`;
+	renderEditValue(column, { item }, onItemChange) {
+		const onChange = event => onItemChange(event.target.value);
+		return html`<paper-input no-label-float type="number" step="0.1" @change=${ onChange } .value=${ getInputString(column, item) }></paper-input>`;
 	}
 }
 customElements.define(XPage.is, XPage);

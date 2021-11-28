@@ -1,11 +1,7 @@
-import { component, useMemo } from 'haunted';
+import { component } from 'haunted';
 import { nothing } from 'lit-html';
-import { useRenderOnColumnUpdates } from './lib/use-render-on-column-updates';
 
 const GroupRow = ({ column, item, selected, folded }) => {
-	const columns = useMemo(() => column ? [column] : [], [column]);
-	useRenderOnColumnUpdates(columns);
-
 	if (!column) {
 		return nothing;
 	}

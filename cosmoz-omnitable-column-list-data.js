@@ -66,7 +66,10 @@ class OmnitableColumnListData extends translatable(mixin(Template, PolymerElemen
 	static get properties() {
 		return {
 			items: {
-				type: Array
+				type: Array,
+				observer() {
+					this.dispatchEvent(new CustomEvent('iron-resize', { bubbles: true }));
+				}
 			},
 
 			_expanded: {

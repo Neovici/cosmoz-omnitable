@@ -7,6 +7,7 @@ import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
 
 import '../../cosmoz-omnitable.js';
 import '../helpers/fixtures/basic-column.js';
+import { columnSymbol } from '../../lib/normalize-settings';
 
 suite('Basic omnitable functionality', () => {
 	let omnitable;
@@ -47,6 +48,7 @@ suite('Basic omnitable functionality', () => {
 		}]);
 		polymerFlush();
 		await nextFrame();
+		await nextFrame();
 	});
 
 	test('should display headers as configured', () => {
@@ -75,16 +77,17 @@ suite('Basic omnitable functionality', () => {
 			name: 'item 6'
 		}];
 
-		omnitable.flush();
+		await nextFrame();
 		polymerFlush();
 		await nextFrame();
+
 		const cells = Array.from(omnitable.shadowRoot.querySelectorAll('.basic-column-cell, .overriden-column-cell'));
 		expect(cells.map(c => c.innerText)).to.deep.equal(['item 4', 'Overriden item 4', 'item 5', 'Overriden item 5', 'item 6', 'Overriden item 6']);
 	});
 
 	test('should use editable template when the column is editable', async () => {
 		omnitable.columns.forEach(c => {
-			c.editable = true;
+			c[columnSymbol].editable = true;
 		});
 
 		await nextFrame();

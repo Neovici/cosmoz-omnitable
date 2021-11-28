@@ -3,7 +3,7 @@ import {
 	assert, expect, html, nextFrame
 } from '@open-wc/testing';
 
-import sinon from 'sinon';
+import { assert as sinonAssert, spy } from 'sinon';
 
 import '../demo/helpers/cosmoz-translations';
 import { setupOmnitableFixture } from './helpers/utils';
@@ -13,11 +13,13 @@ import { flush } from '@polymer/polymer/lib/utils/flush';
 import '../cosmoz-omnitable.js';
 import '../cosmoz-omnitable-columns.js';
 import '@polymer/paper-toggle-button';
+import { columnSymbol } from '../lib/normalize-settings';
 
-sinon.assert.expose(chai.assert, { prefix: '' });
+sinonAssert.expose(chai.assert, { prefix: '' });
 
 suite('basic', () => {
-	let omnitable;
+	let omnitable,
+		columnWithoutGroupOn;
 
 	setup(async () => {
 		omnitable = await setupOmnitableFixture(html`
@@ -40,11 +42,11 @@ suite('basic', () => {
 				</cosmoz-omnitable-column>
 			</cosmoz-omnitable>
 		`, generateTableDemoData(10, 11, 25));
+		columnWithoutGroupOn = omnitable.columns.find(col => col.name === 'columnWithoutGroupOn');
 	});
 
 	test('sets column groupOn property to valuePath when group-on attribute is missing', () => {
-		const column = omnitable.columns.find(col => col.name === 'columnWithoutGroupOn');
-		assert.equal(column.groupOn, 'valuePath');
+		assert.equal(columnWithoutGroupOn.groupOn, 'valuePath');
 	});
 
 	test('sets column groupOn property to group-on attribute', () => {
@@ -61,163 +63,72 @@ suite('basic', () => {
 		assert.equal(column.sortOn, 'sortOnValuePath');
 	});
 
-	test('changing inputValue updates filter eventually', () => {
-		const column = omnitable.columns.find(col => col.name === 'columnWithFilter');
-		assert.isNull(column.filter);
-		assert.isNull(column.inputValue);
-		column.inputValue = 'test';
-		flush();
-		assert.equal(column.filter, 'test');
+	test('serializeFilter returns filter', () => {
+		const filter = { key: 'value' };
+		assert.deepEqual(columnWithoutGroupOn.serializeFilter({}, filter), filter);
 	});
 
-	test('changing inputValue to empty updates filter instantly', () => {
-		const column = omnitable.columns.find(col => col.name === 'columnWithFilter');
-		assert.isNull(column.filter);
-		assert.isNull(column.inputValue);
-		column.inputValue = '';
-		assert.equal(column.filter, '');
+	test('serializeFilter handles null filter', () => {
+		assert.isNull(columnWithoutGroupOn.serializeFilter({}, null));
 	});
 
-	test('_serializeFilter returns filter', () => {
-		const column = omnitable.columns.find(col => col.name === 'columnWithGroupOn'),
-			filter = { key: 'value' };
-		assert.deepEqual(column._serializeFilter(filter), filter);
+	test('deserializeFilter returns object', () => {
+		assert.deepEqual(columnWithoutGroupOn.deserializeFilter({}, { key: 'value' }), { key: 'value' });
 	});
 
-	test('_serializeFilter uses default filter', () => {
-		const column = omnitable.columns.find(col => col.name === 'columnWithGroupOn');
-		assert.isNull(column.filter);
-		column.filter = { key: 'value' };
-		assert.deepEqual(column._serializeFilter(), column.filter);
-	});
-
-	test('_serializeFilter handles null filter', () => {
-		const column = omnitable.columns.find(col => col.name === 'columnWithGroupOn');
-		assert.isNull(column.filter);
-		assert.isNull(column._serializeFilter());
-	});
-
-	test('_deserializeFilter returns object', () => {
-		const column = omnitable.columns.find(col => col.name === 'columnWithGroupOn');
-		assert.deepEqual(column._deserializeFilter({ key: 'value' }), { key: 'value' });
-	});
-
-	test('_deserializeFilter handles null', () => {
-		const column = omnitable.columns.find(col => col.name === 'columnWithGroupOn');
-		assert.isNull(column._deserializeFilter());
-	});
-
-	test('resetFilter resets filter to null', () => {
-		const column = omnitable.columns.find(col => col.name === 'columnWithGroupOn');
-		column.filter = { key: 'value' };
-		column.resetFilter();
-		assert.isNull(column.filter);
+	test('deserializeFilter handles null', () => {
+		assert.isNull(columnWithoutGroupOn.deserializeFilter({}, null));
 	});
 
 	// Column Behavior unit tests for more coverage
 	test('_hiddenChanged fires cosmoz-column-hidden-changed', () => {
-		const column = omnitable.columns[3],
-			hiddenSpy = sinon.spy();
+		const column = omnitable.columns[3][columnSymbol],
+			hiddenSpy = spy();
 		assert.isUndefined(column.hidden);
-		column.addEventListener('cosmoz-column-hidden-changed', hiddenSpy);
+		column.addEventListener('cosmoz-column-prop-changed', hiddenSpy);
 		column.hidden = true;
 		assert.calledOnce(hiddenSpy);
-		column.removeEventListener('cosmoz-column-hidden-changed', hiddenSpy);
-	});
-
-	test('_applyMultiFilter works with an simple test filter', () => {
-		const column = omnitable.columns[3];
-		let filter = ['a', 'b'];
-		assert.isTrue(column._applyMultiFilter(filter, { valuePath: 'abc' }));
-		filter = ['x', 'y'];
-		assert.isFalse(column._applyMultiFilter(filter, { valuePath: 'abc' }));
+		column.removeEventListener('cosmoz-column-prop-changed', hiddenSpy);
 	});
 });
 
-suite('it logs unnamed column', () => {
-	let omnitable,
-		consoleErrorStub;
+suite('default-config', () => {
+	test('default valuePath is name', async () => {
+		const
+			omnitable = await setupOmnitableFixture(html`
+				<cosmoz-omnitable id="omnitable" selection-enabled>
+					<cosmoz-omnitable-column-date id="date1" name="date1" value-path="date">
+					</cosmoz-omnitable-column-date>
+					<cosmoz-omnitable-column-date id="date2" name="dateJson">
+					</cosmoz-omnitable-column-date>
+					<cosmoz-omnitable-column-date id="date3" name="date">
+					</cosmoz-omnitable-column-date>
+				</cosmoz-omnitable>
+			`, generateTableDemoData(10, 11, 25)),
+			date1 = omnitable.columns[0],
+			date2 = omnitable.columns[1],
+			date3 = omnitable.columns[2];
 
-	setup(async () => {
-		// We must stub console.error otherwise the test will fail
-		consoleErrorStub = sinon.stub(window.console, 'error');
-		omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable id="omnitable" selection-enabled>
-				<cosmoz-omnitable-column-date id="date1" name="date1" value-path="date">
-				</cosmoz-omnitable-column-date>
-				<cosmoz-omnitable-column-date id="date2" value-path="dateJson">
-				</cosmoz-omnitable-column-date>
-				<cosmoz-omnitable-column-date id="date3" value-path="date">
-				</cosmoz-omnitable-column-date>
-			</cosmoz-omnitable>
-		`, generateTableDemoData(10, 11, 25));
-	});
-
-	test('Un-named column get value-path as name if unique', () => {
-		const date2 = omnitable.querySelector('#date2'),
-			date3 = omnitable.querySelector('#date3');
-
-		// Async needed so that omnitable can process the data
-		// eslint-disable-next-line no-console
-		sinon.assert.calledTwice(console.error);
-		expect(date2.name).to.be.equal(date2.valuePath);
-		// Test if only unique value-paths are taken as a fallback name attribute
-		expect(date3.name).to.be.an('undefined');
-	});
-
-	teardown(() => {
-		consoleErrorStub.restore();
+		expect(date1.valuePath).to.be.equal('date');
+		expect(date2.valuePath).to.be.equal('dateJson');
+		expect(date3.valuePath).to.be.equal('date');
 	});
 });
 
 suite('item update effects', () => {
-	let omnitable,
-		consoleErrorStub,
-		filterSpy,
-		groupSpy,
-		sortSpy;
+	let omnitable;
 
 	setup(async () => {
-		// We must stub console.error otherwise the test will fail
-		consoleErrorStub = sinon.stub(window.console, 'error');
 		omnitable = await setupOmnitableFixture(html`
 			<cosmoz-omnitable id="omnitable" selection-enabled group-on="date1" sort-on="date2">
 				<cosmoz-omnitable-column-date id="date1" name="date1" value-path="date">
 				</cosmoz-omnitable-column-date>
 				<cosmoz-omnitable-column-date id="date2" name="date2" value-path="dateJson">
 				</cosmoz-omnitable-column-date>
-				<cosmoz-omnitable-column-boolean id="bool" value-path="bool" filter="true">
+				<cosmoz-omnitable-column-boolean id="bool" name="bool">
 				</cosmoz-omnitable-column-boolean>
 			</cosmoz-omnitable>
 		`, generateTableDemoData(10, 11, 25));
-		filterSpy = sinon.spy(omnitable, '_filterItems');
-		groupSpy = sinon.spy(omnitable, '_groupItems');
-		sortSpy = sinon.spy(omnitable, '_sortFilteredGroupedItems');
-	});
-
-	test('replacing an item with updated filter-property causes refiltering', () => {
-		assert.isFalse(filterSpy.called, 'not filtered');
-		assert.isFalse(groupSpy.called, 'not grouped');
-		assert.isFalse(sortSpy.called, 'not sorted');
-		omnitable.replaceItemAtIndex(0, {
-			...omnitable.data[0],
-			bool: !omnitable.data[0].bool
-		});
-		omnitable.flush();
-		assert.isTrue(filterSpy.called, 'refiltered');
-		assert.isTrue(groupSpy.called, 'regrouped');
-		assert.isTrue(sortSpy.called, 'resorted');
-	});
-
-	test('dropping an item causes refiltering', () => {
-		assert.isFalse(filterSpy.called, 'not filtered');
-		assert.isFalse(groupSpy.called, 'not grouped');
-		assert.isFalse(sortSpy.called, 'not sorted');
-		omnitable.splice('data', 0, 1);
-		omnitable.flush();
-		assert.isTrue(filterSpy.called, 'refiltered');
-		assert.isTrue(groupSpy.called, 'regrouped');
-		assert.isTrue(sortSpy.called, 'resorted');
 	});
 
 	test('removeItem removes a given item from the table', () => {
@@ -226,7 +137,6 @@ suite('item update effects', () => {
 			item = omnitable.data[2];
 
 		assert.equal(omnitable.data.indexOf(item), 2);
-
 		omnitable.removeItem(item);
 		assert.equal(omnitable.data.length, numItems - 1);
 		assert.equal(omnitable.data.indexOf(item), -1);
@@ -236,47 +146,6 @@ suite('item update effects', () => {
 		assert.equal(omnitable.removeItem({}), null);
 		assert.equal(omnitable.removeItem(), null);
 	});
-
-	teardown(() => {
-		consoleErrorStub.restore();
-	});
-});
-
-suite('visible', () => {
-	test('adjusts columns when visible', async () => {
-		const omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable style="display:none" selection-enabled>
-				<cosmoz-omnitable-column-date id="date1" name="date1" value-path="date">
-				</cosmoz-omnitable-column-date>
-				<cosmoz-omnitable-column-date id="date2" name="date2" value-path="dateJson">
-				</cosmoz-omnitable-column-date>
-				<cosmoz-omnitable-column-date id="date3" name="date3" value-path="date">
-				</cosmoz-omnitable-column-date>
-				<cosmoz-omnitable-column name="columnWithGroupOn" value-path="valuePath" group-on="groupOnValuePath">
-				</cosmoz-omnitable-column>
-				<cosmoz-omnitable-column name="columnWithoutGroupOn" value-path="valuePath">
-				</cosmoz-omnitable-column>
-				<cosmoz-omnitable-column name="columnWithSortOn" value-path="valuePath" sort-on="sortOnValuePath">
-				</cosmoz-omnitable-column>
-				<cosmoz-omnitable-column name="columnWithoutSortOn" value-path="valuePath">
-				</cosmoz-omnitable-column>
-				<cosmoz-omnitable-column name="columnWithFilter" value-path="valuePath">
-				</cosmoz-omnitable-column>
-			</cosmoz-omnitable>
-		`, generateTableDemoData(10, 11, 25));
-
-		assert.isFalse(omnitable.visible);
-
-		omnitable.style.display = '';
-		omnitable.flush();
-		await nextFrame();
-		assert.isTrue(omnitable.visible);
-
-		omnitable.style.display = 'none';
-		omnitable.flush();
-		await nextFrame();
-		assert.isFalse(omnitable.visible);
-	});
 });
 
 suite('render cell function', () => {
@@ -285,62 +154,46 @@ suite('render cell function', () => {
 	setup(async () => {
 		const renderCustom = (column, {
 			item, selected
-		}) => html`${ column.valuePath } - ${ selected } - ${ column.getString(item) }`;
+		}) => html`${ column.valuePath } - ${ selected } - ${ column.getString(column, item) }`;
 
 		omnitable = await setupOmnitableFixture(html`
 				<cosmoz-omnitable selection-enabled>
 					<cosmoz-omnitable-column name="custom" value-path="object.label" .renderCell=${ renderCustom }>
 					</cosmoz-omnitable-column>
 				</cosmoz-omnitable>
-			`, generateTableDemoData(10, 11, 25));
+			`, [{ object: { label: 'aa', value: 11 }, name: 'BB' }]);
 
-		flush();
-		omnitable.flush();
 		await nextFrame();
 	});
 
 	test('renders custom cell template with access to data from the column, row AND item', async () => {
-		const firstItem = omnitable.data[0];
-		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent, 'object.label - false - ' + firstItem.object.label);
+		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent, 'object.label - false - aa');
 	});
 
 	test('re-renders when row info changes', async () => {
-		const firstItem = omnitable.data[0];
-
 		omnitable.selectItem(omnitable.data[0]);
 		await nextFrame();
-		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent, 'object.label - true - ' + firstItem.object.label);
+		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent, 'object.label - true - aa');
 
 		omnitable.deselectItem(omnitable.data[0]);
 		await nextFrame();
-		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent, 'object.label - false - ' + firstItem.object.label);
+		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent, 'object.label - false - aa');
 	});
 
 	test('re-renders when an item is updated', async () => {
-		const firstItem = omnitable.data[0];
-
-		omnitable.replaceItemAtIndex(0, {
-			...firstItem,
-			object: {
-				...firstItem.object,
-				label: 'EDITED'
-			}
-		});
-		flush();
-		await nextFrame();
-		await nextFrame();
+		omnitable.replaceItemAtIndex(0, { object: { label: 'EDITED', value: 11 }});
+		await nextFrame();	// one for useOmnitable
+		flush();						// two for iron-list
+		await nextFrame();	// three to get ready
+		// four, let's go
 
 		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent, 'object.label - false - EDITED');
 	});
 
 	test('re-renders when the column setup is updated', async () => {
-		const firstItem = omnitable.data[0];
-
 		omnitable.firstElementChild.valuePath = 'name';
-		flush();
 		await nextFrame();
-
-		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent, 'name - false - ' + firstItem.name);
+		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent, 'name - false - BB');
 	});
 });
 
@@ -350,21 +203,20 @@ suite('render header function', () => {
 	const getRows = () => Array.from(omnitable.shadowRoot.querySelectorAll('cosmoz-omnitable-item-row')),
 		toggle = async () => {
 			omnitable.shadowRoot.querySelector('.header-cell').querySelector('paper-toggle-button').click();
-			flush();
-			omnitable.flush();
+			await nextFrame();
 			flush();
 			await nextFrame();
 		};
 
 	setup(async () => {
-		const renderCustomHeader = column => {
+		const renderCustomHeader = (column, { filter }, setState) => {
 			const onChecked = event => {
-				column.filter = {
+				setState({ filter: {
 					min: event.detail.value ? 9000 : 0,
 					max: undefined
-				};
+				}});
 			};
-			return html`<paper-toggle-button @checked-changed=${ onChecked }>Only large numbers</paper-toggle-button>`;
+			return html`<paper-toggle-button @checked-changed=${ onChecked } .value=${ filter }>Only large numbers</paper-toggle-button>`;
 		};
 
 		omnitable = await setupOmnitableFixture(html`
@@ -373,9 +225,6 @@ suite('render header function', () => {
 					</cosmoz-omnitable-column-number>
 				</cosmoz-omnitable>
 			`, generateTableDemoData(10, 11, 25));
-
-		flush();
-		omnitable.flush();
 		await nextFrame();
 	});
 
@@ -410,12 +259,6 @@ suite('fit columns behaviour', () => {
 					<cosmoz-omnitable-column name="column5" title="column5" value-path="name" priority="1"></cosmoz-omnitable-column>
 				</cosmoz-omnitable>
 			`, data);
-
-		flush();
-		omnitable.flush();
-		await nextFrame();
-		await nextFrame();
-		await nextFrame();
 	});
 
 	test('it adjusts the visible columns based on the available width', async () => {
@@ -447,14 +290,15 @@ suite('render group function', () => {
 			data = generateTableDemoData(10, 11, 25);
 		data[0].value = 0;
 		omnitable = await setupOmnitableFixture(html`
-				<cosmoz-omnitable selection-enabled group-on="custom">
+				<cosmoz-omnitable selection-enabled>
 					<cosmoz-omnitable-column-number name="custom" value-path="value" .renderGroup=${ renderGroup } locale="en-US">
 					</cosmoz-omnitable-column-number>
 				</cosmoz-omnitable>
 			`, data);
+		omnitable.setGroupOn('custom');
 
+		await nextFrame();
 		flush();
-		omnitable.flush();
 		await nextFrame();
 	});
 
