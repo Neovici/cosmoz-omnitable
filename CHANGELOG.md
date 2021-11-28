@@ -1,3 +1,14 @@
+# [8.0.0-beta.1](https://github.com/neovici/cosmoz-omnitable/compare/v7.2.1...v8.0.0-beta.1) (2021-11-28)
+
+
+* feat!: migrate to hooks ([6285a11](https://github.com/neovici/cosmoz-omnitable/commit/6285a11a6e24ecf4ab343ddc3871112e4ae679a2))
+
+
+### BREAKING CHANGES
+
+* the columns no longer store the state. A compatibility
+layer has been set up to make sure the legacy code still works.
+
 ## [7.2.1](https://github.com/neovici/cosmoz-omnitable/compare/v7.2.0...v7.2.1) (2021-11-03)
 
 
