@@ -1,3 +1,10 @@
+# [8.0.0-beta.2](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0-beta.1...v8.0.0-beta.2) (2021-12-07)
+
+
+### Bug Fixes
+
+* support for treenode columns ([37f6825](https://github.com/neovici/cosmoz-omnitable/commit/37f6825d0096bf646863b9e26b9f5b5637035063))
+
 # [8.0.0-beta.1](https://github.com/neovici/cosmoz-omnitable/compare/v7.2.1...v8.0.0-beta.1) (2021-11-28)
 
 
