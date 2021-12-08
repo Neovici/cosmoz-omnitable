@@ -1,3 +1,11 @@
+# [7.3.0](https://github.com/neovici/cosmoz-omnitable/compare/v7.2.1...v7.3.0) (2021-12-08)
+
+
+### Features
+
+* **ui:** checkbox color variables ([98c80fc](https://github.com/neovici/cosmoz-omnitable/commit/98c80fcf5276e46af0b94177cb09bdb8f317773e))
+* **ui:** footer color variable ([db1302a](https://github.com/neovici/cosmoz-omnitable/commit/db1302ac17798a8321ad9cf975504ee77dd7fe61))
+
 ## [7.2.1](https://github.com/neovici/cosmoz-omnitable/compare/v7.2.0...v7.2.1) (2021-11-03)
 
 
