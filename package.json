@@ -64,7 +64,6 @@
 		"@polymer/iron-icons": "^3.0.0",
 		"@polymer/iron-label": "^3.0.0",
 		"@polymer/paper-button": "^3.0.0",
-		"@polymer/paper-checkbox": "^3.0.0",
 		"@polymer/paper-dropdown-menu": "^3.2.0",
 		"@polymer/paper-icon-button": "^3.0.0",
 		"@polymer/paper-input": "^3.2.0",
