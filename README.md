@@ -28,3 +28,5 @@ views/administration/periods/list.js
 BUGS:
 * when navigating the queue, filters are not reset when view-core is reused
 * autocomplete columns without valueProperty might not work
+* treenode cells have show-max-nodes="undefined"
+* treenode source has empty texts
