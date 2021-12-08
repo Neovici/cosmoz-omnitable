@@ -281,7 +281,7 @@ export default `<style>
 		display: flex;
 		align-items: center;
 		border-top: solid 1px #e8e8e8;
-		background-color: #f5f5f5;
+		background-color: var(--cosmoz-omnitable-footer-bg-color, #f5f5f5);
 		min-height: 25px;
 		height: 63px;
 		margin-bottom: 1px; /* Chrome overflow rendering bug? When only component in a view */
