@@ -3,7 +3,6 @@ import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-icon/iron-icon';
 import '@polymer/iron-label/iron-label';
 import '@polymer/paper-button/paper-button';
-import '@polymer/paper-checkbox/paper-checkbox';
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/paper-item/paper-item';

@@ -21,7 +21,7 @@ const checkbox = `
 	}
 
 	.checkbox:checked {
-		background-color: var(--paper-checkbox-checked-color, var(--primary-color));
+		background-color: var(--cosmoz-omnitable-checkbox-checked-color, var(--primary-color));
 		box-shadow: none;
 	}
 
@@ -62,7 +62,7 @@ const checkbox = `
 		height: 2px;
 		left: 4px;
 		top: 8px;
-	    background-color: var(--paper-checkbox-checked-color, var(--primary-color));
+	  background-color: var(--cosmoz-omnitable-checkbox-checked-color, var(--primary-color));
 	}
 `;
 
