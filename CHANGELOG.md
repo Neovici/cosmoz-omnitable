@@ -1,3 +1,11 @@
+# [8.0.0-beta.4](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0-beta.3...v8.0.0-beta.4) (2021-12-10)
+
+
+### Bug Fixes
+
+* list is not re-rendered ([9dab054](https://github.com/neovici/cosmoz-omnitable/commit/9dab0541173b9f243883e83b891befec7b4beb7d))
+* **refactor:** render the layout css via haunted ([0d572a4](https://github.com/neovici/cosmoz-omnitable/commit/0d572a4788fd560db832f51efdf10a2467b64cca))
+
 # [8.0.0-beta.3](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0-beta.2...v8.0.0-beta.3) (2021-12-08)
 
 
