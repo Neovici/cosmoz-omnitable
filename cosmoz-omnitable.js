@@ -23,7 +23,7 @@ import styles from './cosmoz-omnitable-styles';
 
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
-import { html as litHtml, render } from 'lit-html';
+import { html as litHtml } from 'lit-html';
 
 import { translatable } from '@neovici/cosmoz-i18next';
 import { mixin, hauntedPolymer } from '@neovici/cosmoz-utils';
@@ -275,8 +275,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 
 	static get observers() {
 		return [
-			'_selectedItemsChanged(selectedItems.*)',
-			'renderFastLayoutCss(layoutCss, $.layoutStyle)'
+			'_selectedItemsChanged(selectedItems.*)'
 		];
 	}
 
@@ -514,10 +513,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 			return this.ngettext('{1} / {0} row', '{1} / {0} rows', totalAvailable, numRows);
 		}
 		return this.ngettext('{0} row', '{0} rows', numRows);
-	}
-
-	renderFastLayoutCss(layoutCss, outlet) {
-		render(layoutCss, outlet);
 	}
 
 	_onCompleteValues(columns, type, value) { /* eslint-disable-next-line no-bitwise */
