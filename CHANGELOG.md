@@ -1,3 +1,10 @@
+# [8.0.0-beta.6](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0-beta.5...v8.0.0-beta.6) (2021-12-13)
+
+
+### Bug Fixes
+
+* **legacy-interop:** match polymer property change events ([178a713](https://github.com/neovici/cosmoz-omnitable/commit/178a71347f3ef24054f8919e9c59276331631f86))
+
 # [8.0.0-beta.5](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0-beta.4...v8.0.0-beta.5) (2021-12-13)
 
 
