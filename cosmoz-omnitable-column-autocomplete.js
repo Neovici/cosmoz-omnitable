@@ -14,7 +14,7 @@ import {
 import { get } from '@polymer/polymer/lib/utils/path';
 
 export const
-	getComparableValue = (item, valuePath, { textProperty, valueProperty } = {}) => {
+	getComparableValue = ({ valuePath, textProperty, valueProperty }, item) => {
 		const property = textProperty ? strProp(textProperty) : prop(valueProperty),
 			values = array(valuePath && get(item, valuePath)).map(property);
 		return values.length > 1 ? values.filter(Boolean).join(',') : values[0];
@@ -63,8 +63,8 @@ class OmnitableColumnAutocomplete extends listColumnMixin(columnMixin(PolymerEle
 		>${ spinner }</cosmoz-autocomplete-ui>`;
 	}
 
-	getComparableValue(item, valuePath, column) {
-		return getComparableValue(item, valuePath, column);
+	getComparableValue(column, item) {
+		return getComparableValue(column, item);
 	}
 
 	computeSource(column, data) {

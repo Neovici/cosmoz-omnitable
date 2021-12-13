@@ -252,10 +252,10 @@ suite('number - pure functions', () => {
 	});
 
 	test('returns the value of an item', () => {
-		assert.strictEqual(getComparableValue({ age: '13' }, 'age'), 13);
-		assert.strictEqual(getComparableValue(13), 13);
-		assert.equal(getComparableValue(data[1], 'age'), null);
-		assert.strictEqual(getComparableValue(data[2], 'age'), -11);
+		assert.strictEqual(getComparableValue({ valuePath: 'age' }, { age: '13' }), 13);
+		assert.strictEqual(getComparableValue({}, 13), 13);
+		assert.equal(getComparableValue({ valuePath: 'age' }, data[1]), null);
+		assert.strictEqual(getComparableValue({ valuePath: 'age' }, data[2]), -11);
 	});
 
 	test('getString displays 46.768 as 46.77', () => {

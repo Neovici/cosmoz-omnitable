@@ -200,10 +200,10 @@ suite('date - pure functions', () => {
 	});
 
 	test('date returns comparable values', () => {
-		assert.typeOf(getComparableValue('2023-03-21T00:00:00Z'), 'number');
-		assert.typeOf(getComparableValue(new Date('2015-03-18T00:00:00Z')), 'number');
-		assert.typeOf(getComparableValue(new Date(86400000)), 'number');
-		assert.equal(getComparableValue(new Date('2010-01-08T12:04:01Z')), 1262952241000);
+		assert.typeOf(getComparableValue({}, '2023-03-21T00:00:00Z'), 'number');
+		assert.typeOf(getComparableValue({}, new Date('2015-03-18T00:00:00Z')), 'number');
+		assert.typeOf(getComparableValue({}, new Date(86400000)), 'number');
+		assert.equal(getComparableValue({}, new Date('2010-01-08T12:04:01Z')), 1262952241000);
 	});
 
 	test('getString returns formated date with locale en-US', () => {

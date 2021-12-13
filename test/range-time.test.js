@@ -155,7 +155,7 @@ suite('time - pure functions', () => {
 	});
 
 	test('time getComparableValue returns right value', () => {
-		assert.equal(getComparableValue({ time: '2015-03-18T00:00:00Z' }, 'time'), 0);
+		assert.equal(getComparableValue({ valuePath: 'time' }, { time: '2015-03-18T00:00:00Z' }), 0);
 	});
 
 	test('time _toInputString returns local ISO string', () => {

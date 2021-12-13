@@ -36,8 +36,8 @@ class OmnitableColumnNumber extends columnMixin(PolymerElement) {
 
 	getFilterFn(column, filter) {
 		const
-			min = getComparableValue(filter, 'min', column),
-			max = getComparableValue(filter, 'max', column);
+			min = getComparableValue({ ...column, valuePath: 'min' }, filter),
+			max = getComparableValue({ ...column, valuePath: 'max' }, filter);
 
 		if (min == null && max == null) {
 			return;
@@ -57,8 +57,8 @@ class OmnitableColumnNumber extends columnMixin(PolymerElement) {
 		return getString(column, item);
 	}
 
-	getComparableValue(item, valuePath, column) {
-		return getComparableValue(item, valuePath, column);
+	getComparableValue(column, item) {
+		return getComparableValue(column, item);
 	}
 
 	serializeFilter(column, filter) {

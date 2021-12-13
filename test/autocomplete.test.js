@@ -30,21 +30,21 @@ const data = [{
 
 suite('pure functions', () => {
 	test('getComparableValue returns the correct value, given a path', () => {
-		assert.equal(getComparableValue({
+		assert.equal(getComparableValue({ valuePath: 'id' }, {
 			id: 14,
 			group: 'group0',
 			name: 'Item 14'
-		}, 'id'), 14);
-		assert.equal(getComparableValue({
+		}), 14);
+		assert.equal(getComparableValue({ valuePath: 'id' }, {
 			id: 345,
 			group: 'group7',
 			name: 'Item 345'
-		}, 'id'), 345);
-		assert.equal(getComparableValue({
+		}), 345);
+		assert.equal(getComparableValue({ valuePath: 'name' }, {
 			id: 27,
 			group: 'group5',
 			name: 'Item 27'
-		}, 'name'), 'Item 27');
+		}), 'Item 27');
 	});
 
 	test('getString handles undefined valuePath parameter', () => {
