@@ -1,3 +1,20 @@
+# [8.0.0-beta.5](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0-beta.4...v8.0.0-beta.5) (2021-12-13)
+
+
+### Bug Fixes
+
+* computeSource should by default return the unaltered data ([35addf7](https://github.com/neovici/cosmoz-omnitable/commit/35addf7247aa26a62825e046e5f29058d78dc693))
+
+
+### Code Refactoring
+
+* change the signature of getComparableValue ([772523e](https://github.com/neovici/cosmoz-omnitable/commit/772523e1a04182761add3a59bb679ed3bbc77b40))
+
+
+### BREAKING CHANGES
+
+* the signature is now getComparableValue(column, item)
+
 # [8.0.0-beta.4](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0-beta.3...v8.0.0-beta.4) (2021-12-10)
 
 
