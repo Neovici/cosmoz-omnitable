@@ -159,14 +159,14 @@ suite('amount', () => {
 	});
 
 	test('returns comparable value', () => {
-		assert.equal(getComparableValue(data[3], 'amount'), -8);
-		assert.equal(getComparableValue(data[4], 'amount'), 3450);
-		assert.equal(getComparableValue({
+		assert.equal(getComparableValue({ valuePath: 'amount' }, data[3]), -8);
+		assert.equal(getComparableValue({ valuePath: 'amount' }, data[4]), 3450);
+		assert.equal(getComparableValue({}, {
 			amount: '13',
 			currency: 'EUR'
 		}), 13);
-		assert.isUndefined(getComparableValue({}));
-		assert.isUndefined(getComparableValue([]));
+		assert.isUndefined(getComparableValue({}, {}));
+		assert.isUndefined(getComparableValue({}, []));
 	});
 
 	test('amount renders symbol and value', () => {
@@ -354,85 +354,85 @@ suite('currency rates', () => {
 	});
 
 	test('getComparableValue with rates returns value', () => {
-		assert.equal(getComparableValue({
+		assert.equal(getComparableValue({ rates }, {
 			amount: '10',
 			currency: 'EUR'
-		}, null, column), 10);
-		assert.equal(getComparableValue({
+		}), 10);
+		assert.equal(getComparableValue({ rates }, {
 			amount: -645,
 			currency: 'EUR'
-		}, null, column), -645);
-		assert.equal(getComparableValue({
+		}), -645);
+		assert.equal(getComparableValue({ rates }, {
 			amount: '10',
 			currency: 'USD'
-		}, null, column), 8.169982616);
-		assert.equal(getComparableValue({
+		}), 8.169982616);
+		assert.equal(getComparableValue({ rates }, {
 			amount: 10,
 			currency: 'GBP'
-		}, null, column), 11.347079368);
-		assert.equal(getComparableValue({
+		}), 11.347079368);
+		assert.equal(getComparableValue({ rates }, {
 			amount: 10,
 			currency: 'SEK'
-		}, null, column).toFixed(8), 1.01927144);
-		assert.equal(getComparableValue({
+		}).toFixed(8), 1.01927144);
+		assert.equal(getComparableValue({ rates }, {
 			amount: 678,
 			currency: 'AUD'
-		}, null, column).toFixed(8), 442.72228362);
-		assert.equal(getComparableValue({
+		}).toFixed(8), 442.72228362);
+		assert.equal(getComparableValue({ rates }, {
 			amount: '12.4',
 			currency: 'USD'
-		}, null, column).toFixed(8), 10.13077844);
+		}).toFixed(8), 10.13077844);
 	});
 
 	test('changing currency does not affect comparable value', async () => {
 		column.currency = 'USD';
 		await nextFrame();
-		assert.equal(getComparableValue({
+		assert.equal(getComparableValue({ rates }, {
 			amount: '-3147',
 			currency: 'EUR'
-		}, null, column), -3147);
-		assert.equal(getComparableValue({
+		}), -3147);
+		assert.equal(getComparableValue({ rates }, {
 			amount: '1000',
 			currency: 'USD'
-		}, null, column), 816.9982616);
+		}), 816.9982616);
 
 		column.currency = 'GBP';
 		await nextFrame();
-		assert.equal(getComparableValue({
+		assert.equal(getComparableValue({ rates }, {
 			amount: 333,
 			currency: 'EUR'
-		}, null, column), 333);
-		assert.equal(getComparableValue({
+		}), 333);
+		assert.equal(getComparableValue({ rates }, {
 			amount: -100,
 			currency: 'USD'
-		}, null, column), -81.69982616);
-		assert.equal(getComparableValue({
+		}), -81.69982616);
+		assert.equal(getComparableValue({ rates }, {
 			amount: 2534,
 			currency: 'SEK'
-		}, null, column).toFixed(8), 258.28338239);
+		}).toFixed(8), 258.28338239);
 	});
 
 	test('getComparableValue with default rate returns value', () => {
-		assert.equal(getComparableValue({
+		assert.equal(getComparableValue({ rates }, {
 			amount: '3450',
 			currency: 'DKK'
-		}, null, column), 3450);
-		assert.equal(getComparableValue({
+		}), 3450);
+		assert.equal(getComparableValue({ rates }, {
 			amount: -888,
 			currency: 'AED'
-		}, null, column), -888);
-		assert.equal(getComparableValue({
+		}), -888);
+		assert.equal(getComparableValue({ rates }, {
 			amount: 491,
 			currency: 'AED'
-		}, null, column), 491);
-		assert.equal(getComparableValue({
+		}), 491);
+		assert.equal(getComparableValue({ rates }, {
 			amount: 7321,
 			currency: 'CRC'
-		}, null, column), 7321);
-		assert.equal(getComparableValue({
+		}), 7321);
+		assert.equal(getComparableValue({ rates }, {
 			amount: 901,
 			currency: 'BHD'
-		}, null, column), 901);
+		}), 901);
 	});
 
 	test('toAmount limits the value with rates', () => {

@@ -130,7 +130,7 @@ const
 			return getString(column, item);
 		}
 
-		getComparableValue(item, valuePath, { valueProperty }) {
+		getComparableValue({ valuePath, valueProperty }, item) {
 			const value = get(item, valuePath);
 			if (valueProperty == null) {
 				return value;

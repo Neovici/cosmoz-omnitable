@@ -3,6 +3,7 @@ import { get } from '@polymer/polymer/lib/utils/path';
 export const
 	getString = ({ valuePath }, item) => get(item, valuePath),
 	toXlsxValue = getString,
+	getComparableValue = getString,
 
 	applySingleFilter = ({ valuePath }, filter) => item => {
 		const value = get(item, valuePath);
@@ -87,8 +88,8 @@ export const
 			return filter;
 		}
 
-		getComparableValue(item, valuePath) {
-			return get(item, valuePath);
+		getComparableValue(column, item) {
+			return getComparableValue(column, item);
 		}
 
 		computeSource(column, data) {
