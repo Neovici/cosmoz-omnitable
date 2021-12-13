@@ -91,8 +91,8 @@ export const
 			return get(item, valuePath);
 		}
 
-		computeSource() {
-			return null;
+		computeSource(column, data) {
+			return data;
 		}
 
 		_propertiesChanged(currentProps, changedProps, oldProps) {
