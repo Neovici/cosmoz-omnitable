@@ -8,7 +8,7 @@ import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from 'lit-html';
 import { fromHashString, getString, toHashString, toXlsxValue } from './lib/utils-datetime';
 import { applySingleFilter, fromInputString, getComparableValue, toDate } from './lib/utils-date';
-import { valuesFrom } from './lib/utils-data';
+import { defaultComputeSource } from './lib/utils-data';
 import './lib/cosmoz-omnitable-datetime-range-input';
 
 /**
@@ -123,8 +123,8 @@ class OmnitableColumnDatetime extends columnMixin(PolymerElement) {
 		></cosmoz-omnitable-datetime-range-input>`;
 	}
 
-	computeSource({ valuePath }, data) {
-		return valuesFrom(data, valuePath);
+	computeSource(column, data) {
+		return defaultComputeSource(column, data);
 	}
 }
 

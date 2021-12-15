@@ -68,7 +68,9 @@ class OmnitableColumnAutocomplete extends listColumnMixin(columnMixin(PolymerEle
 	}
 
 	computeSource(column, data) {
-		return computeSource(column, data);
+		return column.externalValues || typeof column.values === 'function'
+			? column.values
+			: computeSource(column, data);
 	}
 
 }

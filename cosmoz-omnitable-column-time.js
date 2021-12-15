@@ -10,7 +10,7 @@ import { html } from 'lit-html';
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 import { getComparableValue, getString, toXlsxValue, applySingleFilter, toDate, toHashString, fromHashString } from './lib/utils-time';
 import './lib/cosmoz-omnitable-time-range-input';
-import { valuesFrom } from './lib/utils-data';
+import { defaultComputeSource } from './lib/utils-data';
 
 /**
  * @polymer
@@ -124,8 +124,8 @@ class OmnitableColumnTime extends columnMixin(PolymerElement) {
 		></cosmoz-omnitable-time-range-input>`;
 	}
 
-	computeSource({ valuePath }, data) {
-		return valuesFrom(data, valuePath);
+	computeSource(column, data) {
+		return defaultComputeSource(column, data);
 	}
 }
 customElements.define('cosmoz-omnitable-column-time', OmnitableColumnTime);

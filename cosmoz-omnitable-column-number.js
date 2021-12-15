@@ -8,7 +8,7 @@ import { html } from 'lit-html';
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 
 import './lib/cosmoz-omnitable-number-range-input';
-import { valuesFrom } from './lib/utils-data';
+import { defaultComputeSource } from './lib/utils-data';
 import { applySingleFilter, getComparableValue, getInputString, getString, toHashString, toNumber } from './lib/utils-number';
 import { get } from '@polymer/polymer/lib/utils/path';
 
@@ -127,8 +127,8 @@ class OmnitableColumnNumber extends columnMixin(PolymerElement) {
 		></cosmoz-omnitable-number-range-input>`;
 	}
 
-	computeSource({ valuePath }, data) {
-		return valuesFrom(data, valuePath);
+	computeSource(column, data) {
+		return defaultComputeSource(column, data);
 	}
 }
 customElements.define('cosmoz-omnitable-column-number', OmnitableColumnNumber);
