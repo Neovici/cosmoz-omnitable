@@ -7,7 +7,7 @@ import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from 'lit-html';
 
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
-import { valuesFrom } from './lib/utils-data';
+import { defaultComputeSource } from './lib/utils-data';
 import './lib/cosmoz-omnitable-amount-range-input';
 import { getComparableValue, getCurrency, applySingleFilter, getString, getInputString, toAmount, toHashString, fromHashString } from './lib/utils-amount';
 import { get } from '@polymer/polymer/lib/utils/path';
@@ -134,8 +134,8 @@ class OmnitableColumnAmount extends columnMixin(PolymerElement) {
 		></cosmoz-omnitable-amount-range-input>`;
 	}
 
-	computeSource({ valuePath }, data) {
-		return valuesFrom(data, valuePath);
+	computeSource(column, data) {
+		return defaultComputeSource(column, data);
 	}
 }
 

@@ -9,7 +9,7 @@ import { html } from 'lit-html';
 
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 import './lib/cosmoz-omnitable-date-range-input';
-import { valuesFrom } from './lib/utils-data';
+import { defaultComputeSource } from './lib/utils-data';
 import { getString, getComparableValue, toDate, toHashString, toXlsxValue, applySingleFilter, getInputString, fromInputString } from './lib/utils-date';
 
 class OmnitableColumnDate extends columnMixin(PolymerElement) {
@@ -117,8 +117,8 @@ class OmnitableColumnDate extends columnMixin(PolymerElement) {
 		></cosmoz-omnitable-date-range-input>`;
 	}
 
-	computeSource({ valuePath }, data) {
-		return valuesFrom(data, valuePath);
+	computeSource(column, data) {
+		return defaultComputeSource(column, data);
 	}
 }
 customElements.define('cosmoz-omnitable-column-date', OmnitableColumnDate);
