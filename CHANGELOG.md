@@ -1,3 +1,11 @@
+# [8.0.0-beta.7](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0-beta.6...v8.0.0-beta.7) (2021-12-15)
+
+
+### Bug Fixes
+
+* send `values` to computeSource ([4a6312d](https://github.com/neovici/cosmoz-omnitable/commit/4a6312d126ceee71cf6b1b1d6d82fa0f5bff27f0))
+* **use-dom-columns:** copy over headerCellClass to column config ([e6197d3](https://github.com/neovici/cosmoz-omnitable/commit/e6197d35d48432cb4b093f1e949654cc1ff19931))
+
 # [8.0.0-beta.6](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0-beta.5...v8.0.0-beta.6) (2021-12-13)
 
 
