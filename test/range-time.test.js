@@ -8,9 +8,9 @@ import { setupOmnitableFixture } from './helpers/utils';
 import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
 
 import '../cosmoz-omnitable';
-import { columnSymbol } from '../lib/normalize-settings';
 import { getComparableValue, toDate, toHashString, toInputString } from '../lib/utils-time';
 import { toLocalISOString } from '@neovici/cosmoz-utils/lib/date';
+import { columnSymbol } from '../lib/use-dom-columns';
 
 const data = [{
 		age: 17,

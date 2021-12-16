@@ -10,7 +10,7 @@ import '../cosmoz-omnitable-columns.js';
 import { computeItemValue, getString, toXlsxValue, onChange, deserializeFilter } from '../cosmoz-omnitable-column-boolean';
 import { onItemChange } from '../lib/utils-data';
 import { serializeFilter } from '../cosmoz-omnitable-column-mixin';
-import { columnSymbol } from '../lib/normalize-settings';
+import { columnSymbol } from '../lib/use-dom-columns';
 
 suite('boolean', () => {
 	test('initializes boolean column', async () => {
