@@ -1,3 +1,10 @@
+# [8.0.0-beta.8](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0-beta.7...v8.0.0-beta.8) (2021-12-16)
+
+
+### Bug Fixes
+
+* external values stops working after column resize ([40087ca](https://github.com/neovici/cosmoz-omnitable/commit/40087ca7b01ce9894a596dab22cf469c809430c4))
+
 # [8.0.0-beta.7](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0-beta.6...v8.0.0-beta.7) (2021-12-15)
 
 
