@@ -13,7 +13,7 @@ import { flush } from '@polymer/polymer/lib/utils/flush';
 import '../cosmoz-omnitable.js';
 import '../cosmoz-omnitable-columns.js';
 import '@polymer/paper-toggle-button';
-import { columnSymbol } from '../lib/normalize-settings';
+import { columnSymbol } from '../lib/use-dom-columns';
 
 sinonAssert.expose(chai.assert, { prefix: '' });
 

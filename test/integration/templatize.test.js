@@ -7,7 +7,7 @@ import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
 
 import '../../cosmoz-omnitable.js';
 import '../helpers/fixtures/basic-column.js';
-import { columnSymbol } from '../../lib/normalize-settings';
+import { columnSymbol } from '../../lib/use-dom-columns';
 
 suite('Basic omnitable functionality', () => {
 	let omnitable;

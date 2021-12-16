@@ -4,9 +4,9 @@ import { setupOmnitableFixture } from './helpers/utils';
 
 import '../cosmoz-omnitable.js';
 import '../cosmoz-omnitable-columns.js';
-import { columnSymbol } from '../lib/normalize-settings';
 import { applySingleFilter } from '../cosmoz-omnitable-column-mixin';
 import { applyMultiFilter, getString } from '../cosmoz-omnitable-column-list-mixin';
+import { columnSymbol } from '../lib/use-dom-columns';
 
 suite('basic', () => {
 	let

@@ -12,8 +12,8 @@ import { flush } from '@polymer/polymer/lib/utils/flush';
 
 import '../cosmoz-omnitable.js';
 import '../cosmoz-omnitable-columns.js';
-import { columnSymbol } from '../lib/normalize-settings';
 import { getComparableValue, getString, toNumber } from '../lib/utils-number';
+import { columnSymbol } from '../lib/use-dom-columns';
 
 const data = [{
 		age: 17,
