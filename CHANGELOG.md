@@ -1,3 +1,10 @@
+# [8.0.0-beta.10](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0-beta.9...v8.0.0-beta.10) (2021-12-17)
+
+
+### Bug Fixes
+
+* **use-omnitable:** settings panel does not display correct hidden columns ([6535170](https://github.com/neovici/cosmoz-omnitable/commit/65351706eb725b3638af828049ad93ee2f60a2d5))
+
 # [8.0.0-beta.9](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0-beta.8...v8.0.0-beta.9) (2021-12-16)
 
 
