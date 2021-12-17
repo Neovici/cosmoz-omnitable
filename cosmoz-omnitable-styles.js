@@ -281,11 +281,9 @@ export default `<style>
 	.footer {
 		display: flex;
 		align-items: center;
-		border-top: solid 1px #e8e8e8;
 		background-color: var(--cosmoz-omnitable-footer-bg-color, #f5f5f5);
-		min-height: 25px;
-		height: 63px;
-		margin-bottom: 1px; /* Chrome overflow rendering bug? When only component in a view */
+		height: 64px;
+		padding: 0 24px;
 	}
 
 	.footer-controls {
@@ -296,24 +294,34 @@ export default `<style>
 	}
 
 	.footer-control {
-		margin-left: 3%;
 		display: flex;
 		align-items: center;
+	}
+	.footer-control + .footer-control {
+		margin-left: 34px;
+	}
+	.footer-control::part(input-label) {
+		opacity: 0.7;
+	}
+	.footer-control::part(input-line) {
+		margin-top: 1px;
+	}
+	.footer-control::part(chip) {
+	  background-color: #CBCFDB;
+	}
+	.footer-control::part(chip-clear) {
+		background-color: #81899B;
+		fill: #CBCFDB;
 	}
 
 	.footer-tableStats {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-end;
-		margin-right: 3%;
 	}
 
 	.footer-tableStats :first-child {
 		margin-bottom: 5px;
-	}
-
-	.footer-control-label {
-		margin-right: 10px;
 	}
 
 	.item-row-wrapper {
@@ -322,7 +330,7 @@ export default `<style>
 	}
 
 	.itemRow {
-		border-bottom-color: #e2e2e2;
+		border-bottom-color: var(--cosmoz-omnitable-border-color, #e1e2e5);
 		border-bottom-width: 1px;
 		border-bottom-style: var(--cosmoz-omnitable-item-row-border-bottom-style, solid);
 		/* set a min-height for rows so that rows with empty values are visible */
@@ -333,7 +341,7 @@ export default `<style>
 	}
 
 	.itemRow[selected] {
-		background-color: rgb(195, 212, 248) !important;
+		background-color: var(--cosmoz-omnitable-selection-color, rgb(195, 212, 248)) !important;
 		@apply --cosmoz-omnitable-selected-row;
 	}
 
@@ -346,7 +354,7 @@ export default `<style>
 		flex-direction: column;
 		padding: 5px 4%;
 		line-height: 1.3em;
-		border-bottom: solid 1px #e2e2e2;
+		border-bottom: solid 1px var(--cosmoz-omnitable-border-color, #e1e2e5);
 		background-color: #fafafa;
 	}
 
@@ -400,9 +408,11 @@ export default `<style>
 
 	cosmoz-bottom-bar {
 		background-color: var(--cosmoz-omnitable-bottom-bar-color, #5f5a92);
-		color: white;
 		overflow: hidden;
 		z-index: auto;
+	}
+	cosmoz-bottom-bar::part(bar) {
+		padding: 0 24px;
 	}
 
 	cosmoz-bottom-bar::slotted(*) {
@@ -417,31 +427,6 @@ export default `<style>
 		cursor: not-allowed;
 	}
 
-	#dropdownExtra paper-button, #dropdownExtra ::slotted(paper-button) {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		position: relative;
-		@apply --cosmoz-bottom-bar-menu-item;
-	}
-
-	#dropdownExtra paper-button:hover, #dropdownExtra ::slotted(paper-button:hover) {
-		background: #eee;
-	}
-
-	#dropdownExtra {
-		padding: 0;
-	}
-
-	#listboxSizer {
-		max-height: 0;
-		padding: 0 !important;
-	}
-
-	#dropdownExtraButton {
-		color: var(--cosmoz-bottom-bar-menubutton-color, var(--light-primary-color));
-		background-color: var(--cosmoz-bottom-bar-menubutton-background-color, var(--dark-primary-color));
-	}
 
 	.boolean-cell[editable] {
 		overflow: initial;
@@ -479,4 +464,34 @@ export default `<style>
 	.expand:hover, .fold:hover {
 		color: #000;
 	}
+
+	cosmoz-dropdown::part(button) {
+		background: var(--cosmoz-omnitable-dropdown-bg-color, #101010);
+		color: white;
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		border: none;
+		cursor: pointer;
+	}
+
+	cosmoz-dropdown::part(anchor) {
+		padding: 12px 8px;
+	}
+	cosmoz-dropdown::part(dropdown) {
+		background: #fff;
+		box-shadow: 0px 3px 4px 2px rgba(0, 0, 0, 0.1);
+	}
+
+	cosmoz-dropdown paper-button,cosmoz-dropdown ::slotted(paper-button) {
+		@apply --cosmoz-bottom-bar-menu-item;
+		padding: 10px 24px;
+		min-width: 140px;
+		justify-content: flex-start;
+	}
+
+	cosmoz-dropdown paper-button:hover, cosmoz-dropdown ::slotted(paper-button:hover) {
+		background: var(--cosmoz-omnitable-selection-color, rgb(195, 212, 248))
+	}
+
 </style>`;

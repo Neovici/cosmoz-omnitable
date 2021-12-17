@@ -1,12 +1,8 @@
 /* eslint-disable max-lines */
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-icon/iron-icon';
-import '@polymer/iron-label/iron-label';
 import '@polymer/paper-button/paper-button';
-import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import '@polymer/paper-icon-button/paper-icon-button';
-import '@polymer/paper-item/paper-item';
-import '@polymer/paper-listbox/paper-listbox';
 import '@polymer/paper-spinner/paper-spinner-lite';
 
 import '@neovici/cosmoz-grouped-list';
@@ -32,7 +28,7 @@ import { useOmnitable } from './lib/use-omnitable';
 import './lib/cosmoz-omnitable-settings';
 import { saveAsCsvAction } from './lib/save-as-csv-action';
 import { saveAsXlsxAction } from './lib/save-as-xlsx-action';
-
+import { defaultPlacement } from '@neovici/cosmoz-dropdown';
 /**
  * @polymer
  * @customElement
@@ -140,38 +136,40 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 						source="[[ _onCompleteValues(columns, 'groupOn', groupOnColumn) ]]" value="[[ groupOnColumn ]]" limit="1" text-property="title"
 						always-float-label item-height="48" item-limit="8"
 						class="footer-control" on-change="[[ _onCompleteChange('groupOn') ]]" default-index="-1" show-single show-selection
-					></cosmoz-autocomplete>
+					>
+						<svg slot="suffix" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" width="24" fill="currentColor"><path d="M7 10l5 5 5-5z"></path></svg>
+					</cosmoz-autocomplete>
 					<cosmoz-autocomplete
 						label="[[ _('Sort on', t) ]] [[ _computeSortDirection(descending, t) ]]" placeholder="[[ _('No sorting', t) ]]"
 						source="[[ _onCompleteValues(columns, 'sortOn', sortOnColumn) ]]" value="[[ sortOnColumn ]]" limit="1" text-property="title"
 						always-float-label item-height="48" item-limit="8"
 						class="footer-control" on-change="[[ _onCompleteChange('sortOn') ]]" default-index="-1" show-single show-selection
-					></cosmoz-autocomplete>
+					>
+						<svg slot="suffix" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" width="24" fill="currentColor"><path d="M7 10l5 5 5-5z"></path></svg>
+					</cosmoz-autocomplete>
 				</div>
 				<div class="footer-tableStats">
 					<span>[[ ngettext('{0} group', '{0} groups', groupsCount, t) ]]</span>
 					<span>[[ _renderRowStats(numProcessedItems, totalAvailable, t) ]]</span>
 				</div>
 				<cosmoz-bottom-bar id="bottomBar" class="footer-actionBar" match-parent
-					on-action="_onAction" active$="[[ !isEmpty(selectedItems.length) ]]" computed-bar-height="{{ computedBarHeight }}">
+					on-action="_onAction" active$="[[ !isEmpty(selectedItems.length) ]]">
 					<slot name="info" slot="info">[[ ngettext('{0} selected item', '{0} selected items', selectedItems.length, t) ]]</slot>
 					<slot name="actions" id="actions"></slot>
 					<!-- These slots are needed by cosmoz-bottom-bar
 						as it might change the slot of the actions to distribute them in the menu -->
 					<slot name="bottom-bar-toolbar" slot="bottom-bar-toolbar"></slot>
 					<slot name="bottom-bar-menu" slot="bottom-bar-menu"></slot>
-					<paper-menu-button id="extraMenu" slot="extra" no-animations
-						vertical-offset="[[ computedBarHeight ]]" vertical-align="bottom" horizontal-align="right">
-						<paper-icon-button id="dropdownExtraButton" class="dropdown-trigger" slot="dropdown-trigger" icon="file-download" toggles raised>
-						</paper-icon-button>
-						<paper-listbox id="dropdownExtra" class="dropdown-content" slot="dropdown-content">
-							<span id="listboxSizer"></span>
-							<paper-button on-click="_saveAsCsvAction">[[ _('Save as CSV', t) ]]</paper-button>
-							<paper-button on-click="_saveAsXlsxAction">[[ _('Save as XLSX', t) ]]</paper-button>
-							<slot name="download-menu"></slot>
-						</paper-listbox>
-					</paper-menu-button>
-
+					<cosmoz-dropdown slot="extra" placement="[[ topPlacement ]]">
+						<svg slot="button" width="14" height="18" viewBox="0 0 14 18" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+							<path d="M1 8.5L7.00024 14.5L13 8.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+							<path d="M13 17L1 17" stroke-width="2" stroke-linecap="round"/>
+							<path d="M7 1V13" stroke-width="2" stroke-linecap="round"/>
+						</svg>
+						<paper-button on-click="_saveAsCsvAction">[[ _('Save as CSV', t) ]]</paper-button>
+						<paper-button on-click="_saveAsXlsxAction">[[ _('Save as XLSX', t) ]]</paper-button>
+						<slot name="download-menu"></slot>
+					</cosmoz-dropdown>
 				</cosmoz-bottom-bar>
 			</div>
 		</div>
@@ -269,7 +267,10 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 			 */
 			_allSelected: { type: Boolean },
 			computedBarHeight: { type: Number },
-			settingsId: { type: String, value: undefined }
+			settingsId: { type: String, value: undefined },
+			topPlacement: {
+				value: ['top-right', ...defaultPlacement]
+			}
 		};
 	}
 
