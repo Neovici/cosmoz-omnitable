@@ -1,8 +1,5 @@
 import 'web-animations-js/web-animations-next.min.js';
-import { flush } from '@polymer/polymer/lib/utils/flush';
-import {
-	expect, html, nextFrame, oneEvent
-} from '@open-wc/testing';
+import { expect, html, nextFrame, oneEvent } from '@open-wc/testing';
 
 import {
 	pressEnter, pressAndReleaseKeyOn
@@ -39,25 +36,27 @@ const data = [{
 }];
 
 suite('cosmoz-omnitable-column-number', () => {
-	let omnitable;
+	let omnitable,
+		columnHeaderInput;
 
-	const getHeaderMenu = () => omnitable.shadowRoot.querySelector('cosmoz-omnitable-header-row paper-dropdown-menu'),
+	const getHeaderMenu = () => columnHeaderInput.shadowRoot.querySelector('paper-dropdown-menu'),
 		openHeaderMenu = async () => {
 			const header = getHeaderMenu();
 			header.noAnimations = true;
-			header.click();
+			header.open();
 			await oneEvent(header.querySelector('paper-input'), 'focus');
 		},
 
 		getInputs = () =>
-			omnitable.shadowRoot.querySelectorAll('cosmoz-omnitable-header-row paper-dropdown-menu paper-input'),
+			columnHeaderInput.shadowRoot.querySelectorAll('paper-dropdown-menu paper-input'),
 
 		getFocusedInput = () =>
-			omnitable.shadowRoot.querySelector('cosmoz-omnitable-header-row paper-dropdown-menu paper-input:focus-within'),
+			columnHeaderInput.shadowRoot.querySelector('paper-dropdown-menu paper-input:focus-within'),
 
 		setInputValue = async (inputNo, value) => {
 			const input = getInputs()[inputNo];
 			input.focus();
+			await nextFrame();
 			input.value = value;
 		};
 
@@ -69,9 +68,7 @@ suite('cosmoz-omnitable-column-number', () => {
 			</cosmoz-omnitable>
 		`, data);
 
-		flush();
-		omnitable.flush();
-		await nextFrame();
+		columnHeaderInput = omnitable.shadowRoot.querySelector('cosmoz-omnitable-number-range-input');
 	});
 
 	test('filters the table', async () => {
@@ -89,7 +86,7 @@ suite('cosmoz-omnitable-column-number', () => {
 		pressEnter(getFocusedInput());
 
 		// then the omnitable displays only one item
-		omnitable.flush();
+		await nextFrame();
 		expect(omnitable.sortedFilteredGroupedItems).to.have.lengthOf(1);
 	});
 
@@ -183,16 +180,14 @@ suite('cosmoz-omnitable-column-number', () => {
 		await setInputValue(0, 10);
 		await setInputValue(1, 12);
 		pressEnter(getFocusedInput());
-		omnitable.flush();
+		await nextFrame();
 		expect(omnitable.sortedFilteredGroupedItems).to.have.lengthOf(1);
 
-		// when I click the clear buttons
-		const inputs = getInputs();
-		inputs[0].querySelector('iron-icon').click();
-		inputs[1].querySelector('iron-icon').click();
+		// when I clear the inputs
+		columnHeaderInput.shadowRoot.querySelector('cosmoz-clear-button').click();
+		await nextFrame();
 
 		// then the omnitable displays all items
-		omnitable.flush();
 		expect(omnitable.sortedFilteredGroupedItems).to.have.lengthOf(6);
 	});
 });

@@ -1,113 +1,54 @@
-import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin';
 import {
 	prop, array
 } from '@neovici/cosmoz-autocomplete/lib/utils';
+import { get } from '@polymer/polymer/lib/utils/path';
+import { valuesFrom } from './lib/utils-data';
 
-/**
- * @polymer
- * @mixinFunction
- */
-// eslint-disable-next-line max-lines-per-function
-export const listColumnMixin = dedupingMixin(base => class extends base {
-	static get properties() {
-		return {
-			/**
-			 * Ask for a list of values
-			 */
-			bindValues: {
-				type: Boolean,
-				readOnly: true,
-				value: true
-			},
-
-			filter: {
-				type: Array,
-				notify: true,
-				value() {
-					return this._getDefaultFilter();
-				}
-			},
-
-			textProperty: {
-				type: String
-			},
-
-			valueProperty: {
-				type: String
-			},
-
-			query: {
-				type: String,
-				notify: true
-			},
-
-			emptyLabel: {
-				type: String
-			},
-			emptyValue: {
-				type: Object
-			},
-
-			_source: {
-				type: Array,
-				computed: '_computeSource(values, valueProperty, textProperty, emptyLabel, emptyValue)'
-			}
-		};
-	}
-	constructor() {
-		super();
-		this._onFocus = this._onFocus.bind(this);
-		this._onChange = this._onChange.bind(this);
-		this._onText = this._onText.bind(this);
-	}
-
-	getString(item, valuePath = this.valuePath, textProperty = this.textProperty) {
-		return this.getTexts(item, valuePath, textProperty)
-			.filter(i => i != null)
-			.join(', ');
-	}
-
-	getTexts(item, valuePath = this.valuePath, textProperty = this.textProperty) {
-		return array(valuePath && this.get(valuePath, item)).map(prop(textProperty));
-	}
-
-	toXlsxValue(item, valuePath = this.valuePath) {
-		return this.getString(item, valuePath);
-	}
-
-	/**
-	 * Get the comparable value of an item.
-	 *
-	 * @param {Object} item Item to be processed
-	 * @param {String} valuePath Property path
-	 * @returns {String|void} Valid value or void
-	 */
-	getComparableValue(item, valuePath = this.valuePath) {
-		const value = super.getComparableValue(item, valuePath);
-		if (this.valueProperty == null) {
-			return value;
+const
+	unique = (values, valueProperty) => {
+		if (!Array.isArray(values)) {
+			return;
 		}
-		const subValues = array(value).reduce((acc, subItem) => {
-			acc.push(this.get(this.valueProperty, subItem));
-			return acc;
-		}, []);
-		return subValues.sort().join(' ');
-	}
+		const used = [];
+		return values
+			.reduce((acc, cur) => {
+				if (Array.isArray(cur)) {
+					cur.forEach(subcur => {
+						acc.push(subcur);
+					});
+					return acc;
+				}
+				acc.push(cur);
+				return acc;
+			}, [])
+			.filter((item, index, array) => {
+				if (array.indexOf(item) !== index) {
+					return false;
+				}
+				if (valueProperty) {
+					const value = get(item, valueProperty);
+					if (used.indexOf(value) !== -1) {
+						return false;
+					}
+					used.push(value);
+				}
+				return true;
+			});
+	},
 
-	_getDefaultFilter() {
-		return [];
-	}
+	toAutocompleteSource = (values, valueProperty, textProperty) => {
+		if (values == null) {
+			return [];
+		}
 
-	_getSource(values, valueProperty = this.valueProperty, textProperty = this.textProperty) {
-		if (values != null && !Array.isArray(values) && typeof values === 'object') {
-			const valProp = valueProperty ?? 'id',
+		if (Array.isArray(values)) {
+			return unique(values, valueProperty);
+		}
+
+		if (typeof values === 'object') {
+			const
+				valProp = valueProperty ?? 'id',
 				textProp = textProperty ?? 'label';
-			if (valueProperty == null) {
-				this.valueProperty = valProp;
-			}
-			if (textProperty == null) {
-				this.textProperty = textProp;
-			}
 			return Object
 				.entries(values)
 				.map(([id, label]) => ({
@@ -124,51 +65,105 @@ export const listColumnMixin = dedupingMixin(base => class extends base {
 					return 0;
 				});
 		}
-		return this._unique(values, valueProperty) || [];
-	}
 
-	_computeSource(values, valueProperty, textProperty, emptyLabel, emptyValue) {
-		if (typeof values === 'function') {
-			return values;
-		}
+		return [];
+	},
 
-		const source = this._getSource(values, valueProperty, textProperty);
-		if (!emptyLabel || emptyValue === undefined || source.length < 0) {
+	getTexts = (item, valuePath, textProperty) =>
+		array(valuePath && get(item, valuePath)).map(prop(textProperty)),
+
+	getString = ({ valuePath, textProperty }, item) => {
+		return getTexts(item, valuePath, textProperty)
+			.filter(i => i != null)
+			.join(', ');
+	},
+
+	toXlsxValue = getString,
+
+	applyMultiFilter = ({ valueProperty, valuePath, emptyValue }, filters) => item => {
+		const val = prop(valueProperty),
+			values = array(get(item, valuePath));
+		return filters.some(filter =>
+			values.length === 0 && val(filter) === emptyValue || values.some(value => val(value) === val(filter))
+		);
+	},
+
+	onChange = setState => value => setState(state => ({ ...state, filter: value })),
+	onFocus = setState => focused => setState(state => ({ ...state, headerFocused: focused })),
+	onText = setState => text => setState(state => ({ ...state, query: text })),
+
+	computeSource = (
+		{ valuePath, valueProperty, textProperty, emptyLabel, emptyValue },
+		data
+	) => {
+		const values = valuesFrom(data, valuePath),
+			source = toAutocompleteSource(values, valueProperty, textProperty);
+
+		if (!emptyLabel || emptyValue === undefined || !textProperty || !valueProperty || source.length < 0) {
 			return source;
 		}
 		return [{
-			[this.textProperty]: emptyLabel,
-			[this.valueProperty]: emptyValue
+			[textProperty]: emptyLabel,
+			[valueProperty]: emptyValue
 		}, ...source];
-	}
+	},
 
-
-	_applyMultiFilter(filters, item) {
-		const val = prop(this.valueProperty),
-			values = array(this.get(this.valuePath, item));
-		return filters.some(
-			filter => values.length === 0 && val(filter) === this.emptyValue || values.some(value => val(value) === val(filter))
-		);
-	}
-
-	_computeValue(filters, source = [], valueProperty = this.valueProperty) {
-		if ((filters?.length || 0) < 1) {
-			return;
+	listColumnMixin = base => class extends base {
+		static get properties() {
+			return {
+				textProperty: { type: String },
+				valueProperty: { type: String },
+				emptyLabel: { type: String },
+				emptyValue: { type: Object }
+			};
 		}
-		const val = prop(valueProperty),
-			sourced = typeof source === 'function' ? [] : source.filter(item => filters.some(filter => val(filter) === val(item)));
-		return filters.map(filter => sourced.find(item => val(item) === val(filter)) || filter);
-	}
 
-	_onChange(value) {
-		this.filter = value;
-	}
+		getString(column, item) {
+			return getString(column, item);
+		}
 
-	_onFocus(focused) {
-		this.headerFocused = focused;
-	}
+		toXlsxValue(column, item) {
+			return toXlsxValue(column, item);
+		}
 
-	_onText(text) {
-		this.query = text;
-	}
-});
+		cellTitleFn(column, item) {
+			return getString(column, item);
+		}
+
+		getComparableValue({ valuePath, valueProperty }, item) {
+			const value = get(item, valuePath);
+			if (valueProperty == null) {
+				return value;
+			}
+			const subValues = array(value).reduce((acc, subItem) => {
+				acc.push(get(subItem, valueProperty));
+				return acc;
+			}, []);
+			return subValues.sort().join(' ');
+		}
+
+		getFilterFn(column, filters) {
+			if (!filters || !Array.isArray(filters) || filters.length === 0) {
+				return;
+			}
+
+			return applyMultiFilter(column, filters);
+		}
+
+		serializeFilter(column, filter) {
+			// TODO: drop the double-encoding
+			return filter.length === 0 ? null : encodeURIComponent(JSON.stringify(filter));
+		}
+
+		deserializeFilter(column, filter) {
+			return JSON.parse(decodeURIComponent(filter));
+		}
+
+		computeSource(column, data) {
+			return column.externalValues || typeof column.values === 'function'
+				? column.values
+				: computeSource(column, data);
+		}
+	};
+
+export { unique, getTexts, getString, toXlsxValue, applyMultiFilter, onChange, onFocus, onText, computeSource, toAutocompleteSource, listColumnMixin };

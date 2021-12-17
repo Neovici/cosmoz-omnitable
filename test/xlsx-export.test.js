@@ -1,15 +1,17 @@
 
 import {
-	assert, html
+	assert, html, nextFrame
 } from '@open-wc/testing';
 
-import sinon from 'sinon';
+import { assert as sinonAssert } from 'sinon';
 import { setupOmnitableFixture } from './helpers/utils';
 
 import '../cosmoz-omnitable.js';
 import '../cosmoz-omnitable-columns.js';
+import { prepareXlsxData } from '../lib/save-as-xlsx-action';
+import { toDate } from '../lib/utils-date';
 
-sinon.assert.expose(chai.assert, { prefix: '' });
+sinonAssert.expose(chai.assert, { prefix: '' });
 
 suite('xlsx-export-omnitable', () => {
 	let omnitable;
@@ -65,22 +67,13 @@ suite('xlsx-export-omnitable', () => {
 		`, data.slice(0));
 	});
 
-	test('it instantiates a cosmoz-omnitable element', () => {
-		assert.equal(omnitable.constructor.name, 'Omnitable');
-	});
-
-	test('it is loading the name of first id column', () => {
-		const id = omnitable.querySelector('#id');
-		assert.isDefined(id);
-		assert.equal(id.getString(), 'id');
-	});
-
-	test('it prepares selected items', () => {
+	test('it prepares selected items', async () => {
 		// select two items
 		omnitable.selectItem(data[0]);
 		omnitable.selectItem(data[1]);
+		await nextFrame();
 		// prepare selected items, verify data
-		const xlsx = omnitable._prepareXlsxData(),
+		const xlsx = prepareXlsxData(omnitable.columns, omnitable.selectedItems),
 			headers = xlsx[0];
 		assert.equal(headers[0], omnitable.columns[0].title);
 		assert.equal(headers.length, omnitable.columns.length);
@@ -207,8 +200,9 @@ suite('toXlsx range tests', () => {
 				</cosmoz-omnitable-column-datetime>
 			</cosmoz-omnitable>
 		`, data);
-		data.map(item => omnitable.selectItem(item));
-		xlsx = omnitable._prepareXlsxData();
+		data.forEach(item => omnitable.selectItem(item));
+		await nextFrame();
+		xlsx = prepareXlsxData(omnitable.columns, omnitable.selectedItems);
 	});
 
 	test('prepares number values', () => {
@@ -238,15 +232,14 @@ suite('toXlsx range tests', () => {
 	});
 
 	test('prepares date values', () => {
-		const column = omnitable.columns[2];
 		xlsx
 			.map(row => row[2])
 			.slice(1)
 			.forEach((value, index) => {
-				const date	= column.toValue(data[index].date);
+				const date	= toDate(data[index].date);
 				assert.isOk(date, `date at index: ${ index }`);
 				date.setHours(0, 0, 0);
-				assert.equal(column.toValue(value).getTime(), date.getTime());
+				assert.equal(toDate(value).getTime(), date.getTime());
 			});
 	});
 
@@ -256,7 +249,7 @@ suite('toXlsx range tests', () => {
 			.map(row => row[3])
 			.slice(1)
 			.forEach((value, index) => {
-				const time = column.toXlsxValue(data[index]);
+				const time = column.toXlsxValue(column, data[index]);
 				assert.equal(value, time);
 			});
 	});
@@ -267,9 +260,9 @@ suite('toXlsx range tests', () => {
 			.map(row => row[4])
 			.slice(1)
 			.forEach((value, index) => {
-				const time = column.toXlsxValue(data[index]);
+				const time = column.toXlsxValue(column, data[index]);
 				assert.equal(value, time);
-				assert.equal(column.toValue(value).getTime(), column.toValue(data[index].datetime).getTime());
+				assert.equal(toDate(value).getTime(), toDate(data[index].datetime).getTime());
 			});
 	});
 });

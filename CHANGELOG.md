@@ -1,3 +1,91 @@
+# [8.0.0-beta.10](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0-beta.9...v8.0.0-beta.10) (2021-12-17)
+
+
+### Bug Fixes
+
+* **use-omnitable:** settings panel does not display correct hidden columns ([6535170](https://github.com/neovici/cosmoz-omnitable/commit/65351706eb725b3638af828049ad93ee2f60a2d5))
+
+# [8.0.0-beta.9](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0-beta.8...v8.0.0-beta.9) (2021-12-16)
+
+
+### Features
+
+* **ui:** checkbox color variables ([98c80fc](https://github.com/neovici/cosmoz-omnitable/commit/98c80fcf5276e46af0b94177cb09bdb8f317773e))
+* **ui:** footer color variable ([db1302a](https://github.com/neovici/cosmoz-omnitable/commit/db1302ac17798a8321ad9cf975504ee77dd7fe61))
+
+# [8.0.0-beta.8](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0-beta.7...v8.0.0-beta.8) (2021-12-16)
+
+
+### Bug Fixes
+
+* external values stops working after column resize ([40087ca](https://github.com/neovici/cosmoz-omnitable/commit/40087ca7b01ce9894a596dab22cf469c809430c4))
+
+# [8.0.0-beta.7](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0-beta.6...v8.0.0-beta.7) (2021-12-15)
+
+
+### Bug Fixes
+
+* send `values` to computeSource ([4a6312d](https://github.com/neovici/cosmoz-omnitable/commit/4a6312d126ceee71cf6b1b1d6d82fa0f5bff27f0))
+* **use-dom-columns:** copy over headerCellClass to column config ([e6197d3](https://github.com/neovici/cosmoz-omnitable/commit/e6197d35d48432cb4b093f1e949654cc1ff19931))
+
+# [8.0.0-beta.6](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0-beta.5...v8.0.0-beta.6) (2021-12-13)
+
+
+### Bug Fixes
+
+* **legacy-interop:** match polymer property change events ([178a713](https://github.com/neovici/cosmoz-omnitable/commit/178a71347f3ef24054f8919e9c59276331631f86))
+
+# [8.0.0-beta.5](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0-beta.4...v8.0.0-beta.5) (2021-12-13)
+
+
+### Bug Fixes
+
+* computeSource should by default return the unaltered data ([35addf7](https://github.com/neovici/cosmoz-omnitable/commit/35addf7247aa26a62825e046e5f29058d78dc693))
+
+
+### Code Refactoring
+
+* change the signature of getComparableValue ([772523e](https://github.com/neovici/cosmoz-omnitable/commit/772523e1a04182761add3a59bb679ed3bbc77b40))
+
+
+### BREAKING CHANGES
+
+* the signature is now getComparableValue(column, item)
+
+# [8.0.0-beta.4](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0-beta.3...v8.0.0-beta.4) (2021-12-10)
+
+
+### Bug Fixes
+
+* list is not re-rendered ([9dab054](https://github.com/neovici/cosmoz-omnitable/commit/9dab0541173b9f243883e83b891befec7b4beb7d))
+* **refactor:** render the layout css via haunted ([0d572a4](https://github.com/neovici/cosmoz-omnitable/commit/0d572a4788fd560db832f51efdf10a2467b64cca))
+
+# [8.0.0-beta.3](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0-beta.2...v8.0.0-beta.3) (2021-12-08)
+
+
+### Features
+
+* **ui:** checkbox color variables ([3025cf3](https://github.com/neovici/cosmoz-omnitable/commit/3025cf3594f49ef551ee72fcec53928d1e626615))
+* **ui:** footer color variable ([1ec85a0](https://github.com/neovici/cosmoz-omnitable/commit/1ec85a0f70c384d95ff85772a5dacf45f9ae4f12))
+
+# [8.0.0-beta.2](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0-beta.1...v8.0.0-beta.2) (2021-12-07)
+
+
+### Bug Fixes
+
+* support for treenode columns ([37f6825](https://github.com/neovici/cosmoz-omnitable/commit/37f6825d0096bf646863b9e26b9f5b5637035063))
+
+# [8.0.0-beta.1](https://github.com/neovici/cosmoz-omnitable/compare/v7.2.1...v8.0.0-beta.1) (2021-11-28)
+
+
+* feat!: migrate to hooks ([6285a11](https://github.com/neovici/cosmoz-omnitable/commit/6285a11a6e24ecf4ab343ddc3871112e4ae679a2))
+
+
+### BREAKING CHANGES
+
+* the columns no longer store the state. A compatibility
+layer has been set up to make sure the legacy code still works.
+
 # [7.3.0](https://github.com/neovici/cosmoz-omnitable/compare/v7.2.1...v7.3.0) (2021-12-08)
 
 
@@ -5,6 +93,7 @@
 
 * **ui:** checkbox color variables ([98c80fc](https://github.com/neovici/cosmoz-omnitable/commit/98c80fcf5276e46af0b94177cb09bdb8f317773e))
 * **ui:** footer color variable ([db1302a](https://github.com/neovici/cosmoz-omnitable/commit/db1302ac17798a8321ad9cf975504ee77dd7fe61))
+
 
 ## [7.2.1](https://github.com/neovici/cosmoz-omnitable/compare/v7.2.0...v7.2.1) (2021-11-03)
 

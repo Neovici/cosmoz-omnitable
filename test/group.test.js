@@ -1,5 +1,5 @@
 import {
-	assert, html
+	assert, html, nextFrame
 } from '@open-wc/testing';
 
 import { setupOmnitableFixture } from './helpers/utils';
@@ -25,12 +25,11 @@ suite('id', () => {
 		assert.equal(omnitable.groupOn, 'id');
 		const groupOnColumn = omnitable.groupOnColumn;
 		assert.equal(typeof groupOnColumn, 'object');
-		assert.equal(groupOnColumn.constructor.name, 'OmnitableColumn');
 		assert.equal(groupOnColumn.name, 'id', 'Expected "groupOnColumn" to be the column that matches "groupOn" value');
 		assert.equal(groupOnColumn, omnitable.columns[0]);
 	});
 
-	test('groupOnDescending true for id column changes order of items', () => {
+	test('groupOnDescending true for id column changes order of items', async () => {
 		const items = omnitable.sortedFilteredGroupedItems;
 		assert.isArray(items);
 		assert.isObject(items[0]);
@@ -44,8 +43,8 @@ suite('id', () => {
 		assert.equal(second.id, 1);
 		assert.equal(last.id, idx);
 
-		omnitable.groupOnDescending = true;
-		omnitable.flush();
+		omnitable.setGroupOnDescending(true);
+		await nextFrame();
 		const gItems = omnitable.sortedFilteredGroupedItems;
 		assert.equal(gItems[0].id, idx);
 		assert.equal(gItems[idx - 1].id, 1);
@@ -72,7 +71,7 @@ suite('bool', () => {
 		`, data);
 	});
 
-	test('groupOnDescending true for boolean column changes order of items', () => {
+	test('groupOnDescending true for boolean column changes order of items', async () => {
 		assert.equal(omnitable.groupOn, 'bool');
 		assert.equal(omnitable.groupOnColumn.name, 'bool');
 		assert.equal(omnitable.groupOnColumn, omnitable.columns[1]);
@@ -83,8 +82,8 @@ suite('bool', () => {
 		assert.equal(first.id, true);
 		assert.equal(last.id, false);
 
-		omnitable.groupOnDescending = true;
-		omnitable.flush();
+		omnitable.setGroupOnDescending(true);
+		await nextFrame();
 		assert.equal(omnitable.sortedFilteredGroupedItems[0].id, false);
 		assert.equal(omnitable.sortedFilteredGroupedItems[idx].id, true);
 	});
@@ -97,20 +96,21 @@ suite('amount', () => {
 	setup(async () => {
 		data = generateTableDemoData(10, 11, 25);
 		omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable group-on="amount">
+			<cosmoz-omnitable group-on="id">
+				<cosmoz-omnitable-column title="Id" name="id" value-path="id" sort-on="id">
+				</cosmoz-omnitable-column>
 				<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount" sort-on="amount">
 				</cosmoz-omnitable-column-amount>
 			</cosmoz-omnitable>
 		`, data);
 	});
 
-	test('setting groupOn property to "amount" updates property groupOnColumn', () => {
-		omnitable.groupOn = 'amount';
-		omnitable.flush();
+	test('setting groupOn property to "amount" updates property groupOnColumn', async () => {
+		omnitable.setGroupOn('amount');
+		await nextFrame();
 		const groupOnColumn = omnitable.groupOnColumn;
 		assert.equal(typeof groupOnColumn, 'object');
-		assert.equal(groupOnColumn.constructor.name, 'OmnitableColumnAmount');
 		assert.equal(groupOnColumn.name, 'amount', 'Expected "groupOnColumn" to be the column that matches "groupOn" value');
-		assert.equal(groupOnColumn, omnitable.columns[0]);
+		assert.equal(groupOnColumn, omnitable.columns[1]);
 	});
 });

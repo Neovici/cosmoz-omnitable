@@ -3,7 +3,6 @@ import { component, useEffect } from 'haunted';
 import {
 	html, nothing
 } from 'lit-html';
-import { useRenderOnColumnUpdates } from './lib/use-render-on-column-updates';
 import './cosmoz-omnitable-item-expand-line';
 
 const
@@ -15,8 +14,6 @@ const
 		>${ column.renderCell(column, { item, selected, expanded }) }</cosmoz-omnitable-item-expand-line>`),
 
 	ExpandList = host => {
-		useRenderOnColumnUpdates(host.columns);
-
 		useEffect(() => {
 			if (host.columns?.length > 0) {
 				return;

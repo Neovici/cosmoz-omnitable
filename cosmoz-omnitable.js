@@ -11,7 +11,6 @@ import '@polymer/paper-spinner/paper-spinner-lite';
 
 import '@neovici/cosmoz-grouped-list';
 import '@neovici/cosmoz-bottom-bar';
-import '@neovici/cosmoz-page-router/cosmoz-page-location';
 
 import './cosmoz-omnitable-column';
 import './cosmoz-omnitable-header-row';
@@ -21,24 +20,18 @@ import './cosmoz-omnitable-group-row';
 import './cosmoz-omnitable-columns';
 import styles from './cosmoz-omnitable-styles';
 
-import { NullXlsx } from '@neovici/nullxlsx';
 
-import { saveAs } from 'file-saver-es';
-
-import { timeOut } from '@polymer/polymer/lib/utils/async';
-import { Debouncer } from '@polymer/polymer/lib/utils/debounce';
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
-import { html as litHtml, render } from 'lit-html';
+import { html as litHtml } from 'lit-html';
 
 import { translatable } from '@neovici/cosmoz-i18next';
 import { mixin, hauntedPolymer } from '@neovici/cosmoz-utils';
 import { isEmpty } from '@neovici/cosmoz-utils/lib/template.js';
 import { useOmnitable } from './lib/use-omnitable';
 import './lib/cosmoz-omnitable-settings';
-import { genericSorter } from './lib/generic-sorter';
-
-const PROPERTY_HASH_PARAMS = ['sortOn', 'groupOn', 'descending', 'groupOnDescending'];
+import { saveAsCsvAction } from './lib/save-as-csv-action';
+import { saveAsXlsxAction } from './lib/save-as-xlsx-action';
 
 /**
  * @polymer
@@ -56,16 +49,17 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		${ html([styles]) }
 		<div id="layoutStyle"></div>
 
-		<cosmoz-page-location id="location" route-hash="{{ _routeHash }}"></cosmoz-page-location>
-
 		<div class="mainContainer">
 			<div class="header" id="header">
 				<input class="checkbox all" type="checkbox" checked="[[ _allSelected ]]" on-input="_onAllCheckboxChange" disabled$="[[ !_dataIsValid ]]" />
 				<cosmoz-omnitable-header-row
+					data="[[ data ]]"
 					columns="[[ normalizedColumns ]]"
+					filters="[[ filters ]]"
 					group-on-column="[[ groupOnColumn ]]"
-					content="[[ _renderSettings(normalizedSettings, collapsedColumns, settingsId, hasChangedSettings, hasHiddenFilter) ]]"
-				>
+					content="[[ _renderSettings(normalizedSettings, collapsedColumns, settingsId, hasChangedSettings, hasHiddenFilter, filters) ]]"
+					set-filter-state="[[ setFilterState ]]"
+				></cosmoz-omnitable-header-row>
 			</div>
 			<div class="tableContent" id="tableContent">
 				<template is="dom-if" if="[[ !_dataIsValid ]]">
@@ -100,18 +94,23 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 					<cosmoz-grouped-list id="groupedList"
 						data="{{ sortedFilteredGroupedItems }}"
 						selected-items="{{ selectedItems }}"
-						highlighted-items="{{ highlightedItems }}"
 						display-empty-groups="[[ displayEmptyGroups ]]"
 						compare-items-fn="[[ compareItemsFn ]]"
 					>
 						<template slot="templates" data-type="item">
 							<div class="item-row-wrapper">
-								<div selected$="[[ selected ]]" class="itemRow" highlighted$="[[ highlighted ]]">
+								<div selected$="[[ selected ]]" class="itemRow">
 									<input class="checkbox" type="checkbox" checked="[[ selected ]]" on-input="_onCheckboxChange" disabled$="[[ !_dataIsValid ]]" />
 									<cosmoz-omnitable-item-row columns="[[ normalizedColumns ]]"
-										selected="[[ selected ]]" expanded="{{ expanded }}" item="[[ item ]]" group-on-column="[[ groupOnColumn ]]">
+										selected="[[ selected ]]" expanded="{{ expanded }}" item="[[ item ]]" group-on-column="[[ groupOnColumn ]]"
+										on-item-change="[[ onItemChange ]]">
 									</cosmoz-omnitable-item-row>
-									<paper-icon-button class="expand" hidden="[[ isEmpty(collapsedColumns.length) ]]" icon="[[ _getFoldIcon(expanded) ]]" on-tap="_toggleItem"></paper-icon-button>
+									<paper-icon-button
+										class="expand"
+										hidden="[[ isEmpty(collapsedColumns.length) ]]"
+										icon="[[ _getFoldIcon(expanded) ]]"
+										on-tap="_toggleItem"
+									></paper-icon-button>
 								</div>
 								<cosmoz-omnitable-item-expand columns="[[ collapsedColumns ]]"
 									item="[[item]]" selected="{{ selected }}" expanded$="{{ expanded }}" group-on-column="[[ groupOnColumn ]]"
@@ -138,18 +137,20 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 				<div class="footer-controls">
 					<cosmoz-autocomplete
 						label="[[ _('Group on', t) ]] [[ _computeSortDirection(groupOnDescending, t) ]]" placeholder="[[ _('No grouping', t) ]]"
-						source="[[ _onCompleteValues(columns, 'groupOn', groupOnColumn) ]]" value="[[ groupOnColumn ]]" limit="1" text-property="title" always-float-label item-height="48" item-limit="8"
+						source="[[ _onCompleteValues(columns, 'groupOn', groupOnColumn) ]]" value="[[ groupOnColumn ]]" limit="1" text-property="title"
+						always-float-label item-height="48" item-limit="8"
 						class="footer-control" on-change="[[ _onCompleteChange('groupOn') ]]" default-index="-1" show-single show-selection
 					></cosmoz-autocomplete>
 					<cosmoz-autocomplete
 						label="[[ _('Sort on', t) ]] [[ _computeSortDirection(descending, t) ]]" placeholder="[[ _('No sorting', t) ]]"
-						source="[[ _onCompleteValues(columns, 'sortOn', sortOnColumn) ]]" value="[[ sortOnColumn ]]" limit="1" text-property="title" always-float-label item-height="48" item-limit="8"
+						source="[[ _onCompleteValues(columns, 'sortOn', sortOnColumn) ]]" value="[[ sortOnColumn ]]" limit="1" text-property="title"
+						always-float-label item-height="48" item-limit="8"
 						class="footer-control" on-change="[[ _onCompleteChange('sortOn') ]]" default-index="-1" show-single show-selection
 					></cosmoz-autocomplete>
 				</div>
 				<div class="footer-tableStats">
-					<span>[[ ngettext('{0} group', '{0} groups', _groupsCount, t) ]]</span>
-					<span>[[ _renderRowStats(filteredItems.length, totalAvailable, t) ]]</span>
+					<span>[[ ngettext('{0} group', '{0} groups', groupsCount, t) ]]</span>
+					<span>[[ _renderRowStats(numProcessedItems, totalAvailable, t) ]]</span>
 				</div>
 				<cosmoz-bottom-bar id="bottomBar" class="footer-actionBar" match-parent
 					on-action="_onAction" active$="[[ !isEmpty(selectedItems.length) ]]" computed-bar-height="{{ computedBarHeight }}">
@@ -176,321 +177,130 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		</div>
 
 		<div id="columns">
-			<slot id="columnsSlot" on-slotchange="_debounceUpdateColumns"></slot>
+			<slot id="columnsSlot"></slot>
 		</div>
 `;
 		template.setAttribute('strip-whitespace', '');
 		return template;
 	}
 
-	static get is() {
-		return 'cosmoz-omnitable';
-	}
-
 	/* eslint-disable-next-line max-lines-per-function */
 	static get properties() {
 		return {
-
 			/**
 		 * Filename when saving as CSV
 		 */
-			csvFilename: {
-				type: String,
-				value: 'omnitable.csv'
-			},
+			csvFilename: { type: String, value: 'omnitable.csv' },
 
 			/**
 		 * Filename when saving as XLSX
 		 */
-			xlsxFilename: {
-				type: String,
-				value: 'omnitable.xlsx'
-			},
+			xlsxFilename: { type: String, value: 'omnitable.xlsx' },
 
 			/**
 		 * Sheet name when saving as XLSX
 		 */
-			xlsxSheetname: {
-				type: String,
-				value: 'Omnitable'
-			},
+			xlsxSheetname: { type: String, value: 'Omnitable' },
 
 			/**
 		 * Array used to list items.
 		 */
-			data: {
-				type: Array
-			},
+			data: { type: Array },
 
 			/**
 			 * This function is used to determine which items are kept selected across data updates
+			 * TODO: probably broken
 			 */
 			compareItemsFn: Function,
 
 			/**
 		 * True if data is a valid and not empty array.
 		 */
-			_dataIsValid: {
-				type: Boolean,
-				value: false,
-				computed: '_computeDataValidity(data.*)'
-			},
+			_dataIsValid: { type: Boolean, value: false, computed: '_computeDataValidity(data.*)' },
 
 			/**
 		 * If set to true, then group a row will be displayed for groups that contain no items.
 		 */
-			displayEmptyGroups: {
-				type: Boolean,
-				value: false
-			},
+			displayEmptyGroups: { type: Boolean, value: false },
 
 			/**
 		 * Specific columns to enable
 		 */
-			enabledColumns: {
-				type: Array,
-				observer: '_debounceUpdateColumns'
-			},
+			enabledColumns: { type: Array },
 
 			/**
 		 * Whether bottom-bar has actions.
 		 */
-			hasActions: {
-				type: Boolean,
-				value: false
-			},
+			hasActions: { type: Boolean, value: false },
 
 			/**
 		 * Shows a loading overlay to indicate data will be updated
 		 */
-			loading: {
-				type: Boolean,
-				value: false
-			},
+			loading: { type: Boolean, value: false },
 
 			/**
 		 * List of selected rows/items in `data`.
 		 */
-			selectedItems: {
-				type: Array,
-				notify: true
-			},
+			selectedItems: { type: Array, notify: true },
+			descending: { type: Boolean, value: false, notify: true },
+			sortOn: { type: String, value: '', notify: true },
+			groupOnDescending: { type: Boolean, value: false },
 
-			highlightedItems: {
-				type: Array,
-				notify: true
-			},
-
-			descending: {
-				type: Boolean,
-				value: false,
-				notify: true
-			},
-
-			sortOn: {
-				type: String,
-				value: '',
-				notify: true
-			},
-
-			sortOnColumn: {
-				type: Object,
-				computed: '_getColumn(sortOn, "name", columns)'
-			},
-
-			groupOnDescending: {
-				type: Boolean,
-				value: false,
-				observer: '_debounceProcessItems'
-			},
 			/**
 		 * The column name to group on.
 		 */
-			groupOn: {
-				type: String,
-				notify: true,
-				value: ''
-			},
-
-			/**
-		 * The column that matches the current `groupOn` value.
-		 */
-			groupOnColumn: {
-				type: Object,
-				notify: true,
-				observer: '_groupOnColumnChanged',
-				computed: '_getColumn(groupOn, "name", columns)'
-			},
-
-			/**
-		 * Items matching current set filter(s)
-		 */
-			filteredItems: {
-				type: Array,
-				value: () => []
-			},
-
-			/**
-		 * Grouped items structure after filtering.
-		 */
-			filteredGroupedItems: {
-				type: Array
-			},
+			groupOn: { type: String, notify: true, value: '' },
 
 			/**
 		 * Sorted items structure after filtering and grouping.
 		 */
-			sortedFilteredGroupedItems: {
-				type: Array,
-				notify: true
-			},
-
-			_canvasWidth: {
-				type: Number,
-				value: 0,
-				notify: true
-			},
-
-			/**
-		 * Keep track of width-changes to identify if we go bigger or smaller
-		 */
-			_previousWidth: {
-				type: Number,
-				value: 0
-			},
-
-			_groupsCount: {
-				type: Number,
-				value: 0
-			},
-
-			visible: {
-				type: Boolean,
-				notify: true,
-				readOnly: true,
-				value: false,
-				observer: 'visibleChanged'
-			},
+			sortedFilteredGroupedItems: { type: Array, notify: true },
 
 			/**
 		 	 * List of columns definition for this table.
 		 	 */
-			columns: {
-				type: Array,
-				notify: true,
-				value: () => []
-			},
-
-			settings: {
-				type: Object,
-				notify: true
-			},
-
-			_filterIsTooStrict: {
-				type: Boolean,
-				computed: '_computeFilterIsTooStrict(_dataIsValid, sortedFilteredGroupedItems.length)'
-			},
-
-			hashParam: {
-				type: String
-			},
-
-			_routeHash: {
-				type: Object
-
-			},
-			_routeHashKeyRule: {
-				type: RegExp,
-				computed: '_computeRouteHashKeyRule(hashParam)'
-			},
+			columns: { type: Array, notify: true, value: () => []},
+			settings: { type: Object, notify: true },
+			_filterIsTooStrict: { type: Boolean, computed: '_computeFilterIsTooStrict(_dataIsValid, sortedFilteredGroupedItems.length)' },
+			hashParam: { type: String },
 
 			/**
 			 * True when all items are selected.
 			 */
-			_allSelected: {
-				type: Boolean
-			},
-			computedBarHeight: {
-				type: Number
-			},
-			settingsId: {
-				type: String,
-				value: undefined
-			}
+			_allSelected: { type: Boolean },
+			computedBarHeight: { type: Number },
+			settingsId: { type: String, value: undefined }
 		};
 	}
 
 	static get observers() {
 		return [
-			'_dataChanged(data.splices)',
-			'_debounceProcessItems(sortOn, descending)',
-			'_selectedItemsChanged(selectedItems.*)',
-			'renderFastLayoutCss(layoutCss, $.layoutStyle)'
+			'_selectedItemsChanged(selectedItems.*)'
 		];
 	}
 
 	constructor() {
 		super();
 
-		this.debouncers = {};
-		this._updateColumns = this._updateColumns.bind(this);
-		this._processItems = this._processItems.bind(this);
-		this._groupItems = this._groupItems.bind(this);
-		this._sortFilteredGroupedItems = this._sortFilteredGroupedItems.bind(this);
 		this._onKey = this._onKey.bind(this);
-		this._resizeObserver = new ResizeObserver(this._onResize.bind(this));
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
 
 		this.$.groupedList.scrollTarget = this.$.scroller;
-		this.addEventListener('cosmoz-column-hidden-changed', this._debounceUpdateColumns);
-		this.addEventListener('cosmoz-column-disabled-changed', this._debounceUpdateColumns);
 
 		this.addEventListener('update-item-size', this._onUpdateItemSize);
-		this.addEventListener('cosmoz-column-title-changed', this._onColumnTitleChanged);
-		this.addEventListener('cosmoz-column-filter-changed', this._filterChanged);
-		this.addEventListener('cosmoz-column-editable-changed', this._onColumnEditableChanged);
-		this.addEventListener('cosmoz-column-values-update', this._onColumnValuesUpdate);
 		window.addEventListener('keydown', this._onKey);
 		window.addEventListener('keyup', this._onKey);
-		this._resizeObserver.observe(this);
-		this._updateParamsFromHash();
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 
-		this.removeEventListener('cosmoz-column-hidden-changed', this._debounceUpdateColumns);
-		this.removeEventListener('cosmoz-column-disabled-changed', this._debounceUpdateColumns);
-		// Just in case we get detached before a planned debouncer has not run yet.
-		this._cancelDebouncers();
-
 		this.removeEventListener('update-item-size', this._onUpdateItemSize);
-		this.removeEventListener('cosmoz-column-title-changed', this._onColumnTitleChanged);
-		this.removeEventListener('cosmoz-column-filter-changed', this._filterChanged);
-		this.removeEventListener('cosmoz-column-editable-changed', this._onColumnEditableChanged);
-		this.removeEventListener('cosmoz-column-values-update', this._onColumnValuesUpdate);
-		this._resizeObserver.unobserve(this);
 		window.removeEventListener('keydown', this._onKey);
 		window.removeEventListener('keyup', this._onKey);
-	}
-
-	flush() {
-		// NOTE: in some instances flushing a debouncer causes another debouncer
-		// to be set, so we must test each debouncer independently and in this order
-		if (this.debouncers._updateColumnsDebouncer) {
-			this.debouncers._updateColumnsDebouncer.flush();
-		}
-
-		if (this.debouncers._processItemsDebouncer) {
-			this.debouncers._processItemsDebouncer.flush();
-		}
-	}
-
-	_cancelDebouncers() {
-		Object.values(this.debouncers).forEach(d => d.cancel());
 	}
 
 	/** ELEMENT BEHAVIOR */
@@ -508,53 +318,12 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		return `(${ direction })`;
 	}
 
-	visibleChanged(turnedVisible) {
-		if (turnedVisible) {
-			this._debounceUpdateColumns();
-		}
-	}
-
 	_onUpdateItemSize(event) {
 		const { detail } = event;
 		if (detail && detail.item) {
 			this.$.groupedList.updateSize(detail.item);
 		}
 		event.stopPropagation();
-	}
-
-	_onColumnTitleChanged(event) {
-		event.stopPropagation();
-
-		if (!Array.isArray(this.columns)) {
-			return;
-		}
-
-		const column = event.target,
-			columnIndex = this.columns.indexOf(column);
-
-		// re-notify column change to make dom-repeat re-render menu item title
-		this.notifyPath(['columns', columnIndex, 'title']);
-
-		if (column === this.groupOnColumn) {
-			this.notifyPath(['groupOnColumn', 'title']);
-		}
-	}
-
-	_onColumnEditableChanged(event) {
-		event.stopPropagation();
-		const { detail: { column }} = event,
-			{ columns } = this;
-
-		if (!Array.isArray(columns) || columns.length === 0) {
-			return;
-		}
-
-		const index = columns.indexOf(column);
-		if (index < 0) {
-			return;
-		}
-
-		this.columns = [...this.columns];
 	}
 
 	_onKey(e) {
@@ -578,387 +347,20 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		event.stopPropagation();
 	}
 
-	_itemRowTapped(event) {
-		const item = event.model.item;
-		this.highlight(item, this.isItemHighlighted(item));
-	}
-
-	_onResize([entry]) {
-		const hidden = entry.borderBoxSize?.[0]?.blockSize === 0 || entry.contentRect?.height === 0;
-		this._setVisible(!hidden);
-		if (hidden) {
-			return;
-		}
-		requestAnimationFrame(() => requestAnimationFrame(() => this.$.groupedList.$.list._render()));
-	}
-
-	_dataChanged() {
-		if (!Array.isArray(this.columns)) {
-			return;
-		}
-		this._setColumnValues();
-		this._debounceProcessItems();
-	}
-
-	_debounceUpdateColumns() {
-		this._debounce('_updateColumnsDebouncer', this._updateColumns, timeOut.after(10));
-	}
-
-	/* eslint-disable-next-line max-lines-per-function, max-statements */
-	_updateColumns() {
-		if (!this.isConnected) {
-			return;
-		}
-
-		this._setVisible(this.offsetParent != null);
-
-		if (!this.visible) {
-			return;
-		}
-
-		// NOTE: it's important to get all children, including those projected in slots
-		let columns = this.$.columnsSlot.assignedElements({ flatten: true }).filter(child => child.isOmnitableColumn && !child.hidden),
-			valuePathNames;
-
-		const columnNames = columns.map(c => c.name);
-
-		if (Array.isArray(this.enabledColumns)) {
-			columns = columns.filter(column =>
-				this.enabledColumns.indexOf(column.name) !== -1
-			);
-		} else {
-			columns = columns.filter(column => !column.disabled);
-		}
-
-		const columnsChanged = !Array.isArray(this.columns) ||
-			this.columns.length !== columns.length ||
-			this.columns.some(col => columns.indexOf(col) === -1);
-
-		if (!columns || columns.length === 0 || !columnsChanged) {
-			return;
-		}
-
-		this._verifyColumnSetup(columns, columnNames);
-
-		columns.forEach(column => {
-			if (!column.name) {
-				// No name set; Try to set name attribute via valuePath
-				if (!valuePathNames) {
-					valuePathNames = columns.map(c => c.valuePath);
-				}
-				const hasUniqueValuePath = valuePathNames.indexOf(column.valuePath) === valuePathNames.lastIndexOf(column.valuePath);
-				if (hasUniqueValuePath && columnNames.indexOf(column.valuePath) === -1) {
-					column.name = column.valuePath;
-				}
-			}
-		});
-
-		if (!Array.isArray(this.columns) || this.columns.length === 0) {
-			this._setColumnValues(columns);
-		}
-
-		this.columns = columns;
-		this._updateParamsFromHash();
-
-		if (Array.isArray(this.data)) {
-			this._debounceProcessItems();
-		}
-	}
-
-	/**
-	 * Checks if the column setup is valid and logs errors.
-	 * As a separate functions to make testing easier.
-	 * @param {any} columns The columns.
-	 * @param {any} columnNames The column names.
-	 * @returns {Boolean} True if setup is valid.
-	 */
-	_verifyColumnSetup(columns, columnNames = columns.map(c => c.name)) {
-		// Check if column names are set and unique
-		const columnsMissingNameAttribute = columns
-			.filter(column => {
-				const name = column.name;
-				if (!name) {
-					// eslint-disable-next-line no-console
-					console.error('The name attribute needs to be set on all columns! Missing on column', column.title, column);
-					return false;
-				}
-				return columnNames.indexOf(name) !== columnNames.lastIndexOf(name);
-			});
-
-		columnsMissingNameAttribute.forEach(column => {
-			// eslint-disable-next-line no-console
-			console.error('The name attribute needs to be unique among all columns! Not unique on column', column.title, column);
-		});
-
-		return columnsMissingNameAttribute.length === 0;
-	}
-
-	_onColumnValuesUpdate({ detail }) {
-		if (detail == null || detail.column == null) {
-			return;
-		}
-		this._setColumnValues([detail.column]);
-	}
-	// TODO: provides a mean to avoid setting the values for a column
-	// TODO: should process (distinct, sort, min, max) the values at the column level depending on the column type
-	_setColumnValues(columns = this.columns) {
-		if (!Array.isArray(this.data) || this.data.length < 1 || !Array.isArray(columns) || columns.length < 1) {
-			return;
-		}
-		columns.forEach(column => {
-			if (!column.bindValues || column.externalValues) {
-				return;
-			}
-
-			if (!column.valuePath) {
-				// eslint-disable-next-line no-console
-				console.error('value path is not defined for column', column, 'with bindValues');
-				return;
-			}
-
-			column.set('values', this.data
-				.map(item => this.get(column.valuePath, item))
-				.filter((value, index, self) =>
-					value != null && self.indexOf(value) === index
-				)
-			);
-		});
-	}
-	/*
-	 * Returns a column based on an attribute.
-	 * @param {String} attributeValue The value of the column attribute.
-	 * @param {String} attribute The attribute name of the column.
-	 * @returns {Object} The found column.
-	 */
-	_getColumn(attributeValue, attribute = 'name', columns) {
-		if (!attributeValue || !columns) {
-			return;
-		}
-		return columns.find(column => column[attribute] === attributeValue);
-	}
-
-	_filterChanged({ detail }) {
-		if (!Array.isArray(this.columns) || this.columns.length < 1 || this.columns.indexOf(detail.column) < 0) {
-			return;
-		}
-		this._debounceProcessItems();
-		this._filterForRouteChanged(detail.column);
-	}
-
-	_groupOnColumnChanged() {
-		this._debounceProcessItems();
-	}
-
-	_debounceProcessItems() {
-		this._debounce('_processItemsDebouncer', this._processItems);
-	}
-
-	_processItems() {
-		this._filterItems();
-		this._groupItems();
-		this._sortFilteredGroupedItems();
-	}
-
-	_filterItems() {
-		if (Array.isArray(this.data) && this.data.length > 0 && Array.isArray(this.columns)) {
-			// Call filtering code only on columns that has a filter
-			const filterFunctions = this.columns
-				.map(col => col.getFilterFn())
-				.filter(fn => fn !== undefined);
-
-			if (filterFunctions.length) {
-				this.filteredItems = this.data.filter(item =>
-					filterFunctions.every(filterFn => filterFn(item))
-				);
-			} else {
-				this.filteredItems = this.data.slice();
-			}
-		} else {
-			this.filteredItems = [];
-			this.filteredGroupedItems = [];
-			this.sortedFilteredGroupedItems = [];
-			this._groupsCount = 0;
-		}
-	}
-
-	/* eslint-disable-next-line max-statements */
-	_groupItems() {
-		// do not attempt to group items if no columns are defined
-		if (!Array.isArray(this.columns) || this.columns.length === 0) {
-			return;
-		}
-
-		this._updateRouteParam('groupOn');
-
-		if (!Array.isArray(this.filteredItems) || this.filteredItems.length === 0) {
-			this.filteredGroupedItems = [];
-			this.sortedFilteredGroupedItems = [];
-			this._groupsCount = 0;
-			return;
-		}
-
-		const groupOnColumn = this.groupOnColumn;
-
-		if (!groupOnColumn || !groupOnColumn.groupOn) {
-			this.filteredGroupedItems = this.filteredItems;
-			this._groupsCount = 0;
-			return;
-		}
-
-		const groups = this.filteredItems.reduce((array, item) => {
-			const gval = groupOnColumn.getComparableValue(item, groupOnColumn.groupOn);
-
-			if (gval === undefined) {
-				return array;
-			}
-
-			let group = array.find(g => g.id === gval);
-			if (!group) {
-				group = {
-					id: gval,
-					name: gval,
-					items: []
-				};
-				array.push(group);
-			}
-			group.items.push(item);
-			return array;
-		}, []);
-
-		groups.sort((a, b) => {
-			const v1 = groupOnColumn.getComparableValue(a.items[0], groupOnColumn.groupOn),
-				v2 = groupOnColumn.getComparableValue(b.items[0], groupOnColumn.groupOn);
-
-			return genericSorter(v1, v2);
-		});
-
-		if (this.groupOnDescending) {
-			groups.reverse();
-		}
-
-		this._groupsCount = groups.length;
-		this.filteredGroupedItems = groups;
-	}
-
-	/**
-	 * compareFunction for sort(), can be overridden
-	 * @see Array.prototype.sort()
-	 * {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort}
-	 * @param {*} a First compare value
-	 * @param {*} b Second compare value
-	 * @returns {number} -1 if a has lower index, 0 if a and b index are same, 1 if b is lower
-	*/
-	sorter(a, b) {
-		const v1 = this.sortOnColumn.getComparableValue(a, this.sortOnColumn.sortOn),
-			v2 = this.sortOnColumn.getComparableValue(b, this.sortOnColumn.sortOn);
-
-		return genericSorter(v1, v2);
-	}
-
-	/* eslint-disable-next-line max-statements */
-	_sortFilteredGroupedItems() {
-		if (!this.filteredGroupedItems) {
-			return;
-		}
-
-		this._updateRouteParam('sortOn');
-		this._updateRouteParam('descending');
-		this._updateRouteParam('groupOnDescending');
-
-		if (!this.sortOn || !this.sortOnColumn) {
-			this.sortedFilteredGroupedItems = this.filteredGroupedItems;
-			return;
-		}
-
-		const sorter = this.sorter.bind(this);
-
-		if (this._groupsCount > 0) {
-			this.set('sortedFilteredGroupedItems', this.filteredGroupedItems
-				.filter(group => Array.isArray(group.items))
-				.map(group => {
-					group.items.sort(sorter);
-					if (this.descending) {
-						group.items.reverse();
-					}
-					return {
-						name: group.name,
-						id: group.id,
-						items: group.items
-					};
-				}));
-			return;
-		}
-
-		// No grouping
-		this.filteredGroupedItems.sort(sorter);
-		if (this.descending) {
-			this.filteredGroupedItems.reverse();
-		}
-
-		this.set('sortedFilteredGroupedItems', this.filteredGroupedItems.slice());
-	}
-
-	_makeCsvField(str) {
-		const result = str.replace(/"/gu, '""');
-		if (result.search(/("|,|\n)/gu) >= 0) {
-			return '"' + result + '"';
-		}
-		return str;
-	}
 	/**
 	 * Triggers a download of selected rows as a CSV file.
 	 * @returns {undefined}
 	 */
 	_saveAsCsvAction() {
-		const separator = ';',
-			lf = '\n',
-			header = this.columns.map(col => this._makeCsvField(col.title)).join(separator) + lf,
-			rows = this.selectedItems.map(item => {
-				return this.columns.map(column => {
-					const cell = column.getString(item);
-					if (cell === undefined || cell === null) {
-						return '';
-					}
-					return this._makeCsvField(String(cell));
-				}).join(separator) + lf;
-			});
-
-		rows.unshift(header);
-
-		saveAs(new File(rows, this.csvFilename, {
-			type: 'text/csv;charset=utf-8'
-		}));
-	}
-
-	/**
-	 * Makes the data ready to be exported as XLSX.
-	 * @returns {Array} data Array of prepared rows.
-	 */
-	_prepareXlsxData() {
-		const headers = this.columns.map(col => col.title),
-			data = this.selectedItems.map(item =>
-				this.columns.map(column => {
-					const value = column.toXlsxValue(item);
-					return value == null ? '' : value;
-				})
-			);
-
-		data.unshift(headers);
-		return data;
+		saveAsCsvAction(this.columns, this.selectedItems, this.csvFilename);
 	}
 
 	/**
 	 * Triggers a download of selected rows as a XLSX file.
-	 * @param {Object} data The prepared rows to be saved as file with default value this._prepareXlsxData().
 	 * @returns {undefined}
 	 */
 	_saveAsXlsxAction() {
-		const data = this._prepareXlsxData(),
-			xlsx = new NullXlsx(this.xlsxFilename).addSheetFromData(data, this.xlsxSheetname).generate();
-
-		saveAs(new File([xlsx], this.xlsxFilename, {
-			type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-		}));
+		saveAsXlsxAction(this.columns, this.selectedItems, this.xlsxFilename, this.xlsxSheetname);
 	}
 
 	/** view functions */
@@ -969,6 +371,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 	_getFoldIcon(expanded) {
 		return expanded ? 'expand-less' : 'expand-more';
 	}
+
 	/**
 	 * Toggle folding of a group
 	 * @param	 {Event} event event
@@ -1018,17 +421,19 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		}
 	}
 
+	// TODO: move to publicInterface mixin
 	/** PUBLIC */
 
 	suppressNextScrollReset() {
 		const list = this.$.groupedList.$.list;
 		// HACK: Replace _resetScrollPosition for one call to maintain scroll position
-		if (list._scrollTop > 0) {
+		if (list._scrollTop > 0 && !list._resetScrollPosition.suppressed) {
 			const reset = list._resetScrollPosition;
 			list._resetScrollPosition = () => {
 				// restore hack
 				list._resetScrollPosition = reset;
 			};
+			list._resetScrollPosition.suppressed = true;
 		}
 	}
 
@@ -1061,6 +466,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		}
 
 		const removed = this.splice('data', index, 1);
+		this.data = this.data.slice();
 		if (Array.isArray(removed) && removed.length > 0) {
 			return removed[0];
 		}
@@ -1074,6 +480,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 	replaceItemAtIndex(index, newItem) {
 		this.suppressNextScrollReset();
 		this.splice('data', index, 1, newItem);
+		this.data = this.data.slice();
 	}
 	/**
 	 * Convenience method for setting a value to an item's path and notifying any
@@ -1101,117 +508,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		return this.$.groupedList.isItemSelected(item);
 	}
 
-	isItemHighlighted(item) {
-		return this.$.groupedList.isItemHighlighted(item);
-	}
-
-	highlight(items, reverse) {
-		if (!items) {
-			return;
-		}
-		const gl = this.$.groupedList;
-		if (Array.isArray(items)) {
-			items.forEach(item => gl.highlightItem(item, reverse));
-			return;
-		}
-		gl.highlightItem(items, reverse);
-	}
-
-	_routeHashPropertyChanged(key, value) {
-		const deserialized = this._deserializeValue(value, Omnitable.properties[key].type);
-		if (deserialized === this.get(key)) {
-			return;
-		}
-		this.set(key, deserialized);
-	}
-
-	_routeHashFilterChanged(key, value) {
-		const column = this.columns.find(c => c.name === key);
-
-		if (!column) {
-			return;
-		}
-
-		if (value === column._serializeFilter()) {
-			return;
-		}
-
-		const deserialized = column._deserializeFilter(value);
-
-		if (deserialized === null) {
-			column.resetFilter();
-			return;
-		}
-		column.set('filter', deserialized);
-	}
-	_computeRouteHashKeyRule(hashParam) {
-		if (!hashParam) {
-			return;
-		}
-		return new RegExp('^' + hashParam + '-(.+?)(?=(?:--|$))(?:-{2})?([A-Za-z0-9-_]+)?$', 'u');
-	}
-	_routeHashKeyChanged(key, value) {
-		const match = key.match(this._routeHashKeyRule);
-
-		if (!Array.isArray(match)) {
-			return;
-		}
-
-		if (match[2] == null && PROPERTY_HASH_PARAMS.indexOf(match[1]) > -1) {
-			this._routeHashPropertyChanged(match[1], value);
-			return;
-		}
-		if (match[2] !== null && match[1] === 'filter') {
-			this._routeHashFilterChanged(match[2], value);
-		}
-	}
-
-	_updateParamsFromHash() {
-		if (!this.hashParam || !this._routeHash) {
-			return;
-		}
-		const hash = this._routeHash;
-		Object.keys(hash).forEach(key => {
-			this._routeHashKeyChanged(key, hash[key]);
-		});
-	}
-
-	_updateRouteParam(key) {
-		if (!this.hashParam || !this._routeHash) {
-			return;
-		}
-
-		const path = ['_routeHash', this.hashParam + '-' + key],
-			hashValue = this.get(path),
-			value = this.get(key),
-			serialized = this._serializeValue(value, Omnitable.properties[key].type);
-
-		if (serialized === hashValue) {
-			return;
-		}
-		this.set(path, serialized === undefined ? null : serialized);
-	}
-
-	_filterForRouteChanged(column) {
-		if (!this.hashParam || !this._routeHash || !Array.isArray(this.data)) {
-			return;
-		}
-
-		const path = ['_routeHash', this.hashParam + '-filter--' + column.name],
-			hashValue = this.get(path),
-			serialized = column._serializeFilter();
-
-		if (serialized === hashValue) {
-			return;
-		}
-
-		this.set(path, serialized === undefined ? null : serialized);
-	}
-
-	_debounce(name, fn, asyncModule = timeOut.after(0)) {
-		this.debouncers[name] = Debouncer.debounce(this.debouncers[name], asyncModule, fn);
-	}
-
 	_renderRowStats(numRows, totalAvailable) {
 		if (Number.isInteger(totalAvailable) && totalAvailable > numRows) {
 			return this.ngettext('{1} / {0} row', '{1} / {0} rows', totalAvailable, numRows);
@@ -1219,24 +515,31 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		return this.ngettext('{0} row', '{0} rows', numRows);
 	}
 
-	renderFastLayoutCss(layoutCss, outlet) {
-		render(layoutCss, outlet);
-	}
-
 	_onCompleteValues(columns, type, value) { /* eslint-disable-next-line no-bitwise */
 		return columns?.filter?.(c => c[type]).sort((a, b) => ((b === value) >> 0) - ((a === value) >> 0));
 	}
+
 	_onCompleteChange(type) {
 		return (val, close) => {
 			const value = (val[0] ?? val)?.name ?? '',
-				prop = type === 'groupOn' ? 'groupOnDescending' : 'descending';
-			this[prop] = value && value === this[type] ? !this[prop] : false;
-			this[type] = value;
+				setter = type === 'groupOn' ? this.setGroupOn : this.setSortOn,
+				directionSetter = type === 'groupOn' ? this.setGroupOnDescending : this.setDescending;
+
+			setter(oldValue => {
+				if (value) {
+					directionSetter(oldDirection => value === oldValue ? !oldDirection : false);
+				} else {
+					directionSetter(null);
+				}
+				return value;
+			});
+
 			value && close(); /* eslint-disable-line no-unused-expressions */
 		};
 	}
 
-	_renderSettings(normalizedSettings, collapsed, settingsId, hasChangedSettings, hasHiddenFilter) {
+	// eslint-disable-next-line max-params
+	_renderSettings(normalizedSettings, collapsed, settingsId, hasChangedSettings, hasHiddenFilter, filters) {
 		return litHtml`<cosmoz-omnitable-settings
 			.settings=${ normalizedSettings }
 			.onSettings=${ this.setSettings }
@@ -1246,10 +549,11 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 			.onSave=${ this.onSettingsSave }
 			.onReset=${ this.onSettingsReset }
 			.badge=${ hasHiddenFilter }
+			.filters=${ filters }
 		>`;
 	}
 }
-customElements.define(Omnitable.is, Omnitable);
+customElements.define('cosmoz-omnitable', Omnitable);
 
 const tmplt = `
 	<slot name="actions" slot="actions"></slot>
