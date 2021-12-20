@@ -15,7 +15,7 @@ const
 		column,
 		filters[column.name] ?? {},
 		state => setFilterState(column.name, state),
-		column.source(column, data)
+		column.source?.(column, data)
 	) }</div>`,
 			html`<cosmoz-omnitable-resize-nub
 				.column=${ column }

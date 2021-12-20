@@ -15,6 +15,9 @@ import { translatable } from '@neovici/cosmoz-i18next';
 
 import { html as lit } from 'lit-html';
 
+const
+	onTap = event => console.log('onTap', event),
+	renderCustomNameCell = (column, { item }) => lit`<span style="background: red;" @click=${ onTap }>${ item.name }</span>`;
 class XPage extends translatable(PolymerElement) {
 	/* eslint-disable-next-line max-lines-per-function */
 	static get template() {
@@ -69,9 +72,10 @@ class XPage extends translatable(PolymerElement) {
 
 			<cosmoz-omnitable loading="[[ loading ]]" id="omnitable"
 				data="[[ data ]]" selection-enabled selected-items="{{ selectedItems }}"
-				hash-param="[[ hashParam ]]" settings-id="test">
-				<cosmoz-omnitable-column priority="-1" title="Name" name="name" value-path="name" flex="2" render-cell="[[ renderNameCell ]]">
-				</cosmoz-omnitable-column>
+				hash-param="[[ hashParam ]]" settings-id="test"
+				config="[[ config ]]">
+				<!--cosmoz-omnitable-column priority="-1" title="Name" name="name" value-path="name" flex="2" render-cell="[[ renderNameCell ]]">
+				</cosmoz-omnitable-column-->
 				<cosmoz-omnitable-column-amount title="[[ _('Amount', t) ]]" name="amount"
 					value-path="amount"
 					locale="[[ locale ]]" rates="{&quot;EUR&quot;: 1, &quot;USD&quot;:0.8169982616, &quot;AUD&quot;:0.6529827192, &quot;SEK&quot;: 0.1019271438}">
@@ -100,12 +104,6 @@ class XPage extends translatable(PolymerElement) {
 				</cosmoz-omnitable-column-list>
 				<cosmoz-omnitable-column-list-horizontal title="Object list" name="objectList" value-path="objectList" value-property="value" text-property="name">
 				</cosmoz-omnitable-column-list-horizontal>
-				<cosmoz-omnitable-column priority="3" title="Sub-property" name="sub-property" value-path="sub.subProp"
-					sort-on="sub.subProp" group-on="sub.subProp" flex="5" width="200px">
-				</cosmoz-omnitable-column>
-				<cosmoz-omnitable-column priority="3" title="Custom template" name="custom-name" value-path="name" sort-on="name" width="130px" flex="2"
-					render-cell="[[ renderCustomNameCell ]]">
-				</cosmoz-omnitable-column>
 				<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" locale="[[ locale ]]" priority="1">
 				</cosmoz-omnitable-column-number>
 
@@ -150,6 +148,14 @@ class XPage extends translatable(PolymerElement) {
 			},
 			hashParam: {
 				type: String
+			},
+			config: {
+				type: Object,
+				value: {
+					name: { title: 'Name', priority: -1 },
+					'sub-property': { title: 'Sub-property', valuePath: 'sub.subProp', priority: 3, flex: 5, width: 200 },
+					'custom-name': { title: 'Custom template', valuePath: 'name', width: 130, flex: 2, renderCell: renderCustomNameCell }
+				}
 			}
 		};
 	}
@@ -157,7 +163,6 @@ class XPage extends translatable(PolymerElement) {
 	constructor() {
 		super();
 		this.renderIdCell = this.renderIdCell.bind(this);
-		this.renderCustomNameCell = this.renderCustomNameCell.bind(this);
 	}
 
 	connectedCallback() {
@@ -218,10 +223,6 @@ class XPage extends translatable(PolymerElement) {
 		return lit`<span @click=${ this.onTap }>
 			<a href=${ this._getItemLink(item) }>${ item.id }</a>
 		</span>`;
-	}
-
-	renderCustomNameCell(column, { item }) {
-		return lit`<span style="background: red;" @click=${ this.onTap }>${ item.name }</span>`;
 	}
 }
 customElements.define(XPage.is, XPage);

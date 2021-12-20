@@ -6,8 +6,8 @@ import {
 	html, nothing
 } from 'lit-html';
 
-import { columnMixin, getString } from './cosmoz-omnitable-column-mixin.js';
-import { computeSource, listColumnMixin, onChange, onFocus, onText, toAutocompleteSource } from './cosmoz-omnitable-column-list-mixin';
+import { columnMixin } from './cosmoz-omnitable-column-mixin.js';
+import { computeSource, getString, listColumnMixin, onChange, onFocus, onText, toAutocompleteSource } from './cosmoz-omnitable-column-list-mixin';
 import {
 	prop, strProp, array
 } from '@neovici/cosmoz-autocomplete/lib/utils';
@@ -35,7 +35,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(columnMixin(PolymerEle
 	}
 
 	renderCell(column, { item }) {
-		return html`<span class="default-column">${ column.getString(column, item) }</span>`;
+		return html`<span class="default-column">${ getString(column, item) }</span>`;
 	}
 
 	renderEditCell(column, { item }, onItemChange) {

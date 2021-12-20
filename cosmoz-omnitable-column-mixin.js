@@ -1,20 +1,6 @@
-import { get } from '@polymer/polymer/lib/utils/path';
+import { getString, serializeFilter, deserializeFilter, toXlsxValue, getComparableValue } from './lib/columns/default';
 
 export const
-	getString = ({ valuePath }, item) => get(item, valuePath),
-	toXlsxValue = getString,
-	getComparableValue = getString,
-
-	applySingleFilter = ({ valuePath }, filter) => item => {
-		const value = get(item, valuePath);
-		if (value == null) {
-			return false;
-		}
-		return value.toString().toLowerCase().includes(filter.toLowerCase());
-	},
-
-	serializeFilter = (column, filter) => filter === '' || filter == null ? null : filter,
-
 	// eslint-disable-next-line max-lines-per-function
 	columnMixin = base => class extends base {
 		static get properties() {
@@ -85,7 +71,7 @@ export const
 		}
 
 		deserializeFilter(column, filter) {
-			return filter;
+			return deserializeFilter(column, filter);
 		}
 
 		getComparableValue(column, item) {
