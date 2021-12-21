@@ -1,3 +1,11 @@
+# [8.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0...v8.1.0) (2021-12-21)
+
+
+### Features
+
+* **design:** redesign some omnitable elements ([dcb20b4](https://github.com/neovici/cosmoz-omnitable/commit/dcb20b426e0e10a5827da5973939aaf321f12e35))
+* dropdon, bottom-bar, groupRow styling ([4a31546](https://github.com/neovici/cosmoz-omnitable/commit/4a31546f7178b40faed4ac7bbe9bbadee713afc3))
+
 # [8.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v7.3.0...v8.0.0) (2021-12-17)
 
 
