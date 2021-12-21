@@ -366,10 +366,10 @@ export default `<style>
 	.groupRow {
 		display: flex;
 		align-items: center;
-		background-color: #efefef;
-		font-weight: 400;
-		color: #48515b;
-		border-bottom: solid 1px #d6d6d6;
+		background-color: #f5f6f9;;
+		font-weight: 700;
+		color: #101010;
+		border-bottom: 1px solid var(--cosmoz-omnitable-border-color, #e1e2e5);
 	}
 
 	.groupRow.groupRow-folded {
@@ -392,6 +392,17 @@ export default `<style>
 
 	.groupRow-label > cosmoz-omnitable-group-row {
 		flex: auto;
+	}
+
+	.groupRow-badge {
+		background: #8BE5C6;
+		color: #fff;
+		line-height: 30px;
+		width: 30px;
+		text-align: center;
+		border-radius: 50%;
+		font-size: 13px;
+		font-weight: 500;
 	}
 
 	.rtl {
@@ -464,34 +475,4 @@ export default `<style>
 	.expand:hover, .fold:hover {
 		color: #000;
 	}
-
-	cosmoz-dropdown::part(button) {
-		background: var(--cosmoz-omnitable-dropdown-bg-color, #101010);
-		color: white;
-		width: 40px;
-		height: 40px;
-		border-radius: 50%;
-		border: none;
-		cursor: pointer;
-	}
-
-	cosmoz-dropdown::part(anchor) {
-		padding: 12px 8px;
-	}
-	cosmoz-dropdown::part(dropdown) {
-		background: #fff;
-		box-shadow: 0px 3px 4px 2px rgba(0, 0, 0, 0.1);
-	}
-
-	cosmoz-dropdown paper-button,cosmoz-dropdown ::slotted(paper-button) {
-		@apply --cosmoz-bottom-bar-menu-item;
-		padding: 10px 24px;
-		min-width: 140px;
-		justify-content: flex-start;
-	}
-
-	cosmoz-dropdown paper-button:hover, cosmoz-dropdown ::slotted(paper-button:hover) {
-		background: var(--cosmoz-omnitable-selection-color, rgb(195, 212, 248))
-	}
-
 </style>`;

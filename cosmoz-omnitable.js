@@ -1,7 +1,6 @@
 /* eslint-disable max-lines */
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-icon/iron-icon';
-import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/paper-spinner/paper-spinner-lite';
 
@@ -122,7 +121,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 									<cosmoz-omnitable-group-row column="[[ groupOnColumn ]]" item="[[ item.items.0 ]]" selected="[[ selected ]]" folded="[[ folded ]]">
 									</cosmoz-omnitable-group-row>
 								</h3>
-								<div>[[ item.items.length ]]</div>
+								<div class="groupRow-badge">[[ item.items.length ]]</div>
 								<paper-icon-button class="fold" icon="[[ _getFoldIcon(folded) ]]" on-tap="_toggleGroup"></paper-icon-button>
 							</div>
 						</template>
@@ -160,16 +159,16 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 						as it might change the slot of the actions to distribute them in the menu -->
 					<slot name="bottom-bar-toolbar" slot="bottom-bar-toolbar"></slot>
 					<slot name="bottom-bar-menu" slot="bottom-bar-menu"></slot>
-					<cosmoz-dropdown slot="extra" placement="[[ topPlacement ]]">
+					<cosmoz-dropdown-menu slot="extra" placement="[[ topPlacement ]]">
 						<svg slot="button" width="14" height="18" viewBox="0 0 14 18" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
 							<path d="M1 8.5L7.00024 14.5L13 8.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 							<path d="M13 17L1 17" stroke-width="2" stroke-linecap="round"/>
 							<path d="M7 1V13" stroke-width="2" stroke-linecap="round"/>
 						</svg>
-						<paper-button on-click="_saveAsCsvAction">[[ _('Save as CSV', t) ]]</paper-button>
-						<paper-button on-click="_saveAsXlsxAction">[[ _('Save as XLSX', t) ]]</paper-button>
+						<button on-click="_saveAsCsvAction">[[ _('Save as CSV', t) ]]</button>
+						<button on-click="_saveAsXlsxAction">[[ _('Save as XLSX', t) ]]</button>
 						<slot name="download-menu"></slot>
-					</cosmoz-dropdown>
+					</cosmoz-dropdown-menu>
 				</cosmoz-bottom-bar>
 			</div>
 		</div>
