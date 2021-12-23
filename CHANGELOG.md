@@ -1,3 +1,10 @@
+## [8.1.1](https://github.com/neovici/cosmoz-omnitable/compare/v8.1.0...v8.1.1) (2021-12-23)
+
+
+### Bug Fixes
+
+* **valuesFrom:** handle non Array ([71a4f14](https://github.com/neovici/cosmoz-omnitable/commit/71a4f148d08bdb5eb99966b370680d6176529ab9))
+
 # [8.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.0.0...v8.1.0) (2021-12-21)
 
 
