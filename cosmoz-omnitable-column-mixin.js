@@ -1,4 +1,5 @@
-import { getString, serializeFilter, deserializeFilter, toXlsxValue, getComparableValue } from './lib/columns/default';
+import { defaultColumn } from './lib/columns';
+const { getString, serializeFilter, deserializeFilter, toXlsxValue, getComparableValue } = defaultColumn;
 
 export const
 	// eslint-disable-next-line max-lines-per-function

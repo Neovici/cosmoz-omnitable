@@ -33,6 +33,8 @@ import './lib/cosmoz-omnitable-settings';
 import { saveAsCsvAction } from './lib/save-as-csv-action';
 import { saveAsXlsxAction } from './lib/save-as-xlsx-action';
 
+export * from './lib/columns';
+
 /**
  * @polymer
  * @customElement

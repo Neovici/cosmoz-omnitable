@@ -5,7 +5,7 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-toggle-button/paper-toggle-button';
 import '@neovici/cosmoz-viewinfo';
 
-import '../../cosmoz-omnitable';
+import { boolean } from '../../cosmoz-omnitable';
 import { generateTableDemoData } from '../table-demo-helper';
 import './cosmoz-translations';
 
@@ -85,8 +85,8 @@ class XPage extends translatable(PolymerElement) {
 				<cosmoz-omnitable-column-autocomplete flex="0" width="40px" title="Id" name="id" value-path="id"
 					render-cell="[[ renderIdCell ]]">
 				</cosmoz-omnitable-column-autocomplete>
-				<cosmoz-omnitable-column-boolean title="Boolean" name="bool" value-path="bool" true-label="Yes" false-label="No">
-				</cosmoz-omnitable-column-boolean>
+				<!--cosmoz-omnitable-column-boolean title="Boolean" name="bool" value-path="bool" true-label="Yes" false-label="No">
+				</cosmoz-omnitable-column-boolean-->
 				<cosmoz-omnitable-column-autocomplete title="[[ _('Group', t) ]]" name="group" value-path="group" flex="0" width="125px">
 				</cosmoz-omnitable-column-autocomplete>
 				<cosmoz-omnitable-column-autocomplete title="[[ _('Object', t) ]]"
@@ -153,6 +153,7 @@ class XPage extends translatable(PolymerElement) {
 				type: Object,
 				value: {
 					name: { title: 'Name', priority: -1 },
+					bool: boolean({ title: 'Boolean' }),
 					'sub-property': { title: 'Sub-property', valuePath: 'sub.subProp', priority: 3, flex: 5, width: 200 },
 					'custom-name': { title: 'Custom template', valuePath: 'name', width: 130, flex: 2, renderCell: renderCustomNameCell }
 				}

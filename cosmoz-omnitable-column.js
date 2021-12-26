@@ -5,7 +5,8 @@ import './ui-helpers/cosmoz-clear-button';
 
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 import { PolymerElement } from '@polymer/polymer/polymer-element';
-import { getFilterFn, renderCell, renderEditCell, renderHeader } from './lib/columns/default';
+import { defaultColumn } from './lib/columns';
+const { getFilterFn, renderCell, renderEditCell, renderHeader } = defaultColumn;
 
 /**
  * @polymer
