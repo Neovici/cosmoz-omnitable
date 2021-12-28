@@ -1,3 +1,10 @@
+# [8.2.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.1.1...v8.2.0) (2021-12-28)
+
+
+### Features
+
+* improve design of omnitable settings ([4621109](https://github.com/neovici/cosmoz-omnitable/commit/46211090a8804aa52d363e9fe383e73a427e4f5c))
+
 ## [8.1.1](https://github.com/neovici/cosmoz-omnitable/compare/v8.1.0...v8.1.1) (2021-12-23)
 
 
