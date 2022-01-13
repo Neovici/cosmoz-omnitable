@@ -1,3 +1,10 @@
+## [8.2.1](https://github.com/neovici/cosmoz-omnitable/compare/v8.2.0...v8.2.1) (2022-01-13)
+
+
+### Bug Fixes
+
+* use null for filter reset ([2ff42b1](https://github.com/neovici/cosmoz-omnitable/commit/2ff42b134e47aaa1b4c0eb553264fb7f419c7356))
+
 # [8.2.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.1.1...v8.2.0) (2021-12-28)
 
 
