@@ -28,7 +28,7 @@ const
 		setState(state => ({ ...state, headerFocused: event.detail.value })),
 
 	resetFilter = setState => () =>
-		setState(state => ({ ...state, filter: undefined, inputValue: undefined })),
+		setState(state => ({ ...state, filter: null, inputValue: null })),
 
 	hasFilter = filter => filter != null && filter !== '';
 
