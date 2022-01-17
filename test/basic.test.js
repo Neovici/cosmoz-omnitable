@@ -72,6 +72,10 @@ suite('basic', () => {
 		assert.isNull(columnWithoutGroupOn.serializeFilter({}, null));
 	});
 
+	test('deserializeFilter handles encoded strings', () => {
+		assert.deepEqual(columnWithoutGroupOn.deserializeFilter({}, 'aaaa%40bbb.com'), 'aaaa@bbb.com');
+	});
+
 	test('deserializeFilter returns object', () => {
 		assert.deepEqual(columnWithoutGroupOn.deserializeFilter({}, { key: 'value' }), { key: 'value' });
 	});

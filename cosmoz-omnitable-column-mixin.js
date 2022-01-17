@@ -85,6 +85,13 @@ export const
 		}
 
 		deserializeFilter(column, filter) {
+			if (filter == null) {
+				return null;
+			}
+
+			if (typeof filter === 'string') {
+				return window.decodeURIComponent(filter);
+			}
 			return filter;
 		}
 
