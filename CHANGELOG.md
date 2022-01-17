@@ -1,3 +1,10 @@
+## [8.2.2](https://github.com/neovici/cosmoz-omnitable/compare/v8.2.1...v8.2.2) (2022-01-17)
+
+
+### Bug Fixes
+
+* **default-column:** workaround for double-encoded filters ([65cc7ca](https://github.com/neovici/cosmoz-omnitable/commit/65cc7ca282718abd30eed7a3af4de850f0ff12b4))
+
 ## [8.2.1](https://github.com/neovici/cosmoz-omnitable/compare/v8.2.0...v8.2.1) (2022-01-13)
 
 
