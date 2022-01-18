@@ -1,3 +1,10 @@
+## [8.2.3](https://github.com/neovici/cosmoz-omnitable/compare/v8.2.2...v8.2.3) (2022-01-18)
+
+
+### Bug Fixes
+
+* **enabled-columns:** react to enabled columns changes ([2cfd45a](https://github.com/neovici/cosmoz-omnitable/commit/2cfd45ad3eb06600bc600336886c938df940b59b))
+
 ## [8.2.2](https://github.com/neovici/cosmoz-omnitable/compare/v8.2.1...v8.2.2) (2022-01-17)
 
 
