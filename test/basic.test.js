@@ -341,3 +341,42 @@ suite('render row stats', () => {
 		assert.equal(omnitable.shadowRoot.querySelector('.footer-tableStats span:last-child').textContent, '1 / 250 rows');
 	});
 });
+
+suite('enabled columns', () => {
+	test('displays only enabled columns', async () => {
+		const omnitable = await setupOmnitableFixture(html`
+			<cosmoz-omnitable .resizeSpeedFactor=${ 0 } .enabledColumns=${ ['name1'] }>
+				<cosmoz-omnitable-column name="name1" value-path="name" title="Name1"></cosmoz-omnitable-column>
+				<cosmoz-omnitable-column name="name2" value-path="name" title="Name2"></cosmoz-omnitable-column>
+				<cosmoz-omnitable-column name="name3" value-path="name" title="Name3"></cosmoz-omnitable-column>
+			</cosmoz-omnitable>`, generateTableDemoData(10, 10, 25));
+
+		assert.deepEqual(Array.from(omnitable.shadowRoot.querySelectorAll('.header-cell')).map(cell => cell.title), ['Name1']);
+	});
+
+	test('react to enabled columns changes', async () => {
+		const omnitable = await setupOmnitableFixture(html`
+			<cosmoz-omnitable .resizeSpeedFactor=${ 0 }>
+				<cosmoz-omnitable-column name="name1" value-path="name" title="Name1"></cosmoz-omnitable-column>
+				<cosmoz-omnitable-column name="name2" value-path="name" title="Name2"></cosmoz-omnitable-column>
+				<cosmoz-omnitable-column name="name3" value-path="name" title="Name3"></cosmoz-omnitable-column>
+			</cosmoz-omnitable>`, generateTableDemoData(10, 10, 25));
+
+		assert.deepEqual(Array.from(omnitable.shadowRoot.querySelectorAll('.header-cell')).map(cell => cell.title), ['Name1', 'Name2', 'Name3']);
+
+		omnitable.enabledColumns = ['name1'];
+		await nextFrame();
+
+		assert.deepEqual(Array.from(omnitable.shadowRoot.querySelectorAll('.header-cell')).map(cell => cell.title), ['Name1']);
+
+		omnitable.enabledColumns = ['name2', 'name3'];
+		await nextFrame();
+
+		assert.deepEqual(Array.from(omnitable.shadowRoot.querySelectorAll('.header-cell')).map(cell => cell.title), ['Name2', 'Name3']);
+
+		omnitable.enabledColumns = undefined;
+		await nextFrame();
+
+		assert.deepEqual(Array.from(omnitable.shadowRoot.querySelectorAll('.header-cell')).map(cell => cell.title), ['Name1', 'Name2', 'Name3']);
+	});
+});

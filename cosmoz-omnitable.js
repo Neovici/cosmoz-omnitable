@@ -223,7 +223,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 			/**
 		 * Specific columns to enable
 		 */
-			enabledColumns: { type: Array },
+			enabledColumns: { type: Array, notify: true },
 
 			/**
 		 * Whether bottom-bar has actions.
