@@ -1,3 +1,10 @@
+## [8.2.4](https://github.com/neovici/cosmoz-omnitable/compare/v8.2.3...v8.2.4) (2022-01-21)
+
+
+### Bug Fixes
+
+* **legacy:** column.filter to internal state mapping ([34af4ed](https://github.com/neovici/cosmoz-omnitable/commit/34af4ed86e3e0c3b0cc4b0ab601013e12fd9e52b))
+
 ## [8.2.3](https://github.com/neovici/cosmoz-omnitable/compare/v8.2.2...v8.2.3) (2022-01-18)
 
 
