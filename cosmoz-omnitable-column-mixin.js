@@ -27,6 +27,7 @@ export const
 				title: { type: String },
 				valuePath: { type: String, notify: true },
 				values: { type: Array, notify: true },
+				filter: { type: Object },
 				/**
 			 * If the column should be disabled until enabled with enabledColumns
 			 */
@@ -59,6 +60,21 @@ export const
 				renderEditCell: { type: Function },
 				renderGroup: { type: Function }
 			};
+		}
+
+		static get observers() {
+			return ['notifyFilterChange(filter)'];
+		}
+
+		notifyFilterChange(filter) {
+			if (this.__ownChange) {
+				return;
+			}
+			this.dispatchEvent(new CustomEvent('legacy-filter-changed', { detail: { name: this.name, state: this.legacyFilterToState(filter) }, bubbles: true }));
+		}
+
+		legacyFilterToState(filter) {
+			return { filter };
 		}
 
 		/**

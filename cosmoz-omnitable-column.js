@@ -75,5 +75,9 @@ class OmnitableColumn extends columnMixin(PolymerElement) {
 			<cosmoz-clear-button suffix slot="suffix" ?visible=${ hasFilter(filter) } light @click=${ resetFilter(setState) }></cosmoz-clear-button>
 		</paper-input>`;
 	}
+
+	legacyFilterToState(filter) {
+		return { filter, inputValue: filter };
+	}
 }
 customElements.define('cosmoz-omnitable-column', OmnitableColumn);
