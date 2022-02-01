@@ -298,7 +298,7 @@ export default `<style>
 		align-items: center;
 	}
 	.footer-control + .footer-control {
-		margin-left: 34px;
+		margin-left: 16px;
 	}
 	.footer-control::part(input-label) {
 		opacity: 0.7;
@@ -318,6 +318,7 @@ export default `<style>
 		display: flex;
 		flex-direction: column;
 		align-items: flex-end;
+		white-space: nowrap;
 	}
 
 	.footer-tableStats :first-child {

@@ -146,6 +146,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 					>
 						<svg slot="suffix" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" width="24" fill="currentColor"><path d="M7 10l5 5 5-5z"></path></svg>
 					</cosmoz-autocomplete>
+					<slot id="controlsSlot" name="controls"></slot>
 				</div>
 				<div class="footer-tableStats">
 					<span>[[ ngettext('{0} group', '{0} groups', groupsCount, t) ]]</span>
