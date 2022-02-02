@@ -1,3 +1,10 @@
+# [8.3.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.2.4...v8.3.0) (2022-02-02)
+
+
+### Features
+
+* add controls slot ([c8839ee](https://github.com/neovici/cosmoz-omnitable/commit/c8839ee31c9c5d16b4ce8f02c7ccedc2d8d86342))
+
 ## [8.2.4](https://github.com/neovici/cosmoz-omnitable/compare/v8.2.3...v8.2.4) (2022-01-21)
 
 
