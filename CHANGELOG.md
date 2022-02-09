@@ -1,3 +1,10 @@
+## [8.3.1](https://github.com/neovici/cosmoz-omnitable/compare/v8.3.0...v8.3.1) (2022-02-09)
+
+
+### Bug Fixes
+
+* **column-date:** parse dates as UTC ([3b1245a](https://github.com/neovici/cosmoz-omnitable/commit/3b1245aaf2ba40f16a15584683a9b0973ad544b6))
+
 # [8.3.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.2.4...v8.3.0) (2022-02-02)
 
 
