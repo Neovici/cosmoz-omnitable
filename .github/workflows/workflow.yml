@@ -41,6 +41,9 @@ jobs:
     - name: ESLint
       run: npm run lint
 
+    - name: Install playwright deps
+      run: npx playwright install
+
     - name: Test and report
       env:
         CC_TEST_REPORTER_ID: a061a568c2b58fab68f6fad8d19fa398b5ea29d701348e69716e4f48132fc4c3
