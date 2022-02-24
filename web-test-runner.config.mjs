@@ -1,12 +1,16 @@
-import { chromeLauncher } from '@web/test-runner';
-import { seleniumLauncher } from '@web/test-runner-selenium';
-import webdriver from 'selenium-webdriver';
-import firefox from 'selenium-webdriver/firefox.js';
+import { playwrightLauncher } from '@web/test-runner-playwright';
 
 export default {
 	nodeResolve: true,
+	browsers: [
+		playwrightLauncher({ product: 'chromium' }),
+		playwrightLauncher({ product: 'firefox' })
+	],
+	coverage: true,
 	coverageConfig: {
+		report: true,
 		reportDir: 'coverage',
+		nativeInstrumentation: true,
 		exclude: ['test/**/*.js', 'demo/**/*.js', 'ui-helpers/*.js', 'node_modules/**'],
 		threshold: {
 			statements: 70,
@@ -20,14 +24,5 @@ export default {
 			ui: 'tdd'
 		}
 	},
-	files: [
-		'test/**/*test.js'
-	],
-	browsers: [
-		chromeLauncher(),
-		seleniumLauncher({
-			driverBuilder: new webdriver.Builder().forBrowser('firefox').setFirefoxOptions(new firefox.Options().headless())
-		})
-	]
-
+	files: ['test/**/*test.js']
 };
