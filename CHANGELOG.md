@@ -1,3 +1,11 @@
+## [8.3.2](https://github.com/neovici/cosmoz-omnitable/compare/v8.3.1...v8.3.2) (2022-03-09)
+
+
+### Bug Fixes
+
+* **deps:** update cosmoz-page-router ([283996d](https://github.com/neovici/cosmoz-omnitable/commit/283996d044ebecca658dfcc552585c8948cbbea8))
+* **use-dom-columns:** changes to enabled columns are ignored ([9f4fdcf](https://github.com/neovici/cosmoz-omnitable/commit/9f4fdcf44380246fdd6d3a67ca0a0fa13da15193))
+
 ## [8.3.1](https://github.com/neovici/cosmoz-omnitable/compare/v8.3.0...v8.3.1) (2022-02-09)
 
 
