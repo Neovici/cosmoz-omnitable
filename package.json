@@ -53,7 +53,7 @@
 	},
 	"dependencies": {
 		"@neovici/cosmoz-autocomplete": "^2.17.1",
-		"@neovici/cosmoz-bottom-bar": "^4.4.0",
+		"@neovici/cosmoz-bottom-bar": "^5.0.0",
 		"@neovici/cosmoz-datetime-input": "^3.0.3",
 		"@neovici/cosmoz-dropdown": "^1.5.0",
 		"@neovici/cosmoz-grouped-list": "^3.2.0",

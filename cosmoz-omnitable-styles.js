@@ -421,7 +421,7 @@ export default `<style>
 	cosmoz-bottom-bar {
 		background-color: var(--cosmoz-omnitable-bottom-bar-color, #5f5a92);
 		overflow: hidden;
-		z-index: auto;
+		position: absolute;
 	}
 	cosmoz-bottom-bar::part(bar) {
 		padding: 0 24px;
@@ -438,7 +438,6 @@ export default `<style>
 		border-color: #b7b6c8;
 		cursor: not-allowed;
 	}
-
 
 	.boolean-cell[editable] {
 		overflow: initial;
