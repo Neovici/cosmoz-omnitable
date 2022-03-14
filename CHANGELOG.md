@@ -1,3 +1,10 @@
+# [8.4.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.3.2...v8.4.0) (2022-03-14)
+
+
+### Features
+
+* **deps:** upgrade cosmoz-bottom-bar ([ad40cf6](https://github.com/neovici/cosmoz-omnitable/commit/ad40cf6dcbe9d61ffcd05289e2af8f9b1ad89ad9))
+
 ## [8.3.2](https://github.com/neovici/cosmoz-omnitable/compare/v8.3.1...v8.3.2) (2022-03-09)
 
 
