@@ -1,3 +1,10 @@
+# [8.5.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.4.0...v8.5.0) (2022-03-31)
+
+
+### Features
+
+* **cosmoz-autocomplete:** upgrade ([e0219f8](https://github.com/neovici/cosmoz-omnitable/commit/e0219f85ecde531f5b5ca99ab4a9a7e838e7acfd))
+
 # [8.4.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.3.2...v8.4.0) (2022-03-14)
 
 
