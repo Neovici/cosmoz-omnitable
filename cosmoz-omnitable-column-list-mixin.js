@@ -151,8 +151,7 @@ const
 		}
 
 		serializeFilter(column, filter) {
-			// TODO: drop the double-encoding
-			return filter.length === 0 ? null : encodeURIComponent(JSON.stringify(filter));
+			return filter.length === 0 ? null : JSON.stringify(filter);
 		}
 
 		deserializeFilter(column, filter) {
