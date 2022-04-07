@@ -91,7 +91,7 @@ suite('basic-write', () => {
 	test('updates location from filter', async () => {
 		omnitable.setFilterState('id', { filter: [0, 1]});
 		await nextFrame();
-		assert.equal(location.hash, '#!/#test-filter--id=%255B0%252C1%255D');
+		assert.equal(location.hash, '#!/#test-filter--id=%5B0%2C1%5D');
 
 		omnitable.setFilterState('id', { filter: null });
 		await nextFrame();
