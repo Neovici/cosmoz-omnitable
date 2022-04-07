@@ -1,3 +1,10 @@
+## [8.5.1](https://github.com/neovici/cosmoz-omnitable/compare/v8.5.0...v8.5.1) (2022-04-07)
+
+
+### Bug Fixes
+
+* **use-hash-state:** remove double encoding ([4856c6c](https://github.com/neovici/cosmoz-omnitable/commit/4856c6c67f21a9c132266f5f6a7f37fc682306ba))
+
 # [8.5.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.4.0...v8.5.0) (2022-03-31)
 
 
