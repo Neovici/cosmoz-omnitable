@@ -134,7 +134,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 						label="[[ _('Group on', t) ]] [[ _computeSortDirection(groupOnDescending, t) ]]" placeholder="[[ _('No grouping', t) ]]"
 						source="[[ _onCompleteValues(columns, 'groupOn', groupOnColumn) ]]" value="[[ groupOnColumn ]]" limit="1" text-property="title"
 						always-float-label item-height="48" item-limit="8"
-						class="footer-control" on-change="[[ _onCompleteChange('groupOn') ]]" default-index="-1" show-single show-selection
+						class="footer-control" on-select="[[ _onCompleteChange('groupOn') ]]" default-index="-1" show-single
 					>
 						<svg slot="suffix" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" width="24" fill="currentColor"><path d="M7 10l5 5 5-5z"></path></svg>
 					</cosmoz-autocomplete>
@@ -142,7 +142,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 						label="[[ _('Sort on', t) ]] [[ _computeSortDirection(descending, t) ]]" placeholder="[[ _('No sorting', t) ]]"
 						source="[[ _onCompleteValues(columns, 'sortOn', sortOnColumn) ]]" value="[[ sortOnColumn ]]" limit="1" text-property="title"
 						always-float-label item-height="48" item-limit="8"
-						class="footer-control" on-change="[[ _onCompleteChange('sortOn') ]]" default-index="-1" show-single show-selection
+						class="footer-control" on-select="[[ _onCompleteChange('sortOn') ]]" default-index="-1" show-single
 					>
 						<svg slot="suffix" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" width="24" fill="currentColor"><path d="M7 10l5 5 5-5z"></path></svg>
 					</cosmoz-autocomplete>
@@ -521,7 +521,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 	}
 
 	_onCompleteChange(type) {
-		return (val, close) => {
+		return (val, {setClosed}) => {
 			const value = (val[0] ?? val)?.name ?? '',
 				setter = type === 'groupOn' ? this.setGroupOn : this.setSortOn,
 				directionSetter = type === 'groupOn' ? this.setGroupOnDescending : this.setDescending;
@@ -535,7 +535,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 				return value;
 			});
 
-			value && close(); /* eslint-disable-line no-unused-expressions */
+			value && setClosed(true); /* eslint-disable-line no-unused-expressions */
 		};
 	}
 
