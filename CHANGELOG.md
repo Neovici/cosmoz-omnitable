@@ -1,3 +1,10 @@
+## [8.5.2](https://github.com/neovici/cosmoz-omnitable/compare/v8.5.1...v8.5.2) (2022-04-12)
+
+
+### Bug Fixes
+
+* **sort-and-group-options:**  fallback descending/groupByDescending ([2c25638](https://github.com/neovici/cosmoz-omnitable/commit/2c25638441266c6092e19940b27606d0c104b6a6))
+
 ## [8.5.1](https://github.com/neovici/cosmoz-omnitable/compare/v8.5.0...v8.5.1) (2022-04-07)
 
 
