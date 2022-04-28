@@ -1,3 +1,10 @@
+## [8.5.3](https://github.com/neovici/cosmoz-omnitable/compare/v8.5.2...v8.5.3) (2022-04-28)
+
+
+### Bug Fixes
+
+* **cosmoz-omnitable:** clear sort & group ([35c9273](https://github.com/neovici/cosmoz-omnitable/commit/35c9273ef71c2b512c22c9194f38afad6032fcdd))
+
 ## [8.5.2](https://github.com/neovici/cosmoz-omnitable/compare/v8.5.1...v8.5.2) (2022-04-12)
 
 
