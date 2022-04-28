@@ -28,6 +28,7 @@ import './lib/cosmoz-omnitable-settings';
 import { saveAsCsvAction } from './lib/save-as-csv-action';
 import { saveAsXlsxAction } from './lib/save-as-xlsx-action';
 import { defaultPlacement } from '@neovici/cosmoz-dropdown';
+import { without } from '@neovici/cosmoz-utils/lib/array';
 /**
  * @polymer
  * @customElement
@@ -134,7 +135,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 						label="[[ _('Group on', t) ]] [[ _computeSortDirection(groupOnDescending, t) ]]" placeholder="[[ _('No grouping', t) ]]"
 						source="[[ _onCompleteValues(columns, 'groupOn', groupOnColumn) ]]" value="[[ groupOnColumn ]]" limit="1" text-property="title"
 						always-float-label item-height="48" item-limit="8"
-						class="footer-control" on-select="[[ _onCompleteChange('groupOn') ]]" default-index="-1" show-single
+						class="footer-control" on-change="[[ _onCompleteChange('groupOn') ]]" on-select="[[ _onCompleteSelect ]]" default-index="-1" show-single
 					>
 						<svg slot="suffix" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" width="24" fill="currentColor"><path d="M7 10l5 5 5-5z"></path></svg>
 					</cosmoz-autocomplete>
@@ -142,7 +143,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 						label="[[ _('Sort on', t) ]] [[ _computeSortDirection(descending, t) ]]" placeholder="[[ _('No sorting', t) ]]"
 						source="[[ _onCompleteValues(columns, 'sortOn', sortOnColumn) ]]" value="[[ sortOnColumn ]]" limit="1" text-property="title"
 						always-float-label item-height="48" item-limit="8"
-						class="footer-control" on-select="[[ _onCompleteChange('sortOn') ]]" default-index="-1" show-single
+						class="footer-control" on-change="[[ _onCompleteChange('sortOn') ]]" on-select="[[ _onCompleteSelect ]]" default-index="-1" show-single
 					>
 						<svg slot="suffix" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" width="24" fill="currentColor"><path d="M7 10l5 5 5-5z"></path></svg>
 					</cosmoz-autocomplete>
@@ -520,8 +521,13 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		return columns?.filter?.(c => c[type]).sort((a, b) => ((b === value) >> 0) - ((a === value) >> 0));
 	}
 
+	_onCompleteSelect(newVal, {value, onChange, onText, limit}) {
+		onText('');
+		onChange([...without(newVal)(value), newVal].slice(-limit));
+	}
+
 	_onCompleteChange(type) {
-		return (val, {setClosed}) => {
+		return (val, close) => {
 			const value = (val[0] ?? val)?.name ?? '',
 				setter = type === 'groupOn' ? this.setGroupOn : this.setSortOn,
 				directionSetter = type === 'groupOn' ? this.setGroupOnDescending : this.setDescending;
@@ -535,7 +541,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 				return value;
 			});
 
-			value && setClosed(true); /* eslint-disable-line no-unused-expressions */
+			value && close(); /* eslint-disable-line no-unused-expressions */
 		};
 	}
 
