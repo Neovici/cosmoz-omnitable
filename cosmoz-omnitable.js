@@ -53,6 +53,10 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 					columns="[[ normalizedColumns ]]"
 					filters="[[ filters ]]"
 					group-on-column="[[ groupOnColumn ]]"
+					descending="[[ descending ]]"
+					set-descending="[[ setDescending ]]"
+					sort-on-column="[[ sortOnColumn ]]"
+					set-sort-on="[[ setSortOn ]]"
 					content="[[ _renderSettings(normalizedSettings, collapsedColumns, settingsId, hasChangedSettings, hasHiddenFilter, filters) ]]"
 					set-filter-state="[[ setFilterState ]]"
 				></cosmoz-omnitable-header-row>
