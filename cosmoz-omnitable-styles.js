@@ -1,73 +1,104 @@
 /* eslint-disable max-lines */
-const checkbox = `
-	.checkbox {
-		box-sizing: border-box;
-		width: 18px;
-		height: 18px;
-		background: transparent;
-		border-radius: 4px;
-		appearance: none;
-		-webkit-appearance: none;
-		outline: none;
-		position: relative;
-		user-select: none;
-		cursor: pointer;
-		display: inline-block;
-		box-shadow: 0 0 0 2px rgba(0,0,0, 0.16) inset;
-		-webkit-tap-highlight-color: rgba(0,0,0,0);
-		vertical-align: middle;
-		transition: background-color 140ms;
-		margin: 1px 12px;
-		flex: none;
-	}
+import { tagged as css } from '@neovici/cosmoz-utils';
+const checkbox = css`
+		.checkbox {
+			box-sizing: border-box;
+			width: 18px;
+			height: 18px;
+			background: transparent;
+			border-radius: 4px;
+			appearance: none;
+			-webkit-appearance: none;
+			outline: none;
+			position: relative;
+			user-select: none;
+			cursor: pointer;
+			display: inline-block;
+			box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.16) inset;
+			-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+			vertical-align: middle;
+			transition: background-color 140ms;
+			margin: 1px 12px;
+			flex: none;
+		}
 
-	.checkbox:checked {
-		background-color: var(--cosmoz-omnitable-checkbox-checked-color, var(--primary-color));
-		box-shadow: none;
-	}
+		.checkbox:checked {
+			background-color: var(
+				--cosmoz-omnitable-checkbox-checked-color,
+				var(--primary-color)
+			);
+			box-shadow: none;
+		}
 
-	.checkbox:checked::before {
-		content: "";
-		position: absolute;
-		box-sizing: content-box;
-		width: 5px;
-		height: 10px;
-		border: 2.4px solid #fff;
-		border-top: none;
-		border-left: none;
-		transform-origin: 5px 10px;
-		transform: translate(3px) rotate(45deg);
-	}
+		.checkbox:checked::before {
+			content: '';
+			position: absolute;
+			box-sizing: content-box;
+			width: 5px;
+			height: 10px;
+			border: 2.4px solid #fff;
+			border-top: none;
+			border-left: none;
+			transform-origin: 5px 10px;
+			transform: translate(3px) rotate(45deg);
+		}
 
-	.checkbox::after {
-		content: '';
-		display: block;
-		bottom: -5px;
-		left: -5px;
-		right: -5px;
-		top: -5px;
-	}
+		.checkbox::after {
+			content: '';
+			display: block;
+			bottom: -5px;
+			left: -5px;
+			right: -5px;
+			top: -5px;
+		}
 
-	.checkbox:hover {
-		box-shadow: 0 0 0 2px rgba(0, 0, 0, 1) inset, 0 0 2px 6px #2021240f;
-	}
+		.checkbox:hover {
+			box-shadow: 0 0 0 2px rgba(0, 0, 0, 1) inset, 0 0 2px 6px #2021240f;
+		}
 
-	.checkbox:checked:hover {
-		box-shadow: 0 0 2px 6px #2021240f;
-	}
+		.checkbox:checked:hover {
+			box-shadow: 0 0 2px 6px #2021240f;
+		}
 
-	.checkbox:indeterminate::before {
-		content: "";
-		position: absolute;
-		width: 10px;
-		height: 2px;
-		left: 4px;
-		top: 8px;
-	  background-color: var(--cosmoz-omnitable-checkbox-checked-color, var(--primary-color));
-	}
-`;
+		.checkbox:indeterminate::before {
+			content: '';
+			position: absolute;
+			width: 10px;
+			height: 2px;
+			left: 4px;
+			top: 8px;
+			background-color: var(
+				--cosmoz-omnitable-checkbox-checked-color,
+				var(--primary-color)
+			);
+		}
+	`,
+	sort = css`
+		.sort {
+			display: inline-flex;
+			width: 10px;
+			cursor: pointer;
+			align-items: center;
+			margin-top: 18px;
+			overflow: hidden;
+		}
+		.sort svg {display: block;}
+
+		.header-cell {
+			display: inline-flex;
+			position: relative;
+		}
+		.header-cell:not([data-sort]):not(:hover) > .sort {
+			width: 0;
+		}
+		[data-sort="desc"] > .sort {
+			transform: scaleY(-1);
+		}
+
+	`;
 
 export { checkbox };
+
 export default `<style>
 	:host {
 		display: flex;
@@ -115,7 +146,9 @@ export default `<style>
 	}
 	.header-cell {
 		 --paper-input-container: {
-			padding-top: 0;
+				padding-top: 0;
+				padding-bottom: 0;
+				--paper-font-caption_-_line-height: 18px;
 		 }
 	}
 
@@ -455,7 +488,7 @@ export default `<style>
 		color: rgba(0, 0, 0, 0.54);
 	}
 
-	${ checkbox }
+	${checkbox}
 
 	.all {
 		margin-bottom: 14px;
@@ -475,4 +508,5 @@ export default `<style>
 	.expand:hover, .fold:hover {
 		color: #000;
 	}
+	${sort}
 </style>`;
