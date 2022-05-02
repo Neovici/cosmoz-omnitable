@@ -82,31 +82,38 @@ const checkbox = css`
 			margin-top: 18px;
 			overflow: hidden;
 			flex: none;
+			background: none;
+			border: none;
+			outline: none;
+			color: inherit;
+			padding: 0;
+			order: 112;
 		}
 		.sort svg {
 			display: block;
+		}
+		.sort[data-sort] {
+			color: var(
+				--cosmoz-omnitable-checkbox-checked-color,
+				var(--primary-color)
+			);
+		}
+		.sort[data-sort='desc'] {
+			transform: scaleY(-1);
+		}
+		:not(:hover) > .sort:not([data-sort]) {
+			display: none;
 		}
 
 		.header-cell {
 			display: inline-flex;
 			position: relative;
 		}
-		.header-cell[data-sort] > :not(.sort),
-		.header-cell:not([data-sort]):hover > :not(.sort) {
+		.header-cell:hover .sort + *,
+		.header-cell .sort[data-sort] + * {
 			max-width: calc(100% - 10px);
 		}
-		.header-cell:not([data-sort]):not(:hover) > .sort {
-			width: 0;
-		}
-		[data-sort='desc'] > .sort {
-			transform: scaleY(-1);
-		}
-		[data-sort] .sort {
-			color: var(
-				--cosmoz-omnitable-checkbox-checked-color,
-				var(--primary-color)
-			);
-		}
+
 	`;
 
 export { checkbox };

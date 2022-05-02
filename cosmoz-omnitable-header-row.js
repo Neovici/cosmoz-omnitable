@@ -14,6 +14,34 @@ const sortIcon = html`<svg
 			d="M3.56699 0.75C3.75944 0.416666 4.24056 0.416667 4.43301 0.75L7.03109 5.25C7.22354 5.58333 6.98298 6 6.59808 6L1.40192 6C1.01702 6 0.776461 5.58333 0.968911 5.25L3.56699 0.75Z"
 		/>
 	</svg> `,
+	sort = ({
+		column,
+		sortOnColumn,
+		setSortOn,
+		descending,
+		setDescending,
+	}) => html` <button
+		class="sort"
+		data-sort=${ifDefined(
+			(column === sortOnColumn && (descending ? 'desc' : 'asc')) || undefined
+		)}
+		@click=${(e) => {
+			const sort = e.currentTarget?.dataset.sort;
+			if (!sort) {
+				setSortOn(column.name);
+				setDescending(false);
+			}
+			if (sort === 'asc') {
+				setDescending(true);
+			}
+			if (sort === 'desc') {
+				setSortOn();
+				setDescending(false);
+			}
+		}}
+	>
+		${sortIcon}
+	</button>`,
 	/* eslint-disable-next-line max-lines-per-function */
 	renderHeaderRow = ({
 		data,
@@ -35,30 +63,20 @@ const sortIcon = html`<svg
 					?hidden=${column === groupOnColumn}
 					title=${column.title}
 					name=${column.name}
-					data-sort=${ifDefined(
-						(column === sortOnColumn && (descending ? 'desc' : 'asc')) || undefined
-					)}
 				>
+					${sort({
+						column,
+						sortOnColumn,
+						setSortOn,
+						descending,
+						setDescending,
+					})}
 					${column.renderHeader(
 						column,
 						filters[column.name] ?? {},
 						(state) => setFilterState(column.name, state),
 						column.source(column, data)
 					)}
-					<span class="sort" @click=${(e)=>{
-						const sort= e.currentTarget.parentElement?.dataset.sort;
-						if(!sort) {
-							setSortOn(column.name);
-							setDescending(false);
-						}
-						if(sort === 'asc'){
-							setDescending(true);
-						}
-						if(sort === 'desc') {
-							setSortOn();
-							setDescending(false);
-						}
-						}}>${sortIcon}</span>
 				</div>`,
 				html`<cosmoz-omnitable-resize-nub
 					.column=${column}
