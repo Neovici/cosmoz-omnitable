@@ -1,3 +1,17 @@
+# [8.6.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.5.3...v8.6.0) (2022-05-03)
+
+
+### Bug Fixes
+
+* adjust styles and classes ([52337a8](https://github.com/neovici/cosmoz-omnitable/commit/52337a82ef48f502070b301e9ab9475f9402bfb7))
+* **settings:** update style ([229e65b](https://github.com/neovici/cosmoz-omnitable/commit/229e65bd74c5ece2cb2d6071b3fd25535e32245e))
+* tweaking sorting headers ([fe17084](https://github.com/neovici/cosmoz-omnitable/commit/fe170845f096aaa69c345e3a9c789e40c0e4f6d0))
+
+
+### Features
+
+* **omnitable:** sort headers ([be1bb14](https://github.com/neovici/cosmoz-omnitable/commit/be1bb14a6ff8db90343a8bee39b3ec768154588c))
+
 ## [8.5.3](https://github.com/neovici/cosmoz-omnitable/compare/v8.5.2...v8.5.3) (2022-04-28)
 
 
