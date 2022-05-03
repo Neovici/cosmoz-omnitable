@@ -8,10 +8,6 @@ const /* eslint-disable-next-line max-lines-per-function */
 		data,
 		columns,
 		groupOnColumn,
-		sortOnColumn,
-		setSortOn,
-		descending,
-		setDescending,
 		filters,
 		setFilterState,
 	}) =>
@@ -25,19 +21,15 @@ const /* eslint-disable-next-line max-lines-per-function */
 					title=${column.title}
 					name=${column.name}
 				>
-					${sort({
-						column,
-						sortOnColumn,
-						setSortOn,
-						descending,
-						setDescending,
-					})}
-					${column.renderHeader(
-						column,
-						filters[column.name] ?? {},
-						(state) => setFilterState(column.name, state),
-						column.source(column, data)
-					)}
+					${[
+						column.renderHeader(
+							column,
+							filters[column.name] ?? {},
+							(state) => setFilterState(column.name, state),
+							column.source(column, data)
+						),
+						sort(column.name),
+					]}
 				</div>`,
 				html`<cosmoz-omnitable-resize-nub
 					.column=${column}

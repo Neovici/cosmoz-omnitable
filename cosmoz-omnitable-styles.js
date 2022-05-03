@@ -87,7 +87,6 @@ const checkbox = css`
 			outline: none;
 			color: inherit;
 			padding: 0;
-			order: 112;
 		}
 		.sort svg {
 			display: block;
@@ -101,22 +100,19 @@ const checkbox = css`
 		.sort[data-sort='desc'] {
 			transform: scaleY(-1);
 		}
-		:not(:hover) > .sort:not([data-sort]) {
+		:not(:hover) > * > .sort:not([data-sort]) {
 			display: none;
 		}
-
 		.header-cell {
 			display: inline-flex;
 			position: relative;
 		}
-		.header-cell:hover .sort + *,
-		.header-cell .sort[data-sort] + * {
-			max-width: calc(100% - 10px);
+		.header-cell * {
+			min-width: 0;
 		}
-
 	`;
 
-export { checkbox };
+export { checkbox, sort };
 
 export default `<style>
 	:host {
@@ -169,10 +165,6 @@ export default `<style>
 				padding-bottom: 0;
 				--paper-font-caption_-_line-height: 18px;
 		 }
-	}
-
-	.header-cell > * {
-		width: 100%;
 	}
 
 	cosmoz-omnitable-header-row {

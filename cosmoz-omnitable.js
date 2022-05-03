@@ -46,6 +46,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		<div id="layoutStyle"></div>
 
 		<div class="mainContainer">
+			<sort-and-group-provider value="[[ sortAndGroup ]]">
 			<div class="header" id="header">
 				<input class="checkbox all" type="checkbox" checked="[[ _allSelected ]]" on-input="_onAllCheckboxChange" disabled$="[[ !_dataIsValid ]]" />
 				<cosmoz-omnitable-header-row
@@ -53,14 +54,11 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 					columns="[[ normalizedColumns ]]"
 					filters="[[ filters ]]"
 					group-on-column="[[ groupOnColumn ]]"
-					descending="[[ descending ]]"
-					set-descending="[[ setDescending ]]"
-					sort-on-column="[[ sortOnColumn ]]"
-					set-sort-on="[[ setSortOn ]]"
 					content="[[ _renderSettings(normalizedSettings, collapsedColumns, settingsId, hasChangedSettings, hasHiddenFilter, filters) ]]"
 					set-filter-state="[[ setFilterState ]]"
 				></cosmoz-omnitable-header-row>
 			</div>
+			</sort-and-group-provider>
 			<div class="tableContent" id="tableContent">
 				<template is="dom-if" if="[[ !_dataIsValid ]]">
 					<div class="tableContent-empty">
