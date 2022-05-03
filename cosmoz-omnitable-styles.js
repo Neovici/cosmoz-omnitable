@@ -107,8 +107,9 @@ const checkbox = css`
 			display: inline-flex;
 			position: relative;
 		}
-		.header-cell * {
+		.header-cell :not(.sort) {
 			min-width: 0;
+			flex: auto;
 		}
 	`;
 
