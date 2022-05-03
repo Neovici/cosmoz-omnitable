@@ -1,3 +1,15 @@
+# [8.7.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.6.0...v8.7.0) (2022-05-03)
+
+
+### Bug Fixes
+
+* update sort icon ([bb60782](https://github.com/neovici/cosmoz-omnitable/commit/bb60782df20e467ebaaea22718d3b89347f7f70d))
+
+
+### Features
+
+* add sort in settings ui ([72dc696](https://github.com/neovici/cosmoz-omnitable/commit/72dc69688d1935f871c5ad76ae7ce7d429bae7ee))
+
 # [8.6.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.5.3...v8.6.0) (2022-05-03)
 
 
