@@ -1,3 +1,10 @@
+## [8.7.1](https://github.com/neovici/cosmoz-omnitable/compare/v8.7.0...v8.7.1) (2022-05-04)
+
+
+### Bug Fixes
+
+* **sort:** correct sizing with less columns ([db42cf2](https://github.com/neovici/cosmoz-omnitable/commit/db42cf242a4c2b74e548482bd0e4b94e803dc4a6))
+
 # [8.7.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.6.0...v8.7.0) (2022-05-03)
 
 
