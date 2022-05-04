@@ -121,8 +121,9 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 								<input class="checkbox" type="checkbox" checked="[[ selected ]]" on-input="_onCheckboxChange" disabled$="[[ !_dataIsValid ]]" />
 								<h3 class="groupRow-label">
 									<div><span>[[ groupOnColumn.title ]]</span>: &nbsp;</div>
-									<cosmoz-omnitable-group-row column="[[ groupOnColumn ]]" item="[[ item.items.0 ]]" selected="[[ selected ]]" folded="[[ folded ]]">
-									</cosmoz-omnitable-group-row>
+									<cosmoz-omnitable-group-row column="[[ groupOnColumn ]]" item="[[ item.items.0 ]]" selected="[[ selected ]]" folded="[[ folded ]]"
+										group="[[ item ]]"
+									></cosmoz-omnitable-group-row>
 								</h3>
 								<div class="groupRow-badge">[[ item.items.length ]]</div>
 								<paper-icon-button class="fold" icon="[[ _getFoldIcon(folded) ]]" on-tap="_toggleGroup"></paper-icon-button>
