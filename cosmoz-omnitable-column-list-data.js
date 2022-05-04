@@ -68,7 +68,7 @@ class OmnitableColumnListData extends translatable(mixin(Template, PolymerElemen
 			items: {
 				type: Array,
 				observer() {
-					this.dispatchEvent(new CustomEvent('iron-resize', { bubbles: true }));
+					// this.dispatchEvent(new CustomEvent('iron-resize', { bubbles: true }));
 				}
 			},
 
@@ -122,7 +122,7 @@ class OmnitableColumnListData extends translatable(mixin(Template, PolymerElemen
 		this._expanded = !this._expanded;
 		event.stopPropagation();
 		event.preventDefault();
-		this.dispatchEvent(new CustomEvent('iron-resize', { bubbles: true }));
+		this.dispatchEvent(new CustomEvent('expand', { bubbles: true }));
 	}
 }
 

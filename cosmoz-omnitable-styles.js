@@ -127,6 +127,10 @@ export default `<style>
 		color: var(--primary-link-color, inherit);
 	}
 
+	sort-and-group-provider {
+		display: contents;
+	}
+
 	/* The wrapping div that contains the header, the table content and the footer */
 	.mainContainer {
 		background-color: #fff;
@@ -316,7 +320,7 @@ export default `<style>
 	}
 
 	#groupedList {
-		position: absolute;
+		position: absolute !important;
 		top: 0;
 		right: 0;
 		bottom: 0;

@@ -13,22 +13,19 @@ import './cosmoz-omnitable-item-row';
 import './cosmoz-omnitable-item-expand';
 import './cosmoz-omnitable-group-row';
 import './cosmoz-omnitable-columns';
-import styles from './cosmoz-omnitable-styles';
-
 
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
 import { html as litHtml } from 'lit-html';
 
-import { translatable } from '@neovici/cosmoz-i18next';
-import { mixin, hauntedPolymer } from '@neovici/cosmoz-utils';
-import { isEmpty } from '@neovici/cosmoz-utils/lib/template.js';
 import { useOmnitable } from './lib/use-omnitable';
 import './lib/cosmoz-omnitable-settings';
 import { saveAsCsvAction } from './lib/save-as-csv-action';
 import { saveAsXlsxAction } from './lib/save-as-xlsx-action';
 import { defaultPlacement } from '@neovici/cosmoz-dropdown';
 import { without } from '@neovici/cosmoz-utils/lib/array';
+import { component } from 'haunted';
+import { renderOmnitable } from './lib/render-omnitable';
 /**
  * @polymer
  * @customElement
@@ -38,151 +35,9 @@ import { without } from '@neovici/cosmoz-utils/lib/array';
  * @demo demo/index.html
  */
 
-class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translatable(PolymerElement))) {
-	/* eslint-disable-next-line max-lines-per-function */
+class OmnitableC extends PolymerElement {
 	static get template() {
-		const template = html`
-		${ html([styles]) }
-		<div id="layoutStyle"></div>
-
-		<div class="mainContainer">
-			<sort-and-group-provider value="[[ sortAndGroup ]]">
-			<div class="header" id="header">
-				<input class="checkbox all" type="checkbox" checked="[[ _allSelected ]]" on-input="_onAllCheckboxChange" disabled$="[[ !_dataIsValid ]]" />
-				<cosmoz-omnitable-header-row
-					data="[[ data ]]"
-					columns="[[ normalizedColumns ]]"
-					filters="[[ filters ]]"
-					group-on-column="[[ groupOnColumn ]]"
-					content="[[ _renderSettings(normalizedSettings, collapsedColumns, settingsId, hasChangedSettings, hasHiddenFilter, filters) ]]"
-					set-filter-state="[[ setFilterState ]]"
-				></cosmoz-omnitable-header-row>
-			</div>
-			</sort-and-group-provider>
-			<div class="tableContent" id="tableContent">
-				<template is="dom-if" if="[[ !_dataIsValid ]]">
-					<div class="tableContent-empty">
-						<slot name="empty-set-message">
-							<iron-icon icon="icons:announcement"></iron-icon>
-							<div class="tableContent-empty-message">
-								<h3>[[ _('Working set empty', t) ]]</h3>
-								<p>[[ _('No data to display', t) ]]</p>
-							</div>
-						</slot>
-					</div>
-				</template>
-				<template is="dom-if" if="[[ _filterIsTooStrict ]]">
-					<div class="tableContent-empty">
-						<iron-icon icon="icons:announcement"></iron-icon>
-						<div>
-							<h3>[[ _('Filter too strict', t) ]]</h3>
-							<p>[[ _('No matches for selection', t) ]]</p>
-						</div>
-					</div>
-				</template>
-				<template is="dom-if" if="[[ loading ]]">
-					<div class="tableContent-empty overlay">
-						<paper-spinner-lite active="[[ loading ]]"></paper-spinner-lite>
-						<div>
-							<h3>[[ _('Data set is updating', t) ]]</h3>
-						</div>
-					</div>
-				</template>
-				<div class="tableContent-scroller" id="scroller">
-					<cosmoz-grouped-list id="groupedList"
-						data="{{ sortedFilteredGroupedItems }}"
-						selected-items="{{ selectedItems }}"
-						display-empty-groups="[[ displayEmptyGroups ]]"
-						compare-items-fn="[[ compareItemsFn ]]"
-					>
-						<template slot="templates" data-type="item">
-							<div class="item-row-wrapper">
-								<div selected$="[[ selected ]]" class="itemRow">
-									<input class="checkbox" type="checkbox" checked="[[ selected ]]" on-input="_onCheckboxChange" disabled$="[[ !_dataIsValid ]]" />
-									<cosmoz-omnitable-item-row columns="[[ normalizedColumns ]]"
-										selected="[[ selected ]]" expanded="{{ expanded }}" item="[[ item ]]" group-on-column="[[ groupOnColumn ]]"
-										on-item-change="[[ onItemChange ]]">
-									</cosmoz-omnitable-item-row>
-									<paper-icon-button
-										class="expand"
-										hidden="[[ isEmpty(collapsedColumns.length) ]]"
-										icon="[[ _getFoldIcon(expanded) ]]"
-										on-tap="_toggleItem"
-									></paper-icon-button>
-								</div>
-								<cosmoz-omnitable-item-expand columns="[[ collapsedColumns ]]"
-									item="[[item]]" selected="{{ selected }}" expanded$="{{ expanded }}" group-on-column="[[ groupOnColumn ]]"
-									part="item-expand" on-expanded="onExpanded">
-								</cosmoz-omnitable-item-expand>
-							</div>
-						</template>
-						<template slot="templates" data-type="group">
-							<div class$="[[ _getGroupRowClasses(folded) ]]">
-								<input class="checkbox" type="checkbox" checked="[[ selected ]]" on-input="_onCheckboxChange" disabled$="[[ !_dataIsValid ]]" />
-								<h3 class="groupRow-label">
-									<div><span>[[ groupOnColumn.title ]]</span>: &nbsp;</div>
-									<cosmoz-omnitable-group-row column="[[ groupOnColumn ]]" item="[[ item.items.0 ]]" selected="[[ selected ]]" folded="[[ folded ]]">
-									</cosmoz-omnitable-group-row>
-								</h3>
-								<div class="groupRow-badge">[[ item.items.length ]]</div>
-								<paper-icon-button class="fold" icon="[[ _getFoldIcon(folded) ]]" on-tap="_toggleGroup"></paper-icon-button>
-							</div>
-						</template>
-					</cosmoz-grouped-list>
-				</div>
-			</div>
-			<div class="footer">
-				<div class="footer-controls">
-					<cosmoz-autocomplete
-						label="[[ _('Group on', t) ]] [[ _computeSortDirection(groupOnDescending, t) ]]" placeholder="[[ _('No grouping', t) ]]"
-						source="[[ _onCompleteValues(columns, 'groupOn', groupOnColumn) ]]" value="[[ groupOnColumn ]]" limit="1" text-property="title"
-						always-float-label item-height="48" item-limit="8"
-						class="footer-control" on-change="[[ _onCompleteChange('groupOn') ]]" on-select="[[ _onCompleteSelect ]]" default-index="-1" show-single
-					>
-						<svg slot="suffix" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" width="24" fill="currentColor"><path d="M7 10l5 5 5-5z"></path></svg>
-					</cosmoz-autocomplete>
-					<cosmoz-autocomplete
-						label="[[ _('Sort on', t) ]] [[ _computeSortDirection(descending, t) ]]" placeholder="[[ _('No sorting', t) ]]"
-						source="[[ _onCompleteValues(columns, 'sortOn', sortOnColumn) ]]" value="[[ sortOnColumn ]]" limit="1" text-property="title"
-						always-float-label item-height="48" item-limit="8"
-						class="footer-control" on-change="[[ _onCompleteChange('sortOn') ]]" on-select="[[ _onCompleteSelect ]]" default-index="-1" show-single
-					>
-						<svg slot="suffix" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" width="24" fill="currentColor"><path d="M7 10l5 5 5-5z"></path></svg>
-					</cosmoz-autocomplete>
-					<slot id="controlsSlot" name="controls"></slot>
-				</div>
-				<div class="footer-tableStats">
-					<span>[[ ngettext('{0} group', '{0} groups', groupsCount, t) ]]</span>
-					<span>[[ _renderRowStats(numProcessedItems, totalAvailable, t) ]]</span>
-				</div>
-				<cosmoz-bottom-bar id="bottomBar" class="footer-actionBar" match-parent
-					on-action="_onAction" active$="[[ !isEmpty(selectedItems.length) ]]">
-					<slot name="info" slot="info">[[ ngettext('{0} selected item', '{0} selected items', selectedItems.length, t) ]]</slot>
-					<slot name="actions" id="actions"></slot>
-					<!-- These slots are needed by cosmoz-bottom-bar
-						as it might change the slot of the actions to distribute them in the menu -->
-					<slot name="bottom-bar-toolbar" slot="bottom-bar-toolbar"></slot>
-					<slot name="bottom-bar-menu" slot="bottom-bar-menu"></slot>
-					<cosmoz-dropdown-menu slot="extra" placement="[[ topPlacement ]]">
-						<svg slot="button" width="14" height="18" viewBox="0 0 14 18" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-							<path d="M1 8.5L7.00024 14.5L13 8.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-							<path d="M13 17L1 17" stroke-width="2" stroke-linecap="round"/>
-							<path d="M7 1V13" stroke-width="2" stroke-linecap="round"/>
-						</svg>
-						<button on-click="_saveAsCsvAction">[[ _('Save as CSV', t) ]]</button>
-						<button on-click="_saveAsXlsxAction">[[ _('Save as XLSX', t) ]]</button>
-						<slot name="download-menu"></slot>
-					</cosmoz-dropdown-menu>
-				</cosmoz-bottom-bar>
-			</div>
-		</div>
-
-		<div id="columns">
-			<slot id="columnsSlot"></slot>
-		</div>
-`;
-		template.setAttribute('strip-whitespace', '');
-		return template;
+		return null;
 	}
 
 	/* eslint-disable-next-line max-lines-per-function */
@@ -242,7 +97,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 			/**
 		 * List of selected rows/items in `data`.
 		 */
-			selectedItems: { type: Array, notify: true },
 			descending: { type: Boolean, value: false, notify: true },
 			sortOn: { type: String, value: '', notify: true },
 			groupOnDescending: { type: Boolean, value: false },
@@ -253,16 +107,10 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 			groupOn: { type: String, notify: true, value: '' },
 
 			/**
-		 * Sorted items structure after filtering and grouping.
-		 */
-			sortedFilteredGroupedItems: { type: Array, notify: true },
-
-			/**
 		 	 * List of columns definition for this table.
 		 	 */
 			columns: { type: Array, notify: true, value: () => []},
 			settings: { type: Object, notify: true },
-			_filterIsTooStrict: { type: Boolean, computed: '_computeFilterIsTooStrict(_dataIsValid, sortedFilteredGroupedItems.length)' },
 			hashParam: { type: String },
 
 			/**
@@ -294,7 +142,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 
 		this.$.groupedList.scrollTarget = this.$.scroller;
 
-		this.addEventListener('update-item-size', this._onUpdateItemSize);
+		
 		window.addEventListener('keydown', this._onKey);
 		window.addEventListener('keyup', this._onKey);
 	}
@@ -302,7 +150,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 	disconnectedCallback() {
 		super.disconnectedCallback();
 
-		this.removeEventListener('update-item-size', this._onUpdateItemSize);
 		window.removeEventListener('keydown', this._onKey);
 		window.removeEventListener('keyup', this._onKey);
 	}
@@ -314,6 +161,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 	}
 
 	_computeFilterIsTooStrict(dataIsValid, visibleItemsLength) {
+		console.log({dataIsValid, visibleItemsLength})
 		return dataIsValid && visibleItemsLength < 1;
 	}
 
@@ -322,13 +170,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 		return `(${ direction })`;
 	}
 
-	_onUpdateItemSize(event) {
-		const { detail } = event;
-		if (detail && detail.item) {
-			this.$.groupedList.updateSize(detail.item);
-		}
-		event.stopPropagation();
-	}
 
 	_onKey(e) {
 		this._shiftKey = e.shiftKey;
@@ -371,9 +212,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 
 	_getGroupRowClasses(folded) {
 		return folded ? 'groupRow groupRow-folded' : 'groupRow';
-	}
-	_getFoldIcon(expanded) {
-		return expanded ? 'expand-less' : 'expand-more';
 	}
 
 	/**
@@ -429,6 +267,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 	/** PUBLIC */
 
 	suppressNextScrollReset() {
+		return;
 		const list = this.$.groupedList.$.list;
 		// HACK: Replace _resetScrollPosition for one call to maintain scroll position
 		if (list._scrollTop > 0 && !list._resetScrollPosition.suppressed) {
@@ -546,23 +385,13 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 			value && close(); /* eslint-disable-line no-unused-expressions */
 		};
 	}
-
-	// eslint-disable-next-line max-params
-	_renderSettings(normalizedSettings, collapsed, settingsId, hasChangedSettings, hasHiddenFilter, filters) {
-		return litHtml`<cosmoz-omnitable-settings
-			.settings=${ normalizedSettings }
-			.onSettings=${ this.setSettings }
-			.collapsed=${ collapsed?.map(c => c.name) }
-			.settingsId=${ settingsId }
-			.hasChanges=${ hasChangedSettings }
-			.onSave=${ this.onSettingsSave }
-			.onReset=${ this.onSettingsReset }
-			.badge=${ hasHiddenFilter }
-			.filters=${ filters }
-		>`;
-	}
 }
-customElements.define('cosmoz-omnitable', Omnitable);
+
+const Omnitable = host => renderOmnitable(useOmnitable(host));
+
+customElements.define('cosmoz-omnitable', component(Omnitable, {
+	baseElement: OmnitableC
+}));
 
 const tmplt = `
 	<slot name="actions" slot="actions"></slot>
