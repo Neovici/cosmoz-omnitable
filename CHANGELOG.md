@@ -1,3 +1,10 @@
+## [8.5.4](https://github.com/neovici/cosmoz-omnitable/compare/v8.5.3...v8.5.4) (2022-05-04)
+
+
+### Bug Fixes
+
+* **group-row:** pass group to render-group ([62130ac](https://github.com/neovici/cosmoz-omnitable/commit/62130ace97f28813366d3444da7e94ce5201e203))
+
 ## [8.5.3](https://github.com/neovici/cosmoz-omnitable/compare/v8.5.2...v8.5.3) (2022-04-28)
 
 
