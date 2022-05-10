@@ -1,3 +1,10 @@
+## [8.7.3](https://github.com/neovici/cosmoz-omnitable/compare/v8.7.2...v8.7.3) (2022-05-10)
+
+
+### Bug Fixes
+
+* **sort:** flip icon ([958b706](https://github.com/neovici/cosmoz-omnitable/commit/958b7063e0351358dd028efa2899b20103286e6b))
+
 ## [8.7.2](https://github.com/neovici/cosmoz-omnitable/compare/v8.7.1...v8.7.2) (2022-05-09)
 
 
