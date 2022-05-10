@@ -97,7 +97,7 @@ const checkbox = css`
 				var(--primary-color)
 			);
 		}
-		.sort[data-sort='desc'] {
+		.sort:not([data-sort='desc']) {
 			transform: scaleY(-1);
 		}
 		:not(:hover) > * > .sort:not([data-sort]) {
