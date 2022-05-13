@@ -1,3 +1,10 @@
+# [8.8.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.7.3...v8.8.0) (2022-05-13)
+
+
+### Features
+
+* **group:** add group to settings ([1b42ba2](https://github.com/neovici/cosmoz-omnitable/commit/1b42ba2ba5828193b40382ac70ad83d0d3ec422d))
+
 ## [8.7.3](https://github.com/neovici/cosmoz-omnitable/compare/v8.7.2...v8.7.3) (2022-05-10)
 
 
