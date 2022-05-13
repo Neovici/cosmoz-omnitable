@@ -1,3 +1,10 @@
+## [8.8.1](https://github.com/neovici/cosmoz-omnitable/compare/v8.8.0...v8.8.1) (2022-05-13)
+
+
+### Bug Fixes
+
+* **groupOn:** persists selection ([85c2e48](https://github.com/neovici/cosmoz-omnitable/commit/85c2e48ab84a19727c3ae04cd587c545535ceaf5))
+
 # [8.8.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.7.3...v8.8.0) (2022-05-13)
 
 
