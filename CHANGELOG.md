@@ -1,3 +1,15 @@
+# [8.10.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.9.0...v8.10.0) (2022-05-17)
+
+
+### Bug Fixes
+
+* correctly show collapsed columns ([f1eea05](https://github.com/neovici/cosmoz-omnitable/commit/f1eea05ad41b32bc1fbf7035c2b60a218103558a))
+
+
+### Features
+
+* misc style fixes ([48f3099](https://github.com/neovici/cosmoz-omnitable/commit/48f3099aa4c93bfa315a63577b102efed9449d70))
+
 # [8.9.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.8.1...v8.9.0) (2022-05-17)
 
 
