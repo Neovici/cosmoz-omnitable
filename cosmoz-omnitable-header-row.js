@@ -37,13 +37,15 @@ const /* eslint-disable-next-line max-lines-per-function */
 				></cosmoz-omnitable-resize-nub>`,
 			]
 		),
-	HeaderRow = ({ content, columns, ...thru }) => [
+	HeaderRow = ({ columns, settingsConfig, ...thru }) => [
 		columns &&
 			renderHeaderRow({
 				columns,
 				...thru,
 			}),
-		content,
+		html`<cosmoz-omnitable-settings
+			.config=${settingsConfig}
+		></cosmoz-omnitable-settings>`,
 	];
 
 customElements.define(
