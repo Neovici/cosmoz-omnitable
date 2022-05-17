@@ -24,7 +24,7 @@ import { translatable } from '@neovici/cosmoz-i18next';
 import { mixin, hauntedPolymer } from '@neovici/cosmoz-utils';
 import { isEmpty } from '@neovici/cosmoz-utils/lib/template.js';
 import { useOmnitable } from './lib/use-omnitable';
-import './lib/cosmoz-omnitable-settings';
+import './lib/settings';
 import { saveAsCsvAction } from './lib/save-as-csv-action';
 import { saveAsXlsxAction } from './lib/save-as-xlsx-action';
 import { defaultPlacement } from '@neovici/cosmoz-dropdown';
