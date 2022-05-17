@@ -1,3 +1,11 @@
+# [8.9.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.8.1...v8.9.0) (2022-05-17)
+
+
+### Features
+
+* **omnitable:** separate settings in lib/settings ([550be18](https://github.com/neovici/cosmoz-omnitable/commit/550be1834a536ae45ee0a2ba8e31eeb2a4c34438))
+* **settings/groupOn:** implement collapsible ([10dc86a](https://github.com/neovici/cosmoz-omnitable/commit/10dc86a3ae6ea90a576d04b412ea7d4a568d5548))
+
 ## [8.8.1](https://github.com/neovici/cosmoz-omnitable/compare/v8.8.0...v8.8.1) (2022-05-13)
 
 
