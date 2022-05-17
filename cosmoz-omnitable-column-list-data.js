@@ -67,9 +67,6 @@ class OmnitableColumnListData extends translatable(mixin(Template, PolymerElemen
 		return {
 			items: {
 				type: Array,
-				observer() {
-					this.dispatchEvent(new CustomEvent('iron-resize', { bubbles: true }));
-				}
 			},
 
 			_expanded: {
@@ -82,6 +79,14 @@ class OmnitableColumnListData extends translatable(mixin(Template, PolymerElemen
 				computed: '_computeOthersCount(items)'
 			}
 		};
+	}
+
+	static get observers() {
+		return ['_itemsLengthChanged(items.length)']
+	}
+
+	_itemsLengthChanged() {
+		this.dispatchEvent(new CustomEvent('expand', { bubbles: true }));
 	}
 
 	_firstItem(items) {
@@ -122,7 +127,7 @@ class OmnitableColumnListData extends translatable(mixin(Template, PolymerElemen
 		this._expanded = !this._expanded;
 		event.stopPropagation();
 		event.preventDefault();
-		this.dispatchEvent(new CustomEvent('iron-resize', { bubbles: true }));
+		this.dispatchEvent(new CustomEvent('expand', { bubbles: true }));
 	}
 }
 
