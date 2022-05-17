@@ -24,7 +24,6 @@ import { translatable } from '@neovici/cosmoz-i18next';
 import { mixin, hauntedPolymer } from '@neovici/cosmoz-utils';
 import { isEmpty } from '@neovici/cosmoz-utils/lib/template.js';
 import { useOmnitable } from './lib/use-omnitable';
-import './lib/settings';
 import { saveAsCsvAction } from './lib/save-as-csv-action';
 import { saveAsXlsxAction } from './lib/save-as-xlsx-action';
 import { defaultPlacement } from '@neovici/cosmoz-dropdown';
@@ -54,8 +53,8 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 					columns="[[ normalizedColumns ]]"
 					filters="[[ filters ]]"
 					group-on-column="[[ groupOnColumn ]]"
-					content="[[ _renderSettings(normalizedSettings, collapsedColumns, settingsId, hasChangedSettings, hasHiddenFilter, filters) ]]"
 					set-filter-state="[[ setFilterState ]]"
+					settings-config="[[ settingsConfig ]]"
 				></cosmoz-omnitable-header-row>
 			</div>
 			</sort-and-group-provider>
@@ -546,21 +545,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 
 			value && close(); /* eslint-disable-line no-unused-expressions */
 		};
-	}
-
-	// eslint-disable-next-line max-params
-	_renderSettings(normalizedSettings, collapsed, settingsId, hasChangedSettings, hasHiddenFilter, filters) {
-		return litHtml`<cosmoz-omnitable-settings
-			.settings=${ normalizedSettings }
-			.onSettings=${ this.setSettings }
-			.collapsed=${ collapsed?.map(c => c.name) }
-			.settingsId=${ settingsId }
-			.hasChanges=${ hasChangedSettings }
-			.onSave=${ this.onSettingsSave }
-			.onReset=${ this.onSettingsReset }
-			.badge=${ hasHiddenFilter }
-			.filters=${ filters }
-		>`;
 	}
 }
 customElements.define('cosmoz-omnitable', Omnitable);
