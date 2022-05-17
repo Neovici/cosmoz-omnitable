@@ -273,11 +273,12 @@ export default `<style>
 		flex: auto;
 		position: relative;
 		overflow: auto;
+		overflow-x: hidden;
 		will-change: transform;
 	}
 
 	#groupedList {
-		position: absolute;
+		position: absolute !important;
 		top: 0;
 		right: 0;
 		bottom: 0;
