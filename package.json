@@ -89,7 +89,7 @@
 		"@semantic-release/changelog": "^6.0.0",
 		"@semantic-release/git": "^10.0.0",
 		"@web/dev-server": "^0.1.10",
-		"husky": "^7.0.0",
+		"husky": "^8.0.0",
 		"semantic-release": "^19.0.0",
 		"sinon": "^13.0.0",
 		"web-animations-js": "^2.3.2"
