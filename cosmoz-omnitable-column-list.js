@@ -36,7 +36,7 @@ class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
 	renderHeader(column, { filter, query }, setState, source) {
 		const
 			spinner = column.loading
-				? html`<paper-spinner-lite style="width: 20px; height: 20px;" suffix slot="suffix" active></paper-spinner-lite>`
+				? html`<paper-spinner-lite style="width: 20px; height: 20px; flex:none;" suffix slot="suffix" active></paper-spinner-lite>`
 				: nothing;
 
 		return html`<cosmoz-autocomplete-ui
@@ -44,6 +44,7 @@ class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
 			.label=${ column.title }
 			.source=${ source }
 			.textProperty=${ column.textProperty }
+			.valueProperty=${ column.valueProperty }
 			.value=${ filter }
 			.text=${ query }
 			.onChange=${ onChange(setState) }

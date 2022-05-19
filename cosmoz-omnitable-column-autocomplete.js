@@ -46,7 +46,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(columnMixin(PolymerEle
 	renderHeader(column, { filter, query }, setState, source) {
 		const
 			spinner = column.loading
-				? html`<paper-spinner-lite style="width: 20px; height: 20px;" suffix slot="suffix" active></paper-spinner-lite>`
+				? html`<paper-spinner-lite style="width: 20px; height: 20px; flex: none;" suffix slot="suffix" active></paper-spinner-lite>`
 				: nothing;
 
 		return html`<cosmoz-autocomplete-ui
