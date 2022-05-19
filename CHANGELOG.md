@@ -1,3 +1,10 @@
+## [8.11.1](https://github.com/neovici/cosmoz-omnitable/compare/v8.11.0...v8.11.1) (2022-05-19)
+
+
+### Bug Fixes
+
+* **column-list:** add valueProperty to autocomplete ([bfde123](https://github.com/neovici/cosmoz-omnitable/commit/bfde123ff9c348e014c1bf6231b078f9cf4327bc))
+
 # [8.11.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.10.0...v8.11.0) (2022-05-19)
 
 
