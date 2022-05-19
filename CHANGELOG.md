@@ -1,3 +1,10 @@
+# [8.11.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.10.0...v8.11.0) (2022-05-19)
+
+
+### Features
+
+* update cosmoz-page-router ([c460af5](https://github.com/neovici/cosmoz-omnitable/commit/c460af558180562e3045b76135b665f57cd82aa5))
+
 # [8.10.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.9.0...v8.10.0) (2022-05-17)
 
 
