@@ -1,7 +1,6 @@
 import { html, component } from 'haunted';
 import { repeat } from 'lit-html/directives/repeat';
 import './lib/cosmoz-omnitable-resize-nub';
-import sort from './lib/cosmoz-omnitable-sort';
 
 const /* eslint-disable-next-line max-lines-per-function */
 	renderHeaderRow = ({
@@ -28,7 +27,6 @@ const /* eslint-disable-next-line max-lines-per-function */
 							(state) => setFilterState(column.name, state),
 							column.source(column, data)
 						),
-						sort(column.name),
 					]}
 				</div>`,
 				html`<cosmoz-omnitable-resize-nub
