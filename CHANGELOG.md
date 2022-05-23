@@ -1,3 +1,15 @@
+# [8.12.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.11.1...v8.12.0) (2022-05-23)
+
+
+### Bug Fixes
+
+* open columns and sort collapses by default ([48e898d](https://github.com/neovici/cosmoz-omnitable/commit/48e898da7bff984fe544934082743260f3a2aa64))
+
+
+### Features
+
+* **omnitable:** add sort to omnitable settings ([b7280b8](https://github.com/neovici/cosmoz-omnitable/commit/b7280b83640fb640accb7294baf5f43157eae18d))
+
 ## [8.11.1](https://github.com/neovici/cosmoz-omnitable/compare/v8.11.0...v8.11.1) (2022-05-19)
 
 
