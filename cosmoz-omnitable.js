@@ -50,7 +50,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 				<input class="checkbox all" type="checkbox" checked="[[ _allSelected ]]" on-input="_onAllCheckboxChange" disabled$="[[ !_dataIsValid ]]" />
 				<cosmoz-omnitable-header-row
 					data="[[ data ]]"
-					columns="[[ normalizedColumns ]]"
+					columns="[[ columns ]]"
 					filters="[[ filters ]]"
 					group-on-column="[[ groupOnColumn ]]"
 					set-filter-state="[[ setFilterState ]]"
@@ -98,7 +98,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 							<div class="item-row-wrapper">
 								<div selected$="[[ selected ]]" class="itemRow">
 									<input class="checkbox" type="checkbox" checked="[[ selected ]]" on-input="_onCheckboxChange" disabled$="[[ !_dataIsValid ]]" />
-									<cosmoz-omnitable-item-row columns="[[ normalizedColumns ]]"
+									<cosmoz-omnitable-item-row columns="[[ columns ]]"
 										selected="[[ selected ]]" expanded="{{ expanded }}" item="[[ item ]]" group-on-column="[[ groupOnColumn ]]"
 										on-item-change="[[ onItemChange ]]">
 									</cosmoz-omnitable-item-row>
