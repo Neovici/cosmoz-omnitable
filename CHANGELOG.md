@@ -1,3 +1,16 @@
+# [8.13.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.12.0...v8.13.0) (2022-05-24)
+
+
+### Bug Fixes
+
+* refactor normalize ([e3d4db8](https://github.com/neovici/cosmoz-omnitable/commit/e3d4db85bb8f42cfc6c95d09c2a3eea7442655a7))
+
+
+### Features
+
+* implement saving group and sort to settings ([4c2626b](https://github.com/neovici/cosmoz-omnitable/commit/4c2626b356b097f4be1cb50043c4bb6e340a55d7))
+* **settings:** allow misc settings ([deb312e](https://github.com/neovici/cosmoz-omnitable/commit/deb312e4b26098f70a6a5def18fc580514d5b125))
+
 # [8.12.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.11.1...v8.12.0) (2022-05-23)
 
 
