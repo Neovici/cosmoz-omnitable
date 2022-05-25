@@ -348,7 +348,7 @@ export default `<style>
 	}
 
 	.itemRow[selected] {
-		background-color: var(--cosmoz-omnitable-selection-color, rgb(195, 212, 248)) !important;
+		background-color: var(--cosmoz-omnitable-selection-color, rgb(195, 212, 248));
 		@apply --cosmoz-omnitable-selected-row;
 	}
 

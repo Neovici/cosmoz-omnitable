@@ -15,7 +15,6 @@ import './cosmoz-omnitable-group-row';
 import './cosmoz-omnitable-columns';
 import styles from './cosmoz-omnitable-styles';
 
-
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
 import { html as litHtml } from 'lit-html';
@@ -96,11 +95,11 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 					>
 						<template slot="templates" data-type="item">
 							<div class="item-row-wrapper">
-								<div selected$="[[ selected ]]" class="itemRow">
+								<div selected$="[[ selected ]]" part="itemRow itemRow-[[ index ]]" data-index$="[[ index ]]" class="itemRow">
 									<input class="checkbox" type="checkbox" checked="[[ selected ]]" on-input="_onCheckboxChange" disabled$="[[ !_dataIsValid ]]" />
 									<cosmoz-omnitable-item-row columns="[[ columns ]]"
 										selected="[[ selected ]]" expanded="{{ expanded }}" item="[[ item ]]" group-on-column="[[ groupOnColumn ]]"
-										on-item-change="[[ onItemChange ]]">
+										on-item-change="[[ onItemChange ]]" on-click="onItemClick">
 									</cosmoz-omnitable-item-row>
 									<paper-icon-button
 										class="expand"
@@ -132,7 +131,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 				</div>
 			</div>
 			<div class="footer">
-				<div class="footer-controls">
+				<div class="footer-controls" part="footer-controls">
 					<cosmoz-autocomplete
 						label="[[ _('Group on', t) ]] [[ _computeSortDirection(groupOnDescending, t) ]]" placeholder="[[ _('No grouping', t) ]]"
 						source="[[ _onCompleteValues(columns, 'groupOn', groupOnColumn) ]]" value="[[ groupOnColumn ]]" limit="1" text-property="title"
@@ -545,6 +544,21 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 
 			value && close(); /* eslint-disable-line no-unused-expressions */
 		};
+	}
+	onItemClick(e){
+		const path = e.composedPath(),
+			hasLinks = path.slice(0, path.indexOf(e.currentTarget))
+				.find(e => e.matches?.('a'));
+
+		this.dispatchEvent(new window.CustomEvent('omnitable-item-click', {
+			bubbles: true,
+			composed: true,
+			detail: {
+				item: e.model.item,
+				index: e.model.index,
+				hasLinks
+			}
+		}));
 	}
 }
 customElements.define('cosmoz-omnitable', Omnitable);
