@@ -1,3 +1,10 @@
+# [8.14.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.13.0...v8.14.0) (2022-05-26)
+
+
+### Features
+
+* **omnitable:** add item part and item click event ([f4d5c7a](https://github.com/neovici/cosmoz-omnitable/commit/f4d5c7ac780aad6d69956af8022392a8333f3012))
+
 # [8.13.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.12.0...v8.13.0) (2022-05-24)
 
 
