@@ -95,11 +95,11 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 					>
 						<template slot="templates" data-type="item">
 							<div class="item-row-wrapper">
-								<div selected$="[[ selected ]]" part="itemRow itemRow-[[ index ]]" data-index$="[[ index ]]" class="itemRow">
+								<div selected$="[[ selected ]]" part="itemRow itemRow-[[ index ]]" data-index$="[[ index ]]" class="itemRow" on-click="onItemClick">
 									<input class="checkbox" type="checkbox" checked="[[ selected ]]" on-input="_onCheckboxChange" disabled$="[[ !_dataIsValid ]]" />
 									<cosmoz-omnitable-item-row columns="[[ columns ]]"
 										selected="[[ selected ]]" expanded="{{ expanded }}" item="[[ item ]]" group-on-column="[[ groupOnColumn ]]"
-										on-item-change="[[ onItemChange ]]" on-click="onItemClick">
+										on-item-change="[[ onItemChange ]]">
 									</cosmoz-omnitable-item-row>
 									<paper-icon-button
 										class="expand"
