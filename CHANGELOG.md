@@ -1,3 +1,10 @@
+## [8.14.2](https://github.com/neovici/cosmoz-omnitable/compare/v8.14.1...v8.14.2) (2022-05-27)
+
+
+### Bug Fixes
+
+* correct itemRow click ([2d86e12](https://github.com/neovici/cosmoz-omnitable/commit/2d86e1221e8f2eb59daf17bfbd8b96c45ba04f6f))
+
 ## [8.14.1](https://github.com/neovici/cosmoz-omnitable/compare/v8.14.0...v8.14.1) (2022-05-27)
 
 
