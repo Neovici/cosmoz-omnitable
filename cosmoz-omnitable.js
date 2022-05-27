@@ -545,20 +545,26 @@ class Omnitable extends hauntedPolymer(useOmnitable)(mixin({ isEmpty }, translat
 			value && close(); /* eslint-disable-line no-unused-expressions */
 		};
 	}
-	onItemClick(e){
-		const path = e.composedPath(),
-			hasLinks = path.slice(0, path.indexOf(e.currentTarget))
-				.find(e => e.matches?.('a'));
 
-		this.dispatchEvent(new window.CustomEvent('omnitable-item-click', {
-			bubbles: true,
-			composed: true,
-			detail: {
-				item: e.model.item,
-				index: e.model.index,
-				hasLinks
-			}
-		}));
+	onItemClick(e) {
+		const composedPath = e.composedPath(),
+			path = composedPath.slice(0, composedPath.indexOf(e.currentTarget));
+
+		if (path.find((e) => e.matches?.('a, .checkbox, .expand'))) {
+			return;
+		}
+
+
+		this.dispatchEvent(
+			new window.CustomEvent('omnitable-item-click', {
+				bubbles: true,
+				composed: true,
+				detail: {
+					item: e.model.item,
+					index: e.model.index,
+				},
+			})
+		);
 	}
 }
 customElements.define('cosmoz-omnitable', Omnitable);
