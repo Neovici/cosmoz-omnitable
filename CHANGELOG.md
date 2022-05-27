@@ -1,3 +1,10 @@
+## [8.14.1](https://github.com/neovici/cosmoz-omnitable/compare/v8.14.0...v8.14.1) (2022-05-27)
+
+
+### Bug Fixes
+
+* **omnitable:** improve item click ([e79bcdc](https://github.com/neovici/cosmoz-omnitable/commit/e79bcdc9744f1df5d8304fa6907675e4f5243cac))
+
 # [8.14.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.13.0...v8.14.0) (2022-05-26)
 
 
