@@ -27,6 +27,7 @@ import { saveAsCsvAction } from './lib/save-as-csv-action';
 import { saveAsXlsxAction } from './lib/save-as-xlsx-action';
 import { defaultPlacement } from '@neovici/cosmoz-dropdown';
 import { without } from '@neovici/cosmoz-utils/lib/array';
+import { indexSymbol } from './lib/utils';
 
 /**
  * @polymer
@@ -236,15 +237,26 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 		) => {
 			return litHtml`
 			<div class="item-row-wrapper">
-				<div ?selected=${selected} part="itemRow itemRow-${index}" data-index="${index}" class="itemRow" on-click="onItemClick">
-					<input class="checkbox" type="checkbox" ?checked=${selected} @input=${toggleSelect} ?disabled=${!this
-				._dataIsValid} />
-					<cosmoz-omnitable-item-row .columns=${this.columns}
+				<div ?selected=${selected}
+					part="itemRow itemRow-${item[indexSymbol]}"
+					.dataIndex="${item[indexSymbol]}" 
+					.dataItem="${item}" 
+					class="itemRow" 
+					@click=${this.onItemClick}
+				>
+					<input class="checkbox"
+						type="checkbox"
+						?checked=${selected}
+						@input=${toggleSelect}
+						?disabled=${!this._dataIsValid} />
+					<cosmoz-omnitable-item-row
+						.columns=${this.columns}
 						.index=${index}
-						.selected=${selected} .expanded=${expanded} .item=${item} .groupOnColumn=${
-				this.groupOnColumn
-			}
-						@item-change=${this.onItemChange} @click=${this.onItemClick}>
+						.selected=${selected}
+						.expanded=${expanded}
+						.item=${item}
+						.groupOnColumn=${this.groupOnColumn}
+						@item-change=${this.onItemChange}>
 					</cosmoz-omnitable-item-row>
 					<paper-icon-button
 						class="expand"
@@ -256,7 +268,9 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 				<cosmoz-omnitable-item-expand .columns=${collapsedColumns}
 					.item=${item}
 					.index=${index} 
-					?selected=${selected} ?expanded=${expanded} .groupOnColumn=${this.groupOnColumn}
+					?selected=${selected}
+					?expanded=${expanded}
+					.groupOnColumn=${this.groupOnColumn}
 					part="item-expand">
 				</cosmoz-omnitable-item-expand>
 			</div>`;
@@ -266,20 +280,26 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 	renderGroup(item, index, { selected, folded, toggleSelect, toggleFold }) {
 		return litHtml`
 			<div class="${this._getGroupRowClasses(folded)}">
-				<input class="checkbox" type="checkbox" ?checked=${selected} @input=${toggleSelect} ?disabled=${!this
-			._dataIsValid} />
+				<input class="checkbox"
+					type="checkbox"
+					?checked=${selected}
+					@input=${toggleSelect}
+					?disabled=${!this._dataIsValid} />
 				<h3 class="groupRow-label">
 					<div><span>${this.groupOnColumn.title}</span>: &nbsp;</div>
-					<cosmoz-omnitable-group-row .column=${this.groupOnColumn} .item=${
-			item.items?.[0]
-		} .selected=${selected} .folded=${folded}
+					<cosmoz-omnitable-group-row
+						.column=${this.groupOnColumn}
+						.item=${item.items?.[0]}
+						.selected=${selected}
+						.folded=${folded}
 						.group=${item}
 					></cosmoz-omnitable-group-row>
 				</h3>
 				<div class="groupRow-badge">${item.items.length}</div>
-				<paper-icon-button class="fold" .icon=${this._getFoldIcon(
-					folded
-				)} @click=${toggleFold}></paper-icon-button>
+				<paper-icon-button
+					class="fold"
+					.icon=${this._getFoldIcon(folded)}
+					@click=${toggleFold}></paper-icon-button>
 			</div>`;
 	}
 
@@ -678,14 +698,13 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 			return;
 		}
 
-
 		this.dispatchEvent(
 			new window.CustomEvent('omnitable-item-click', {
 				bubbles: true,
 				composed: true,
 				detail: {
-					item: e.model.item,
-					index: e.model.index,
+					item: e.currentTarget.dataItem,
+					index: e.currentTarget.dataIndex,
 				},
 			})
 		);
