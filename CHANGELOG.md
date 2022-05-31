@@ -1,3 +1,10 @@
+## [8.14.3](https://github.com/neovici/cosmoz-omnitable/compare/v8.14.2...v8.14.3) (2022-05-31)
+
+
+### Bug Fixes
+
+* **settings:** close button in ios ([f9863dc](https://github.com/neovici/cosmoz-omnitable/commit/f9863dcf475478a36bf58ab6b8bc8a63b71113dc))
+
 ## [8.14.2](https://github.com/neovici/cosmoz-omnitable/compare/v8.14.1...v8.14.2) (2022-05-27)
 
 
