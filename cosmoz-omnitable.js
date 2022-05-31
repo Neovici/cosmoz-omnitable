@@ -497,25 +497,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 	_getFoldIcon(expanded) {
 		return expanded ? 'expand-less' : 'expand-more';
 	}
-
-	// /**
-	//  * Toggle folding of a group
-	//  * @param	 {Event} event event
-	//  * @returns {undefined}
-	//  */
-	// _toggleGroup(event) {
-	// 	this.$.groupedList.toggleFold(event.model.item);
-	// }
-
-	// _toggleItem(event) {
-	// 	const item = event.model.item;
-	// 	this.$.groupedList.toggleCollapse(item);
-	// }
-
-	// onExpanded() {
-	// 	debugger
-	// 	requestAnimationFrame(() => this.$.groupedList.$.list._render());
-	// }
+	
 	/**
 	 * Turn an `action` event into a `run` event
 	 * @param	 {Event} event	`action` event
@@ -560,17 +542,8 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 	/** PUBLIC */
 
 	suppressNextScrollReset() {
-		return;
-		const list = this.$.groupedList.$.list;
-		// HACK: Replace _resetScrollPosition for one call to maintain scroll position
-		if (list._scrollTop > 0 && !list._resetScrollPosition.suppressed) {
-			const reset = list._resetScrollPosition;
-			list._resetScrollPosition = () => {
-				// restore hack
-				list._resetScrollPosition = reset;
-			};
-			list._resetScrollPosition.suppressed = true;
-		}
+		/** deprecated */
+		// TODO: drop in next major version
 	}
 
 	/**
@@ -657,10 +630,12 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 	}
 
 	_onCompleteValues(columns, type, value) {
-		/* eslint-disable-next-line no-bitwise */
-		return columns
-			?.filter?.((c) => c[type])
-			.sort((a, b) => ((b === value) >> 0) - ((a === value) >> 0));
+		return (
+			columns
+				?.filter?.((c) => c[type])
+				/* eslint-disable-next-line no-bitwise */
+				.sort((a, b) => ((b === value) >> 0) - ((a === value) >> 0))
+		);
 	}
 
 	_onCompleteSelect(newVal, { value, onChange, onText, limit }) {
