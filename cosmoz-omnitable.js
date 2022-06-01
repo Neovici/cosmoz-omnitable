@@ -331,7 +331,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 
 			/**
 			 * This function is used to determine which items are kept selected across data updates
-			 * TODO: probably broken
 			 */
 			compareItemsFn: Function,
 
