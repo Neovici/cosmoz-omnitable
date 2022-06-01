@@ -541,12 +541,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 
 	// TODO: move to publicInterface mixin
 	/** PUBLIC */
-
-	suppressNextScrollReset() {
-		/** deprecated */
-		// TODO: drop in next major version
-	}
-
 	/**
 	 * Remove multiple items from `data`
 	 * @param {Array} items Array of items to remove
@@ -588,7 +582,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 		}
 	}
 	replaceItemAtIndex(index, newItem) {
-		this.suppressNextScrollReset();
 		this.splice('data', index, 1, newItem);
 		this.data = this.data.slice();
 	}
