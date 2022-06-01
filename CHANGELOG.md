@@ -1,3 +1,31 @@
+# [9.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.14.3...v9.0.0) (2022-06-01)
+
+
+### Bug Fixes
+
+* add back support for keyboard ([1c48991](https://github.com/neovici/cosmoz-omnitable/commit/1c48991d07f22736d4cab83a1c69b8322bf8c390))
+* cleanup _render call ([00ec0c9](https://github.com/neovici/cosmoz-omnitable/commit/00ec0c9a1087b9b54b5e397ee820181555ecae62))
+* folded and expanded are not boolean all the time ([3980c2c](https://github.com/neovici/cosmoz-omnitable/commit/3980c2cf456a4c374f02651bc0825c2858950b7d))
+* list columns are not rendered correctly when scrolling ([f82d945](https://github.com/neovici/cosmoz-omnitable/commit/f82d94553451283babc1e3b9c587caaf777a1419))
+* **omnitable-item-click:** index is not correct when grouped ([df3ca7c](https://github.com/neovici/cosmoz-omnitable/commit/df3ca7c6a0004400275232172e59dfe535cce77c))
+* onItemChange is not defined ([dba81cb](https://github.com/neovici/cosmoz-omnitable/commit/dba81cba7ef1913b258ae8632bc5caae827d454b))
+* resize observer loop limit exceeded ([1b1479a](https://github.com/neovici/cosmoz-omnitable/commit/1b1479a8a8430ec7255da909594d8f5e0de1f472))
+
+
+* fix!: drop suppressNextScrollReset ([0f33856](https://github.com/neovici/cosmoz-omnitable/commit/0f3385690347c5c47513b8727e307abc285507aa))
+
+
+### Features
+
+* add parts for groupRows ([6cf6b82](https://github.com/neovici/cosmoz-omnitable/commit/6cf6b828a065d9e27a629b553b6b09ee530d5e68))
+* expose visibleData and calculate index based on it ([c0dddb3](https://github.com/neovici/cosmoz-omnitable/commit/c0dddb381ce1b30aefc52820f00297adc2f64b93))
+* upgrade to latest cosmoz-grouped-list ([4489079](https://github.com/neovici/cosmoz-omnitable/commit/4489079fa8a78b6d79ec2ef3ec369e39bb32413f))
+
+
+### BREAKING CHANGES
+
+* suppressNextScrollReset was removed
+
 ## [8.14.3](https://github.com/neovici/cosmoz-omnitable/compare/v8.14.2...v8.14.3) (2022-05-31)
 
 
