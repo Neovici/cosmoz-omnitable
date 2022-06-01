@@ -86,7 +86,7 @@ class OmnitableColumnListData extends translatable(mixin(Template, PolymerElemen
 	}
 
 	_itemsLengthChanged() {
-		this.dispatchEvent(new CustomEvent('expand', { bubbles: true }));
+		requestAnimationFrame(() => this.dispatchEvent(new CustomEvent('expand', { bubbles: true })));
 	}
 
 	_firstItem(items) {
