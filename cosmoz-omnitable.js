@@ -233,21 +233,22 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 		return (
 			item,
 			index,
-			{ selected, expanded, toggleSelect, toggleCollapse }
+			{ selected, expanded, toggleCollapse }
 		) => {
 			return litHtml`
 			<div class="item-row-wrapper">
 				<div ?selected=${selected}
 					part="itemRow itemRow-${item[indexSymbol]}"
-					.dataIndex="${item[indexSymbol]}" 
-					.dataItem="${item}" 
+					.dataIndex=${item[indexSymbol]}
+					.dataItem=${item}
 					class="itemRow" 
 					@click=${this.onItemClick}
 				>
 					<input class="checkbox"
 						type="checkbox"
-						?checked=${selected}
-						@input=${toggleSelect}
+						.checked=${selected}
+						.dataItem=${item}
+						@input=${this._onCheckboxChange}
 						?disabled=${!this._dataIsValid} />
 					<cosmoz-omnitable-item-row
 						.columns=${this.columns}
@@ -277,14 +278,15 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 		};
 	}
 
-	renderGroup(item, index, { selected, folded, toggleSelect, toggleFold }) {
+	renderGroup(item, index, { selected, folded, toggleFold }) {
 		return litHtml`
 			<div class="${this._getGroupRowClasses(folded)}" 
 					part="groupRow groupRow-${item[indexSymbol]}">
 				<input class="checkbox"
 					type="checkbox"
-					?checked=${selected}
-					@input=${toggleSelect}
+					.checked=${selected}
+					.dataItem=${item}
+					@input=${this._onCheckboxChange}
 					?disabled=${!this._dataIsValid} />
 				<h3 class="groupRow-label">
 					<div><span>${this.groupOnColumn?.title}</span>: &nbsp;</div>
@@ -412,6 +414,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 		super();
 
 		this._onKey = this._onKey.bind(this);
+		this._onCheckboxChange = this._onCheckboxChange.bind(this);
 		this.renderItem = this.renderItem.bind(this);
 		this.renderGroup = this.renderGroup.bind(this);
 	}
@@ -452,9 +455,8 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 		this._ctrlKey = e.ctrlKey;
 	}
 
-	// TODO: add back support for keyboard
 	_onCheckboxChange(event) {
-		const item = event.model.item,
+		const item = event.target.dataItem,
 			selected = event.target.checked;
 		if (this._shiftKey) {
 			this.$.groupedList.toggleSelectTo(item, selected);
