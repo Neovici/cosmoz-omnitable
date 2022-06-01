@@ -279,14 +279,15 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 
 	renderGroup(item, index, { selected, folded, toggleSelect, toggleFold }) {
 		return litHtml`
-			<div class="${this._getGroupRowClasses(folded)}">
+			<div class="${this._getGroupRowClasses(folded)}" 
+					part="groupRow groupRow-${item[indexSymbol]}">
 				<input class="checkbox"
 					type="checkbox"
 					?checked=${selected}
 					@input=${toggleSelect}
 					?disabled=${!this._dataIsValid} />
 				<h3 class="groupRow-label">
-					<div><span>${this.groupOnColumn.title}</span>: &nbsp;</div>
+					<div><span>${this.groupOnColumn?.title}</span>: &nbsp;</div>
 					<cosmoz-omnitable-group-row
 						.column=${this.groupOnColumn}
 						.item=${item.items?.[0]}
@@ -497,7 +498,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 	_getFoldIcon(expanded) {
 		return expanded ? 'expand-less' : 'expand-more';
 	}
-	
+
 	/**
 	 * Turn an `action` event into a `run` event
 	 * @param	 {Event} event	`action` event
