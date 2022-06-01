@@ -204,7 +204,7 @@ suite('render cell function', () => {
 suite('render header function', () => {
 	let omnitable;
 
-	const getRows = () => Array.from(omnitable.shadowRoot.querySelectorAll('cosmoz-omnitable-item-row')),
+	const getRows = () => Array.from(omnitable.shadowRoot.querySelectorAll('cosmoz-omnitable-item-row:not([hidden])')),
 		toggle = async () => {
 			omnitable.shadowRoot.querySelector('.header-cell').querySelector('paper-toggle-button').click();
 			await nextFrame();
