@@ -257,7 +257,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 						.expanded=${expanded}
 						.item=${item}
 						.groupOnColumn=${this.groupOnColumn}
-						@item-change=${this.onItemChange}>
+						.onItemChange=${this.onItemChange}>
 					</cosmoz-omnitable-item-row>
 					<paper-icon-button
 						class="expand"
