@@ -1,3 +1,10 @@
+## [9.0.1](https://github.com/neovici/cosmoz-omnitable/compare/v9.0.0...v9.0.1) (2022-06-06)
+
+
+### Bug Fixes
+
+* iron-list bug ([69080f6](https://github.com/neovici/cosmoz-omnitable/commit/69080f60e8ec0fcd478ffe9c572fd0329ef3c5c3))
+
 # [9.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v8.14.3...v9.0.0) (2022-06-01)
 
 
