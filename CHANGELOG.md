@@ -1,3 +1,10 @@
+# [9.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v9.0.1...v9.1.0) (2022-06-08)
+
+
+### Features
+
+* **sort-and-group:** implement correct reset ([a692ee1](https://github.com/neovici/cosmoz-omnitable/commit/a692ee1bf3b905bc44efa4dd42cdc5f9c5618842))
+
 ## [9.0.1](https://github.com/neovici/cosmoz-omnitable/compare/v9.0.0...v9.0.1) (2022-06-06)
 
 
