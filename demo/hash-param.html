@@ -6,8 +6,6 @@
 
 	<title>cosmoz-omnitable hash-param demo</title>
 
-	<script type="module" src="/node_modules/@neovici/cosmoz-page-router/cosmoz-page-router.js"></script>
-
 	<style>
 		body, demo-router { margin: 0; height: 100vh; }
 	</style>
@@ -17,7 +15,7 @@
 	<script type="module">
 		import { html } from 'lit-html';
 		import { component } from 'haunted';
-		import { hashbang } from '@neovici/cosmoz-page-router/lib/match.js';
+		import { hashbang } from '@neovici/cosmoz-page-router';
 
 		const routes = [
 				{
@@ -27,7 +25,7 @@
 				}
 	],
 	DemoRouter = () => {
-				return html`<cosmoz-page-router .routes=${ routes } />`;
+				return html`<cosmoz-router .routes=${ routes } />`;
 	};
 		customElements.define('demo-router', component(DemoRouter));
 	</script>

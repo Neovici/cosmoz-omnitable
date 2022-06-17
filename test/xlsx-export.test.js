@@ -11,7 +11,7 @@ import '../cosmoz-omnitable-columns.js';
 import { prepareXlsxData } from '../lib/save-as-xlsx-action';
 import { toDate } from '../lib/utils-date';
 
-sinonAssert.expose(chai.assert, { prefix: '' });
+sinonAssert.expose(assert, { prefix: '' });
 
 suite('xlsx-export-omnitable', () => {
 	let omnitable;
