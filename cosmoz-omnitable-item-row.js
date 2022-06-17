@@ -1,5 +1,5 @@
 import { component, html } from 'haunted';
-import { repeat } from 'lit-html/directives/repeat';
+import { repeat } from 'lit-html/directives/repeat.js';
 
 const
 	renderCell = (column, data, onItemChange) => column.editable
