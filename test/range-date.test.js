@@ -67,7 +67,7 @@ const data = [{
 		</cosmoz-omnitable>
 	`;
 
-sinonAssert.expose(chai.assert, { prefix: '' });
+sinonAssert.expose(assert, { prefix: '' });
 
 suite('render', () => {
 	test('basic render', async () => {
