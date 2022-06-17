@@ -1,5 +1,5 @@
 import { html, component } from 'haunted';
-import { repeat } from 'lit-html/directives/repeat';
+import { repeat } from 'lit-html/directives/repeat.js';
 import './lib/cosmoz-omnitable-resize-nub';
 
 const /* eslint-disable-next-line max-lines-per-function */

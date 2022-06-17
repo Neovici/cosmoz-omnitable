@@ -68,7 +68,7 @@ const data = [{
 		</cosmoz-omnitable>
 	`;
 
-sinonAssert.expose(chai.assert, { prefix: '' });
+sinonAssert.expose(assert, { prefix: '' });
 
 suite('number', () => {
 	let

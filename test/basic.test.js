@@ -15,7 +15,7 @@ import '../cosmoz-omnitable-columns.js';
 import '@polymer/paper-toggle-button';
 import { columnSymbol } from '../lib/use-dom-columns';
 
-sinonAssert.expose(chai.assert, { prefix: '' });
+sinonAssert.expose(assert, { prefix: '' });
 
 suite('basic', () => {
 	let omnitable,
@@ -171,17 +171,17 @@ suite('render cell function', () => {
 	});
 
 	test('renders custom cell template with access to data from the column, row AND item', async () => {
-		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent, 'object.label - false - aa');
+		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent.trim(), 'object.label - false - aa');
 	});
 
 	test('re-renders when row info changes', async () => {
 		omnitable.selectItem(omnitable.data[0]);
 		await nextFrame();
-		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent, 'object.label - true - aa');
+		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent.trim(), 'object.label - true - aa');
 
 		omnitable.deselectItem(omnitable.data[0]);
 		await nextFrame();
-		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent, 'object.label - false - aa');
+		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent.trim(), 'object.label - false - aa');
 	});
 
 	test('re-renders when an item is updated', async () => {
@@ -191,13 +191,13 @@ suite('render cell function', () => {
 		await nextFrame();	// three to get ready
 		// four, let's go
 
-		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent, 'object.label - false - EDITED');
+		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent.trim(), 'object.label - false - EDITED');
 	});
 
 	test('re-renders when the column setup is updated', async () => {
 		omnitable.firstElementChild.valuePath = 'name';
 		await nextFrame();
-		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent, 'name - false - BB');
+		assert.equal(omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row').textContent.trim(), 'name - false - BB');
 	});
 });
 
