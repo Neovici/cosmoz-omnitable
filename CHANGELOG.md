@@ -1,3 +1,15 @@
+# [10.0.0-beta.1](https://github.com/neovici/cosmoz-omnitable/compare/v9.1.1-beta.1...v10.0.0-beta.1) (2022-06-17)
+
+
+### Features
+
+* upgrade to lit@^2 ([e3941f3](https://github.com/neovici/cosmoz-omnitable/commit/e3941f3f17b4f4140db7b55227e249f756e60a56))
+
+
+### BREAKING CHANGES
+
+* Upgrade to lit@^2 and haunted@^5
+
 ## [9.1.1-beta.1](https://github.com/neovici/cosmoz-omnitable/compare/v9.1.0...v9.1.1-beta.1) (2022-06-17)
 
 
