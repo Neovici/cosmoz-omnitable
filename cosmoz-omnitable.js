@@ -44,7 +44,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 	/* eslint-disable-next-line max-lines-per-function */
 	static get template() {
 		const template = html`
-			${html([styles])}
+			${html(Object.assign([styles], { raw: [styles] }))}
 			<div id="layoutStyle"></div>
 
 			<div class="mainContainer">
@@ -230,18 +230,14 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 	}
 
 	renderItem(collapsedColumns) {
-		return (
-			item,
-			index,
-			{ selected, expanded, toggleCollapse }
-		) => {
+		return (item, index, { selected, expanded, toggleCollapse }) => {
 			return litHtml`
 			<div class="item-row-wrapper">
 				<div ?selected=${selected}
 					part="itemRow itemRow-${item[indexSymbol]}"
 					.dataIndex=${item[indexSymbol]}
 					.dataItem=${item}
-					class="itemRow" 
+					class="itemRow"
 					@click=${this.onItemClick}
 				>
 					<input class="checkbox"
@@ -268,7 +264,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 				</div>
 				<cosmoz-omnitable-item-expand .columns=${collapsedColumns}
 					.item=${item}
-					.index=${index} 
+					.index=${index}
 					?selected=${selected}
 					?expanded=${expanded}
 					.groupOnColumn=${this.groupOnColumn}
@@ -280,7 +276,7 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 
 	renderGroup(item, index, { selected, folded, toggleFold }) {
 		return litHtml`
-			<div class="${this._getGroupRowClasses(folded)}" 
+			<div class="${this._getGroupRowClasses(folded)}"
 					part="groupRow groupRow-${item[indexSymbol]}">
 				<input class="checkbox"
 					type="checkbox"
@@ -688,5 +684,5 @@ const tmplt = `
 	<slot name="bottom-bar-menu" slot="bottom-bar-menu"></slot>
 `;
 
-export const actionSlots = litHtml([tmplt]),
-	actionSlotsPolymer = html([tmplt]);
+export const actionSlots = litHtml(Object.assign([tmplt], { raw: [tmplt] })),
+	actionSlotsPolymer = html(Object.assign([tmplt], { raw: [tmplt] }));
