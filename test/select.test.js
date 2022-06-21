@@ -39,25 +39,25 @@ suite('basic', () => {
 		);
 	});
 
-	test('shift click some items', async () => {
-		const item = Array.from(
+	test('shift click select multiple items', async () => {
+		const items = Array.from(
 				omnitable.shadowRoot.querySelectorAll('.itemRow input[type="checkbox"]')
 			),
 			keyEvent = new KeyboardEvent('keydown', {
 				key: 'Shift',
 				shiftKey: true,
 			});
-		item[0].click();
+		items[0].click();
 
 		await nextFrame();
 
 		window.dispatchEvent(keyEvent);
 
-		item[3].click();
+		items[3].click();
 
 		await nextFrame();
 
-		assert.isTrue(item.slice(0, 4).every((el) => el.checked));
+		assert.isTrue(items.slice(0, 4).every((el) => el.checked));
 
 		assert.sameMembers(omnitable.data.slice(0, 4), omnitable.selectedItems);
 		assert.isTrue(
@@ -65,5 +65,38 @@ suite('basic', () => {
 				.slice(0, 4)
 				.every((el) => el.matches('[selected]'))
 		);
+	});
+
+	test('ctrl click to remain one item selected', async () => {
+		const items = Array.from(
+				omnitable.shadowRoot.querySelectorAll('.itemRow input[type="checkbox"]')
+			),
+			keyEvent = new KeyboardEvent('keydown', {
+				key: 'Ctrl',
+				ctrlKey: true,
+			});
+		items[0].click();
+		items[1].click();
+		items[2].click();
+
+		await nextFrame();
+
+		assert.isTrue(items.slice(0, 3).every((el) => el.checked));
+		assert.sameMembers(omnitable.data.slice(0, 3), omnitable.selectedItems);
+
+		window.dispatchEvent(keyEvent);
+
+		items[2].click();
+
+		await nextFrame();
+
+		assert.isTrue(items[2].checked);
+		assert.isNotOk(
+			items
+				.slice(0, 2)
+				.concat(items.slice(-5))
+				.every((el) => el.checked)
+		);
+		assert.notSameMembers(omnitable.data, omnitable.selectedItems);
 	});
 });
