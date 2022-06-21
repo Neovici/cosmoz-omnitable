@@ -1,3 +1,10 @@
+## [9.1.1](https://github.com/neovici/cosmoz-omnitable/compare/v9.1.0...v9.1.1) (2022-06-21)
+
+
+### Bug Fixes
+
+* **deps:** polymer 3.5.x support ([17df8c2](https://github.com/neovici/cosmoz-omnitable/commit/17df8c2db23c31e35e76d4a41d6f82628e342c10))
+
 # [9.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v9.0.1...v9.1.0) (2022-06-08)
 
 
