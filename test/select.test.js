@@ -24,7 +24,7 @@ suite('basic', () => {
 		);
 	});
 
-	test('selects all items', async () => {
+	test('selects and deselect all items', async () => {
 		const all = omnitable.shadowRoot.querySelector('input[type="checkbox"]');
 		all.click();
 		assert.isTrue(all.checked);
@@ -37,6 +37,13 @@ suite('basic', () => {
 				(el) => el.matches('[selected]')
 			)
 		);
+
+		all.click();
+
+		await nextFrame();
+
+		assert.isNotTrue(all.checked);
+		assert.deepEqual(omnitable.selectedItems, []);
 	});
 
 	test('shift click select multiple items', async () => {
