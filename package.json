@@ -1,6 +1,6 @@
 {
 	"name": "@neovici/cosmoz-omnitable",
-	"version": "10.0.0-beta.1",
+	"version": "10.0.0",
 	"description": "[![Build Status](https://travis-ci.org/Neovici/cosmoz-omnitable.svg?branch=master)](https://travis-ci.org/Neovici/cosmoz-omnitable)",
 	"keywords": [
 		"web-components"
@@ -51,7 +51,11 @@
 			"@commitlint/config-conventional"
 		],
 		"rules": {
-			"body-max-line-length": [1, "always", 100]
+			"body-max-line-length": [
+				1,
+				"always",
+				100
+			]
 		}
 	},
 	"dependencies": {
