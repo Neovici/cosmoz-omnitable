@@ -1,3 +1,15 @@
+# [10.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v10.0.0...v10.1.0) (2022-07-18)
+
+
+### Bug Fixes
+
+* imports ([0b23daa](https://github.com/neovici/cosmoz-omnitable/commit/0b23daa4797ebd6499bdb9b1b61c4a10e1e7aa85))
+
+
+### Features
+
+* upgrade @neovici/cosmoz-router ([64080be](https://github.com/neovici/cosmoz-omnitable/commit/64080be116d22d94346d19b7926c1a39c3b7974b))
+
 # [10.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v9.1.1...v10.0.0) (2022-06-22)
 
 
