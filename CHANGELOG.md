@@ -1,3 +1,15 @@
+# [11.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v10.1.0...v11.0.0) (2022-07-19)
+
+
+### Features
+
+* **deps:** upgrade cosmoz-utils ([ebc529c](https://github.com/neovici/cosmoz-omnitable/commit/ebc529c95d7f5a6c7fa34f5387df5609ed603d04))
+
+
+### BREAKING CHANGES
+
+* **deps:** Upgrade cosmoz-utils
+
 # [10.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v10.0.0...v10.1.0) (2022-07-18)
 
 
