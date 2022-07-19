@@ -10,7 +10,7 @@ import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
 import '../cosmoz-omnitable.js';
 import '../cosmoz-omnitable-columns.js';
 import { getComparableValue, toDate, getString } from '../lib/utils-date';
-import { toLocalISOString } from '@neovici/cosmoz-utils/lib/date';
+import { toLocalISOString } from '@neovici/cosmoz-utils/date';
 import { columnSymbol } from '../lib/use-dom-columns';
 
 const data = [{

@@ -7,7 +7,7 @@ import {
 import { setupOmnitableFixture } from './helpers/utils';
 import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
 import { fromHashString, toHashString, toInputString } from '../lib/utils-datetime';
-import { toLocalISOString } from '@neovici/cosmoz-utils/lib/date';
+import { toLocalISOString } from '@neovici/cosmoz-utils/date';
 import { toDate } from '../lib/utils-date';
 
 import '../cosmoz-omnitable';

@@ -21,12 +21,12 @@ import { html as litHtml } from 'lit-html';
 
 import { translatable } from '@neovici/cosmoz-i18next';
 import { mixin, hauntedPolymer } from '@neovici/cosmoz-utils';
-import { isEmpty } from '@neovici/cosmoz-utils/lib/template.js';
+import { isEmpty } from '@neovici/cosmoz-utils/template';
 import { useOmnitable } from './lib/use-omnitable';
 import { saveAsCsvAction } from './lib/save-as-csv-action';
 import { saveAsXlsxAction } from './lib/save-as-xlsx-action';
 import { defaultPlacement } from '@neovici/cosmoz-dropdown';
-import { without } from '@neovici/cosmoz-utils/lib/array';
+import { without } from '@neovici/cosmoz-utils/array';
 import { indexSymbol } from './lib/utils';
 
 /**
