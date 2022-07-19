@@ -9,7 +9,7 @@ import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
 
 import '../cosmoz-omnitable';
 import { getComparableValue, toDate, toHashString, toInputString } from '../lib/utils-time';
-import { toLocalISOString } from '@neovici/cosmoz-utils/lib/date';
+import { toLocalISOString } from '@neovici/cosmoz-utils/date';
 import { columnSymbol } from '../lib/use-dom-columns';
 
 const data = [{
