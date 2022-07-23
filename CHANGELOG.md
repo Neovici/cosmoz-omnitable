@@ -1,3 +1,10 @@
+## [11.0.1](https://github.com/neovici/cosmoz-omnitable/compare/v11.0.0...v11.0.1) (2022-07-23)
+
+
+### Bug Fixes
+
+* **settings:** drag and drop columns on ios ([0fc6187](https://github.com/neovici/cosmoz-omnitable/commit/0fc6187ba9c9a19c6777fec2fea6ab7391d641a5))
+
 # [11.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v10.1.0...v11.0.0) (2022-07-19)
 
 
