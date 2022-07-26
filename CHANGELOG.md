@@ -1,3 +1,16 @@
+# [11.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v11.0.1...v11.1.0) (2022-07-26)
+
+
+### Bug Fixes
+
+* cleanup ([264c66a](https://github.com/neovici/cosmoz-omnitable/commit/264c66a0aae20bdcccef5ab6d7e889cfda70cc81))
+* improve remote osd ([5514457](https://github.com/neovici/cosmoz-omnitable/commit/5514457fc91c264853ccb8c253ec3797fea74d73))
+
+
+### Features
+
+* **settings:** initial settings drivers support ([da43bf8](https://github.com/neovici/cosmoz-omnitable/commit/da43bf80678efd71bb3a166330bee8cb8b1125bf))
+
 ## [11.0.1](https://github.com/neovici/cosmoz-omnitable/compare/v11.0.0...v11.0.1) (2022-07-23)
 
 
