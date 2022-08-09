@@ -76,7 +76,7 @@ const checkbox = css`
 
 export { checkbox };
 
-export default `<style>
+export default `
 	:host {
 		display: flex;
 		flex-direction: column;
@@ -435,4 +435,4 @@ export default `<style>
 	.expand:hover, .fold:hover {
 		color: #000;
 	}
-</style>`;
+`;

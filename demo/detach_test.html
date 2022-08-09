@@ -123,11 +123,6 @@
 						<cosmoz-omnitable-column title="Custom template" name="customname" value-path="name" sort-on="name" width="50px" flex="2">
 						</cosmoz-omnitable-column>
 
-						<paper-button slot="actions" on-run="updateSelectedRows">
-							<iron-icon icon="editor:mode-edit"></iron-icon>
-							<span>Update [[ selectedItems.length ]] items</span>
-						</paper-button>
-
 						<paper-button slot="actions" on-run="removeItems">
 							<iron-icon icon="delete"></iron-icon>
 							<span>Remove [[ selectedItems.length ]] items</span>
@@ -208,13 +203,6 @@
 
 			emptyData() {
 				this.data = [];
-			}
-
-			updateSelectedRows(event, detail) {
-				detail.items.forEach(function (item) {
-					this.$.omnitable.setItemValue(item, 'name', 'blablablalbal');
-				}, this);
-
 			}
 
 			removeItems(event, detail) {

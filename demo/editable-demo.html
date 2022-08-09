@@ -142,23 +142,10 @@ class XPage extends translatable(PolymerElement) {
 	disconnectedCallback() {
 		window.removeEventListener('column-item-changed', this._itemChanged);
 	}
-
-	updateSelectedRows(event, detail) {
-		detail.items.forEach(function (item) {
-			this.$.omnitable.setItemValue(item, 'randomString3', 'blablablalbal');
-		}, this);
-	}
-
+	
 	removeItems(event, detail) {
 		console.log('runAction', detail.items, event, detail, detail.items);
 		detail.omnitable.removeItems(detail.items);
-	}
-
-	_itemNameChanged(event) {
-		const item = event.model.item,
-			oldValue = item.name;
-		this.$.omnitable.setItemValue(item, 'name', event.target.value);
-		this.$.nameCol._fireItemChangeEvent(item, 'name', oldValue);
 	}
 
 	_itemChanged(e) {

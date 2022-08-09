@@ -159,8 +159,6 @@ suite('number', () => {
 			max: 15
 		};
 		await nextFrame();
-
-		assert.isUndefined(omnitable.filters.age.filter);
 		columnHeaderInput._updateFilter();
 
 		await nextFrame();
