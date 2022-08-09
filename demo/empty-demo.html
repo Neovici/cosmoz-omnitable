@@ -81,11 +81,6 @@
 					<cosmoz-omnitable-column title="Name" name="name" value-path="name" bind-values sort-on="name" group-on="name">
 					</cosmoz-omnitable-column>
 
-					<paper-button slot="actions" on-run="updateSelectedRows">
-						<iron-icon icon="editor:mode-edit"></iron-icon>
-						<span>{{ _computeLabel('Update', selectedItems.length)}}</span>
-					</paper-button>
-
 					<paper-button slot="actions" on-run="removeItems">
 						<iron-icon icon="delete"></iron-icon>
 						<span>{{ _computeLabel('Remove', selectedItems.length)}}</span>
@@ -135,13 +130,6 @@
 
 			_computeLabel(text, count) {
 				return text + ' ' + count + ' items';
-			}
-
-			updateSelectedRows(event, detail) {
-				detail.items.forEach(function (item) {
-					this.$.omnitable.setItemValue(item, 'name', 'blablablalbal');
-				}, this);
-
 			}
 
 			removeItems(event, detail) {

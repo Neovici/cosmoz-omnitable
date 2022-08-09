@@ -112,12 +112,7 @@ class XPage extends translatable(PolymerElement) {
 				<template is="dom-repeat" items="[[ _getRowItems(selectedItems.length) ]]">
 					<paper-button slot="actions">[[ item ]]</paper-button>
 				</template>
-
-				<paper-button slot="actions" on-run="updateSelectedRows">
-					<iron-icon icon="editor:mode-edit"></iron-icon>
-					<span>Update [[ selectedItems.length ]] items</span>
-				</paper-button>
-
+				
 				<paper-button slot="actions" on-run="removeItems">
 					<iron-icon icon="delete"></iron-icon>
 					<span>Remove [[ selectedItems.length ]] items</span>
@@ -183,12 +178,6 @@ class XPage extends translatable(PolymerElement) {
 
 	emptyData() {
 		this.data = [];
-	}
-
-	updateSelectedRows(event, detail) {
-		detail.items.forEach(function (item) {
-			this.$.omnitable.setItemValue(item, 'name', 'blablablalbal');
-		}, this);
 	}
 
 	removeItems(event, detail) {
