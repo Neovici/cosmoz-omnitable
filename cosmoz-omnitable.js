@@ -533,18 +533,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 		return this.$.groupedList.isItemSelected(item);
 	}
 
-	_renderRowStats(numRows, totalAvailable) {
-		if (Number.isInteger(totalAvailable) && totalAvailable > numRows) {
-			return this.ngettext(
-				'{1} / {0} row',
-				'{1} / {0} rows',
-				totalAvailable,
-				numRows
-			);
-		}
-		return this.ngettext('{0} row', '{0} rows', numRows);
-	}
-
 	onItemClick(e) {
 		const composedPath = e.composedPath(),
 			path = composedPath.slice(0, composedPath.indexOf(e.currentTarget));
