@@ -285,52 +285,6 @@ export default `<style>
 		left: 0;
 	}
 
-	.footer {
-		display: flex;
-		align-items: center;
-		background-color: var(--cosmoz-omnitable-footer-bg-color, #f5f5f5);
-		height: 64px;
-		padding: 0 24px;
-	}
-
-	.footer-controls {
-		display: flex;
-		align-items: center;
-		flex: auto;
-		isolation: isolate;
-	}
-
-	.footer-control {
-		display: flex;
-		align-items: center;
-	}
-	.footer-control + .footer-control {
-		margin-left: 16px;
-	}
-	.footer-control::part(input-label) {
-		opacity: 0.7;
-	}
-	.footer-control::part(input-line) {
-		margin-top: 1px;
-	}
-	.footer-control::part(chip) {
-	  background-color: #CBCFDB;
-	}
-	.footer-control::part(chip-clear) {
-		background-color: #81899B;
-		fill: #CBCFDB;
-	}
-
-	.footer-tableStats {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-end;
-		white-space: nowrap;
-	}
-
-	.footer-tableStats :first-child {
-		margin-bottom: 5px;
-	}
 
 	.item-row-wrapper {
 		display: block;
@@ -428,7 +382,6 @@ export default `<style>
 	cosmoz-bottom-bar {
 		background-color: var(--cosmoz-omnitable-bottom-bar-color, #5f5a92);
 		overflow: hidden;
-		position: absolute;
 	}
 	cosmoz-bottom-bar::part(bar) {
 		padding: 0 24px;
