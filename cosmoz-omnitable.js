@@ -26,7 +26,6 @@ import { useOmnitable } from './lib/use-omnitable';
 import { saveAsCsvAction } from './lib/save-as-csv-action';
 import { saveAsXlsxAction } from './lib/save-as-xlsx-action';
 import { defaultPlacement } from '@neovici/cosmoz-dropdown';
-import { without } from '@neovici/cosmoz-utils/array';
 import { indexSymbol } from './lib/utils';
 
 /**
