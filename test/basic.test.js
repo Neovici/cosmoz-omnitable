@@ -311,37 +311,6 @@ suite('render group function', () => {
 	});
 });
 
-suite('render row stats', () => {
-	test('renders row stats', async () => {
-		const omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable>
-				<cosmoz-omnitable-column name="name" value-path="name"></cosmoz-omnitable-column>
-				<cosmoz-translations locale="en"></cosmoz-translations>
-			</cosmoz-omnitable>`, generateTableDemoData(10, 10, 25));
-		assert.equal(omnitable.shadowRoot.querySelector('.footer-tableStats span:last-child').textContent, '100 rows');
-	});
-
-	test('renders totalAvailable stats', async () => {
-		const omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable .totalAvailable=${ 2000 }>
-				<cosmoz-omnitable-column name="name" value-path="name">
-				</cosmoz-omnitable-column>
-				<cosmoz-translations locale="en"></cosmoz-translations>
-			</cosmoz-omnitable>`, generateTableDemoData(10, 10, 25));
-		assert.equal(omnitable.shadowRoot.querySelector('.footer-tableStats span:last-child').textContent, '100 / 2000 rows');
-	});
-
-	test('renders totalAvailable stat', async () => {
-		const omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable .totalAvailable=${ 250 }>
-				<cosmoz-omnitable-column name="name" value-path="name">
-				</cosmoz-omnitable-column>
-				<cosmoz-translations locale="en"></cosmoz-translations>
-			</cosmoz-omnitable>`, [{ name: 'Somename' }]);
-		assert.equal(omnitable.shadowRoot.querySelector('.footer-tableStats span:last-child').textContent, '1 / 250 rows');
-	});
-});
-
 suite('enabled columns', () => {
 	test('displays only enabled columns', async () => {
 		const omnitable = await setupOmnitableFixture(html`
