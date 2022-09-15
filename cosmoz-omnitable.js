@@ -108,117 +108,48 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 						></cosmoz-grouped-list>
 					</div>
 				</div>
-				<div class="footer">
-					<div class="footer-controls" part="footer-controls">
-						<cosmoz-autocomplete
-							label="[[ _('Group on', t) ]] [[ _computeSortDirection(groupOnDescending, t) ]]"
-							placeholder="[[ _('No grouping', t) ]]"
-							source="[[ _onCompleteValues(columns, 'groupOn', groupOnColumn) ]]"
-							value="[[ groupOnColumn ]]"
-							limit="1"
-							text-property="title"
-							always-float-label
-							item-height="48"
-							item-limit="8"
-							class="footer-control"
-							on-change="[[ _onCompleteChange('groupOn') ]]"
-							on-select="[[ _onCompleteSelect ]]"
-							default-index="-1"
-							show-single
-						>
-							<svg
-								slot="suffix"
-								viewBox="0 0 24 24"
-								preserveAspectRatio="xMidYMid meet"
-								focusable="false"
-								width="24"
-								fill="currentColor"
-							>
-								<path d="M7 10l5 5 5-5z"></path>
-							</svg>
-						</cosmoz-autocomplete>
-						<cosmoz-autocomplete
-							label="[[ _('Sort on', t) ]] [[ _computeSortDirection(descending, t) ]]"
-							placeholder="[[ _('No sorting', t) ]]"
-							source="[[ _onCompleteValues(columns, 'sortOn', sortOnColumn) ]]"
-							value="[[ sortOnColumn ]]"
-							limit="1"
-							text-property="title"
-							always-float-label
-							item-height="48"
-							item-limit="8"
-							class="footer-control"
-							on-change="[[ _onCompleteChange('sortOn') ]]"
-							on-select="[[ _onCompleteSelect ]]"
-							default-index="-1"
-							show-single
-						>
-							<svg
-								slot="suffix"
-								viewBox="0 0 24 24"
-								preserveAspectRatio="xMidYMid meet"
-								focusable="false"
-								width="24"
-								fill="currentColor"
-							>
-								<path d="M7 10l5 5 5-5z"></path>
-							</svg>
-						</cosmoz-autocomplete>
-						<slot id="controlsSlot" name="controls"></slot>
-					</div>
-					<div class="footer-tableStats">
-						<span
-							>[[ ngettext('{0} group', '{0} groups', groupsCount, t) ]]</span
-						>
-						<span
-							>[[ _renderRowStats(numProcessedItems, totalAvailable, t) ]]</span
-						>
-					</div>
-					<cosmoz-bottom-bar
-						id="bottomBar"
-						class="footer-actionBar"
-						match-parent
-						on-action="_onAction"
-						active$="[[ !isEmpty(selectedItems.length) ]]"
+				<cosmoz-bottom-bar
+					id="bottomBar"
+					on-action="_onAction"
+					active$="[[ !isEmpty(selectedItems.length) ]]"
+				>
+					<slot name="info" slot="info"
+						>[[ ngettext('{0} selected item', '{0} selected items',
+						selectedItems.length, t) ]]</slot
 					>
-						<slot name="info" slot="info"
-							>[[ ngettext('{0} selected item', '{0} selected items',
-							selectedItems.length, t) ]]</slot
+					<slot name="actions" id="actions"></slot>
+					<!-- These slots are needed by cosmoz-bottom-bar
+					as it might change the slot of the actions to distribute them in the menu -->
+					<slot name="bottom-bar-toolbar" slot="bottom-bar-toolbar"></slot>
+					<slot name="bottom-bar-menu" slot="bottom-bar-menu"></slot>
+					<cosmoz-dropdown-menu slot="extra" placement="[[ topPlacement ]]">
+						<svg
+							slot="button"
+							width="14"
+							height="18"
+							viewBox="0 0 14 18"
+							fill="none"
+							stroke="currentColor"
+							xmlns="http://www.w3.org/2000/svg"
 						>
-						<slot name="actions" id="actions"></slot>
-						<!-- These slots are needed by cosmoz-bottom-bar
-						as it might change the slot of the actions to distribute them in the menu -->
-						<slot name="bottom-bar-toolbar" slot="bottom-bar-toolbar"></slot>
-						<slot name="bottom-bar-menu" slot="bottom-bar-menu"></slot>
-						<cosmoz-dropdown-menu slot="extra" placement="[[ topPlacement ]]">
-							<svg
-								slot="button"
-								width="14"
-								height="18"
-								viewBox="0 0 14 18"
-								fill="none"
-								stroke="currentColor"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									d="M1 8.5L7.00024 14.5L13 8.5"
-									stroke-width="2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-								/>
-								<path d="M13 17L1 17" stroke-width="2" stroke-linecap="round" />
-								<path d="M7 1V13" stroke-width="2" stroke-linecap="round" />
-							</svg>
-							<button on-click="_saveAsCsvAction">
-								[[ _('Save as CSV', t) ]]
-							</button>
-							<button on-click="_saveAsXlsxAction">
-								[[ _('Save as XLSX', t) ]]
-							</button>
-							<slot name="download-menu"></slot>
-						</cosmoz-dropdown-menu>
-					</cosmoz-bottom-bar>
-				</div>
+							<path
+								d="M1 8.5L7.00024 14.5L13 8.5"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							/>
+							<path d="M13 17L1 17" stroke-width="2" stroke-linecap="round" />
+							<path d="M7 1V13" stroke-width="2" stroke-linecap="round" />
+						</svg>
+						<button on-click="_saveAsCsvAction">
+							[[ _('Save as CSV', t) ]]
+						</button>
+						<button on-click="_saveAsXlsxAction">
+							[[ _('Save as XLSX', t) ]]
+						</button>
+						<slot name="download-menu"></slot>
+					</cosmoz-dropdown-menu>
+				</cosmoz-bottom-bar>
 			</div>
 
 			<div id="columns">
@@ -440,11 +371,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 		return dataIsValid && visibleItemsLength < 1;
 	}
 
-	_computeSortDirection(descending) {
-		const direction = descending ? this._('Descending') : this._('Ascending');
-		return `(${direction})`;
-	}
-
 	_onKey(e) {
 		this._shiftKey = e.shiftKey;
 		this._ctrlKey = e.ctrlKey;
@@ -618,42 +544,6 @@ class Omnitable extends hauntedPolymer(useOmnitable)(
 			);
 		}
 		return this.ngettext('{0} row', '{0} rows', numRows);
-	}
-
-	_onCompleteValues(columns, type, value) {
-		return (
-			columns
-				?.filter?.((c) => c[type])
-				/* eslint-disable-next-line no-bitwise */
-				.sort((a, b) => ((b === value) >> 0) - ((a === value) >> 0))
-		);
-	}
-
-	_onCompleteSelect(newVal, { value, onChange, onText, limit }) {
-		onText('');
-		onChange([...without(newVal)(value), newVal].slice(-limit));
-	}
-
-	_onCompleteChange(type) {
-		return (val, close) => {
-			const value = (val[0] ?? val)?.name ?? '',
-				setter = type === 'groupOn' ? this.setGroupOn : this.setSortOn,
-				directionSetter =
-					type === 'groupOn' ? this.setGroupOnDescending : this.setDescending;
-
-			setter((oldValue) => {
-				if (value) {
-					directionSetter((oldDirection) =>
-						value === oldValue ? !oldDirection : false
-					);
-				} else {
-					directionSetter(null);
-				}
-				return value;
-			});
-
-			value && close(); /* eslint-disable-line no-unused-expressions */
-		};
 	}
 
 	onItemClick(e) {
