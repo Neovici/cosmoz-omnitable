@@ -1,3 +1,15 @@
+# [12.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v11.1.0...v12.0.0) (2022-09-15)
+
+
+### Features
+
+* remove footer ([1683528](https://github.com/neovici/cosmoz-omnitable/commit/16835283c22a362d46b921f4b5995480ee26d63f))
+
+
+### BREAKING CHANGES
+
+* remove the footer
+
 # [11.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v11.0.1...v11.1.0) (2022-07-26)
 
 
