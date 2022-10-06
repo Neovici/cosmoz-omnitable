@@ -1,3 +1,10 @@
+## [12.0.1](https://github.com/neovici/cosmoz-omnitable/compare/v12.0.0...v12.0.1) (2022-10-06)
+
+
+### Bug Fixes
+
+* **use-settings:** error when removing columns ([db61132](https://github.com/neovici/cosmoz-omnitable/commit/db6113263b8eee32115877f6fd68521ec29675bf))
+
 # [12.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v11.1.0...v12.0.0) (2022-09-15)
 
 
