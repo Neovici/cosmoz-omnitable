@@ -5,10 +5,12 @@ on:
     branches:
       - master
       - beta
+      - 11.x
   push:
     branches:
       - master
       - beta
+      - 11.x
 
 jobs:
   test:
