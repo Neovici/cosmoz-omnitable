@@ -9,7 +9,12 @@ import { html } from 'lit-html';
 
 const
 	onChange = setState => event => setState(state => {
-		clearInterval(state.t);
+		// skip the event emitted during paper-input initialization 
+		if(state.inputValue === undefined && event.target.value === '') {
+			return state;
+		}
+		
+		clearTimeout(state.t);
 		const t = setTimeout(() => setState(state => ({ ...state, filter: state.inputValue })), 1000);
 		return { ...state, inputValue: event.target.value, t };
 	}),
