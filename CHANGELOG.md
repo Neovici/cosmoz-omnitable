@@ -1,3 +1,10 @@
+## [11.1.2](https://github.com/neovici/cosmoz-omnitable/compare/v11.1.1...v11.1.2) (2022-10-17)
+
+
+### Bug Fixes
+
+* registerProvider fails if called twice ([5b26c6d](https://github.com/neovici/cosmoz-omnitable/commit/5b26c6db8200decbfb32f4c59a77f5b2d476f6cb))
+
 ## [11.1.1](https://github.com/neovici/cosmoz-omnitable/compare/v11.1.0...v11.1.1) (2022-10-06)
 
 
