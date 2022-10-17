@@ -84,7 +84,7 @@
 	"devDependencies": {
 		"@commitlint/cli": "^17.0.0",
 		"@commitlint/config-conventional": "^17.0.0",
-		"@neovici/cfg": "^1.13.0",
+		"@neovici/cfg": "^1.18.0",
 		"@neovici/cosmoz-viewinfo": "^3.1.0",
 		"@open-wc/testing": "^3.0.0",
 		"@polymer/iron-test-helpers": "^3.0.0",
