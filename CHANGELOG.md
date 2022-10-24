@@ -1,3 +1,15 @@
+# [12.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.0.2...v12.1.0) (2022-10-24)
+
+
+### Bug Fixes
+
+* infinite update loop bug in firefox ([253597d](https://github.com/neovici/cosmoz-omnitable/commit/253597d353d00c4899f495629507d61d19ccec6c))
+
+
+### Features
+
+* refactor to haunted component ([6f56b3c](https://github.com/neovici/cosmoz-omnitable/commit/6f56b3ccf7d0f6b1879649cae9975bd8c16714d8)), closes [AB#7355](https://github.com/AB/issues/7355)
+
 ## [12.0.2](https://github.com/neovici/cosmoz-omnitable/compare/v12.0.1...v12.0.2) (2022-10-17)
 
 
