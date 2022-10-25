@@ -1,6 +1,7 @@
 import { html, component } from 'haunted';
 import { repeat } from 'lit-html/directives/repeat.js';
 import './lib/cosmoz-omnitable-resize-nub';
+import { render } from './lib/settings/cosmoz-omnitable-sort-group';
 
 const /* eslint-disable-next-line max-lines-per-function */
 	renderHeaderRow = ({
@@ -27,6 +28,23 @@ const /* eslint-disable-next-line max-lines-per-function */
 							(state) => setFilterState(column.name, state),
 							column.source(column, data)
 						),
+						html` <sort-and-group-consumer
+							style="display:contents"
+							.render=${({
+								sortOn: on,
+								setSortOn: setOn,
+								descending,
+								setDescending,
+							} = {}) =>
+								render({
+									on,
+									setOn,
+									descending,
+									setDescending,
+									column,
+								})}
+						>
+						</sort-and-group-consumer>`,
 					]}
 				</div>`,
 				html`<cosmoz-omnitable-resize-nub
