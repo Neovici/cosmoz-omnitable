@@ -106,6 +106,18 @@ export default `
 		align-items: flex-end;
 	}
 
+	.headerDots {
+	 	align-items: center;
+	 	cursor: default;
+		display: flex;
+		font-size: 20px;
+		height: 30px;
+		justify-content: center;
+		min-width: 42px;
+		padding-bottom: 12px;
+		transform: rotate(90deg);
+		}
+
 	[hidden] {
 		display: none;
 	}
