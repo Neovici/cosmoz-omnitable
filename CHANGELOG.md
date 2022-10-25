@@ -1,3 +1,10 @@
+# [12.2.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.1.0...v12.2.0) (2022-10-25)
+
+
+### Features
+
+* implement sorting headers ([01bac57](https://github.com/neovici/cosmoz-omnitable/commit/01bac579cf53ce41578b88f17b9863ea92113c24))
+
 # [12.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.0.2...v12.1.0) (2022-10-24)
 
 
