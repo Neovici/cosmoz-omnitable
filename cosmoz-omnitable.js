@@ -49,7 +49,7 @@ const Omnitable = (host) => {
 customElements.define(
 	'cosmoz-omnitable',
 	component(Omnitable, {
-		observedAttributes: ['hash-param', 'sort-on', 'group-on'],
+		observedAttributes: ['hash-param', 'sort-on', 'group-on', 'hide-select-all'],
 	})
 );
 
