@@ -1,3 +1,13 @@
+# [12.3.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.2.1...v12.3.0) (2022-10-26)
+
+
+### Features
+
+* **checkbox:** add new attribute, display checkbox based on hideSelectAll value ([3844f00](https://github.com/neovici/cosmoz-omnitable/commit/3844f002ed47687084a30c44c6658e3685b0b059))
+* **checkbox:** fix quotes ([4ad077a](https://github.com/neovici/cosmoz-omnitable/commit/4ad077a151d4a865215899be7fc8bbcd919e1a71))
+* **checkbox:** pass proper value for hideSelectAll ([342b846](https://github.com/neovici/cosmoz-omnitable/commit/342b846d89fb19d21315c006419ce1217caecbbc))
+* **selectAll:** hide Select All checkbox, expose selectAll and deselectAll methods ([802aa21](https://github.com/neovici/cosmoz-omnitable/commit/802aa21d22187a9c22a3b130d26f918d18818c29))
+
 ## [12.2.1](https://github.com/neovici/cosmoz-omnitable/compare/v12.2.0...v12.2.1) (2022-10-26)
 
 
