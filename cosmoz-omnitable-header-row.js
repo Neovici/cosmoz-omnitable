@@ -11,7 +11,6 @@ const /* eslint-disable-next-line max-lines-per-function */
 		groupOnColumn,
 		filters,
 		setFilterState,
-		hideSelectAll
 	}) =>
 		repeat(
 			columns,
