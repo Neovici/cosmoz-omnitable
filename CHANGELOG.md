@@ -1,3 +1,10 @@
+## [12.2.1](https://github.com/neovici/cosmoz-omnitable/compare/v12.2.0...v12.2.1) (2022-10-26)
+
+
+### Bug Fixes
+
+* sortOn and descending changes are not notified ([589d583](https://github.com/neovici/cosmoz-omnitable/commit/589d583f0354bfd1ec4c1796ecde07de5cb0a05a))
+
 # [12.2.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.1.0...v12.2.0) (2022-10-25)
 
 
