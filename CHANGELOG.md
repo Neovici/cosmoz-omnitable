@@ -1,3 +1,10 @@
+## [12.4.1](https://github.com/neovici/cosmoz-omnitable/compare/v12.4.0...v12.4.1) (2022-10-27)
+
+
+### Bug Fixes
+
+* selected-items-changed is sent too late ([2eecde1](https://github.com/neovici/cosmoz-omnitable/commit/2eecde171fed1588d2e208919986e59d076f7f3a))
+
 # [12.4.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.3.0...v12.4.0) (2022-10-27)
 
 
