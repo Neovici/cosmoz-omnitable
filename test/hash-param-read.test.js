@@ -50,14 +50,14 @@ suite('basic-read', () => {
 		location.hash = '#!/#test-sortOn=id';
 		await instantiate();
 		assert.equal(omnitable.sortOn, 'id');
-		assert.isUndefined(omnitable.descending);
+		assert.isFalse(omnitable.descending);
 	});
 
 	test('updates groupOn from url hash', async () => {
 		location.hash = '#!/#test-groupOn=group';
 		await instantiate();
 		assert.equal(omnitable.groupOn, 'group');
-		assert.isUndefined(omnitable.descending);
+		assert.isFalse(omnitable.descending);
 
 	});
 

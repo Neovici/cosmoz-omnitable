@@ -24,6 +24,7 @@ import { component } from 'haunted';
 import { renderHeader } from './lib/render-header';
 import { renderFooter } from './lib/render-footer';
 import { renderList } from './lib/render-list';
+import { notifyProperty } from '@neovici/cosmoz-utils/hooks/use-notify-property';
 
 const Omnitable = (host) => {
 	const { header, list, footer } = useOmnitable(host);
@@ -48,9 +49,23 @@ const Omnitable = (host) => {
 
 customElements.define(
 	'cosmoz-omnitable',
-	component(Omnitable, {
-		observedAttributes: ['hash-param', 'sort-on', 'group-on', 'hide-select-all'],
-	})
+	class extends component(Omnitable, {
+		observedAttributes: [
+			'hash-param',
+			'sort-on',
+			'group-on',
+			'hide-select-all',
+		],
+	}) {
+		connectedCallback() {
+			super.connectedCallback();
+			notifyProperty(this, 'selectedItems', []);
+			notifyProperty(this, 'visibleData', []);
+			notifyProperty(this, 'sortedFilteredGroupedItems', []);
+			notifyProperty(this, 'sortOn', '');
+			notifyProperty(this, 'descending', false);
+		}
+	}
 );
 
 const tmplt = `
