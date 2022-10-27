@@ -1,3 +1,12 @@
+# [12.4.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.3.0...v12.4.0) (2022-10-27)
+
+
+### Features
+
+* **selectAll:** new layout with settings ([efd847e](https://github.com/neovici/cosmoz-omnitable/commit/efd847ea0207921573b17af28a3a91350b850a9f))
+* **selectAll:** remove unused import ([50cd54e](https://github.com/neovici/cosmoz-omnitable/commit/50cd54edb56c63ff92f2a47100a16a438730e40a))
+* **selectAll:** remove unused value ([1aeb8e8](https://github.com/neovici/cosmoz-omnitable/commit/1aeb8e8698fc5a5d5751af03714d6a31f394e42c))
+
 # [12.3.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.2.1...v12.3.0) (2022-10-26)
 
 
