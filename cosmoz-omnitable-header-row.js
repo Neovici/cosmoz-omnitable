@@ -2,6 +2,7 @@ import { html, component } from 'haunted';
 import { repeat } from 'lit-html/directives/repeat.js';
 import './lib/cosmoz-omnitable-resize-nub';
 import { render } from './lib/settings/cosmoz-omnitable-sort-group';
+import { when } from 'lit-html/directives/when.js';
 
 const /* eslint-disable-next-line max-lines-per-function */
 	renderHeaderRow = ({
@@ -53,15 +54,16 @@ const /* eslint-disable-next-line max-lines-per-function */
 				></cosmoz-omnitable-resize-nub>`,
 			]
 		),
-	HeaderRow = ({ columns, settingsConfig, ...thru }) => [
+	HeaderRow = ({ columns, settingsConfig, hideSelectAll, ...thru }) => [
 		columns &&
 			renderHeaderRow({
 				columns,
 				...thru,
 			}),
-		html`<cosmoz-omnitable-settings
-			.config=${settingsConfig}
-		></cosmoz-omnitable-settings>`,
+		html`${when(!hideSelectAll, () => html`
+			<cosmoz-omnitable-settings
+			.config=${settingsConfig}>
+			</cosmoz-omnitable-settings>`)}`,
 	];
 
 customElements.define(
