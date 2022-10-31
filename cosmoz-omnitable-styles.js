@@ -76,7 +76,7 @@ const checkbox = css`
 
 export { checkbox };
 
-export default `
+export default css`
 	:host {
 		display: flex;
 		flex-direction: column;
@@ -111,22 +111,26 @@ export default `
 	}
 
 	cosmoz-omnitable-header-row .external-values-false {
-		--paper-input-container-color: var(--cosmoz-omnitable-local-filter-header-color);
+		--paper-input-container-color: var(
+			--cosmoz-omnitable-local-filter-header-color
+		);
 	}
 
 	cosmoz-omnitable-header-row .external-values-true {
-		--paper-input-container-color: var(--cosmoz-omnitable-remote-filter-header-color);
+		--paper-input-container-color: var(
+			--cosmoz-omnitable-remote-filter-header-color
+		);
 	}
 
 	.header > cosmoz-omnitable-header-row {
 		flex: auto;
 	}
 	.header-cell {
-		 --paper-input-container: {
-				padding-top: 0;
-				padding-bottom: 0;
-				--paper-font-caption_-_line-height: 18px;
-		 }
+		--paper-input-container: {
+			padding-top: 0;
+			padding-bottom: 0;
+			--paper-font-caption_-_line-height: 18px;
+		}
 	}
 
 	cosmoz-omnitable-header-row {
@@ -166,7 +170,6 @@ export default `
 	.number-header-cell {
 		position: relative;
 	}
-
 
 	cosmoz-omnitable-item-row {
 		display: flex;
@@ -285,7 +288,6 @@ export default `
 		left: 0;
 	}
 
-
 	.item-row-wrapper {
 		display: block;
 		width: 100%;
@@ -294,7 +296,10 @@ export default `
 	.itemRow {
 		border-bottom-color: var(--cosmoz-omnitable-border-color, #e1e2e5);
 		border-bottom-width: 1px;
-		border-bottom-style: var(--cosmoz-omnitable-item-row-border-bottom-style, solid);
+		border-bottom-style: var(
+			--cosmoz-omnitable-item-row-border-bottom-style,
+			solid
+		);
 		/* set a min-height for rows so that rows with empty values are visible */
 		min-height: var(--item-row-min-height, 24px);
 		padding-right: 8px;
@@ -303,12 +308,15 @@ export default `
 	}
 
 	.itemRow[selected] {
-		background-color: var(--cosmoz-omnitable-selection-color, rgb(195, 212, 248));
+		background-color: var(
+			--cosmoz-omnitable-selection-color,
+			rgb(195, 212, 248)
+		);
 		@apply --cosmoz-omnitable-selected-row;
 	}
 
 	.tableContent .itemRow-cell paper-dropdown-menu {
-		margin-top:-20px;
+		margin-top: -20px;
 	}
 
 	cosmoz-omnitable-item-expand[expanded] {
@@ -328,7 +336,7 @@ export default `
 	.groupRow {
 		display: flex;
 		align-items: center;
-		background-color: #f5f6f9;;
+		background-color: #f5f6f9;
 		font-weight: 700;
 		color: #101010;
 		border-bottom: 1px solid var(--cosmoz-omnitable-border-color, #e1e2e5);
@@ -357,7 +365,7 @@ export default `
 	}
 
 	.groupRow-badge {
-		background: #8BE5C6;
+		background: #8be5c6;
 		color: #fff;
 		line-height: 30px;
 		width: 30px;
@@ -403,8 +411,13 @@ export default `
 		overflow: initial;
 	}
 
+	.omnitable-cell-number {
+		font-variant-numeric: tabular-nums;
+	}
+
 	.itemRow:hover {
-		box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
+		box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0,
+			0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
 	}
 	.groupRow:hover .checkbox:not(:checked):not(:hover),
 	.itemRow:hover .checkbox:not(:checked):not(:hover) {
@@ -428,49 +441,51 @@ export default `
 		flex: none;
 	}
 
-	.expand, .fold {
+	.expand,
+	.fold {
 		color: rgba(0, 0, 0, 0.16);
 	}
 
-	.expand:hover, .fold:hover {
+	.expand:hover,
+	.fold:hover {
 		color: #000;
 	}
-.sg {
-			display: inline-flex;
-			width: 10px;
-			cursor: pointer;
-			align-items: center;
-			margin-top: 18px;
-			overflow: hidden;
-			flex: none;
-			background: none;
-			border: none;
-			outline: none;
-			color: inherit;
-			padding: 0;
-		}
-		.sg span {display: none}
-		.sg svg {
-			display: block;
-		}
-		.sg[data-on] {
-			color: var(
-				--cosmoz-omnitable-checkbox-checked-color,
-				var(--primary-color)
-			);
-		}
-		.sg:not([data-on='desc']) {
-			transform: scaleY(-1);
-		}
-		:not(:hover) > * > .sg:not([data-on]) {
-			display: none;
-		}
-		.header-cell {
-			display: inline-flex;
-			position: relative;
-		}
-		.header-cell :not(.sg) {
-			min-width: 0;
-			flex: auto;
-		}
+
+	.sg {
+		display: inline-flex;
+		width: 10px;
+		cursor: pointer;
+		align-items: center;
+		margin-top: 18px;
+		overflow: hidden;
+		flex: none;
+		background: none;
+		border: none;
+		outline: none;
+		color: inherit;
+		padding: 0;
+	}
+	.sg span {
+		display: none;
+	}
+	.sg svg {
+		display: block;
+	}
+	.sg[data-on] {
+		color: var(--cosmoz-omnitable-checkbox-checked-color, var(--primary-color));
+	}
+	.sg:not([data-on='desc']) {
+		transform: scaleY(-1);
+	}
+	:not(:hover) > * > .sg:not([data-on]) {
+		display: none;
+	}
+	.header-cell {
+		display: inline-flex;
+		position: relative;
+	}
+	.header-cell :not(.sg) {
+		min-width: 0;
+		flex: auto;
+	}
 `;
