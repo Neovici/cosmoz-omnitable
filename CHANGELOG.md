@@ -1,3 +1,17 @@
+# [12.5.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.4.1...v12.5.0) (2022-10-31)
+
+
+### Bug Fixes
+
+* revert test ([c31ea8f](https://github.com/neovici/cosmoz-omnitable/commit/c31ea8fe60375f248c2aa8375f8a920905dfaa48))
+* test add extra frame ([cb1a898](https://github.com/neovici/cosmoz-omnitable/commit/cb1a8987da19339b7573325995b2740535311022))
+
+
+### Features
+
+* don't init notify sort/descending ([90ad308](https://github.com/neovici/cosmoz-omnitable/commit/90ad308452a3eab6610227861d35cd2c31327270))
+* **number-columne:** use same width for number chars ([ba6f48d](https://github.com/neovici/cosmoz-omnitable/commit/ba6f48d9b3a4547ed531e88affa8aca7f91ba765))
+
 ## [12.4.1](https://github.com/neovici/cosmoz-omnitable/compare/v12.4.0...v12.4.1) (2022-10-27)
 
 
