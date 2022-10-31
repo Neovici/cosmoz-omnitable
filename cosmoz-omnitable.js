@@ -62,8 +62,6 @@ customElements.define(
 			notifyProperty(this, 'selectedItems', []);
 			notifyProperty(this, 'visibleData', []);
 			notifyProperty(this, 'sortedFilteredGroupedItems', []);
-			notifyProperty(this, 'sortOn', '');
-			notifyProperty(this, 'descending', false);
 		}
 	}
 );
