@@ -18,6 +18,7 @@ import styles from './cosmoz-omnitable-styles';
 
 import { html as polymerHtml } from '@polymer/polymer/lib/utils/html-tag';
 import { html } from 'lit-html';
+import { guard } from 'lit-html/directives/guard.js';
 
 import { useOmnitable } from './lib/use-omnitable';
 import { component } from 'haunted';
@@ -26,12 +27,14 @@ import { renderFooter } from './lib/render-footer';
 import { renderList } from './lib/render-list';
 import { notifyProperty } from '@neovici/cosmoz-utils/hooks/use-notify-property';
 
+const shimCSS = (s) => window.ShadyCSS?.ApplyShim?.transformCssText?.(s) || s;
+
 const Omnitable = (host) => {
 	const { header, list, footer } = useOmnitable(host);
 
 	return html`
 		<style>
-			${styles}
+			${guard([], () => shimCSS(styles))}
 		</style>
 		<div id="layoutStyle"></div>
 
