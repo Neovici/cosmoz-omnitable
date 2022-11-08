@@ -1,3 +1,15 @@
+# [12.6.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.5.0...v12.6.0) (2022-11-08)
+
+
+### Bug Fixes
+
+* **styles:** shim styles ([f56224c](https://github.com/neovici/cosmoz-omnitable/commit/f56224c7ad34e68a9d329a2d4b211f97f5111d17))
+
+
+### Features
+
+* **checkbox:** add check needed for polymer components ([142ea4b](https://github.com/neovici/cosmoz-omnitable/commit/142ea4b71c13828492aeba5781ccfaa8e5b0ead9))
+
 # [12.5.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.4.1...v12.5.0) (2022-10-31)
 
 
