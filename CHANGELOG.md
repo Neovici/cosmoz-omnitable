@@ -1,3 +1,10 @@
+## [12.6.1](https://github.com/neovici/cosmoz-omnitable/compare/v12.6.0...v12.6.1) (2022-11-15)
+
+
+### Bug Fixes
+
+* **drodpown:** correct placement ([b82cc22](https://github.com/neovici/cosmoz-omnitable/commit/b82cc22db503fd84fed9770facd001e14e790d7d))
+
 # [12.6.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.5.0...v12.6.0) (2022-11-08)
 
 
