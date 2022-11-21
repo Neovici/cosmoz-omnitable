@@ -1,3 +1,10 @@
+## [12.6.2](https://github.com/neovici/cosmoz-omnitable/compare/v12.6.1...v12.6.2) (2022-11-21)
+
+
+### Bug Fixes
+
+* handle settings-id ([3a021e3](https://github.com/neovici/cosmoz-omnitable/commit/3a021e3167d8b264e82ebac20887a479edafe901))
+
 ## [12.6.1](https://github.com/neovici/cosmoz-omnitable/compare/v12.6.0...v12.6.1) (2022-11-15)
 
 
