@@ -58,6 +58,7 @@ customElements.define(
 			'sort-on',
 			'group-on',
 			'hide-select-all',
+			'settings-id',
 		],
 	}) {
 		connectedCallback() {
