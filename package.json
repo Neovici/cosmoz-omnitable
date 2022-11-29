@@ -97,7 +97,7 @@
 		"@web/dev-server": "^0.1.10",
 		"husky": "^8.0.0",
 		"semantic-release": "^19.0.0",
-		"sinon": "^14.0.0",
+		"sinon": "^15.0.0",
 		"web-animations-js": "^2.3.0"
 	}
 }
