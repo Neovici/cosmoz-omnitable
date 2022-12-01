@@ -1,3 +1,11 @@
+## [12.6.3](https://github.com/neovici/cosmoz-omnitable/compare/v12.6.2...v12.6.3) (2022-12-01)
+
+
+### Bug Fixes
+
+* re-add columns to public interface ([9d1d7cd](https://github.com/neovici/cosmoz-omnitable/commit/9d1d7cd057480cebaa79e1f2b7bf9d4e7139ebf4))
+* **use-public-interface:** memoize ([dc40ae4](https://github.com/neovici/cosmoz-omnitable/commit/dc40ae4d221ba45c72cd8bfd2d4fb3f625109c4a))
+
 ## [12.6.2](https://github.com/neovici/cosmoz-omnitable/compare/v12.6.1...v12.6.2) (2022-11-21)
 
 
