@@ -11,6 +11,7 @@ import { computeSource, listColumnMixin, onChange, onFocus, onText, toAutocomple
 import {
 	prop, strProp, array
 } from '@neovici/cosmoz-autocomplete/lib/utils';
+import { columnSymbol } from './lib/use-dom-columns';
 import { get } from '@polymer/polymer/lib/utils/path';
 
 export const
@@ -55,6 +56,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(columnMixin(PolymerEle
 			.source=${ toAutocompleteSource(source, column.valueProperty, column.textProperty) }
 			.textProperty=${ column.textProperty }
 			.valueProperty=${ column.valueProperty }
+			.itemRenderer=${column[columnSymbol]?.itemRenderer}
 			.value=${ filter }
 			.text=${ query }
 			.onChange=${ onChange(setState) }
