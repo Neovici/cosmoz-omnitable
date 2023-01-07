@@ -14,6 +14,7 @@ import {
 } from './cosmoz-omnitable-column-list-mixin';
 import '@neovici/cosmoz-autocomplete';
 import { notifyResize } from './lib/utils';
+import { columnSymbol } from './lib/use-dom-columns';
 
 /**
  * @polymer
@@ -50,13 +51,13 @@ class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
 					active
 			  ></paper-spinner-lite>`
 			: nothing;
-
 		return html`<cosmoz-autocomplete-ui
 			class="external-values-${column.externalValues}"
 			.label=${column.title}
 			.source=${source}
 			.textProperty=${column.textProperty}
 			.valueProperty=${column.valueProperty}
+			.itemRenderer=${column[columnSymbol]?.itemRenderer}
 			.value=${filter}
 			.text=${query}
 			.onChange=${onChange(setState)}
