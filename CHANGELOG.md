@@ -1,3 +1,10 @@
+# [12.7.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.6.3...v12.7.0) (2023-01-07)
+
+
+### Features
+
+* **list:** pass item-render to cosmoz-autocomplete ([0c53709](https://github.com/neovici/cosmoz-omnitable/commit/0c537095ebb1a7abf0ef9a7bb28b07352cd779d1))
+
 ## [12.6.3](https://github.com/neovici/cosmoz-omnitable/compare/v12.6.2...v12.6.3) (2022-12-01)
 
 
