@@ -125,7 +125,6 @@ export default css`
 	.header > cosmoz-omnitable-header-row {
 		flex: auto;
 	}
-
 	.header-cell {
 		--paper-input-container: {
 			padding-top: 0;
@@ -135,8 +134,6 @@ export default css`
 	}
 
 	cosmoz-omnitable-header-row {
-		font-family: 'Inter', sans-serif;
-		font-weight: bold;
 		white-space: nowrap;
 	}
 
@@ -175,13 +172,14 @@ export default css`
 
 	cosmoz-omnitable-item-row {
 		display: flex;
+
 		white-space: nowrap;
-		
 	}
 
 	cosmoz-omnitable-item-row > div {
 		display: block;
 		flex: none;
+
 		padding: 0 3px;
 		white-space: nowrap;
 		overflow: hidden;
