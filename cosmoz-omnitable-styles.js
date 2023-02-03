@@ -135,6 +135,8 @@ export default css`
 	}
 
 	cosmoz-omnitable-header-row {
+		font-family: 'Inter', sans-serif;
+		font-weight: bold;
 		white-space: nowrap;
 	}
 
@@ -174,7 +176,7 @@ export default css`
 	cosmoz-omnitable-item-row {
 		display: flex;
 		white-space: nowrap;
-		font-weight: bold;
+		
 	}
 
 	cosmoz-omnitable-item-row > div {
