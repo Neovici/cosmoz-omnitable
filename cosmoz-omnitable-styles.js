@@ -125,6 +125,7 @@ export default css`
 	.header > cosmoz-omnitable-header-row {
 		flex: auto;
 	}
+
 	.header-cell {
 		--paper-input-container: {
 			padding-top: 0;
@@ -136,6 +137,7 @@ export default css`
 	cosmoz-omnitable-header-row {
 		white-space: nowrap;
 	}
+
 	cosmoz-omnitable-header-row > div {
 		display: inline-block;
 		box-sizing: border-box;
@@ -155,10 +157,8 @@ export default css`
 		width: 7px;
 		height: 30px;
 		margin-left: -3px;
-
 		background: transparent;
 		cursor: ew-resize;
-
 		z-index: 1000;
 		user-select: none;
 	}
@@ -174,6 +174,7 @@ export default css`
 	cosmoz-omnitable-item-row {
 		display: flex;
 		white-space: nowrap;
+		font-weight: bold;
 	}
 
 	cosmoz-omnitable-item-row > div {
@@ -258,7 +259,6 @@ export default css`
 	.tableContent-empty.overlay div.tableContent-empty-message {
 		padding-bottom: 0;
 	}
-
 	.tableContent-empty p {
 		font-size: 15px;
 		color: #ddd;
