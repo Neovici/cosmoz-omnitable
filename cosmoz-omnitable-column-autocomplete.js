@@ -62,6 +62,10 @@ class OmnitableColumnAutocomplete extends listColumnMixin(columnMixin(PolymerEle
 			.onChange=${ onChange(setState) }
 			.onFocus=${ onFocus(setState) }
 			.onText=${ onText(setState) }
+			keep-opened
+			float-label-value-selected
+			filter-from-dropdown
+			show-multiple-selections
 		>${ spinner }</cosmoz-autocomplete-ui>`;
 	}
 
