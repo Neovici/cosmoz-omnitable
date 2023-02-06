@@ -145,10 +145,14 @@ export default css`
 		text-overflow: ellipsis;
 		vertical-align: bottom;
 	}
+
 	cosmoz-omnitable-header-row > div[hidden] {
 		display: none !important;
 	}
-
+	cosmoz-omnitable-header-row > div > paper-input {
+		color: red;
+	}
+	
 	cosmoz-omnitable-resize-nub {
 		display: inline-block;
 		position: absolute;
@@ -172,14 +176,12 @@ export default css`
 
 	cosmoz-omnitable-item-row {
 		display: flex;
-
 		white-space: nowrap;
 	}
 
 	cosmoz-omnitable-item-row > div {
 		display: block;
 		flex: none;
-
 		padding: 0 3px;
 		white-space: nowrap;
 		overflow: hidden;
