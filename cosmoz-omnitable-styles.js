@@ -133,6 +133,10 @@ export default css`
 		}
 	}
 
+	/*.header-cell label{
+	
+	}*/
+
 	cosmoz-omnitable-header-row {
 		white-space: nowrap;
 	}
@@ -145,14 +149,9 @@ export default css`
 		text-overflow: ellipsis;
 		vertical-align: bottom;
 	}
-
 	cosmoz-omnitable-header-row > div[hidden] {
 		display: none !important;
 	}
-	cosmoz-omnitable-header-row > div > paper-input {
-		color: red;
-	}
-	
 	cosmoz-omnitable-resize-nub {
 		display: inline-block;
 		position: absolute;
@@ -173,12 +172,11 @@ export default css`
 	.number-header-cell {
 		position: relative;
 	}
-
+	
 	cosmoz-omnitable-item-row {
 		display: flex;
 		white-space: nowrap;
 	}
-
 	cosmoz-omnitable-item-row > div {
 		display: block;
 		flex: none;
