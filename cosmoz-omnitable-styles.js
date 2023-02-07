@@ -133,9 +133,17 @@ export default css`
 		}
 	}
 
-	/*.header-cell label{
+	cosmoz-autocomplete-ui::part(input-label) {
+		text-transform: uppercase;
+		font-weight: bold;
+		font-family: 'Inter', sans-serif;
+	}
 	
-	}*/
+	paper-input {
+		--paper-font-subhead_-_font-family: 'Inter', sans-serif;
+		text-transform: uppercase;
+		--paper-font-subhead_-_font-weight: bold;
+	}
 
 	cosmoz-omnitable-header-row {
 		white-space: nowrap;
