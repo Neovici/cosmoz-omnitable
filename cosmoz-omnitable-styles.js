@@ -144,7 +144,17 @@ export default css`
 		text-transform: uppercase;
 		--paper-font-subhead_-_font-weight: bold;
 	}
-
+	
+	//for the missing cells, perhaps something about the cosmoz-omnitable-datetime-range-input
+	
+	paper-menu-button {
+		--paper-font-subhead_-_font-family: 'Inter', sans-serif;
+		text-transform: uppercase;
+		--paper-font-subhead_-_font-weight: bold;
+		--paper-input-container_-_font-size: 30px;
+	}
+	
+	
 	cosmoz-omnitable-header-row {
 		white-space: nowrap;
 	}
