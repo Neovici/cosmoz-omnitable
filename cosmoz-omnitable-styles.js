@@ -82,6 +82,10 @@ export default css`
 		flex-direction: column;
 		position: relative;
 		overflow: hidden;
+		--cosmoz-header-font-family: 'Inter', sans-serif;
+		--cosmoz-header-text-transform: uppercase;
+		--cosmoz-header-font-weight: bold;
+		--cosmoz-header-font-size: 14pt;
 	}
 
 	:host a {
@@ -134,11 +138,12 @@ export default css`
 	}
 
 	cosmoz-autocomplete-ui::part(input-label) {
-		text-transform: uppercase;
-		font-weight: bold;
-		font-family: 'Inter', sans-serif;
-		font-size: 14pt;
+		text-transform: var(--cosmoz-header-text-transform, uppercase);
+		font-weight: var(--cosmoz-header-font-weight, bold);
+		font-family: var(--cosmoz-header-font-family, 'Inter', sans-serif);
+		font-size: var(--cosmoz-header-font-size, 14pt);
 	}
+
 
 	
 	cosmoz-omnitable-amount-range-input,
@@ -147,10 +152,10 @@ export default css`
 	cosmoz-omnitable-time-range-input,
 	cosmoz-omnitable-datetime-range-input,
 	paper-input {
-		--paper-font-subhead_-_font-family: 'Inter', sans-serif;
-		text-transform: uppercase;
-		--paper-font-subhead_-_font-weight: bold;
-		--paper-font-subhead_-_font-size: 14pt;
+		--paper-font-subhead_-_font-family: var(--cosmoz-header-font-family, 'Inter', sans-serif);
+		text-transform: var(--cosmoz-header-text-transform, uppercase);
+		--paper-font-subhead_-_font-weight: var(--cosmoz-header-font-weight, bold);
+		--paper-font-subhead_-_font-size: var(--cosmoz-header-font-size, 14pt);
 	}
 	cosmoz-omnitable-header-row {
 		white-space: nowrap;
