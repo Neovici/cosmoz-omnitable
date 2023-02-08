@@ -137,11 +137,12 @@ export default css`
 		text-transform: uppercase;
 		font-weight: bold;
 		font-family: 'Inter', sans-serif;
-		font-size: 15px;
+		font-size: 14pt;
 	}
 
 	.editable-header,
-	/* cosmoz-omnitable-amount-range-input,
+	/*This class is assigned to:
+	cosmoz-omnitable-amount-range-input,
 	cosmoz-omnitable-number-range-input,
 	cosmoz-omnitable-date-range-input,
 	cosmoz-omnitable-time-range-input,
@@ -150,7 +151,7 @@ export default css`
 		--paper-font-subhead_-_font-family: 'Inter', sans-serif;
 		text-transform: uppercase;
 		--paper-font-subhead_-_font-weight: bold;
-		--paper-font-subhead_-_font-size: 15px;
+		--paper-font-subhead_-_font-size: 14pt;
 	}
 	cosmoz-omnitable-header-row {
 		white-space: nowrap;
