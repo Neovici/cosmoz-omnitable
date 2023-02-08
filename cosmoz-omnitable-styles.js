@@ -144,16 +144,7 @@ export default css`
 		text-transform: uppercase;
 		--paper-font-subhead_-_font-weight: bold;
 	}
-	
 	//for the missing cells, perhaps something about the cosmoz-omnitable-datetime-range-input
-	
-	paper-menu-button {
-		--paper-font-subhead_-_font-family: 'Inter', sans-serif;
-		text-transform: uppercase;
-		--paper-font-subhead_-_font-weight: bold;
-		--paper-input-container_-_font-size: 30px;
-	}
-	
 	
 	cosmoz-omnitable-header-row {
 		white-space: nowrap;
@@ -218,7 +209,7 @@ export default css`
 		position: relative;
 		flex: auto;
 	}
-
+	
 	/* Empty data set styling */
 
 	.tableContent-empty {
@@ -363,7 +354,7 @@ export default css`
 	.groupRow.groupRow-folded {
 		/* Add here style rules for folded group rows */
 	}
-
+	
 	.groupRow-label {
 		display: flex;
 		flex: auto;
@@ -468,8 +459,11 @@ export default css`
 	.fold:hover {
 		color: #000;
 	}
-
+	
 	.sg {
+		font-family: 'Inter', sans-serif;
+		text-transform: uppercase;
+		font-weight: bold;
 		display: inline-flex;
 		width: 10px;
 		cursor: pointer;
