@@ -9,9 +9,15 @@ import { columnMixin } from './cosmoz-omnitable-column-mixin';
 
 import './lib/cosmoz-omnitable-number-range-input';
 import { defaultComputeSource } from './lib/utils-data';
-import { applySingleFilter, getComparableValue, getInputString, getString, toHashString, toNumber } from './lib/utils-number';
+import {
+	applySingleFilter,
+	getComparableValue,
+	getInputString,
+	getString,
+	toHashString,
+	toNumber,
+} from './lib/utils-number';
 import { get } from '@polymer/polymer/lib/utils/path';
-
 
 /**
  * @polymer
@@ -30,13 +36,12 @@ class OmnitableColumnNumber extends columnMixin(PolymerElement) {
 			minWidth: { type: String, value: '30px' },
 			headerCellClass: { type: String, value: 'number-header-cell' },
 			maximumFractionDigits: { type: Number, value: null },
-			minimumFractionDigits: { type: Number, value: null } // browser default 0 for numbers, currency-specific or 2 for currency
+			minimumFractionDigits: { type: Number, value: null }, // browser default 0 for numbers, currency-specific or 2 for currency
 		};
 	}
 
 	getFilterFn(column, filter) {
-		const
-			min = getComparableValue({ ...column, valuePath: 'min' }, filter),
+		const min = getComparableValue({ ...column, valuePath: 'min' }, filter),
 			max = getComparableValue({ ...column, valuePath: 'max' }, filter);
 
 		if (min == null && max == null) {
@@ -86,44 +91,56 @@ class OmnitableColumnNumber extends columnMixin(PolymerElement) {
 
 		return {
 			min: toNumber(matches[1]),
-			max: toNumber(matches[2])
+			max: toNumber(matches[2]),
 		};
 	}
 
 	renderCell(column, { item }) {
-		return html`<div class="omnitable-cell-number">${ getString(column, item) }</div>`;
+		return html`<div class="omnitable-cell-number">
+			${getString(column, item)}
+		</div>`;
 	}
 
 	renderEditCell(column, { item }, onItemChange) {
-		const onChange = event => onItemChange(event.target.value);
+		const onChange = (event) => onItemChange(event.target.value);
 
-		return html`<paper-input no-label-float type="number" @change=${ onChange } .value=${ getInputString(column, item) }></paper-input>`;
+		return html`<paper-input
+			no-label-float
+			type="number"
+			@change=${onChange}
+			.value=${getInputString(column, item)}
+		></paper-input>`;
 	}
 
 	renderHeader(
-		{ title,
+		{
+			title,
 			min,
 			max,
 			locale,
 			maximumFractionDigits,
 			minimumFractionDigits,
-			autoupdate },
+			autoupdate,
+		},
 		{ filter },
 		setState,
 		source
 	) {
 		return html`<cosmoz-omnitable-number-range-input
-			.title=${ title }
-			.filter=${ filter }
-			.values=${ source }
-			.min=${ min }
-			.max=${ max }
-			.locale=${ locale }
-			.maximumFractionDigits=${ maximumFractionDigits }
-			.minimumFractionDigsits=${ minimumFractionDigits }
-			.autoupdate=${ autoupdate }
-			@filter-changed=${ ({ detail: { value }}) => setState(state => ({ ...state, filter: value })) }
-			@header-focused-changed=${ ({ detail: { value }}) => setState(state => ({ ...state, headerFocused: value })) }
+			class="editable-header"
+			.title=${title}
+			.filter=${filter}
+			.values=${source}
+			.min=${min}
+			.max=${max}
+			.locale=${locale}
+			.maximumFractionDigits=${maximumFractionDigits}
+			.minimumFractionDigsits=${minimumFractionDigits}
+			.autoupdate=${autoupdate}
+			@filter-changed=${({ detail: { value } }) =>
+				setState((state) => ({ ...state, filter: value }))}
+			@header-focused-changed=${({ detail: { value } }) =>
+				setState((state) => ({ ...state, headerFocused: value }))}
 		></cosmoz-omnitable-number-range-input>`;
 	}
 

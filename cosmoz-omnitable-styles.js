@@ -138,11 +138,12 @@ export default css`
 		font-weight: bold;
 		font-family: 'Inter', sans-serif;
 	}
-	cosmoz-omnitable-amount-range-input,
+	/* cosmoz-omnitable-amount-range-input,
 	cosmoz-omnitable-number-range-input,
 	cosmoz-omnitable-date-range-input,
 	cosmoz-omnitable-time-range-input,
-	cosmoz-omnitable-datetime-range-input,
+	cosmoz-omnitable-datetime-range-input, */
+	.editable-header,
 	paper-input {
 		--paper-font-subhead_-_font-family: 'Inter', sans-serif;
 		text-transform: uppercase;

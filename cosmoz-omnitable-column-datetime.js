@@ -6,8 +6,18 @@ import './ui-helpers/cosmoz-clear-button';
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from 'lit-html';
-import { fromHashString, getString, toHashString, toXlsxValue } from './lib/utils-datetime';
-import { applySingleFilter, fromInputString, getComparableValue, toDate } from './lib/utils-date';
+import {
+	fromHashString,
+	getString,
+	toHashString,
+	toXlsxValue,
+} from './lib/utils-datetime';
+import {
+	applySingleFilter,
+	fromInputString,
+	getComparableValue,
+	toDate,
+} from './lib/utils-date';
 import { defaultComputeSource } from './lib/utils-data';
 import './lib/cosmoz-omnitable-datetime-range-input';
 
@@ -30,13 +40,12 @@ class OmnitableColumnDatetime extends columnMixin(PolymerElement) {
 			width: { type: String, value: '210px' },
 			minWidth: { type: String, value: '128px' },
 			flex: { type: String, value: '0' },
-			filterStep: { type: Number, value: 1 }
+			filterStep: { type: Number, value: 1 },
 		};
 	}
 
 	getFilterFn(column, filter) {
-		const
-			min = getComparableValue({ ...column, valuePath: 'min' }, filter),
+		const min = getComparableValue({ ...column, valuePath: 'min' }, filter),
 			max = getComparableValue({ ...column, valuePath: 'max' }, filter);
 
 		if (min == null && max == null) {
@@ -86,7 +95,7 @@ class OmnitableColumnDatetime extends columnMixin(PolymerElement) {
 
 		return {
 			min: fromHashString(matches[1]),
-			max: fromHashString(matches[2])
+			max: fromHashString(matches[2]),
 		};
 	}
 
@@ -95,31 +104,36 @@ class OmnitableColumnDatetime extends columnMixin(PolymerElement) {
 	}
 
 	renderEditCell(column, { item }, onItemChange) {
-		const onChange = event => onItemChange(fromInputString(event.target.value));
-		return html`<paper-input no-label-float type="text" @change=${ onChange } .value=${ getString(column, item) }></paper-input>`;
+		const onChange = (event) =>
+			onItemChange(fromInputString(event.target.value));
+		return html`<paper-input
+			no-label-float
+			type="text"
+			@change=${onChange}
+			.value=${getString(column, item)}
+		></paper-input>`;
 	}
 
 	// eslint-disable-next-line max-lines-per-function
 	renderHeader(
-		{ title,
-			min,
-			max,
-			locale,
-			filterStep },
+		{ title, min, max, locale, filterStep },
 		{ filter },
 		setState,
 		source
 	) {
 		return html`<cosmoz-omnitable-datetime-range-input
-			.title=${ title }
-			.filter=${ filter }
-			.values=${ source }
-			.min=${ min }
-			.max=${ max }
-			.locale=${ locale }
-			.filterStep=${ filterStep }
-			@filter-changed=${ ({ detail: { value }}) => setState(state => ({ ...state, filter: value })) }
-			@header-focused-changed=${ ({ detail: { value }}) => setState(state => ({ ...state, headerFocused: value })) }
+			class="editable-header"
+			.title=${title}
+			.filter=${filter}
+			.values=${source}
+			.min=${min}
+			.max=${max}
+			.locale=${locale}
+			.filterStep=${filterStep}
+			@filter-changed=${({ detail: { value } }) =>
+				setState((state) => ({ ...state, filter: value }))}
+			@header-focused-changed=${({ detail: { value } }) =>
+				setState((state) => ({ ...state, headerFocused: value }))}
 		></cosmoz-omnitable-datetime-range-input>`;
 	}
 
