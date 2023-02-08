@@ -1,3 +1,10 @@
+## [12.7.1](https://github.com/neovici/cosmoz-omnitable/compare/v12.7.0...v12.7.1) (2023-02-08)
+
+
+### Bug Fixes
+
+* **settings:** keep collapsed columns hidden when disabling a column ([c4f0d41](https://github.com/neovici/cosmoz-omnitable/commit/c4f0d4142a16a47b3f40a917a5d440f946e0277b)), closes [AB#8399](https://github.com/AB/issues/8399)
+
 # [12.7.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.6.3...v12.7.0) (2023-01-07)
 
 
