@@ -139,7 +139,7 @@ export default css`
 
 	cosmoz-autocomplete-ui::part(input-label) {
 		text-transform: var(--cosmoz-header-text-transform, uppercase);
-		font-weight: var(--cosmoz-header-font-weight, bold, bolder);
+		font-weight: var(--cosmoz-header-font-weight, bold);
 		font-family: var(--cosmoz-header-font-family, 'Inter', sans-serif);
 		font-size: var(--cosmoz-header-font-size, 14pt);
 	}
