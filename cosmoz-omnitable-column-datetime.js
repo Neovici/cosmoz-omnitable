@@ -122,7 +122,6 @@ class OmnitableColumnDatetime extends columnMixin(PolymerElement) {
 		source
 	) {
 		return html`<cosmoz-omnitable-datetime-range-input
-			class="editable-header"
 			.title=${title}
 			.filter=${filter}
 			.values=${source}

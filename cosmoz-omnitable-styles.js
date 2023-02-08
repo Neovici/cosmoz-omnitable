@@ -140,13 +140,12 @@ export default css`
 		font-size: 14pt;
 	}
 
-	.editable-header,
-	/*This class is assigned to:
+	
 	cosmoz-omnitable-amount-range-input,
 	cosmoz-omnitable-number-range-input,
 	cosmoz-omnitable-date-range-input,
 	cosmoz-omnitable-time-range-input,
-	cosmoz-omnitable-datetime-range-input, */
+	cosmoz-omnitable-datetime-range-input,
 	paper-input {
 		--paper-font-subhead_-_font-family: 'Inter', sans-serif;
 		text-transform: uppercase;
