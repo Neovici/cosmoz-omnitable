@@ -137,20 +137,21 @@ export default css`
 		text-transform: uppercase;
 		font-weight: bold;
 		font-family: 'Inter', sans-serif;
+		font-size: 15px;
 	}
+
+	.editable-header,
 	/* cosmoz-omnitable-amount-range-input,
 	cosmoz-omnitable-number-range-input,
 	cosmoz-omnitable-date-range-input,
 	cosmoz-omnitable-time-range-input,
 	cosmoz-omnitable-datetime-range-input, */
-	.editable-header,
 	paper-input {
 		--paper-font-subhead_-_font-family: 'Inter', sans-serif;
 		text-transform: uppercase;
 		--paper-font-subhead_-_font-weight: bold;
+		--paper-font-subhead_-_font-size: 15px;
 	}
-	//for the missing cells, perhaps something about the cosmoz-omnitable-datetime-range-input
-
 	cosmoz-omnitable-header-row {
 		white-space: nowrap;
 	}
