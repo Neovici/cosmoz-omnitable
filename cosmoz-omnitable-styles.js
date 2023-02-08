@@ -138,14 +138,18 @@ export default css`
 		font-weight: bold;
 		font-family: 'Inter', sans-serif;
 	}
-	
+	cosmoz-omnitable-amount-range-input,
+	cosmoz-omnitable-number-range-input,
+	cosmoz-omnitable-date-range-input,
+	cosmoz-omnitable-time-range-input,
+	cosmoz-omnitable-datetime-range-input,
 	paper-input {
 		--paper-font-subhead_-_font-family: 'Inter', sans-serif;
 		text-transform: uppercase;
 		--paper-font-subhead_-_font-weight: bold;
 	}
 	//for the missing cells, perhaps something about the cosmoz-omnitable-datetime-range-input
-	
+
 	cosmoz-omnitable-header-row {
 		white-space: nowrap;
 	}
@@ -181,7 +185,7 @@ export default css`
 	.number-header-cell {
 		position: relative;
 	}
-	
+
 	cosmoz-omnitable-item-row {
 		display: flex;
 		white-space: nowrap;
@@ -209,7 +213,7 @@ export default css`
 		position: relative;
 		flex: auto;
 	}
-	
+
 	/* Empty data set styling */
 
 	.tableContent-empty {
@@ -354,7 +358,7 @@ export default css`
 	.groupRow.groupRow-folded {
 		/* Add here style rules for folded group rows */
 	}
-	
+
 	.groupRow-label {
 		display: flex;
 		flex: auto;
@@ -459,7 +463,7 @@ export default css`
 	.fold:hover {
 		color: #000;
 	}
-	
+
 	.sg {
 		font-family: 'Inter', sans-serif;
 		text-transform: uppercase;
