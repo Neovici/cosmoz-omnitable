@@ -357,9 +357,9 @@ export default css`
 		border-bottom: 1px solid var(--cosmoz-omnitable-border-color, #e1e2e5);
 	}
 
-	.groupRow.groupRow-folded {
-		/* Add here style rules for folded group rows */
-	}
+	/*.groupRow.groupRow-folded {
+		 Add here style rules for folded group rows 
+	}*/
 
 	.groupRow-label {
 		display: flex;
