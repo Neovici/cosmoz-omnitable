@@ -1,3 +1,10 @@
+## [12.7.2](https://github.com/neovici/cosmoz-omnitable/compare/v12.7.1...v12.7.2) (2023-02-14)
+
+
+### Bug Fixes
+
+* omnitable now gets the memoize functions from cosmoz-utils ([261cde3](https://github.com/neovici/cosmoz-omnitable/commit/261cde313dda109da1d0431b375ff279258d0599))
+
 ## [12.7.1](https://github.com/neovici/cosmoz-omnitable/compare/v12.7.0...v12.7.1) (2023-02-08)
 
 
