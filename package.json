@@ -67,7 +67,7 @@
 		"@neovici/cosmoz-grouped-list": "^6.0.0",
 		"@neovici/cosmoz-i18next": "^3.1.1",
 		"@neovici/cosmoz-router": "^10.0.0",
-		"@neovici/cosmoz-utils": "^5.0.0",
+		"@neovici/cosmoz-utils": "^5.12.1",
 		"@neovici/nullxlsx": "^3.0.0",
 		"@polymer/iron-icon": "^3.0.0",
 		"@polymer/iron-icons": "^3.0.0",

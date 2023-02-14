@@ -8,7 +8,7 @@ import {
 	html, nothing
 } from 'lit-html';
 import { get } from '@polymer/polymer/lib/utils/path';
-import { memooize } from './lib/memoize';
+import { memooize } from '@neovici/cosmoz-utils/memoize';
 
 const
 	computeValue = (value, source) =>
