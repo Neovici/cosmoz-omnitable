@@ -131,13 +131,6 @@ export default css`
 			padding-bottom: 0;
 			--paper-font-caption_-_line-height: 18px;
 		}
-	}
-	cosmoz-omnitable-amount-range-input,
-	cosmoz-omnitable-number-range-input,
-	cosmoz-omnitable-date-range-input,
-	cosmoz-omnitable-time-range-input,
-	cosmoz-omnitable-datetime-range-input,
-	paper-input {
 		--paper-font-subhead_-_font-family: var(
 			--cosmoz-omnitable-header-font-family,
 			'Inter' sans-serif
