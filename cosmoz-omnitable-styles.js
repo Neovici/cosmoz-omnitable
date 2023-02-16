@@ -140,12 +140,17 @@ export default css`
 	paper-input {
 		--paper-font-subhead_-_font-family: var(
 			--cosmoz-omnitable-header-font-family,
-			'Inter'
-			sans-serif
+			'Inter' sans-serif
 		);
 		text-transform: var(--cosmoz-omnitable-header-text-transform, uppercase);
-		--paper-font-subhead_-_font-weight: var(--cosmoz-omnitable-header-font-weight, bold);
-		--paper-font-subhead_-_font-size: var(--cosmoz-omnitable-header-font-size, 14pt);
+		--paper-font-subhead_-_font-weight: var(
+			--cosmoz-omnitable-header-font-weight,
+			bold
+		);
+		--paper-font-subhead_-_font-size: var(
+			--cosmoz-omnitable-header-font-size,
+			14pt
+		);
 	}
 
 	cosmoz-autocomplete-ui::part(input-label) {
