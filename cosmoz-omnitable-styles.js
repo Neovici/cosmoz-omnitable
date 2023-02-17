@@ -131,8 +131,27 @@ export default css`
 			padding-bottom: 0;
 			--paper-font-caption_-_line-height: 18px;
 		}
+		--paper-font-subhead_-_font-family: var(
+			--cosmoz-omnitable-header-font-family,
+			'Inter' sans-serif
+		);
+		text-transform: var(--cosmoz-omnitable-header-text-transform, uppercase);
+		--paper-font-subhead_-_font-weight: var(
+			--cosmoz-omnitable-header-font-weight,
+			bold
+		);
+		--paper-font-subhead_-_font-size: var(
+			--cosmoz-omnitable-header-font-size,
+			14pt
+		);
 	}
 
+	cosmoz-autocomplete-ui::part(input-label) {
+		text-transform: var(--cosmoz-omnitable-header-text-transform, uppercase);
+		font-weight: var(--cosmoz-omnitable-header-font-weight, bold);
+		font-family: var(--cosmoz-omnitable-header-font-family, 'Inter' sans-serif);
+		font-size: var(--cosmoz-omnitable-header-font-size, 14pt);
+	}
 	cosmoz-omnitable-header-row {
 		white-space: nowrap;
 	}
