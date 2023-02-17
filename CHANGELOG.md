@@ -1,3 +1,10 @@
+# [12.8.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.7.2...v12.8.0) (2023-02-17)
+
+
+### Features
+
+* change font in omnitable headers, change omnitable settings icon ([5d1d985](https://github.com/neovici/cosmoz-omnitable/commit/5d1d985f4ec20bf8db8cdcfcc76790923ea7955d)), closes [AB#9162](https://github.com/AB/issues/9162)
+
 ## [12.7.2](https://github.com/neovici/cosmoz-omnitable/compare/v12.7.1...v12.7.2) (2023-02-14)
 
 
