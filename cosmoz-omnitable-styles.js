@@ -83,14 +83,13 @@ export default css`
 		position: relative;
 		overflow: hidden;
 	}
-	//The following code makes the link underlining appear only on mouseover
 	:host a {
 		color: var(--primary-link-color, inherit);
-		text-decoration: none;
+		text-decoration: var(--cosmoz-omnitable-link-decoration, none);
 	}
 	:host a:hover {
 		color: var(--primary-link-color, inherit);
-		text-decoration: underline;
+		text-decoration: var(--cosmoz-omnitable-link-decoration, underline);
 	}
 	/* The wrapping div that contains the header, the table content and the footer */
 	.mainContainer {
