@@ -132,25 +132,24 @@ export default css`
 			--paper-font-caption_-_line-height: 18px;
 		}
 		--paper-font-subhead_-_font-family: var(
-			--cosmoz-omnitable-header-font-family,
-			'Inter' sans-serif
+			--cosmoz-omnitable-header-font-family, 'Roboto', 'Noto', sans-serif
 		);
-		text-transform: var(--cosmoz-omnitable-header-text-transform, uppercase);
+		text-transform: var(--cosmoz-omnitable-header-text-transform, none);
 		--paper-font-subhead_-_font-weight: var(
 			--cosmoz-omnitable-header-font-weight,
-			bold
+			normal
 		);
 		--paper-font-subhead_-_font-size: var(
 			--cosmoz-omnitable-header-font-size,
-			14pt
+			16px
 		);
 	}
 
 	cosmoz-autocomplete-ui::part(input-label) {
-		text-transform: var(--cosmoz-omnitable-header-text-transform, uppercase);
-		font-weight: var(--cosmoz-omnitable-header-font-weight, bold);
-		font-family: var(--cosmoz-omnitable-header-font-family, 'Inter' sans-serif);
-		font-size: var(--cosmoz-omnitable-header-font-size, 14pt);
+		text-transform: var(--cosmoz-omnitable-header-text-transform, none);
+		font-weight: var(--cosmoz-omnitable-header-font-weight, normal);
+		font-family: var(--cosmoz-omnitable-header-font-family, 'Roboto', 'Noto', sans-serif);
+		font-size: var(--cosmoz-omnitable-header-font-size, 16px);
 	}
 	cosmoz-omnitable-header-row {
 		white-space: nowrap;
