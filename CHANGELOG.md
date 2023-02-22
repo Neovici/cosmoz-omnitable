@@ -1,3 +1,15 @@
+# [12.9.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.8.0...v12.9.0) (2023-02-22)
+
+
+### Bug Fixes
+
+* omnitable styling reset to original ([d287235](https://github.com/neovici/cosmoz-omnitable/commit/d28723554e59f15e236a2af9d6f7a21ff0d933fe))
+
+
+### Features
+
+* **deps:** update ([309322b](https://github.com/neovici/cosmoz-omnitable/commit/309322b6b5081fd1672f009b929e138ab189d527))
+
 # [12.8.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.7.2...v12.8.0) (2023-02-17)
 
 
