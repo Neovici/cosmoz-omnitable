@@ -1,3 +1,10 @@
+# [12.10.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.9.0...v12.10.0) (2023-02-22)
+
+
+### Features
+
+* **filter:** applying trim for more lenient searching ([43812d5](https://github.com/neovici/cosmoz-omnitable/commit/43812d53470871f1b2355a758f909676b17fd2a3))
+
 # [12.9.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.8.0...v12.9.0) (2023-02-22)
 
 
