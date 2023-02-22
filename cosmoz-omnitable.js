@@ -7,7 +7,7 @@ import '@polymer/paper-spinner/paper-spinner-lite';
 
 import '@neovici/cosmoz-grouped-list';
 import '@neovici/cosmoz-bottom-bar';
-
+import './cosmoz-minitable';
 import './cosmoz-omnitable-column';
 import './cosmoz-omnitable-header-row';
 import './cosmoz-omnitable-item-row';
@@ -36,6 +36,7 @@ const Omnitable = (host) => {
 		<style>
 			${guard([], () => shimCSS(styles))}
 		</style>
+		<cosmoz-minitable></cosmoz-minitable>
 		<div id="layoutStyle"></div>
 
 		<div class="mainContainer">
