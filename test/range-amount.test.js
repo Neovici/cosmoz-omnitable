@@ -232,7 +232,7 @@ suite('amount', () => {
 	});
 
 	test('changing filter updates _filterInput', async () => {
-		assert.isUndefined(omnitable.filters.amount.filter);
+		assert.isUndefined(omnitable.filters.amount);
 		omnitable.setFilterState('amount', { filter: {
 			min: {
 				amount: 225,
@@ -258,15 +258,15 @@ suite('amount', () => {
 		};
 		flush();
 		await nextFrame();
-		assert.equal(omnitable.filters.amount.filter.min.amount, 1);
-		assert.equal(omnitable.filters.amount.filter.max.amount, 15);
+		assert.equal(omnitable.filters.amount.min.amount, 1);
+		assert.equal(omnitable.filters.amount.max.amount, 15);
 	});
 
 	test('changing only _filterInput min updates filter min', async () => {
 		columnHeaderInput.set('_filterInput.min', -2317);
 		flush();
 		await nextFrame();
-		assert.equal(omnitable.filters.amount.filter.min.amount, -8);
+		assert.equal(omnitable.filters.amount.min.amount, -8);
 	});
 
 	test('changing out of range _filterInput limits _filterInput', async () => {
@@ -281,13 +281,13 @@ suite('amount', () => {
 		await nextFrame();
 		assert.equal(columnHeaderInput._filterInput.min, 7);
 		assert.equal(columnHeaderInput._filterInput.max, 77);
-		assert.equal(omnitable.filters.amount.filter.min.amount, 7);
-		assert.equal(omnitable.filters.amount.filter.max.amount, 77);
+		assert.equal(omnitable.filters.amount.min.amount, 7);
+		assert.equal(omnitable.filters.amount.max.amount, 77);
 
 		columnHeaderInput.set('_filterInput.min', 9992);
 		flush();
 		await nextFrame();
-		assert.equal(omnitable.filters.amount.filter.min.amount, 77);
+		assert.equal(omnitable.filters.amount.min.amount, 77);
 	});
 });
 
@@ -639,7 +639,7 @@ suite('default currency', () => {
 		};
 		flush();
 		await nextFrame();
-		assert.equal(omnitable.filters.amount.filter.min.amount, 105);
-		assert.equal(omnitable.filters.amount.filter.max.amount, 150);
+		assert.equal(omnitable.filters.amount.min.amount, 105);
+		assert.equal(omnitable.filters.amount.max.amount, 150);
 	});
 });

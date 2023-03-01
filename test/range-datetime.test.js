@@ -77,7 +77,7 @@ suite('datetime', () => {
 	});
 
 	test('changing filter updates _filterInput', async () => {
-		assert.isUndefined(omnitable.filters.datetime.filter);
+		assert.isUndefined(omnitable.filters.datetime);
 		omnitable.setFilterState('datetime', {
 			filter: {
 				min: new Date(1970, 0, 2, 2, 0, 0),
@@ -96,15 +96,15 @@ suite('datetime', () => {
 		};
 		polymerFlush();
 		await nextFrame();
-		assert.equal(omnitable.filters.datetime.filter.min.getTime(), new Date(1970, 0, 2, 2, 0, 0).getTime());
-		assert.equal(omnitable.filters.datetime.filter.max.getTime(), new Date(1999, 5, 24, 11, 33, 30).getTime());
+		assert.equal(omnitable.filters.datetime.min.getTime(), new Date(1970, 0, 2, 2, 0, 0).getTime());
+		assert.equal(omnitable.filters.datetime.max.getTime(), new Date(1999, 5, 24, 11, 33, 30).getTime());
 	});
 
 	test('changing only _filterInput min updates filter min', async () => {
 		columnHeaderInput.set('_filterInput.min', '2014-06-24T11:33:30');
 		polymerFlush();
 		await nextFrame();
-		assert.equal(omnitable.filters.datetime.filter.min.getTime(), new Date(2014, 5, 24, 11, 33, 30).getTime());
+		assert.equal(omnitable.filters.datetime.min.getTime(), new Date(2014, 5, 24, 11, 33, 30).getTime());
 	});
 });
 

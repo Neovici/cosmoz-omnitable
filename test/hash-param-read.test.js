@@ -73,15 +73,15 @@ suite('basic-read', () => {
 	test('updates filter from url hash', async () => {
 		location.hash = '#!/#test-filter--id=["1"]';
 		await instantiate();
-		assert.isArray(omnitable.filters.id.filter);
-		assert.lengthOf(omnitable.filters.id.filter, 1);
-		assert.include(omnitable.filters.id.filter, '1');
+		assert.isArray(omnitable.filters.id);
+		assert.lengthOf(omnitable.filters.id, 1);
+		assert.include(omnitable.filters.id, '1');
 	});
 
 	test('updates filter from url hash (text column)', async () => {
 		location.hash = '#!/#test-filter--name=john';
 		await instantiate();
-		assert.equal(omnitable.filters.name.filter, 'john');
+		assert.equal(omnitable.filters.name, 'john');
 		assert.equal(
 			omnitable
 				.shadowRoot

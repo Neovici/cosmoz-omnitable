@@ -98,7 +98,7 @@ suite('date', () => {
 		const min = toDate('2015-03-18'),
 			max = toDate('2023-03-21');
 
-		assert.isUndefined(omnitable.filters.date.filter);
+		assert.isUndefined(omnitable.filters.date);
 
 		omnitable.setFilterState('date', { filter: {
 			min,
@@ -125,15 +125,15 @@ suite('date', () => {
 		};
 		polymerFlush();
 		await nextFrame();
-		assert.equal(omnitable.filters.date.filter.min.getTime(), new Date(2015, 2, 18, 0, 0, 0).getTime());
-		assert.equal(omnitable.filters.date.filter.max.getTime(), new Date(2023, 2, 21, 23, 59, 59).getTime(), 'Expecting max date included');
+		assert.equal(omnitable.filters.date.min.getTime(), new Date(2015, 2, 18, 0, 0, 0).getTime());
+		assert.equal(omnitable.filters.date.max.getTime(), new Date(2023, 2, 21, 23, 59, 59).getTime(), 'Expecting max date included');
 	});
 
 	test('changing only _filterInput min updates filter min', async () => {
 		columnHeaderInput.set('_filterInput.min', '2015-08-27');
 		polymerFlush();
 		await nextFrame();
-		assert.equal(omnitable.filters.date.filter.min.getTime(), new Date(2015, 7, 27, 0, 0, 0).getTime());
+		assert.equal(omnitable.filters.date.min.getTime(), new Date(2015, 7, 27, 0, 0, 0).getTime());
 	});
 
 	test('filtering on specific date with datetime source', async () => {
