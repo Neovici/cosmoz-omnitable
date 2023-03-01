@@ -1,3 +1,10 @@
+# [12.11.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.10.0...v12.11.0) (2023-03-01)
+
+
+### Features
+
+* **filters-changed:** emit filters-changed event ([53d07d1](https://github.com/neovici/cosmoz-omnitable/commit/53d07d17d369101f86d9f1c9cffc837a19e7471f)), closes [AB#9731](https://github.com/AB/issues/9731)
+
 # [12.10.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.9.0...v12.10.0) (2023-02-22)
 
 
