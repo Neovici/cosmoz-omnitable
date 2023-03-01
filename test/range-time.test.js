@@ -85,7 +85,7 @@ suite('time', () => {
 
 
 	test('changing filter updates _filterInput', async () => {
-		assert.isUndefined(omnitable.filters.time.filter);
+		assert.isUndefined(omnitable.filters.time);
 		omnitable.setFilterState('time', { filter: {
 			min: '2000-01-01T09:12:00',
 			max: '2016-08-27T09:34:56'
@@ -110,7 +110,7 @@ suite('time', () => {
 		await nextFrame();
 		const {
 			min: fMin, max: fMax
-		} = omnitable.filters.time.filter;
+		} = omnitable.filters.time;
 		assert.equal(fMin.getTime(), columnHeaderInput.toValue(min).getTime());
 		assert.equal(fMax.getTime(), columnHeaderInput.toValue(max).getTime());
 	});
@@ -120,7 +120,7 @@ suite('time', () => {
 		columnHeaderInput.set('_filterInput.min', min);
 		polymerFlush();
 		await nextFrame();
-		assert.equal(omnitable.filters.time.filter.min.getTime(), toDate(min).getTime());
+		assert.equal(omnitable.filters.time.min.getTime(), toDate(min).getTime());
 	});
 });
 

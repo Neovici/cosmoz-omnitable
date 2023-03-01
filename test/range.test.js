@@ -95,7 +95,7 @@ suite('number', () => {
 	});
 
 	test('changing filter updates _filterInput', async () => {
-		assert.isUndefined(omnitable.filters.age.filter);
+		assert.isUndefined(omnitable.filters.age);
 		omnitable.setFilterState('age', { filter: {
 			min: 3,
 			max: 200
@@ -114,15 +114,15 @@ suite('number', () => {
 		};
 		flush();
 		await nextFrame();
-		assert.equal(omnitable.filters.age.filter.min, -10);
-		assert.equal(omnitable.filters.age.filter.max, 15);
+		assert.equal(omnitable.filters.age.min, -10);
+		assert.equal(omnitable.filters.age.max, 15);
 	});
 
 	test('changing only _filterInput min updates filter min', async () => {
 		columnHeaderInput.set('_filterInput.min', -21);
 		flush();
 		await nextFrame();
-		assert.equal(omnitable.filters.age.filter.min, -11);
+		assert.equal(omnitable.filters.age.min, -11);
 	});
 
 	test('changing out of range _filterInput limits _filterInput', async () => {
@@ -138,14 +138,14 @@ suite('number', () => {
 
 		assert.equal(columnHeaderInput._filterInput.min, -11);
 		assert.equal(columnHeaderInput._filterInput.max, 17);
-		assert.equal(omnitable.filters.age.filter.min, -11);
-		assert.equal(omnitable.filters.age.filter.max, 17);
+		assert.equal(omnitable.filters.age.min, -11);
+		assert.equal(omnitable.filters.age.max, 17);
 
 		columnHeaderInput.set('_filterInput.min', 20);
 		flush();
 		await nextFrame();
 
-		assert.equal(omnitable.filters.age.filter.min, 17);
+		assert.equal(omnitable.filters.age.min, 17);
 	});
 
 	test('when autoupdate is off, changing _filterInput does not update filter', async () => {
@@ -162,8 +162,8 @@ suite('number', () => {
 		columnHeaderInput._updateFilter();
 
 		await nextFrame();
-		assert.equal(omnitable.filters.age.filter.min, -10);
-		assert.equal(omnitable.filters.age.filter.max, 15);
+		assert.equal(omnitable.filters.age.min, -10);
+		assert.equal(omnitable.filters.age.max, 15);
 	});
 
 	test('filter comparision uses maximumFractionDigits; item age outside the range', async () => {
@@ -284,6 +284,6 @@ suite('external values', () => {
 		flush();
 		await nextFrame();
 
-		assert.equal(omnitable.filters.age.filter.min, -1);
+		assert.equal(omnitable.filters.age.min, -1);
 	});
 });
