@@ -1,3 +1,10 @@
+# [12.12.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.11.0...v12.12.0) (2023-03-05)
+
+
+### Features
+
+* **no-local:** add support for disabling local sorting and filtering ([4c6439f](https://github.com/neovici/cosmoz-omnitable/commit/4c6439ffdac1dd48daee567ac111efd8ca809078)), closes [AB#8486](https://github.com/AB/issues/8486)
+
 # [12.11.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.10.0...v12.11.0) (2023-03-01)
 
 
