@@ -59,6 +59,9 @@ customElements.define(
 			'group-on',
 			'hide-select-all',
 			'settings-id',
+			'no-local',
+			'no-local-sort',
+			'no-local-filter',
 		],
 	}) {
 		connectedCallback() {
