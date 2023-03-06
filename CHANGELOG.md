@@ -1,3 +1,16 @@
+# [12.13.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.12.0...v12.13.0) (2023-03-06)
+
+
+### Bug Fixes
+
+* added support/passthrough for hide and show node, also refactor ([6d801f6](https://github.com/neovici/cosmoz-omnitable/commit/6d801f695a1f6e7c593de1aca8a2fef6e29374c6))
+* pr feedback ([b0c1947](https://github.com/neovici/cosmoz-omnitable/commit/b0c19475b00f5779ebea458082c192f84e0f2f65))
+
+
+### Features
+
+* **treenode column:** passing along three new values ([caf8573](https://github.com/neovici/cosmoz-omnitable/commit/caf8573b371154dfb03c33cff67823c1c158b82a))
+
 # [12.12.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.11.0...v12.12.0) (2023-03-05)
 
 
