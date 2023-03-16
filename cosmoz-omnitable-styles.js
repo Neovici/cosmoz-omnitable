@@ -85,7 +85,7 @@ export default css`
 	}
 	:host a {
 		color: var(--primary-link-color, inherit);
-		text-decoration: var(--cosmoz-omnitable-link-decoration, underline);
+		text-decoration: var(--cosmoz-omnitable-link-decoration, none);
 	}
 	:host a:hover {
 		color: var(--primary-link-color, inherit);
@@ -210,6 +210,9 @@ export default css`
 
 	cosmoz-omnitable-item-row > div[hidden] {
 		display: none !important;
+	}
+	cosmoz-omnitable-item-row > div a {
+		text-decoration: none;
 	}
 
 	.tableContent {
