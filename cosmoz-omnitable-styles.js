@@ -83,15 +83,11 @@ export default css`
 		position: relative;
 		overflow: hidden;
 	}
-	//The following code makes the link underlining appear only on mouseover
+
 	:host a {
 		color: var(--primary-link-color, inherit);
-		text-decoration: none;
 	}
-	:host a:hover {
-		color: var(--primary-link-color, inherit);
-		text-decoration: underline;
-	}
+
 	/* The wrapping div that contains the header, the table content and the footer */
 	.mainContainer {
 		background-color: #fff;
@@ -129,7 +125,6 @@ export default css`
 	.header > cosmoz-omnitable-header-row {
 		flex: auto;
 	}
-
 	.header-cell {
 		--paper-input-container: {
 			padding-top: 0;
@@ -159,7 +154,6 @@ export default css`
 	cosmoz-omnitable-header-row {
 		white-space: nowrap;
 	}
-
 	cosmoz-omnitable-header-row > div {
 		display: inline-block;
 		box-sizing: border-box;
@@ -179,8 +173,10 @@ export default css`
 		width: 7px;
 		height: 30px;
 		margin-left: -3px;
+
 		background: transparent;
 		cursor: ew-resize;
+
 		z-index: 1000;
 		user-select: none;
 	}
@@ -211,10 +207,6 @@ export default css`
 
 	cosmoz-omnitable-item-row > div[hidden] {
 		display: none !important;
-	}
-	cosmoz-omnitable-item-row > div a {
-		text-decoration: none;
-		color: var(--cosmoz-omnitable-item-row-color, grey);
 	}
 
 	.tableContent {
@@ -284,6 +276,7 @@ export default css`
 	.tableContent-empty.overlay div.tableContent-empty-message {
 		padding-bottom: 0;
 	}
+
 	.tableContent-empty p {
 		font-size: 15px;
 		color: #ddd;
