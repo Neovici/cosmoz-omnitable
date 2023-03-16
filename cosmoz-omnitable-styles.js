@@ -214,6 +214,7 @@ export default css`
 	}
 	cosmoz-omnitable-item-row > div a {
 		text-decoration: none;
+		color: var(--cosmoz-omnitable-item-row-color, grey);
 	}
 
 	.tableContent {
