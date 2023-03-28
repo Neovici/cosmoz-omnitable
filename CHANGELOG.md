@@ -1,3 +1,18 @@
+# [12.14.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.13.0...v12.14.0) (2023-03-28)
+
+
+### Bug Fixes
+
+* link underline configurable with css vars ([350967c](https://github.com/neovici/cosmoz-omnitable/commit/350967c8b063463b53643c7a8cc02b8862f32821))
+* link underline made removable with CSS vars ([3017b69](https://github.com/neovici/cosmoz-omnitable/commit/3017b69b6aea6a913bcde1124dc1e97769c8ec05))
+* **loading:** does not react to loading attribute ([2992b55](https://github.com/neovici/cosmoz-omnitable/commit/2992b55b3bfa8f02d9acf3d094c7c0cf4c9bfd47))
+* removed link underline ([82f0e1b](https://github.com/neovici/cosmoz-omnitable/commit/82f0e1b4de91c65391988404c5a53139d26ac41d))
+
+
+### Features
+
+* **column-list:** pass keepOpened to autocomplete ([420ebf0](https://github.com/neovici/cosmoz-omnitable/commit/420ebf0bea9eb0a94468d477cfa258bc229f13b5))
+
 # [12.13.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.12.0...v12.13.0) (2023-03-06)
 
 
