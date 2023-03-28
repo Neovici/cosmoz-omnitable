@@ -62,6 +62,7 @@ customElements.define(
 			'no-local',
 			'no-local-sort',
 			'no-local-filter',
+			'loading',
 		],
 	}) {
 		connectedCallback() {
