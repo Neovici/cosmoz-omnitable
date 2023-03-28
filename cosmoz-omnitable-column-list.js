@@ -2,6 +2,7 @@ import './cosmoz-omnitable-column-list-data';
 
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html, nothing } from 'lit-html';
+import { when } from 'lit-html/directives/when.js';
 
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 import {
@@ -23,6 +24,9 @@ import { columnSymbol } from './lib/use-dom-columns';
  * @appliesMixin columnMixin
  */
 class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
+	static get properties() {
+		return { keepOpened: { type: Boolean } };
+	}
 	renderCell({ valuePath, textProperty }, { item, index }) {
 		return html`<cosmoz-omnitable-column-list-data
 			.items=${getTexts(item, valuePath, textProperty)}
@@ -42,17 +46,17 @@ class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
 		></paper-input>`;
 	}
 
+	getConfig(column) {
+		return {
+			keepOpened: column.keepOpened,
+		};
+	}
+
 	renderHeader(column, { filter, query }, setState, source) {
-		const spinner = column.loading
-			? html`<paper-spinner-lite
-					style="width: 20px; height: 20px; flex:none;"
-					suffix
-					slot="suffix"
-					active
-			  ></paper-spinner-lite>`
-			: nothing;
 		return html`<cosmoz-autocomplete-ui
 			class="external-values-${column.externalValues}"
+			.column=${column}
+			?keep-opened=${column.keepOpened}
 			.label=${column.title}
 			.source=${source}
 			.textProperty=${column.textProperty}
@@ -63,7 +67,15 @@ class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
 			.onChange=${onChange(setState)}
 			.onFocus=${onFocus(setState)}
 			.onText=${onText(setState)}
-			>${spinner}</cosmoz-autocomplete-ui
+			>${when(
+				column.loading,
+				() => html`<paper-spinner-lite
+					style="width: 20px; height: 20px; flex:none;"
+					suffix
+					slot="suffix"
+					active
+				></paper-spinner-lite>`
+			)}</cosmoz-autocomplete-ui
 		>`;
 	}
 }
