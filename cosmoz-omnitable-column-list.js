@@ -1,7 +1,7 @@
 import './cosmoz-omnitable-column-list-data';
 
 import { PolymerElement } from '@polymer/polymer/polymer-element';
-import { html, nothing } from 'lit-html';
+import { html } from 'lit-html';
 import { when } from 'lit-html/directives/when.js';
 
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
