@@ -32,6 +32,7 @@ export const getString = ({ valuePath }, item) => get(item, valuePath),
 					valuePath: { type: String, notify: true },
 					values: { type: Array, notify: true },
 					filter: { type: Object },
+					noLocalFilter: { type: Boolean },
 					/**
 					 * If the column should be disabled until enabled with enabledColumns
 					 */
