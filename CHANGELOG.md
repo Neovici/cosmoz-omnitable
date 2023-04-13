@@ -1,3 +1,10 @@
+# [12.15.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.14.0...v12.15.0) (2023-04-13)
+
+
+### Features
+
+* **noLocalFilter:** per column noLocalFilter ([e24d8b5](https://github.com/neovici/cosmoz-omnitable/commit/e24d8b57aaaf1e75c9679c01e4044a42ef1092b1))
+
 # [12.14.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.13.0...v12.14.0) (2023-03-28)
 
 
