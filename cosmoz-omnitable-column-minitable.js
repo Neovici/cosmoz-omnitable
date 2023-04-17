@@ -15,14 +15,14 @@ import { minitableStyle } from './cosmoz-omnitable-styles';
 const today = new Date('2015-08-21');
 
 const color = (date) => {
-    if(date < today){
-        return 'red';
-    }
-    if(date > today-1){
-        return 'green';
-    }
-    return 'yellow';
-}
+	if (date < today) {
+		return 'red';
+	}
+	if (date > today - 1) {
+		return 'green';
+	}
+	return 'yellow';
+};
 const onChange = (setState) => (event) =>
 		setState((state) => {
 			// skip the event emitted during paper-input initialization
@@ -73,7 +73,6 @@ class OmnitableColumnMinitable extends columnMixin(PolymerElement) {
 	}
 
 	renderCell(column, { item }) {
-		console.log(item);
 		return html` <style>
 				${minitableStyle}
 			</style>
@@ -84,7 +83,9 @@ class OmnitableColumnMinitable extends columnMixin(PolymerElement) {
 					<div id="amount">
 						${item.amount?.amount + ' ' + item.amount?.currency}
 					</div>
-					<div id="dueDate" style="color: ${color(item.date)}">${item.dateJSON}</div>
+					<div id="dueDate" style="color: ${color(item.date)}">
+						${item.dateJSON}
+					</div>
 				</div>
 			</div>`;
 	}
