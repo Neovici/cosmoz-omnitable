@@ -76,6 +76,46 @@ const checkbox = css`
 
 export { checkbox };
 
+const minitableStyle = css`
+	.minitable-block {
+		max-width: 300px;
+		width: 300px;
+		height: 80px;
+		border: 1px black solid;
+		border-radius: 20px;
+		padding: 5px;
+		margin: 5px;
+	}
+	#supplier {
+		position: relative;
+		top: 10%;
+		left: 5%;
+	}
+	.amount-date {
+		position: relative;
+		bottom: 10%;
+		padding: 5%;
+		display: inline-block;
+		max-width: 250px;
+	}
+	.amount-date > #dueDate {
+		padding-left: 20px;
+	}
+	.amount-date > #amount {
+		padding-right: 20px;
+	}
+	#amount {
+		float: left;
+		left: 25%;
+	}
+	#dueDate {
+		float: left;
+		left: 40%;
+	}
+`;
+
+export { minitableStyle };
+
 export default css`
 	:host {
 		display: flex;
@@ -136,7 +176,10 @@ export default css`
 			--paper-font-caption_-_line-height: 18px;
 		}
 		--paper-font-subhead_-_font-family: var(
-			--cosmoz-omnitable-header-font-family, 'Roboto', 'Noto', sans-serif
+			--cosmoz-omnitable-header-font-family,
+			'Roboto',
+			'Noto',
+			sans-serif
 		);
 		text-transform: var(--cosmoz-omnitable-header-text-transform, none);
 		--paper-font-subhead_-_font-weight: var(
@@ -152,7 +195,12 @@ export default css`
 	cosmoz-autocomplete-ui::part(input-label) {
 		text-transform: var(--cosmoz-omnitable-header-text-transform, none);
 		font-weight: var(--cosmoz-omnitable-header-font-weight, normal);
-		font-family: var(--cosmoz-omnitable-header-font-family, 'Roboto', 'Noto', sans-serif);
+		font-family: var(
+			--cosmoz-omnitable-header-font-family,
+			'Roboto',
+			'Noto',
+			sans-serif
+		);
 		font-size: var(--cosmoz-omnitable-header-font-size, 16px);
 	}
 	cosmoz-omnitable-header-row {
