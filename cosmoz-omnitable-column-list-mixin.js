@@ -71,13 +71,14 @@ const unique = (values, valueProperty) => {
 	},
 	toXlsxValue = getString,
 	applyMultiFilter =
-		({ valueProperty, valuePath, emptyValue }, filters) =>
+		({ valueProperty, valuePath, emptyValue, emptyProperty }, filters) =>
 		(item) => {
 			const val = prop(valueProperty),
 				values = array(get(item, valuePath));
 			return filters.some(
 				(filter) =>
-					(values.length === 0 && val(filter) === emptyValue) ||
+					(values.length === 0 &&
+						prop(emptyProperty || valueProperty)(filter) === emptyValue) ||
 					values.some((value) => val(value) === val(filter))
 			);
 		},
@@ -88,7 +89,14 @@ const unique = (values, valueProperty) => {
 	onText = (setState) => (text) =>
 		setState((state) => ({ ...state, query: text })),
 	computeSource = (
-		{ valuePath, valueProperty, textProperty, emptyLabel, emptyValue },
+		{
+			valuePath,
+			valueProperty,
+			textProperty,
+			emptyLabel,
+			emptyValue,
+			emptyProperty,
+		},
 		data
 	) => {
 		const values = valuesFrom(data, valuePath),
@@ -98,7 +106,7 @@ const unique = (values, valueProperty) => {
 			!emptyLabel ||
 			emptyValue === undefined ||
 			!textProperty ||
-			!valueProperty ||
+			!(emptyProperty || valueProperty) ||
 			source.length < 0
 		) {
 			return source;
@@ -106,7 +114,7 @@ const unique = (values, valueProperty) => {
 		return [
 			{
 				[textProperty]: emptyLabel,
-				[valueProperty]: emptyValue,
+				[emptyProperty || valueProperty]: emptyValue,
 			},
 			...source,
 		];
@@ -119,6 +127,17 @@ const unique = (values, valueProperty) => {
 					valueProperty: { type: String },
 					emptyLabel: { type: String },
 					emptyValue: { type: Object },
+					emptyProperty: { type: String },
+				};
+			}
+
+			getConfig(column) {
+				return {
+					valueProperty: column.valueProperty,
+					textProperty: column.textProperty,
+					emptyLabel: column.emptyLabel,
+					emptyValue: column.emptyValue,
+					emptyProperty: { type: String },
 				};
 			}
 

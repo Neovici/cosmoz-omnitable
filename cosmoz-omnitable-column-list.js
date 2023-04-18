@@ -48,6 +48,7 @@ class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
 
 	getConfig(column) {
 		return {
+			...super.getConfig?.(column),
 			keepOpened: column.keepOpened,
 		};
 	}
