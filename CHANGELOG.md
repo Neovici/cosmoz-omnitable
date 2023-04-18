@@ -1,3 +1,10 @@
+# [12.16.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.15.0...v12.16.0) (2023-04-18)
+
+
+### Features
+
+* **list:** support different empty property ([a615350](https://github.com/neovici/cosmoz-omnitable/commit/a615350f0e4bedad481fe9db91ab8d0eb2c04ef9))
+
 # [12.15.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.14.0...v12.15.0) (2023-04-13)
 
 
