@@ -81,7 +81,7 @@ const minitableStyle = css`
 		max-width: 300px;
 		width: 300px;
 		height: 80px;
-		border: 1px black solid;
+		border: 1.75px black solid;
 		border-radius: 20px;
 		padding: 5px;
 		margin: 5px;
@@ -99,10 +99,10 @@ const minitableStyle = css`
 		max-width: 250px;
 	}
 	.amount-date > #dueDate {
-		padding-left: 20px;
+		padding-left: 50px;
 	}
 	.amount-date > #amount {
-		padding-right: 20px;
+		padding-right: 50px;
 	}
 	#amount {
 		float: left;

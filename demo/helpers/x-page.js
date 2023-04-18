@@ -78,6 +78,10 @@ class XPage extends translatable(PolymerElement) {
 					<paper-toggle-button checked="{{ loading }}">
 						Loading</paper-toggle-button
 					>
+					<br />
+					<paper-toggle-button checked="{{minitableView}}"
+						>Activate Minitable</paper-toggle-button
+					>
 				</div>
 
 				<cosmoz-omnitable
@@ -90,11 +94,10 @@ class XPage extends translatable(PolymerElement) {
 					settings-id="test"
 				>
 					<cosmoz-omnitable-column-minitable
-						title="Minitable"
+						title="Minified view"
 						name="minitable"
 						value-path="minitable"
-						flex="2"
-						render-cell="[[renderCell]]"
+						render-cell="[[ renderCell ]]"
 					></cosmoz-omnitable-column-minitable>
 					<cosmoz-omnitable-column
 						priority="-1"

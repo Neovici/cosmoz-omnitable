@@ -11,18 +11,10 @@ import {
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from 'lit-html';
 import { minitableStyle } from './cosmoz-omnitable-styles';
+import { when } from 'lit/directives/when.js';
 
-const today = new Date('2015-08-21');
+const today = new Date();
 
-const color = (date) => {
-	if (date < today) {
-		return 'red';
-	}
-	if (date > today - 1) {
-		return 'green';
-	}
-	return 'yellow';
-};
 const onChange = (setState) => (event) =>
 		setState((state) => {
 			// skip the event emitted during paper-input initialization
@@ -62,6 +54,7 @@ class OmnitableColumnMinitable extends columnMixin(PolymerElement) {
 			minWidth: { type: String, value: '55px' },
 			editMinWidth: { type: String, value: '55px' },
 			inputValue: { type: Object, notify: true },
+			visible: { type: Boolean, value: false },
 		};
 	}
 
@@ -73,6 +66,17 @@ class OmnitableColumnMinitable extends columnMixin(PolymerElement) {
 	}
 
 	renderCell(column, { item }) {
+		let color = '#FF7539';
+		switch (
+			true //The switch evaluates the argument in hbrackets and compares it to the case statement
+		) {
+			case item.date < today:
+				color = '#E74040';
+				break;
+			case item.date > today:
+				color = '#36C144';
+				break;
+		}
 		return html` <style>
 				${minitableStyle}
 			</style>
@@ -81,11 +85,13 @@ class OmnitableColumnMinitable extends columnMixin(PolymerElement) {
 				<br />
 				<div class="amount-date">
 					<div id="amount">
-						${item.amount?.amount + ' ' + item.amount?.currency}
+						${when(
+							item.amount,
+							() => item.amount.amount + ' ' + item.amount.currency,
+							() => 'No price'
+						)}
 					</div>
-					<div id="dueDate" style="color: ${color(item.date)}">
-						${item.dateJSON}
-					</div>
+					<div id="dueDate" style="color: ${color}">${item.dateJSON}</div>
 				</div>
 			</div>`;
 	}
