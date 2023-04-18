@@ -133,11 +133,7 @@ const unique = (values, valueProperty) => {
 
 			getConfig(column) {
 				return {
-					valueProperty: column.valueProperty,
-					textProperty: column.textProperty,
-					emptyLabel: column.emptyLabel,
-					emptyValue: column.emptyValue,
-					emptyProperty: { type: String },
+					emptyProperty: column.emptyProperty,
 				};
 			}
 
