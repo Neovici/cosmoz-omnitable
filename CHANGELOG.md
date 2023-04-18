@@ -1,3 +1,10 @@
+# [12.17.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.16.0...v12.17.0) (2023-04-18)
+
+
+### Features
+
+* restore column props ([c963591](https://github.com/neovici/cosmoz-omnitable/commit/c963591950677e964652b5ee3aabca6c8daa12d7))
+
 # [12.16.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.15.0...v12.16.0) (2023-04-18)
 
 
