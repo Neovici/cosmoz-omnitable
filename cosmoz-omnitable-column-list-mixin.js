@@ -1,11 +1,8 @@
-import {
-	prop, array
-} from '@neovici/cosmoz-autocomplete/lib/utils';
+import { prop, array } from '@neovici/cosmoz-autocomplete/lib/utils';
 import { get } from '@polymer/polymer/lib/utils/path';
 import { valuesFrom } from './lib/utils-data';
 
-const
-	unique = (values, valueProperty) => {
+const unique = (values, valueProperty) => {
 		if (!Array.isArray(values)) {
 			return;
 		}
@@ -13,7 +10,7 @@ const
 		return values
 			.reduce((acc, cur) => {
 				if (Array.isArray(cur)) {
-					cur.forEach(subcur => {
+					cur.forEach((subcur) => {
 						acc.push(subcur);
 					});
 					return acc;
@@ -35,7 +32,6 @@ const
 				return true;
 			});
 	},
-
 	toAutocompleteSource = (values, valueProperty, textProperty) => {
 		if (values == null) {
 			return [];
@@ -46,14 +42,12 @@ const
 		}
 
 		if (typeof values === 'object') {
-			const
-				valProp = valueProperty ?? 'id',
+			const valProp = valueProperty ?? 'id',
 				textProp = textProperty ?? 'label';
-			return Object
-				.entries(values)
+			return Object.entries(values)
 				.map(([id, label]) => ({
 					[valProp]: id,
-					[textProp]: label
+					[textProp]: label,
 				}))
 				.sort((a, b) => {
 					if (a[textProp] < b[textProp]) {
@@ -68,30 +62,31 @@ const
 
 		return [];
 	},
-
 	getTexts = (item, valuePath, textProperty) =>
 		array(valuePath && get(item, valuePath)).map(prop(textProperty)),
-
 	getString = ({ valuePath, textProperty }, item) => {
 		return getTexts(item, valuePath, textProperty)
-			.filter(i => i != null)
+			.filter((i) => i != null)
 			.join(', ');
 	},
-
 	toXlsxValue = getString,
-
-	applyMultiFilter = ({ valueProperty, valuePath, emptyValue }, filters) => item => {
-		const val = prop(valueProperty),
-			values = array(get(item, valuePath));
-		return filters.some(filter =>
-			values.length === 0 && val(filter) === emptyValue || values.some(value => val(value) === val(filter))
-		);
-	},
-
-	onChange = setState => value => setState(state => ({ ...state, filter: value })),
-	onFocus = setState => focused => setState(state => ({ ...state, headerFocused: focused })),
-	onText = setState => text => setState(state => ({ ...state, query: text })),
-
+	applyMultiFilter =
+		({ valueProperty, valuePath, emptyValue }, filters) =>
+		(item) => {
+			const val = prop(valueProperty),
+				values = array(get(item, valuePath));
+			return filters.some(
+				(filter) =>
+					(values.length === 0 && val(filter) === emptyValue) ||
+					values.some((value) => val(value) === val(filter))
+			);
+		},
+	onChange = (setState) => (value) =>
+		setState((state) => ({ ...state, filter: value })),
+	onFocus = (setState) => (focused) =>
+		setState((state) => ({ ...state, headerFocused: focused })),
+	onText = (setState) => (text) =>
+		setState((state) => ({ ...state, query: text })),
 	computeSource = (
 		{ valuePath, valueProperty, textProperty, emptyLabel, emptyValue },
 		data
@@ -99,70 +94,91 @@ const
 		const values = valuesFrom(data, valuePath),
 			source = toAutocompleteSource(values, valueProperty, textProperty);
 
-		if (!emptyLabel || emptyValue === undefined || !textProperty || !valueProperty || source.length < 0) {
+		if (
+			!emptyLabel ||
+			emptyValue === undefined ||
+			!textProperty ||
+			!valueProperty ||
+			source.length < 0
+		) {
 			return source;
 		}
-		return [{
-			[textProperty]: emptyLabel,
-			[valueProperty]: emptyValue
-		}, ...source];
+		return [
+			{
+				[textProperty]: emptyLabel,
+				[valueProperty]: emptyValue,
+			},
+			...source,
+		];
 	},
-
-	listColumnMixin = base => class extends base {
-		static get properties() {
-			return {
-				textProperty: { type: String },
-				valueProperty: { type: String },
-				emptyLabel: { type: String },
-				emptyValue: { type: Object }
-			};
-		}
-
-		getString(column, item) {
-			return getString(column, item);
-		}
-
-		toXlsxValue(column, item) {
-			return toXlsxValue(column, item);
-		}
-
-		cellTitleFn(column, item) {
-			return getString(column, item);
-		}
-
-		getComparableValue({ valuePath, valueProperty }, item) {
-			const value = get(item, valuePath);
-			if (valueProperty == null) {
-				return value;
-			}
-			const subValues = array(value).reduce((acc, subItem) => {
-				acc.push(get(subItem, valueProperty));
-				return acc;
-			}, []);
-			return subValues.sort().join(' ');
-		}
-
-		getFilterFn(column, filters) {
-			if (!filters || !Array.isArray(filters) || filters.length === 0) {
-				return;
+	listColumnMixin = (base) =>
+		class extends base {
+			static get properties() {
+				return {
+					textProperty: { type: String },
+					valueProperty: { type: String },
+					emptyLabel: { type: String },
+					emptyValue: { type: Object },
+				};
 			}
 
-			return applyMultiFilter(column, filters);
-		}
+			getString(column, item) {
+				return getString(column, item);
+			}
 
-		serializeFilter(column, filter) {
-			return filter.length === 0 ? null : JSON.stringify(filter);
-		}
+			toXlsxValue(column, item) {
+				return toXlsxValue(column, item);
+			}
 
-		deserializeFilter(column, filter) {
-			return JSON.parse(decodeURIComponent(filter));
-		}
+			cellTitleFn(column, item) {
+				return getString(column, item);
+			}
 
-		computeSource(column, data) {
-			return column.externalValues || typeof column.values === 'function'
-				? column.values
-				: computeSource(column, data);
-		}
-	};
+			getComparableValue({ valuePath, valueProperty }, item) {
+				const value = get(item, valuePath);
+				if (valueProperty == null) {
+					return value;
+				}
+				const subValues = array(value).reduce((acc, subItem) => {
+					acc.push(get(subItem, valueProperty));
+					return acc;
+				}, []);
+				return subValues.sort().join(' ');
+			}
 
-export { unique, getTexts, getString, toXlsxValue, applyMultiFilter, onChange, onFocus, onText, computeSource, toAutocompleteSource, listColumnMixin };
+			getFilterFn(column, filters) {
+				if (!filters || !Array.isArray(filters) || filters.length === 0) {
+					return;
+				}
+
+				return applyMultiFilter(column, filters);
+			}
+
+			serializeFilter(column, filter) {
+				return filter.length === 0 ? null : JSON.stringify(filter);
+			}
+
+			deserializeFilter(column, filter) {
+				return JSON.parse(decodeURIComponent(filter));
+			}
+
+			computeSource(column, data) {
+				return column.externalValues || typeof column.values === 'function'
+					? column.values
+					: computeSource(column, data);
+			}
+		};
+
+export {
+	unique,
+	getTexts,
+	getString,
+	toXlsxValue,
+	applyMultiFilter,
+	onChange,
+	onFocus,
+	onText,
+	computeSource,
+	toAutocompleteSource,
+	listColumnMixin,
+};
