@@ -94,7 +94,6 @@
 		"@polymer/paper-toggle-button": "^3.0.0",
 		"@semantic-release/changelog": "^6.0.0",
 		"@semantic-release/git": "^10.0.0",
-		"@web/dev-server": "^0.1.10",
 		"husky": "^8.0.0",
 		"semantic-release": "^21.0.0",
 		"sinon": "^15.0.0",
