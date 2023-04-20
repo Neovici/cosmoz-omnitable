@@ -59,7 +59,7 @@
 		}
 	},
 	"dependencies": {
-		"@neovici/cosmoz-autocomplete": "^5.0.0",
+		"@neovici/cosmoz-autocomplete": "^5.0.0 || ^6.0.0",
 		"@neovici/cosmoz-bottom-bar": "^6.0.0",
 		"@neovici/cosmoz-collapse": "^1.1.0",
 		"@neovici/cosmoz-datetime-input": "^3.0.3",

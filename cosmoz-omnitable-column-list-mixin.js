@@ -1,4 +1,5 @@
-import { prop, array } from '@neovici/cosmoz-autocomplete/lib/utils';
+import { prop } from '@neovici/cosmoz-utils/object';
+import { array } from '@neovici/cosmoz-utils/array';
 import { get } from '@polymer/polymer/lib/utils/path';
 import { valuesFrom } from './lib/utils-data';
 

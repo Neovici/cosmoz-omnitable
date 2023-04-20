@@ -14,7 +14,9 @@ import {
 	onText,
 	toAutocompleteSource,
 } from './cosmoz-omnitable-column-list-mixin';
-import { prop, strProp, array } from '@neovici/cosmoz-autocomplete/lib/utils';
+import { prop, strProp } from '@neovici/cosmoz-utils/object';
+import { array } from '@neovici/cosmoz-utils/array';
+
 import { columnSymbol } from './lib/use-dom-columns';
 import { get } from '@polymer/polymer/lib/utils/path';
 
