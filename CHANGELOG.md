@@ -1,3 +1,10 @@
+# [12.18.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.17.0...v12.18.0) (2023-04-20)
+
+
+### Features
+
+* pass textual to cosmoz-autocomplete ([533b64b](https://github.com/neovici/cosmoz-omnitable/commit/533b64babdcf9ac58d304bb44816c3a9b6c88cf8))
+
 # [12.17.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.16.0...v12.17.0) (2023-04-18)
 
 
