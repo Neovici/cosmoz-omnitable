@@ -358,7 +358,6 @@ suite('render header function', () => {
 	});
 
 	test('custom headers can set filters', async () => {
-		await nextFrame();
 		assert.isFalse(
 			getRows().every(
 				(row) => parseInt(row.textContent.replace(',', ''), 10) >= 9000
