@@ -1,3 +1,10 @@
+# [12.20.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.19.0...v12.20.0) (2023-04-28)
+
+
+### Features
+
+* upgrade to autocomplete v7 ([e7d1f59](https://github.com/neovici/cosmoz-omnitable/commit/e7d1f59850a64e92343be6314ca9d1514fbec8fc))
+
 # [12.19.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.18.0...v12.19.0) (2023-04-20)
 
 
