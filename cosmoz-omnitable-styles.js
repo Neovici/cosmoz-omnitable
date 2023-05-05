@@ -84,11 +84,10 @@ export default css`
 		overflow: hidden;
 	}
 	:host a {
-		color: var(--primary-link-color, black);
+		color: var(--primary-link-color, inherit);
 		text-decoration: var(--cosmoz-omnitable-link-decoration, none);
 	}
 	:host a:hover {
-		color: var(--primary-link-color, #0092ff);
 		text-decoration: var(--cosmoz-omnitable-link-decoration, underline);
 	}
 	/* The wrapping div that contains the header, the table content and the footer */
