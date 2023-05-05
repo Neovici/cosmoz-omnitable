@@ -79,7 +79,7 @@ class XPage extends translatable(PolymerElement) {
 						Loading</paper-toggle-button
 					>
 					<br />
-					<paper-toggle-button checked="{{minitableView}}"
+					<paper-toggle-button checked="{{minitable}}"
 						>Activate Minitable</paper-toggle-button
 					>
 				</div>
@@ -92,6 +92,7 @@ class XPage extends translatable(PolymerElement) {
 					selected-items="{{ selectedItems }}"
 					hash-param="[[ hashParam ]]"
 					settings-id="test"
+					minitable-view="[[ renderMinitable ]]"
 				>
 					<cosmoz-omnitable-column-minitable
 						title="Minified view"

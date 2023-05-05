@@ -63,6 +63,7 @@ customElements.define(
 			'no-local-sort',
 			'no-local-filter',
 			'loading',
+			'minitable-view' //This line here should describe whether the minifying toggle is triggered or not
 		],
 	}) {
 		connectedCallback() {
