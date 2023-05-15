@@ -90,7 +90,6 @@ export default css`
 	:host a:hover {
 		text-decoration: var(--cosmoz-omnitable-link-decoration, underline);
 	}
-	/* The wrapping div that contains the header, the table content and the footer */
 	.mainContainer {
 		background-color: #fff;
 		display: flex;
