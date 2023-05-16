@@ -88,7 +88,11 @@ export default css`
 		text-decoration: var(--cosmoz-omnitable-link-decoration, none);
 	}
 	:host a:hover {
-		text-decoration: var(--cosmoz-omnitable-link-decoration, underline);
+		text-decoration: var(
+			-cosmoz-omnitable-link-decoration-hover,
+			var(--cosmoz-omnitable-link-decoration)
+		);
+		color: var(--link-color-hover, var(--primary-link-color));
 	}
 	/* The wrapping div that contains the header, the table content and the footer */
 	.mainContainer {
