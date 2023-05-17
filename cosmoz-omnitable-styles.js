@@ -85,14 +85,14 @@ export default css`
 	}
 	:host a {
 		color: var(--primary-link-color, inherit);
-		text-decoration: var(--cosmoz-omnitable-link-decoration, none);
+		text-decoration: var(--cosmoz-omnitable-link-decoration, underline);
 	}
 	:host a:hover {
 		text-decoration: var(
-			-cosmoz-omnitable-link-decoration-hover,
+			--cosmoz-omnitable-link-decoration-hover,
 			var(--cosmoz-omnitable-link-decoration)
 		);
-		color: var(--link-color-hover, var(--primary-link-color));
+		color: var(--primary-link-color-hover, var(--primary-link-color));
 	}
 	/* The wrapping div that contains the header, the table content and the footer */
 	.mainContainer {
