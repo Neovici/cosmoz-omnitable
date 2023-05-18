@@ -90,7 +90,7 @@ export default css`
 	:host a:hover {
 		text-decoration: var(
 			--cosmoz-omnitable-link-decoration-hover,
-			var(--cosmoz-omnitable-link-decoration)
+			var(--cosmoz-omnitable-link-decoration, underline)
 		);
 		color: var(--primary-link-color-hover, var(--primary-link-color));
 	}
