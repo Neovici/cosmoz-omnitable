@@ -88,8 +88,11 @@ export default css`
 		text-decoration: var(--cosmoz-omnitable-link-decoration, underline);
 	}
 	:host a:hover {
-		color: var(--primary-link-color, inherit);
-		text-decoration: var(--cosmoz-omnitable-link-decoration, underline);
+		text-decoration: var(
+			--cosmoz-omnitable-link-decoration-hover,
+			var(--cosmoz-omnitable-link-decoration, underline)
+		);
+		color: var(--primary-link-color-hover, var(--primary-link-color));
 	}
 	/* The wrapping div that contains the header, the table content and the footer */
 	.mainContainer {
@@ -136,7 +139,10 @@ export default css`
 			--paper-font-caption_-_line-height: 18px;
 		}
 		--paper-font-subhead_-_font-family: var(
-			--cosmoz-omnitable-header-font-family, 'Roboto', 'Noto', sans-serif
+			--cosmoz-omnitable-header-font-family,
+			'Roboto',
+			'Noto',
+			sans-serif
 		);
 		text-transform: var(--cosmoz-omnitable-header-text-transform, none);
 		--paper-font-subhead_-_font-weight: var(
@@ -152,7 +158,12 @@ export default css`
 	cosmoz-autocomplete-ui::part(input-label) {
 		text-transform: var(--cosmoz-omnitable-header-text-transform, none);
 		font-weight: var(--cosmoz-omnitable-header-font-weight, normal);
-		font-family: var(--cosmoz-omnitable-header-font-family, 'Roboto', 'Noto', sans-serif);
+		font-family: var(
+			--cosmoz-omnitable-header-font-family,
+			'Roboto',
+			'Noto',
+			sans-serif
+		);
 		font-size: var(--cosmoz-omnitable-header-font-size, 16px);
 	}
 	cosmoz-omnitable-header-row {
