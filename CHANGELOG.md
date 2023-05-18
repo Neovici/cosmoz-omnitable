@@ -1,3 +1,10 @@
+## [12.20.1](https://github.com/neovici/cosmoz-omnitable/compare/v12.20.0...v12.20.1) (2023-05-18)
+
+
+### Bug Fixes
+
+* stylable links ([#582](https://github.com/neovici/cosmoz-omnitable/issues/582)) ([7dc7712](https://github.com/neovici/cosmoz-omnitable/commit/7dc77124634f97190659f34787efc7cd4c2dc7ba))
+
 # [12.20.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.19.0...v12.20.0) (2023-04-28)
 
 
