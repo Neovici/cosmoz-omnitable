@@ -1,6 +1,6 @@
 {
 	"name": "@neovici/cosmoz-omnitable",
-	"version": "12.20.1",
+	"version": "12.21.0",
 	"description": "[![Build Status](https://travis-ci.org/Neovici/cosmoz-omnitable.svg?branch=master)](https://travis-ci.org/Neovici/cosmoz-omnitable)",
 	"keywords": [
 		"web-components"

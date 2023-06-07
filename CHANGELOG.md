@@ -1,3 +1,10 @@
+# [12.21.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.20.1...v12.21.0) (2023-06-07)
+
+
+### Features
+
+* **header:** export all part ([8a1083d](https://github.com/neovici/cosmoz-omnitable/commit/8a1083d3b824781a592d53bc057c96196029405d))
+
 ## [12.20.1](https://github.com/neovici/cosmoz-omnitable/compare/v12.20.0...v12.20.1) (2023-05-18)
 
 
