@@ -42,7 +42,8 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 			headerCellClass: { type: String, value: 'autocomplete-header-cell' },
 			minWidth: { type: String, value: '55px' },
 			editMinWidth: { type: String, value: '55px' },
-			keepOpened: { type: Boolean },
+			keepOpened: { type: Boolean, value: true },
+			keepQuery: { type: Boolean },
 			textual: { type: Function },
 		};
 	}
@@ -51,6 +52,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 		return {
 			...super.getConfig?.(column),
 			keepOpened: column.keepOpened,
+			keepQuery: column.keepQuery,
 			textual: column.textual,
 		};
 	}
