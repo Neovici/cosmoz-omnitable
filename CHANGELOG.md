@@ -1,3 +1,15 @@
+# [12.22.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.21.0...v12.22.0) (2023-06-13)
+
+
+### Bug Fixes
+
+* keep-query ([e335589](https://github.com/neovici/cosmoz-omnitable/commit/e335589d84035617f960ff2dbc222f9a9056fb31))
+
+
+### Features
+
+* **list:** keep opened ([9458177](https://github.com/neovici/cosmoz-omnitable/commit/9458177f917e0e0719f33c116193eb1230e78cb8))
+
 # [12.21.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.20.1...v12.21.0) (2023-06-07)
 
 
