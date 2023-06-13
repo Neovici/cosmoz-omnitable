@@ -26,7 +26,8 @@ import { columnSymbol } from './lib/use-dom-columns';
 class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
 	static get properties() {
 		return {
-			keepOpened: { type: Boolean },
+			keepOpened: { type: Boolean, value: true },
+			keepQuery: { type: Boolean },
 			textual: { type: Function },
 		};
 	}
@@ -35,6 +36,7 @@ class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
 		return {
 			...super.getConfig?.(column),
 			keepOpened: column.keepOpened,
+			keepQuery: column.keepQuery,
 			textual: column.textual,
 		};
 	}
@@ -62,6 +64,7 @@ class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
 		return html`<cosmoz-autocomplete-ui
 			class="external-values-${column.externalValues}"
 			?keep-opened=${column.keepOpened}
+			?keep-query=${column.keepQuery}
 			.textual=${column.textual}
 			.column=${column}
 			.label=${column.title}
