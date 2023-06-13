@@ -77,6 +77,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 		return html`<cosmoz-autocomplete-ui
 			class="external-values-${column.externalValues}"
 			?keep-opened=${column.keepOpened}
+			?keep-query=${column.keepQuery}
 			.textual=${column.textual}
 			.label=${column.title}
 			.source=${toAutocompleteSource(
