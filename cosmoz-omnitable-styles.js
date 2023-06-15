@@ -519,4 +519,8 @@ export default css`
 		min-width: 0;
 		flex: auto;
 	}
+	.celebration {
+		width: 100px;
+		padding: 25px;
+	}
 `;
