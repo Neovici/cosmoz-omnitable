@@ -7,12 +7,10 @@ import { when } from 'lit-html/directives/when.js';
 
 import { columnMixin, getString } from './cosmoz-omnitable-column-mixin.js';
 import {
-	computeSource,
 	listColumnMixin,
 	onChange,
 	onFocus,
 	onText,
-	toAutocompleteSource,
 } from './cosmoz-omnitable-column-list-mixin';
 import { prop, strProp } from '@neovici/cosmoz-utils/object';
 import { array } from '@neovici/cosmoz-utils/array';
