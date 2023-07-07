@@ -1,5 +1,6 @@
 import { prop } from '@neovici/cosmoz-utils/object';
 import { array } from '@neovici/cosmoz-utils/array';
+import { invoke } from '@neovici/cosmoz-utils/function';
 import { get } from '@polymer/polymer/lib/utils/path';
 import { valuesFrom } from './lib/utils-data';
 
@@ -89,26 +90,17 @@ const unique = (values, valueProperty) => {
 		setState((state) => ({ ...state, headerFocused: focused })),
 	onText = (setState) => (text) =>
 		setState((state) => ({ ...state, query: text })),
-	computeSource = (
-		{
-			valuePath,
-			valueProperty,
-			textProperty,
-			emptyLabel,
-			emptyValue,
-			emptyProperty,
-		},
-		data
+	computeValues = (
+		{ emptyValue, emptyLabel, emptyProperty, textProperty, valueProperty },
+		rawSource
 	) => {
-		const values = valuesFrom(data, valuePath),
-			source = toAutocompleteSource(values, valueProperty, textProperty);
-
+		const source = toAutocompleteSource(rawSource, valueProperty, textProperty);
 		if (
 			!emptyLabel ||
 			emptyValue === undefined ||
 			!textProperty ||
 			!(emptyProperty || valueProperty) ||
-			source.length < 0
+			!source
 		) {
 			return source;
 		}
@@ -120,6 +112,8 @@ const unique = (values, valueProperty) => {
 			...source,
 		];
 	},
+	computeSource = (column, data) =>
+		computeValues(column, valuesFrom(data, column.valuePath)),
 	listColumnMixin = (base) =>
 		class extends base {
 			static get properties() {
@@ -180,7 +174,7 @@ const unique = (values, valueProperty) => {
 
 			computeSource(column, data) {
 				return column.externalValues || typeof column.values === 'function'
-					? column.values
+					? (...args) => computeValues(column, invoke(column.values, ...args))
 					: computeSource(column, data);
 			}
 		};

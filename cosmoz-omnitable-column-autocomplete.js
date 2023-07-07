@@ -80,11 +80,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 			?keep-query=${column.keepQuery}
 			.textual=${column.textual}
 			.label=${column.title}
-			.source=${toAutocompleteSource(
-				source,
-				column.valueProperty,
-				column.textProperty
-			)}
+			.source=${source}
 			.textProperty=${column.textProperty}
 			.valueProperty=${column.valueProperty}
 			.itemRenderer=${column[columnSymbol]?.itemRenderer}
@@ -107,12 +103,6 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 
 	getComparableValue(column, item) {
 		return getComparableValue(column, item);
-	}
-
-	computeSource(column, data) {
-		return column.externalValues || typeof column.values === 'function'
-			? column.values
-			: computeSource(column, data);
 	}
 }
 customElements.define(
