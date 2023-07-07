@@ -1,3 +1,10 @@
+# [12.23.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.22.0...v12.23.0) (2023-07-07)
+
+
+### Features
+
+* **list:** better support for empty ([41ec7ca](https://github.com/neovici/cosmoz-omnitable/commit/41ec7cacae1a07263bbb4fec3725f1e028afde0b))
+
 # [12.22.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.21.0...v12.22.0) (2023-06-13)
 
 
