@@ -1,3 +1,10 @@
+## [12.23.1](https://github.com/neovici/cosmoz-omnitable/compare/v12.23.0...v12.23.1) (2023-07-10)
+
+
+### Bug Fixes
+
+* added var initialization in itemrow hover in omnitable component ([30108a4](https://github.com/neovici/cosmoz-omnitable/commit/30108a40281fbadb4c2be66ee725ca72cf71342f))
+
 # [12.23.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.22.0...v12.23.0) (2023-07-07)
 
 
