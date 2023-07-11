@@ -1,3 +1,10 @@
+# [12.24.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.23.1...v12.24.0) (2023-07-11)
+
+
+### Features
+
+* transparent fallback hover color ([76aa6eb](https://github.com/neovici/cosmoz-omnitable/commit/76aa6ebcfd9d293bb9d02f82b5988dc585980d02))
+
 ## [12.23.1](https://github.com/neovici/cosmoz-omnitable/compare/v12.23.0...v12.23.1) (2023-07-10)
 
 
