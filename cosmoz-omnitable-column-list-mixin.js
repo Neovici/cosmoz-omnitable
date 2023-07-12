@@ -81,7 +81,7 @@ const unique = (values, valueProperty) => {
 				(filter) =>
 					(values.length === 0 &&
 						prop(emptyProperty || valueProperty)(filter) === emptyValue) ||
-					values.some((value) => val(value) === val(filter))
+					values.some((value) => val(value) === val(filter)),
 			);
 		},
 	onChange = (setState) => (value) =>
@@ -92,7 +92,7 @@ const unique = (values, valueProperty) => {
 		setState((state) => ({ ...state, query: text })),
 	computeValues = (
 		{ emptyValue, emptyLabel, emptyProperty, textProperty, valueProperty },
-		rawSource
+		rawSource,
 	) => {
 		const source = toAutocompleteSource(rawSource, valueProperty, textProperty);
 		if (
@@ -174,7 +174,11 @@ const unique = (values, valueProperty) => {
 
 			computeSource(column, data) {
 				return column.externalValues || typeof column.values === 'function'
-					? (...args) => computeValues(column, invoke(column.values, ...args))
+					? async (...args) =>
+							computeValues(
+								column,
+								await Promise.resolve(invoke(column.values, ...args)),
+							)
 					: computeSource(column, data);
 			}
 		};
