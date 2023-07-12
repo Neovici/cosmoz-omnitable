@@ -1,3 +1,10 @@
+# [12.25.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.24.0...v12.25.0) (2023-07-12)
+
+
+### Features
+
+* **list:** handle promise source ([83e6d71](https://github.com/neovici/cosmoz-omnitable/commit/83e6d71343a9b3e7e9c5f054e1c149669face42f))
+
 # [12.24.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.23.1...v12.24.0) (2023-07-11)
 
 
