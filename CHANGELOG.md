@@ -1,3 +1,10 @@
+## [12.25.1](https://github.com/neovici/cosmoz-omnitable/compare/v12.25.0...v12.25.1) (2023-08-23)
+
+
+### Bug Fixes
+
+* **boolean column:** element name mismatch fix ([f2896d8](https://github.com/neovici/cosmoz-omnitable/commit/f2896d8c7cab9f9b3e223aa5737bb91cabcc4edb))
+
 # [12.25.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.24.0...v12.25.0) (2023-07-12)
 
 
