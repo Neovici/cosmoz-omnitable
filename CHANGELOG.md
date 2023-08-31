@@ -1,3 +1,11 @@
+# [12.26.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.25.2...v12.26.0) (2023-08-31)
+
+
+### Features
+
+* **error:** standard error handling ([90f0c53](https://github.com/neovici/cosmoz-omnitable/commit/90f0c53ab91a44986f7c15b2497dbeddb4a636ec))
+* show dynamic error message if error ([84154ce](https://github.com/neovici/cosmoz-omnitable/commit/84154ce2deccc7cf45b898cff06039168fcebb7e))
+
 ## [12.25.2](https://github.com/neovici/cosmoz-omnitable/compare/v12.25.1...v12.25.2) (2023-08-31)
 
 
