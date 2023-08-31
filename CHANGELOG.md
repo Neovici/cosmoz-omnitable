@@ -1,3 +1,10 @@
+## [12.25.2](https://github.com/neovici/cosmoz-omnitable/compare/v12.25.1...v12.25.2) (2023-08-31)
+
+
+### Bug Fixes
+
+* update deps ([e3029b2](https://github.com/neovici/cosmoz-omnitable/commit/e3029b2578ef458f521fe13bf60e17c846e1d797))
+
 ## [12.25.1](https://github.com/neovici/cosmoz-omnitable/compare/v12.25.0...v12.25.1) (2023-08-23)
 
 
