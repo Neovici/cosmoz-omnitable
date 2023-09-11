@@ -53,9 +53,7 @@ const checkbox = css`
 	}
 
 	.checkbox:hover {
-		box-shadow:
-			0 0 0 2px rgba(0, 0, 0, 1) inset,
-			0 0 2px 6px #2021240f;
+		box-shadow: 0 0 0 2px rgba(0, 0, 0, 1) inset, 0 0 2px 6px #2021240f;
 	}
 
 	.checkbox:checked:hover {
@@ -521,5 +519,10 @@ export default css`
 	.header-cell :not(.sg) {
 		min-width: 0;
 		flex: auto;
+	}
+
+	[name='status'],
+	[name='invoiceStatus'] {
+		min-width: var(--cosmoz-status-min-width, 50px);
 	}
 `;
