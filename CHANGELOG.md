@@ -1,3 +1,10 @@
+## [12.26.1](https://github.com/neovici/cosmoz-omnitable/compare/v12.26.0...v12.26.1) (2023-09-20)
+
+
+### Bug Fixes
+
+* **lib/use-dom-columns:** fallback sortOn, groupOn on valuePath ([c92bd64](https://github.com/neovici/cosmoz-omnitable/commit/c92bd64be600912d50bb1cc61484459b9679d8d7))
+
 # [12.26.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.25.2...v12.26.0) (2023-08-31)
 
 
