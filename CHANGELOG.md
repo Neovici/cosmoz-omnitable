@@ -1,3 +1,10 @@
+## [12.26.2](https://github.com/neovici/cosmoz-omnitable/compare/v12.26.1...v12.26.2) (2023-10-05)
+
+
+### Bug Fixes
+
+* **xlsx:** error when date is malformed ([15aa770](https://github.com/neovici/cosmoz-omnitable/commit/15aa770820b07738004e65c196d99aeab6c53867))
+
 ## [12.26.1](https://github.com/neovici/cosmoz-omnitable/compare/v12.26.0...v12.26.1) (2023-09-20)
 
 
