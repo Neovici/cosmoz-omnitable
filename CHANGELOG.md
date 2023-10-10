@@ -1,3 +1,10 @@
+## [12.26.3](https://github.com/neovici/cosmoz-omnitable/compare/v12.26.2...v12.26.3) (2023-10-10)
+
+
+### Bug Fixes
+
+* tween does not stop running ([f1d3a78](https://github.com/neovici/cosmoz-omnitable/commit/f1d3a7832a62a528e74228924606d13b5514f154))
+
 ## [12.26.2](https://github.com/neovici/cosmoz-omnitable/compare/v12.26.1...v12.26.2) (2023-10-05)
 
 
