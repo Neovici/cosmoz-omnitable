@@ -57,6 +57,8 @@ customElements.define(
 			'hash-param',
 			'sort-on',
 			'group-on',
+			'descending',
+			'group-on-descending',
 			'hide-select-all',
 			'settings-id',
 			'no-local',
