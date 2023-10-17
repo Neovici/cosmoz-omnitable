@@ -1,3 +1,10 @@
+## [12.26.4](https://github.com/neovici/cosmoz-omnitable/compare/v12.26.3...v12.26.4) (2023-10-17)
+
+
+### Bug Fixes
+
+* descending and group-on-descending are not observed ([84d816e](https://github.com/neovici/cosmoz-omnitable/commit/84d816efc770b61949ed1794ed4405a4bbc2513b))
+
 ## [12.26.3](https://github.com/neovici/cosmoz-omnitable/compare/v12.26.2...v12.26.3) (2023-10-10)
 
 
