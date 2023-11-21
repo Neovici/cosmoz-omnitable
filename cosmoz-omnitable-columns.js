@@ -8,3 +8,4 @@ import './cosmoz-omnitable-column-list.js';
 import './cosmoz-omnitable-column-number.js';
 import './cosmoz-omnitable-column-time.js';
 import './cosmoz-omnitable-column-datetime.js';
+import './cosmoz-omnitable-column-minitable.js';

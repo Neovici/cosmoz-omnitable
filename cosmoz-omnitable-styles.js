@@ -78,6 +78,46 @@ const checkbox = css`
 
 export { checkbox };
 
+const minitableStyle = css`
+	.minitable-block {
+		max-width: 300px;
+		width: 300px;
+		height: 80px;
+		border: 1.75px black solid;
+		border-radius: 20px;
+		padding: 5px;
+		margin: 5px;
+	}
+	#supplier {
+		position: relative;
+		top: 10%;
+		left: 5%;
+	}
+	.amount-date {
+		position: relative;
+		bottom: 10%;
+		padding: 5%;
+		display: inline-block;
+		max-width: 250px;
+	}
+	.amount-date > #dueDate {
+		padding-left: 50px;
+	}
+	.amount-date > #amount {
+		padding-right: 50px;
+	}
+	#amount {
+		float: left;
+		left: 25%;
+	}
+	#dueDate {
+		float: left;
+		left: 40%;
+	}
+`;
+
+export { minitableStyle };
+
 export default css`
 	:host {
 		display: flex;
