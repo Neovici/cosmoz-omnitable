@@ -1,5 +1,5 @@
 /* eslint-disable no-return-assign */
-import '@polymer/paper-input/paper-input';
+import '@neovici/cosmoz-input';
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 
 import './ui-helpers/cosmoz-clear-button';
@@ -88,12 +88,12 @@ class OmnitableColumnDate extends columnMixin(PolymerElement) {
 	renderEditCell(column, { item }, onItemChange) {
 		const onChange = event => onItemChange(fromInputString(event.target.value));
 
-		return html`<paper-input
+		return html`<cosmoz-input
 			no-label-float
 			type="date"
 			@change=${ onChange }
 			.value=${ getInputString(column, item) }
-		></paper-input>`;
+		></cosmoz-input>`;
 	}
 
 	renderHeader(

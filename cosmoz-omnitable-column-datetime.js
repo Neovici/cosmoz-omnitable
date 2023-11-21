@@ -96,7 +96,7 @@ class OmnitableColumnDatetime extends columnMixin(PolymerElement) {
 
 	renderEditCell(column, { item }, onItemChange) {
 		const onChange = event => onItemChange(fromInputString(event.target.value));
-		return html`<paper-input no-label-float type="text" @change=${ onChange } .value=${ getString(column, item) }></paper-input>`;
+		return html`<cosmoz-input no-label-float type="text" @change=${ onChange } .value=${ getString(column, item) }></cosmoz-input>`;
 	}
 
 	// eslint-disable-next-line max-lines-per-function

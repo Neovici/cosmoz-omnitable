@@ -20,7 +20,7 @@ import { get } from '@polymer/polymer/lib/utils/path';
 
 export const getComparableValue = (
 	{ valuePath, textProperty, valueProperty },
-	item
+	item,
 ) => {
 	const property = textProperty ? strProp(textProperty) : prop(valueProperty),
 		values = array(valuePath && get(item, valuePath)).map(property);
@@ -33,7 +33,7 @@ export const getComparableValue = (
  * @appliesMixin columnMixin
  */
 class OmnitableColumnAutocomplete extends listColumnMixin(
-	columnMixin(PolymerElement)
+	columnMixin(PolymerElement),
 ) {
 	static get properties() {
 		return {
@@ -63,12 +63,12 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 
 	renderEditCell(column, { item }, onItemChange) {
 		const onChange = (event) => onItemChange(event.target.value);
-		return html`<paper-input
+		return html`<cosmoz-input
 			no-label-float
 			type="text"
 			@change=${onChange}
 			.value=${getString(column, item)}
-		></paper-input>`;
+		></cosmoz-input>`;
 	}
 
 	renderHeader(column, { filter, query }, setState, source) {
@@ -89,12 +89,13 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 			.onText=${onText(setState)}
 			>${when(
 				column.loading,
-				() => html`<paper-spinner-lite
-					style="width: 20px; height: 20px; flex:none;"
-					suffix
-					slot="suffix"
-					active
-				></paper-spinner-lite>`
+				() =>
+					html`<paper-spinner-lite
+						style="width: 20px; height: 20px; flex:none;"
+						suffix
+						slot="suffix"
+						active
+					></paper-spinner-lite>`,
 			)}</cosmoz-autocomplete-ui
 		>`;
 	}
@@ -105,5 +106,5 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 }
 customElements.define(
 	'cosmoz-omnitable-column-autocomplete',
-	OmnitableColumnAutocomplete
+	OmnitableColumnAutocomplete,
 );

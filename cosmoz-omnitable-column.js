@@ -1,6 +1,5 @@
 /* eslint-disable no-return-assign */
-import '@polymer/iron-icon/iron-icon';
-import '@polymer/paper-input/paper-input';
+import '@neovici/cosmoz-input';
 import './ui-helpers/cosmoz-clear-button';
 
 import {
@@ -13,7 +12,7 @@ import { html } from 'lit-html';
 
 const onChange = (setState) => (event) =>
 		setState((state) => {
-			// skip the event emitted during paper-input initialization
+			// skip the event emitted during cosmoz-input initialization
 			if (state.inputValue === undefined && event.target.value === '') {
 				return state;
 			}
@@ -76,7 +75,7 @@ class OmnitableColumn extends columnMixin(PolymerElement) {
 
 	renderHeader(column, { filter, inputValue, headerFocused }, setState) {
 		return html`<cosmoz-input
-			.label=${column.title}
+			label=${column.title}
 			.value=${inputValue ?? filter}
 			@value-changed=${onChange(setState)}
 			focused=${headerFocused}

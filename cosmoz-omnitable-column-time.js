@@ -1,6 +1,6 @@
 /* eslint-disable no-return-assign */
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
-import '@polymer/paper-input/paper-input';
+import '@neovici/cosmoz-input';
 
 import './ui-helpers/cosmoz-clear-button';
 
@@ -8,7 +8,15 @@ import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from 'lit-html';
 
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
-import { getComparableValue, getString, toXlsxValue, applySingleFilter, toDate, toHashString, fromHashString } from './lib/utils-time';
+import {
+	getComparableValue,
+	getString,
+	toXlsxValue,
+	applySingleFilter,
+	toDate,
+	toHashString,
+	fromHashString,
+} from './lib/utils-time';
 import './lib/cosmoz-omnitable-time-range-input';
 import { defaultComputeSource } from './lib/utils-data';
 
@@ -32,13 +40,12 @@ class OmnitableColumnTime extends columnMixin(PolymerElement) {
 			 * 1 => full seconds
 			 * 0.1 => milliseconds
 			 */
-			filterStep: { type: String, value: '1' }
+			filterStep: { type: String, value: '1' },
 		};
 	}
 
 	getFilterFn(column, filter) {
-		const
-			min = getComparableValue({ ...column, valuePath: 'min' }, filter),
+		const min = getComparableValue({ ...column, valuePath: 'min' }, filter),
 			max = getComparableValue({ ...column, valuePath: 'max' }, filter);
 
 		if (min == null && max == null) {
@@ -88,7 +95,7 @@ class OmnitableColumnTime extends columnMixin(PolymerElement) {
 
 		return {
 			min: fromHashString(matches[1]),
-			max: fromHashString(matches[2])
+			max: fromHashString(matches[2]),
 		};
 	}
 
@@ -97,30 +104,33 @@ class OmnitableColumnTime extends columnMixin(PolymerElement) {
 	}
 
 	renderEditCell(column, { item }, onItemChange) {
-		const onChange = event => onItemChange(event.target.value);
-		return html`<paper-input no-label-float type="text" @change=${ onChange } .value=${ getString(column, item) }></paper-input>`;
+		const onChange = (event) => onItemChange(event.target.value);
+		return html`<cosmoz-input
+			no-label-float
+			type="text"
+			@change=${onChange}
+			.value=${getString(column, item)}
+		></cosmoz-input>`;
 	}
 
 	renderHeader(
-		{ title,
-			min,
-			max,
-			locale,
-			filterStep },
+		{ title, min, max, locale, filterStep },
 		{ filter },
 		setState,
-		source
+		source,
 	) {
 		return html`<cosmoz-omnitable-time-range-input
-			.title=${ title }
-			.filter=${ filter }
-			.values=${ source }
-			.min=${ min }
-			.max=${ max }
-			.locale=${ locale }
-			.filterStep=${ filterStep }
-			@filter-changed=${ ({ detail: { value }}) => setState(state => ({ ...state, filter: value })) }
-			@header-focused-changed=${ ({ detail: { value }}) => setState(state => ({ ...state, headerFocused: value })) }
+			.title=${title}
+			.filter=${filter}
+			.values=${source}
+			.min=${min}
+			.max=${max}
+			.locale=${locale}
+			.filterStep=${filterStep}
+			@filter-changed=${({ detail: { value } }) =>
+				setState((state) => ({ ...state, filter: value }))}
+			@header-focused-changed=${({ detail: { value } }) =>
+				setState((state) => ({ ...state, headerFocused: value }))}
 		></cosmoz-omnitable-time-range-input>`;
 	}
 

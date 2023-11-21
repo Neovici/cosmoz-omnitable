@@ -237,13 +237,13 @@
 
 				renderEditValue(column, { item }, onItemChange) {
 					const onChange = (event) => onItemChange(event.target.value);
-					return html`<paper-input
+					return html`<cosmoz-input
 						no-label-float
 						type="number"
 						step="0.1"
-						@change=${onChange}
+						@value-changed=${onChange}
 						.value=${getInputString(column, item)}
-					></paper-input>`;
+					></cosmoz-input>`;
 				}
 			}
 			customElements.define(XPage.is, XPage);

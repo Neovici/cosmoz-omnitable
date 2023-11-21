@@ -1,5 +1,5 @@
 /* eslint-disable no-return-assign */
-import '@polymer/paper-input/paper-input';
+import '@neovici/cosmoz-input';
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import './ui-helpers/cosmoz-clear-button';
 
@@ -9,7 +9,16 @@ import { html } from 'lit-html';
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 import { defaultComputeSource } from './lib/utils-data';
 import './lib/cosmoz-omnitable-amount-range-input';
-import { getComparableValue, getCurrency, applySingleFilter, getString, getInputString, toAmount, toHashString, fromHashString } from './lib/utils-amount';
+import {
+	getComparableValue,
+	getCurrency,
+	applySingleFilter,
+	getString,
+	getInputString,
+	toAmount,
+	toHashString,
+	fromHashString,
+} from './lib/utils-amount';
 import { get } from '@polymer/polymer/lib/utils/path';
 
 /**
@@ -29,13 +38,12 @@ class OmnitableColumnAmount extends columnMixin(PolymerElement) {
 			rates: { type: Object, notify: true },
 			width: { type: String, value: '70px' },
 			cellClass: { type: String, value: 'amount-cell align-right' },
-			headerCellClass: { type: String, value: 'amount-header-cell' }
+			headerCellClass: { type: String, value: 'amount-header-cell' },
 		};
 	}
 
 	getFilterFn(column, filter) {
-		const
-			min = getComparableValue({ ...column, valuePath: 'min' }, filter),
+		const min = getComparableValue({ ...column, valuePath: 'min' }, filter),
 			max = getComparableValue({ ...column, valuePath: 'max' }, filter);
 
 		if (min == null && max == null) {
@@ -64,8 +72,7 @@ class OmnitableColumnAmount extends columnMixin(PolymerElement) {
 		if (filter == null) {
 			return;
 		}
-		const
-			min = toAmount(rates, filter.min),
+		const min = toAmount(rates, filter.min),
 			max = toAmount(rates, filter.max);
 
 		if (min == null && max == null) {
@@ -86,51 +93,52 @@ class OmnitableColumnAmount extends columnMixin(PolymerElement) {
 
 		return {
 			min: fromHashString(matches[1]),
-			max: fromHashString(matches[2])
+			max: fromHashString(matches[2]),
 		};
 	}
 
 	renderCell(column, { item }) {
-		return html`<span>${ column.getString(column, item) }</span>`;
+		return html`<span>${column.getString(column, item)}</span>`;
 	}
 
 	renderEditCell(column, { item }, onItemChange) {
-		const onChange = event => onItemChange({
-			amount: event.target.value,
-			currency: get(item, column.valuePath)?.currency
-		});
+		const onChange = (event) =>
+			onItemChange({
+				amount: event.target.value,
+				currency: get(item, column.valuePath)?.currency,
+			});
 
-		return html`<paper-input no-label-float type="number" @change=${ onChange } .value=${ getInputString(column, item) }>
-			<div slot="suffix">${ getCurrency(column, item) }</div>
-		</paper-input>`;
+		return html`<cosmoz-input
+			no-label-float
+			type="number"
+			@change=${onChange}
+			.value=${getInputString(column, item)}
+		>
+			<div slot="suffix">${getCurrency(column, item)}</div>
+		</cosmoz-input>`;
 	}
 
 	renderHeader(
-		{ title,
-			min,
-			max,
-			locale,
-			rates,
-			currency,
-			autoupdate,
-			autodetect },
+		{ title, min, max, locale, rates, currency, autoupdate, autodetect },
 		{ filter },
 		setState,
-		source
+		source,
 	) {
 		return html`<cosmoz-omnitable-amount-range-input
-			.title=${ title }
-			.filter=${ filter }
-			.values=${ source }
-			.rates=${ rates }
-			.min=${ min }
-			.max=${ max }
-			.locale=${ locale }
-			.currency=${ currency }
-			.autoupdate=${ autoupdate }
-			.autodetect=${ autodetect }
-			@filter-changed=${ ({ detail: { value }}) => setState(state => ({ ...state, filter: value })) }
-			@header-focused-changed=${ ({ detail: { value }}) => setState(state => ({ ...state, headerFocused: value })) }
+			.title=${title}
+			.filter=${filter}
+			.values=${source}
+			.rates=${rates}
+			.min=${min}
+			.max=${max}
+			.locale=${locale}
+			.currency=${currency}
+			.autoupdate=${autoupdate}
+			.autodetect=${autodetect}
+			@filter-changed=${({ detail: { value } }) =>
+				setState((state) => ({ ...state, filter: value }))}
+			@header-focused-changed=${({ detail: { value } }) =>
+				setState((state) => ({ ...state, headerFocused: value }))}
 		></cosmoz-omnitable-amount-range-input>`;
 	}
 

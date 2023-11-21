@@ -51,15 +51,15 @@ suite('cosmoz-omnitable-column-number', () => {
 			const header = getHeaderMenu();
 			header.noAnimations = true;
 			header.open();
-			await oneEvent(header.querySelector('paper-input'), 'focus');
+			await oneEvent(header.querySelector('cosmoz-input'), 'focus');
 		},
 		getInputs = () =>
 			columnHeaderInput.shadowRoot.querySelectorAll(
-				'paper-dropdown-menu paper-input',
+				'paper-dropdown-menu cosmoz-input',
 			),
 		getFocusedInput = () =>
 			columnHeaderInput.shadowRoot.querySelector(
-				'paper-dropdown-menu paper-input:focus-within',
+				'paper-dropdown-menu cosmoz-input:focus-within',
 			),
 		setInputValue = async (inputNo, value) => {
 			const input = getInputs()[inputNo];
