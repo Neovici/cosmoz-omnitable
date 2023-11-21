@@ -1,58 +1,66 @@
-import 'web-animations-js/web-animations-next.min.js';
 import { expect, html, nextFrame, oneEvent } from '@open-wc/testing';
 
 import {
-	pressEnter, pressAndReleaseKeyOn
+	pressEnter,
+	pressAndReleaseKeyOn,
 } from '@polymer/iron-test-helpers/mock-interactions.js';
 
 import '../../cosmoz-omnitable.js';
 import '../../cosmoz-omnitable-column-number.js';
 import { setupOmnitableFixture } from '../helpers/utils';
 
-const data = [{
-	age: 17
-}, {
-	age: 11,
-	amount: {
-		amount: 678,
-		currency: 'AUD'
-	}
-}, {
-	age: 9,
-	amount: {
-		amount: -8,
-		currency: 'EUR'
-	}
-}, {
-	age: 5,
-	amount: {
-		amount: '3450',
-		currency: 'DKK'
-	}
-}, {
-	age: 46.7511
-}, {
-	age: 46.768
-}];
+const data = [
+	{
+		age: 17,
+	},
+	{
+		age: 11,
+		amount: {
+			amount: 678,
+			currency: 'AUD',
+		},
+	},
+	{
+		age: 9,
+		amount: {
+			amount: -8,
+			currency: 'EUR',
+		},
+	},
+	{
+		age: 5,
+		amount: {
+			amount: '3450',
+			currency: 'DKK',
+		},
+	},
+	{
+		age: 46.7511,
+	},
+	{
+		age: 46.768,
+	},
+];
 
 suite('cosmoz-omnitable-column-number', () => {
-	let omnitable,
-		columnHeaderInput;
+	let omnitable, columnHeaderInput;
 
-	const getHeaderMenu = () => columnHeaderInput.shadowRoot.querySelector('paper-dropdown-menu'),
+	const getHeaderMenu = () =>
+			columnHeaderInput.shadowRoot.querySelector('paper-dropdown-menu'),
 		openHeaderMenu = async () => {
 			const header = getHeaderMenu();
 			header.noAnimations = true;
 			header.open();
 			await oneEvent(header.querySelector('paper-input'), 'focus');
 		},
-
 		getInputs = () =>
-			columnHeaderInput.shadowRoot.querySelectorAll('paper-dropdown-menu paper-input'),
-
+			columnHeaderInput.shadowRoot.querySelectorAll(
+				'paper-dropdown-menu paper-input',
+			),
 		getFocusedInput = () =>
-			columnHeaderInput.shadowRoot.querySelector('paper-dropdown-menu paper-input:focus-within'),
-
+			columnHeaderInput.shadowRoot.querySelector(
+				'paper-dropdown-menu paper-input:focus-within',
+			),
 		setInputValue = async (inputNo, value) => {
 			const input = getInputs()[inputNo];
 			input.focus();
@@ -61,14 +69,24 @@ suite('cosmoz-omnitable-column-number', () => {
 		};
 
 	setup(async () => {
-		omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable id="omnitable" .resizeSpeedFactor=${ 1 }>
-				<cosmoz-omnitable-column-number title="Age" name="age" value-path="age" maximum-fraction-digits="2">
-				</cosmoz-omnitable-column-number>
-			</cosmoz-omnitable>
-		`, data);
+		omnitable = await setupOmnitableFixture(
+			html`
+				<cosmoz-omnitable id="omnitable" .resizeSpeedFactor=${1}>
+					<cosmoz-omnitable-column-number
+						title="Age"
+						name="age"
+						value-path="age"
+						maximum-fraction-digits="2"
+					>
+					</cosmoz-omnitable-column-number>
+				</cosmoz-omnitable>
+			`,
+			data,
+		);
 
-		columnHeaderInput = omnitable.shadowRoot.querySelector('cosmoz-omnitable-number-range-input');
+		columnHeaderInput = omnitable.shadowRoot.querySelector(
+			'cosmoz-omnitable-number-range-input',
+		);
 	});
 
 	test('filters the table', async () => {

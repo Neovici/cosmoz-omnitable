@@ -1,180 +1,281 @@
 <!doctype html>
 <html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-	<title>Cosmoz Omnitable demo</title>
+		<title>Cosmoz Omnitable demo</title>
 
-	<script src="/node_modules/web-animations-js/web-animations-next-lite.min.js"></script>
-	<script type="module" src="/node_modules/@polymer/polymer/polymer-element.js"></script>
-	<script type="module" src="/node_modules/@polymer/iron-icons/editor-icons.js"></script>
-	<script type="module" src="/node_modules/@polymer/iron-icons/iron-icons.js"></script>
-	<script type="module" src="/node_modules/@polymer/paper-button/paper-button.js"></script>
-	<script type="module" src="/node_modules/@polymer/marked-element/marked-element.js"></script>
-	<script type="module" src="/node_modules/@polymer/prism-element/prism-highlighter.js"></script>
-	<script type="module" src="/node_modules/@polymer/prism-element/prism-theme-default.js"></script>
+		<script
+			type="module"
+			src="/node_modules/@polymer/polymer/polymer-element.js"
+		></script>
+		<script
+			type="module"
+			src="/node_modules/@polymer/iron-icons/editor-icons.js"
+		></script>
+		<script
+			type="module"
+			src="/node_modules/@polymer/iron-icons/iron-icons.js"
+		></script>
+		<script
+			type="module"
+			src="/node_modules/@polymer/paper-button/paper-button.js"
+		></script>
+		<script
+			type="module"
+			src="/node_modules/@polymer/marked-element/marked-element.js"
+		></script>
+		<script
+			type="module"
+			src="/node_modules/@polymer/prism-element/prism-highlighter.js"
+		></script>
+		<script
+			type="module"
+			src="/node_modules/@polymer/prism-element/prism-theme-default.js"
+		></script>
 
-	<script type="module" src="../cosmoz-omnitable.js"></script>
-	<style>
-		body, x-page { margin: 0; height: 100vh; }
-	</style>
-
-</head>
-<body>
-	<dom-module id="x-page">
-		<template>
-			<style include="prism-theme-default">
-				:host {
-					display: flex;
-					flex-direction: column;
-					position: relative;
-				}
-
-				#container {
-					display: flex;
-					flex-direction: column;
-					flex: 1;
-				}
-
-				.action {
-					padding: 5px;
-					margin: 5px 5px 10px 5px;
-				}
-
-				#omnitable {
-					flex: auto;
-					--cosmoz-omnitable-column-0: {
-						background-color: green;
-					};
-
-					--cosmoz-omnitable-column-8: {
-						background-color: deepskyblue;
-					};
-
-					--cosmoz-omnitable-selected-row: {
-						background-color: coral;
-					};
-				}
-			</style>
-			 <prism-highlighter></prism-highlighter>
-
-			<div id="container">
-				<h3>Cosmoz omnitable styling demo</h3>
-				<div>Individual columns can by styled using per column CSS mixins, for example:</div>
-				<marked-element>
-					<div class="markdown-html"></div>
-					<script type="text/markdown">
-						```css
-						#omnitable {
-							--cosmoz-omnitable-column-0: {
-								background-color: green;
-							};
-
-							--cosmoz-omnitable-column-8: {
-								background-color: deepskyblue;
-							};
-						}
-						```
-					</script>
-				</marked-element>
-				<div>
-					Selected row can be styled using <code>--cosmoz-omnitable-selected-row</code> mixin:
-				</div>
-				<marked-element>
-					<div class="markdown-html"></div>
-					<script type="text/markdown">
-						```css
-						#omnitable {
-							--cosmoz-omnitable-selected-row: {
-								background-color: coral;
-							};
-						}
-						```
-					</script>
-				</marked-element>
-
-				<cosmoz-omnitable id="omnitable" data="[[data]]" selection-enabled selected-items="{{selectedItems}}">
-					<cosmoz-omnitable-column title="Id" name="id" value-path="id" sort-on="id" group-on="id" width="30px" flex="1">
-					</cosmoz-omnitable-column>
-					<cosmoz-omnitable-column-boolean title="Boolean" name="bool" value-path="bool" sort-on="bool" group-on="bool" width="100px" true-label="Yes" false-label="No">
-					</cosmoz-omnitable-column-boolean>
-					<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" locale="{{locale}}" sort-on="value" group-on="value" width="80px" flex="0">
-					</cosmoz-omnitable-column-number>
-					<cosmoz-omnitable-column title="Group" name="group" value-path="group" bind-values sort-on="group" group-on="group">
-					</cosmoz-omnitable-column>
-					<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount" sort-on="amount" group-on="amount">
-					</cosmoz-omnitable-column-amount>
-					<cosmoz-omnitable-column-date title="Date" name="date" value-path="date" locale="{{locale}}" sort-on="date" group-on="date">
-					</cosmoz-omnitable-column-date>
-					<cosmoz-omnitable-column-date title="DateJSON" name="datejson" value-path="dateJSON" locale="{{locale}}" sort-on="dateJSON" group-on="dateJSON">
-					</cosmoz-omnitable-column-date>
-					<cosmoz-omnitable-column title="Sub-property" name="subproperty" value-path="sub.subProp" sort-on="sub.subProp" group-on="sub.subProp" flex="2">
-					</cosmoz-omnitable-column>
-					<cosmoz-omnitable-column title="Name" name="name" value-path="name" bind-values sort-on="name" group-on="name" width="50px" flex="2">
-					</cosmoz-omnitable-column>
-
-					<paper-button slot="actions" on-run="removeItems">
-						<iron-icon icon="delete"></iron-icon>
-						<span>{{ _computeLabel('Remove', selectedItems.length)}}</span>
-					</paper-button>
-				</cosmoz-omnitable>
-			</div>
-		</template>
-	</dom-module>
-
-	<x-page></x-page>
-
-	<script type="module">
-		import { PolymerElement } from '@polymer/polymer/polymer-element';
-		import { generateTableDemoData } from './table-demo-helper';
-
-		class XPage extends PolymerElement {
-			static get is() {
-				return 'x-page';
+		<script type="module" src="../cosmoz-omnitable.js"></script>
+		<style>
+			body,
+			x-page {
+				margin: 0;
+				height: 100vh;
 			}
-
-			static get properties() {
-				return {
-					data: {
-						type: Array
-					},
-					selectedItems: {
-						type: Array
-					},
-					locale: {
-						type: String,
-						value: null
+		</style>
+	</head>
+	<body>
+		<dom-module id="x-page">
+			<template>
+				<style include="prism-theme-default">
+					:host {
+						display: flex;
+						flex-direction: column;
+						position: relative;
 					}
-				};
-			}
 
-			connectedCallback() {
-				super.connectedCallback();
-				const data = generateTableDemoData(10, 11, 25);
-				window.setTimeout(() => {
-					this.data = data;
-				}, 16);
-			}
+					#container {
+						display: flex;
+						flex-direction: column;
+						flex: 1;
+					}
 
-			changeData() {
-				this.data = generateTableDemoData(10, 11, 10);
-			}
+					.action {
+						padding: 5px;
+						margin: 5px 5px 10px 5px;
+					}
 
-			_localeChanged(locale, oldLocale) {
-				console.log('_localeChanged', locale, oldLocale);
-			}
+					#omnitable {
+						flex: auto;
+						--cosmoz-omnitable-column-0: {
+							background-color: green;
+						};
 
-			_computeLabel(text, count) {
-				return text + ' ' + count + ' items';
-			}
+						--cosmoz-omnitable-column-8: {
+							background-color: deepskyblue;
+						};
 
-			removeItems(event, detail) {
-				console.log('runAction', detail.items, event, detail, detail.items);
-				detail.omnitable.removeItems(detail.items);
+						--cosmoz-omnitable-selected-row: {
+							background-color: coral;
+						};
+					}
+				</style>
+				<prism-highlighter></prism-highlighter>
+
+				<div id="container">
+					<h3>Cosmoz omnitable styling demo</h3>
+					<div>
+						Individual columns can by styled using per column CSS mixins, for
+						example:
+					</div>
+					<marked-element>
+						<div class="markdown-html"></div>
+						<script type="text/markdown">
+							```css
+							#omnitable {
+								--cosmoz-omnitable-column-0: {
+									background-color: green;
+								};
+
+								--cosmoz-omnitable-column-8: {
+									background-color: deepskyblue;
+								};
+							}
+							```
+						</script>
+					</marked-element>
+					<div>
+						Selected row can be styled using
+						<code>--cosmoz-omnitable-selected-row</code> mixin:
+					</div>
+					<marked-element>
+						<div class="markdown-html"></div>
+						<script type="text/markdown">
+							```css
+							#omnitable {
+								--cosmoz-omnitable-selected-row: {
+									background-color: coral;
+								};
+							}
+							```
+						</script>
+					</marked-element>
+
+					<cosmoz-omnitable
+						id="omnitable"
+						data="[[data]]"
+						selection-enabled
+						selected-items="{{selectedItems}}"
+					>
+						<cosmoz-omnitable-column
+							title="Id"
+							name="id"
+							value-path="id"
+							sort-on="id"
+							group-on="id"
+							width="30px"
+							flex="1"
+						>
+						</cosmoz-omnitable-column>
+						<cosmoz-omnitable-column-boolean
+							title="Boolean"
+							name="bool"
+							value-path="bool"
+							sort-on="bool"
+							group-on="bool"
+							width="100px"
+							true-label="Yes"
+							false-label="No"
+						>
+						</cosmoz-omnitable-column-boolean>
+						<cosmoz-omnitable-column-number
+							title="Value"
+							name="value"
+							value-path="value"
+							locale="{{locale}}"
+							sort-on="value"
+							group-on="value"
+							width="80px"
+							flex="0"
+						>
+						</cosmoz-omnitable-column-number>
+						<cosmoz-omnitable-column
+							title="Group"
+							name="group"
+							value-path="group"
+							bind-values
+							sort-on="group"
+							group-on="group"
+						>
+						</cosmoz-omnitable-column>
+						<cosmoz-omnitable-column-amount
+							title="Amount"
+							name="amount"
+							value-path="amount"
+							sort-on="amount"
+							group-on="amount"
+						>
+						</cosmoz-omnitable-column-amount>
+						<cosmoz-omnitable-column-date
+							title="Date"
+							name="date"
+							value-path="date"
+							locale="{{locale}}"
+							sort-on="date"
+							group-on="date"
+						>
+						</cosmoz-omnitable-column-date>
+						<cosmoz-omnitable-column-date
+							title="DateJSON"
+							name="datejson"
+							value-path="dateJSON"
+							locale="{{locale}}"
+							sort-on="dateJSON"
+							group-on="dateJSON"
+						>
+						</cosmoz-omnitable-column-date>
+						<cosmoz-omnitable-column
+							title="Sub-property"
+							name="subproperty"
+							value-path="sub.subProp"
+							sort-on="sub.subProp"
+							group-on="sub.subProp"
+							flex="2"
+						>
+						</cosmoz-omnitable-column>
+						<cosmoz-omnitable-column
+							title="Name"
+							name="name"
+							value-path="name"
+							bind-values
+							sort-on="name"
+							group-on="name"
+							width="50px"
+							flex="2"
+						>
+						</cosmoz-omnitable-column>
+
+						<paper-button slot="actions" on-run="removeItems">
+							<iron-icon icon="delete"></iron-icon>
+							<span>{{ _computeLabel('Remove', selectedItems.length)}}</span>
+						</paper-button>
+					</cosmoz-omnitable>
+				</div>
+			</template>
+		</dom-module>
+
+		<x-page></x-page>
+
+		<script type="module">
+			import { PolymerElement } from '@polymer/polymer/polymer-element';
+			import { generateTableDemoData } from './table-demo-helper';
+
+			class XPage extends PolymerElement {
+				static get is() {
+					return 'x-page';
+				}
+
+				static get properties() {
+					return {
+						data: {
+							type: Array,
+						},
+						selectedItems: {
+							type: Array,
+						},
+						locale: {
+							type: String,
+							value: null,
+						},
+					};
+				}
+
+				connectedCallback() {
+					super.connectedCallback();
+					const data = generateTableDemoData(10, 11, 25);
+					window.setTimeout(() => {
+						this.data = data;
+					}, 16);
+				}
+
+				changeData() {
+					this.data = generateTableDemoData(10, 11, 10);
+				}
+
+				_localeChanged(locale, oldLocale) {
+					console.log('_localeChanged', locale, oldLocale);
+				}
+
+				_computeLabel(text, count) {
+					return text + ' ' + count + ' items';
+				}
+
+				removeItems(event, detail) {
+					console.log('runAction', detail.items, event, detail, detail.items);
+					detail.omnitable.removeItems(detail.items);
+				}
 			}
-		}
-		customElements.define(XPage.is, XPage);
-	</script>
-</body>
+			customElements.define(XPage.is, XPage);
+		</script>
+	</body>
 </html>

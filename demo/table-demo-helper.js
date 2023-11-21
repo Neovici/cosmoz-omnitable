@@ -1,8 +1,7 @@
 const leftPad = (stro, leno, cho) => {
 		let str = String(stro),
-			i =	 -1;
-		const
-			ch = !cho && cho !== 0 ? ' ' : cho,
+			i = -1;
+		const ch = !cho && cho !== 0 ? ' ' : cho,
 			len = leno - str.length;
 
 		while (++i < len) {
@@ -10,13 +9,15 @@ const leftPad = (stro, leno, cho) => {
 		}
 		return str;
 	},
-
-	getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min,
-
-	getRandomDateJSON = () => '2015-' + leftPad(getRandomInt(1, 12), 2, '0') + '-' + leftPad(getRandomInt(1, 28), 2, '0'),
-
+	getRandomInt = (min, max) =>
+		Math.floor(Math.random() * (max - min + 1)) + min,
+	getRandomDateJSON = () =>
+		'2015-' +
+		leftPad(getRandomInt(1, 12), 2, '0') +
+		'-' +
+		leftPad(getRandomInt(1, 28), 2, '0'),
 	getRandomDate = () => {
-	// return some equal dates to test grouping
+		// return some equal dates to test grouping
 		const i = getRandomInt(0, 20);
 		if (i === 1) {
 			return new Date(2015, 3, 2, 14, 26, 10, 299);
@@ -37,7 +38,7 @@ const leftPad = (stro, leno, cho) => {
 			getRandomInt(0, 23),
 			getRandomInt(0, 59),
 			getRandomInt(0, 59),
-			getRandomInt(0, 999)
+			getRandomInt(0, 999),
 		);
 	};
 
@@ -51,20 +52,15 @@ export const generateTableDemoData = (min, max, maxRandomString) => {
 			'Curabitur vestibulum',
 			'Cras laoreet',
 			'Himenaeos',
-			'maximus diam purus at mauris'
+			'maximus diam purus at mauris',
 		],
-		currencies = [
-			'SEK',
-			'USD',
-			'EUR',
-			'AUD'
-		];
+		currencies = ['SEK', 'USD', 'EUR', 'AUD'];
 
 	let n = 0;
 
 	for (let i = 0; i < groupsCount; i += 1) {
-		const group =	 'Group ' + i,
-			itemsCount = i * 2	+ 1;
+		const group = 'Group ' + i,
+			itemsCount = i * 2 + 1;
 		for (let j = 0; j < itemsCount; j += 1) {
 			const listValue = [],
 				objectListValue = [],
@@ -73,7 +69,7 @@ export const generateTableDemoData = (min, max, maxRandomString) => {
 				listValue.push('Item ' + k);
 				objectListValue.push({
 					name: 'Item ' + k,
-					value: 'item-value-' + k
+					value: 'item-value-' + k,
 				});
 			}
 			data.push({
@@ -83,10 +79,10 @@ export const generateTableDemoData = (min, max, maxRandomString) => {
 				bool: getRandomInt(0, 100) > 50,
 				object: {
 					value: getRandomInt(0, 10000),
-					label: 'Random string ' + getRandomInt(1, maxRandomString)
+					label: 'Random string ' + getRandomInt(1, maxRandomString),
 				},
 				sub: {
-					subProp: descriptions[n % descriptions.length]
+					subProp: descriptions[n % descriptions.length],
 				},
 				randomString: 'Random string ' + getRandomInt(1, maxRandomString),
 				randomString2: 'Random string 2 ' + getRandomInt(1, maxRandomString),
@@ -96,11 +92,11 @@ export const generateTableDemoData = (min, max, maxRandomString) => {
 				dateJSON: getRandomDateJSON(),
 				amount: {
 					amount: getRandomInt(10, 100),
-					currency: currencies[n % currencies.length]
+					currency: currencies[n % currencies.length],
 				},
 				group,
 				list: listValue,
-				objectList: objectListValue
+				objectList: objectListValue,
 			});
 			n += 1;
 		}

@@ -1,141 +1,190 @@
 <!doctype html>
 <html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-	<title>Cosmoz Omnitable demo</title>
+		<title>Cosmoz Omnitable demo</title>
 
-	<script src="/node_modules/web-animations-js/web-animations-next-lite.min.js"></script>
-	<script type="module" src="/node_modules/@polymer/polymer/polymer-element.js"></script>
-	<script type="module" src="/node_modules/@polymer/iron-icons/editor-icons.js"></script>
-	<script type="module" src="/node_modules/@polymer/iron-icons/iron-icons.js"></script>
-	<script type="module" src="/node_modules/@polymer/paper-button/paper-button.js"></script>
+		<script
+			type="module"
+			src="/node_modules/@polymer/polymer/polymer-element.js"
+		></script>
+		<script
+			type="module"
+			src="/node_modules/@polymer/iron-icons/editor-icons.js"
+		></script>
+		<script
+			type="module"
+			src="/node_modules/@polymer/iron-icons/iron-icons.js"
+		></script>
+		<script
+			type="module"
+			src="/node_modules/@polymer/paper-button/paper-button.js"
+		></script>
 
-	<script type="module" src="../cosmoz-omnitable.js"></script>
+		<script type="module" src="../cosmoz-omnitable.js"></script>
 
-	<style>
-		body, x-page { margin: 0; height: 100vh; }
-	</style>
-</head>
-<body>
-	<dom-module id="x-page">
-		<template>
-			<style>
-				:host {
-					display: flex;
-					flex-direction: column;
-					position: relative;
-				}
-
-				#container {
-					display: flex;
-					flex-direction: column;
-					flex: 1;
-				}
-
-				cosmoz-omnitable { flex: auto; }
-
-				.action {
-					padding: 5px;
-					margin: 5px 5px 10px 5px;
-				}
-			</style>
-			<div id="container">
-				<h3>Cosmoz omnitable templates demo</h3>
-
-				<div style="display: flex; align-items: center">
-					<button class="action" on-tap="changeData">Generate a new data set</button>
-					<button class="action" on-tap="emptyData">Generate an empty data set</button>
-					<div class="action">
-						Selected items count: <span>{{selectedItems.length}}</span>
-					</div>
-					<div class="action">
-						<paper-dropdown-menu label="Locale" no-animations>
-							<paper-listbox class="dropdown-content" selected="{{ locale }}" attr-for-selected="value">
-								<paper-item value="en">en</paper-item>
-								<paper-item value="fr">fr</paper-item>
-								<paper-item value="sv">sv</paper-item>
-							</paper-listbox>
-						</paper-dropdown-menu>
-					</div>
-				</div>
-
-				<cosmoz-omnitable id="omnitable" data="[[data]]" selection-enabled selected-items="{{ selectedItems }}">
-					<cosmoz-omnitable-column title="Id" name="id" value-path="id" sort-on="id" group-on="id" render-cell="[[ renderIdCell ]]">
-					</cosmoz-omnitable-column>
-
-					<cosmoz-omnitable-column title="Value" name="value" value-path="value" sort-on="value" group-on="value">
-					</cosmoz-omnitable-column>
-
-					<cosmoz-omnitable-column title="Amount" name="amount" value-path="amount" sort-on="amount" group-on="amount" render-cell="[[renderAmountCell]]">
-					</cosmoz-omnitable-column>
-				</cosmoz-omnitable>
-
-
-			</div>
-		</template>
-	</dom-module>
-
-	<x-page></x-page>
-
-	<script type="module">
-import { PolymerElement } from '@polymer/polymer/polymer-element';
-import { translatable } from '@neovici/cosmoz-i18next';
-import { generateTableDemoData } from './table-demo-helper';
-import { html } from 'lit-html';
-
-const
-	_customFunction = item => 'bla ' + item.id + ' bla',
-	onTap = event => console.log('onTap', event);
-
-class XPage extends translatable(PolymerElement) {
-	static get is() {
-		return 'x-page';
-	}
-	static get properties() {
-		return {
-			data: {
-				type: Array
-			},
-			selectedItems: {
-				type: Array
-			},
-			locale: {
-				type: String,
-				value: null
+		<style>
+			body,
+			x-page {
+				margin: 0;
+				height: 100vh;
 			}
-		};
-	}
+		</style>
+	</head>
+	<body>
+		<dom-module id="x-page">
+			<template>
+				<style>
+					:host {
+						display: flex;
+						flex-direction: column;
+						position: relative;
+					}
 
-	connectedCallback() {
-		super.connectedCallback();
-		const data = generateTableDemoData(10, 11, 25);
-		setTimeout(() => {
-			this.data = data;
-		}, 100);
-	}
+					#container {
+						display: flex;
+						flex-direction: column;
+						flex: 1;
+					}
 
-	changeData() {
-		this.data = generateTableDemoData(10, 11, 10);
-	}
+					cosmoz-omnitable {
+						flex: auto;
+					}
 
-	emptyData() {
-		this.data = [];
-	}
+					.action {
+						padding: 5px;
+						margin: 5px 5px 10px 5px;
+					}
+				</style>
+				<div id="container">
+					<h3>Cosmoz omnitable templates demo</h3>
 
-	renderIdCell(column, { item }) {
-		return html`
-			<span>${ _customFunction(item) }</span>
-			<a href="#!/purchase/suppliers/view?id=${ item.id }">${ item.id }</a>
-		`;
-	}
+					<div style="display: flex; align-items: center">
+						<button class="action" on-tap="changeData">
+							Generate a new data set
+						</button>
+						<button class="action" on-tap="emptyData">
+							Generate an empty data set
+						</button>
+						<div class="action">
+							Selected items count: <span>{{selectedItems.length}}</span>
+						</div>
+						<div class="action">
+							<paper-dropdown-menu label="Locale" no-animations>
+								<paper-listbox
+									class="dropdown-content"
+									selected="{{ locale }}"
+									attr-for-selected="value"
+								>
+									<paper-item value="en">en</paper-item>
+									<paper-item value="fr">fr</paper-item>
+									<paper-item value="sv">sv</paper-item>
+								</paper-listbox>
+							</paper-dropdown-menu>
+						</div>
+					</div>
 
-	renderAmountCell(column, { item }) {
-		return html`<span style="background: red;" @tap=${ onTap }>${ item.amount.amount }</span>`;
-	}
-}
-customElements.define(XPage.is, XPage);
-</script>
-</body>
+					<cosmoz-omnitable
+						id="omnitable"
+						data="[[data]]"
+						selection-enabled
+						selected-items="{{ selectedItems }}"
+					>
+						<cosmoz-omnitable-column
+							title="Id"
+							name="id"
+							value-path="id"
+							sort-on="id"
+							group-on="id"
+							render-cell="[[ renderIdCell ]]"
+						>
+						</cosmoz-omnitable-column>
+
+						<cosmoz-omnitable-column
+							title="Value"
+							name="value"
+							value-path="value"
+							sort-on="value"
+							group-on="value"
+						>
+						</cosmoz-omnitable-column>
+
+						<cosmoz-omnitable-column
+							title="Amount"
+							name="amount"
+							value-path="amount"
+							sort-on="amount"
+							group-on="amount"
+							render-cell="[[renderAmountCell]]"
+						>
+						</cosmoz-omnitable-column>
+					</cosmoz-omnitable>
+				</div>
+			</template>
+		</dom-module>
+
+		<x-page></x-page>
+
+		<script type="module">
+			import { PolymerElement } from '@polymer/polymer/polymer-element';
+			import { translatable } from '@neovici/cosmoz-i18next';
+			import { generateTableDemoData } from './table-demo-helper';
+			import { html } from 'lit-html';
+
+			const _customFunction = (item) => 'bla ' + item.id + ' bla',
+				onTap = (event) => console.log('onTap', event);
+
+			class XPage extends translatable(PolymerElement) {
+				static get is() {
+					return 'x-page';
+				}
+				static get properties() {
+					return {
+						data: {
+							type: Array,
+						},
+						selectedItems: {
+							type: Array,
+						},
+						locale: {
+							type: String,
+							value: null,
+						},
+					};
+				}
+
+				connectedCallback() {
+					super.connectedCallback();
+					const data = generateTableDemoData(10, 11, 25);
+					setTimeout(() => {
+						this.data = data;
+					}, 100);
+				}
+
+				changeData() {
+					this.data = generateTableDemoData(10, 11, 10);
+				}
+
+				emptyData() {
+					this.data = [];
+				}
+
+				renderIdCell(column, { item }) {
+					return html`
+						<span>${_customFunction(item)}</span>
+						<a href="#!/purchase/suppliers/view?id=${item.id}">${item.id}</a>
+					`;
+				}
+
+				renderAmountCell(column, { item }) {
+					return html`<span style="background: red;" @tap=${onTap}
+						>${item.amount.amount}</span
+					>`;
+				}
+			}
+			customElements.define(XPage.is, XPage);
+		</script>
+	</body>
 </html>

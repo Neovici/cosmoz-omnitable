@@ -36,9 +36,9 @@ suite('utils-amount', () => {
 			assert.equal(
 				getComparableValue(
 					{ valuePath: 'totalAmount', rates: { SEK: 2 } },
-					{ totalAmount: null }
+					{ totalAmount: null },
 				),
-				undefined
+				undefined,
 			);
 		});
 
@@ -46,9 +46,9 @@ suite('utils-amount', () => {
 			assert.equal(
 				getComparableValue(
 					{ valuePath: 'totalAmount', rates: null },
-					{ totalAmount: { amount: 2, currency: 'SEK' } }
+					{ totalAmount: { amount: 2, currency: 'SEK' } },
 				),
-				2
+				2,
 			);
 		});
 
@@ -56,9 +56,9 @@ suite('utils-amount', () => {
 			assert.equal(
 				getComparableValue(
 					{ valuePath: 'totalAmount', rates: {} },
-					{ totalAmount: { amount: 2, currency: 'SEK' } }
+					{ totalAmount: { amount: 2, currency: 'SEK' } },
 				),
-				2
+				2,
 			);
 		});
 
@@ -66,9 +66,9 @@ suite('utils-amount', () => {
 			assert.equal(
 				getComparableValue(
 					{ valuePath: 'totalAmount', rates: { SEK: 2 } },
-					{ totalAmount: { amount: 2, currency: 'SEK' } }
+					{ totalAmount: { amount: 2, currency: 'SEK' } },
 				),
-				4
+				4,
 			);
 		});
 	});
@@ -78,14 +78,14 @@ suite('utils-amount', () => {
 			assert.equal(applySingleFilter({ valuePath: 'totalAmount' })(), false);
 			assert.equal(
 				applySingleFilter({ valuePath: 'totalAmount' }, { max: 1 })(null),
-				false
+				false,
 			);
 			assert.equal(
 				applySingleFilter(
 					{ valuePath: 'totalAmount' },
-					{ max: 1 }
+					{ max: 1 },
 				)({ totalAmount: { amount: 2, currency: 'SEK' } }),
-				true
+				true,
 			);
 		});
 	});

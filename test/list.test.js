@@ -27,7 +27,7 @@ suite('basic', () => {
 					</cosmoz-omnitable-column-list>
 				</cosmoz-omnitable>
 			`,
-			data
+			data,
 		);
 
 		column = omnitable.columns[0][columnSymbol];
@@ -63,14 +63,14 @@ suite('horizontal', () => {
 					</cosmoz-omnitable-column-list-horizontal>
 				</cosmoz-omnitable>
 			`,
-			data
+			data,
 		);
 		column = omnitable.columns[0][columnSymbol];
 	});
 
 	test('basic render', async () => {
 		const cells = Array.from(
-			omnitable.shadowRoot.querySelectorAll('.itemRow-cell')
+			omnitable.shadowRoot.querySelectorAll('.itemRow-cell'),
 		);
 		assert.lengthOf(cells, 2);
 		assert.include(cells[0].innerText, 'item 1item 2item 3');
@@ -93,22 +93,22 @@ suite('pure functions', () => {
 		assert.isTrue(
 			applySingleFilter(
 				column,
-				'abc'
+				'abc',
 			)({
 				list: 'abc',
 				some: 'data',
-			})
+			}),
 		);
 	});
 	test('_applySingleFilter returns false if filterString is not equal to value', () => {
 		assert.isFalse(
 			applySingleFilter(
 				column,
-				'abc'
+				'abc',
 			)({
 				list: 'def',
 				some: 'data',
-			})
+			}),
 		);
 	});
 
@@ -116,11 +116,11 @@ suite('pure functions', () => {
 		assert.isTrue(
 			applySingleFilter(
 				column,
-				' abc '
+				' abc ',
 			)({
 				list: 'abc',
 				some: 'data',
-			})
+			}),
 		);
 	});
 
@@ -131,14 +131,14 @@ suite('pure functions', () => {
 
 	test('_applyMultiFilter works', () => {
 		assert.isTrue(
-			applyMultiFilter(column, [123, 456])({ list: [123, 345, 678] })
+			applyMultiFilter(column, [123, 456])({ list: [123, 345, 678] }),
 		);
 	});
 
 	test('getString returns values', () => {
 		assert.equal(
 			getString(column, { list: ['123', '345', '678'] }),
-			'123, 345, 678'
+			'123, 345, 678',
 		);
 	});
 });

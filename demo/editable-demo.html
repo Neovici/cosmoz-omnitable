@@ -1,165 +1,252 @@
 <!doctype html>
 <html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-	<title>Cosmoz Omnitable demo</title>
+		<title>Cosmoz Omnitable demo</title>
 
-	<script src="/node_modules/web-animations-js/web-animations-next-lite.min.js"></script>
+		<script
+			type="module"
+			src="/node_modules/@polymer/polymer/polymer-element.js"
+		></script>
+		<script
+			type="module"
+			src="/node_modules/@polymer/iron-icons/editor-icons.js"
+		></script>
+		<script
+			type="module"
+			src="/node_modules/@polymer/iron-icons/iron-icons.js"
+		></script>
+		<script
+			type="module"
+			src="/node_modules/@polymer/paper-button/paper-button.js"
+		></script>
+		<script type="module" src="../cosmoz-omnitable.js"></script>
+		<style>
+			body,
+			x-page {
+				margin: 0;
+				height: 100vh;
+			}
+		</style>
+	</head>
+	<body>
+		<dom-module id="x-page">
+			<template>
+				<style>
+					:host {
+						display: flex;
+						flex-direction: column;
+						position: relative;
+					}
 
-	<script type="module" src="/node_modules/@polymer/polymer/polymer-element.js"></script>
-	<script type="module" src="/node_modules/@polymer/iron-icons/editor-icons.js"></script>
-	<script type="module" src="/node_modules/@polymer/iron-icons/iron-icons.js"></script>
-	<script type="module" src="/node_modules/@polymer/paper-button/paper-button.js"></script>
-	<script type="module" src="../cosmoz-omnitable.js"></script>
-	<style>
-		body, x-page { margin: 0; height: 100vh; }
-	</style>
-</head>
-<body>
-	<dom-module id="x-page">
-		<template>
-			<style>
-				:host {
-					display: flex;
-					flex-direction: column;
-					position: relative;
-				}
+					#container {
+						display: flex;
+						flex-direction: column;
+						flex: 1;
+					}
 
-				#container {
-					display: flex;
-					flex-direction: column;
-					flex: 1;
-				}
+					cosmoz-omnitable {
+						flex: auto;
+					}
 
-				cosmoz-omnitable { flex: auto; }
+					.action {
+						padding: 5px;
+						margin: 5px 5px 10px 5px;
+					}
 
-				.action {
-					padding: 5px;
-					margin: 5px 5px 10px 5px;
-				}
+					#info {
+						position: fixed;
+						top: 0;
+						right: 12px;
+						height: 52px;
+						color: #066906;
+						background-color: #dad7d7;
+						padding: 6px 12px;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						opacity: 0;
+						box-shadow: 0px 5px 6px -3px rgba(0, 0, 0, 0.4);
+						transition: all 0.5s ease;
+					}
 
-				#info {
-					position: fixed;
-					top: 0;
-					right: 12px;
-					height: 52px;
-					color: #066906;
-					background-color: #dad7d7;
-					padding: 6px 12px;
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					opacity: 0;
-					box-shadow: 0px 5px 6px -3px rgba(0, 0, 0, 0.4);
-					transition: all 0.5s ease;
-				}
+					#info[active] {
+						opacity: 1;
+					}
+				</style>
+				<div id="container">
+					<h3>Cosmoz omnitable demo</h3>
 
-				#info[active] {
-					opacity: 1;
-				}
-			</style>
-			<div id="container">
-				<h3>Cosmoz omnitable demo</h3>
+					<div id="info"><span>[[info]]</span></div>
 
-				<div id="info"><span>[[info]]</span></div>
-
-				<div style="display: flex; align-items: center">
-					<button class="action" on-tap="changeData">Generate a new data set</button>
-					<div class="action">
-						Selected items count: <span>{{selectedItems.length}}</span>
+					<div style="display: flex; align-items: center">
+						<button class="action" on-tap="changeData">
+							Generate a new data set
+						</button>
+						<div class="action">
+							Selected items count: <span>{{selectedItems.length}}</span>
+						</div>
 					</div>
+
+					<cosmoz-omnitable
+						id="omnitable"
+						data="[[data]]"
+						selection-enabled
+						selected-items="{{selectedItems}}"
+					>
+						<cosmoz-omnitable-column-autocomplete
+							title="Id"
+							name="id"
+							value-path="id"
+							editable
+						></cosmoz-omnitable-column-autocomplete>
+						<cosmoz-omnitable-column-list
+							title="List"
+							name="list"
+							value-path="list"
+							editable
+						></cosmoz-omnitable-column-list>
+						<cosmoz-omnitable-column-number
+							title="Value"
+							name="value"
+							value-path="value"
+							editable
+						></cosmoz-omnitable-column-number>
+						<cosmoz-omnitable-column-number
+							title="Lit Value"
+							name="litvalue"
+							value-path="value"
+							editable
+							render-edit-cell="[[ renderEditValue ]]"
+						></cosmoz-omnitable-column-number>
+						<cosmoz-omnitable-column-boolean
+							title="Boolean"
+							name="bool"
+							value-path="bool"
+							true-label="Yes"
+							false-label="No"
+							editable
+						></cosmoz-omnitable-column-boolean>
+						<cosmoz-omnitable-column-amount
+							title="Amount"
+							name="amount"
+							value-path="amount"
+							editable
+						></cosmoz-omnitable-column-amount>
+						<cosmoz-omnitable-column-date
+							title="Date"
+							name="date"
+							value-path="date"
+							editable
+						></cosmoz-omnitable-column-date>
+						<cosmoz-omnitable-column-datetime
+							title="Datetime"
+							name="datetime"
+							value-path="date"
+							editable
+						></cosmoz-omnitable-column-datetime>
+						<cosmoz-omnitable-column-time
+							title="Time"
+							name="time"
+							value-path="date"
+							editable
+						></cosmoz-omnitable-column-time>
+						<cosmoz-omnitable-column
+							title="Sub-property"
+							name="subproperty"
+							value-path="sub.subProp"
+							editable
+						></cosmoz-omnitable-column>
+						<cosmoz-omnitable-column
+							title="Random String"
+							name="randomstring"
+							value-path="randomString"
+							editable
+						></cosmoz-omnitable-column>
+					</cosmoz-omnitable>
 				</div>
+			</template>
+		</dom-module>
 
-				<cosmoz-omnitable id="omnitable" data="[[data]]" selection-enabled selected-items="{{selectedItems}}">
-					<cosmoz-omnitable-column-autocomplete title="Id" name="id" value-path="id" editable></cosmoz-omnitable-column-autocomplete>
-					<cosmoz-omnitable-column-list title="List" name="list" value-path="list" editable></cosmoz-omnitable-column-list>
-					<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" editable></cosmoz-omnitable-column-number>
-					<cosmoz-omnitable-column-number title="Lit Value" name="litvalue" value-path="value" editable render-edit-cell="[[ renderEditValue ]]"></cosmoz-omnitable-column-number>
-					<cosmoz-omnitable-column-boolean title="Boolean" name="bool" value-path="bool" true-label="Yes" false-label="No" editable></cosmoz-omnitable-column-boolean>
-					<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount" editable></cosmoz-omnitable-column-amount>
-					<cosmoz-omnitable-column-date title="Date" name="date" value-path="date" editable></cosmoz-omnitable-column-date>
-					<cosmoz-omnitable-column-datetime title="Datetime" name="datetime" value-path="date" editable></cosmoz-omnitable-column-datetime>
-					<cosmoz-omnitable-column-time title="Time" name="time" value-path="date" editable></cosmoz-omnitable-column-time>
-					<cosmoz-omnitable-column title="Sub-property" name="subproperty" value-path="sub.subProp" editable></cosmoz-omnitable-column>
-					<cosmoz-omnitable-column title="Random String" name="randomstring" value-path="randomString" editable></cosmoz-omnitable-column>
-				</cosmoz-omnitable>
-			</div>
-		</template>
-	</dom-module>
+		<x-page></x-page>
 
-	<x-page></x-page>
+		<script type="module">
+			import { PolymerElement } from '@polymer/polymer/polymer-element';
+			import { translatable } from '@neovici/cosmoz-i18next';
+			import { generateTableDemoData } from './table-demo-helper';
+			import { html } from 'lit-html';
+			import { getInputString } from '../lib/utils-number';
 
-	<script type="module">
-import { PolymerElement } from '@polymer/polymer/polymer-element';
-import { translatable } from '@neovici/cosmoz-i18next';
-import { generateTableDemoData } from './table-demo-helper';
-import { html } from 'lit-html';
-import { getInputString } from '../lib/utils-number';
+			class XPage extends translatable(PolymerElement) {
+				static get is() {
+					return 'x-page';
+				}
+				static get properties() {
+					return {
+						data: {
+							type: Array,
+						},
 
-class XPage extends translatable(PolymerElement) {
-	static get is() {
-		return 'x-page';
-	}
-	static get properties() {
-		return {
+						selectedItems: {
+							type: Array,
+						},
 
-			data: {
-				type: Array
-			},
+						info: {
+							type: String,
+							observer: function () {
+								// eslint-disable-line object-shorthand
+								this.$.info.setAttribute('active', true);
+								window.setTimeout(() => {
+									this.$.info.removeAttribute('active');
+								}, 4000);
+							},
+						},
+					};
+				}
 
-			selectedItems: {
-				type: Array
-			},
+				connectedCallback() {
+					super.connectedCallback();
+					window.addEventListener('column-item-changed', this._itemChanged);
+					this.data = generateTableDemoData(20, 25, 25);
+				}
 
-			info: {
-				type: String,
-				observer: function () { // eslint-disable-line object-shorthand
-					this.$.info.setAttribute('active', true);
-					window.setTimeout(() => {
-						this.$.info.removeAttribute('active');
-					}, 4000);
+				changeData() {
+					this.data = generateTableDemoData(20, 25, 10);
+				}
+
+				_computeLabel(text, count) {
+					return text + ' ' + count + ' items';
+				}
+
+				disconnectedCallback() {
+					window.removeEventListener('column-item-changed', this._itemChanged);
+				}
+
+				removeItems(event, detail) {
+					console.log('runAction', detail.items, event, detail, detail.items);
+					detail.omnitable.removeItems(detail.items);
+				}
+
+				_itemChanged(e) {
+					const change = e.detail;
+					this.info = `Column ${e.detail.column.name}: Item ${change.valuePath} changed from "${change.oldValue}" to "${change.value}"`;
+					console.log(this.info);
+				}
+
+				renderEditValue(column, { item }, onItemChange) {
+					const onChange = (event) => onItemChange(event.target.value);
+					return html`<paper-input
+						no-label-float
+						type="number"
+						step="0.1"
+						@change=${onChange}
+						.value=${getInputString(column, item)}
+					></paper-input>`;
 				}
 			}
-		};
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-		window.addEventListener('column-item-changed', this._itemChanged);
-		this.data = generateTableDemoData(20, 25, 25);
-	}
-
-	changeData() {
-		this.data = generateTableDemoData(20, 25, 10);
-	}
-
-	_computeLabel(text, count) {
-		return text + ' ' + count + ' items';
-	}
-
-	disconnectedCallback() {
-		window.removeEventListener('column-item-changed', this._itemChanged);
-	}
-	
-	removeItems(event, detail) {
-		console.log('runAction', detail.items, event, detail, detail.items);
-		detail.omnitable.removeItems(detail.items);
-	}
-
-	_itemChanged(e) {
-		const change = e.detail;
-		this.info = `Column ${ e.detail.column.name }: Item ${ change.valuePath } changed from "${ change.oldValue }" to "${ change.value }"`;
-		console.log(this.info);
-	}
-
-	renderEditValue(column, { item }, onItemChange) {
-		const onChange = event => onItemChange(event.target.value);
-		return html`<paper-input no-label-float type="number" step="0.1" @change=${ onChange } .value=${ getInputString(column, item) }></paper-input>`;
-	}
-}
-customElements.define(XPage.is, XPage);
-</script>
-</body>
+			customElements.define(XPage.is, XPage);
+		</script>
+	</body>
 </html>

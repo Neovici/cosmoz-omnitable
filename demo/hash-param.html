@@ -1,32 +1,43 @@
 <!doctype html>
 <html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-	<title>cosmoz-omnitable hash-param demo</title>
+		<title>cosmoz-omnitable hash-param demo</title>
 
-	<style>
-		body, demo-router { margin: 0; height: 100vh; }
-	</style>
-</head>
-<body>
-	<demo-router id="appRouter" />
-	<script type="module">
-		import { html } from 'lit-html';
-		import { component } from 'haunted';
-		import { hashbang } from '@neovici/cosmoz-page-router';
+		<style>
+			body,
+			demo-router {
+				margin: 0;
+				height: 100vh;
+			}
+		</style>
+	</head>
+	<body>
+		<demo-router id="appRouter" />
+		<script type="module">
+			import { html } from 'lit-html';
+			import { component } from 'haunted';
+			import { hashbang } from '@neovici/cosmoz-page-router';
 
-		const routes = [
-				{
-					rule: hashbang(/^\/$/u),
-					handle: () => import('./helpers/x-page.js').then(() =>
-						html`<x-page style="height: 100%; width: 100%;" hash-param="full" />`)
-				}
-	],
-	DemoRouter = () => {
-				return html`<cosmoz-router .routes=${ routes } />`;
-	};
-		customElements.define('demo-router', component(DemoRouter));
-	</script>
-</body></html>
+			const routes = [
+					{
+						rule: hashbang(/^\/$/u),
+						handle: () =>
+							import('./helpers/x-page.js').then(
+								() =>
+									html`<x-page
+										style="height: 100%; width: 100%;"
+										hash-param="full"
+									/>`,
+							),
+					},
+				],
+				DemoRouter = () => {
+					return html`<cosmoz-router .routes=${routes} />`;
+				};
+			customElements.define('demo-router', component(DemoRouter));
+		</script>
+	</body>
+</html>

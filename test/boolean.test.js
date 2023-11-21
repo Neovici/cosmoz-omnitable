@@ -1,36 +1,53 @@
-import {
-	assert, html
-} from '@open-wc/testing';
+import { assert, html } from '@open-wc/testing';
 
 import { spy } from 'sinon';
 import { setupOmnitableFixture } from './helpers/utils';
 
 import '../cosmoz-omnitable.js';
 import '../cosmoz-omnitable-columns.js';
-import { computeItemValue, getString, toXlsxValue, onChange, deserializeFilter } from '../cosmoz-omnitable-column-boolean';
+import {
+	computeItemValue,
+	getString,
+	toXlsxValue,
+	onChange,
+	deserializeFilter,
+} from '../cosmoz-omnitable-column-boolean';
 import { onItemChange } from '../lib/utils-data';
 import { serializeFilter } from '../cosmoz-omnitable-column-mixin';
 import { columnSymbol } from '../lib/use-dom-columns';
 
 suite('boolean', () => {
 	test('initializes boolean column', async () => {
-		const
-			data = [
+		const data = [
 				{ boolean: true },
 				{ boolean: false },
 				{ null: true },
 				{ boolean: 'invalid' },
-				{ boolean: 'true' }
+				{ boolean: 'true' },
 			],
-			omnitable = await setupOmnitableFixture(html`
-					<cosmoz-omnitable id="omnitable" selection-enabled .resizeSpeedFactor=${ 1 }>
-						<cosmoz-omnitable-column-boolean name="boolean" value-path="boolean">
+			omnitable = await setupOmnitableFixture(
+				html`
+					<cosmoz-omnitable
+						id="omnitable"
+						selection-enabled
+						.resizeSpeedFactor=${1}
+					>
+						<cosmoz-omnitable-column-boolean
+							name="boolean"
+							value-path="boolean"
+						>
 						</cosmoz-omnitable-column-boolean>
-						<cosmoz-omnitable-column-boolean name="boolean2" value-path="boolean" true-label="default true label"
-							false-label="default false label">
+						<cosmoz-omnitable-column-boolean
+							name="boolean2"
+							value-path="boolean"
+							true-label="default true label"
+							false-label="default false label"
+						>
 						</cosmoz-omnitable-column-boolean>
 					</cosmoz-omnitable>
-				`, data),
+				`,
+				data,
+			),
 			column = omnitable.columns[0][columnSymbol];
 
 		assert.equal(column.constructor.name, 'OmnitableColumnBoolean');
@@ -43,11 +60,22 @@ suite('boolean pure functions', () => {
 			{ boolean: false },
 			{ null: true },
 			{ boolean: 'invalid' },
-			{ boolean: 'true' }
+			{ boolean: 'true' },
 		],
-		columnConfig = { valuePath: 'boolean', trueLabel: 'True', falseLabel: 'False' },
-		columnConfig2 = { valuePath: 'boolean', trueLabel: 'default true label', falseLabel: 'default false label' },
-		source = [{ text: 'True', value: true }, { text: 'False', value: false }];
+		columnConfig = {
+			valuePath: 'boolean',
+			trueLabel: 'True',
+			falseLabel: 'False',
+		},
+		columnConfig2 = {
+			valuePath: 'boolean',
+			trueLabel: 'default true label',
+			falseLabel: 'default false label',
+		},
+		source = [
+			{ text: 'True', value: true },
+			{ text: 'False', value: false },
+		];
 
 	test('getString', () => {
 		assert.equal(getString(columnConfig, data[0]), 'True');
@@ -62,11 +90,11 @@ suite('boolean pure functions', () => {
 	test('_computeItemValue returns correct value', () => {
 		assert.deepEqual(computeItemValue(columnConfig, data[0], source), {
 			text: 'True',
-			value: true
+			value: true,
 		});
 		assert.deepEqual(computeItemValue(columnConfig, data[1], source), {
 			text: 'False',
-			value: false
+			value: false,
 		});
 	});
 
