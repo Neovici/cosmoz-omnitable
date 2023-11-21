@@ -52,12 +52,12 @@ class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
 		const onChange = (event) =>
 			onItemChange(event.target.value.split(/,\s*/gu));
 
-		return html`<paper-input
+		return html`<cosmoz-input
 			no-label-float
 			type="text"
-			@change=${onChange}
 			.value=${getString(column, item)}
-		></paper-input>`;
+			@change=${onChange}
+		></cosmoz-input>`;
 	}
 
 	renderHeader(column, { filter, query }, setState, source) {
@@ -79,12 +79,13 @@ class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
 			.onText=${onText(setState)}
 			>${when(
 				column.loading,
-				() => html`<paper-spinner-lite
-					style="width: 20px; height: 20px; flex:none;"
-					suffix
-					slot="suffix"
-					active
-				></paper-spinner-lite>`
+				() =>
+					html`<paper-spinner-lite
+						style="width: 20px; height: 20px; flex:none;"
+						suffix
+						slot="suffix"
+						active
+					></paper-spinner-lite>`,
 			)}</cosmoz-autocomplete-ui
 		>`;
 	}

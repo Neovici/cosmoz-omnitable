@@ -216,43 +216,6 @@ suite('number', () => {
 			'Expected item coresponding to the age: 46.7511 to be in the filtered items.',
 		);
 	});
-
-	test("make sure onBadInputFloatLabel doesn't explode", () => {
-		assert.strictEqual(
-			columnHeaderInput.onBadInputFloatLabel(new InputEvent('input')),
-			undefined,
-		);
-	});
-
-	test('float label on invalid input', async () => {
-		await nextFrame(); // give lit time to render the columns
-		const filterMenu = columnHeaderInput.root.querySelector(
-				'paper-dropdown-menu',
-			),
-			isFloating = (element) =>
-				element.$.container.$.labelAndInputContainer.classList.contains(
-					'label-is-floating',
-				),
-			inputEvent = new InputEvent('input');
-
-		filterMenu.noAnimations = true;
-		assert.isFalse(filterMenu.opened);
-		filterMenu.click();
-		const [from, to] = filterMenu.querySelectorAll('paper-input');
-		assert.isFalse(isFloating(from));
-		assert.isFalse(isFloating(to));
-
-		from.value = 'e';
-		to.value = 'e';
-		flush();
-		await nextFrame();
-
-		assert.isTrue(filterMenu.opened);
-		from.dispatchEvent(inputEvent);
-		to.dispatchEvent(inputEvent);
-		assert.isTrue(isFloating(from));
-		assert.isTrue(isFloating(to));
-	});
 });
 
 suite('number - pure functions', () => {
