@@ -86,7 +86,7 @@ suite('basic-read', () => {
 			omnitable
 				.shadowRoot
 				.querySelector('.header-cell[title=Name]')
-				.querySelector('paper-input')
+				.querySelector('cosmoz-input')
 				.value,
 			'john'
 		);

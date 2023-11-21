@@ -518,7 +518,7 @@ export default css`
 		display: inline-flex;
 		position: relative;
 	}
-	.header-cell :not(.sg) {
+	.header-cell :not(.sg,cosmoz-clear-button) {
 		min-width: 0;
 		flex: auto;
 	}

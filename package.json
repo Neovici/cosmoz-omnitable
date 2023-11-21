@@ -66,6 +66,7 @@
 		"@neovici/cosmoz-dropdown": "^3.0.0",
 		"@neovici/cosmoz-grouped-list": "^6.0.0",
 		"@neovici/cosmoz-i18next": "^3.1.1",
+		"@neovici/cosmoz-input": "^3.15.0",
 		"@neovici/cosmoz-router": "^10.0.0",
 		"@neovici/cosmoz-utils": "^5.16.0",
 		"@neovici/nullxlsx": "^3.0.0",
@@ -82,8 +83,8 @@
 		"lit-html": "^2.0.0"
 	},
 	"devDependencies": {
-		"@commitlint/cli": "^17.0.0",
-		"@commitlint/config-conventional": "^17.0.0",
+		"@commitlint/cli": "^18.0.0",
+		"@commitlint/config-conventional": "^18.0.0",
 		"@neovici/cfg": "^1.18.0",
 		"@neovici/cosmoz-viewinfo": "^3.1.0",
 		"@open-wc/testing": "^3.0.0",
@@ -95,8 +96,7 @@
 		"@semantic-release/changelog": "^6.0.0",
 		"@semantic-release/git": "^10.0.0",
 		"husky": "^8.0.0",
-		"semantic-release": "^21.0.0",
-		"sinon": "^15.0.0",
-		"web-animations-js": "^2.3.0"
+		"semantic-release": "^22.0.0",
+		"sinon": "^17.0.0"
 	}
 }
