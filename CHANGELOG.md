@@ -1,3 +1,14 @@
+# [12.27.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.26.4...v12.27.0) (2023-11-22)
+
+
+### Features
+
+* **number-range-input:** replace paper-input ([7dd61fc](https://github.com/neovici/cosmoz-omnitable/commit/7dd61fc944c9ec86ea4beec0621aa5645533c70b))
+* replace paper-input with cosmoz-input ([d61fa5f](https://github.com/neovici/cosmoz-omnitable/commit/d61fa5fbc2ad73c8cf504b594c8a0a10403c198b))
+* replace paper-input with cosmoz-input in text column ([bb83d80](https://github.com/neovici/cosmoz-omnitable/commit/bb83d805770d2556ba6c4253b04b5c6ea64c37e0))
+* run prettier and test and demo ([d9223d1](https://github.com/neovici/cosmoz-omnitable/commit/d9223d162561179e3074b88b29ae4058c8b9573b))
+* update @neovici/cosmoz-datetime-input ([8534150](https://github.com/neovici/cosmoz-omnitable/commit/8534150f99aa3f58f568036cb875da670d4edc85))
+
 ## [12.26.4](https://github.com/neovici/cosmoz-omnitable/compare/v12.26.3...v12.26.4) (2023-10-17)
 
 
