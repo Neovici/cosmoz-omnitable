@@ -69,10 +69,10 @@ suite('basic', () => {
 					</cosmoz-omnitable-column>
 				</cosmoz-omnitable>
 			`,
-			generateTableDemoData(10, 11, 25)
+			generateTableDemoData(10, 11, 25),
 		);
 		columnWithoutGroupOn = omnitable.columns.find(
-			(col) => col.name === 'columnWithoutGroupOn'
+			(col) => col.name === 'columnWithoutGroupOn',
 		);
 	});
 
@@ -82,20 +82,20 @@ suite('basic', () => {
 
 	test('sets column groupOn property to group-on attribute', () => {
 		const column = omnitable.columns.find(
-			(col) => col.name === 'columnWithGroupOn'
+			(col) => col.name === 'columnWithGroupOn',
 		);
 		assert.equal(column.groupOn, 'groupOnValuePath');
 	});
 
 	test('sets column sortOn property to valuePath when sort-on attribute is missing', () => {
 		const column = omnitable.columns.find(
-			(col) => col.name === 'columnWithoutSortOn'
+			(col) => col.name === 'columnWithoutSortOn',
 		);
 		assert.equal(column.sortOn, 'valuePath');
 	});
 	test('sets column sortOn property to sort-on attribute', () => {
 		const column = omnitable.columns.find(
-			(col) => col.name === 'columnWithSortOn'
+			(col) => col.name === 'columnWithSortOn',
 		);
 		assert.equal(column.sortOn, 'sortOnValuePath');
 	});
@@ -112,14 +112,14 @@ suite('basic', () => {
 	test('deserializeFilter handles encoded strings', () => {
 		assert.deepEqual(
 			columnWithoutGroupOn.deserializeFilter({}, 'aaaa%40bbb.com'),
-			'aaaa@bbb.com'
+			'aaaa@bbb.com',
 		);
 	});
 
 	test('deserializeFilter returns object', () => {
 		assert.deepEqual(
 			columnWithoutGroupOn.deserializeFilter({}, { key: 'value' }),
-			{ key: 'value' }
+			{ key: 'value' },
 		);
 	});
 
@@ -156,7 +156,7 @@ suite('default-config', () => {
 						</cosmoz-omnitable-column-date>
 					</cosmoz-omnitable>
 				`,
-				generateTableDemoData(10, 11, 25)
+				generateTableDemoData(10, 11, 25),
 			),
 			date1 = omnitable.columns[0],
 			date2 = omnitable.columns[1],
@@ -196,7 +196,7 @@ suite('item update effects', () => {
 					</cosmoz-omnitable-column-boolean>
 				</cosmoz-omnitable>
 			`,
-			generateTableDemoData(10, 11, 25)
+			generateTableDemoData(10, 11, 25),
 		);
 	});
 
@@ -234,7 +234,7 @@ suite('render cell function', () => {
 					</cosmoz-omnitable-column>
 				</cosmoz-omnitable>
 			`,
-			[{ object: { label: 'aa', value: 11 }, name: 'BB' }]
+			[{ object: { label: 'aa', value: 11 }, name: 'BB' }],
 		);
 
 		await nextFrame();
@@ -245,7 +245,7 @@ suite('render cell function', () => {
 			omnitable.shadowRoot
 				.querySelector('cosmoz-omnitable-item-row')
 				.textContent.trim(),
-			'object.label - false - aa'
+			'object.label - false - aa',
 		);
 	});
 
@@ -256,7 +256,7 @@ suite('render cell function', () => {
 			omnitable.shadowRoot
 				.querySelector('cosmoz-omnitable-item-row')
 				.textContent.trim(),
-			'object.label - true - aa'
+			'object.label - true - aa',
 		);
 
 		omnitable.deselectItem(omnitable.data[0]);
@@ -265,7 +265,7 @@ suite('render cell function', () => {
 			omnitable.shadowRoot
 				.querySelector('cosmoz-omnitable-item-row')
 				.textContent.trim(),
-			'object.label - false - aa'
+			'object.label - false - aa',
 		);
 	});
 
@@ -280,7 +280,7 @@ suite('render cell function', () => {
 			omnitable.shadowRoot
 				.querySelector('cosmoz-omnitable-item-row')
 				.textContent.trim(),
-			'object.label - false - EDITED'
+			'object.label - false - EDITED',
 		);
 	});
 
@@ -291,7 +291,7 @@ suite('render cell function', () => {
 			omnitable.shadowRoot
 				.querySelector('cosmoz-omnitable-item-row')
 				.textContent.trim(),
-			'name - false - BB'
+			'name - false - BB',
 		);
 	});
 });
@@ -302,8 +302,8 @@ suite('render header function', () => {
 	const getRows = () =>
 			Array.from(
 				omnitable.shadowRoot.querySelectorAll(
-					'cosmoz-omnitable-item-row:not([hidden])'
-				)
+					'cosmoz-omnitable-item-row:not([hidden])',
+				),
 			),
 		toggle = async () => {
 			omnitable.shadowRoot
@@ -344,7 +344,7 @@ suite('render header function', () => {
 					</cosmoz-omnitable-column-number>
 				</cosmoz-omnitable>
 			`,
-			generateTableDemoData(10, 11, 25)
+			generateTableDemoData(10, 11, 25),
 		);
 		await nextFrame();
 	});
@@ -360,22 +360,22 @@ suite('render header function', () => {
 	test('custom headers can set filters', async () => {
 		assert.isFalse(
 			getRows().every(
-				(row) => parseInt(row.textContent.replace(',', ''), 10) >= 9000
-			)
+				(row) => parseInt(row.textContent.replace(',', ''), 10) >= 9000,
+			),
 		);
 
 		await toggle();
 		assert.isTrue(
 			getRows().every(
-				(row) => parseInt(row.textContent.replace(',', ''), 10) >= 9000
-			)
+				(row) => parseInt(row.textContent.replace(',', ''), 10) >= 9000,
+			),
 		);
 
 		await toggle();
 		assert.isFalse(
 			getRows().every(
-				(row) => parseInt(row.textContent.replace(',', ''), 10) >= 9000
-			)
+				(row) => parseInt(row.textContent.replace(',', ''), 10) >= 9000,
+			),
 		);
 	});
 });
@@ -420,16 +420,16 @@ suite('fit columns behaviour', () => {
 					></cosmoz-omnitable-column>
 				</cosmoz-omnitable>
 			`,
-			data
+			data,
 		);
 	});
 
 	test('it adjusts the visible columns based on the available width', async () => {
 		assert.deepEqual(
 			Array.from(omnitable.shadowRoot.querySelectorAll('.header-cell')).map(
-				(cell) => !!cell.offsetWidth
+				(cell) => !!cell.offsetWidth,
 			),
-			[true, true, true, true, true]
+			[true, true, true, true, true],
 		);
 
 		omnitable.style.width = '400px';
@@ -439,9 +439,9 @@ suite('fit columns behaviour', () => {
 
 		assert.deepEqual(
 			Array.from(omnitable.shadowRoot.querySelectorAll('.header-cell')).map(
-				(cell) => !!cell.offsetWidth
+				(cell) => !!cell.offsetWidth,
 			),
-			[true, true, true, false, true]
+			[true, true, true, false, true],
 		);
 
 		omnitable.style.width = '800px';
@@ -451,9 +451,9 @@ suite('fit columns behaviour', () => {
 
 		assert.deepEqual(
 			Array.from(omnitable.shadowRoot.querySelectorAll('.header-cell')).map(
-				(cell) => !!cell.offsetWidth
+				(cell) => !!cell.offsetWidth,
 			),
-			[true, true, true, true, true]
+			[true, true, true, true, true],
 		);
 	});
 });
@@ -478,7 +478,7 @@ suite('render group function', () => {
 					</cosmoz-omnitable-column-number>
 				</cosmoz-omnitable>
 			`,
-			data
+			data,
 		);
 		omnitable.setGroupOn('custom');
 
@@ -491,7 +491,7 @@ suite('render group function', () => {
 		assert.equal(
 			omnitable.shadowRoot.querySelector('cosmoz-omnitable-group-row')
 				.textContent,
-			'custom - false - 0'
+			'custom - false - 0',
 		);
 	});
 });
@@ -519,14 +519,14 @@ suite('enabled columns', () => {
 					title="Name3"
 				></cosmoz-omnitable-column>
 			</cosmoz-omnitable>`,
-			generateTableDemoData(10, 10, 25)
+			generateTableDemoData(10, 10, 25),
 		);
 
 		assert.deepEqual(
 			Array.from(omnitable.shadowRoot.querySelectorAll('.header-cell')).map(
-				(cell) => cell.title
+				(cell) => cell.title,
 			),
-			['Name1']
+			['Name1'],
 		);
 	});
 
@@ -549,14 +549,14 @@ suite('enabled columns', () => {
 					title="Name3"
 				></cosmoz-omnitable-column>
 			</cosmoz-omnitable>`,
-			generateTableDemoData(10, 10, 25)
+			generateTableDemoData(10, 10, 25),
 		);
 
 		assert.deepEqual(
 			Array.from(omnitable.shadowRoot.querySelectorAll('.header-cell')).map(
-				(cell) => cell.title
+				(cell) => cell.title,
 			),
-			['Name1', 'Name2', 'Name3']
+			['Name1', 'Name2', 'Name3'],
 		);
 
 		omnitable.enabledColumns = ['name1'];
@@ -564,9 +564,9 @@ suite('enabled columns', () => {
 
 		assert.deepEqual(
 			Array.from(omnitable.shadowRoot.querySelectorAll('.header-cell')).map(
-				(cell) => cell.title
+				(cell) => cell.title,
 			),
-			['Name1']
+			['Name1'],
 		);
 
 		omnitable.enabledColumns = ['name2', 'name3'];
@@ -574,9 +574,9 @@ suite('enabled columns', () => {
 
 		assert.deepEqual(
 			Array.from(omnitable.shadowRoot.querySelectorAll('.header-cell')).map(
-				(cell) => cell.title
+				(cell) => cell.title,
 			),
-			['Name2', 'Name3']
+			['Name2', 'Name3'],
 		);
 
 		omnitable.enabledColumns = undefined;
@@ -584,9 +584,9 @@ suite('enabled columns', () => {
 
 		assert.deepEqual(
 			Array.from(omnitable.shadowRoot.querySelectorAll('.header-cell')).map(
-				(cell) => cell.title
+				(cell) => cell.title,
 			),
-			['Name1', 'Name2', 'Name3']
+			['Name1', 'Name2', 'Name3'],
 		);
 	});
 });

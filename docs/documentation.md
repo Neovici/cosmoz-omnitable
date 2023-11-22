@@ -134,7 +134,7 @@ For `cosmoz-omnitable-column`
 
 ```html
 <template>
-   <paper-input label="[[title]]" value="{{filter}}"></paper-input>
+   <cosmoz-input label="[[title]]" value="{{filter}}"></cosmoz-input>
 </template>
 ```
 

@@ -1,6 +1,4 @@
-import {
-	assert, html, nextFrame
-} from '@open-wc/testing';
+import { assert, html, nextFrame } from '@open-wc/testing';
 
 import { setupOmnitableFixture } from './helpers/utils';
 import { generateTableDemoData } from '../demo/table-demo-helper';
@@ -9,23 +7,34 @@ import '../cosmoz-omnitable.js';
 import '../cosmoz-omnitable-columns.js';
 
 suite('id', () => {
-	let omnitable,
-		data;
+	let omnitable, data;
 
 	setup(async () => {
 		data = generateTableDemoData(10, 11, 25);
-		omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable group-on="id" .resizeSpeedFactor=${ 1 }>
-				<cosmoz-omnitable-column title="Id" name="id" value-path="id" sort-on="id"></cosmoz-omnitable-column>
-			</cosmoz-omnitable>
-		`, data);
+		omnitable = await setupOmnitableFixture(
+			html`
+				<cosmoz-omnitable group-on="id" .resizeSpeedFactor=${1}>
+					<cosmoz-omnitable-column
+						title="Id"
+						name="id"
+						value-path="id"
+						sort-on="id"
+					></cosmoz-omnitable-column>
+				</cosmoz-omnitable>
+			`,
+			data,
+		);
 	});
 
 	test('groupOn id', () => {
 		assert.equal(omnitable.groupOn, 'id');
 		const groupOnColumn = omnitable.groupOnColumn;
 		assert.equal(typeof groupOnColumn, 'object');
-		assert.equal(groupOnColumn.name, 'id', 'Expected "groupOnColumn" to be the column that matches "groupOn" value');
+		assert.equal(
+			groupOnColumn.name,
+			'id',
+			'Expected "groupOnColumn" to be the column that matches "groupOn" value',
+		);
 		assert.equal(groupOnColumn, omnitable.columns[0]);
 	});
 
@@ -53,22 +62,41 @@ suite('id', () => {
 });
 
 suite('bool', () => {
-	let omnitable,
-		data;
+	let omnitable, data;
 
 	setup(async () => {
 		data = generateTableDemoData(10, 11, 25);
-		omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable group-on="bool">
-				<cosmoz-omnitable-column title="Id" name="id" value-path="id" sort-on="id">
-				</cosmoz-omnitable-column>
-				<cosmoz-omnitable-column-boolean title="Boolean" name="bool" value-path="bool" sort-on="bool" group-on="bool"
-					true-label="Yes" false-label="No">
-				</cosmoz-omnitable-column-boolean>
-				<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" sort-on="value">
-				</cosmoz-omnitable-column-number>
-			</cosmoz-omnitable>
-		`, data);
+		omnitable = await setupOmnitableFixture(
+			html`
+				<cosmoz-omnitable group-on="bool">
+					<cosmoz-omnitable-column
+						title="Id"
+						name="id"
+						value-path="id"
+						sort-on="id"
+					>
+					</cosmoz-omnitable-column>
+					<cosmoz-omnitable-column-boolean
+						title="Boolean"
+						name="bool"
+						value-path="bool"
+						sort-on="bool"
+						group-on="bool"
+						true-label="Yes"
+						false-label="No"
+					>
+					</cosmoz-omnitable-column-boolean>
+					<cosmoz-omnitable-column-number
+						title="Value"
+						name="value"
+						value-path="value"
+						sort-on="value"
+					>
+					</cosmoz-omnitable-column-number>
+				</cosmoz-omnitable>
+			`,
+			data,
+		);
 	});
 
 	test('groupOnDescending true for boolean column changes order of items', async () => {
@@ -90,19 +118,31 @@ suite('bool', () => {
 });
 
 suite('amount', () => {
-	let omnitable,
-		data;
+	let omnitable, data;
 
 	setup(async () => {
 		data = generateTableDemoData(10, 11, 25);
-		omnitable = await setupOmnitableFixture(html`
-			<cosmoz-omnitable group-on="id">
-				<cosmoz-omnitable-column title="Id" name="id" value-path="id" sort-on="id">
-				</cosmoz-omnitable-column>
-				<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount" sort-on="amount">
-				</cosmoz-omnitable-column-amount>
-			</cosmoz-omnitable>
-		`, data);
+		omnitable = await setupOmnitableFixture(
+			html`
+				<cosmoz-omnitable group-on="id">
+					<cosmoz-omnitable-column
+						title="Id"
+						name="id"
+						value-path="id"
+						sort-on="id"
+					>
+					</cosmoz-omnitable-column>
+					<cosmoz-omnitable-column-amount
+						title="Amount"
+						name="amount"
+						value-path="amount"
+						sort-on="amount"
+					>
+					</cosmoz-omnitable-column-amount>
+				</cosmoz-omnitable>
+			`,
+			data,
+		);
 	});
 
 	test('setting groupOn property to "amount" updates property groupOnColumn', async () => {
@@ -110,7 +150,11 @@ suite('amount', () => {
 		await nextFrame();
 		const groupOnColumn = omnitable.groupOnColumn;
 		assert.equal(typeof groupOnColumn, 'object');
-		assert.equal(groupOnColumn.name, 'amount', 'Expected "groupOnColumn" to be the column that matches "groupOn" value');
+		assert.equal(
+			groupOnColumn.name,
+			'amount',
+			'Expected "groupOnColumn" to be the column that matches "groupOn" value',
+		);
 		assert.equal(groupOnColumn, omnitable.columns[1]);
 	});
 });

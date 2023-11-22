@@ -1,139 +1,206 @@
 <!doctype html>
 <html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-	<title>Cosmoz Omnitable demo</title>
+		<title>Cosmoz Omnitable demo</title>
 
-	<script src="/node_modules/web-animations-js/web-animations-next-lite.min.js"></script>
-	<script type="module" src="/node_modules/@polymer/polymer/polymer-element.js"></script>
-	<script type="module" src="/node_modules/@polymer/iron-icons/editor-icons.js"></script>
-	<script type="module" src="/node_modules/@polymer/iron-icons/iron-icons.js"></script>
-	<script type="module" src="/node_modules/@polymer/paper-button/paper-button.js"></script>
-	<script type="module" src="../cosmoz-omnitable.js"></script>
-	<script type="module" src="./table-demo-helper.js"></script>
-	<style>
-		body, x-page { margin: 0; height: 100vh; }
-	</style>
-</head>
-<body>
-	<dom-module id="x-page">
-		<template>
-			<style>
-				:host {
-					display: flex;
-					flex-direction: column;
-					position: relative;
-				}
-
-				#container {
-					display: flex;
-					flex-direction: column;
-					flex: 1;
-				}
-
-				cosmoz-omnitable { flex: auto; }
-
-				.action {
-					padding: 5px;
-					margin: 5px 5px 10px 5px;
-				}
-			</style>
-			<div id="container">
-				<h3>Cosmoz omnitable demo</h3>
-
-				<div style="display: flex; align-items: center">
-					<button class="action" on-tap="changeData">Generate a new data set</button>
-					<div class="action">
-						Selected items count: <span>{{selectedItems.length}}</span>
-					</div>
-				</div>
-				<div style="display: flex; flex-direction: column">
-					<div>Current filters</div>
-					<ul>
-						<li>Boolean: {{boolFilter}}</li>
-						<li>Value: minValue={{numberFilter.minValue}}, maxValue={{numberFilter.maxValue}}</li>
-						<li>Amount: minValue={{amountFilter.minValue}}, maxValue={{amountFilter.maxValue}}</li>
-						<li>Date: {{dateFilter}}</li>
-						<li>Name: {{nameFilter}}</li>
-					</ul>
-				</div>
-
-				<cosmoz-omnitable id="omnitable" data="[[data]]" selection-enabled selected-items="{{selectedItems}}">
-					<cosmoz-omnitable-column title="Id" value-path="id" name="id"></cosmoz-omnitable-column>
-					<cosmoz-omnitable-column-boolean title="Boolean" name="bool" value-path="bool" filter="{{boolFilter}}" true-label="Yes" false-label="No"></cosmoz-omnitable-column-boolean>
-					<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" locale="{{locale}}" filter="{{numberFilter}}"></cosmoz-omnitable-column-number>
-					<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount" filter="{{amountFilter}}"></cosmoz-omnitable-column-amount>
-					<cosmoz-omnitable-column-date title="Date" name="datejson" value-path="dateJSON" locale="sv" filter="{{dateFilter}}"></cosmoz-omnitable-column-date>
-					<cosmoz-omnitable-column title="Sub-property" name="subproperty" value-path="sub.subProp"></cosmoz-omnitable-column>
-					<cosmoz-omnitable-column title="Name" name="name" value-path="name" filter="{{nameFilter}}"></cosmoz-omnitable-column>
-				</cosmoz-omnitable>
-			</div>
-		</template>
-	</dom-module>
-
-	<x-page></x-page>
-
-	<script type="module">
-		import { PolymerElement } from '@polymer/polymer/polymer-element';
-		import { generateTableDemoData } from './table-demo-helper';
-
-		class XPage extends PolymerElement {
-			static get is() {
-				return 'x-page';
+		<script
+			type="module"
+			src="/node_modules/@polymer/polymer/polymer-element.js"
+		></script>
+		<script
+			type="module"
+			src="/node_modules/@polymer/iron-icons/editor-icons.js"
+		></script>
+		<script
+			type="module"
+			src="/node_modules/@polymer/iron-icons/iron-icons.js"
+		></script>
+		<script
+			type="module"
+			src="/node_modules/@polymer/paper-button/paper-button.js"
+		></script>
+		<script type="module" src="../cosmoz-omnitable.js"></script>
+		<script type="module" src="./table-demo-helper.js"></script>
+		<style>
+			body,
+			x-page {
+				margin: 0;
+				height: 100vh;
 			}
-			static get properties() {
-				return {
-					data: {
-						type: Array
-					},
-					selectedItems: {
-						type: Array
-					},
-					nameFilter: {
-						type: String
-					},
-					boolFilter: {
-						type: Boolean
+		</style>
+	</head>
+	<body>
+		<dom-module id="x-page">
+			<template>
+				<style>
+					:host {
+						display: flex;
+						flex-direction: column;
+						position: relative;
 					}
-				};
+
+					#container {
+						display: flex;
+						flex-direction: column;
+						flex: 1;
+					}
+
+					cosmoz-omnitable {
+						flex: auto;
+					}
+
+					.action {
+						padding: 5px;
+						margin: 5px 5px 10px 5px;
+					}
+				</style>
+				<div id="container">
+					<h3>Cosmoz omnitable demo</h3>
+
+					<div style="display: flex; align-items: center">
+						<button class="action" on-tap="changeData">
+							Generate a new data set
+						</button>
+						<div class="action">
+							Selected items count: <span>{{selectedItems.length}}</span>
+						</div>
+					</div>
+					<div style="display: flex; flex-direction: column">
+						<div>Current filters</div>
+						<ul>
+							<li>Boolean: {{boolFilter}}</li>
+							<li>
+								Value: minValue={{numberFilter.minValue}},
+								maxValue={{numberFilter.maxValue}}
+							</li>
+							<li>
+								Amount: minValue={{amountFilter.minValue}},
+								maxValue={{amountFilter.maxValue}}
+							</li>
+							<li>Date: {{dateFilter}}</li>
+							<li>Name: {{nameFilter}}</li>
+						</ul>
+					</div>
+
+					<cosmoz-omnitable
+						id="omnitable"
+						data="[[data]]"
+						selection-enabled
+						selected-items="{{selectedItems}}"
+					>
+						<cosmoz-omnitable-column
+							title="Id"
+							value-path="id"
+							name="id"
+						></cosmoz-omnitable-column>
+						<cosmoz-omnitable-column-boolean
+							title="Boolean"
+							name="bool"
+							value-path="bool"
+							filter="{{boolFilter}}"
+							true-label="Yes"
+							false-label="No"
+						></cosmoz-omnitable-column-boolean>
+						<cosmoz-omnitable-column-number
+							title="Value"
+							name="value"
+							value-path="value"
+							locale="{{locale}}"
+							filter="{{numberFilter}}"
+						></cosmoz-omnitable-column-number>
+						<cosmoz-omnitable-column-amount
+							title="Amount"
+							name="amount"
+							value-path="amount"
+							filter="{{amountFilter}}"
+						></cosmoz-omnitable-column-amount>
+						<cosmoz-omnitable-column-date
+							title="Date"
+							name="datejson"
+							value-path="dateJSON"
+							locale="sv"
+							filter="{{dateFilter}}"
+						></cosmoz-omnitable-column-date>
+						<cosmoz-omnitable-column
+							title="Sub-property"
+							name="subproperty"
+							value-path="sub.subProp"
+						></cosmoz-omnitable-column>
+						<cosmoz-omnitable-column
+							title="Name"
+							name="name"
+							value-path="name"
+							filter="{{nameFilter}}"
+						></cosmoz-omnitable-column>
+					</cosmoz-omnitable>
+				</div>
+			</template>
+		</dom-module>
+
+		<x-page></x-page>
+
+		<script type="module">
+			import { PolymerElement } from '@polymer/polymer/polymer-element';
+			import { generateTableDemoData } from './table-demo-helper';
+
+			class XPage extends PolymerElement {
+				static get is() {
+					return 'x-page';
+				}
+				static get properties() {
+					return {
+						data: {
+							type: Array,
+						},
+						selectedItems: {
+							type: Array,
+						},
+						nameFilter: {
+							type: String,
+						},
+						boolFilter: {
+							type: Boolean,
+						},
+					};
+				}
+				connectedCallback() {
+					super.connectedCallback();
+					this.data = generateTableDemoData(20, 25, 25);
+
+					// Test
+					// set filters to display first item
+
+					this.nameFilter = this.data[0].name;
+					this.amountFilter = {
+						minValue: this.data[0].amount.amount,
+						maxValue: this.data[0].amount.amount,
+					};
+
+					this.dateFilter = this.data[0].dateJSON;
+					this.boolFilter = this.data[0].bool;
+					this.numberFilter = {
+						minValue: this.data[0].value - 1,
+						maxValue: this.data[0].value + 1,
+					};
+				}
+
+				changeData() {
+					this.data = generateTableDemoData(20, 25, 10);
+				}
+
+				_computeLabel(text, count) {
+					return text + ' ' + count + ' items';
+				}
+
+				removeItems(event, detail) {
+					console.log('runAction', detail.items, event, detail, detail.items);
+					detail.omnitable.removeItems(detail.items);
+				}
 			}
-			connectedCallback() {
-				super.connectedCallback();
-				this.data = generateTableDemoData(20, 25, 25);
-
-				// Test
-				// set filters to display first item
-
-				this.nameFilter = this.data[0].name;
-				this.amountFilter = {
-					minValue: this.data[0].amount.amount,
-					maxValue: this.data[0].amount.amount
-				};
-
-				this.dateFilter = this.data[0].dateJSON;
-				this.boolFilter = this.data[0].bool;
-				this.numberFilter = {
-					minValue: this.data[0].value - 1,
-					maxValue: this.data[0].value + 1
-				};
-			}
-
-			changeData() {
-				this.data = generateTableDemoData(20, 25, 10);
-			}
-
-			_computeLabel(text, count) {
-				return text + ' ' + count + ' items';
-			}
-
-			removeItems(event, detail) {
-				console.log('runAction', detail.items, event, detail, detail.items);
-				detail.omnitable.removeItems(detail.items);
-			}
-		}
-		customElements.define(XPage.is, XPage);
-	</script>
-</body>
+			customElements.define(XPage.is, XPage);
+		</script>
+	</body>
 </html>

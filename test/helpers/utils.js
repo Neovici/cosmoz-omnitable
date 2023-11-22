@@ -1,6 +1,4 @@
-import {
-	fixture, nextFrame
-} from '@open-wc/testing';
+import { fixture, nextFrame } from '@open-wc/testing';
 import { flush } from '@polymer/polymer/lib/utils/flush';
 
 export const setupOmnitableFixture = async (omnitableFixture, data) => {

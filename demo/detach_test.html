@@ -1,220 +1,324 @@
 <!doctype html>
 <html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-	<title>Cosmoz Omnitable demo</title>
+		<title>Cosmoz Omnitable demo</title>
 
-	<script src="/node_modules/web-animations-js/web-animations-next-lite.min.js"></script>
-	<script type="module" src="/node_modules/@polymer/polymer/polymer-element.js"></script>
-	<script type="module" src="/node_modules/@polymer/iron-icons/editor-icons.js"></script>
-	<script type="module" src="/node_modules/@polymer/iron-icons/iron-icons.js"></script>
-	<script type="module" src="/node_modules/@polymer/paper-button/paper-button.js"></script>
+		<script
+			type="module"
+			src="/node_modules/@polymer/polymer/polymer-element.js"
+		></script>
+		<script
+			type="module"
+			src="/node_modules/@polymer/iron-icons/editor-icons.js"
+		></script>
+		<script
+			type="module"
+			src="/node_modules/@polymer/iron-icons/iron-icons.js"
+		></script>
+		<script
+			type="module"
+			src="/node_modules/@polymer/paper-button/paper-button.js"
+		></script>
 
-	<script type="module" src="../cosmoz-omnitable.js"></script>
-	<style>
-		body, x-page { margin: 0; height: 100vh; }
-	</style>
-</head>
-<body>
-	<dom-module id="x-container">
-		<template>
-			<style>
-				:host {
-					display: flex;
-					flex-direction: column;
-				}
-				#content1, #content2 {
-					flex: auto;
-					position: relative;
-				}
-			</style>
-
-			<button on-tap="toggleSlot">Change slot</button>
-			<template is="dom-if" if="[[ !showContent2 ]]" restamp>
-				<h1>Content1</h1>
-				<div id="content1">
-					<slot></slot>
-				</div>
-			</template>
-			<template is="dom-if" if="[[ showContent2 ]]" restamp>
-				<h1>Content2</h1>
-				<div id="content2">
-					<slot></slot>
-				</div>
-			</template>
-		</template>
-	</dom-module>
-
-	<dom-module id="x-page">
-		<template>
-			<style>
-				:host {
-					display: flex;
-					flex-direction: column;
-					position: relative;
-				}
-
-				cosmoz-viewinfo {
-					display: flex;
-					flex-direction: column;
-					flex: 1;
-				}
-				x-container {flex: auto; }
-				cosmoz-omnitable {
-					position: absolute;
-					left: 0;
-					right: 0;
-					top: 0;
-					bottom: 0;
-				}
-
-				.action {
-					padding: 5px;
-					margin: 5px 5px 10px 5px;
-				}
-			</style>
-
-			<cosmoz-viewinfo>
-				<h3>Cosmoz omnitable demo</h3>
-
-				<cosmoz-i18next interpolation-prefix="{" interpolation-suffix="}">
-				</cosmoz-i18next>
-
-				<div style="display: flex; align-items: center">
-					<button class="action" on-tap="changeData">Generate a new data set</button>
-					<button class="action" on-tap="emptyData">Generate an empty data set</button>
-					<div class="action">
-						Selected items count: <span>[[ selectedItems.length ]]</span>
-					</div>
-					<div class="action">
-						<paper-dropdown-menu label="Locale" no-animations>
-							<paper-listbox class="dropdown-content" selected="{{ locale }}" attr-for-selected="value">
-								<paper-item value="en">en</paper-item>
-								<paper-item value="fr">fr</paper-item>
-								<paper-item value="sv">sv</paper-item>
-							</paper-listbox>
-						</paper-dropdown-menu>
-					</div>
-				</div>
-				<x-container>
-					<cosmoz-omnitable id="omnitable" data="[[ data ]]" selection-enabled selected-items="{{ selectedItems }}">
-						<cosmoz-omnitable-column-autocomplete title="Id" name="id" value-path="id" sort-on="id" group-on="id">
-						</cosmoz-omnitable-column-autocomplete>
-						<cosmoz-omnitable-column-boolean title="Boolean" name="boolean" value-path="bool" sort-on="bool" group-on="bool" true-label="Yes" false-label="No">
-						</cosmoz-omnitable-column-boolean>
-						<cosmoz-omnitable-column-number title="Value" name="value" value-path="value" sort-on="value" group-on="value" locale="[[ locale ]]">
-						</cosmoz-omnitable-column-number>
-						<cosmoz-omnitable-column-autocomplete title="Group" name="group" value-path="group" sort-on="group" group-on="group">
-						</cosmoz-omnitable-column-autocomplete>
-						<cosmoz-omnitable-column-amount title="Amount" name="amount" value-path="amount" sort-on="amount" group-on="amount">
-						</cosmoz-omnitable-column-amount>
-						<cosmoz-omnitable-column-date title="Date" name="date" value-path="date" sort-on="date" group-on="date">
-						</cosmoz-omnitable-column-date>
-						<cosmoz-omnitable-column-date title="DateJSON" name="datejson" value-path="dateJSON" sort-on="dateJSON" group-on="dateJSON">
-						</cosmoz-omnitable-column-date>
-						<cosmoz-omnitable-column-list title="List" name="list" value-path="list">
-						</cosmoz-omnitable-column-list>
-						<cosmoz-omnitable-column title="Sub-property" name="subproperty" value-path="sub.subProp" sort-on="sub.subProp" group-on="sub.subProp" flex="5">
-						</cosmoz-omnitable-column>
-						<cosmoz-omnitable-column title="Name" name="name" value-path="name" sort-on="name" group-on="name" flex="2">
-						</cosmoz-omnitable-column>
-						<cosmoz-omnitable-column title="Custom template" name="customname" value-path="name" sort-on="name" width="50px" flex="2">
-						</cosmoz-omnitable-column>
-
-						<paper-button slot="actions" on-run="removeItems">
-							<iron-icon icon="delete"></iron-icon>
-							<span>Remove [[ selectedItems.length ]] items</span>
-						</paper-button>
-						<paper-item slot="actions"><paper-button>
-							bigger bigger button 5
-						</paper-button></paper-item>
-						<paper-item slot="actions"><paper-button>
-							bigger bigger bigger button 6
-						</paper-button></paper-item>
-					</cosmoz-omnitable>
-				</x-container>
-
-			</cosmoz-viewinfo>
-		</template>
-	</dom-module>
-
-	<x-page></x-page>
-
-	<script type="module">
-		import { PolymerElement } from '@polymer/polymer/polymer-element';
-		import { generateTableDemoData } from './table-demo-helper';
-
-		class XContainer extends PolymerElement {
-			static get is() {
-				return 'x-container';
+		<script type="module" src="../cosmoz-omnitable.js"></script>
+		<style>
+			body,
+			x-page {
+				margin: 0;
+				height: 100vh;
 			}
-			static get properties() {
-				return {
-					showContent2: {
-						type: Boolean,
-						value: false
+		</style>
+	</head>
+	<body>
+		<dom-module id="x-container">
+			<template>
+				<style>
+					:host {
+						display: flex;
+						flex-direction: column;
 					}
-				};
-			}
-			toggleSlot() {
-				this.showContent2 = !this.showContent2;
-			}
-		}
-
-		customElements.define(XContainer.is, XContainer);
-
-		class XPage extends PolymerElement {
-			static get is() {
-				return 'x-page';
-			}
-			static get properties() {
-				return {
-					data: {
-						type: Array
-					},
-					selectedItems: {
-						type: Array
-					},
-					locale: {
-						type: String,
-						value: 'en'
+					#content1,
+					#content2 {
+						flex: auto;
+						position: relative;
 					}
-				};
+				</style>
+
+				<button on-tap="toggleSlot">Change slot</button>
+				<template is="dom-if" if="[[ !showContent2 ]]" restamp>
+					<h1>Content1</h1>
+					<div id="content1">
+						<slot></slot>
+					</div>
+				</template>
+				<template is="dom-if" if="[[ showContent2 ]]" restamp>
+					<h1>Content2</h1>
+					<div id="content2">
+						<slot></slot>
+					</div>
+				</template>
+			</template>
+		</dom-module>
+
+		<dom-module id="x-page">
+			<template>
+				<style>
+					:host {
+						display: flex;
+						flex-direction: column;
+						position: relative;
+					}
+
+					cosmoz-viewinfo {
+						display: flex;
+						flex-direction: column;
+						flex: 1;
+					}
+					x-container {
+						flex: auto;
+					}
+					cosmoz-omnitable {
+						position: absolute;
+						left: 0;
+						right: 0;
+						top: 0;
+						bottom: 0;
+					}
+
+					.action {
+						padding: 5px;
+						margin: 5px 5px 10px 5px;
+					}
+				</style>
+
+				<cosmoz-viewinfo>
+					<h3>Cosmoz omnitable demo</h3>
+
+					<cosmoz-i18next interpolation-prefix="{" interpolation-suffix="}">
+					</cosmoz-i18next>
+
+					<div style="display: flex; align-items: center">
+						<button class="action" on-tap="changeData">
+							Generate a new data set
+						</button>
+						<button class="action" on-tap="emptyData">
+							Generate an empty data set
+						</button>
+						<div class="action">
+							Selected items count: <span>[[ selectedItems.length ]]</span>
+						</div>
+						<div class="action">
+							<paper-dropdown-menu label="Locale" no-animations>
+								<paper-listbox
+									class="dropdown-content"
+									selected="{{ locale }}"
+									attr-for-selected="value"
+								>
+									<paper-item value="en">en</paper-item>
+									<paper-item value="fr">fr</paper-item>
+									<paper-item value="sv">sv</paper-item>
+								</paper-listbox>
+							</paper-dropdown-menu>
+						</div>
+					</div>
+					<x-container>
+						<cosmoz-omnitable
+							id="omnitable"
+							data="[[ data ]]"
+							selection-enabled
+							selected-items="{{ selectedItems }}"
+						>
+							<cosmoz-omnitable-column-autocomplete
+								title="Id"
+								name="id"
+								value-path="id"
+								sort-on="id"
+								group-on="id"
+							>
+							</cosmoz-omnitable-column-autocomplete>
+							<cosmoz-omnitable-column-boolean
+								title="Boolean"
+								name="boolean"
+								value-path="bool"
+								sort-on="bool"
+								group-on="bool"
+								true-label="Yes"
+								false-label="No"
+							>
+							</cosmoz-omnitable-column-boolean>
+							<cosmoz-omnitable-column-number
+								title="Value"
+								name="value"
+								value-path="value"
+								sort-on="value"
+								group-on="value"
+								locale="[[ locale ]]"
+							>
+							</cosmoz-omnitable-column-number>
+							<cosmoz-omnitable-column-autocomplete
+								title="Group"
+								name="group"
+								value-path="group"
+								sort-on="group"
+								group-on="group"
+							>
+							</cosmoz-omnitable-column-autocomplete>
+							<cosmoz-omnitable-column-amount
+								title="Amount"
+								name="amount"
+								value-path="amount"
+								sort-on="amount"
+								group-on="amount"
+							>
+							</cosmoz-omnitable-column-amount>
+							<cosmoz-omnitable-column-date
+								title="Date"
+								name="date"
+								value-path="date"
+								sort-on="date"
+								group-on="date"
+							>
+							</cosmoz-omnitable-column-date>
+							<cosmoz-omnitable-column-date
+								title="DateJSON"
+								name="datejson"
+								value-path="dateJSON"
+								sort-on="dateJSON"
+								group-on="dateJSON"
+							>
+							</cosmoz-omnitable-column-date>
+							<cosmoz-omnitable-column-list
+								title="List"
+								name="list"
+								value-path="list"
+							>
+							</cosmoz-omnitable-column-list>
+							<cosmoz-omnitable-column
+								title="Sub-property"
+								name="subproperty"
+								value-path="sub.subProp"
+								sort-on="sub.subProp"
+								group-on="sub.subProp"
+								flex="5"
+							>
+							</cosmoz-omnitable-column>
+							<cosmoz-omnitable-column
+								title="Name"
+								name="name"
+								value-path="name"
+								sort-on="name"
+								group-on="name"
+								flex="2"
+							>
+							</cosmoz-omnitable-column>
+							<cosmoz-omnitable-column
+								title="Custom template"
+								name="customname"
+								value-path="name"
+								sort-on="name"
+								width="50px"
+								flex="2"
+							>
+							</cosmoz-omnitable-column>
+
+							<paper-button slot="actions" on-run="removeItems">
+								<iron-icon icon="delete"></iron-icon>
+								<span>Remove [[ selectedItems.length ]] items</span>
+							</paper-button>
+							<paper-item slot="actions"
+								><paper-button>
+									bigger bigger button 5
+								</paper-button></paper-item
+							>
+							<paper-item slot="actions"
+								><paper-button>
+									bigger bigger bigger button 6
+								</paper-button></paper-item
+							>
+						</cosmoz-omnitable>
+					</x-container>
+				</cosmoz-viewinfo>
+			</template>
+		</dom-module>
+
+		<x-page></x-page>
+
+		<script type="module">
+			import { PolymerElement } from '@polymer/polymer/polymer-element';
+			import { generateTableDemoData } from './table-demo-helper';
+
+			class XContainer extends PolymerElement {
+				static get is() {
+					return 'x-container';
+				}
+				static get properties() {
+					return {
+						showContent2: {
+							type: Boolean,
+							value: false,
+						},
+					};
+				}
+				toggleSlot() {
+					this.showContent2 = !this.showContent2;
+				}
 			}
 
-			connectedCallback() {
-				super.connectedCallback();
-				const data = generateTableDemoData(10, 11, 25);
-				// Used to test filtering and sorting when a row has an undefined or null amount or number
-				data[0].amount = undefined;
-				data[1].value = undefined;
-				data[2].amount = null;
-				data[3].value = null;
-				window.setTimeout(() => {
-					this.data = data;
-				}, 100);
-			}
+			customElements.define(XContainer.is, XContainer);
 
-			changeData() {
-				this.data = generateTableDemoData(10, 11, 10);
-			}
+			class XPage extends PolymerElement {
+				static get is() {
+					return 'x-page';
+				}
+				static get properties() {
+					return {
+						data: {
+							type: Array,
+						},
+						selectedItems: {
+							type: Array,
+						},
+						locale: {
+							type: String,
+							value: 'en',
+						},
+					};
+				}
 
-			emptyData() {
-				this.data = [];
-			}
+				connectedCallback() {
+					super.connectedCallback();
+					const data = generateTableDemoData(10, 11, 25);
+					// Used to test filtering and sorting when a row has an undefined or null amount or number
+					data[0].amount = undefined;
+					data[1].value = undefined;
+					data[2].amount = null;
+					data[3].value = null;
+					window.setTimeout(() => {
+						this.data = data;
+					}, 100);
+				}
 
-			removeItems(event, detail) {
-				console.log('runAction', detail.items, event, detail, detail.items);
-				detail.omnitable.removeItems(detail.items);
-			}
+				changeData() {
+					this.data = generateTableDemoData(10, 11, 10);
+				}
 
-			onTap(event) {
-				console.log('onTap', event);
+				emptyData() {
+					this.data = [];
+				}
+
+				removeItems(event, detail) {
+					console.log('runAction', detail.items, event, detail, detail.items);
+					detail.omnitable.removeItems(detail.items);
+				}
+
+				onTap(event) {
+					console.log('onTap', event);
+				}
 			}
-		}
-		customElements.define(XPage.is, XPage);
-	</script>
-</body>
+			customElements.define(XPage.is, XPage);
+		</script>
+	</body>
 </html>

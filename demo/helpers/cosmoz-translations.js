@@ -6,8 +6,14 @@ import { translatable } from '@neovici/cosmoz-i18next';
 class CosmozTranslations extends translatable(PolymerElement) {
 	static get template() {
 		return html`
-				<cosmoz-i18next translations="[[ _getTranslations(locale) ]]" interpolation-prefix="{" interpolation-suffix="}" key-separator="::" ns-separator=":::">
-				</cosmoz-i18next>
+			<cosmoz-i18next
+				translations="[[ _getTranslations(locale) ]]"
+				interpolation-prefix="{"
+				interpolation-suffix="}"
+				key-separator="::"
+				ns-separator=":::"
+			>
+			</cosmoz-i18next>
 		`;
 	}
 
@@ -31,9 +37,8 @@ class CosmozTranslations extends translatable(PolymerElement) {
 				'{0} row': '{0} rad',
 				'{0} row_plural': '{0} rader',
 				'{0} selected item': '{0} valt objekt',
-				'{0} selected item_plural': '{0} valda objekt'
+				'{0} selected item_plural': '{0} valda objekt',
 			};
-
 		} else if (locale === 'fr') {
 			return {
 				Amount: 'Montant',
@@ -50,7 +55,7 @@ class CosmozTranslations extends translatable(PolymerElement) {
 				'{0} row': '{0} ligne',
 				'{0} row_plural': '{0} lignes',
 				'{0} selected item': '{0} élément sélectionné',
-				'{0} selected item_plural': '{0} éléments sélectionnés'
+				'{0} selected item_plural': '{0} éléments sélectionnés',
 			};
 		}
 
