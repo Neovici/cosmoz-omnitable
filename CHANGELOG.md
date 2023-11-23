@@ -1,3 +1,10 @@
+# [12.28.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.27.0...v12.28.0) (2023-11-23)
+
+
+### Features
+
+* adjust header styles ([4cc16d4](https://github.com/neovici/cosmoz-omnitable/commit/4cc16d43c55b3c799fd4cbe0841992ba3600bf9c))
+
 # [12.27.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.26.4...v12.27.0) (2023-11-22)
 
 
