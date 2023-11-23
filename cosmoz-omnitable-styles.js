@@ -155,19 +155,10 @@ export default css`
 			--cosmoz-omnitable-header-font-size,
 			16px
 		);
+		--cosmoz-input-label-text-transform: var(--cosmoz-omnitable-header-text-transform, none);
+		--cosmoz-input-label-font-weight: var(--cosmoz-omnitable-header-font-weight, normal);
 	}
 
-	cosmoz-autocomplete-ui::part(input-label) {
-		text-transform: var(--cosmoz-omnitable-header-text-transform, none);
-		font-weight: var(--cosmoz-omnitable-header-font-weight, normal);
-		font-family: var(
-			--cosmoz-omnitable-header-font-family,
-			'Roboto',
-			'Noto',
-			sans-serif
-		);
-		font-size: var(--cosmoz-omnitable-header-font-size, 16px);
-	}
 	cosmoz-omnitable-header-row {
 		white-space: nowrap;
 	}
