@@ -1,3 +1,10 @@
+# [12.29.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.28.0...v12.29.0) (2023-11-28)
+
+
+### Features
+
+* export checkboxes as parts ([598395b](https://github.com/neovici/cosmoz-omnitable/commit/598395b4c0ac8a90d64defeb20b4e1c59c023da4))
+
 # [12.28.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.27.0...v12.28.0) (2023-11-23)
 
 
