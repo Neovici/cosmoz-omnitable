@@ -1,3 +1,15 @@
+# [13.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.29.0...v13.0.0) (2024-01-11)
+
+
+### Features
+
+* update to pion ([0d49d48](https://github.com/neovici/cosmoz-omnitable/commit/0d49d484503b0a4639551f0562f839eda0220bf9))
+
+
+### BREAKING CHANGES
+
+* Update to @pionjs/pion.
+
 # [12.29.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.28.0...v12.29.0) (2023-11-28)
 
 
