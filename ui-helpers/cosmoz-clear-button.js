@@ -1,5 +1,5 @@
 import { tagged as css } from '@neovici/cosmoz-utils';
-import { html, component } from 'haunted';
+import { html, component } from '@pionjs/pion';
 
 const styles = css`
 	:host {

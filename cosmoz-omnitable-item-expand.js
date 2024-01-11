@@ -1,5 +1,5 @@
 /* eslint-disable object-curly-newline */
-import { component, useEffect } from 'haunted';
+import { component, useEffect } from '@pionjs/pion';
 import { html, nothing } from 'lit-html';
 import './cosmoz-omnitable-item-expand-line';
 import { notifyResize } from './lib/utils';

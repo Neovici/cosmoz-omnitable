@@ -1,4 +1,4 @@
-import { component, html } from 'haunted';
+import { component, html } from '@pionjs/pion';
 import { repeat } from 'lit-html/directives/repeat.js';
 
 const

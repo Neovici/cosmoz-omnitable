@@ -1,4 +1,4 @@
-import { html, component } from 'haunted';
+import { html, component } from '@pionjs/pion';
 import { repeat } from 'lit-html/directives/repeat.js';
 import './lib/cosmoz-omnitable-resize-nub';
 import { render } from './lib/settings/cosmoz-omnitable-sort-group';

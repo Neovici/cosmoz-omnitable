@@ -21,7 +21,7 @@ import { html } from 'lit-html';
 import { guard } from 'lit-html/directives/guard.js';
 
 import { useOmnitable } from './lib/use-omnitable';
-import { component } from 'haunted';
+import { component } from '@pionjs/pion';
 import { renderHeader } from './lib/render-header';
 import { renderFooter } from './lib/render-footer';
 import { renderList } from './lib/render-list';
