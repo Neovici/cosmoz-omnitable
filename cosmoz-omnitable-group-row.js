@@ -1,4 +1,4 @@
-import { component } from 'haunted';
+import { component } from '@pionjs/pion';
 import { nothing } from 'lit-html';
 
 const GroupRow = ({ column, item, selected, folded, group }) => {
