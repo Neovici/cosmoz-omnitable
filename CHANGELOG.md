@@ -1,3 +1,10 @@
+# [13.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.0.0...v13.1.0) (2024-01-26)
+
+
+### Features
+
+* **use-list:** add rowPartFn ([e15e99a](https://github.com/neovici/cosmoz-omnitable/commit/e15e99a9fbd9f7ffbe7455bf5a8f459f176c2fb2))
+
 # [13.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v12.29.0...v13.0.0) (2024-01-11)
 
 
