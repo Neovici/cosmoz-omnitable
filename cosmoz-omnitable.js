@@ -36,7 +36,6 @@ const Omnitable = (host) => {
 		<style>
 			${guard([], () => shimCSS(styles))}
 		</style>
-		<div id="layoutStyle"></div>
 
 		<div class="mainContainer">
 			${renderHeader(header)}
