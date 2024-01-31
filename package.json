@@ -68,7 +68,7 @@
 		"@neovici/cosmoz-i18next": "^3.1.1",
 		"@neovici/cosmoz-input": "^4.0.0",
 		"@neovici/cosmoz-router": "^11.0.0",
-		"@neovici/cosmoz-utils": "^6.0.0",
+		"@neovici/cosmoz-utils": "^6.5.0",
 		"@neovici/nullxlsx": "^3.0.0",
 		"@pionjs/pion": "^2.0.0",
 		"@polymer/iron-icon": "^3.0.0",
