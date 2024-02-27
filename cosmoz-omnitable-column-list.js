@@ -14,7 +14,6 @@ import {
 	onText,
 } from './cosmoz-omnitable-column-list-mixin';
 import '@neovici/cosmoz-autocomplete';
-import { notifyResize } from './lib/utils';
 import { columnSymbol } from './lib/use-dom-columns';
 
 /**
@@ -41,10 +40,9 @@ class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
 		};
 	}
 
-	renderCell({ valuePath, textProperty }, { item, index }) {
+	renderCell({ valuePath, textProperty }, { item }) {
 		return html`<cosmoz-omnitable-column-list-data
 			.items=${getTexts(item, valuePath, textProperty)}
-			@expand=${(event) => notifyResize(event.target, index)}
 		></cosmoz-omnitable-column-list-data>`;
 	}
 
