@@ -2,7 +2,6 @@
 import { component, useEffect } from '@pionjs/pion';
 import { html, nothing } from 'lit-html';
 import './cosmoz-omnitable-item-expand-line';
-import { notifyResize } from './lib/utils';
 
 const renderExpandList = ({
 		columns,
@@ -24,7 +23,7 @@ const renderExpandList = ({
 			>`
 		),
 	ExpandList = (host) => {
-		const { expanded, index, columns } = host;
+		const { columns } = host;
 
 		useEffect(() => {
 			if (columns?.length > 0) {
@@ -34,11 +33,6 @@ const renderExpandList = ({
 			host.setAttribute('hidden', '');
 			return () => host.removeAttribute('hidden');
 		}, [columns?.length]);
-
-		useEffect(
-			() => expanded && requestAnimationFrame(() => notifyResize(host, index)),
-			[expanded]
-		);
 
 		return Array.isArray(columns) && columns.length > 0 && host.expanded
 			? renderExpandList(host)
