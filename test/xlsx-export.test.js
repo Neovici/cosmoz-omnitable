@@ -1,7 +1,7 @@
 import { assert, html, nextFrame } from '@open-wc/testing';
 
 import { assert as sinonAssert } from 'sinon';
-import { setupOmnitableFixture } from './helpers/utils';
+import { ignoreResizeObserverLoopErrors, setupOmnitableFixture } from './helpers/utils';
 
 import '../cosmoz-omnitable.js';
 import '../cosmoz-omnitable-columns.js';
@@ -11,6 +11,7 @@ import { toDate } from '../lib/utils-date';
 sinonAssert.expose(assert, { prefix: '' });
 
 suite('xlsx-export-omnitable', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable;
 	const data = [
 		{
@@ -115,6 +116,7 @@ suite('xlsx-export-omnitable', () => {
 });
 
 suite('toXlsx range tests', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable, xlsx;
 	const data = [
 		{

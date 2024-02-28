@@ -1,6 +1,11 @@
+/* eslint-disable max-lines */
 import { assert, html, nextFrame } from '@open-wc/testing';
 
-import { setupOmnitableFixture } from './helpers/utils';
+import {
+	ignoreResizeObserverLoopErrors,
+	rowVisible,
+	setupOmnitableFixture,
+} from './helpers/utils';
 
 import '../cosmoz-omnitable.js';
 import { getComparableValue } from '../cosmoz-omnitable-column-autocomplete.js';
@@ -422,10 +427,12 @@ const basicFixture = html`
 `;
 
 suite('autocomplete unit tests', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable;
 
 	setup(async () => {
 		omnitable = await setupOmnitableFixture(basicFixture, data.slice(0));
+		await rowVisible();
 	});
 
 	test('basic render test', async () => {
@@ -454,6 +461,7 @@ suite('autocomplete unit tests', () => {
 });
 
 suite('values as function', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	test('displays values from a source function', async () => {
 		const data = [
 				{

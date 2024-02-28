@@ -2,13 +2,14 @@
 import { assert, html, nextFrame } from '@open-wc/testing';
 
 import '../demo/helpers/cosmoz-translations';
-import { setupOmnitableFixture } from './helpers/utils';
+import { ignoreResizeObserverLoopErrors, rowVisible, setupOmnitableFixture } from './helpers/utils';
 import { generateTableDemoData } from '../demo/table-demo-helper';
 
 import '../cosmoz-omnitable.js';
 import '../cosmoz-omnitable-columns.js';
 
 suite('basic', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable;
 	setup(async () => {
 		omnitable = await setupOmnitableFixture(
@@ -22,6 +23,7 @@ suite('basic', () => {
 			`,
 			generateTableDemoData(10, 11, 25),
 		);
+		await rowVisible();
 	});
 
 	test('selects and deselect all items', async () => {

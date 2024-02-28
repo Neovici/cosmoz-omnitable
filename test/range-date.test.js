@@ -2,7 +2,7 @@
 import { assert, html, nextFrame } from '@open-wc/testing';
 import { assert as sinonAssert } from 'sinon';
 
-import { setupOmnitableFixture } from './helpers/utils';
+import { ignoreResizeObserverLoopErrors, rowVisible, setupOmnitableFixture } from './helpers/utils';
 import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
 
 import '../cosmoz-omnitable.js';
@@ -99,17 +99,21 @@ const data = [
 sinonAssert.expose(assert, { prefix: '' });
 
 suite('render', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	test('basic render', async () => {
-		const omnitable = await setupOmnitableFixture(rangeFixture, data),
-			cells = Array.from(
-				omnitable.shadowRoot.querySelectorAll('.itemRow-cell'),
-			);
+		const omnitable = await setupOmnitableFixture(rangeFixture, data);
+		await rowVisible();
+
+		const cells = Array.from(
+			omnitable.shadowRoot.querySelectorAll('.itemRow-cell'),
+		);
 		assert.isAtLeast(cells.length, 20);
 		assert.equal(cells[0].innerText, '17');
 	});
 });
 
 suite('date', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable, column, columnHeaderInput;
 
 	setup(async () => {

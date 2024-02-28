@@ -1,12 +1,13 @@
 import { assert, html, nextFrame } from '@open-wc/testing';
 
-import { setupOmnitableFixture } from './helpers/utils';
+import { ignoreResizeObserverLoopErrors, setupOmnitableFixture } from './helpers/utils';
 import { generateTableDemoData } from '../demo/table-demo-helper';
 
 import '../cosmoz-omnitable.js';
 import '../cosmoz-omnitable-columns.js';
 
 suite('id', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable, data;
 
 	setup(async () => {
@@ -62,6 +63,7 @@ suite('id', () => {
 });
 
 suite('bool', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable, data;
 
 	setup(async () => {
@@ -118,6 +120,7 @@ suite('bool', () => {
 });
 
 suite('amount', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable, data;
 
 	setup(async () => {

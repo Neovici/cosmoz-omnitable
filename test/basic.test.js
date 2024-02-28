@@ -4,7 +4,7 @@ import { assert, expect, html, nextFrame } from '@open-wc/testing';
 import { assert as sinonAssert, spy } from 'sinon';
 
 import '../demo/helpers/cosmoz-translations';
-import { setupOmnitableFixture } from './helpers/utils';
+import { ignoreResizeObserverLoopErrors, rowVisible, setupOmnitableFixture } from './helpers/utils';
 import { generateTableDemoData } from '../demo/table-demo-helper';
 import { flush } from '@polymer/polymer/lib/utils/flush';
 
@@ -16,6 +16,7 @@ import { columnSymbol } from '../lib/use-dom-columns';
 sinonAssert.expose(assert, { prefix: '' });
 
 suite('basic', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable, columnWithoutGroupOn;
 
 	setup(async () => {
@@ -140,6 +141,7 @@ suite('basic', () => {
 });
 
 suite('default-config', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	test('default valuePath is name', async () => {
 		const omnitable = await setupOmnitableFixture(
 				html`
@@ -169,6 +171,7 @@ suite('default-config', () => {
 });
 
 suite('item update effects', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable;
 
 	setup(async () => {
@@ -217,6 +220,7 @@ suite('item update effects', () => {
 });
 
 suite('render cell function', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable;
 
 	setup(async () => {
@@ -297,6 +301,7 @@ suite('render cell function', () => {
 });
 
 suite('render header function', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable;
 
 	const getRows = () =>
@@ -381,6 +386,7 @@ suite('render header function', () => {
 });
 
 suite('fit columns behaviour', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable;
 
 	setup(async () => {
@@ -422,6 +428,7 @@ suite('fit columns behaviour', () => {
 			`,
 			data,
 		);
+		await rowVisible();
 	});
 
 	test('it adjusts the visible columns based on the available width', async () => {
@@ -433,6 +440,7 @@ suite('fit columns behaviour', () => {
 		);
 
 		omnitable.style.width = '400px';
+		await nextFrame();
 		await nextFrame();
 		await nextFrame();
 		await nextFrame();
@@ -448,6 +456,7 @@ suite('fit columns behaviour', () => {
 		await nextFrame();
 		await nextFrame();
 		await nextFrame();
+		await nextFrame();
 
 		assert.deepEqual(
 			Array.from(omnitable.shadowRoot.querySelectorAll('.header-cell')).map(
@@ -459,6 +468,7 @@ suite('fit columns behaviour', () => {
 });
 
 suite('render group function', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable;
 
 	setup(async () => {
@@ -497,6 +507,7 @@ suite('render group function', () => {
 });
 
 suite('enabled columns', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	test('displays only enabled columns', async () => {
 		const omnitable = await setupOmnitableFixture(
 			html` <cosmoz-omnitable

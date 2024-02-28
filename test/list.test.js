@@ -1,6 +1,6 @@
 import { assert, html } from '@open-wc/testing';
 
-import { setupOmnitableFixture } from './helpers/utils';
+import { ignoreResizeObserverLoopErrors, rowVisible, setupOmnitableFixture } from './helpers/utils';
 
 import '../cosmoz-omnitable.js';
 import '../cosmoz-omnitable-columns.js';
@@ -12,6 +12,7 @@ import {
 import { columnSymbol } from '../lib/use-dom-columns';
 
 suite('basic', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable, column, data;
 
 	setup(async () => {
@@ -43,6 +44,7 @@ suite('basic', () => {
 });
 
 suite('horizontal', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable, column, data;
 
 	setup(async () => {
@@ -69,6 +71,7 @@ suite('horizontal', () => {
 	});
 
 	test('basic render', async () => {
+		await rowVisible();
 		const cells = Array.from(
 			omnitable.shadowRoot.querySelectorAll('.itemRow-cell'),
 		);
