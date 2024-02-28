@@ -1,6 +1,6 @@
-import { assert, html, nextFrame } from '@open-wc/testing';
+import { assert, html } from '@open-wc/testing';
 
-import { setupOmnitableFixture } from './helpers/utils';
+import { ignoreResizeObserverLoopErrors, setupOmnitableFixture } from './helpers/utils';
 
 import '../cosmoz-omnitable.js';
 import '../cosmoz-omnitable-column-autocomplete.js';
@@ -31,7 +31,6 @@ const data = [
 	],
 	location = window.location,
 	instantiate = async () => {
-		await nextFrame();
 		omnitable = await setupOmnitableFixture(
 			html`
 				<cosmoz-omnitable
@@ -69,10 +68,10 @@ const data = [
 			`,
 			data,
 		);
-		await nextFrame();
 	};
 
 suite('basic-read', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	setup(() => {
 		location.hash = '#!/';
 	});

@@ -3,7 +3,7 @@ import { assert, html, nextFrame } from '@open-wc/testing';
 
 import { assert as sinonAssert } from 'sinon';
 
-import { setupOmnitableFixture } from './helpers/utils';
+import { ignoreResizeObserverLoopErrors, setupOmnitableFixture } from './helpers/utils';
 import { flush } from '@polymer/polymer/lib/utils/flush';
 
 import '../cosmoz-omnitable.js';
@@ -86,6 +86,7 @@ const data = [
 sinonAssert.expose(assert, { prefix: '' });
 
 suite('number', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable, column, columnHeaderInput;
 
 	setup(async () => {
@@ -257,6 +258,7 @@ suite('number - pure functions', () => {
 });
 
 suite('external values', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	test('changing _filterInput min on column with external values updates filter min correctly', async () => {
 		const omnitable = await setupOmnitableFixture(
 				html`

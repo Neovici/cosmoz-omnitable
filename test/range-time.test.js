@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 import { assert, html, nextFrame } from '@open-wc/testing';
 
-import { setupOmnitableFixture } from './helpers/utils';
+import { ignoreResizeObserverLoopErrors, setupOmnitableFixture } from './helpers/utils';
 import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
 
 import '../cosmoz-omnitable';
@@ -100,6 +100,7 @@ const data = [
 	`;
 
 suite('time', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable, column, columnHeaderInput;
 
 	setup(async () => {

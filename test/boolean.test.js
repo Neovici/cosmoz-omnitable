@@ -1,7 +1,7 @@
 import { assert, html } from '@open-wc/testing';
 
 import { spy } from 'sinon';
-import { setupOmnitableFixture } from './helpers/utils';
+import { ignoreResizeObserverLoopErrors, setupOmnitableFixture } from './helpers/utils';
 
 import '../cosmoz-omnitable.js';
 import '../cosmoz-omnitable-columns.js';
@@ -17,6 +17,7 @@ import { serializeFilter } from '../cosmoz-omnitable-column-mixin';
 import { columnSymbol } from '../lib/use-dom-columns';
 
 suite('boolean', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	test('initializes boolean column', async () => {
 		const data = [
 				{ boolean: true },

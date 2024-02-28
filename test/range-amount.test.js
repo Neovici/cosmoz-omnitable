@@ -3,7 +3,10 @@ import { assert, html, nextFrame } from '@open-wc/testing';
 
 import { assert as sinonAssert } from 'sinon';
 
-import { setupOmnitableFixture } from './helpers/utils';
+import {
+	ignoreResizeObserverLoopErrors,
+	setupOmnitableFixture,
+} from './helpers/utils';
 import { flush } from '@polymer/polymer/lib/utils/flush';
 
 import '../cosmoz-omnitable.js';
@@ -92,6 +95,7 @@ const data = [
 sinonAssert.expose(assert, { prefix: '' });
 
 suite('amount', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	const rates = undefined;
 	let omnitable, column, columnHeaderInput;
 
@@ -383,6 +387,7 @@ suite('amount', () => {
 });
 
 suite('currency rates', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable, column, columnHeaderInput;
 
 	const rates = {
@@ -875,6 +880,7 @@ suite('currency rates', () => {
 });
 
 suite('default currency', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable, column, columnHeaderInput;
 
 	setup(async () => {
