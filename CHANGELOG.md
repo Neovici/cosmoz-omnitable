@@ -1,3 +1,10 @@
+# [13.2.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.1.0...v13.2.0) (2024-02-28)
+
+
+### Features
+
+* upgrade cosmoz-grouped-list ([c0fd102](https://github.com/neovici/cosmoz-omnitable/commit/c0fd1024179990a95c6cbb2c7015c2867a932430))
+
 # [13.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.0.0...v13.1.0) (2024-01-26)
 
 
