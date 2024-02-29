@@ -118,6 +118,10 @@ export default css`
 		display: none;
 	}
 
+	cosmoz-grouped-list-row {
+		width: 100%;
+	}
+
 	cosmoz-omnitable-header-row .external-values-false {
 		--paper-input-container-color: var(
 			--cosmoz-omnitable-local-filter-header-color
