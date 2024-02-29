@@ -1,3 +1,10 @@
+## [13.2.2](https://github.com/neovici/cosmoz-omnitable/compare/v13.2.1...v13.2.2) (2024-02-29)
+
+
+### Bug Fixes
+
+* group rows are not full width ([1d358ec](https://github.com/neovici/cosmoz-omnitable/commit/1d358eca5edfdddcd0b39b4ed1bb22b8a62b12d1))
+
 ## [13.2.1](https://github.com/neovici/cosmoz-omnitable/compare/v13.2.0...v13.2.1) (2024-02-29)
 
 
