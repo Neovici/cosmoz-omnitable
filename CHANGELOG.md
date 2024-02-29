@@ -1,3 +1,10 @@
+## [13.2.1](https://github.com/neovici/cosmoz-omnitable/compare/v13.2.0...v13.2.1) (2024-02-29)
+
+
+### Bug Fixes
+
+* use an adopted stylesheet to render the layout ([78de154](https://github.com/neovici/cosmoz-omnitable/commit/78de1547ad05133158049ec74c27738ba8fc4b71))
+
 # [13.2.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.1.0...v13.2.0) (2024-02-28)
 
 
