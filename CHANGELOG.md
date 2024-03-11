@@ -1,3 +1,10 @@
+## [13.2.3](https://github.com/neovici/cosmoz-omnitable/compare/v13.2.2...v13.2.3) (2024-03-11)
+
+
+### Bug Fixes
+
+* **vscode-settings:** change eslint setting ([15bc85c](https://github.com/neovici/cosmoz-omnitable/commit/15bc85c58ccdc1c2c9adcba73a260b44f1dd2863))
+
 ## [13.2.2](https://github.com/neovici/cosmoz-omnitable/compare/v13.2.1...v13.2.2) (2024-02-29)
 
 
