@@ -452,7 +452,7 @@ export default css`
 	.itemRow:hover .checkbox:not(:checked):not(:hover) {
 		box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.54) inset;
 	}
-	.groupRow:hover .fold:not(:hover),
+	.groupRow:hover .expand:not(:hover),
 	.itemRow:hover .expand:not(:hover) {
 		color: rgba(0, 0, 0, 0.54);
 	}
@@ -468,16 +468,29 @@ export default css`
 		height: 24px;
 		padding: 0;
 		flex: none;
-	}
-
-	.expand,
-	.fold {
+		border: none;
+		border-radius: 50%;
+		cursor: pointer;
+		background: none;
+		transition: 0.15s background ease-in;
+		outline: none;
 		color: rgba(0, 0, 0, 0.16);
-	}
 
-	.expand:hover,
-	.fold:hover {
+	}
+	.expand svg {
+		fill: currentColor;
+	}
+	.expand:not([aria-expanded]) svg {
+		transform: scaleY(-1);
+	}
+	.expand:active {
+		background: rgba(33,33,33,0.25)
+	}
+	.expand:hover {
 		color: #000;
+	}
+	.groupRow .expand {
+		margin: 8px;
 	}
 
 	.sg {

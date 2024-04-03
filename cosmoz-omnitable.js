@@ -2,7 +2,6 @@
 /* eslint-disable max-lines */
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-icon/iron-icon';
-import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/paper-spinner/paper-spinner-lite';
 
 import '@neovici/cosmoz-grouped-list';
