@@ -1,3 +1,11 @@
+## [13.2.4](https://github.com/neovici/cosmoz-omnitable/compare/v13.2.3...v13.2.4) (2024-04-22)
+
+
+### Bug Fixes
+
+* **dependencies:** further updates to components ([d48401d](https://github.com/neovici/cosmoz-omnitable/commit/d48401d83e6236a0580e08f951dd47b7bc2dd546))
+* **dependencies:** new inputs needed in all their instances ([c97e20e](https://github.com/neovici/cosmoz-omnitable/commit/c97e20eb449d993172d8292a031d692cb370a62f))
+
 ## [13.2.3](https://github.com/neovici/cosmoz-omnitable/compare/v13.2.2...v13.2.3) (2024-03-11)
 
 
