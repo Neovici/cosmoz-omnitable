@@ -161,6 +161,7 @@ export default css`
 		);
 		--cosmoz-input-label-text-transform: var(--cosmoz-omnitable-header-text-transform, none);
 		--cosmoz-input-label-font-weight: var(--cosmoz-omnitable-header-font-weight, normal);
+		--cosmoz-input-padding: 0;
 	}
 
 	cosmoz-omnitable-header-row {
@@ -329,7 +330,7 @@ export default css`
 			solid
 		);
 		/* set a min-height for rows so that rows with empty values are visible */
-		min-height: var(--item-row-min-height, 24px);
+		min-height: var(--item-row-min-height, 39px);
 		padding-right: 8px;
 		display: flex;
 		align-items: center;
@@ -356,9 +357,8 @@ export default css`
 		background-color: #fafafa;
 	}
 
-	cosmoz-omnitable-item-expand[hidden],
 	cosmoz-omnitable-item-expand:not([expanded]) {
-		display: none !important;
+		display: none;
 	}
 
 	.groupRow {
