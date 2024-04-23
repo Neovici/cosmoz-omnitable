@@ -159,6 +159,7 @@ export default css`
 			--cosmoz-omnitable-header-font-size,
 			16px
 		);
+		--cosmoz-input-padding: 0;
 		--cosmoz-input-label-text-transform: var(--cosmoz-omnitable-header-text-transform, none);
 		--cosmoz-input-label-font-weight: var(--cosmoz-omnitable-header-font-weight, normal);
 	}
@@ -475,7 +476,6 @@ export default css`
 		transition: 0.15s background ease-in;
 		outline: none;
 		color: rgba(0, 0, 0, 0.16);
-
 	}
 	.expand svg {
 		fill: currentColor;
@@ -484,7 +484,7 @@ export default css`
 		transform: scaleY(-1);
 	}
 	.expand:active {
-		background: rgba(33,33,33,0.25)
+		background: rgba(33, 33, 33, 0.25);
 	}
 	.expand:hover {
 		color: #000;
@@ -526,7 +526,7 @@ export default css`
 		display: inline-flex;
 		position: relative;
 	}
-	.header-cell :not(.sg,cosmoz-clear-button) {
+	.header-cell :not(.sg, cosmoz-clear-button) {
 		min-width: 0;
 		flex: auto;
 	}
