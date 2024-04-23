@@ -1,3 +1,10 @@
+## [13.2.5](https://github.com/neovici/cosmoz-omnitable/compare/v13.2.4...v13.2.5) (2024-04-23)
+
+
+### Bug Fixes
+
+* **input-padding:** spacing in the omnitable header horizontally aligned ([254c5d0](https://github.com/neovici/cosmoz-omnitable/commit/254c5d0f1e03e949af8a86087bf49d5318711614))
+
 ## [13.2.4](https://github.com/neovici/cosmoz-omnitable/compare/v13.2.3...v13.2.4) (2024-04-22)
 
 
