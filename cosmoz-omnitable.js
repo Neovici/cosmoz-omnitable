@@ -63,6 +63,7 @@ customElements.define(
 			'no-local-sort',
 			'no-local-filter',
 			'loading',
+			'mini-breakpoint',
 		],
 	}) {
 		connectedCallback() {
@@ -71,7 +72,7 @@ customElements.define(
 			notifyProperty(this, 'visibleData', []);
 			notifyProperty(this, 'sortedFilteredGroupedItems', []);
 		}
-	}
+	},
 );
 
 const tmplt = `
