@@ -330,10 +330,12 @@ export default css`
 			solid
 		);
 		/* set a min-height for rows so that rows with empty values are visible */
-		min-height: var(--item-row-min-height, 39px);
-		padding-right: 8px;
+	}
+	.itemRow-wrapper {
 		display: flex;
 		align-items: center;
+		min-height: var(--item-row-min-height, 39px);
+		padding-right: 8px;
 	}
 
 	.itemRow[selected] {
@@ -530,4 +532,15 @@ export default css`
 		min-width: 0;
 		flex: auto;
 	}
+
+	:host([mini]) .itemRow .expand,
+	:host([mini]) cosmoz-omnitable-item-expand {
+		display: none;
+	}
+
+	.itemRow-minis {
+		display: flex;
+		justify-content: space-between;
+	}
+
 `;

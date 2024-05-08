@@ -66,11 +66,11 @@ export const getString = ({ valuePath }, item) => get(item, valuePath),
 					renderGroup: { type: Function },
 
 					/**
-					 * Is the column enabled in mini mode
+					 * The priority of the column in the mini mode. If missing the column is disabled in the mini mode.
 					 */
-					mini: { type: Boolean },
+					mini: { type: Number, value: null },
 					/**
-					 *An alternative render to use in mini mode. Takes the same params as `renderCell`.
+					 * An alternative render to use in mini mode. Takes the same params as `renderCell`.
 					 */
 					renderMini: { type: Function },
 				};
