@@ -317,11 +317,6 @@ export default css`
 		left: 0;
 	}
 
-	.item-row-wrapper {
-		display: block;
-		width: 100%;
-	}
-
 	.itemRow {
 		border-bottom-color: var(--cosmoz-omnitable-border-color, #e1e2e5);
 		border-bottom-width: 1px;
@@ -541,6 +536,24 @@ export default css`
 	.itemRow-minis {
 		display: flex;
 		justify-content: space-between;
+		margin: 0 8px 8px 8px;
+	}
+
+	:host([mini]) .itemRow {
+		border-radius: 8px;
+		border: 1px solid var(--cosmoz-omnitable-border-color, #e1e2e5);
+		margin: 4px 8px;
+	}
+	:host([mini]) .itemRow:not([selected]) {
+		background: var(--cosmoz-omnitable-mini-item-background, #fdfdfd);
+	}
+
+	:host([mini]) .itemRow:hover {
+		box-shadow: none;
+	}
+
+	:host([mini]) .header {
+		margin: 0 8px;
 	}
 
 `;
