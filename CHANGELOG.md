@@ -1,3 +1,16 @@
+# [13.3.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.2.5...v13.3.0) (2024-05-09)
+
+
+### Features
+
+*  collect mini and renderMini props ([0441f02](https://github.com/neovici/cosmoz-omnitable/commit/0441f02d5de772c0f349f0c862ce01f69d71bdd2))
+* adjust expand ([4406fd4](https://github.com/neovici/cosmoz-omnitable/commit/4406fd4fa1baba783dc935dd79bc8ea45e966dc5))
+* cleanup style ([7564458](https://github.com/neovici/cosmoz-omnitable/commit/756445811da9b86d84305df9c70dcc58b0a40200))
+* **column:** add mini and renderMini column props ([581d9f1](https://github.com/neovici/cosmoz-omnitable/commit/581d9f1331c589ff5fd5fa89737e9ea02d6dfece))
+* implement mini breakpoint ([f50a852](https://github.com/neovici/cosmoz-omnitable/commit/f50a8520e816bf37e5c1616e9203000969745311))
+* implement mini layout ([06416e6](https://github.com/neovici/cosmoz-omnitable/commit/06416e6b7d2bfa0ff711e9ba6af004acd56c15dd))
+* **mini:** adjust style ([183d09f](https://github.com/neovici/cosmoz-omnitable/commit/183d09f8d06a9da6fe6e0f70e05ca0f26a24db25))
+
 ## [13.2.5](https://github.com/neovici/cosmoz-omnitable/compare/v13.2.4...v13.2.5) (2024-04-23)
 
 
