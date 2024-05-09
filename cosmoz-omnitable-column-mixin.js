@@ -64,6 +64,15 @@ export const getString = ({ valuePath }, item) => get(item, valuePath),
 					renderCell: { type: Function },
 					renderEditCell: { type: Function },
 					renderGroup: { type: Function },
+
+					/**
+					 * The priority of the column in the mini mode. If missing the column is disabled in the mini mode.
+					 */
+					mini: { type: Number, value: null },
+					/**
+					 * An alternative render to use in mini mode. Takes the same params as `renderCell`.
+					 */
+					renderMini: { type: Function },
 				};
 			}
 
@@ -82,7 +91,7 @@ export const getString = ({ valuePath }, item) => get(item, valuePath),
 							state: this.legacyFilterToState(filter),
 						},
 						bubbles: true,
-					})
+					}),
 				);
 			}
 
@@ -135,7 +144,7 @@ export const getString = ({ valuePath }, item) => get(item, valuePath),
 			_propertiesChanged(currentProps, changedProps, oldProps) {
 				super._propertiesChanged(currentProps, changedProps, oldProps);
 				this.dispatchEvent(
-					new CustomEvent('cosmoz-column-prop-changed', { bubbles: true })
+					new CustomEvent('cosmoz-column-prop-changed', { bubbles: true }),
 				);
 			}
 		};

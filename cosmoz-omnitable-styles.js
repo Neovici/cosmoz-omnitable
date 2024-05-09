@@ -162,6 +162,7 @@ export default css`
 		--cosmoz-input-padding: 0;
 		--cosmoz-input-label-text-transform: var(--cosmoz-omnitable-header-text-transform, none);
 		--cosmoz-input-label-font-weight: var(--cosmoz-omnitable-header-font-weight, normal);
+		--cosmoz-input-padding: 0;
 	}
 
 	cosmoz-omnitable-header-row {
@@ -317,11 +318,6 @@ export default css`
 		left: 0;
 	}
 
-	.item-row-wrapper {
-		display: block;
-		width: 100%;
-	}
-
 	.itemRow {
 		border-bottom-color: var(--cosmoz-omnitable-border-color, #e1e2e5);
 		border-bottom-width: 1px;
@@ -330,10 +326,12 @@ export default css`
 			solid
 		);
 		/* set a min-height for rows so that rows with empty values are visible */
-		min-height: var(--item-row-min-height, 24px);
-		padding-right: 8px;
+	}
+	.itemRow-wrapper {
 		display: flex;
 		align-items: center;
+		min-height: var(--item-row-min-height, 39px);
+		padding-right: 8px;
 	}
 
 	.itemRow[selected] {
@@ -357,9 +355,8 @@ export default css`
 		background-color: #fafafa;
 	}
 
-	cosmoz-omnitable-item-expand[hidden],
 	cosmoz-omnitable-item-expand:not([expanded]) {
-		display: none !important;
+		display: none;
 	}
 
 	.groupRow {
@@ -447,7 +444,7 @@ export default css`
 	.itemRow:hover {
 		box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0,
 			0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
-		background: var(--cosmoz-omnitable-hover-color);
+		/* background: var(--cosmoz-omnitable-hover-color); */
 	}
 	.groupRow:hover .checkbox:not(:checked):not(:hover),
 	.itemRow:hover .checkbox:not(:checked):not(:hover) {
@@ -529,5 +526,33 @@ export default css`
 	.header-cell :not(.sg, cosmoz-clear-button) {
 		min-width: 0;
 		flex: auto;
+	}
+
+	:host([mini]) .itemRow .expand,
+	:host([mini]) cosmoz-omnitable-item-expand {
+		display: none;
+	}
+
+	.itemRow-minis {
+		display: flex;
+		justify-content: space-between;
+		margin: 0 8px 8px 8px;
+	}
+
+	:host([mini]) .itemRow {
+		border-radius: 8px;
+		border: 1px solid var(--cosmoz-omnitable-border-color, #e1e2e5);
+		margin: 4px 8px;
+	}
+	:host([mini]) .itemRow:not([selected]) {
+		background: var(--cosmoz-omnitable-mini-item-background, #fdfdfd);
+	}
+
+	:host([mini]) .itemRow:hover {
+		box-shadow: none;
+	}
+
+	:host([mini]) .header {
+		margin: 0 8px;
 	}
 `;
