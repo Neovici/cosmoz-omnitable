@@ -1,3 +1,12 @@
+# [13.4.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.3.0...v13.4.0) (2024-05-24)
+
+
+### Features
+
+* update deps ([cd4795f](https://github.com/neovici/cosmoz-omnitable/commit/cd4795f755f767896dd3681c44217f4a797bdfcc))
+* **use-dom-columns:** debounce collecting columns ([a294835](https://github.com/neovici/cosmoz-omnitable/commit/a2948355e0d3ea92a6eadd15f3b199d70f6d4156))
+* **use-fast-layout:** regenerate css when columns change too ([4fdf558](https://github.com/neovici/cosmoz-omnitable/commit/4fdf558faaa5940112e4e7b5ad88ede14a82d55a))
+
 # [13.3.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.2.5...v13.3.0) (2024-05-09)
 
 
