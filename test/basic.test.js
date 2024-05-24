@@ -4,7 +4,11 @@ import { assert, expect, html, nextFrame } from '@open-wc/testing';
 import { assert as sinonAssert, spy } from 'sinon';
 
 import '../demo/helpers/cosmoz-translations';
-import { ignoreResizeObserverLoopErrors, rowVisible, setupOmnitableFixture } from './helpers/utils';
+import {
+	ignoreResizeObserverLoopErrors,
+	rowVisible,
+	setupOmnitableFixture,
+} from './helpers/utils';
 import { generateTableDemoData } from '../demo/table-demo-helper';
 import { flush } from '@polymer/polymer/lib/utils/flush';
 
@@ -572,6 +576,7 @@ suite('enabled columns', () => {
 
 		omnitable.enabledColumns = ['name1'];
 		await nextFrame();
+		await nextFrame();
 
 		assert.deepEqual(
 			Array.from(omnitable.shadowRoot.querySelectorAll('.header-cell')).map(
@@ -582,6 +587,7 @@ suite('enabled columns', () => {
 
 		omnitable.enabledColumns = ['name2', 'name3'];
 		await nextFrame();
+		await nextFrame();
 
 		assert.deepEqual(
 			Array.from(omnitable.shadowRoot.querySelectorAll('.header-cell')).map(
@@ -591,6 +597,7 @@ suite('enabled columns', () => {
 		);
 
 		omnitable.enabledColumns = undefined;
+		await nextFrame();
 		await nextFrame();
 
 		assert.deepEqual(
