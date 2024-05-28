@@ -1,3 +1,10 @@
+# [13.6.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.5.0...v13.6.0) (2024-05-28)
+
+
+### Features
+
+* **styling:** expose more parts ([7fb9c65](https://github.com/neovici/cosmoz-omnitable/commit/7fb9c65ec6ab434e7ca792db00676a6736ae2fec))
+
 # [13.5.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.4.0...v13.5.0) (2024-05-28)
 
 
