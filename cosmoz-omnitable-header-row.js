@@ -18,6 +18,7 @@ const /* eslint-disable-next-line max-lines-per-function */
 			(column) => [
 				html`<div
 					class="cell ${column.headerCellClass} header-cell"
+					part="cell header-cell cell-${column.name} header-cell-${column.name}"
 					?hidden=${column === groupOnColumn}
 					title=${column.title}
 					name=${column.name}
@@ -27,7 +28,7 @@ const /* eslint-disable-next-line max-lines-per-function */
 							column,
 							filters[column.name] ?? {},
 							(state) => setFilterState(column.name, state),
-							column.source(column, data)
+							column.source(column, data),
 						),
 						html` <sort-and-group-consumer
 							style="display:contents"
@@ -52,7 +53,7 @@ const /* eslint-disable-next-line max-lines-per-function */
 					.column=${column}
 					name=${column.name}
 				></cosmoz-omnitable-resize-nub>`,
-			]
+			],
 		),
 	HeaderRow = ({ columns, settingsConfig, hideSelectAll, ...thru }) => [
 		columns &&
@@ -60,13 +61,15 @@ const /* eslint-disable-next-line max-lines-per-function */
 				columns,
 				...thru,
 			}),
-		html`${when(!hideSelectAll, () => html`
-			<cosmoz-omnitable-settings
-			.config=${settingsConfig}>
-			</cosmoz-omnitable-settings>`)}`,
+		when(
+			!hideSelectAll,
+			() =>
+				html` <cosmoz-omnitable-settings .config=${settingsConfig}>
+				</cosmoz-omnitable-settings>`,
+		),
 	];
 
 customElements.define(
 	'cosmoz-omnitable-header-row',
-	component(HeaderRow, { useShadowDOM: false })
+	component(HeaderRow, { useShadowDOM: false }),
 );
