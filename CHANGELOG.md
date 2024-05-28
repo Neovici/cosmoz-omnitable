@@ -1,3 +1,10 @@
+# [13.7.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.6.0...v13.7.0) (2024-05-28)
+
+
+### Features
+
+* add index to renderMini ([d71ff90](https://github.com/neovici/cosmoz-omnitable/commit/d71ff904594caee6ccdcac424b7ebad1052fc9e7))
+
 # [13.6.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.5.0...v13.6.0) (2024-05-28)
 
 
