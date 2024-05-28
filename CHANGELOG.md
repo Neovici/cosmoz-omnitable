@@ -1,3 +1,10 @@
+# [13.5.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.4.0...v13.5.0) (2024-05-28)
+
+
+### Features
+
+* **mini:** adjust styles ([e9a39f5](https://github.com/neovici/cosmoz-omnitable/commit/e9a39f56c4c1302d33a4b7dadcb3fe6569a8353d))
+
 # [13.4.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.3.0...v13.4.0) (2024-05-24)
 
 
