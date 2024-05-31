@@ -1,3 +1,10 @@
+# [13.8.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.7.0...v13.8.0) (2024-05-31)
+
+
+### Features
+
+* add scroller part ([5b8409e](https://github.com/neovici/cosmoz-omnitable/commit/5b8409e88eae5186ab9c0f3ab6a6d6eb4b5cc2eb))
+
 # [13.7.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.6.0...v13.7.0) (2024-05-28)
 
 
