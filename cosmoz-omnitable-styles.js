@@ -557,4 +557,22 @@ export default css`
 	:host([mini]) .header {
 		margin: 0 8px;
 	}
+
+	:host([mini]) .tableContent-scroller::-webkit-scrollbar {
+		width: 4px;
+	}
+	:host([mini]) .tableContent-scroller::-webkit-scrollbar-track {
+		background: transparent;
+	}
+	:host([mini]) .tableContent-scroller::-webkit-scrollbar-thumb {
+  	background: transparent;
+	}
+	:host([mini]) .tableContent-scroller:hover::-webkit-scrollbar-thumb {
+  	background: var(--cosmoz-omnitable-mini-scrollbar-thumb-bg, #aaa);
+	}
+
+	:host([mini]) .tableContent-scroller::-webkit-scrollbar-button:decrement,
+	:host([mini]) .tableContent-scroller::-webkit-scrollbar-button:increment {
+  	width: 0px;
+	}
 `;
