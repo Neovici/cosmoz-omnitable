@@ -1,3 +1,10 @@
+# [13.9.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.8.0...v13.9.0) (2024-05-31)
+
+
+### Features
+
+* **mini:** adjust scroller style ([9f977ec](https://github.com/neovici/cosmoz-omnitable/commit/9f977ec21313bee89bd24e865cc6b714564cf5e0))
+
 # [13.8.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.7.0...v13.8.0) (2024-05-31)
 
 
