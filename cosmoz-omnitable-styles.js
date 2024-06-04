@@ -558,6 +558,9 @@ export default css`
 		margin: 0 8px;
 	}
 
+	:host([mini]) .tableContent {
+		overflow: hidden;
+	}
 	:host([mini]) .tableContent-scroller::-webkit-scrollbar {
 		width: 4px;
 	}
