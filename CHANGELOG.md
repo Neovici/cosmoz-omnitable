@@ -1,3 +1,10 @@
+## [13.9.1](https://github.com/neovici/cosmoz-omnitable/compare/v13.9.0...v13.9.1) (2024-06-04)
+
+
+### Bug Fixes
+
+* **omnitable:** prevent double scrollbar ([8c516b4](https://github.com/neovici/cosmoz-omnitable/commit/8c516b4c828a33e689d3f8035b3bf98feff34064))
+
 # [13.9.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.8.0...v13.9.0) (2024-05-31)
 
 
