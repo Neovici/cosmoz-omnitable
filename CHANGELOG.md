@@ -1,3 +1,10 @@
+## [13.9.2](https://github.com/neovici/cosmoz-omnitable/compare/v13.9.1...v13.9.2) (2024-06-19)
+
+
+### Bug Fixes
+
+* **mini:** check for null and undefined mini attribute ([18c0da7](https://github.com/neovici/cosmoz-omnitable/commit/18c0da7d4dc8ffa8e11708f0fd529ab0271715b5))
+
 ## [13.9.1](https://github.com/neovici/cosmoz-omnitable/compare/v13.9.0...v13.9.1) (2024-06-04)
 
 
