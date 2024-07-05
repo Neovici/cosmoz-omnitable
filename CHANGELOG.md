@@ -1,3 +1,10 @@
+# [13.10.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.9.2...v13.10.0) (2024-07-05)
+
+
+### Features
+
+* **resize-hub:** add event when column changes ([bf94361](https://github.com/neovici/cosmoz-omnitable/commit/bf9436125e766594d310775e57f5b2b3325b3242))
+
 ## [13.9.2](https://github.com/neovici/cosmoz-omnitable/compare/v13.9.1...v13.9.2) (2024-06-19)
 
 
