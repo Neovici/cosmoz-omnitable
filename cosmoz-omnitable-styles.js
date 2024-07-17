@@ -578,4 +578,8 @@ export default css`
 	:host([mini]) .tableContent-scroller::-webkit-scrollbar-button:increment {
   	width: 0px;
 	}
+
+	:host([mini]) cosmoz-omnitable-settings::part(columns) {
+		display:none;
+	}
 `;
