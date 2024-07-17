@@ -579,7 +579,7 @@ export default css`
   	width: 0px;
 	}
 
-	:host([mini]) cosmoz-omnitable-settings::part(columns){
+	:host([mini]) cosmoz-omnitable-settings::part(columns) {
 		display:none;
 	}
 `;
