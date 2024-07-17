@@ -1,3 +1,11 @@
+# [13.11.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.10.0...v13.11.0) (2024-07-17)
+
+
+### Features
+
+* **mini:** hide columns settings in mini mode ([06b4eb7](https://github.com/neovici/cosmoz-omnitable/commit/06b4eb74f5eb1ad6a9d0ede035f28e0e987499ed))
+* **settings:** export parts for groups ([9fc4b01](https://github.com/neovici/cosmoz-omnitable/commit/9fc4b01dcbd36db2f44e169ed070f9e5f923dcd7))
+
 # [13.10.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.9.2...v13.10.0) (2024-07-05)
 
 
