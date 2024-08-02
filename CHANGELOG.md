@@ -1,3 +1,10 @@
+# [13.12.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.11.0...v13.12.0) (2024-08-02)
+
+
+### Features
+
+* **lib/settings:** restore display flex ([006f19e](https://github.com/neovici/cosmoz-omnitable/commit/006f19e4070b44bc61749f58f27428f10594388a))
+
 # [13.11.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.10.0...v13.11.0) (2024-07-17)
 
 
