@@ -1,3 +1,10 @@
+## [13.12.1](https://github.com/neovici/cosmoz-omnitable/compare/v13.12.0...v13.12.1) (2024-08-23)
+
+
+### Bug Fixes
+
+* **cosmoz-omnitable-column-boolean:** make listbox render when clicking boolean chip ([2d23584](https://github.com/neovici/cosmoz-omnitable/commit/2d23584da05a3db3ef375ee0da1f25a71837a240))
+
 # [13.12.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.11.0...v13.12.0) (2024-08-02)
 
 
