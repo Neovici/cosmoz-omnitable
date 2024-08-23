@@ -105,7 +105,7 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 				? html`<paper-spinner-lite style="width: 20px; height: 20px;" suffix slot="suffix" active></paper-spinner-lite>`
 				: nothing;
 
-		return html`<cosmoz-autocomplete-ui
+		return html`<cosmoz-autocomplete
 				no-label-float
 				.title=${ computeItemTooltip(column.title, item, column.valuePath, computeSource(trueLabel, falseLabel)) }
 				.source=${ computeSource(trueLabel, falseLabel) }
@@ -113,7 +113,7 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 				.value=${ computeItemValue(column, item, computeSource(trueLabel, falseLabel)) }
 				.onChange=${ onEditableChange(onItemChange) }
 				.limit=${ 1 }
-			>${ spinner }</cosmoz-autocomplete-ui>`;
+			>${ spinner }</cosmoz-autocomplete>`;
 	}
 
 	renderHeader(column, { filter, query }, setState, source) {
