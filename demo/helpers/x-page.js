@@ -78,6 +78,12 @@ class XPage extends translatable(PolymerElement) {
 					<paper-toggle-button checked="{{ loading }}">
 						Loading</paper-toggle-button
 					>
+					<paper-toggle-button
+						checked="{{ hidden }}"
+						style="margin-left: 10px;"
+					>
+						Hide Sub-property column
+					</paper-toggle-button>
 				</div>
 
 				<cosmoz-omnitable
@@ -200,6 +206,7 @@ class XPage extends translatable(PolymerElement) {
 						group-on="sub.subProp"
 						flex="5"
 						width="200px"
+						disabled="[[ hidden ]]"
 					>
 					</cosmoz-omnitable-column>
 					<cosmoz-omnitable-column
@@ -263,6 +270,10 @@ class XPage extends translatable(PolymerElement) {
 			},
 			hashParam: {
 				type: String,
+			},
+			hidden: {
+				type: Number,
+				value: false,
 			},
 		};
 	}
