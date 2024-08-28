@@ -1,3 +1,10 @@
+## [13.12.2](https://github.com/neovici/cosmoz-omnitable/compare/v13.12.1...v13.12.2) (2024-08-28)
+
+
+### Bug Fixes
+
+* remove saved setting of disabled column ([686542b](https://github.com/neovici/cosmoz-omnitable/commit/686542b9c25bf05223fbb1e91eacafa9b3cdc4d6))
+
 ## [13.12.1](https://github.com/neovici/cosmoz-omnitable/compare/v13.12.0...v13.12.1) (2024-08-23)
 
 
