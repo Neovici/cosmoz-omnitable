@@ -29,6 +29,7 @@ class OmnitableColumnNumber extends columnMixin(PolymerElement) {
 		return {
 			min: { type: Number, value: null, notify: true },
 			max: { type: Number, value: null, notify: true },
+			limits: { type: Function },
 			locale: { type: String, value: null, notify: true },
 			autoupdate: { type: Boolean, value: false, notify: true },
 			cellClass: { type: String, value: 'number-cell align-right' },
@@ -38,6 +39,10 @@ class OmnitableColumnNumber extends columnMixin(PolymerElement) {
 			maximumFractionDigits: { type: Number, value: null },
 			minimumFractionDigits: { type: Number, value: null }, // browser default 0 for numbers, currency-specific or 2 for currency
 		};
+	}
+
+	getConfig(column) {
+		return { limits: column.limits };
 	}
 
 	getFilterFn(column, filter) {
@@ -117,6 +122,7 @@ class OmnitableColumnNumber extends columnMixin(PolymerElement) {
 			title,
 			min,
 			max,
+			limits,
 			locale,
 			maximumFractionDigits,
 			minimumFractionDigits,
@@ -132,6 +138,7 @@ class OmnitableColumnNumber extends columnMixin(PolymerElement) {
 			.values=${source}
 			.min=${min}
 			.max=${max}
+			.limits=${limits}
 			.locale=${locale}
 			.maximumFractionDigits=${maximumFractionDigits}
 			.minimumFractionDigsits=${minimumFractionDigits}

@@ -31,6 +31,7 @@ class OmnitableColumnAmount extends columnMixin(PolymerElement) {
 		return {
 			min: { type: Number, value: null, notify: true },
 			max: { type: Number, value: null, notify: true },
+			limits: { type: Function },
 			locale: { type: String, value: null, notify: true },
 			autoupdate: { type: Boolean, value: false, notify: true },
 			currency: { type: String, notify: true },
@@ -40,6 +41,10 @@ class OmnitableColumnAmount extends columnMixin(PolymerElement) {
 			cellClass: { type: String, value: 'amount-cell align-right' },
 			headerCellClass: { type: String, value: 'amount-header-cell' },
 		};
+	}
+
+	getConfig(column) {
+		return { limits: column.limits };
 	}
 
 	getFilterFn(column, filter) {
@@ -119,7 +124,17 @@ class OmnitableColumnAmount extends columnMixin(PolymerElement) {
 	}
 
 	renderHeader(
-		{ title, min, max, locale, rates, currency, autoupdate, autodetect },
+		{
+			title,
+			min,
+			max,
+			limits,
+			locale,
+			rates,
+			currency,
+			autoupdate,
+			autodetect,
+		},
 		{ filter },
 		setState,
 		source,
@@ -131,6 +146,7 @@ class OmnitableColumnAmount extends columnMixin(PolymerElement) {
 			.rates=${rates}
 			.min=${min}
 			.max=${max}
+			.limits=${limits}
 			.locale=${locale}
 			.currency=${currency}
 			.autoupdate=${autoupdate}
