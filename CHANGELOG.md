@@ -1,3 +1,11 @@
+# [13.13.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.12.2...v13.13.0) (2024-09-12)
+
+
+### Features
+
+* add limits support to range columns ([193163a](https://github.com/neovici/cosmoz-omnitable/commit/193163ad8e14604ab4a5a19e6edf14cf199b229d))
+* **range-input:** add support for limits param ([b503f2a](https://github.com/neovici/cosmoz-omnitable/commit/b503f2a27f282f6452202d22422b038f2d5d294f))
+
 ## [13.12.2](https://github.com/neovici/cosmoz-omnitable/compare/v13.12.1...v13.12.2) (2024-08-28)
 
 
