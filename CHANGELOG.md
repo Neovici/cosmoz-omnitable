@@ -1,3 +1,10 @@
+## [13.13.1](https://github.com/neovici/cosmoz-omnitable/compare/v13.13.0...v13.13.1) (2024-09-24)
+
+
+### Bug Fixes
+
+* reset to saved or factory settings ([692a81e](https://github.com/neovici/cosmoz-omnitable/commit/692a81e91fdce2127695b22c913c646405a1c498))
+
 # [13.13.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.12.2...v13.13.0) (2024-09-12)
 
 
