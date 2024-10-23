@@ -1,3 +1,12 @@
+## [13.13.2](https://github.com/neovici/cosmoz-omnitable/compare/v13.13.1...v13.13.2) (2024-10-23)
+
+
+### Bug Fixes
+
+* **cosmoz-omnitable-column-date:** add css font-variant-numeric rule for date ([32c4fac](https://github.com/neovici/cosmoz-omnitable/commit/32c4facdb5c348cc7fe6fa207d362ae62c8b292c))
+* **lib/cosmoz-omnitable-number-range-input:** change class name ([8e43c4d](https://github.com/neovici/cosmoz-omnitable/commit/8e43c4d0c50bc7694bcb274305da9b5d9d4c41d6))
+* **lib/cosmoz-omnitable-number-range-input:** make title align to the right ([5a4e437](https://github.com/neovici/cosmoz-omnitable/commit/5a4e43700d722135cfe6e230cf452137bf8639ee))
+
 ## [13.13.1](https://github.com/neovici/cosmoz-omnitable/compare/v13.13.0...v13.13.1) (2024-09-24)
 
 
