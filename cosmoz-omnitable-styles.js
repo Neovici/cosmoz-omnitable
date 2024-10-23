@@ -344,6 +344,7 @@ export default css`
 
 	.tableContent .itemRow-cell paper-dropdown-menu {
 		margin-top: -20px;
+
 	}
 
 	cosmoz-omnitable-item-expand[expanded] {
@@ -437,7 +438,7 @@ export default css`
 		overflow: initial;
 	}
 
-	.omnitable-cell-number {
+	.omnitable-cell-number, .omnitable-cell-date {
 		font-variant-numeric: tabular-nums;
 	}
 

@@ -1,12 +1,10 @@
 /* eslint-disable no-return-assign */
-import '@neovici/cosmoz-input';
+import { html } from 'lit-html';
+import { PolymerElement } from '@polymer/polymer/polymer-element';
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
+import '@neovici/cosmoz-input';
 
 import './ui-helpers/cosmoz-clear-button';
-
-import { PolymerElement } from '@polymer/polymer/polymer-element';
-import { html } from 'lit-html';
-
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 import './lib/cosmoz-omnitable-date-range-input';
 import { defaultComputeSource } from './lib/utils-data';
@@ -95,13 +93,14 @@ class OmnitableColumnDate extends columnMixin(PolymerElement) {
 	}
 
 	renderCell(column, { item }) {
-		return getString(column, item);
+		return html`<div class="omnitable-cell-date">
+			${getString(column, item)}
+		</div>`;
 	}
 
 	renderEditCell(column, { item }, onItemChange) {
 		const onChange = (event) =>
 			onItemChange(fromInputString(event.target.value));
-
 		return html`<cosmoz-input
 			no-label-float
 			type="date"
