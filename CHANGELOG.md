@@ -1,3 +1,10 @@
+## [13.13.3](https://github.com/neovici/cosmoz-omnitable/compare/v13.13.2...v13.13.3) (2024-11-13)
+
+
+### Bug Fixes
+
+* boolParam ([0318523](https://github.com/neovici/cosmoz-omnitable/commit/031852334ee0e7ed5b2631f18abda50cb854be65))
+
 ## [13.13.2](https://github.com/neovici/cosmoz-omnitable/compare/v13.13.1...v13.13.2) (2024-10-23)
 
 
