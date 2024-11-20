@@ -1,3 +1,10 @@
+## [13.13.4](https://github.com/neovici/cosmoz-omnitable/compare/v13.13.3...v13.13.4) (2024-11-20)
+
+
+### Bug Fixes
+
+* **deps:** upgrade cosmoz-autocomplete ([82bc09c](https://github.com/neovici/cosmoz-omnitable/commit/82bc09c68e3129352b18862e79ceacb5a70d24df))
+
 ## [13.13.3](https://github.com/neovici/cosmoz-omnitable/compare/v13.13.2...v13.13.3) (2024-11-13)
 
 
