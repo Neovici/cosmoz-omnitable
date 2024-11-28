@@ -42,6 +42,9 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 			editMinWidth: { type: String, value: '55px' },
 			keepOpened: { type: Boolean, value: true },
 			keepQuery: { type: Boolean },
+			showSingle: { type: Boolean },
+			preserveOrder: { type: Boolean },
+			limit: { type: Number },
 			textual: { type: Function },
 		};
 	}
@@ -51,6 +54,9 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 			...super.getConfig?.(column),
 			keepOpened: column.keepOpened,
 			keepQuery: column.keepQuery,
+			showSingle: column.showSingle,
+			preserveOrder: column.preserveOrder,
+			limit: column.limit,
 			textual: column.textual,
 		};
 	}
@@ -76,6 +82,8 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 			class="external-values-${column.externalValues}"
 			?keep-opened=${column.keepOpened}
 			?keep-query=${column.keepQuery}
+			?show-single=${column.showSingle}
+			?preserve-order=${column.preserveOrder}
 			.textual=${column.textual}
 			.label=${column.title}
 			.source=${source}
@@ -84,6 +92,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 			.itemRenderer=${column[columnSymbol]?.itemRenderer}
 			.value=${filter}
 			.text=${query}
+			.limit=${column.limit}
 			.onChange=${onChange(setState)}
 			.onFocus=${onFocus(setState)}
 			.onText=${onText(setState)}
