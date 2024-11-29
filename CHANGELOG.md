@@ -1,3 +1,10 @@
+# [13.14.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.13.4...v13.14.0) (2024-11-29)
+
+
+### Features
+
+* expose more autocomplete options ([#633](https://github.com/neovici/cosmoz-omnitable/issues/633)) ([5ee5e0d](https://github.com/neovici/cosmoz-omnitable/commit/5ee5e0df75402115dd97efe500980d6f6da405e4))
+
 ## [13.13.4](https://github.com/neovici/cosmoz-omnitable/compare/v13.13.3...v13.13.4) (2024-11-20)
 
 
