@@ -1,3 +1,10 @@
+## [13.14.1](https://github.com/neovici/cosmoz-omnitable/compare/v13.14.0...v13.14.1) (2024-12-10)
+
+
+### Bug Fixes
+
+* **footer:** set max-toolbar-items when mini table is used ([#634](https://github.com/neovici/cosmoz-omnitable/issues/634)) ([51b9f58](https://github.com/neovici/cosmoz-omnitable/commit/51b9f58d4c1d9ea42888d1f1b83b4433c2357988)), closes [AB#17737](https://github.com/AB/issues/17737)
+
 # [13.14.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.13.4...v13.14.0) (2024-11-29)
 
 
