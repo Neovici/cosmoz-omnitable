@@ -1,3 +1,10 @@
+## [13.14.2](https://github.com/neovici/cosmoz-omnitable/compare/v13.14.1...v13.14.2) (2024-12-10)
+
+
+### Bug Fixes
+
+* emit event for when mini table is used ([f58c6d2](https://github.com/neovici/cosmoz-omnitable/commit/f58c6d2910a3831f317f6b304b5b5fa6a62181c5))
+
 ## [13.14.1](https://github.com/neovici/cosmoz-omnitable/compare/v13.14.0...v13.14.1) (2024-12-10)
 
 
