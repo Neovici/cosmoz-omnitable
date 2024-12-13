@@ -1,3 +1,10 @@
+## [13.14.3](https://github.com/neovici/cosmoz-omnitable/compare/v13.14.2...v13.14.3) (2024-12-13)
+
+
+### Bug Fixes
+
+* **footer:** remove unused logic for setting max toolbar items ([#636](https://github.com/neovici/cosmoz-omnitable/issues/636)) ([803efb5](https://github.com/neovici/cosmoz-omnitable/commit/803efb59319a3076c72a9e02810260dc55eb4e5a)), closes [PR#166](https://github.com/PR/issues/166) [AB#17737](https://github.com/AB/issues/17737)
+
 ## [13.14.2](https://github.com/neovici/cosmoz-omnitable/compare/v13.14.1...v13.14.2) (2024-12-10)
 
 
