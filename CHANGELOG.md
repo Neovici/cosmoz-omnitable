@@ -1,3 +1,17 @@
+# [14.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.14.3...v14.0.0) (2025-01-10)
+
+
+### Features
+
+* update to cosmoz-dropdown with floating-ui support ([#638](https://github.com/neovici/cosmoz-omnitable/issues/638)) ([d533fc9](https://github.com/neovici/cosmoz-omnitable/commit/d533fc964e973e9a3471ac3eeae6eafeda6f050f))
+
+
+### BREAKING CHANGES
+
+* Update to cosmoz-dropdown with floating-ui support
+
+* chore(deps): upgrade playwright
+
 ## [13.14.3](https://github.com/neovici/cosmoz-omnitable/compare/v13.14.2...v13.14.3) (2024-12-13)
 
 
