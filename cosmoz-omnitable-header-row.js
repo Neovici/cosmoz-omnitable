@@ -64,7 +64,10 @@ const /* eslint-disable-next-line max-lines-per-function */
 		when(
 			!hideSelectAll,
 			() =>
-				html` <cosmoz-omnitable-settings .config=${settingsConfig}>
+				html` <cosmoz-omnitable-settings
+					.config=${settingsConfig}
+					part="settings"
+				>
 				</cosmoz-omnitable-settings>`,
 		),
 	];
