@@ -1,3 +1,10 @@
+## [14.0.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.0.0...v14.0.1) (2025-01-29)
+
+
+### Bug Fixes
+
+* expose part for omnitable settings ([#639](https://github.com/neovici/cosmoz-omnitable/issues/639)) ([0afb1f7](https://github.com/neovici/cosmoz-omnitable/commit/0afb1f79e411a842b1b8edf06a8b7931d5628865))
+
 # [14.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v13.14.3...v14.0.0) (2025-01-10)
 
 
