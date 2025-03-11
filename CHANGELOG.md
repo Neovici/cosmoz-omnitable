@@ -1,3 +1,10 @@
+## [14.0.2](https://github.com/neovici/cosmoz-omnitable/compare/v14.0.1...v14.0.2) (2025-03-11)
+
+
+### Bug Fixes
+
+* **css:** styling of omnitable accessible from outside via vars ([bee47c3](https://github.com/neovici/cosmoz-omnitable/commit/bee47c3e3cf20b734e7aa673aa99f576c37840b1))
+
 ## [14.0.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.0.0...v14.0.1) (2025-01-29)
 
 
