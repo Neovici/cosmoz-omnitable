@@ -84,6 +84,7 @@ export default css`
 		flex-direction: column;
 		position: relative;
 		overflow: hidden;
+		color: var(--cosmoz-omnitable-text-color, rgb(0,0,0))
 	}
 	:host a {
 		color: var(--primary-link-color, inherit);
@@ -98,7 +99,7 @@ export default css`
 	}
 	/* The wrapping div that contains the header, the table content and the footer */
 	.mainContainer {
-		background-color: #fff;
+		background-color: var(--cosmoz-omnitable-bg-color, rgb(255, 255, 255));
 		display: flex;
 		flex-direction: column;
 		flex: auto;
