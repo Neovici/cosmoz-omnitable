@@ -84,7 +84,7 @@ export default css`
 		flex-direction: column;
 		position: relative;
 		overflow: hidden;
-		color: var(--cosmoz-omnitable-text-color, rgb(0,0,0))
+		color: var(--cosmoz-omnitable-text-color, rgb(89, 102, 121));
 	}
 	:host a {
 		color: var(--primary-link-color, inherit);
