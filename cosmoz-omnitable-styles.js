@@ -14,7 +14,8 @@ const checkbox = css`
 		user-select: none;
 		cursor: pointer;
 		display: inline-block;
-		box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.16) inset;
+		box-shadow: 0 0 0 2px
+			var(--cosmoz-omnitable-checkbox-shadow-color, rgba(0, 0, 0, 0.16)) inset;
 		-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 		vertical-align: middle;
 		transition: background-color 140ms;
@@ -54,7 +55,9 @@ const checkbox = css`
 
 	.checkbox:hover {
 		box-shadow:
-			0 0 0 2px rgba(0, 0, 0, 1) inset,
+			0 0 0 2px
+				var(--cosmoz-omnitable-checkbox-shadow-color-hover, rgba(0, 0, 0, 1))
+				inset,
 			0 0 2px 6px #2021240f;
 	}
 
@@ -450,7 +453,8 @@ export default css`
 	}
 	.groupRow:hover .checkbox:not(:checked):not(:hover),
 	.itemRow:hover .checkbox:not(:checked):not(:hover) {
-		box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.54) inset;
+		box-shadow: 0 0 0 2px var(--cosmoz-omnitable-checkbox-shadow-color-not-hover, rgba(0, 0, 0, 0.54))
+		inset;
 	}
 	.groupRow:hover .expand:not(:hover),
 	.itemRow:hover .expand:not(:hover) {
