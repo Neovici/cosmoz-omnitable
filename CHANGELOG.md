@@ -1,3 +1,10 @@
+## [14.0.4](https://github.com/neovici/cosmoz-omnitable/compare/v14.0.3...v14.0.4) (2025-03-13)
+
+
+### Bug Fixes
+
+* **vars:** further styling vars for omnitable styling for themes ([823865f](https://github.com/neovici/cosmoz-omnitable/commit/823865f9ece9eaceaf16e4d3c1cfad89361830ff))
+
 ## [14.0.3](https://github.com/neovici/cosmoz-omnitable/compare/v14.0.2...v14.0.3) (2025-03-12)
 
 
