@@ -1,3 +1,10 @@
+## [14.0.5](https://github.com/neovici/cosmoz-omnitable/compare/v14.0.4...v14.0.5) (2025-04-01)
+
+
+### Bug Fixes
+
+* **vars:** graphical elements of omnitable need external control for color themes ([#646](https://github.com/neovici/cosmoz-omnitable/issues/646)) ([33db94d](https://github.com/neovici/cosmoz-omnitable/commit/33db94d3d71f0804c7e8a65230828266d56015c9))
+
 ## [14.0.4](https://github.com/neovici/cosmoz-omnitable/compare/v14.0.3...v14.0.4) (2025-03-13)
 
 
