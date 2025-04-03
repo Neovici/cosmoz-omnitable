@@ -37,7 +37,8 @@ const checkbox = css`
 		box-sizing: content-box;
 		width: 5px;
 		height: 10px;
-		border: 2.4px solid #fff;
+		border: 2.4px solid
+			var(--cosmoz-omnitable-checkbox-checked-tick-color, #fff);
 		border-top: none;
 		border-left: none;
 		transform-origin: 5px 10px;
