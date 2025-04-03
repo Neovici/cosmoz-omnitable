@@ -1,3 +1,10 @@
+## [14.0.6](https://github.com/neovici/cosmoz-omnitable/compare/v14.0.5...v14.0.6) (2025-04-03)
+
+
+### Bug Fixes
+
+* **vars:** external style control over the checkbox tick ([1817887](https://github.com/neovici/cosmoz-omnitable/commit/1817887f089d607be1a7e2f9dde8db48a94e3e4b))
+
 ## [14.0.5](https://github.com/neovici/cosmoz-omnitable/compare/v14.0.4...v14.0.5) (2025-04-01)
 
 
