@@ -524,7 +524,7 @@ export default css`
 	.sg:not([data-on='desc']) {
 		transform: scaleY(-1);
 	}
-	:not(:hover) > * > .sg:not([data-on]) {
+	:not(:hover) > .sg:not([data-on]) {
 		display: none;
 	}
 	.header-cell {
