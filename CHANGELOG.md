@@ -1,3 +1,10 @@
+# [14.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.0.6...v14.1.0) (2025-04-15)
+
+
+### Features
+
+* **header-row:** use one sortAndGroup provider for all columns ([#649](https://github.com/neovici/cosmoz-omnitable/issues/649)) ([2d4f4e3](https://github.com/neovici/cosmoz-omnitable/commit/2d4f4e347ea7bccf934fa51aec0421980cc9577b))
+
 ## [14.0.6](https://github.com/neovici/cosmoz-omnitable/compare/v14.0.5...v14.0.6) (2025-04-03)
 
 
