@@ -1,3 +1,10 @@
+## [14.1.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.1.0...v14.1.1) (2025-04-15)
+
+
+### Bug Fixes
+
+* remove whitespaces in header ([423f444](https://github.com/neovici/cosmoz-omnitable/commit/423f4446d9326843cd73db98ca028c3c1b3bcf01))
+
 # [14.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.0.6...v14.1.0) (2025-04-15)
 
 
