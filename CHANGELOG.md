@@ -1,3 +1,10 @@
+## [14.1.2](https://github.com/neovici/cosmoz-omnitable/compare/v14.1.1...v14.1.2) (2025-05-07)
+
+
+### Bug Fixes
+
+* optimize layout animation ([#651](https://github.com/neovici/cosmoz-omnitable/issues/651)) ([058118b](https://github.com/neovici/cosmoz-omnitable/commit/058118bc388a4e182d29212cc7e11584472ceccd))
+
 ## [14.1.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.1.0...v14.1.1) (2025-04-15)
 
 
