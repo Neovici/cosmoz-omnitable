@@ -77,8 +77,6 @@ customElements.define(
 
 const tmplt = `
 	<slot name="actions" slot="actions"></slot>
-	<slot name="bottom-bar-toolbar" slot="bottom-bar-toolbar"></slot>
-	<slot name="bottom-bar-menu" slot="bottom-bar-menu"></slot>
 `;
 
 export const actionSlots = html(Object.assign([tmplt], { raw: [tmplt] })),
