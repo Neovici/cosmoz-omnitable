@@ -1,3 +1,10 @@
+# [14.2.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.1.2...v14.2.0) (2025-05-08)
+
+
+### Features
+
+* bump cosmoz-bottom-bar from 8.0.0 to 9.0.3 ([#652](https://github.com/neovici/cosmoz-omnitable/issues/652)) ([e691f1b](https://github.com/neovici/cosmoz-omnitable/commit/e691f1bd46f4dbec97dc979e3a553fe6a21f21a4))
+
 ## [14.1.2](https://github.com/neovici/cosmoz-omnitable/compare/v14.1.1...v14.1.2) (2025-05-07)
 
 
