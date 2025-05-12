@@ -59,6 +59,7 @@
     }
   },
   "dependencies": {
+    "@lit-labs/virtualizer": "^2.1.0",
     "@neovici/cosmoz-autocomplete": "^10.0.0",
     "@neovici/cosmoz-bottom-bar": "^9.0.3",
     "@neovici/cosmoz-collapse": "^1.1.0",
@@ -93,6 +94,6 @@
     "@semantic-release/git": "^10.0.0",
     "husky": "^9.0.0",
     "semantic-release": "^24.0.0",
-    "sinon": "^19.0.0"
+    "sinon": "^20.0.0"
   }
 }
