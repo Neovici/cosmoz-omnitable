@@ -3,7 +3,7 @@ import { spy as sinonSpy } from 'sinon';
 import { assert, html, fixture, nextFrame } from '@open-wc/testing';
 import { setupIgnoreWindowResizeObserverLoopErrors } from '@lit-labs/virtualizer/support/resize-observer-errors.js';
 
-import '../cosmoz-grouped-list.js';
+import '../grouped-list/index.js';
 
 const renderItem = (item, index, { selected, expanded }) => html`
 		I:${ item.id }-${ item.name }-${ item.value }-${ selected }-${ expanded }
@@ -187,7 +187,7 @@ suite('flat data', () => {
 
 suite('empty-groups', () => {
 	setupIgnoreWindowResizeObserverLoopErrors(setup, teardown);
-	
+
 	let element;
 	setup(async () => {
 		element = await fixture(basicHtmlFixture);
@@ -529,7 +529,7 @@ suite('basic', () => {
 
 suite('compare items function', () => {
 	setupIgnoreWindowResizeObserverLoopErrors(setup, teardown);
-	
+
 	let element;
 
 	setup(async () => {
