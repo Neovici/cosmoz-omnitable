@@ -21,9 +21,9 @@
   },
   "files": [
     "cosmoz-*.js",
-    "get-effective-children-legacy-mixin.js",
     "ui-helpers",
-    "lib/**/*.js"
+    "lib/**/*.js",
+    "grouped-list/*.js"
   ],
   "scripts": {
     "lint": "eslint --cache --ext .js .",

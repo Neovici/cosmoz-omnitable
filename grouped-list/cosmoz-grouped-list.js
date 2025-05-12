@@ -9,5 +9,5 @@ const CosmozGroupedList = (host) =>
 
 customElements.define(
 	'cosmoz-grouped-list',
-	component(CosmozGroupedList, { useShadowDOM: false })
+	component(CosmozGroupedList, { useShadowDOM: false }),
 );
