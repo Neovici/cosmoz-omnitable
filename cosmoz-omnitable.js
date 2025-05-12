@@ -4,7 +4,6 @@ import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-icon/iron-icon';
 import '@polymer/paper-spinner/paper-spinner-lite';
 
-import '@neovici/cosmoz-grouped-list';
 import '@neovici/cosmoz-bottom-bar';
 
 import './cosmoz-omnitable-column';
@@ -18,13 +17,14 @@ import styles from './cosmoz-omnitable-styles';
 import { html as polymerHtml } from '@polymer/polymer/lib/utils/html-tag';
 import { html } from 'lit-html';
 import { guard } from 'lit-html/directives/guard.js';
+import { notifyProperty } from '@neovici/cosmoz-utils/hooks/use-notify-property';
 
 import { useOmnitable } from './lib/use-omnitable';
 import { component } from '@pionjs/pion';
 import { renderHeader } from './lib/render-header';
 import { renderFooter } from './lib/render-footer';
 import { renderList } from './lib/render-list';
-import { notifyProperty } from '@neovici/cosmoz-utils/hooks/use-notify-property';
+import './grouped-list/index.js';
 
 const shimCSS = (s) => window.ShadyCSS?.ApplyShim?.transformCssText?.(s) || s;
 
