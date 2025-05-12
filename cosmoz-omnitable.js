@@ -24,7 +24,7 @@ import { component } from '@pionjs/pion';
 import { renderHeader } from './lib/render-header';
 import { renderFooter } from './lib/render-footer';
 import { renderList } from './lib/render-list';
-import './grouped-list/';
+import './grouped-list/cosmoz-grouped-list.js';
 
 const shimCSS = (s) => window.ShadyCSS?.ApplyShim?.transformCssText?.(s) || s;
 
