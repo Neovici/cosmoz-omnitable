@@ -6,16 +6,16 @@ import { setupIgnoreWindowResizeObserverLoopErrors } from '@lit-labs/virtualizer
 import '../grouped-list/index.js';
 
 const renderItem = (item, index, { selected, expanded }) => html`
-		I:${item.id}-${item.name}-${item.value}-${selected}-${expanded}
+		I:${ item.id }-${ item.name }-${ item.value }-${ selected }-${ expanded }
 	`,
 	renderGroup = (item, index, { selected, folded }) => html`
-		G:${item.name}-${item.value}-${selected}-${folded}
+		G:${ item.name }-${ item.value }-${ selected }-${ folded }
 	`,
 	basicHtmlFixture = html`
 		<cosmoz-grouped-list
 			style="min-height: 300px"
-			.renderItem=${renderItem}
-			.renderGroup=${renderGroup}
+			.renderItem=${ renderItem }
+			.renderGroup=${ renderGroup }
 		></cosmoz-grouped-list>
 	`;
 
@@ -57,15 +57,13 @@ suite('empty', () => {
 		element.data = data.concat([{ id: 4 }, { id: 5 }]);
 		await nextFrame();
 		await nextFrame();
-		await nextFrame();
 
 		assert.equal(
 			element.innerText,
-			'I:0---false-false\nI:1---false-false\nI:2---true-false\nI:3---true-false\nI:4---false-false\nI:5---false-false',
+			'I:0---false-false\nI:1---false-false\nI:2---true-false\nI:3---true-false\nI:4---false-false\nI:5---false-false'
 		);
 
 		element.data = [data[2]];
-		await nextFrame();
 		await nextFrame();
 		await nextFrame();
 
@@ -74,25 +72,22 @@ suite('empty', () => {
 		element.data = data;
 		await nextFrame();
 		await nextFrame();
-		await nextFrame();
 
 		assert.equal(
 			element.innerText,
-			'I:0---false-false\nI:1---false-false\nI:2---true-false\nI:3---false-false',
+			'I:0---false-false\nI:1---false-false\nI:2---true-false\nI:3---false-false'
 		);
 
 		element.deselect(data[2]);
 		await nextFrame();
 		await nextFrame();
-		await nextFrame();
 
 		assert.equal(
 			element.innerText,
-			'I:0---false-false\nI:1---false-false\nI:2---false-false\nI:3---false-false',
+			'I:0---false-false\nI:1---false-false\nI:2---false-false\nI:3---false-false'
 		);
 
 		element.data = [{ id: 6 }];
-		await nextFrame();
 		await nextFrame();
 		await nextFrame();
 
@@ -111,7 +106,7 @@ suite('empty', () => {
 
 		assert.equal(
 			element.innerText,
-			'I:0---false-false\nI:1---false-false\nI:2---true-false\nI:3---true-false',
+			'I:0---false-false\nI:1---false-false\nI:2---true-false\nI:3---true-false'
 		);
 
 		element.data = data.splice(0, 2);
@@ -125,7 +120,8 @@ suite('empty', () => {
 suite('flat data', () => {
 	setupIgnoreWindowResizeObserverLoopErrors(setup, teardown);
 
-	let element, items;
+	let element,
+		items;
 
 	setup(async () => {
 		element = await fixture(basicHtmlFixture);
@@ -133,18 +129,18 @@ suite('flat data', () => {
 			{
 				id: 'i0',
 				name: 'item 0',
-				value: 0,
+				value: 0
 			},
 			{
 				id: 'i1',
 				name: 'item 1',
-				value: 1,
+				value: 1
 			},
 			{
 				id: 'i2',
 				name: 'item 2',
-				value: 1,
-			},
+				value: 1
+			}
 		];
 
 		element.data = items;
@@ -160,7 +156,7 @@ suite('flat data', () => {
 
 		assert.equal(
 			element.innerText,
-			'I:i0-item 0-0-true-false\nI:i1-item 1-1-false-false\nI:i2-item 2-1-false-false',
+			'I:i0-item 0-0-true-false\nI:i1-item 1-1-false-false\nI:i2-item 2-1-false-false'
 		);
 	});
 
@@ -173,10 +169,7 @@ suite('flat data', () => {
 		await nextFrame();
 		await nextFrame();
 
-		assert.equal(
-			element.innerText,
-			'I:i1-item 1-1-true-false\nI:i2-item 2-1-true-false',
-		);
+		assert.equal(element.innerText, 'I:i1-item 1-1-true-false\nI:i2-item 2-1-true-false');
 	});
 
 	test('select all items [#977]', async () => {
@@ -187,7 +180,7 @@ suite('flat data', () => {
 
 		assert.equal(
 			element.innerText,
-			'I:i0-item 0-0-true-false\nI:i1-item 1-1-true-false\nI:i2-item 2-1-true-false',
+			'I:i0-item 0-0-true-false\nI:i1-item 1-1-true-false\nI:i2-item 2-1-true-false'
 		);
 	});
 });
@@ -202,7 +195,7 @@ suite('empty-groups', () => {
 			{
 				name: 'Group 0',
 				id: 'g0',
-				items: [],
+				items: []
 			},
 			{
 				name: 'Group 1',
@@ -211,15 +204,15 @@ suite('empty-groups', () => {
 					{
 						id: 'g1-0',
 						name: 'Group 1 item 0',
-						value: 0,
+						value: 0
 					},
 					{
 						id: 'g1-1',
 						name: 'Group 1 item 1',
-						value: 1,
-					},
-				],
-			},
+						value: 1
+					}
+				]
+			}
 		];
 		await nextFrame();
 		await nextFrame();
@@ -228,7 +221,7 @@ suite('empty-groups', () => {
 	test('does not render empty groups by default', () => {
 		assert.equal(
 			element.innerText,
-			'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false',
+			'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false'
 		);
 	});
 
@@ -240,7 +233,7 @@ suite('empty-groups', () => {
 
 		assert.equal(
 			element.innerText,
-			'G:Group 0--true-false\nG:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false',
+			'G:Group 0--true-false\nG:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false'
 		);
 	});
 });
@@ -248,7 +241,8 @@ suite('empty-groups', () => {
 suite('basic', () => {
 	setupIgnoreWindowResizeObserverLoopErrors(setup, teardown);
 
-	let element, groups;
+	let element,
+		groups;
 
 	setup(async () => {
 		element = await fixture(basicHtmlFixture);
@@ -261,14 +255,14 @@ suite('basic', () => {
 					{
 						id: 'g0-0',
 						name: 'Group 0 item 0',
-						value: 0,
+						value: 0
 					},
 					{
 						id: 'g0-1',
 						name: 'Group 0 item 1',
-						value: 1,
-					},
-				],
+						value: 1
+					}
+				]
 			},
 			{
 				name: 'Group 1',
@@ -277,15 +271,15 @@ suite('basic', () => {
 					{
 						id: 'g1-0',
 						name: 'Group 1 item 0',
-						value: 0,
+						value: 0
 					},
 					{
 						id: 'g1-1',
 						name: 'Group 1 item 1',
-						value: 1,
-					},
-				],
-			},
+						value: 1
+					}
+				]
+			}
 		];
 		element.data = groups;
 		await nextFrame();
@@ -302,7 +296,7 @@ suite('basic', () => {
 		assert.equal(
 			element.innerText,
 			'G:Group 0--false-false\nI:g0-0-Group 0 item 0-0-true-false\nI:g0-1-Group 0 item 1-1-false-false\n' +
-				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false',
+				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false'
 		);
 	});
 
@@ -316,7 +310,7 @@ suite('basic', () => {
 		assert.equal(
 			element.innerText,
 			'G:Group 0--false-false\nI:g0-0-Group 0 item 0-0-false-false\nI:g0-1-Group 0 item 1-1-false-false\n' +
-				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-true-false\nI:g1-1-Group 1 item 1-1-false-false',
+				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-true-false\nI:g1-1-Group 1 item 1-1-false-false'
 		);
 
 		element.deselect(item);
@@ -326,7 +320,7 @@ suite('basic', () => {
 		assert.equal(
 			element.innerText,
 			'G:Group 0--false-false\nI:g0-0-Group 0 item 0-0-false-false\nI:g0-1-Group 0 item 1-1-false-false\n' +
-				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false',
+				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false'
 		);
 	});
 
@@ -340,7 +334,7 @@ suite('basic', () => {
 		assert.equal(
 			element.innerText,
 			'G:Group 0--false-false\nI:g0-0-Group 0 item 0-0-false-false\nI:g0-1-Group 0 item 1-1-false-false\n' +
-				'G:Group 1--true-false\nI:g1-0-Group 1 item 0-0-true-false\nI:g1-1-Group 1 item 1-1-true-false',
+				'G:Group 1--true-false\nI:g1-0-Group 1 item 0-0-true-false\nI:g1-1-Group 1 item 1-1-true-false'
 		);
 	});
 
@@ -354,7 +348,7 @@ suite('basic', () => {
 		assert.equal(
 			element.innerText,
 			'G:Group 0--true-false\nI:g0-0-Group 0 item 0-0-true-false\nI:g0-1-Group 0 item 1-1-true-false\n' +
-				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false',
+				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false'
 		);
 
 		element.toggleSelect(group, false);
@@ -364,7 +358,7 @@ suite('basic', () => {
 		assert.equal(
 			element.innerText,
 			'G:Group 0--false-false\nI:g0-0-Group 0 item 0-0-false-false\nI:g0-1-Group 0 item 1-1-false-false\n' +
-				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false',
+				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false'
 		);
 	});
 
@@ -379,7 +373,7 @@ suite('basic', () => {
 		assert.equal(
 			element.innerText,
 			'G:Group 0--false-false\nI:g0-0-Group 0 item 0-0-false-false\nI:g0-1-Group 0 item 1-1-false-false\n' +
-				'G:Group 1--true-false\nI:g1-0-Group 1 item 0-0-true-false\nI:g1-1-Group 1 item 1-1-true-false',
+				'G:Group 1--true-false\nI:g1-0-Group 1 item 0-0-true-false\nI:g1-1-Group 1 item 1-1-true-false'
 		);
 
 		element.deselect(item);
@@ -389,7 +383,7 @@ suite('basic', () => {
 		assert.equal(
 			element.innerText,
 			'G:Group 0--false-false\nI:g0-0-Group 0 item 0-0-false-false\nI:g0-1-Group 0 item 1-1-false-false\n' +
-				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-true-false\nI:g1-1-Group 1 item 1-1-false-false',
+				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-true-false\nI:g1-1-Group 1 item 1-1-false-false'
 		);
 	});
 
@@ -403,18 +397,19 @@ suite('basic', () => {
 		assert.equal(
 			element.innerText,
 			'G:Group 0--true-false\nI:g0-0-Group 0 item 0-0-true-false\nI:g0-1-Group 0 item 1-1-true-false\n' +
-				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false',
+				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false'
 		);
 
-		element.data = [{ ...groups[0], items: [group.items[1]] }, groups[1]];
+		element.data = [{ ...groups[0], items: [group.items[1]]}, groups[1]];
 		await nextFrame();
 		await nextFrame();
 
 		assert.equal(
 			element.innerText,
 			'G:Group 0--true-false\nI:g0-1-Group 0 item 1-1-true-false\n' +
-				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false',
+				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false'
 		);
+
 	});
 
 	test('selects all items', async () => {
@@ -425,7 +420,7 @@ suite('basic', () => {
 		assert.equal(
 			element.innerText,
 			'G:Group 0--true-false\nI:g0-0-Group 0 item 0-0-true-false\nI:g0-1-Group 0 item 1-1-true-false\n' +
-				'G:Group 1--true-false\nI:g1-0-Group 1 item 0-0-true-false\nI:g1-1-Group 1 item 1-1-true-false',
+				'G:Group 1--true-false\nI:g1-0-Group 1 item 0-0-true-false\nI:g1-1-Group 1 item 1-1-true-false'
 		);
 	});
 
@@ -437,7 +432,7 @@ suite('basic', () => {
 		assert.equal(
 			element.innerText,
 			'G:Group 0--true-false\nI:g0-0-Group 0 item 0-0-true-false\nI:g0-1-Group 0 item 1-1-true-false\n' +
-				'G:Group 1--true-false\nI:g1-0-Group 1 item 0-0-true-false\nI:g1-1-Group 1 item 1-1-true-false',
+				'G:Group 1--true-false\nI:g1-0-Group 1 item 0-0-true-false\nI:g1-1-Group 1 item 1-1-true-false'
 		);
 
 		element.deselectAll();
@@ -447,7 +442,7 @@ suite('basic', () => {
 		assert.equal(
 			element.innerText,
 			'G:Group 0--false-false\nI:g0-0-Group 0 item 0-0-false-false\nI:g0-1-Group 0 item 1-1-false-false\n' +
-				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false',
+				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false'
 		);
 	});
 
@@ -457,7 +452,7 @@ suite('basic', () => {
 		assert.equal(
 			element.innerText,
 			'G:Group 0--false-false\nI:g0-0-Group 0 item 0-0-false-false\nI:g0-1-Group 0 item 1-1-false-false\n' +
-				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false',
+				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false'
 		);
 
 		element.toggleFold(group, true);
@@ -467,7 +462,7 @@ suite('basic', () => {
 		assert.equal(
 			element.innerText,
 			'G:Group 0--false-false\nI:g0-0-Group 0 item 0-0-false-false\nI:g0-1-Group 0 item 1-1-false-false\n' +
-				'G:Group 1--false-true',
+				'G:Group 1--false-true'
 		);
 	});
 
@@ -477,7 +472,7 @@ suite('basic', () => {
 		assert.equal(
 			element.innerText,
 			'G:Group 0--false-false\nI:g0-0-Group 0 item 0-0-false-false\nI:g0-1-Group 0 item 1-1-false-false\n' +
-				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false',
+				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false'
 		);
 
 		element.toggleFold(group, true);
@@ -487,7 +482,7 @@ suite('basic', () => {
 		assert.equal(
 			element.innerText,
 			'G:Group 0--false-false\nI:g0-0-Group 0 item 0-0-false-false\nI:g0-1-Group 0 item 1-1-false-false\n' +
-				'G:Group 1--false-true',
+				'G:Group 1--false-true'
 		);
 
 		element.toggleFold(group, false);
@@ -497,7 +492,7 @@ suite('basic', () => {
 		assert.equal(
 			element.innerText,
 			'G:Group 0--false-false\nI:g0-0-Group 0 item 0-0-false-false\nI:g0-1-Group 0 item 1-1-false-false\n' +
-				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false',
+				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false'
 		);
 	});
 
@@ -506,7 +501,7 @@ suite('basic', () => {
 		assert.equal(
 			element.innerText,
 			'G:Group 0--false-false\nI:g0-0-Group 0 item 0-0-false-false\nI:g0-1-Group 0 item 1-1-false-false\n' +
-				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false',
+				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false'
 		);
 
 		element.toggleCollapse(item);
@@ -516,7 +511,7 @@ suite('basic', () => {
 		assert.equal(
 			element.innerText,
 			'G:Group 0--false-false\nI:g0-0-Group 0 item 0-0-false-false\nI:g0-1-Group 0 item 1-1-false-false\n' +
-				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-true',
+				'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-true'
 		);
 	});
 
@@ -527,7 +522,7 @@ suite('basic', () => {
 
 		assert.equal(
 			element.innerText,
-			'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false',
+			'G:Group 1--false-false\nI:g1-0-Group 1 item 0-0-false-false\nI:g1-1-Group 1 item 1-1-false-false'
 		);
 	});
 });
@@ -557,7 +552,7 @@ suite('compare items function', () => {
 
 		assert.equal(
 			element.innerText,
-			'I:0---true-false\nI:1---true-false\nI:2---false-false\nI:3---false-false',
+			'I:0---true-false\nI:1---true-false\nI:2---false-false\nI:3---false-false'
 		);
 
 		element.data = [{ id: 0 }, { id: 1 }, { id: 5 }];
@@ -566,13 +561,16 @@ suite('compare items function', () => {
 
 		assert.equal(
 			element.innerText,
-			'I:0---true-false\nI:1---true-false\nI:5---false-false',
+			'I:0---true-false\nI:1---true-false\nI:5---false-false'
 		);
 
 		element.data = [{ id: 0 }, { id: 5 }];
 		await nextFrame();
 		await nextFrame();
 
-		assert.equal(element.innerText, 'I:0---true-false\nI:5---false-false');
+		assert.equal(
+			element.innerText,
+			'I:0---true-false\nI:5---false-false'
+		);
 	});
 });
