@@ -1,3 +1,19 @@
+# [14.3.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.2.0...v14.3.0) (2025-05-13)
+
+
+### Bug Fixes
+
+* correct import ([48e9480](https://github.com/neovici/cosmoz-omnitable/commit/48e94801db1450e762b98cc4f8daa8d3be4c551b))
+* format tests and adjust imports ([d075eec](https://github.com/neovici/cosmoz-omnitable/commit/d075eecd0cec7ea27d9534297e84694178c39e75))
+
+
+### Features
+
+* **grouped-list:** add tests too ([32e3946](https://github.com/neovici/cosmoz-omnitable/commit/32e3946f787763530c42bca79bde233a6ecc33c0))
+* integrate cosmoz-grouped-list code in omnitable ([1f26d31](https://github.com/neovici/cosmoz-omnitable/commit/1f26d31ba397c4a103173f3cd4bb6ed972351253))
+* **scroller:** add extra content slot ([1f2ce01](https://github.com/neovici/cosmoz-omnitable/commit/1f2ce012347ab978eb19888968ce7ad330430bd1))
+* update deps ([641fe3d](https://github.com/neovici/cosmoz-omnitable/commit/641fe3d864bf80e272a39da538620ff330d21f9a))
+
 # [14.2.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.1.2...v14.2.0) (2025-05-08)
 
 
