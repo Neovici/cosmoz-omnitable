@@ -307,21 +307,15 @@ export default css`
 	}
 
 	/* End of empty data set styling */
-
 	.tableContent-scroller {
 		flex: auto;
 		position: relative;
 		overflow: auto;
 		overflow-x: hidden;
 		will-change: transform;
-	}
-
-	#groupedList {
-		position: absolute !important;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
+		flex-basis: 0.000001px;
+		display: flex;
+		flex-direction: column;
 	}
 
 	.itemRow {
