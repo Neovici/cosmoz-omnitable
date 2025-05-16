@@ -230,7 +230,7 @@ export default css`
 
 	.tableContent {
 		overflow-y: auto;
-		min-height: 90px;
+		min-height: 40px;
 		display: flex;
 		flex-direction: column;
 		position: relative;
