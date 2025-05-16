@@ -1,3 +1,10 @@
+## [14.3.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.3.0...v14.3.1) (2025-05-16)
+
+
+### Bug Fixes
+
+* cant resize the last column from right ([a020f18](https://github.com/neovici/cosmoz-omnitable/commit/a020f188d509b14d98b70328743fe0fc1bc29267))
+
 # [14.3.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.2.0...v14.3.0) (2025-05-13)
 
 
