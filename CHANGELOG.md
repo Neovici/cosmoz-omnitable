@@ -1,3 +1,10 @@
+## [14.3.2](https://github.com/neovici/cosmoz-omnitable/compare/v14.3.1...v14.3.2) (2025-05-19)
+
+
+### Bug Fixes
+
+* bottom-bar covered in horizontal split view ([#656](https://github.com/neovici/cosmoz-omnitable/issues/656)) ([f9a87ef](https://github.com/neovici/cosmoz-omnitable/commit/f9a87ef8e03bd42ab69238d2f20651a544b99c34))
+
 ## [14.3.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.3.0...v14.3.1) (2025-05-16)
 
 
