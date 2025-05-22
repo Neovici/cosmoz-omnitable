@@ -1,3 +1,10 @@
+# [14.4.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.3.2...v14.4.0) (2025-05-22)
+
+
+### Features
+
+* bump bottom bar ([8824c37](https://github.com/neovici/cosmoz-omnitable/commit/8824c3795e2f74aac1aa01a43ae442b44ad2243c))
+
 ## [14.3.2](https://github.com/neovici/cosmoz-omnitable/compare/v14.3.1...v14.3.2) (2025-05-19)
 
 
