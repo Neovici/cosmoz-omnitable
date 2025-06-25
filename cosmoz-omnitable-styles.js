@@ -1,6 +1,7 @@
 /* eslint-disable max-lines */
 import { tagged as css } from '@neovici/cosmoz-utils';
-const checkbox = css`
+
+export const checkbox = css`
 	.checkbox {
 		box-sizing: border-box;
 		width: 18px;
@@ -80,8 +81,6 @@ const checkbox = css`
 	}
 `;
 
-export { checkbox };
-
 export default css`
 	:host {
 		display: flex;
@@ -101,6 +100,7 @@ export default css`
 		);
 		color: var(--primary-link-color-hover, var(--primary-link-color));
 	}
+
 	/* The wrapping div that contains the header, the table content and the footer */
 	.mainContainer {
 		background-color: var(--cosmoz-omnitable-bg-color, rgb(255, 255, 255));
@@ -237,7 +237,6 @@ export default css`
 	}
 
 	/* Empty data set styling */
-
 	.tableContent-empty {
 		position: absolute;
 		top: 0;
@@ -249,13 +248,11 @@ export default css`
 		justify-content: center;
 		color: #ccc;
 	}
-
 	.tableContent-empty.overlay {
 		background-color: rgba(255, 255, 255, 0.8);
 		color: #333;
 		z-index: 1;
 	}
-
 	.tableContent-empty iron-icon {
 		height: 96px;
 		min-height: 96px;
@@ -263,34 +260,49 @@ export default css`
 		min-width: 96px;
 		margin-right: 24px;
 	}
-
-	.tableContent-empty.overlay paper-spinner-lite {
-		height: 48px;
-		min-height: 48px;
-		width: 48px;
-		min-width: 48px;
-		margin-right: 24px;
-		--paper-spinner-color: #333;
-		--paper-spinner-stroke-width: 6px;
-	}
-
 	.tableContent-empty > div {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		padding-bottom: 24px;
 	}
-
 	.tableContent-empty.overlay > div {
 		padding-bottom: 0;
 	}
-
+	.tableContent-empty.overlay:has(.ot-skeleton) {
+		align-items: flex-start;
+	}
+	.tableContent-empty.overlay .ot-skeleton {
+		width: 100%;
+		padding: 0 12px;
+	}
+	.tableContent-empty.overlay .ot-skeleton > div {
+		height: 20px;
+		display: grid;
+		grid-template-columns: 18px 1fr;
+		gap: 12px;
+		padding: 12px 12px 12px 0;
+	}
+	.tableContent-empty.overlay .ot-skeleton > div div {
+		background-image: linear-gradient(90deg, #e0e0e0, #f5f5f5, #e0e0e0);
+		background-size: 1000%;
+    background-position: right;
+		border-radius: 4px;
+		animation: sweep 1.5s cubic-bezier(0.3, 1, 0.3, 1) infinite;
+	}
+	@keyframes sweep {
+			0% {
+				background-position: right;
+			}
+			100% {
+				background-position: left;
+			}
+		}
 	.tableContent-empty div.tableContent-empty-message {
 		@apply --layout-vertical;
 		@apply --layout-center-justified;
 		padding-bottom: 24px;
 	}
-
 	.tableContent-empty.overlay div.tableContent-empty-message {
 		padding-bottom: 0;
 	}
@@ -299,7 +311,6 @@ export default css`
 		color: #ddd;
 		margin: 0;
 	}
-
 	.tableContent-empty h3 {
 		white-space: nowrap;
 		margin: 0px 0px 8px 0px;
@@ -366,10 +377,6 @@ export default css`
 		font-weight: 700;
 		color: #101010;
 		border-bottom: 1px solid var(--cosmoz-omnitable-border-color, #e1e2e5);
-	}
-
-	.groupRow.groupRow-folded {
-		/* Add here style rules for folded group rows */
 	}
 
 	.groupRow-label {
