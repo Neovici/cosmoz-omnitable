@@ -269,35 +269,9 @@ export default css`
 	.tableContent-empty.overlay > div {
 		padding-bottom: 0;
 	}
-	.tableContent-empty.overlay:has(.ot-skeleton) {
+	.tableContent-empty.overlay:has(cosmoz-omnitable-skeleton) {
 		align-items: flex-start;
 	}
-	.tableContent-empty.overlay .ot-skeleton {
-		width: 100%;
-		padding: 0 12px;
-	}
-	.tableContent-empty.overlay .ot-skeleton > div {
-		height: 20px;
-		display: grid;
-		grid-template-columns: 18px 1fr;
-		gap: 12px;
-		padding: 12px 12px 12px 0;
-	}
-	.tableContent-empty.overlay .ot-skeleton > div div {
-		background-image: linear-gradient(90deg, #e0e0e0, #f5f5f5, #e0e0e0);
-		background-size: 1000%;
-    background-position: right;
-		border-radius: 4px;
-		animation: sweep 1.5s cubic-bezier(0.3, 1, 0.3, 1) infinite;
-	}
-	@keyframes sweep {
-			0% {
-				background-position: right;
-			}
-			100% {
-				background-position: left;
-			}
-		}
 	.tableContent-empty div.tableContent-empty-message {
 		@apply --layout-vertical;
 		@apply --layout-center-justified;

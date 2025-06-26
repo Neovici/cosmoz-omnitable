@@ -38,7 +38,9 @@ const Omnitable = (host) => {
 
 		<div class="mainContainer">
 			${renderHeader(header)}
-			<div class="tableContent" id="tableContent">${renderList(list)}</div>
+			<div class="tableContent" id="tableContent">
+				${renderList(header, list)}
+			</div>
 			${renderFooter(footer)}
 		</div>
 

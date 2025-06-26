@@ -5,7 +5,10 @@ suite('render-list', () => {
 	test('error', async () => {
 		const el = await fixture(
 			html` <div class="tableContent" id="tableContent">
-				${renderList({ error: { message: 'An error occurred' } })}
+				${renderList(
+					{ settingsConfig: {} },
+					{ error: { message: 'An error occurred' } },
+				)}
 			</div>`,
 		);
 		await nextFrame();
