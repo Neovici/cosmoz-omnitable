@@ -1,3 +1,10 @@
+# [14.5.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.4.0...v14.5.0) (2025-07-08)
+
+
+### Features
+
+* cosmoz input padding variable ([9c86e5c](https://github.com/neovici/cosmoz-omnitable/commit/9c86e5c35466af8a80b79297c177331a9b583d20))
+
 # [14.4.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.3.2...v14.4.0) (2025-05-22)
 
 
