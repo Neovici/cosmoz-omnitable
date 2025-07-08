@@ -165,10 +165,9 @@ export default css`
 			--cosmoz-omnitable-header-font-size,
 			16px
 		);
-		--cosmoz-input-padding: 0;
+		--cosmoz-input-padding: var(--cosmoz-omnitable-header-input-padding, 0);
 		--cosmoz-input-label-text-transform: var(--cosmoz-omnitable-header-text-transform, none);
 		--cosmoz-input-label-font-weight: var(--cosmoz-omnitable-header-font-weight, normal);
-		--cosmoz-input-padding: 0;
 	}
 
 	cosmoz-omnitable-header-row {
