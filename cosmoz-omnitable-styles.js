@@ -118,6 +118,10 @@ export default css`
 		display: flex;
 		align-items: flex-end;
 		background-color: var(--cosmoz-omnitable-header-bg-color, inherit);
+		border-top-left-radius: var(--cosmoz-omnitable-header-border-radius-top-left, 8px);
+		border-top-right-radius: var(--cosmoz-omnitable-header-border-radius-top-right, 8px);
+		border-bottom-left-radius: var(--cosmoz-omnitable-header-border-radius-bottom-left, 2px);
+		border-bottom-right-radius: var(--cosmoz-omnitable-header-border-radius-bottom-right, 2px);
 	}
 
 	[hidden] {
@@ -147,7 +151,7 @@ export default css`
 	.header-cell {
 		--paper-input-container: {
 			padding-top: 0;
-			padding-bottom: 0;
+			padding-bottom: 1px;
 			--paper-font-caption_-_line-height: 18px;
 		}
 		--paper-font-subhead_-_font-family: var(
@@ -528,6 +532,7 @@ export default css`
 		margin: 4px 8px;
 		padding-top: 2px;
 	}
+	
 	:host([mini]) .itemRow:not([selected]) {
 		background: var(--cosmoz-omnitable-mini-item-background, #fdfdfd);
 	}
@@ -543,22 +548,26 @@ export default css`
 	:host([mini]) .tableContent {
 		overflow: hidden;
 	}
+	
 	:host([mini]) .tableContent-scroller::-webkit-scrollbar {
 		width: 4px;
 	}
+	
 	:host([mini]) .tableContent-scroller::-webkit-scrollbar-track {
 		background: transparent;
 	}
+	
 	:host([mini]) .tableContent-scroller::-webkit-scrollbar-thumb {
-  	background: transparent;
+	background: transparent;
 	}
+	
 	:host([mini]) .tableContent-scroller:hover::-webkit-scrollbar-thumb {
-  	background: var(--cosmoz-omnitable-mini-scrollbar-thumb-bg, #aaa);
+	background: var(--cosmoz-omnitable-mini-scrollbar-thumb-bg, #aaa);
 	}
 
 	:host([mini]) .tableContent-scroller::-webkit-scrollbar-button:decrement,
 	:host([mini]) .tableContent-scroller::-webkit-scrollbar-button:increment {
-  	width: 0px;
+	width: 0px;
 	}
 
 	:host([mini]) cosmoz-omnitable-settings::part(columns) {
