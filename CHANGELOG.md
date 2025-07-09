@@ -1,3 +1,10 @@
+# [14.7.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.6.1...v14.7.0) (2025-07-09)
+
+
+### Features
+
+* border radius on header row ([#662](https://github.com/neovici/cosmoz-omnitable/issues/662)) ([bd5fdba](https://github.com/neovici/cosmoz-omnitable/commit/bd5fdbabe36c1cc82f08d81878d9ac97551325ec))
+
 ## [14.6.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.6.0...v14.6.1) (2025-07-09)
 
 
