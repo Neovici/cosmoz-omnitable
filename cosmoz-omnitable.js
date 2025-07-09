@@ -1,29 +1,27 @@
-/* eslint-disable max-lines-per-function */
-/* eslint-disable max-lines */
-import '@polymer/iron-icons/iron-icons';
+import '@neovici/cosmoz-bottom-bar';
 import '@polymer/iron-icon/iron-icon';
+import '@polymer/iron-icons/iron-icons';
 import '@polymer/paper-spinner/paper-spinner-lite';
 
-import '@neovici/cosmoz-bottom-bar';
-
 import './cosmoz-omnitable-column';
-import './cosmoz-omnitable-header-row';
-import './cosmoz-omnitable-item-row';
-import './cosmoz-omnitable-item-expand';
-import './cosmoz-omnitable-group-row';
 import './cosmoz-omnitable-columns';
-import styles from './cosmoz-omnitable-styles';
+import './cosmoz-omnitable-group-row';
+import './cosmoz-omnitable-header-row';
+import './cosmoz-omnitable-item-expand';
+import './cosmoz-omnitable-item-row';
 
+import { notifyProperty } from '@neovici/cosmoz-utils/hooks/use-notify-property';
+import { component } from '@pionjs/pion';
 import { html as polymerHtml } from '@polymer/polymer/lib/utils/html-tag';
 import { html } from 'lit-html';
 import { guard } from 'lit-html/directives/guard.js';
-import { notifyProperty } from '@neovici/cosmoz-utils/hooks/use-notify-property';
 
-import { useOmnitable } from './lib/use-omnitable';
-import { component } from '@pionjs/pion';
-import { renderHeader } from './lib/render-header';
+import styles from './cosmoz-omnitable-styles';
 import { renderFooter } from './lib/render-footer';
+import { renderHeader } from './lib/render-header';
 import { renderList } from './lib/render-list';
+import { useOmnitable } from './lib/use-omnitable';
+
 import './grouped-list/index.js';
 
 const shimCSS = (s) => window.ShadyCSS?.ApplyShim?.transformCssText?.(s) || s;
@@ -38,7 +36,9 @@ const Omnitable = (host) => {
 
 		<div class="mainContainer">
 			${renderHeader(header)}
-			<div class="tableContent" id="tableContent">${renderList(list)}</div>
+			<div class="tableContent" id="tableContent">
+				${renderList(header, list)}
+			</div>
 			${renderFooter(footer)}
 		</div>
 
