@@ -118,10 +118,10 @@ export default css`
 		display: flex;
 		align-items: flex-end;
 		background-color: var(--cosmoz-omnitable-header-bg-color, inherit);
-		border-top-left-radius: 8px;
-		border-top-right-radius: 8px;
-		border-bottom-left-radius: 2px;
-		border-bottom-right-radius: 2px;
+		border-top-left-radius: var(--cosmoz-omnitable-header-border-radius-top-left, 8px);
+		border-top-right-radius: var(--cosmoz-omnitable-header-border-radius-top-right, 8px);
+		border-bottom-left-radius: var(--cosmoz-omnitable-header-border-radius-bottom-left, 2px);
+		border-bottom-right-radius: var(--cosmoz-omnitable-header-border-radius-bottom-right, 2px);
 	}
 
 	[hidden] {
@@ -532,6 +532,7 @@ export default css`
 		margin: 4px 8px;
 		padding-top: 2px;
 	}
+	
 	:host([mini]) .itemRow:not([selected]) {
 		background: var(--cosmoz-omnitable-mini-item-background, #fdfdfd);
 	}
@@ -547,15 +548,19 @@ export default css`
 	:host([mini]) .tableContent {
 		overflow: hidden;
 	}
+	
 	:host([mini]) .tableContent-scroller::-webkit-scrollbar {
 		width: 4px;
 	}
+	
 	:host([mini]) .tableContent-scroller::-webkit-scrollbar-track {
 		background: transparent;
 	}
+	
 	:host([mini]) .tableContent-scroller::-webkit-scrollbar-thumb {
 	background: transparent;
 	}
+	
 	:host([mini]) .tableContent-scroller:hover::-webkit-scrollbar-thumb {
 	background: var(--cosmoz-omnitable-mini-scrollbar-thumb-bg, #aaa);
 	}
