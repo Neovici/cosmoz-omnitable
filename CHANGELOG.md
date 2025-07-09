@@ -1,3 +1,10 @@
+## [14.6.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.6.0...v14.6.1) (2025-07-09)
+
+
+### Bug Fixes
+
+* omnitable skeleton loader ([#659](https://github.com/neovici/cosmoz-omnitable/issues/659)) ([1a1ff43](https://github.com/neovici/cosmoz-omnitable/commit/1a1ff43c6f81e7d1f1c00b1e5c124dad87d9cf37))
+
 # [14.6.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.5.0...v14.6.0) (2025-07-09)
 
 
