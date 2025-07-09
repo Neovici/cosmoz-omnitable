@@ -1,3 +1,10 @@
+# [14.6.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.5.0...v14.6.0) (2025-07-09)
+
+
+### Features
+
+* inputs and settings styling ([#661](https://github.com/neovici/cosmoz-omnitable/issues/661)) ([38f6640](https://github.com/neovici/cosmoz-omnitable/commit/38f66407c02e1c550645558dea70a13430ecb91f))
+
 # [14.5.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.4.0...v14.5.0) (2025-07-08)
 
 
