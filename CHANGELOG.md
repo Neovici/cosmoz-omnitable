@@ -1,3 +1,10 @@
+## [14.8.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.8.0...v14.8.1) (2025-08-04)
+
+
+### Bug Fixes
+
+* automerge workflow ([059ae9f](https://github.com/neovici/cosmoz-omnitable/commit/059ae9f606d738644a8c4f243bbf0ac52cdc2d1f))
+
 # [14.8.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.7.0...v14.8.0) (2025-07-21)
 
 
