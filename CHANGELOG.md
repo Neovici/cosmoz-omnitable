@@ -1,3 +1,10 @@
+## [14.8.2](https://github.com/neovici/cosmoz-omnitable/compare/v14.8.1...v14.8.2) (2025-08-05)
+
+
+### Bug Fixes
+
+* **deps:** bump cosmoz-dropdown 5.4.0 to 6.2.1 ([852c729](https://github.com/neovici/cosmoz-omnitable/commit/852c7295b577e8fbafc080d4518f123ec47952df))
+
 ## [14.8.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.8.0...v14.8.1) (2025-08-04)
 
 
