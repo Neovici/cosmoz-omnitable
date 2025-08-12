@@ -1,3 +1,10 @@
+# [14.10.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.9.0...v14.10.0) (2025-08-12)
+
+
+### Features
+
+* **footer:** export more parts ([1dd9925](https://github.com/neovici/cosmoz-omnitable/commit/1dd9925a4aeba262012b068437468e411aef829d))
+
 # [14.9.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.8.2...v14.9.0) (2025-08-12)
 
 
