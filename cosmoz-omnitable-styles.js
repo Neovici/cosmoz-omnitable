@@ -154,6 +154,13 @@ export default css`
 			padding-bottom: 1px;
 			--paper-font-caption_-_line-height: 18px;
 		}
+		--paper-input-container-underline: {
+			border-color: var(--cosmoz-omnitable-header-line-color);
+		}
+		--paper-input-container-underline-focus {
+			border-color: var(--cosmoz-omnitable-header-line-focused-color);
+		}
+
 		--paper-font-subhead_-_font-family: var(
 			--cosmoz-omnitable-header-font-family,
 			'Roboto',
@@ -172,6 +179,8 @@ export default css`
 		--cosmoz-input-padding: var(--cosmoz-omnitable-header-input-padding, 0);
 		--cosmoz-input-label-text-transform: var(--cosmoz-omnitable-header-text-transform, none);
 		--cosmoz-input-label-font-weight: var(--cosmoz-omnitable-header-font-weight, normal);
+		--cosmoz-input-line-color: var(--cosmoz-omnitable-header-line-color);
+		--cosmoz-input-focused-color: var(--cosmoz-omnitable-header-line-focused-color);
 	}
 
 	cosmoz-omnitable-header-row {
@@ -532,7 +541,7 @@ export default css`
 		margin: 4px 8px;
 		padding-top: 2px;
 	}
-	
+
 	:host([mini]) .itemRow:not([selected]) {
 		background: var(--cosmoz-omnitable-mini-item-background, #fdfdfd);
 	}
@@ -548,19 +557,19 @@ export default css`
 	:host([mini]) .tableContent {
 		overflow: hidden;
 	}
-	
+
 	:host([mini]) .tableContent-scroller::-webkit-scrollbar {
 		width: 4px;
 	}
-	
+
 	:host([mini]) .tableContent-scroller::-webkit-scrollbar-track {
 		background: transparent;
 	}
-	
+
 	:host([mini]) .tableContent-scroller::-webkit-scrollbar-thumb {
 	background: transparent;
 	}
-	
+
 	:host([mini]) .tableContent-scroller:hover::-webkit-scrollbar-thumb {
 	background: var(--cosmoz-omnitable-mini-scrollbar-thumb-bg, #aaa);
 	}
