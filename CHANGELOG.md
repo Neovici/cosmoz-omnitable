@@ -1,3 +1,10 @@
+# [14.11.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.10.0...v14.11.0) (2025-08-12)
+
+
+### Features
+
+* more header and row parts ([c912272](https://github.com/neovici/cosmoz-omnitable/commit/c9122724dc4ae08fe198e7a8f237f5d521c7d779))
+
 # [14.10.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.9.0...v14.10.0) (2025-08-12)
 
 
