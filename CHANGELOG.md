@@ -1,3 +1,10 @@
+# [14.9.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.8.2...v14.9.0) (2025-08-12)
+
+
+### Features
+
+* **header:** add parts and vars ([6b24098](https://github.com/neovici/cosmoz-omnitable/commit/6b24098faf7d3c0fae4c59a5477d58f77696b7b9))
+
 ## [14.8.2](https://github.com/neovici/cosmoz-omnitable/compare/v14.8.1...v14.8.2) (2025-08-05)
 
 
