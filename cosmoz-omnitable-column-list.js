@@ -2,7 +2,6 @@ import './cosmoz-omnitable-column-list-data';
 
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from 'lit-html';
-import { when } from 'lit-html/directives/when.js';
 
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 import {
@@ -75,17 +74,7 @@ class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
 			.onChange=${onChange(setState)}
 			.onFocus=${onFocus(setState)}
 			.onText=${onText(setState)}
-			>${when(
-				column.loading,
-				() =>
-					html`<paper-spinner-lite
-						style="width: 20px; height: 20px; flex:none;"
-						suffix
-						slot="suffix"
-						active
-					></paper-spinner-lite>`,
-			)}</cosmoz-autocomplete-ui
-		>`;
+		></cosmoz-autocomplete-ui>`;
 	}
 }
 

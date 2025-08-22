@@ -1,9 +1,7 @@
-import '@polymer/paper-spinner/paper-spinner-lite.js';
 import '@neovici/cosmoz-autocomplete';
 
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { html } from 'lit-html';
-import { when } from 'lit-html/directives/when.js';
 
 import { columnMixin, getString } from './cosmoz-omnitable-column-mixin.js';
 import {
@@ -96,17 +94,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 			.onChange=${onChange(setState)}
 			.onFocus=${onFocus(setState)}
 			.onText=${onText(setState)}
-			>${when(
-				column.loading,
-				() =>
-					html`<paper-spinner-lite
-						style="width: 20px; height: 20px; flex:none;"
-						suffix
-						slot="suffix"
-						active
-					></paper-spinner-lite>`,
-			)}</cosmoz-autocomplete-ui
-		>`;
+		></cosmoz-autocomplete-ui>`;
 	}
 
 	getComparableValue(column, item) {
