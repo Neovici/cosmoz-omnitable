@@ -1,3 +1,10 @@
+## [14.11.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.11.0...v14.11.1) (2025-08-29)
+
+
+### Bug Fixes
+
+* extract location utils to cosmoz-utils ([e787dd9](https://github.com/neovici/cosmoz-omnitable/commit/e787dd9472475622c7f0ed60b4374be107048a23))
+
 # [14.11.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.10.0...v14.11.0) (2025-08-12)
 
 
