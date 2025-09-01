@@ -95,6 +95,7 @@ class NumberRangeInput extends rangeInputMixin(
 				title=${this._tooltip}
 				horizontal-align="right"
 				@opened-changed=${onOpenedChanged}
+				placement="bottom-start"
 			>
 				<div class="dropdown-content" slot="dropdown-content">
 					<h3 style="margin: 0;">${this.title}</h3>
