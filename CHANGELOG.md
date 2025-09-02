@@ -1,3 +1,15 @@
+# [14.12.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.11.1...v14.12.0) (2025-09-02)
+
+
+### Bug Fixes
+
+* incorrect variable names ([0bba476](https://github.com/neovici/cosmoz-omnitable/commit/0bba476f49aa855427cb98c4bfcbaf709eb67d35))
+
+
+### Features
+
+* color variables for omnitable settings ([fc64b4b](https://github.com/neovici/cosmoz-omnitable/commit/fc64b4bbac6c40ddc0904061bdcbfb7df54342bb))
+
 ## [14.11.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.11.0...v14.11.1) (2025-08-29)
 
 
