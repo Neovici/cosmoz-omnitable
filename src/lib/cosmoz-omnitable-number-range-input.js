@@ -104,6 +104,7 @@ class NumberRangeInput extends rangeInputMixin(
 						type="number"
 						label=${_('From')}
 						.value=${this._filterInput?.min}
+						@click=${(e) => e.currentTarget.focus()}
 						@value-changed=${(event) => {
 							this.set('_filterInput.min', event.detail.value);
 						}}
@@ -117,6 +118,7 @@ class NumberRangeInput extends rangeInputMixin(
 						type="number"
 						label=${_('To')}
 						.value=${this._filterInput?.max}
+						@click=${(e) => e.currentTarget.focus()}
 						@value-changed=${(event) => {
 							this.set('_filterInput.max', event.detail.value);
 						}}
