@@ -1,5 +1,5 @@
 const symbols = {
-		group: Symbol('group')
+		group: Symbol('group'),
 	},
 	getItemState = (item, itemsState) => {
 		if (!itemsState.has(item)) {
@@ -8,22 +8,24 @@ const symbols = {
 
 		return itemsState.get(item);
 	},
-	isExpanded = (item, itemsState) => Boolean(getItemState(item, itemsState).expanded),
-	isFolded = (group, itemsState) => Boolean(getItemState(group, itemsState).folded),
-	isGroup = item => item ? item.items instanceof Array : false,
+	isExpanded = (item, itemsState) =>
+		Boolean(getItemState(item, itemsState).expanded),
+	isFolded = (group, itemsState) =>
+		Boolean(getItemState(group, itemsState).folded),
+	isGroup = (item) => (item ? item.items instanceof Array : false),
 	/**
 	 * Asserts that data is either all items or all groups, never mixed.
 	 * @param	 {Array} data the data
 	 * @return {void}
 	 */
-	_assertDataIsHomogeneous = data => {
+	_assertDataIsHomogeneous = (data) => {
 		if (!Array.isArray(data) || data.length === 0) {
 			return;
 		}
 
 		const firstItemIsAGroup = Array.isArray(data[0].items),
 			isHomogeneous = data.every(
-				group => Array.isArray(group.items) === firstItemIsAGroup
+				(group) => Array.isArray(group.items) === firstItemIsAGroup,
 			);
 
 		if (!isHomogeneous) {
@@ -58,7 +60,7 @@ const symbols = {
 				}
 				return acc.concat(
 					item,
-					item.items.map(i => Object.assign(i, { [symbols.group]: item }))
+					item.items.map((i) => Object.assign(i, { [symbols.group]: item })),
 				);
 			}
 
@@ -72,7 +74,7 @@ const symbols = {
 
 		return flatData;
 	},
-	callFn = (fn, ...args) => typeof fn === 'function' ? fn(...args) : fn,
+	callFn = (fn, ...args) => (typeof fn === 'function' ? fn(...args) : fn),
 	byReference = (a, b) => a === b;
 
 export {
@@ -83,5 +85,5 @@ export {
 	isFolded,
 	isGroup,
 	callFn,
-	byReference
+	byReference,
 };

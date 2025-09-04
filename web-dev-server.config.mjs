@@ -5,6 +5,9 @@ export default {
 	preserveSymlinks: true,
 	nodeResolve: {
 		mainFields: ['browser', 'jsnext', 'jsnext:main', 'module', 'main'],
-		dedupe: pkg => ['@neovici', '@polymer', 'lit', '@pionjs/pion'].find(prefix => pkg.startsWith(prefix))
-	}
+		dedupe: (pkg) =>
+			['@neovici', '@polymer', 'lit', '@pionjs/pion'].find((prefix) =>
+				pkg.startsWith(prefix),
+			),
+	},
 };
