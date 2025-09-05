@@ -1,4 +1,4 @@
-import { renderValue } from '../lib/utils-date';
+import { renderValue } from '../src/lib/utils-date';
 import { assert } from '@open-wc/testing';
 
 suite('utils-date', () => {

@@ -1,5 +1,5 @@
 import { assert } from '@open-wc/testing';
-import { layout } from '../lib/layout';
+import { layout } from '../src/lib/layout';
 
 const toObj = ([width, minWidth, flex]) => ({ width, minWidth, flex });
 

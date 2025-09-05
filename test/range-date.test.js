@@ -5,11 +5,11 @@ import { assert as sinonAssert } from 'sinon';
 import { ignoreResizeObserverLoopErrors, rowVisible, setupOmnitableFixture } from './helpers/utils';
 import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
 
-import '../cosmoz-omnitable.js';
-import '../cosmoz-omnitable-columns.js';
-import { getComparableValue, toDate, getString } from '../lib/utils-date';
+import '../src/cosmoz-omnitable.js';
+import '../src/cosmoz-omnitable-columns.js';
+import { getComparableValue, toDate, getString } from '../src/lib/utils-date';
 import { toLocalISOString } from '@neovici/cosmoz-utils/date';
-import { columnSymbol } from '../lib/use-dom-columns';
+import { columnSymbol } from '../src/lib/use-dom-columns';
 
 const data = [
 		{
