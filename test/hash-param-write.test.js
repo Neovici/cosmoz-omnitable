@@ -1,6 +1,9 @@
 import { assert, html, nextFrame } from '@open-wc/testing';
 
-import { ignoreResizeObserverLoopErrors, setupOmnitableFixture } from './helpers/utils';
+import {
+	ignoreResizeObserverLoopErrors,
+	setupOmnitableFixture,
+} from './helpers/utils';
 
 import '../cosmoz-omnitable.js';
 import '../cosmoz-omnitable-column-autocomplete.js';

@@ -30,7 +30,7 @@ const styles = {
 			// suggested fix: separate signal for item collapse and group fold
 			flatData = useMemo(
 				() => prepareData(data, displayEmptyGroups, state),
-				[data, displayEmptyGroups, signal]
+				[data, displayEmptyGroups, signal],
 			),
 			{
 				selectedItems,
@@ -60,21 +60,21 @@ const styles = {
 								toggleSelect: (selected) =>
 									toggleSelect(
 										item,
-										typeof selected === 'boolean' ? selected : undefined
+										typeof selected === 'boolean' ? selected : undefined,
 									),
 								toggleFold: () => toggleFold(item),
-						  })
+							})
 						: renderItem(item, index, {
 								selected: selectedItems.includes(item),
 								expanded: isExpanded(item, state),
 								toggleSelect: (selected) =>
 									toggleSelect(
 										item,
-										typeof selected === 'boolean' ? selected : undefined
+										typeof selected === 'boolean' ? selected : undefined,
 									),
 								toggleCollapse: () => toggleCollapse(item),
-						  }),
-				[renderItem, renderGroup, selectedItems, toggleSelect, signal]
+							}),
+				[renderItem, renderGroup, selectedItems, toggleSelect, signal],
 			);
 
 		useLayoutEffect(() => Object.assign(host.style, styles.host), []);
@@ -105,11 +105,12 @@ const styles = {
 	renderCosmozGroupedList = ({ renderRow, flatData }) =>
 		virtualize({
 			items: flatData,
-			renderItem: (item, index) => html`<cosmoz-grouped-list-row
-				.item=${item}
-				.index=${index}
-				.renderFn=${renderRow}
-			></cosmoz-grouped-list-row>`,
+			renderItem: (item, index) =>
+				html`<cosmoz-grouped-list-row
+					.item=${item}
+					.index=${index}
+					.renderFn=${renderRow}
+				></cosmoz-grouped-list-row>`,
 		});
 
 export { renderCosmozGroupedList, useCosmozGroupedList };

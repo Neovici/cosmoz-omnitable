@@ -35,5 +35,5 @@ const ItemExpandLine = ({ column }) => html`
 
 customElements.define(
 	'cosmoz-omnitable-item-expand-line',
-	component(ItemExpandLine, {styleSheets: [sheet(style)]}),
+	component(ItemExpandLine, { styleSheets: [sheet(style)] }),
 );

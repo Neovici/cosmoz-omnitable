@@ -6,7 +6,15 @@ const GroupRow = ({ column, item, selected, folded, group }) => {
 		return nothing;
 	}
 
-	return (column.renderGroup ?? column.renderCell)(column, { item, selected, folded, group });
+	return (column.renderGroup ?? column.renderCell)(column, {
+		item,
+		selected,
+		folded,
+		group,
+	});
 };
 
-customElements.define('cosmoz-omnitable-group-row', component(GroupRow, { useShadowDOM: false }));
+customElements.define(
+	'cosmoz-omnitable-group-row',
+	component(GroupRow, { useShadowDOM: false }),
+);

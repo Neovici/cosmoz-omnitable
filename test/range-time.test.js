@@ -1,7 +1,10 @@
 /* eslint-disable max-lines */
 import { assert, html, nextFrame } from '@open-wc/testing';
 
-import { ignoreResizeObserverLoopErrors, setupOmnitableFixture } from './helpers/utils';
+import {
+	ignoreResizeObserverLoopErrors,
+	setupOmnitableFixture,
+} from './helpers/utils';
 import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
 
 import '../cosmoz-omnitable';

@@ -6,7 +6,7 @@ export const useSelectedItems = ({
 	initial,
 	compareItemsFn,
 	data,
-	flatData
+	flatData,
 }) => {
 	const [selectedItems, setSelectedItems] = useState(initial),
 		[lastSelection, setLastSelection] = useState(),
@@ -16,8 +16,8 @@ export const useSelectedItems = ({
 		 * @returns {boolean} Whether item is selected.
 		 */
 		isItemSelected = useCallback(
-			item => selectedItems.includes(item),
-			[selectedItems]
+			(item) => selectedItems.includes(item),
+			[selectedItems],
 		),
 		/**
 		 * Check if group is selected.
@@ -25,8 +25,8 @@ export const useSelectedItems = ({
 		 * @returns {boolean} Whether group is selected.
 		 */
 		isGroupSelected = useCallback(
-			group => group?.items?.every(isItemSelected),
-			[isItemSelected]
+			(group) => group?.items?.every(isItemSelected),
+			[isItemSelected],
 		),
 		/**
 		 * Check if item.group is selected.
@@ -34,19 +34,19 @@ export const useSelectedItems = ({
 		 * @returns {boolean} Whether item is selected.
 		 */
 		isSelected = useCallback(
-			item => isItemSelected(item) || isGroupSelected(item),
-			[isItemSelected, isGroupSelected]
+			(item) => isItemSelected(item) || isGroupSelected(item),
+			[isItemSelected, isGroupSelected],
 		),
 		/**
 		 * Add an item/group to the list of selected items.
 		 * @param {object} item Item to select.
 		 * @returns {void}
 		 */
-		select = useCallback(item => {
+		select = useCallback((item) => {
 			const items = item.items ?? [item];
-			setSelectedItems(selection => [
+			setSelectedItems((selection) => [
 				...selection,
-				...items.filter(i => !selection.includes(i))
+				...items.filter((i) => !selection.includes(i)),
 			]);
 			setLastSelection(item);
 		}, []),
@@ -55,14 +55,14 @@ export const useSelectedItems = ({
 		 * @param {object} item Item to select.
 		 * @returns {void}
 		 */
-		deselect = useCallback(item => {
+		deselect = useCallback((item) => {
 			const items = item.items ?? [item];
-			setSelectedItems(selection =>
-				selection.filter(i => !items.includes(i))
+			setSelectedItems((selection) =>
+				selection.filter((i) => !items.includes(i)),
 			);
 			setLastSelection(item);
 		}, []),
-		selectOnly = useCallback(item => {
+		selectOnly = useCallback((item) => {
 			setSelectedItems(item.items?.slice() || [item]);
 			setLastSelection(item);
 		}, []),
@@ -71,7 +71,7 @@ export const useSelectedItems = ({
 		 * @returns {void}
 		 */
 		selectAll = useCallback(() => {
-			setSelectedItems(data.flatMap(item => item.items || item));
+			setSelectedItems(data.flatMap((item) => item.items || item));
 			setLastSelection(undefined);
 		}, [data]),
 		/**
@@ -91,12 +91,12 @@ export const useSelectedItems = ({
 		toggleSelect = useCallback(
 			(item, selected = !isSelected(item)) =>
 				selected ? select(item) : deselect(item),
-			[isSelected]
+			[isSelected],
 		),
 		toggleSelectTo = useCallback(
 			(item, selected) => {
 				const last = lastSelection
-					? flatData.findIndex(i => compareItemsFn(i, lastSelection))
+					? flatData.findIndex((i) => compareItemsFn(i, lastSelection))
 					: -1;
 				if (last < 0) {
 					return toggleSelect(item, selected);
@@ -110,20 +110,20 @@ export const useSelectedItems = ({
 				});
 				setLastSelection(item);
 			},
-			[flatData, compareItemsFn, toggleSelect]
+			[flatData, compareItemsFn, toggleSelect],
 		);
 
 	// keep selected items across data updates
 	useEffect(
 		() =>
-			setSelectedItems(selectedItems =>
+			setSelectedItems((selectedItems) =>
 				selectedItems.length > 0
-					? flatData.filter(i =>
-						selectedItems.find(item => compareItemsFn(i, item))
-					)
-					: selectedItems
+					? flatData.filter((i) =>
+							selectedItems.find((item) => compareItemsFn(i, item)),
+						)
+					: selectedItems,
 			),
-		[flatData]
+		[flatData],
 	);
 	return {
 		selectedItems,
@@ -136,6 +136,6 @@ export const useSelectedItems = ({
 		selectAll,
 		deselectAll,
 		toggleSelect,
-		toggleSelectTo
+		toggleSelectTo,
 	};
 };

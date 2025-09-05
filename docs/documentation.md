@@ -1,7 +1,7 @@
-
 # cosmoz-omnitable
 
 ## Overview
+
 `cosmoz-omnitable` displays a table of data items.
 
 It contains one or more `cosmoz-omnitable-column` elements, which are
@@ -30,10 +30,7 @@ provide type specific functionalities.
 ### Basic usage
 
 ```html
-<cosmoz-omnitable-column
-      name="name"
-      title="Id"
-      value-path="id">
+<cosmoz-omnitable-column name="name" title="Id" value-path="id">
 </cosmoz-omnitable-column>
 ```
 
@@ -54,10 +51,12 @@ The `cosmoz-omnitable-column` element uses the following template to render a co
 
 In this template, all properties and public methods from `Cosmoz.OmnitableColumnBehavior` are available,
 plus :
-* `item`: the current item rendered
-* `selected`: a boolean indicated if the current item is selected
+
+- `item`: the current item rendered
+- `selected`: a boolean indicated if the current item is selected
 
 `renderDefaultValue` is a function of `Cosmoz.OmnitableColumnBehavior`:
+
 ```js
 renderDefaultValue: function (item, valuePath) {
    return this.get(valuePath, item);
@@ -75,11 +74,12 @@ TBD
 
 ```html
 <cosmoz-omnitable-column
-      name="name"
-      title="[[ _('Invoice number', t) ]]"
-      value-path="invoiceNumber"
-      sort-on="invoiceNumber"
-      group-on="invoiceNumber">
+	name="name"
+	title="[[ _('Invoice number', t) ]]"
+	value-path="invoiceNumber"
+	sort-on="invoiceNumber"
+	group-on="invoiceNumber"
+>
 </cosmoz-omnitable-column>
 ```
 
@@ -121,10 +121,11 @@ will apply a filter function to each item.
 
 For `cosmoz-omnitable-column` column, the filter function depends on the `filter` value.
 If it is:
-* a string, the value at `value-path` is converted to lower-cased string and then compared
-using `indexOf` with the filter string
-* an array of strings: lower-cased value is compared to each filter string until one match
-using `indexOf`
+
+- a string, the value at `value-path` is converted to lower-cased string and then compared
+  using `indexOf` with the filter string
+- an array of strings: lower-cased value is compared to each filter string until one match
+  using `indexOf`
 
 ### Rendering the header cell
 
@@ -134,7 +135,7 @@ For `cosmoz-omnitable-column`
 
 ```html
 <template>
-   <cosmoz-input label="[[title]]" value="{{filter}}"></cosmoz-input>
+	<cosmoz-input label="[[title]]" value="{{filter}}"></cosmoz-input>
 </template>
 ```
 
@@ -176,8 +177,7 @@ The `filter` for a number column must be an one object with the following protot
 At least one of `minValue` or `maxValue` must be defined.
 
 The filter function will keep values that are
- `>= minValue` (if present) and `<= maxValue` (if present)
-
+`>= minValue` (if present) and `<= maxValue` (if present)
 
 ### Amount columns: `cosmoz-omnitable-column-amount`
 
@@ -202,6 +202,7 @@ won't work correctly.
 ### Date columns: `cosmoz-omnitable-column-date`
 
 #### Usage
+
 ```html
 <cosmoz-omnitable-column-date
    name="name"
@@ -237,6 +238,3 @@ to render dates and to parse date entered by the user (see filtering).
 
 The `true-label` and `false-label` properties are used to define text displayed when the
 value is `true` or `false` (instead of True/False strings).
-
-
-

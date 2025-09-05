@@ -2,7 +2,11 @@
 import { assert, html, nextFrame } from '@open-wc/testing';
 import { assert as sinonAssert } from 'sinon';
 
-import { ignoreResizeObserverLoopErrors, rowVisible, setupOmnitableFixture } from './helpers/utils';
+import {
+	ignoreResizeObserverLoopErrors,
+	rowVisible,
+	setupOmnitableFixture,
+} from './helpers/utils';
 import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
 
 import '../cosmoz-omnitable.js';

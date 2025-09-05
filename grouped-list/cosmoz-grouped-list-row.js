@@ -37,5 +37,5 @@ customElements.define(
 
 			render(this._renderFn(this._item, this._index), this);
 		}
-	}
+	},
 );
