@@ -5,9 +5,9 @@ import {
 	setupOmnitableFixture,
 } from './helpers/utils';
 
-import '../cosmoz-omnitable.js';
-import '../cosmoz-omnitable-column-autocomplete.js';
-import '../cosmoz-omnitable-column.js';
+import '../src/cosmoz-omnitable.js';
+import '../src/cosmoz-omnitable-column-autocomplete.js';
+import '../src/cosmoz-omnitable-column.js';
 
 let omnitable;
 const data = [

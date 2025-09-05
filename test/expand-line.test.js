@@ -1,5 +1,5 @@
 import { fixture, html, assert } from '@open-wc/testing';
-import '../cosmoz-omnitable-item-expand-line';
+import '../src/cosmoz-omnitable-item-expand-line';
 import { ignoreResizeObserverLoopErrors } from './helpers/utils';
 
 suite('cosmoz-omnitable-item-expand-line', () => {

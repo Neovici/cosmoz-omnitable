@@ -9,16 +9,16 @@ import {
 } from './helpers/utils';
 import { flush } from '@polymer/polymer/lib/utils/flush';
 
-import '../cosmoz-omnitable.js';
-import '../cosmoz-omnitable-columns.js';
+import '../src/cosmoz-omnitable.js';
+import '../src/cosmoz-omnitable-columns.js';
 import {
 	getComparableValue,
 	toAmount,
 	renderValue,
 	getString,
 	getCurrency,
-} from '../lib/utils-amount';
-import { columnSymbol } from '../lib/use-dom-columns';
+} from '../src/lib/utils-amount';
+import { columnSymbol } from '../src/lib/use-dom-columns';
 
 const data = [
 		{

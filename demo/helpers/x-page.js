@@ -5,7 +5,7 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-toggle-button/paper-toggle-button';
 import '@neovici/cosmoz-viewinfo';
 
-import '../../cosmoz-omnitable';
+import '../../src/cosmoz-omnitable';
 import { generateTableDemoData } from '../table-demo-helper';
 import './cosmoz-translations';
 

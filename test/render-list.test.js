@@ -1,4 +1,4 @@
-import { renderList } from '../lib/render-list';
+import { renderList } from '../src/lib/render-list';
 import { expect, html, fixture, nextFrame } from '@open-wc/testing';
 
 suite('render-list', () => {

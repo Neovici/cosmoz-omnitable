@@ -12,10 +12,10 @@ import {
 import { generateTableDemoData } from '../demo/table-demo-helper';
 import { flush } from '@polymer/polymer/lib/utils/flush';
 
-import '../cosmoz-omnitable.js';
-import '../cosmoz-omnitable-columns.js';
+import '../src/cosmoz-omnitable.js';
+import '../src/cosmoz-omnitable-columns.js';
 import '@polymer/paper-toggle-button';
-import { columnSymbol } from '../lib/use-dom-columns';
+import { columnSymbol } from '../src/lib/use-dom-columns';
 
 sinonAssert.expose(assert, { prefix: '' });
 

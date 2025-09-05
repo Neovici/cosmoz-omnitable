@@ -1,105 +1,132 @@
 {
-  "name": "@neovici/cosmoz-omnitable",
-  "version": "14.12.3",
-  "description": "[![Build Status](https://travis-ci.org/Neovici/cosmoz-omnitable.svg?branch=master)](https://travis-ci.org/Neovici/cosmoz-omnitable)",
-  "keywords": [
-    "web-components"
-  ],
-  "homepage": "https://github.com/neovici/cosmoz-omnitable#readme",
-  "bugs": {
-    "url": "https://github.com/neovici/cosmoz-omnitable/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/neovici/cosmoz-omnitable.git"
-  },
-  "license": "Apache-2.0",
-  "author": "Neovici Development",
-  "main": "cosmoz-omnitable.js",
-  "directories": {
-    "test": "test"
-  },
-  "files": [
-    "cosmoz-*.js",
-    "ui-helpers",
-    "lib/**/*.js",
-    "grouped-list/*.js"
-  ],
-  "scripts": {
-    "lint": "eslint --cache --ext .js .",
-    "start": "wds",
-    "test": "wtr --coverage",
-    "test:watch": "wtr --watch",
-    "storybook:start": "storybook dev -p 8000",
-    "storybook:build": "storybook build",
-    "storybook:deploy": "storybook-to-ghpages",
-    "storybook:preview": "npm run storybook:build && web-dev-server --root-dir ./storybook-static/ --open",
-    "prepare": "husky"
-  },
-  "release": {
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/changelog",
-      "@semantic-release/github",
-      "@semantic-release/npm",
-      "@semantic-release/git"
-    ],
-    "branch": "master"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ],
-    "rules": {
-      "body-max-line-length": [
-        1,
-        "always",
-        600
-      ]
-    }
-  },
-  "dependencies": {
-    "@lit-labs/virtualizer": "^2.1.0",
-    "@neovici/cosmoz-autocomplete": "^10.0.0",
-    "@neovici/cosmoz-bottom-bar": "^9.0.5",
-    "@neovici/cosmoz-collapse": "^1.1.0",
-    "@neovici/cosmoz-datetime-input": "^4.0.1",
-    "@neovici/cosmoz-dropdown": "^6.0.0",
-    "@neovici/cosmoz-i18next": "^3.1.1",
-    "@neovici/cosmoz-input": "^5.0.0",
-    "@neovici/cosmoz-router": "^11.0.0",
-    "@neovici/cosmoz-utils": "^6.14.2",
-    "@neovici/nullxlsx": "^3.0.0",
-    "@pionjs/pion": "^2.0.0",
-    "@polymer/iron-icon": "^3.0.0",
-    "@polymer/iron-icons": "^3.0.0",
-    "@polymer/paper-dropdown-menu": "^3.2.0",
-    "@polymer/paper-spinner": "^3.0.0",
-    "@polymer/polymer": "^3.3.0",
-    "file-saver-es": "^2.0.0",
-    "lit-html": "^2.0.0 || ^3.0.0"
-  },
-  "devDependencies": {
-    "@commitlint/cli": "^19.0.0",
-    "@commitlint/config-conventional": "^19.0.0",
-    "@neovici/cfg": "^2.5.1",
-    "@neovici/cosmoz-viewinfo": "^4.0.0",
-    "@open-wc/testing": "^4.0.0",
-    "@polymer/iron-test-helpers": "^3.0.0",
-    "@polymer/paper-button": "^3.0.0",
-    "@polymer/paper-item": "^3.0.0",
-    "@polymer/paper-listbox": "^3.0.0",
-    "@polymer/paper-toggle-button": "^3.0.0",
-    "@semantic-release/changelog": "^6.0.0",
-    "@semantic-release/git": "^10.0.0",
-    "@storybook/web-components-vite": "^9.1.3",
-    "husky": "^9.0.0",
-    "semantic-release": "^24.0.0",
-    "sinon": "^20.0.0",
-    "storybook": "^9.1.3"
-  }
+	"name": "@neovici/cosmoz-omnitable",
+	"version": "14.12.3",
+	"description": "[![Build Status](https://travis-ci.org/Neovici/cosmoz-omnitable.svg?branch=master)](https://travis-ci.org/Neovici/cosmoz-omnitable)",
+	"keywords": [
+		"web-components"
+	],
+	"homepage": "https://github.com/neovici/cosmoz-omnitable#readme",
+	"bugs": {
+		"url": "https://github.com/neovici/cosmoz-omnitable/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/neovici/cosmoz-omnitable.git"
+	},
+	"license": "Apache-2.0",
+	"author": "Neovici Development",
+	"main": "src/cosmoz-omnitable.js",
+	"types": "dist/cosmoz-omnitable.d.ts",
+	"exports": {
+		"./cosmoz-omnitable.js": {
+			"types": "./dist/cosmoz-omnitable.d.ts",
+			"import": "./src/cosmoz-omnitable.js"
+		},
+		"./cosmoz-omnitable-*.js": {
+			"types": "./dist/cosmoz-omnitable-*.d.ts",
+			"import": "./src/cosmoz-omnitable-*.js"
+		},
+		"./lib/*.js": {
+			"types": "./dist/lib/*.d.ts",
+			"import": "./src/lib/*.js"
+		},
+		"./grouped-list/*.js": {
+			"types": "./dist/grouped-list/*.d.ts",
+			"import": "./src/grouped-list/*.js"
+		},
+		"./ui-helpers/*": {
+			"import": "./src/ui-helpers/*"
+		}
+	},
+	"directories": {
+		"test": "test"
+	},
+	"files": [
+		"src/**/*.js",
+		"src/**/*.ts",
+		"dist/**/*.js",
+		"dist/**/*.d.ts",
+		"dist/**/*.d.ts.map"
+	],
+	"scripts": {
+		"build": "tsc",
+		"build:watch": "tsc --watch",
+		"lint": "eslint --cache --ext .js,.ts src/",
+		"start": "wds",
+		"test": "wtr --coverage",
+		"test:watch": "wtr --watch",
+		"storybook:start": "storybook dev -p 8000",
+		"storybook:build": "storybook build",
+		"storybook:deploy": "storybook-to-ghpages",
+		"storybook:preview": "npm run storybook:build && web-dev-server --root-dir ./storybook-static/ --open",
+		"prepare": "husky"
+	},
+	"release": {
+		"plugins": [
+			"@semantic-release/commit-analyzer",
+			"@semantic-release/release-notes-generator",
+			"@semantic-release/changelog",
+			"@semantic-release/github",
+			"@semantic-release/npm",
+			"@semantic-release/git"
+		],
+		"branch": "master"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"commitlint": {
+		"extends": [
+			"@commitlint/config-conventional"
+		],
+		"rules": {
+			"body-max-line-length": [
+				1,
+				"always",
+				600
+			]
+		}
+	},
+	"dependencies": {
+		"@lit-labs/virtualizer": "^2.1.0",
+		"@neovici/cosmoz-autocomplete": "^10.0.0",
+		"@neovici/cosmoz-bottom-bar": "^9.0.5",
+		"@neovici/cosmoz-collapse": "^1.1.0",
+		"@neovici/cosmoz-datetime-input": "^4.0.1",
+		"@neovici/cosmoz-dropdown": "^6.0.0",
+		"@neovici/cosmoz-i18next": "^3.1.1",
+		"@neovici/cosmoz-input": "^5.0.0",
+		"@neovici/cosmoz-router": "^11.0.0",
+		"@neovici/cosmoz-utils": "^6.14.2",
+		"@neovici/nullxlsx": "^3.0.0",
+		"@pionjs/pion": "^2.0.0",
+		"@polymer/iron-icon": "^3.0.0",
+		"@polymer/iron-icons": "^3.0.0",
+		"@polymer/paper-dropdown-menu": "^3.2.0",
+		"@polymer/paper-spinner": "^3.0.0",
+		"@polymer/polymer": "^3.3.0",
+		"file-saver-es": "^2.0.0",
+		"lit-html": "^2.0.0 || ^3.0.0"
+	},
+	"devDependencies": {
+		"@commitlint/cli": "^19.0.0",
+		"@commitlint/config-conventional": "^19.0.0",
+		"@neovici/cfg": "^2.5.1",
+		"@neovici/cosmoz-viewinfo": "^4.0.0",
+		"@open-wc/testing": "^4.0.0",
+		"@polymer/iron-test-helpers": "^3.0.0",
+		"@polymer/paper-button": "^3.0.0",
+		"@polymer/paper-item": "^3.0.0",
+		"@polymer/paper-listbox": "^3.0.0",
+		"@polymer/paper-toggle-button": "^3.0.0",
+		"@semantic-release/changelog": "^6.0.0",
+		"@semantic-release/git": "^10.0.0",
+		"@storybook/web-components-vite": "^9.1.3",
+		"@types/file-saver": "^2.0.0",
+		"husky": "^9.0.0",
+		"semantic-release": "^24.0.0",
+		"sinon": "^20.0.0",
+		"storybook": "^9.1.3",
+		"typescript": "^5.0.0"
+	}
 }
