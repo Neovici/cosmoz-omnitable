@@ -4,15 +4,15 @@ import { assert, html, nextFrame } from '@open-wc/testing';
 import { ignoreResizeObserverLoopErrors, setupOmnitableFixture } from './helpers/utils';
 import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
 
-import '../cosmoz-omnitable';
+import '../src/cosmoz-omnitable';
 import {
 	getComparableValue,
 	toDate,
 	toHashString,
 	toInputString,
-} from '../lib/utils-time';
+} from '../src/lib/utils-time';
 import { toLocalISOString } from '@neovici/cosmoz-utils/date';
-import { columnSymbol } from '../lib/use-dom-columns';
+import { columnSymbol } from '../src/lib/use-dom-columns';
 
 const data = [
 		{

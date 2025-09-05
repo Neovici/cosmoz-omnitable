@@ -3,18 +3,18 @@ import { assert, html } from '@open-wc/testing';
 import { spy } from 'sinon';
 import { ignoreResizeObserverLoopErrors, setupOmnitableFixture } from './helpers/utils';
 
-import '../cosmoz-omnitable.js';
-import '../cosmoz-omnitable-columns.js';
+import '../src/cosmoz-omnitable.js';
+import '../src/cosmoz-omnitable-columns.js';
 import {
 	computeItemValue,
 	getString,
 	toXlsxValue,
 	onChange,
 	deserializeFilter,
-} from '../cosmoz-omnitable-column-boolean';
-import { onItemChange } from '../lib/utils-data';
-import { serializeFilter } from '../cosmoz-omnitable-column-mixin';
-import { columnSymbol } from '../lib/use-dom-columns';
+} from '../src/cosmoz-omnitable-column-boolean';
+import { onItemChange } from '../src/lib/utils-data';
+import { serializeFilter } from '../src/cosmoz-omnitable-column-mixin';
+import { columnSymbol } from '../src/lib/use-dom-columns';
 
 suite('boolean', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);

@@ -7,7 +7,7 @@ import {
 	renderValue,
 	toHashString,
 	getString,
-} from '../lib/utils-amount';
+} from '../src/lib/utils-amount';
 
 suite('utils-amount', () => {
 	suite('renderValue', () => {

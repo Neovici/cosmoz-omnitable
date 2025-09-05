@@ -5,8 +5,8 @@ import {
 	pressAndReleaseKeyOn,
 } from '@polymer/iron-test-helpers/mock-interactions.js';
 
-import '../../cosmoz-omnitable.js';
-import '../../cosmoz-omnitable-column-number.js';
+import '../../src/cosmoz-omnitable.js';
+import '../../src/cosmoz-omnitable-column-number.js';
 import { setupOmnitableFixture } from '../helpers/utils';
 
 const data = [
