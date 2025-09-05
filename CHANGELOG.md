@@ -1,3 +1,10 @@
+## [14.12.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.12.0...v14.12.1) (2025-09-05)
+
+
+### Bug Fixes
+
+* lastIndex shim ([29d5dee](https://github.com/neovici/cosmoz-omnitable/commit/29d5dee82a0127bfe236b45c3392a44ac49883ac))
+
 # [14.12.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.11.1...v14.12.0) (2025-09-02)
 
 
