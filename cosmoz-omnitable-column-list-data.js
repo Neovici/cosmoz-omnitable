@@ -1,7 +1,5 @@
 import { translatable } from '@neovici/cosmoz-i18next';
-import {
-	mixin, Template
-} from '@neovici/cosmoz-utils';
+import { mixin, Template } from '@neovici/cosmoz-utils';
 
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
@@ -12,51 +10,59 @@ window.Cosmoz = window.Cosmoz || {};
  * @customElement
  * @appliesMixin translatable
  */
-class OmnitableColumnListData extends translatable(mixin(Template, PolymerElement)) {
+class OmnitableColumnListData extends translatable(
+	mixin(Template, PolymerElement),
+) {
 	static get template() {
 		return html`
-		<style>
-			:host {
-				display: block;
-			}
+			<style>
+				:host {
+					display: block;
+				}
 
-			:host a {
-				color: var(--primary-link-color, inherit);
-			}
+				:host a {
+					color: var(--primary-link-color, inherit);
+				}
 
-			[hidden] {
-				display: none;
-			}
+				[hidden] {
+					display: none;
+				}
 
-			ul {
-				list-style-type: none;
-				margin: 0.3em 0;
-				padding-left: 0;
-			}
+				ul {
+					list-style-type: none;
+					margin: 0.3em 0;
+					padding-left: 0;
+				}
 
-			li {
-				text-overflow: ellipsis;
-				overflow: hidden;
-			}
-		</style>
+				li {
+					text-overflow: ellipsis;
+					overflow: hidden;
+				}
+			</style>
 
-		<ul hidden$="[[ isEmpty(items) ]]">
-			<li>
-				<span>[[ _firstItem(items) ]]</span>
-			</li>
-			<li class="see-more" hidden$="[[_hideExpand(items, _expanded)]]">
-				<a href="#" on-tap="_toggleExpand">[[ _('and {0} more', _othersCount, t) ]]</a>
-			</li>
-			<template is="dom-repeat" items="[[ _otherItems(items, _expanded) ]]" as="item">
+			<ul hidden$="[[ isEmpty(items) ]]">
 				<li>
-					<span class="item">[[ item ]]</span>
+					<span>[[ _firstItem(items) ]]</span>
 				</li>
-			</template>
-			<li class="see-less" hidden$="[[ _hideCollapse(items, _expanded) ]]">
-				<a href="#" on-tap="_toggleExpand">[[ _('See less', t) ]]</a>
-			</li>
-		</ul>
-`;
+				<li class="see-more" hidden$="[[_hideExpand(items, _expanded)]]">
+					<a href="#" on-tap="_toggleExpand"
+						>[[ _('and {0} more', _othersCount, t) ]]</a
+					>
+				</li>
+				<template
+					is="dom-repeat"
+					items="[[ _otherItems(items, _expanded) ]]"
+					as="item"
+				>
+					<li>
+						<span class="item">[[ item ]]</span>
+					</li>
+				</template>
+				<li class="see-less" hidden$="[[ _hideCollapse(items, _expanded) ]]">
+					<a href="#" on-tap="_toggleExpand">[[ _('See less', t) ]]</a>
+				</li>
+			</ul>
+		`;
 	}
 
 	static get is() {
@@ -71,22 +77,24 @@ class OmnitableColumnListData extends translatable(mixin(Template, PolymerElemen
 
 			_expanded: {
 				type: Boolean,
-				value: false
+				value: false,
 			},
 
 			_othersCount: {
 				type: Number,
-				computed: '_computeOthersCount(items)'
-			}
+				computed: '_computeOthersCount(items)',
+			},
 		};
 	}
 
 	static get observers() {
-		return ['_itemsLengthChanged(items.length)']
+		return ['_itemsLengthChanged(items.length)'];
 	}
 
 	_itemsLengthChanged() {
-		requestAnimationFrame(() => this.dispatchEvent(new CustomEvent('expand', { bubbles: true })));
+		requestAnimationFrame(() =>
+			this.dispatchEvent(new CustomEvent('expand', { bubbles: true })),
+		);
 	}
 
 	_firstItem(items) {

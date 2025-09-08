@@ -10,12 +10,12 @@ export const useWeakState = () => {
 					Object.assign(itemState, callFn(newItemState, itemState));
 					return [state];
 				}),
-			[]
+			[],
 		);
 
 	return {
 		setItemState,
 		state: wrapper[0],
-		signal: wrapper
+		signal: wrapper,
 	};
 };

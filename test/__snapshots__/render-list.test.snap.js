@@ -1,8 +1,7 @@
 /* @web/test-runner snapshot v1 */
 export const snapshots = {};
 
-snapshots["render-list error"] = 
-`<div
+snapshots['render-list error'] = `<div
   class="tableContent"
   id="tableContent"
 >
@@ -31,4 +30,3 @@ snapshots["render-list error"] =
 </div>
 `;
 /* end snapshot render-list error */
-
