@@ -1,4 +1,4 @@
-import{f as Ks,B as on,x as _,E as ne,T as ee,m as Ws,i as hu,p as fu,v as De,r as Et,M as rr}from"./iframe-DT1Rgjzt.js";import{_ as mu}from"./preload-helper-D9Z9MdNV.js";/**
+import{f as Ks,B as on,x as _,E as ne,T as ee,m as Ws,i as hu,p as fu,v as De,r as Et,M as rr}from"./iframe-rlm7c55k.js";import{_ as mu}from"./preload-helper-D9Z9MdNV.js";/**
  * @license
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
@@ -3878,98 +3878,101 @@ found at http://polymer.github.io/PATENTS.txt
       <slot id="content" name="dropdown-content" slot="dropdown-content"></slot>
     </paper-menu-button>
 `,is:"paper-dropdown-menu",behaviors:[pm,_t,$c,Zr],properties:{selectedItemLabel:{type:String,notify:!0,readOnly:!0},selectedItem:{type:Object,notify:!0,readOnly:!0},value:{type:String,notify:!0},label:{type:String},placeholder:{type:String},errorMessage:{type:String},opened:{type:Boolean,notify:!0,value:!1,observer:"_openedChanged"},allowOutsideScroll:{type:Boolean,value:!1},noLabelFloat:{type:Boolean,value:!1,reflectToAttribute:!0},alwaysFloatLabel:{type:Boolean,value:!1},noAnimations:{type:Boolean,value:!1},horizontalAlign:{type:String,value:"right"},verticalAlign:{type:String,value:"top"},verticalOffset:Number,dynamicAlign:{type:Boolean},restoreFocusOnClose:{type:Boolean,value:!0},expandSizingTargetForScrollbars:{type:Boolean,value:!1}},listeners:{tap:"_onTap"},keyBindings:{"up down":"open",esc:"close"},observers:["_selectedItemChanged(selectedItem)"],_attachDom(t){const e=A(this);return e.attachShadow({mode:"open",delegatesFocus:!0,shadyUpgradeFragment:t}),e.shadowRoot.appendChild(t),hm.prototype._attachDom.call(this,t)},focus(){this.$.input._focusableElement.focus()},attached:function(){var t=this.contentElement;t&&t.selectedItem&&this._setSelectedItem(t.selectedItem)},get contentElement(){for(var t=L(this.$.content).getDistributedNodes(),e=0,i=t.length;e<i;e++)if(t[e].nodeType===Node.ELEMENT_NODE)return t[e]},open:function(){this.$.menuButton.open()},close:function(){this.$.menuButton.close()},_onIronSelect:function(t){this._setSelectedItem(t.detail.item)},_onIronDeselect:function(t){this._setSelectedItem(null)},_onTap:function(t){e1(t)===this&&this.open()},_selectedItemChanged:function(t){var e="";t?e=t.label||t.getAttribute("label")||t.textContent.trim():e="",this.value=e,this._setSelectedItemLabel(e)},_computeMenuVerticalOffset:function(t,e){return e||(t?-4:8)},_getValidity:function(t){return this.disabled||!this.required||this.required&&!!this.value},_openedChanged:function(){var t=this.opened?"true":"false",e=this.contentElement;e&&e.setAttribute("aria-expanded",t)}});const ei=Symbol("memo"),Pc=t=>{let e=ei,i=ei,n;return function(r,o){if(e===r&&i===o)return n;const a=t(r,o);return n=a,e=r,i=o,a}},fm=t=>{let e=ei,i=ei,n=ei,r;return function(o,a,s){if(e===o&&i===a&&n===s)return r;const l=t(o,a,s);return r=l,e=o,i=a,n=s,l}},Oe=Symbol("column"),mm=t=>{let e=!0;const i=t.map(n=>n.name);return t.forEach(n=>{n.name==null&&(e=!1,console.error("The name attribute needs to be set on all columns! Missing on column",n))}),t.forEach(n=>{i.indexOf(n.name)!==i.lastIndexOf(n.name)&&(e=!1,console.error("The name attribute needs to be unique among all columns! Not unique on column",n))}),e},gm=t=>{const e=t.valuePath??t.name;return{name:t.name,title:t.title,valuePath:e,groupOn:t.groupOn??e,sortOn:t.sortOn??e,minWidth:t.minWidth,width:t.width,flex:t.flex,priority:t.priority,getString:t.getString,getComparableValue:t.getComparableValue,serializeFilter:t.serializeFilter,deserializeFilter:t.deserializeFilter,toXlsxValue:t.toXlsxValue,renderHeader:t.renderHeader,renderCell:t.renderCell,renderEditCell:t.renderEditCell,renderGroup:t.renderGroup,cellTitleFn:t.cellTitleFn,getFilterFn:t.getFilterFn,headerCellClass:t.headerCellClass,cellClass:t.cellClass,editable:t.editable,values:t.values,source:Pc(t.computeSource),noLocalFilter:t.noLocalFilter,mini:t.mini,renderMini:t.renderMini,loading:t.loading,externalValues:t.externalValues,computeSource:t.computeSource,trueLabel:t.trueLabel,falseLabel:t.falseLabel,valueProperty:t.valueProperty,textProperty:t.textProperty,emptyLabel:t.emptyLabel,emptyValue:t.emptyValue,min:t.min,max:t.max,locale:t.locale,autoupdate:t.autoupdate,maximumFractionDigits:t.maximumFractionDigits,minimumFractionDigits:t.minimumFractionDigits,currency:t.currency,rates:t.rates,autodetect:t.autodetect,ownerTree:t.ownerTree,keyProperty:t.keyProperty,...t.getConfig?.(t),[Oe]:t}},bm=t=>t.isOmnitableColumn&&!t.hidden,ym=t=>{const e=t.assignedElements({flatten:!0}).filter(bm);return mm(e)?e:[]},vm=(t,e)=>(Array.isArray(e)?t.filter(n=>e.includes(n.name)):t.filter(n=>!n.disabled)).map(gm),_m=(t,{enabledColumns:e})=>{const[i,n]=U([]);return si(()=>{let r;const o=t.shadowRoot.querySelector("#columnsSlot"),a=()=>{n(vm(ym(o),e))},s=()=>{cancelAnimationFrame(r),r=requestAnimationFrame(a)};return s(),o.addEventListener("slotchange",s),t.addEventListener("cosmoz-column-prop-changed",s),()=>{o.removeEventListener("slotchange",s),t.removeEventListener("cosmoz-column-prop-changed",s),cancelAnimationFrame(r)}},[e]),i},Ic=(t,e)=>Array.isArray(t)?t.map(i=>k(i,e)).filter((i,n,r)=>i!=null&&r.indexOf(i)===n):void 0,vi=({externalValues:t,values:e,valuePath:i},n)=>t||typeof e=="function"?e:Ic(n,i),xm=(t,e,i,n)=>{const{valuePath:r}=e,o=k(i,r);if(n===o)return;Or(i,r,n);const a={item:i,valuePath:r,value:n,oldValue:o,column:e[Oe]};t.dispatchEvent(new CustomEvent("column-item-changed",{bubbles:!0,composed:!0,detail:a}))},wm={type:"logger",log(t){this.output("log",t)},warn(t){this.output("warn",t)},error(t){this.output("error",t)},output(t,e){console&&console[t]&&console[t].apply(console,e)}};class zn{constructor(e){let i=arguments.length>1&&arguments[1]!==void 0?arguments[1]:{};this.init(e,i)}init(e){let i=arguments.length>1&&arguments[1]!==void 0?arguments[1]:{};this.prefix=i.prefix||"i18next:",this.logger=e||wm,this.options=i,this.debug=i.debug}log(){for(var e=arguments.length,i=new Array(e),n=0;n<e;n++)i[n]=arguments[n];return this.forward(i,"log","",!0)}warn(){for(var e=arguments.length,i=new Array(e),n=0;n<e;n++)i[n]=arguments[n];return this.forward(i,"warn","",!0)}error(){for(var e=arguments.length,i=new Array(e),n=0;n<e;n++)i[n]=arguments[n];return this.forward(i,"error","")}deprecate(){for(var e=arguments.length,i=new Array(e),n=0;n<e;n++)i[n]=arguments[n];return this.forward(i,"warn","WARNING DEPRECATED: ",!0)}forward(e,i,n,r){return r&&!this.debug?null:(typeof e[0]=="string"&&(e[0]=`${n}${this.prefix} ${e[0]}`),this.logger[i](e))}create(e){return new zn(this.logger,{prefix:`${this.prefix}:${e}:`,...this.options})}clone(e){return e=e||this.options,e.prefix=e.prefix||this.prefix,new zn(this.logger,e)}}var ve=new zn;class Jn{constructor(){this.observers={}}on(e,i){return e.split(" ").forEach(n=>{this.observers[n]=this.observers[n]||[],this.observers[n].push(i)}),this}off(e,i){if(this.observers[e]){if(!i){delete this.observers[e];return}this.observers[e]=this.observers[e].filter(n=>n!==i)}}emit(e){for(var i=arguments.length,n=new Array(i>1?i-1:0),r=1;r<i;r++)n[r-1]=arguments[r];this.observers[e]&&[].concat(this.observers[e]).forEach(a=>{a(...n)}),this.observers["*"]&&[].concat(this.observers["*"]).forEach(a=>{a.apply(a,[e,...n])})}}function Tt(){let t,e;const i=new Promise((n,r)=>{t=n,e=r});return i.resolve=t,i.reject=e,i}function ss(t){return t==null?"":""+t}function Cm(t,e,i){t.forEach(n=>{e[n]&&(i[n]=e[n])})}function Ro(t,e,i){function n(a){return a&&a.indexOf("###")>-1?a.replace(/###/g,"."):a}function r(){return!t||typeof t=="string"}const o=typeof e!="string"?[].concat(e):e.split(".");for(;o.length>1;){if(r())return{};const a=n(o.shift());!t[a]&&i&&(t[a]=new i),Object.prototype.hasOwnProperty.call(t,a)?t=t[a]:t={}}return r()?{}:{obj:t,k:n(o.shift())}}function ls(t,e,i){const{obj:n,k:r}=Ro(t,e,Object);n[r]=i}function Sm(t,e,i,n){const{obj:r,k:o}=Ro(t,e,Object);r[o]=r[o]||[],r[o].push(i)}function An(t,e){const{obj:i,k:n}=Ro(t,e);if(i)return i[n]}function zm(t,e,i){const n=An(t,i);return n!==void 0?n:An(e,i)}function Hc(t,e,i){for(const n in e)n!=="__proto__"&&n!=="constructor"&&(n in t?typeof t[n]=="string"||t[n]instanceof String||typeof e[n]=="string"||e[n]instanceof String?i&&(t[n]=e[n]):Hc(t[n],e[n],i):t[n]=e[n]);return t}function nt(t){return t.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g,"\\$&")}var Am={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;","/":"&#x2F;"};function Em(t){return typeof t=="string"?t.replace(/[&<>"'\/]/g,e=>Am[e]):t}const Mm=[" ",",","?","!",";"];function km(t,e,i){e=e||"",i=i||"";const n=Mm.filter(a=>e.indexOf(a)<0&&i.indexOf(a)<0);if(n.length===0)return!0;const r=new RegExp(`(${n.map(a=>a==="?"?"\\?":a).join("|")})`);let o=!r.test(t);if(!o){const a=t.indexOf(i);a>0&&!r.test(t.substring(0,a))&&(o=!0)}return o}function En(t,e){let i=arguments.length>2&&arguments[2]!==void 0?arguments[2]:".";if(!t)return;if(t[e])return t[e];const n=e.split(i);let r=t;for(let o=0;o<n.length;++o){if(!r||typeof r[n[o]]=="string"&&o+1<n.length)return;if(r[n[o]]===void 0){let a=2,s=n.slice(o,o+a).join(i),l=r[s];for(;l===void 0&&n.length>o+a;)a++,s=n.slice(o,o+a).join(i),l=r[s];if(l===void 0)return;if(l===null)return null;if(e.endsWith(s)){if(typeof l=="string")return l;if(s&&typeof l[s]=="string")return l[s]}const c=n.slice(o+a).join(i);return c?En(l,c,i):void 0}r=r[n[o]]}return r}function Mn(t){return t&&t.indexOf("_")>0?t.replace("_","-"):t}class cs extends Jn{constructor(e){let i=arguments.length>1&&arguments[1]!==void 0?arguments[1]:{ns:["translation"],defaultNS:"translation"};super(),this.data=e||{},this.options=i,this.options.keySeparator===void 0&&(this.options.keySeparator="."),this.options.ignoreJSONStructure===void 0&&(this.options.ignoreJSONStructure=!0)}addNamespaces(e){this.options.ns.indexOf(e)<0&&this.options.ns.push(e)}removeNamespaces(e){const i=this.options.ns.indexOf(e);i>-1&&this.options.ns.splice(i,1)}getResource(e,i,n){let r=arguments.length>3&&arguments[3]!==void 0?arguments[3]:{};const o=r.keySeparator!==void 0?r.keySeparator:this.options.keySeparator,a=r.ignoreJSONStructure!==void 0?r.ignoreJSONStructure:this.options.ignoreJSONStructure;let s=[e,i];n&&typeof n!="string"&&(s=s.concat(n)),n&&typeof n=="string"&&(s=s.concat(o?n.split(o):n)),e.indexOf(".")>-1&&(s=e.split("."));const l=An(this.data,s);return l||!a||typeof n!="string"?l:En(this.data&&this.data[e]&&this.data[e][i],n,o)}addResource(e,i,n,r){let o=arguments.length>4&&arguments[4]!==void 0?arguments[4]:{silent:!1};const a=o.keySeparator!==void 0?o.keySeparator:this.options.keySeparator;let s=[e,i];n&&(s=s.concat(a?n.split(a):n)),e.indexOf(".")>-1&&(s=e.split("."),r=i,i=s[1]),this.addNamespaces(i),ls(this.data,s,r),o.silent||this.emit("added",e,i,n,r)}addResources(e,i,n){let r=arguments.length>3&&arguments[3]!==void 0?arguments[3]:{silent:!1};for(const o in n)(typeof n[o]=="string"||Object.prototype.toString.apply(n[o])==="[object Array]")&&this.addResource(e,i,o,n[o],{silent:!0});r.silent||this.emit("added",e,i,n)}addResourceBundle(e,i,n,r,o){let a=arguments.length>5&&arguments[5]!==void 0?arguments[5]:{silent:!1},s=[e,i];e.indexOf(".")>-1&&(s=e.split("."),r=n,n=i,i=s[1]),this.addNamespaces(i);let l=An(this.data,s)||{};r?Hc(l,n,o):l={...l,...n},ls(this.data,s,l),a.silent||this.emit("added",e,i,n)}removeResourceBundle(e,i){this.hasResourceBundle(e,i)&&delete this.data[e][i],this.removeNamespaces(i),this.emit("removed",e,i)}hasResourceBundle(e,i){return this.getResource(e,i)!==void 0}getResourceBundle(e,i){return i||(i=this.options.defaultNS),this.options.compatibilityAPI==="v1"?{...this.getResource(e,i)}:this.getResource(e,i)}getDataByLanguage(e){return this.data[e]}hasLanguageSomeTranslations(e){const i=this.getDataByLanguage(e);return!!(i&&Object.keys(i)||[]).find(r=>i[r]&&Object.keys(i[r]).length>0)}toJSON(){return this.data}}var Rc={processors:{},addPostProcessor(t){this.processors[t.name]=t},handle(t,e,i,n,r){return t.forEach(o=>{this.processors[o]&&(e=this.processors[o].process(e,i,n,r))}),e}};const us={};class kn extends Jn{constructor(e){let i=arguments.length>1&&arguments[1]!==void 0?arguments[1]:{};super(),Cm(["resourceStore","languageUtils","pluralResolver","interpolator","backendConnector","i18nFormat","utils"],e,this),this.options=i,this.options.keySeparator===void 0&&(this.options.keySeparator="."),this.logger=ve.create("translator")}changeLanguage(e){e&&(this.language=e)}exists(e){let i=arguments.length>1&&arguments[1]!==void 0?arguments[1]:{interpolation:{}};if(e==null)return!1;const n=this.resolve(e,i);return n&&n.res!==void 0}extractFromKey(e,i){let n=i.nsSeparator!==void 0?i.nsSeparator:this.options.nsSeparator;n===void 0&&(n=":");const r=i.keySeparator!==void 0?i.keySeparator:this.options.keySeparator;let o=i.ns||this.options.defaultNS||[];const a=n&&e.indexOf(n)>-1,s=!this.options.userDefinedKeySeparator&&!i.keySeparator&&!this.options.userDefinedNsSeparator&&!i.nsSeparator&&!km(e,n,r);if(a&&!s){const l=e.match(this.interpolator.nestingRegexp);if(l&&l.length>0)return{key:e,namespaces:o};const c=e.split(n);(n!==r||n===r&&this.options.ns.indexOf(c[0])>-1)&&(o=c.shift()),e=c.join(r)}return typeof o=="string"&&(o=[o]),{key:e,namespaces:o}}translate(e,i,n){if(typeof i!="object"&&this.options.overloadTranslationOptionHandler&&(i=this.options.overloadTranslationOptionHandler(arguments)),typeof i=="object"&&(i={...i}),i||(i={}),e==null)return"";Array.isArray(e)||(e=[String(e)]);const r=i.returnDetails!==void 0?i.returnDetails:this.options.returnDetails,o=i.keySeparator!==void 0?i.keySeparator:this.options.keySeparator,{key:a,namespaces:s}=this.extractFromKey(e[e.length-1],i),l=s[s.length-1],c=i.lng||this.language,u=i.appendNamespaceToCIMode||this.options.appendNamespaceToCIMode;if(c&&c.toLowerCase()==="cimode"){if(u){const v=i.nsSeparator||this.options.nsSeparator;return r?{res:`${l}${v}${a}`,usedKey:a,exactUsedKey:a,usedLng:c,usedNS:l,usedParams:this.getUsedParamsDetails(i)}:`${l}${v}${a}`}return r?{res:a,usedKey:a,exactUsedKey:a,usedLng:c,usedNS:l,usedParams:this.getUsedParamsDetails(i)}:a}const d=this.resolve(e,i);let p=d&&d.res;const h=d&&d.usedKey||a,f=d&&d.exactUsedKey||a,m=Object.prototype.toString.apply(p),b=["[object Number]","[object Function]","[object RegExp]"],y=i.joinArrays!==void 0?i.joinArrays:this.options.joinArrays,g=!this.i18nFormat||this.i18nFormat.handleAsObject;if(g&&p&&(typeof p!="string"&&typeof p!="boolean"&&typeof p!="number")&&b.indexOf(m)<0&&!(typeof y=="string"&&m==="[object Array]")){if(!i.returnObjects&&!this.options.returnObjects){this.options.returnedObjectHandler||this.logger.warn("accessing an object - but returnObjects options is not enabled!");const v=this.options.returnedObjectHandler?this.options.returnedObjectHandler(h,p,{...i,ns:s}):`key '${a} (${this.language})' returned an object instead of string.`;return r?(d.res=v,d.usedParams=this.getUsedParamsDetails(i),d):v}if(o){const v=m==="[object Array]",w=v?[]:{},C=v?f:h;for(const S in p)if(Object.prototype.hasOwnProperty.call(p,S)){const E=`${C}${o}${S}`;w[S]=this.translate(E,{...i,joinArrays:!1,ns:s}),w[S]===E&&(w[S]=p[S])}p=w}}else if(g&&typeof y=="string"&&m==="[object Array]")p=p.join(y),p&&(p=this.extendTranslation(p,e,i,n));else{let v=!1,w=!1;const C=i.count!==void 0&&typeof i.count!="string",S=kn.hasDefaultValue(i),E=C?this.pluralResolver.getSuffix(c,i.count,i):"",F=i.ordinal&&C?this.pluralResolver.getSuffix(c,i.count,{ordinal:!1}):"",T=i[`defaultValue${E}`]||i[`defaultValue${F}`]||i.defaultValue;!this.isValidLookup(p)&&S&&(v=!0,p=T),this.isValidLookup(p)||(w=!0,p=a);const Y=(i.missingKeyNoValueFallbackToKey||this.options.missingKeyNoValueFallbackToKey)&&w?void 0:p,j=S&&T!==p&&this.options.updateMissing;if(w||v||j){if(this.logger.log(j?"updateKey":"missingKey",c,l,a,j?T:p),o){const P=this.resolve(a,{...i,keySeparator:!1});P&&P.res&&this.logger.warn("Seems the loaded translations were in flat JSON format instead of nested. Either set keySeparator: false on init or make sure your translations are published in nested format.")}let D=[];const N=this.languageUtils.getFallbackCodes(this.options.fallbackLng,i.lng||this.language);if(this.options.saveMissingTo==="fallback"&&N&&N[0])for(let P=0;P<N.length;P++)D.push(N[P]);else this.options.saveMissingTo==="all"?D=this.languageUtils.toResolveHierarchy(i.lng||this.language):D.push(i.lng||this.language);const W=(P,X,ae)=>{const Qe=S&&ae!==p?ae:Y;this.options.missingKeyHandler?this.options.missingKeyHandler(P,l,X,Qe,j,i):this.backendConnector&&this.backendConnector.saveMissing&&this.backendConnector.saveMissing(P,l,X,Qe,j,i),this.emit("missingKey",P,l,X,p)};this.options.saveMissing&&(this.options.saveMissingPlurals&&C?D.forEach(P=>{this.pluralResolver.getSuffixes(P,i).forEach(X=>{W([P],a+X,i[`defaultValue${X}`]||T)})}):W(D,a,T))}p=this.extendTranslation(p,e,i,d,n),w&&p===a&&this.options.appendNamespaceToMissingKey&&(p=`${l}:${a}`),(w||v)&&this.options.parseMissingKeyHandler&&(this.options.compatibilityAPI!=="v1"?p=this.options.parseMissingKeyHandler(this.options.appendNamespaceToMissingKey?`${l}:${a}`:a,v?p:void 0):p=this.options.parseMissingKeyHandler(p))}return r?(d.res=p,d.usedParams=this.getUsedParamsDetails(i),d):p}extendTranslation(e,i,n,r,o){var a=this;if(this.i18nFormat&&this.i18nFormat.parse)e=this.i18nFormat.parse(e,{...this.options.interpolation.defaultVariables,...n},n.lng||this.language||r.usedLng,r.usedNS,r.usedKey,{resolved:r});else if(!n.skipInterpolation){n.interpolation&&this.interpolator.init({...n,interpolation:{...this.options.interpolation,...n.interpolation}});const c=typeof e=="string"&&(n&&n.interpolation&&n.interpolation.skipOnVariables!==void 0?n.interpolation.skipOnVariables:this.options.interpolation.skipOnVariables);let u;if(c){const p=e.match(this.interpolator.nestingRegexp);u=p&&p.length}let d=n.replace&&typeof n.replace!="string"?n.replace:n;if(this.options.interpolation.defaultVariables&&(d={...this.options.interpolation.defaultVariables,...d}),e=this.interpolator.interpolate(e,d,n.lng||this.language,n),c){const p=e.match(this.interpolator.nestingRegexp),h=p&&p.length;u<h&&(n.nest=!1)}!n.lng&&this.options.compatibilityAPI!=="v1"&&r&&r.res&&(n.lng=r.usedLng),n.nest!==!1&&(e=this.interpolator.nest(e,function(){for(var p=arguments.length,h=new Array(p),f=0;f<p;f++)h[f]=arguments[f];return o&&o[0]===h[0]&&!n.context?(a.logger.warn(`It seems you are nesting recursively key: ${h[0]} in key: ${i[0]}`),null):a.translate(...h,i)},n)),n.interpolation&&this.interpolator.reset()}const s=n.postProcess||this.options.postProcess,l=typeof s=="string"?[s]:s;return e!=null&&l&&l.length&&n.applyPostProcessor!==!1&&(e=Rc.handle(l,e,i,this.options&&this.options.postProcessPassResolved?{i18nResolved:{...r,usedParams:this.getUsedParamsDetails(n)},...n}:n,this)),e}resolve(e){let i=arguments.length>1&&arguments[1]!==void 0?arguments[1]:{},n,r,o,a,s;return typeof e=="string"&&(e=[e]),e.forEach(l=>{if(this.isValidLookup(n))return;const c=this.extractFromKey(l,i),u=c.key;r=u;let d=c.namespaces;this.options.fallbackNS&&(d=d.concat(this.options.fallbackNS));const p=i.count!==void 0&&typeof i.count!="string",h=p&&!i.ordinal&&i.count===0&&this.pluralResolver.shouldUseIntlApi(),f=i.context!==void 0&&(typeof i.context=="string"||typeof i.context=="number")&&i.context!=="",m=i.lngs?i.lngs:this.languageUtils.toResolveHierarchy(i.lng||this.language,i.fallbackLng);d.forEach(b=>{this.isValidLookup(n)||(s=b,!us[`${m[0]}-${b}`]&&this.utils&&this.utils.hasLoadedNamespace&&!this.utils.hasLoadedNamespace(s)&&(us[`${m[0]}-${b}`]=!0,this.logger.warn(`key "${r}" for languages "${m.join(", ")}" won't get resolved as namespace "${s}" was not yet loaded`,"This means something IS WRONG in your setup. You access the t function before i18next.init / i18next.loadNamespace / i18next.changeLanguage was done. Wait for the callback or Promise to resolve before accessing it!!!")),m.forEach(y=>{if(this.isValidLookup(n))return;a=y;const g=[u];if(this.i18nFormat&&this.i18nFormat.addLookupKeys)this.i18nFormat.addLookupKeys(g,u,y,b,i);else{let v;p&&(v=this.pluralResolver.getSuffix(y,i.count,i));const w=`${this.options.pluralSeparator}zero`,C=`${this.options.pluralSeparator}ordinal${this.options.pluralSeparator}`;if(p&&(g.push(u+v),i.ordinal&&v.indexOf(C)===0&&g.push(u+v.replace(C,this.options.pluralSeparator)),h&&g.push(u+w)),f){const S=`${u}${this.options.contextSeparator}${i.context}`;g.push(S),p&&(g.push(S+v),i.ordinal&&v.indexOf(C)===0&&g.push(S+v.replace(C,this.options.pluralSeparator)),h&&g.push(S+w))}}let x;for(;x=g.pop();)this.isValidLookup(n)||(o=x,n=this.getResource(y,b,x,i))}))})}),{res:n,usedKey:r,exactUsedKey:o,usedLng:a,usedNS:s}}isValidLookup(e){return e!==void 0&&!(!this.options.returnNull&&e===null)&&!(!this.options.returnEmptyString&&e==="")}getResource(e,i,n){let r=arguments.length>3&&arguments[3]!==void 0?arguments[3]:{};return this.i18nFormat&&this.i18nFormat.getResource?this.i18nFormat.getResource(e,i,n,r):this.resourceStore.getResource(e,i,n,r)}getUsedParamsDetails(){let e=arguments.length>0&&arguments[0]!==void 0?arguments[0]:{};const i=["defaultValue","ordinal","context","replace","lng","lngs","fallbackLng","ns","keySeparator","nsSeparator","returnObjects","returnDetails","joinArrays","postProcess","interpolation"],n=e.replace&&typeof e.replace!="string";let r=n?e.replace:e;if(n&&typeof e.count<"u"&&(r.count=e.count),this.options.interpolation.defaultVariables&&(r={...this.options.interpolation.defaultVariables,...r}),!n){r={...r};for(const o of i)delete r[o]}return r}static hasDefaultValue(e){const i="defaultValue";for(const n in e)if(Object.prototype.hasOwnProperty.call(e,n)&&i===n.substring(0,i.length)&&e[n]!==void 0)return!0;return!1}}function yr(t){return t.charAt(0).toUpperCase()+t.slice(1)}class ds{constructor(e){this.options=e,this.supportedLngs=this.options.supportedLngs||!1,this.logger=ve.create("languageUtils")}getScriptPartFromCode(e){if(e=Mn(e),!e||e.indexOf("-")<0)return null;const i=e.split("-");return i.length===2||(i.pop(),i[i.length-1].toLowerCase()==="x")?null:this.formatLanguageCode(i.join("-"))}getLanguagePartFromCode(e){if(e=Mn(e),!e||e.indexOf("-")<0)return e;const i=e.split("-");return this.formatLanguageCode(i[0])}formatLanguageCode(e){if(typeof e=="string"&&e.indexOf("-")>-1){const i=["hans","hant","latn","cyrl","cans","mong","arab"];let n=e.split("-");return this.options.lowerCaseLng?n=n.map(r=>r.toLowerCase()):n.length===2?(n[0]=n[0].toLowerCase(),n[1]=n[1].toUpperCase(),i.indexOf(n[1].toLowerCase())>-1&&(n[1]=yr(n[1].toLowerCase()))):n.length===3&&(n[0]=n[0].toLowerCase(),n[1].length===2&&(n[1]=n[1].toUpperCase()),n[0]!=="sgn"&&n[2].length===2&&(n[2]=n[2].toUpperCase()),i.indexOf(n[1].toLowerCase())>-1&&(n[1]=yr(n[1].toLowerCase())),i.indexOf(n[2].toLowerCase())>-1&&(n[2]=yr(n[2].toLowerCase()))),n.join("-")}return this.options.cleanCode||this.options.lowerCaseLng?e.toLowerCase():e}isSupportedCode(e){return(this.options.load==="languageOnly"||this.options.nonExplicitSupportedLngs)&&(e=this.getLanguagePartFromCode(e)),!this.supportedLngs||!this.supportedLngs.length||this.supportedLngs.indexOf(e)>-1}getBestMatchFromCodes(e){if(!e)return null;let i;return e.forEach(n=>{if(i)return;const r=this.formatLanguageCode(n);(!this.options.supportedLngs||this.isSupportedCode(r))&&(i=r)}),!i&&this.options.supportedLngs&&e.forEach(n=>{if(i)return;const r=this.getLanguagePartFromCode(n);if(this.isSupportedCode(r))return i=r;i=this.options.supportedLngs.find(o=>{if(o===r)return o;if(!(o.indexOf("-")<0&&r.indexOf("-")<0)&&o.indexOf(r)===0)return o})}),i||(i=this.getFallbackCodes(this.options.fallbackLng)[0]),i}getFallbackCodes(e,i){if(!e)return[];if(typeof e=="function"&&(e=e(i)),typeof e=="string"&&(e=[e]),Object.prototype.toString.apply(e)==="[object Array]")return e;if(!i)return e.default||[];let n=e[i];return n||(n=e[this.getScriptPartFromCode(i)]),n||(n=e[this.formatLanguageCode(i)]),n||(n=e[this.getLanguagePartFromCode(i)]),n||(n=e.default),n||[]}toResolveHierarchy(e,i){const n=this.getFallbackCodes(i||this.options.fallbackLng||[],e),r=[],o=a=>{a&&(this.isSupportedCode(a)?r.push(a):this.logger.warn(`rejecting language code not found in supportedLngs: ${a}`))};return typeof e=="string"&&(e.indexOf("-")>-1||e.indexOf("_")>-1)?(this.options.load!=="languageOnly"&&o(this.formatLanguageCode(e)),this.options.load!=="languageOnly"&&this.options.load!=="currentOnly"&&o(this.getScriptPartFromCode(e)),this.options.load!=="currentOnly"&&o(this.getLanguagePartFromCode(e))):typeof e=="string"&&o(this.formatLanguageCode(e)),n.forEach(a=>{r.indexOf(a)<0&&o(this.formatLanguageCode(a))}),r}}let Lm=[{lngs:["ach","ak","am","arn","br","fil","gun","ln","mfe","mg","mi","oc","pt","pt-BR","tg","tl","ti","tr","uz","wa"],nr:[1,2],fc:1},{lngs:["af","an","ast","az","bg","bn","ca","da","de","dev","el","en","eo","es","et","eu","fi","fo","fur","fy","gl","gu","ha","hi","hu","hy","ia","it","kk","kn","ku","lb","mai","ml","mn","mr","nah","nap","nb","ne","nl","nn","no","nso","pa","pap","pms","ps","pt-PT","rm","sco","se","si","so","son","sq","sv","sw","ta","te","tk","ur","yo"],nr:[1,2],fc:2},{lngs:["ay","bo","cgg","fa","ht","id","ja","jbo","ka","km","ko","ky","lo","ms","sah","su","th","tt","ug","vi","wo","zh"],nr:[1],fc:3},{lngs:["be","bs","cnr","dz","hr","ru","sr","uk"],nr:[1,2,5],fc:4},{lngs:["ar"],nr:[0,1,2,3,11,100],fc:5},{lngs:["cs","sk"],nr:[1,2,5],fc:6},{lngs:["csb","pl"],nr:[1,2,5],fc:7},{lngs:["cy"],nr:[1,2,3,8],fc:8},{lngs:["fr"],nr:[1,2],fc:9},{lngs:["ga"],nr:[1,2,3,7,11],fc:10},{lngs:["gd"],nr:[1,2,3,20],fc:11},{lngs:["is"],nr:[1,2],fc:12},{lngs:["jv"],nr:[0,1],fc:13},{lngs:["kw"],nr:[1,2,3,4],fc:14},{lngs:["lt"],nr:[1,2,10],fc:15},{lngs:["lv"],nr:[1,2,0],fc:16},{lngs:["mk"],nr:[1,2],fc:17},{lngs:["mnk"],nr:[0,1,2],fc:18},{lngs:["mt"],nr:[1,2,11,20],fc:19},{lngs:["or"],nr:[2,1],fc:2},{lngs:["ro"],nr:[1,2,20],fc:20},{lngs:["sl"],nr:[5,1,2,3],fc:21},{lngs:["he","iw"],nr:[1,2,20,21],fc:22}],$m={1:function(t){return+(t>1)},2:function(t){return+(t!=1)},3:function(t){return 0},4:function(t){return t%10==1&&t%100!=11?0:t%10>=2&&t%10<=4&&(t%100<10||t%100>=20)?1:2},5:function(t){return t==0?0:t==1?1:t==2?2:t%100>=3&&t%100<=10?3:t%100>=11?4:5},6:function(t){return t==1?0:t>=2&&t<=4?1:2},7:function(t){return t==1?0:t%10>=2&&t%10<=4&&(t%100<10||t%100>=20)?1:2},8:function(t){return t==1?0:t==2?1:t!=8&&t!=11?2:3},9:function(t){return+(t>=2)},10:function(t){return t==1?0:t==2?1:t<7?2:t<11?3:4},11:function(t){return t==1||t==11?0:t==2||t==12?1:t>2&&t<20?2:3},12:function(t){return+(t%10!=1||t%100==11)},13:function(t){return+(t!==0)},14:function(t){return t==1?0:t==2?1:t==3?2:3},15:function(t){return t%10==1&&t%100!=11?0:t%10>=2&&(t%100<10||t%100>=20)?1:2},16:function(t){return t%10==1&&t%100!=11?0:t!==0?1:2},17:function(t){return t==1||t%10==1&&t%100!=11?0:1},18:function(t){return t==0?0:t==1?1:2},19:function(t){return t==1?0:t==0||t%100>1&&t%100<11?1:t%100>10&&t%100<20?2:3},20:function(t){return t==1?0:t==0||t%100>0&&t%100<20?1:2},21:function(t){return t%100==1?1:t%100==2?2:t%100==3||t%100==4?3:0},22:function(t){return t==1?0:t==2?1:(t<0||t>10)&&t%10==0?2:3}};const Om=["v1","v2","v3"],Tm=["v4"],ps={zero:0,one:1,two:2,few:3,many:4,other:5};function Pm(){const t={};return Lm.forEach(e=>{e.lngs.forEach(i=>{t[i]={numbers:e.nr,plurals:$m[e.fc]}})}),t}class Im{constructor(e){let i=arguments.length>1&&arguments[1]!==void 0?arguments[1]:{};this.languageUtils=e,this.options=i,this.logger=ve.create("pluralResolver"),(!this.options.compatibilityJSON||Tm.includes(this.options.compatibilityJSON))&&(typeof Intl>"u"||!Intl.PluralRules)&&(this.options.compatibilityJSON="v3",this.logger.error("Your environment seems not to be Intl API compatible, use an Intl.PluralRules polyfill. Will fallback to the compatibilityJSON v3 format handling.")),this.rules=Pm()}addRule(e,i){this.rules[e]=i}getRule(e){let i=arguments.length>1&&arguments[1]!==void 0?arguments[1]:{};if(this.shouldUseIntlApi())try{return new Intl.PluralRules(Mn(e),{type:i.ordinal?"ordinal":"cardinal"})}catch{return}return this.rules[e]||this.rules[this.languageUtils.getLanguagePartFromCode(e)]}needsPlural(e){let i=arguments.length>1&&arguments[1]!==void 0?arguments[1]:{};const n=this.getRule(e,i);return this.shouldUseIntlApi()?n&&n.resolvedOptions().pluralCategories.length>1:n&&n.numbers.length>1}getPluralFormsOfKey(e,i){let n=arguments.length>2&&arguments[2]!==void 0?arguments[2]:{};return this.getSuffixes(e,n).map(r=>`${i}${r}`)}getSuffixes(e){let i=arguments.length>1&&arguments[1]!==void 0?arguments[1]:{};const n=this.getRule(e,i);return n?this.shouldUseIntlApi()?n.resolvedOptions().pluralCategories.sort((r,o)=>ps[r]-ps[o]).map(r=>`${this.options.prepend}${i.ordinal?`ordinal${this.options.prepend}`:""}${r}`):n.numbers.map(r=>this.getSuffix(e,r,i)):[]}getSuffix(e,i){let n=arguments.length>2&&arguments[2]!==void 0?arguments[2]:{};const r=this.getRule(e,n);return r?this.shouldUseIntlApi()?`${this.options.prepend}${n.ordinal?`ordinal${this.options.prepend}`:""}${r.select(i)}`:this.getSuffixRetroCompatible(r,i):(this.logger.warn(`no plural rule found for: ${e}`),"")}getSuffixRetroCompatible(e,i){const n=e.noAbs?e.plurals(i):e.plurals(Math.abs(i));let r=e.numbers[n];this.options.simplifyPluralSuffix&&e.numbers.length===2&&e.numbers[0]===1&&(r===2?r="plural":r===1&&(r=""));const o=()=>this.options.prepend&&r.toString()?this.options.prepend+r.toString():r.toString();return this.options.compatibilityJSON==="v1"?r===1?"":typeof r=="number"?`_plural_${r.toString()}`:o():this.options.compatibilityJSON==="v2"||this.options.simplifyPluralSuffix&&e.numbers.length===2&&e.numbers[0]===1?o():this.options.prepend&&n.toString()?this.options.prepend+n.toString():n.toString()}shouldUseIntlApi(){return!Om.includes(this.options.compatibilityJSON)}}function hs(t,e,i){let n=arguments.length>3&&arguments[3]!==void 0?arguments[3]:".",r=arguments.length>4&&arguments[4]!==void 0?arguments[4]:!0,o=zm(t,e,i);return!o&&r&&typeof i=="string"&&(o=En(t,i,n),o===void 0&&(o=En(e,i,n))),o}class Hm{constructor(){let e=arguments.length>0&&arguments[0]!==void 0?arguments[0]:{};this.logger=ve.create("interpolator"),this.options=e,this.format=e.interpolation&&e.interpolation.format||(i=>i),this.init(e)}init(){let e=arguments.length>0&&arguments[0]!==void 0?arguments[0]:{};e.interpolation||(e.interpolation={escapeValue:!0});const i=e.interpolation;this.escape=i.escape!==void 0?i.escape:Em,this.escapeValue=i.escapeValue!==void 0?i.escapeValue:!0,this.useRawValueToEscape=i.useRawValueToEscape!==void 0?i.useRawValueToEscape:!1,this.prefix=i.prefix?nt(i.prefix):i.prefixEscaped||"{{",this.suffix=i.suffix?nt(i.suffix):i.suffixEscaped||"}}",this.formatSeparator=i.formatSeparator?i.formatSeparator:i.formatSeparator||",",this.unescapePrefix=i.unescapeSuffix?"":i.unescapePrefix||"-",this.unescapeSuffix=this.unescapePrefix?"":i.unescapeSuffix||"",this.nestingPrefix=i.nestingPrefix?nt(i.nestingPrefix):i.nestingPrefixEscaped||nt("$t("),this.nestingSuffix=i.nestingSuffix?nt(i.nestingSuffix):i.nestingSuffixEscaped||nt(")"),this.nestingOptionsSeparator=i.nestingOptionsSeparator?i.nestingOptionsSeparator:i.nestingOptionsSeparator||",",this.maxReplaces=i.maxReplaces?i.maxReplaces:1e3,this.alwaysFormat=i.alwaysFormat!==void 0?i.alwaysFormat:!1,this.resetRegExp()}reset(){this.options&&this.init(this.options)}resetRegExp(){const e=`${this.prefix}(.+?)${this.suffix}`;this.regexp=new RegExp(e,"g");const i=`${this.prefix}${this.unescapePrefix}(.+?)${this.unescapeSuffix}${this.suffix}`;this.regexpUnescape=new RegExp(i,"g");const n=`${this.nestingPrefix}(.+?)${this.nestingSuffix}`;this.nestingRegexp=new RegExp(n,"g")}interpolate(e,i,n,r){let o,a,s;const l=this.options&&this.options.interpolation&&this.options.interpolation.defaultVariables||{};function c(f){return f.replace(/\$/g,"$$$$")}const u=f=>{if(f.indexOf(this.formatSeparator)<0){const g=hs(i,l,f,this.options.keySeparator,this.options.ignoreJSONStructure);return this.alwaysFormat?this.format(g,void 0,n,{...r,...i,interpolationkey:f}):g}const m=f.split(this.formatSeparator),b=m.shift().trim(),y=m.join(this.formatSeparator).trim();return this.format(hs(i,l,b,this.options.keySeparator,this.options.ignoreJSONStructure),y,n,{...r,...i,interpolationkey:b})};this.resetRegExp();const d=r&&r.missingInterpolationHandler||this.options.missingInterpolationHandler,p=r&&r.interpolation&&r.interpolation.skipOnVariables!==void 0?r.interpolation.skipOnVariables:this.options.interpolation.skipOnVariables;return[{regex:this.regexpUnescape,safeValue:f=>c(f)},{regex:this.regexp,safeValue:f=>this.escapeValue?c(this.escape(f)):c(f)}].forEach(f=>{for(s=0;o=f.regex.exec(e);){const m=o[1].trim();if(a=u(m),a===void 0)if(typeof d=="function"){const y=d(e,o,r);a=typeof y=="string"?y:""}else if(r&&Object.prototype.hasOwnProperty.call(r,m))a="";else if(p){a=o[0];continue}else this.logger.warn(`missed to pass in variable ${m} for interpolating ${e}`),a="";else typeof a!="string"&&!this.useRawValueToEscape&&(a=ss(a));const b=f.safeValue(a);if(e=e.replace(o[0],b),p?(f.regex.lastIndex+=a.length,f.regex.lastIndex-=o[0].length):f.regex.lastIndex=0,s++,s>=this.maxReplaces)break}}),e}nest(e,i){let n=arguments.length>2&&arguments[2]!==void 0?arguments[2]:{},r,o,a;function s(l,c){const u=this.nestingOptionsSeparator;if(l.indexOf(u)<0)return l;const d=l.split(new RegExp(`${u}[ ]*{`));let p=`{${d[1]}`;l=d[0],p=this.interpolate(p,a);const h=p.match(/'/g),f=p.match(/"/g);(h&&h.length%2===0&&!f||f.length%2!==0)&&(p=p.replace(/'/g,'"'));try{a=JSON.parse(p),c&&(a={...c,...a})}catch(m){return this.logger.warn(`failed parsing options string in nesting for key ${l}`,m),`${l}${u}${p}`}return delete a.defaultValue,l}for(;r=this.nestingRegexp.exec(e);){let l=[];a={...n},a=a.replace&&typeof a.replace!="string"?a.replace:a,a.applyPostProcessor=!1,delete a.defaultValue;let c=!1;if(r[0].indexOf(this.formatSeparator)!==-1&&!/{.*}/.test(r[1])){const u=r[1].split(this.formatSeparator).map(d=>d.trim());r[1]=u.shift(),l=u,c=!0}if(o=i(s.call(this,r[1].trim(),a),a),o&&r[0]===e&&typeof o!="string")return o;typeof o!="string"&&(o=ss(o)),o||(this.logger.warn(`missed to resolve ${r[1]} for nesting ${e}`),o=""),c&&(o=l.reduce((u,d)=>this.format(u,d,n.lng,{...n,interpolationkey:r[1].trim()}),o.trim())),e=e.replace(r[0],o),this.regexp.lastIndex=0}return e}}function Rm(t){let e=t.toLowerCase().trim();const i={};if(t.indexOf("(")>-1){const n=t.split("(");e=n[0].toLowerCase().trim();const r=n[1].substring(0,n[1].length-1);e==="currency"&&r.indexOf(":")<0?i.currency||(i.currency=r.trim()):e==="relativetime"&&r.indexOf(":")<0?i.range||(i.range=r.trim()):r.split(";").forEach(a=>{if(!a)return;const[s,...l]=a.split(":"),c=l.join(":").trim().replace(/^'+|'+$/g,"");i[s.trim()]||(i[s.trim()]=c),c==="false"&&(i[s.trim()]=!1),c==="true"&&(i[s.trim()]=!0),isNaN(c)||(i[s.trim()]=parseInt(c,10))})}return{formatName:e,formatOptions:i}}function rt(t){const e={};return function(n,r,o){const a=r+JSON.stringify(o);let s=e[a];return s||(s=t(Mn(r),o),e[a]=s),s(n)}}class Fm{constructor(){let e=arguments.length>0&&arguments[0]!==void 0?arguments[0]:{};this.logger=ve.create("formatter"),this.options=e,this.formats={number:rt((i,n)=>{const r=new Intl.NumberFormat(i,{...n});return o=>r.format(o)}),currency:rt((i,n)=>{const r=new Intl.NumberFormat(i,{...n,style:"currency"});return o=>r.format(o)}),datetime:rt((i,n)=>{const r=new Intl.DateTimeFormat(i,{...n});return o=>r.format(o)}),relativetime:rt((i,n)=>{const r=new Intl.RelativeTimeFormat(i,{...n});return o=>r.format(o,n.range||"day")}),list:rt((i,n)=>{const r=new Intl.ListFormat(i,{...n});return o=>r.format(o)})},this.init(e)}init(e){const n=(arguments.length>1&&arguments[1]!==void 0?arguments[1]:{interpolation:{}}).interpolation;this.formatSeparator=n.formatSeparator?n.formatSeparator:n.formatSeparator||","}add(e,i){this.formats[e.toLowerCase().trim()]=i}addCached(e,i){this.formats[e.toLowerCase().trim()]=rt(i)}format(e,i,n){let r=arguments.length>3&&arguments[3]!==void 0?arguments[3]:{};return i.split(this.formatSeparator).reduce((s,l)=>{const{formatName:c,formatOptions:u}=Rm(l);if(this.formats[c]){let d=s;try{const p=r&&r.formatParams&&r.formatParams[r.interpolationkey]||{},h=p.locale||p.lng||r.locale||r.lng||n;d=this.formats[c](s,h,{...u,...r,...p})}catch(p){this.logger.warn(p)}return d}else this.logger.warn(`there was no format function for ${c}`);return s},e)}}function Nm(t,e){t.pending[e]!==void 0&&(delete t.pending[e],t.pendingCount--)}class Vm extends Jn{constructor(e,i,n){let r=arguments.length>3&&arguments[3]!==void 0?arguments[3]:{};super(),this.backend=e,this.store=i,this.services=n,this.languageUtils=n.languageUtils,this.options=r,this.logger=ve.create("backendConnector"),this.waitingReads=[],this.maxParallelReads=r.maxParallelReads||10,this.readingCalls=0,this.maxRetries=r.maxRetries>=0?r.maxRetries:5,this.retryTimeout=r.retryTimeout>=1?r.retryTimeout:350,this.state={},this.queue=[],this.backend&&this.backend.init&&this.backend.init(n,r.backend,r)}queueLoad(e,i,n,r){const o={},a={},s={},l={};return e.forEach(c=>{let u=!0;i.forEach(d=>{const p=`${c}|${d}`;!n.reload&&this.store.hasResourceBundle(c,d)?this.state[p]=2:this.state[p]<0||(this.state[p]===1?a[p]===void 0&&(a[p]=!0):(this.state[p]=1,u=!1,a[p]===void 0&&(a[p]=!0),o[p]===void 0&&(o[p]=!0),l[d]===void 0&&(l[d]=!0)))}),u||(s[c]=!0)}),(Object.keys(o).length||Object.keys(a).length)&&this.queue.push({pending:a,pendingCount:Object.keys(a).length,loaded:{},errors:[],callback:r}),{toLoad:Object.keys(o),pending:Object.keys(a),toLoadLanguages:Object.keys(s),toLoadNamespaces:Object.keys(l)}}loaded(e,i,n){const r=e.split("|"),o=r[0],a=r[1];i&&this.emit("failedLoading",o,a,i),n&&this.store.addResourceBundle(o,a,n),this.state[e]=i?-1:2;const s={};this.queue.forEach(l=>{Sm(l.loaded,[o],a),Nm(l,e),i&&l.errors.push(i),l.pendingCount===0&&!l.done&&(Object.keys(l.loaded).forEach(c=>{s[c]||(s[c]={});const u=l.loaded[c];u.length&&u.forEach(d=>{s[c][d]===void 0&&(s[c][d]=!0)})}),l.done=!0,l.errors.length?l.callback(l.errors):l.callback())}),this.emit("loaded",s),this.queue=this.queue.filter(l=>!l.done)}read(e,i,n){let r=arguments.length>3&&arguments[3]!==void 0?arguments[3]:0,o=arguments.length>4&&arguments[4]!==void 0?arguments[4]:this.retryTimeout,a=arguments.length>5?arguments[5]:void 0;if(!e.length)return a(null,{});if(this.readingCalls>=this.maxParallelReads){this.waitingReads.push({lng:e,ns:i,fcName:n,tried:r,wait:o,callback:a});return}this.readingCalls++;const s=(c,u)=>{if(this.readingCalls--,this.waitingReads.length>0){const d=this.waitingReads.shift();this.read(d.lng,d.ns,d.fcName,d.tried,d.wait,d.callback)}if(c&&u&&r<this.maxRetries){setTimeout(()=>{this.read.call(this,e,i,n,r+1,o*2,a)},o);return}a(c,u)},l=this.backend[n].bind(this.backend);if(l.length===2){try{const c=l(e,i);c&&typeof c.then=="function"?c.then(u=>s(null,u)).catch(s):s(null,c)}catch(c){s(c)}return}return l(e,i,s)}prepareLoading(e,i){let n=arguments.length>2&&arguments[2]!==void 0?arguments[2]:{},r=arguments.length>3?arguments[3]:void 0;if(!this.backend)return this.logger.warn("No backend was added via i18next.use. Will not load resources."),r&&r();typeof e=="string"&&(e=this.languageUtils.toResolveHierarchy(e)),typeof i=="string"&&(i=[i]);const o=this.queueLoad(e,i,n,r);if(!o.toLoad.length)return o.pending.length||r(),null;o.toLoad.forEach(a=>{this.loadOne(a)})}load(e,i,n){this.prepareLoading(e,i,{},n)}reload(e,i,n){this.prepareLoading(e,i,{reload:!0},n)}loadOne(e){let i=arguments.length>1&&arguments[1]!==void 0?arguments[1]:"";const n=e.split("|"),r=n[0],o=n[1];this.read(r,o,"read",void 0,void 0,(a,s)=>{a&&this.logger.warn(`${i}loading namespace ${o} for language ${r} failed`,a),!a&&s&&this.logger.log(`${i}loaded namespace ${o} for language ${r}`,s),this.loaded(e,a,s)})}saveMissing(e,i,n,r,o){let a=arguments.length>5&&arguments[5]!==void 0?arguments[5]:{},s=arguments.length>6&&arguments[6]!==void 0?arguments[6]:()=>{};if(this.services.utils&&this.services.utils.hasLoadedNamespace&&!this.services.utils.hasLoadedNamespace(i)){this.logger.warn(`did not save key "${n}" as the namespace "${i}" was not yet loaded`,"This means something IS WRONG in your setup. You access the t function before i18next.init / i18next.loadNamespace / i18next.changeLanguage was done. Wait for the callback or Promise to resolve before accessing it!!!");return}if(!(n==null||n==="")){if(this.backend&&this.backend.create){const l={...a,isUpdate:o},c=this.backend.create.bind(this.backend);if(c.length<6)try{let u;c.length===5?u=c(e,i,n,r,l):u=c(e,i,n,r),u&&typeof u.then=="function"?u.then(d=>s(null,d)).catch(s):s(null,u)}catch(u){s(u)}else c(e,i,n,r,s,l)}!e||!e[0]||this.store.addResource(e[0],i,n,r)}}}function fs(){return{debug:!1,initImmediate:!0,ns:["translation"],defaultNS:["translation"],fallbackLng:["dev"],fallbackNS:!1,supportedLngs:!1,nonExplicitSupportedLngs:!1,load:"all",preload:!1,simplifyPluralSuffix:!0,keySeparator:".",nsSeparator:":",pluralSeparator:"_",contextSeparator:"_",partialBundledLanguages:!1,saveMissing:!1,updateMissing:!1,saveMissingTo:"fallback",saveMissingPlurals:!0,missingKeyHandler:!1,missingInterpolationHandler:!1,postProcess:!1,postProcessPassResolved:!1,returnNull:!1,returnEmptyString:!0,returnObjects:!1,joinArrays:!1,returnedObjectHandler:!1,parseMissingKeyHandler:!1,appendNamespaceToMissingKey:!1,appendNamespaceToCIMode:!1,overloadTranslationOptionHandler:function(e){let i={};if(typeof e[1]=="object"&&(i=e[1]),typeof e[1]=="string"&&(i.defaultValue=e[1]),typeof e[2]=="string"&&(i.tDescription=e[2]),typeof e[2]=="object"||typeof e[3]=="object"){const n=e[3]||e[2];Object.keys(n).forEach(r=>{i[r]=n[r]})}return i},interpolation:{escapeValue:!0,format:t=>t,prefix:"{{",suffix:"}}",formatSeparator:",",unescapePrefix:"-",nestingPrefix:"$t(",nestingSuffix:")",nestingOptionsSeparator:",",maxReplaces:1e3,skipOnVariables:!0}}}function ms(t){return typeof t.ns=="string"&&(t.ns=[t.ns]),typeof t.fallbackLng=="string"&&(t.fallbackLng=[t.fallbackLng]),typeof t.fallbackNS=="string"&&(t.fallbackNS=[t.fallbackNS]),t.supportedLngs&&t.supportedLngs.indexOf("cimode")<0&&(t.supportedLngs=t.supportedLngs.concat(["cimode"])),t}function Oi(){}function Dm(t){Object.getOwnPropertyNames(Object.getPrototypeOf(t)).forEach(i=>{typeof t[i]=="function"&&(t[i]=t[i].bind(t))})}class di extends Jn{constructor(){let e=arguments.length>0&&arguments[0]!==void 0?arguments[0]:{},i=arguments.length>1?arguments[1]:void 0;if(super(),this.options=ms(e),this.services={},this.logger=ve,this.modules={external:[]},Dm(this),i&&!this.isInitialized&&!e.isClone){if(!this.options.initImmediate)return this.init(e,i),this;setTimeout(()=>{this.init(e,i)},0)}}init(){var e=this;let i=arguments.length>0&&arguments[0]!==void 0?arguments[0]:{},n=arguments.length>1?arguments[1]:void 0;typeof i=="function"&&(n=i,i={}),!i.defaultNS&&i.defaultNS!==!1&&i.ns&&(typeof i.ns=="string"?i.defaultNS=i.ns:i.ns.indexOf("translation")<0&&(i.defaultNS=i.ns[0]));const r=fs();this.options={...r,...this.options,...ms(i)},this.options.compatibilityAPI!=="v1"&&(this.options.interpolation={...r.interpolation,...this.options.interpolation}),i.keySeparator!==void 0&&(this.options.userDefinedKeySeparator=i.keySeparator),i.nsSeparator!==void 0&&(this.options.userDefinedNsSeparator=i.nsSeparator);function o(u){return u?typeof u=="function"?new u:u:null}if(!this.options.isClone){this.modules.logger?ve.init(o(this.modules.logger),this.options):ve.init(null,this.options);let u;this.modules.formatter?u=this.modules.formatter:typeof Intl<"u"&&(u=Fm);const d=new ds(this.options);this.store=new cs(this.options.resources,this.options);const p=this.services;p.logger=ve,p.resourceStore=this.store,p.languageUtils=d,p.pluralResolver=new Im(d,{prepend:this.options.pluralSeparator,compatibilityJSON:this.options.compatibilityJSON,simplifyPluralSuffix:this.options.simplifyPluralSuffix}),u&&(!this.options.interpolation.format||this.options.interpolation.format===r.interpolation.format)&&(p.formatter=o(u),p.formatter.init(p,this.options),this.options.interpolation.format=p.formatter.format.bind(p.formatter)),p.interpolator=new Hm(this.options),p.utils={hasLoadedNamespace:this.hasLoadedNamespace.bind(this)},p.backendConnector=new Vm(o(this.modules.backend),p.resourceStore,p,this.options),p.backendConnector.on("*",function(h){for(var f=arguments.length,m=new Array(f>1?f-1:0),b=1;b<f;b++)m[b-1]=arguments[b];e.emit(h,...m)}),this.modules.languageDetector&&(p.languageDetector=o(this.modules.languageDetector),p.languageDetector.init&&p.languageDetector.init(p,this.options.detection,this.options)),this.modules.i18nFormat&&(p.i18nFormat=o(this.modules.i18nFormat),p.i18nFormat.init&&p.i18nFormat.init(this)),this.translator=new kn(this.services,this.options),this.translator.on("*",function(h){for(var f=arguments.length,m=new Array(f>1?f-1:0),b=1;b<f;b++)m[b-1]=arguments[b];e.emit(h,...m)}),this.modules.external.forEach(h=>{h.init&&h.init(this)})}if(this.format=this.options.interpolation.format,n||(n=Oi),this.options.fallbackLng&&!this.services.languageDetector&&!this.options.lng){const u=this.services.languageUtils.getFallbackCodes(this.options.fallbackLng);u.length>0&&u[0]!=="dev"&&(this.options.lng=u[0])}!this.services.languageDetector&&!this.options.lng&&this.logger.warn("init: no languageDetector is used and no lng is defined"),["getResource","hasResourceBundle","getResourceBundle","getDataByLanguage"].forEach(u=>{this[u]=function(){return e.store[u](...arguments)}}),["addResource","addResources","addResourceBundle","removeResourceBundle"].forEach(u=>{this[u]=function(){return e.store[u](...arguments),e}});const l=Tt(),c=()=>{const u=(d,p)=>{this.isInitialized&&!this.initializedStoreOnce&&this.logger.warn("init: i18next is already initialized. You should call init just once!"),this.isInitialized=!0,this.options.isClone||this.logger.log("initialized",this.options),this.emit("initialized",this.options),l.resolve(p),n(d,p)};if(this.languages&&this.options.compatibilityAPI!=="v1"&&!this.isInitialized)return u(null,this.t.bind(this));this.changeLanguage(this.options.lng,u)};return this.options.resources||!this.options.initImmediate?c():setTimeout(c,0),l}loadResources(e){let n=arguments.length>1&&arguments[1]!==void 0?arguments[1]:Oi;const r=typeof e=="string"?e:this.language;if(typeof e=="function"&&(n=e),!this.options.resources||this.options.partialBundledLanguages){if(r&&r.toLowerCase()==="cimode"&&(!this.options.preload||this.options.preload.length===0))return n();const o=[],a=s=>{if(!s||s==="cimode")return;this.services.languageUtils.toResolveHierarchy(s).forEach(c=>{c!=="cimode"&&o.indexOf(c)<0&&o.push(c)})};r?a(r):this.services.languageUtils.getFallbackCodes(this.options.fallbackLng).forEach(l=>a(l)),this.options.preload&&this.options.preload.forEach(s=>a(s)),this.services.backendConnector.load(o,this.options.ns,s=>{!s&&!this.resolvedLanguage&&this.language&&this.setResolvedLanguage(this.language),n(s)})}else n(null)}reloadResources(e,i,n){const r=Tt();return e||(e=this.languages),i||(i=this.options.ns),n||(n=Oi),this.services.backendConnector.reload(e,i,o=>{r.resolve(),n(o)}),r}use(e){if(!e)throw new Error("You are passing an undefined module! Please check the object you are passing to i18next.use()");if(!e.type)throw new Error("You are passing a wrong module! Please check the object you are passing to i18next.use()");return e.type==="backend"&&(this.modules.backend=e),(e.type==="logger"||e.log&&e.warn&&e.error)&&(this.modules.logger=e),e.type==="languageDetector"&&(this.modules.languageDetector=e),e.type==="i18nFormat"&&(this.modules.i18nFormat=e),e.type==="postProcessor"&&Rc.addPostProcessor(e),e.type==="formatter"&&(this.modules.formatter=e),e.type==="3rdParty"&&this.modules.external.push(e),this}setResolvedLanguage(e){if(!(!e||!this.languages)&&!(["cimode","dev"].indexOf(e)>-1))for(let i=0;i<this.languages.length;i++){const n=this.languages[i];if(!(["cimode","dev"].indexOf(n)>-1)&&this.store.hasLanguageSomeTranslations(n)){this.resolvedLanguage=n;break}}}changeLanguage(e,i){var n=this;this.isLanguageChangingTo=e;const r=Tt();this.emit("languageChanging",e);const o=l=>{this.language=l,this.languages=this.services.languageUtils.toResolveHierarchy(l),this.resolvedLanguage=void 0,this.setResolvedLanguage(l)},a=(l,c)=>{c?(o(c),this.translator.changeLanguage(c),this.isLanguageChangingTo=void 0,this.emit("languageChanged",c),this.logger.log("languageChanged",c)):this.isLanguageChangingTo=void 0,r.resolve(function(){return n.t(...arguments)}),i&&i(l,function(){return n.t(...arguments)})},s=l=>{!e&&!l&&this.services.languageDetector&&(l=[]);const c=typeof l=="string"?l:this.services.languageUtils.getBestMatchFromCodes(l);c&&(this.language||o(c),this.translator.language||this.translator.changeLanguage(c),this.services.languageDetector&&this.services.languageDetector.cacheUserLanguage&&this.services.languageDetector.cacheUserLanguage(c)),this.loadResources(c,u=>{a(u,c)})};return!e&&this.services.languageDetector&&!this.services.languageDetector.async?s(this.services.languageDetector.detect()):!e&&this.services.languageDetector&&this.services.languageDetector.async?this.services.languageDetector.detect.length===0?this.services.languageDetector.detect().then(s):this.services.languageDetector.detect(s):s(e),r}getFixedT(e,i,n){var r=this;const o=function(a,s){let l;if(typeof s!="object"){for(var c=arguments.length,u=new Array(c>2?c-2:0),d=2;d<c;d++)u[d-2]=arguments[d];l=r.options.overloadTranslationOptionHandler([a,s].concat(u))}else l={...s};l.lng=l.lng||o.lng,l.lngs=l.lngs||o.lngs,l.ns=l.ns||o.ns,l.keyPrefix=l.keyPrefix||n||o.keyPrefix;const p=r.options.keySeparator||".";let h;return l.keyPrefix&&Array.isArray(a)?h=a.map(f=>`${l.keyPrefix}${p}${f}`):h=l.keyPrefix?`${l.keyPrefix}${p}${a}`:a,r.t(h,l)};return typeof e=="string"?o.lng=e:o.lngs=e,o.ns=i,o.keyPrefix=n,o}t(){return this.translator&&this.translator.translate(...arguments)}exists(){return this.translator&&this.translator.exists(...arguments)}setDefaultNamespace(e){this.options.defaultNS=e}hasLoadedNamespace(e){let i=arguments.length>1&&arguments[1]!==void 0?arguments[1]:{};if(!this.isInitialized)return this.logger.warn("hasLoadedNamespace: i18next was not initialized",this.languages),!1;if(!this.languages||!this.languages.length)return this.logger.warn("hasLoadedNamespace: i18n.languages were undefined or empty",this.languages),!1;const n=i.lng||this.resolvedLanguage||this.languages[0],r=this.options?this.options.fallbackLng:!1,o=this.languages[this.languages.length-1];if(n.toLowerCase()==="cimode")return!0;const a=(s,l)=>{const c=this.services.backendConnector.state[`${s}|${l}`];return c===-1||c===2};if(i.precheck){const s=i.precheck(this,a);if(s!==void 0)return s}return!!(this.hasResourceBundle(n,e)||!this.services.backendConnector.backend||this.options.resources&&!this.options.partialBundledLanguages||a(n,e)&&(!r||a(o,e)))}loadNamespaces(e,i){const n=Tt();return this.options.ns?(typeof e=="string"&&(e=[e]),e.forEach(r=>{this.options.ns.indexOf(r)<0&&this.options.ns.push(r)}),this.loadResources(r=>{n.resolve(),i&&i(r)}),n):(i&&i(),Promise.resolve())}loadLanguages(e,i){const n=Tt();typeof e=="string"&&(e=[e]);const r=this.options.preload||[],o=e.filter(a=>r.indexOf(a)<0);return o.length?(this.options.preload=r.concat(o),this.loadResources(a=>{n.resolve(),i&&i(a)}),n):(i&&i(),Promise.resolve())}dir(e){if(e||(e=this.resolvedLanguage||(this.languages&&this.languages.length>0?this.languages[0]:this.language)),!e)return"rtl";const i=["ar","shu","sqr","ssh","xaa","yhd","yud","aao","abh","abv","acm","acq","acw","acx","acy","adf","ads","aeb","aec","afb","ajp","apc","apd","arb","arq","ars","ary","arz","auz","avl","ayh","ayl","ayn","ayp","bbz","pga","he","iw","ps","pbt","pbu","pst","prp","prd","ug","ur","ydd","yds","yih","ji","yi","hbo","men","xmn","fa","jpr","peo","pes","prs","dv","sam","ckb"],n=this.services&&this.services.languageUtils||new ds(fs());return i.indexOf(n.getLanguagePartFromCode(e))>-1||e.toLowerCase().indexOf("-arab")>1?"rtl":"ltr"}static createInstance(){let e=arguments.length>0&&arguments[0]!==void 0?arguments[0]:{},i=arguments.length>1?arguments[1]:void 0;return new di(e,i)}cloneInstance(){let e=arguments.length>0&&arguments[0]!==void 0?arguments[0]:{},i=arguments.length>1&&arguments[1]!==void 0?arguments[1]:Oi;const n=e.forkResourceStore;n&&delete e.forkResourceStore;const r={...this.options,...e,isClone:!0},o=new di(r);return(e.debug!==void 0||e.prefix!==void 0)&&(o.logger=o.logger.clone(e)),["store","services","language"].forEach(s=>{o[s]=this[s]}),o.services={...this.services},o.services.utils={hasLoadedNamespace:o.hasLoadedNamespace.bind(o)},n&&(o.store=new cs(this.store.data,r),o.services.resourceStore=o.store),o.translator=new kn(o.services,r),o.translator.on("*",function(s){for(var l=arguments.length,c=new Array(l>1?l-1:0),u=1;u<l;u++)c[u-1]=arguments[u];o.emit(s,...c)}),o.init(r,i),o.translator.options=r,o.translator.backendConnector.services.utils={hasLoadedNamespace:o.hasLoadedNamespace.bind(o)},o}toJSON(){return{options:this.options,store:this.store,language:this.language,languages:this.languages,resolvedLanguage:this.resolvedLanguage}}}const R=di.createInstance();R.createInstance=di.createInstance;R.createInstance;R.dir;R.init;R.loadResources;R.reloadResources;R.use;R.changeLanguage;R.getFixedT;R.t;R.exists;R.setDefaultNamespace;R.hasLoadedNamespace;R.loadNamespaces;R.loadLanguages;const tn=[],Xn=()=>{R.isInitialized||R.init({lng:"en",resStore:{en:{}},fallbackLng:!1})},Zn=t=>t.reduce((e,i,n)=>(e.count===void 0&&typeof i=="number"&&(e.count=i),typeof i=="object"?{...e,...i}:(e[n]=i,e)),{}),I=function(t){Xn();const e=Zn([...arguments].slice(1));return delete e.count,R.t(t,e)},Fc=function(t,e){Xn();const i=Zn([...arguments].slice(2)),n=i.count;let r;delete i.count;const o=R.services.pluralResolver.getSuffix(R.language,n);return o?(i.defaultValue=e,r=t+o):(r=t,i.defaultValue=t),R.t(r,i)},qm=function(t,e){Xn();const i=Zn([...arguments].slice(2));return i.context=t,delete i.count,R.t(e,i)},Bm=function(t,e,i){Xn();const n=Zn([...arguments].slice(3)),r=n.count,o=t?"_"+t:"";let a=e;delete n.count;const s=R.services.pluralResolver.getSuffix(R.language,r);return s?(n.defaultValue=i,a=e+o+s):(a=e,n.context=t),R.t(a,n)},jm=(t,e,i)=>{R.init({resources:{}}),R.addResourceBundle(t,e,i)},Um=re(t=>class extends t{static get properties(){return{t:{type:Object,value(){return{}}}}}_filterT(e){return e.filter(i=>i!==this.t)}_(){return I.apply(null,this._filterT([...arguments]))}connectedCallback(){super.connectedCallback(),tn.push(this)}disconnectedCallback(){super.disconnectedCallback();const e=tn.indexOf(this);e>=0&&tn.splice(e,1)}gettext(){return I.apply(null,this._filterT([...arguments]))}ngettext(){return Fc.apply(null,this._filterT([...arguments]))}pgettext(){return qm.apply(null,this._filterT([...arguments]))}npgettext(){return Bm.apply(null,this._filterT([...arguments]))}});class Km extends K{static get properties(){return{compatibilityJSON:{type:String,value:"v3"},domain:{type:String,value:"messages"},interpolationPrefix:{type:String,value:"__"},interpolationSuffix:{type:String,value:"__"},language:{type:String,value:"en"},namespace:{type:String,value:"translation"},translations:{type:Object,observer(e){e!=null&&(jm(this.language,this.namespace,e),tn.forEach(i=>i.set("t",{})))}},keySeparator:{type:String,value:"."},nsSeparator:{type:String,value:":"}}}ready(){super.ready(),R.init({compatibilityJSON:this.compatibilityJSON,interpolation:{escapeValue:!1,prefix:this.interpolationPrefix,suffix:this.interpolationSuffix},keySeparator:this.keySeparator,lng:this.language,nsSeparator:this.nsSeparator,resStore:{}})}}customElements.define("cosmoz-i18next",Km);const Nc=t=>typeof t.close=="function"?t:Nc(t.parentElement),Fo=t=>class extends t{static get properties(){return{filter:{type:Object,notify:!0},values:{type:Array,value(){return[]}},headerFocused:{type:Boolean,notify:!0},min:{type:Number,value:null},max:{type:Number,value:null},limits:{type:Function},autoupdate:{type:String,value:!0},locale:{type:String,value:null},_filterInput:{type:Object,value(){return{min:null,max:null}}},_range:{type:Object,computed:"_computeRange(values.*)"},_limit:{type:Object,computed:"_computeLimit(_range, _filterInput.*, min, max)",value(){return{}}},_tooltip:{type:String,computed:"_computeTooltip(title, _filterText)"},_fromClasses:{type:String,computed:"_computeInputClasses(_filterInput.min)"},_toClasses:{type:String,computed:"_computeInputClasses(_filterInput.max)"}}}static get observers(){return["_filterInputChanged(_filterInput.*, autoupdate)","_filterChanged(filter.*)","_updateLimits(limits, headerFocused)"]}disconnectedCallback(){this._limitInputDebouncer&&this._limitInputDebouncer.cancel(),super.disconnectedCallback()}_computeInputClasses(e){return e!=null&&e!==""?"has-value":""}toNumber(e,i,n){if(e==null||e==="")return;const r=typeof e=="number"?e:Number(e);if(Number.isNaN(r))return;if(n==null||i==null)return r;const o=this.toNumber(i);return o==null?r:n(r,o)}toValue(){return this.toNumber.apply(this,arguments)}getComparableValue(e,i){if(e==null)return;let n=e;return i!=null&&(n=this.get(i,e)),this.toValue(n)}renderValue(){}getInputString(e,i=this.valuePath){const n=this.toValue(this.get(i,e));return this._toInputString(n)}_computeRange(e){const i=e.base,n=Array.isArray(i)&&i.length&&i.map(r=>this.toValue(r)).filter(r=>r!=null);return!n||n.length<1?{min:null,max:null}:n.reduce((r,o)=>({min:this.toValue(o,r.min,Math.min),max:this.toValue(o,r.max,Math.max)}),{})}_computeLimit(e,i,n,r){if(!e)return;const o=i.base,a=this.toValue(n),s=this.toValue(r),l=a??this.toValue(e.min),c=s??this.toValue(e.max);return{fromMin:l,fromMax:this.toValue(c,this._fromInputString(o.max,"max"),Math.min),toMin:this.toValue(l,this._fromInputString(o.min,"min"),Math.max),toMax:c}}_computeFilterText(e){if(e.base==null)return;const i=e.base,n=this.toValue(i.min),r=this.toValue(i.max),o=[];return n!=null&&o.push(this.renderValue(n)),o.push(" - "),r!=null&&o.push(this.renderValue(r)),o.length>1?o.join(""):void 0}_computeTooltip(e,i){return i==null?e:`${e}: ${i}`}_fromInputString(e){return this.toValue(e)}_toInputString(e){const i=this.toValue(e);return i??null}_getDefaultFilter(){return{min:null,max:null}}_filterInputChanged(e,i){const n=e.path.split(".")[1];this.__inputChangePath=n||null,i&&(this._limitInputDebouncer=Re.debounce(this._limitInputDebouncer,st.after(600),()=>{this._limitInput(),this._updateFilter()}),_o(this._limitInputDebouncer))}_clearFrom(){this.set("_filterInput.min",null),this._updateFilter()}_clearTo(){this.set("_filterInput.max",null),this._updateFilter()}_onBlur(){this._limitInput(),this._updateFilter()}_onKeyDown(e){const i=e.currentTarget,n=Array.from(i.parentElement.querySelectorAll("cosmoz-input")),r=n[n.findIndex(s=>s===i)+1],o=!r,a=n[0]===i;switch(e.keyCode){case 13:if(e.preventDefault(),!o)r.focus();else{const s=this._limitInput();this._updateFilter(),s||this._closeParent(i)}break;case 9:(o&&!e.shiftKey||a&&e.shiftKey)&&this._closeParent(i)}}_closeParent(e){Nc(e).close()}_onDropdownOpenedChanged({currentTarget:e,detail:{value:i}}){i&&setTimeout(()=>e.querySelector("cosmoz-input").focus(),100)}_limitInput(){const e=this._filterInput,i=this.__inputChangePath,n=i?this._fromInputString(this.get(i,e),i):null;if(this.__inputChangePath=null,n==null)return!1;const r=this._limit,o=i==="min"?"from":"to",a=this.get(o+"Min",r),s=this.get(o+"Max",r),l=this.toValue(n,a,Math.max),c=this.toValue(l,s,Math.min);return this.getComparableValue(n)!==this.getComparableValue(c)?(this.set(["_filterInput",i],this._toInputString(c,i)),this._limitInputDebouncer&&this._limitInputDebouncer.cancel(),!0):!1}_updateFilter(){const e=this._filterInput,i=this.filter,n=this._fromInputString(e.min,"min"),r=this._fromInputString(e.max,"max");this.getComparableValue(n)===this.getComparableValue(i,"min")&&this.getComparableValue(r)===this.getComparableValue(i,"max")||this.set("filter",{min:n,max:r})}_filterChanged(e){if(this._filterInput==null)return;const i=this._filterInput,n=e.base,r=this._fromInputString(i.min,"min"),o=this._fromInputString(i.max,"max");this.getComparableValue(r)===this.getComparableValue(n,"min")&&this.getComparableValue(o)===this.getComparableValue(n,"max")||(this.set("_filterInput",{min:this._toInputString(n.min),max:this._toInputString(n.max)}),this._limitInputDebouncer&&this._limitInputDebouncer.cancel())}hasFilter(){const e=this.filter;return e==null?!1:this.toValue(e.min)!=null||this.toValue(e.max)!=null}resetFilter(){this.filter=this._getDefaultFilter()}_updateLimits(e,i){e&&Promise.resolve(Vn(e,{active:i})).then(n=>{const{min:r,max:o}=n??{};Object.assign(this,{...r!=null?{min:r}:{},...o!=null?{max:o}:{}})})}},_i=t=>class extends t{static get template(){return q`<div id="output" style="position:relative;"></div>`}connectedCallback(){super.connectedCallback(),on(this.render(),this.$.output)}_propertiesChanged(e,i,n){super._propertiesChanged(e,i,n),requestAnimationFrame(()=>on(this.render(),this.$.output))}};class Wm extends Fo(_i(K)){static get properties(){return{currency:{type:String},autodetect:{type:Boolean,value:!1},rates:{type:Object},autoupdate:{type:String,value:!1},_filterText:{type:String,computed:"_computeFilterText(filter.*, _formatters)"}}}static get observers(){return["_valuesChanged(autodetect, currency, values)"]}render(){const e=i=>{this.headerFocused=i.detail.value,this._onDropdownOpenedChanged(i)};return _`
-		   <style>
-			   paper-dropdown-menu {
-				   --iron-icon-width: 0;
-				   display: block;
-				   text-align: right;
-			   }
+			<style>
+				paper-dropdown-menu {
+					--iron-icon-width: 0;
+					display: block;
+					text-align: right;
+				}
 
-			   .dropdown-content h3 {
-				   font-weight: 500;
-				   font-size: 13px;
-				   margin: 0;
-				   font-family: var(--cosmoz-input-font-family, var(--paper-font-subhead_-_font-family, 'Inter', sans-serif));
-			   }
+				.dropdown-content h3 {
+					font-weight: 500;
+					font-size: 13px;
+					margin: 0;
+					font-family: var(
+						--cosmoz-input-font-family,
+						var(--paper-font-subhead_-_font-family, 'Inter', sans-serif)
+					);
+				}
 
-			   .dropdown-content {
-				   padding: 10px 10px 10px 10px;
-				   min-width: 150px;
-				   text-align: left;
-				   background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
-				   border-radius: 6px;
-				   backdrop-filter: blur(16px) saturate(180%);
-				   -webkit-backdrop-filter: blur(16px) saturate(180%);
-				   box-shadow: 0 4px 24px 0 rgba(0,0,0,0.18), 0 1.5px 6px 0 rgba(0,0,0,0.1);
-			   }
+				.dropdown-content {
+					padding: 10px 10px 10px 10px;
+					min-width: 150px;
+					text-align: left;
+					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
+					border-radius: 6px;
+					backdrop-filter: blur(16px) saturate(180%);
+					-webkit-backdrop-filter: blur(16px) saturate(180%);
+					box-shadow:
+						0 4px 24px 0 rgba(0, 0, 0, 0.18),
+						0 1.5px 6px 0 rgba(0, 0, 0, 0.1);
+				}
 
-			   cosmoz-input[type="number"] {
-				   background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
-				   border-radius: 6px;
-				   border: 1px solid #d1d1d6;
-				   box-shadow: 0 1px 2px 0 rgba(60,60,60,0.04);
-				   padding: 2px 8px;
-				   margin-bottom: 6px;
-				   min-height: 28px;
-				   transition: border-color 0.2s, box-shadow 0.2s;
-			   }
+				cosmoz-input[type='number'] {
+					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
+					border-radius: 6px;
+					border: 1px solid #d1d1d6;
+					box-shadow: 0 1px 2px 0 rgba(60, 60, 60, 0.04);
+					padding: 2px 8px;
+					margin-bottom: 6px;
+					min-height: 28px;
+					transition:
+						border-color 0.2s,
+						box-shadow 0.2s;
+				}
 
-			   cosmoz-input[type="number"]:focus-within {
-				   border-color: var(--cz-accent-color, #007aff);
-				   box-shadow: 0 0 0 1px rgba(0,122,255,0.15);
-				   background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
-			   }
-		   </style>
-		   <cosmoz-clear-button
-			   @click=${()=>this.resetFilter()}
-			   ?visible=${this.hasFilter()}
-		   ></cosmoz-clear-button>
-		   <paper-dropdown-menu
-			   label=${this.title}
-			   placeholder=${J(this._filterText)}
-			   class="external-values-${this.externalValues}"
-			   title=${this._tooltip}
-			   horizontal-align="right"
-			   ?opened=${this.headerFocused}
-			   @opened-changed=${e}
-		   >
-			   <div class="dropdown-content" slot="dropdown-content">
-				   <h3 style="margin: 0;">${this.title}</h3>
-				   <cosmoz-input
-					   class=${this._fromClasses}
-					   type="number"
-					   title=${I("Minimum amount")}
-					   label=${I("Min amount")}
-					   .value=${this._filterInput?.min}
-					   @value-changed=${i=>{this.set("_filterInput.min",i.detail.value)}}
-					   @blur=${i=>this._onBlur(i)}
-					   @keydown=${i=>this._onKeyDown(i)}
-					   min=${this._toInputStringAmount(this._limit.fromMin)}
-					   max=${this._toInputStringAmount(this._limit.fromMax)}
-				   >
-					   <div slot="suffix" suffix>
-						   ${this.filter?.min?.currency}
-					   </div>
-				   </cosmoz-input>
-				   <cosmoz-input
-					   class=${this._toClasses}
-					   type="number"
-					   title=${I("Maximum amount")}
-					   label=${I("Max amount")}
-					   .value=${this._filterInput?.max}
-					   @value-changed=${i=>{this.set("_filterInput.max",i.detail.value)}}
-					   @blur=${i=>this._onBlur(i)}
-					   @keydown=${i=>this._onKeyDown(i)}
-					   min=${this._toInputStringAmount(this._limit.toMin)}
-					   max=${this._toInputStringAmount(this._limit.toMax)}
-				   >
-					   <div slot="suffix" suffix>
-						   ${this.filter?.max?.currency}
-					   </div>
-				   </cosmoz-input>
-			   </div>
-		   </paper-dropdown-menu>
-	   `}_valuesChanged(e,i,n){if(!Array.isArray(n)||n.length<1||!e&&i)return;const r=n.reduce((a,s)=>{if(s.currency){const l=s.currency;a[l]=(a[l]||0)+1}return a},{});let o=Object.keys(r)[0];Object.keys(r).reduce((a,s)=>{const l=Math.max(a,r[s]);return l===r[s]&&(o=s),l},0),this.set("currency",o)}toAmount(e,i,n){if(e==null||e==="")return;if(typeof e!="object"||e.currency==null||e.currency==="")return null;const r=this.toNumber(e.amount);if(r==null||Number.isNaN(r))return null;const o={currency:e.currency,amount:r};if(n==null||i==null)return o;const a=this.toAmount(i);if(a==null)return o;const s=this.rates||{},l=o.amount*(s[o.currency]||1),c=a.amount*(s[a.currency]||1);return this.toNumber(l,c,n)===l?o:a}toValue(){return this.toAmount.apply(this,arguments)}getComparableValue(e,i){const n=super.getComparableValue(e,i);if(n==null)return;const r=this.toNumber(n.amount),o=this.rates;return o==null?r:r*(o[n.currency]||1)}getString(e,i=this.valuePath){const n=this.toValue(this.get(i,e));return n===void 0?"":n===null?"Invalid value":this.renderValue(n)}getCurrency(e,i){const n=this.get(i,e);return n&&n.currency}getFormatter(e,i){const n=i||"",r=e+n||"",o=this._formatters=this._formatters||{};return o[r]||(o[r]=new Intl.NumberFormat(i||void 0,{style:"currency",currency:e})),o[r]}renderValue(e){const i=this.toAmount(e);return i==null?"":this.getFormatter(i.currency,this.locale).format(e.amount)}_amountValueChanged(e){const i=e.target,n=i.value,r=e.model.item,o=this.get(this.valuePath,r),a=Number(n),s={amount:a,currency:o.currency};this.set(this.valuePath,s,r),this._fireItemChangeEvent(r,this.valuePath,o,this.renderValue.bind(this))}_toInputString(e){const i=this.toValue(e);return i==null?null:this.toNumber(i.amount)}_toInputStringAmount(e){const i=this.rates;if(i==null)return this._toInputString(e);const n=this.toValue(e);return n==null?null:(this.toNumber(n.amount)*(i[n.currency]||1)/(i[this.currency]||1)).toFixed(2)}_fromInputString(e,i){const n=this.toNumber(e);if(n!=null)return this.toValue({amount:n,currency:i&&this.get(["filter",i,"currency"])||this.currency})}}customElements.define("cosmoz-omnitable-amount-range-input",Wm);const ce=(t,e,i)=>{if(t==null||t==="")return;const n=typeof t=="number"?t:Number(t);if(!Number.isNaN(n))return n},Vc=t=>{const e=ce(t);return e==null?null:e.toString()},Gm=({valuePath:t},e)=>{const i=ce(k(e,t));return Vc(i)},gs=t=>{const e=Vc(t);return e??""},dt=({valuePath:t,maximumFractionDigits:e},i)=>{if(i==null)return;let n=i;if(t!=null&&(n=k(i,t)),n=ce(n),n!=null)return e!==null?ce(n.toFixed(e)):n},Ym=fm((t,e,i)=>{const n={localeMatcher:"best fit"};return e!==null&&(n.minimumFractionDigits=e),i!==null&&(n.maximumFractionDigits=i),new Intl.NumberFormat(t||void 0,n)}),vr=({valuePath:t,locale:e,minimumFractionDigits:i,maximumFractionDigits:n},r)=>{const o=k(r,t);if(o==null)return"";const a=ce(o);return a==null?void 0:Ym(e,i,n).format(a)},Jm=(t,e)=>i=>{const n=dt(t,i);if(n==null)return!1;const r=dt({...t,valuePath:"min"},e),o=dt({...t,valuePath:"max"},e);return!(n<r||n>o)},pi=(t={},e,i,n)=>{if(e==null||e==="")return;if(typeof e!="object"||e.currency==null||e.currency==="")return null;const r=ce(e.amount);return r==null||Number.isNaN(r)?null:{currency:e.currency,amount:r}},pt=({valuePath:t,rates:e},i)=>{if(i==null)return;let n=i;if(t!=null&&(n=k(i,t)),n=pi(e,n),n==null)return;const r=ce(n.amount);return e==null?r:r*(e[n.currency]||1)},Xm=(t,e)=>i=>{const n=pt(t,i);if(n==null)return!1;const r=pt({...t,valuePath:"min"},e),o=pt({...t,valuePath:"max"},e);return!(n<r||n>o)},Ti={},Zm=(t,e)=>{const i=e||"",n=t+i||"";return Ti[n]||(Ti[n]=new Intl.NumberFormat(e||void 0,{style:"currency",currency:t})),Ti[n]},Qm=(t,e,i)=>{const n=pi(t,e);return n==null?"":Zm(n.currency,i).format(n.amount)},_r=({valuePath:t,rates:e,locale:i},n)=>{const r=pi(e,k(n,t));return r===void 0?"":r===null?"Invalid value":Qm(e,r,i)},bs=t=>t?t.amount+t.currency:"",ys=t=>{if(t==null||t==="")return;const e=t.match(/^(-?[\d]+)([\D]+?)$/iu);return!Array.isArray(e)||e.length<0?null:{amount:e[1],currency:e[2]}},e2=({valuePath:t},e)=>k(e,t)?.currency,t2=({valuePath:t},e)=>k(e,t)?.amount;class i2 extends Se(K){static get properties(){return{min:{type:Number,value:null,notify:!0},max:{type:Number,value:null,notify:!0},limits:{type:Function},locale:{type:String,value:null,notify:!0},autoupdate:{type:Boolean,value:!1,notify:!0},currency:{type:String,notify:!0},autodetect:{type:Boolean,value:!1,notify:!0},rates:{type:Object,notify:!0},width:{type:String,value:"70px"},cellClass:{type:String,value:"amount-cell align-right"},headerCellClass:{type:String,value:"amount-header-cell"}}}getConfig(e){return{limits:e.limits}}getFilterFn(e,i){const n=pt({...e,valuePath:"min"},i),r=pt({...e,valuePath:"max"},i);if(!(n==null&&r==null))return Xm(e,i)}getString(e,i){return _r(e,i)}toXlsxValue(e,i){return _r(e,i)}cellTitleFn(e,i){return _r(e,i)}getComparableValue(e,i){return pt(e,i)}serializeFilter({rates:e},i){if(i==null)return;const n=pi(e,i.min),r=pi(e,i.max);if(!(n==null&&r==null))return bs(n)+"~"+bs(r)}deserializeFilter(e,i){if(i==null||i==="")return null;const n=i.match(/^([^~]+)?~([^~]+)?/iu);return Array.isArray(n)?{min:ys(n[1]),max:ys(n[2])}:null}renderCell(e,{item:i}){return _`<span>${e.getString(e,i)}</span>`}renderEditCell(e,{item:i},n){return _`<cosmoz-input
+				cosmoz-input[type='number']:focus-within {
+					border-color: var(--cz-accent-color, #007aff);
+					box-shadow: 0 0 0 1px rgba(0, 122, 255, 0.15);
+					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
+				}
+			</style>
+			<cosmoz-clear-button
+				@click=${()=>this.resetFilter()}
+				?visible=${this.hasFilter()}
+			></cosmoz-clear-button>
+			<paper-dropdown-menu
+				label=${this.title}
+				placeholder=${J(this._filterText)}
+				class="external-values-${this.externalValues}"
+				title=${this._tooltip}
+				horizontal-align="right"
+				?opened=${this.headerFocused}
+				@opened-changed=${e}
+			>
+				<div class="dropdown-content" slot="dropdown-content">
+					<h3 style="margin: 0;">${this.title}</h3>
+					<cosmoz-input
+						class=${this._fromClasses}
+						type="number"
+						title=${I("Minimum amount")}
+						label=${I("Min amount")}
+						.value=${this._filterInput?.min}
+						@value-changed=${i=>{this.set("_filterInput.min",i.detail.value)}}
+						@blur=${i=>this._onBlur(i)}
+						@keydown=${i=>this._onKeyDown(i)}
+						min=${this._toInputStringAmount(this._limit.fromMin)}
+						max=${this._toInputStringAmount(this._limit.fromMax)}
+					>
+						<div slot="suffix" suffix>${this.filter?.min?.currency}</div>
+					</cosmoz-input>
+					<cosmoz-input
+						class=${this._toClasses}
+						type="number"
+						title=${I("Maximum amount")}
+						label=${I("Max amount")}
+						.value=${this._filterInput?.max}
+						@value-changed=${i=>{this.set("_filterInput.max",i.detail.value)}}
+						@blur=${i=>this._onBlur(i)}
+						@keydown=${i=>this._onKeyDown(i)}
+						min=${this._toInputStringAmount(this._limit.toMin)}
+						max=${this._toInputStringAmount(this._limit.toMax)}
+					>
+						<div slot="suffix" suffix>${this.filter?.max?.currency}</div>
+					</cosmoz-input>
+				</div>
+			</paper-dropdown-menu>
+		`}_valuesChanged(e,i,n){if(!Array.isArray(n)||n.length<1||!e&&i)return;const r=n.reduce((a,s)=>{if(s.currency){const l=s.currency;a[l]=(a[l]||0)+1}return a},{});let o=Object.keys(r)[0];Object.keys(r).reduce((a,s)=>{const l=Math.max(a,r[s]);return l===r[s]&&(o=s),l},0),this.set("currency",o)}toAmount(e,i,n){if(e==null||e==="")return;if(typeof e!="object"||e.currency==null||e.currency==="")return null;const r=this.toNumber(e.amount);if(r==null||Number.isNaN(r))return null;const o={currency:e.currency,amount:r};if(n==null||i==null)return o;const a=this.toAmount(i);if(a==null)return o;const s=this.rates||{},l=o.amount*(s[o.currency]||1),c=a.amount*(s[a.currency]||1);return this.toNumber(l,c,n)===l?o:a}toValue(){return this.toAmount.apply(this,arguments)}getComparableValue(e,i){const n=super.getComparableValue(e,i);if(n==null)return;const r=this.toNumber(n.amount),o=this.rates;return o==null?r:r*(o[n.currency]||1)}getString(e,i=this.valuePath){const n=this.toValue(this.get(i,e));return n===void 0?"":n===null?"Invalid value":this.renderValue(n)}getCurrency(e,i){const n=this.get(i,e);return n&&n.currency}getFormatter(e,i){const n=i||"",r=e+n||"",o=this._formatters=this._formatters||{};return o[r]||(o[r]=new Intl.NumberFormat(i||void 0,{style:"currency",currency:e})),o[r]}renderValue(e){const i=this.toAmount(e);return i==null?"":this.getFormatter(i.currency,this.locale).format(e.amount)}_amountValueChanged(e){const i=e.target,n=i.value,r=e.model.item,o=this.get(this.valuePath,r),a=Number(n),s={amount:a,currency:o.currency};this.set(this.valuePath,s,r),this._fireItemChangeEvent(r,this.valuePath,o,this.renderValue.bind(this))}_toInputString(e){const i=this.toValue(e);return i==null?null:this.toNumber(i.amount)}_toInputStringAmount(e){const i=this.rates;if(i==null)return this._toInputString(e);const n=this.toValue(e);return n==null?null:(this.toNumber(n.amount)*(i[n.currency]||1)/(i[this.currency]||1)).toFixed(2)}_fromInputString(e,i){const n=this.toNumber(e);if(n!=null)return this.toValue({amount:n,currency:i&&this.get(["filter",i,"currency"])||this.currency})}}customElements.define("cosmoz-omnitable-amount-range-input",Wm);const ce=(t,e,i)=>{if(t==null||t==="")return;const n=typeof t=="number"?t:Number(t);if(!Number.isNaN(n))return n},Vc=t=>{const e=ce(t);return e==null?null:e.toString()},Gm=({valuePath:t},e)=>{const i=ce(k(e,t));return Vc(i)},gs=t=>{const e=Vc(t);return e??""},dt=({valuePath:t,maximumFractionDigits:e},i)=>{if(i==null)return;let n=i;if(t!=null&&(n=k(i,t)),n=ce(n),n!=null)return e!==null?ce(n.toFixed(e)):n},Ym=fm((t,e,i)=>{const n={localeMatcher:"best fit"};return e!==null&&(n.minimumFractionDigits=e),i!==null&&(n.maximumFractionDigits=i),new Intl.NumberFormat(t||void 0,n)}),vr=({valuePath:t,locale:e,minimumFractionDigits:i,maximumFractionDigits:n},r)=>{const o=k(r,t);if(o==null)return"";const a=ce(o);return a==null?void 0:Ym(e,i,n).format(a)},Jm=(t,e)=>i=>{const n=dt(t,i);if(n==null)return!1;const r=dt({...t,valuePath:"min"},e),o=dt({...t,valuePath:"max"},e);return!(n<r||n>o)},pi=(t={},e,i,n)=>{if(e==null||e==="")return;if(typeof e!="object"||e.currency==null||e.currency==="")return null;const r=ce(e.amount);return r==null||Number.isNaN(r)?null:{currency:e.currency,amount:r}},pt=({valuePath:t,rates:e},i)=>{if(i==null)return;let n=i;if(t!=null&&(n=k(i,t)),n=pi(e,n),n==null)return;const r=ce(n.amount);return e==null?r:r*(e[n.currency]||1)},Xm=(t,e)=>i=>{const n=pt(t,i);if(n==null)return!1;const r=pt({...t,valuePath:"min"},e),o=pt({...t,valuePath:"max"},e);return!(n<r||n>o)},Ti={},Zm=(t,e)=>{const i=e||"",n=t+i||"";return Ti[n]||(Ti[n]=new Intl.NumberFormat(e||void 0,{style:"currency",currency:t})),Ti[n]},Qm=(t,e,i)=>{const n=pi(t,e);return n==null?"":Zm(n.currency,i).format(n.amount)},_r=({valuePath:t,rates:e,locale:i},n)=>{const r=pi(e,k(n,t));return r===void 0?"":r===null?"Invalid value":Qm(e,r,i)},bs=t=>t?t.amount+t.currency:"",ys=t=>{if(t==null||t==="")return;const e=t.match(/^(-?[\d]+)([\D]+?)$/iu);return!Array.isArray(e)||e.length<0?null:{amount:e[1],currency:e[2]}},e2=({valuePath:t},e)=>k(e,t)?.currency,t2=({valuePath:t},e)=>k(e,t)?.amount;class i2 extends Se(K){static get properties(){return{min:{type:Number,value:null,notify:!0},max:{type:Number,value:null,notify:!0},limits:{type:Function},locale:{type:String,value:null,notify:!0},autoupdate:{type:Boolean,value:!1,notify:!0},currency:{type:String,notify:!0},autodetect:{type:Boolean,value:!1,notify:!0},rates:{type:Object,notify:!0},width:{type:String,value:"70px"},cellClass:{type:String,value:"amount-cell align-right"},headerCellClass:{type:String,value:"amount-header-cell"}}}getConfig(e){return{limits:e.limits}}getFilterFn(e,i){const n=pt({...e,valuePath:"min"},i),r=pt({...e,valuePath:"max"},i);if(!(n==null&&r==null))return Xm(e,i)}getString(e,i){return _r(e,i)}toXlsxValue(e,i){return _r(e,i)}cellTitleFn(e,i){return _r(e,i)}getComparableValue(e,i){return pt(e,i)}serializeFilter({rates:e},i){if(i==null)return;const n=pi(e,i.min),r=pi(e,i.max);if(!(n==null&&r==null))return bs(n)+"~"+bs(r)}deserializeFilter(e,i){if(i==null||i==="")return null;const n=i.match(/^([^~]+)?~([^~]+)?/iu);return Array.isArray(n)?{min:ys(n[1]),max:ys(n[2])}:null}renderCell(e,{item:i}){return _`<span>${e.getString(e,i)}</span>`}renderEditCell(e,{item:i},n){return _`<cosmoz-input
 			no-label-float
 			type="number"
 			@change=${o=>n({amount:o.target.value,currency:k(i,e.valuePath)?.currency})}
@@ -4380,15 +4383,26 @@ found at http://polymer.github.io/PATENTS.txt
 						slot="suffix"
 						active
 					></paper-spinner-lite>`)}</cosmoz-autocomplete-ui
-		>`}getComparableValue(e,i){return ag(e,i)}}customElements.define("cosmoz-omnitable-column-autocomplete",sg);const Uo=(t,e)=>e.find(({value:i})=>t===i),lg=(t,e,i)=>{const n=Uo(e,i);return n?n.text:t},Ms=(t,e,i,n)=>lg(t,k(e,i),n),cg=({valuePath:t},e,i)=>Uo(k(e,t),i),ug=t=>e=>{t(i=>({...i,filter:e?.[0]?.value??null}))},dg=t=>e=>{t(i=>({...i,headerFocused:e}))},pg=t=>e=>{t(i=>({...i,query:e}))},hg=t=>e=>t(e?.[0]?.value),wr=({valuePath:t,trueLabel:e,falseLabel:i},n)=>k(n,t)?e:i,fg=({valuePath:t},e)=>i=>k(i,t)===e,Hi=Pc((t,e)=>[{text:t,value:!0},{text:e,value:!1}]),mg=({valuePath:t,trueLabel:e,falseLabel:i},n)=>t?k(n,t)?e:i:"",gg=(t,e)=>{try{return JSON.parse(e)}catch{return null}};class bg extends Se(K){static get properties(){return{trueLabel:{type:String,value:"True"},falseLabel:{type:String,value:"False"},flex:{type:String,value:"0"},cellClass:{type:String,value:"boolean-cell"}}}getString(e,i){return wr(e,i)}renderCell(e,{item:i}){return wr(e,i)}cellTitleFn(e,i){return wr(e,i)}renderEditCell(e,{item:i},n){const{trueLabel:r,falseLabel:o}=e,a=e.loading?_`<paper-spinner-lite style="width: 20px; height: 20px;" suffix slot="suffix" active></paper-spinner-lite>`:ne;return _`<cosmoz-autocomplete
-				no-label-float
-				.title=${Ms(e.title,i,e.valuePath,Hi(r,o))}
-				.source=${Hi(r,o)}
-				.textProperty=${"text"}
-				.value=${cg(e,i,Hi(r,o))}
-				.onChange=${hg(n)}
-				.limit=${1}
-			>${a}</cosmoz-autocomplete>`}renderHeader(e,{filter:i,query:n},r,o){const a=e.loading?_`<paper-spinner-lite style="width: 20px; height: 20px;" suffix slot="suffix" active></paper-spinner-lite>`:ne;return _`<cosmoz-autocomplete-ui
+		>`}getComparableValue(e,i){return ag(e,i)}}customElements.define("cosmoz-omnitable-column-autocomplete",sg);const Uo=(t,e)=>e.find(({value:i})=>t===i),lg=(t,e,i)=>{const n=Uo(e,i);return n?n.text:t},Ms=(t,e,i,n)=>lg(t,k(e,i),n),cg=({valuePath:t},e,i)=>Uo(k(e,t),i),ug=t=>e=>{t(i=>({...i,filter:e?.[0]?.value??null}))},dg=t=>e=>{t(i=>({...i,headerFocused:e}))},pg=t=>e=>{t(i=>({...i,query:e}))},hg=t=>e=>t(e?.[0]?.value),wr=({valuePath:t,trueLabel:e,falseLabel:i},n)=>k(n,t)?e:i,fg=({valuePath:t},e)=>i=>k(i,t)===e,Hi=Pc((t,e)=>[{text:t,value:!0},{text:e,value:!1}]),mg=({valuePath:t,trueLabel:e,falseLabel:i},n)=>t?k(n,t)?e:i:"",gg=(t,e)=>{try{return JSON.parse(e)}catch{return null}};class bg extends Se(K){static get properties(){return{trueLabel:{type:String,value:"True"},falseLabel:{type:String,value:"False"},flex:{type:String,value:"0"},cellClass:{type:String,value:"boolean-cell"}}}getString(e,i){return wr(e,i)}renderCell(e,{item:i}){return wr(e,i)}cellTitleFn(e,i){return wr(e,i)}renderEditCell(e,{item:i},n){const{trueLabel:r,falseLabel:o}=e,a=e.loading?_`<paper-spinner-lite
+						style="width: 20px; height: 20px;"
+						suffix
+						slot="suffix"
+						active
+					></paper-spinner-lite>`:ne;return _`<cosmoz-autocomplete
+			no-label-float
+			.title=${Ms(e.title,i,e.valuePath,Hi(r,o))}
+			.source=${Hi(r,o)}
+			.textProperty=${"text"}
+			.value=${cg(e,i,Hi(r,o))}
+			.onChange=${hg(n)}
+			.limit=${1}
+			>${a}</cosmoz-autocomplete
+		>`}renderHeader(e,{filter:i,query:n},r,o){const a=e.loading?_`<paper-spinner-lite
+					style="width: 20px; height: 20px;"
+					suffix
+					slot="suffix"
+					active
+				></paper-spinner-lite>`:ne;return _`<cosmoz-autocomplete-ui
 			.label=${e.title}
 			.title=${Ms(e.title,i,e.valuePath,o)}
 			.source=${o}
@@ -4399,83 +4413,91 @@ found at http://polymer.github.io/PATENTS.txt
 			.onFocus=${dg(r)}
 			.onText=${pg(r)}
 			.limit=${1}
-		>${a}</cosmoz-autocomplete-ui>`}computeSource({trueLabel:e,falseLabel:i}){return Hi(e,i)}getFilterFn(e,i){if(i!=null)return fg(e,i)}toXlsxValue(e,i){return mg(e,i)}deserializeFilter(e,i){return gg(e,i)}}customElements.define("cosmoz-omnitable-column-boolean",bg);const Ko=t=>class extends Fo(t){static get properties(){return{max:{type:Date,value:null},min:{type:Date,value:null},_filterText:{type:String,computed:"_computeFilterText(filter.*, formatter)"},formatter:{type:Object,computed:"_computeFormatter(locale)"}}}toDate(e,i,n){if(e==null||e==="")return;let r=e;if(r instanceof Date||(typeof e=="string"&&(r=this.getAbsoluteISOString(r)),r=new Date(r)),Number.isNaN(r.getTime()))return null;if(n==null||i==null)return r;const o=this.toDate(i);if(o==null)return r;const a=this.getComparableValue(r),s=this.getComparableValue(o);return n(a,s)===a?r:o}toValue(){return this.toDate.apply(this,arguments)}getComparableValue(e,i){const n=super.getComparableValue(e,i);if(n!=null)return this.toNumber(n.getTime())}getString(e,i=this.valuePath,n=this.formatter){const r=this.toValue(this.get(i,e));return r===void 0?"":r===null?"Invalid Date":this.renderValue(r,n)}getAbsoluteISOString(e){return e.length===19?e+this._getTimezoneString(e):e}_getTimezoneString(e){const i=-new Date(e).getTimezoneOffset()/60;return(i<0?"-":"+")+["0",Math.abs(i)].join("").substr(-2)+":00"}renderValue(e,i=this.formatter){if(i==null)return;const n=this.toValue(e);if(n!=null)return i.format(n)}_computeFormatter(e){return new Intl.DateTimeFormat(e||void 0)}_toInputString(e){const i=this.toValue(e);return i==null?null:this._toLocalISOString(i).slice(0,10)}_dateValueChanged(e){const i=e.currentTarget,n=i.value,r=e.model.item,o=this.get(this.valuePath,r),a=this._fromInputString(n);this.set(this.valuePath,a,r),this._fireItemChangeEvent(r,this.valuePath,o,this.renderValue.bind(this))}_toLocalISOString(e){return Yn(e)}};class yg extends Ko(_i(K)){render(){return _`
-		   <style>
-			   paper-dropdown-menu {
-				   --iron-icon-width: 0;
-				   display: block;
-				   text-align: right;
-			   }
+			>${a}</cosmoz-autocomplete-ui
+		>`}computeSource({trueLabel:e,falseLabel:i}){return Hi(e,i)}getFilterFn(e,i){if(i!=null)return fg(e,i)}toXlsxValue(e,i){return mg(e,i)}deserializeFilter(e,i){return gg(e,i)}}customElements.define("cosmoz-omnitable-column-boolean",bg);const Ko=t=>class extends Fo(t){static get properties(){return{max:{type:Date,value:null},min:{type:Date,value:null},_filterText:{type:String,computed:"_computeFilterText(filter.*, formatter)"},formatter:{type:Object,computed:"_computeFormatter(locale)"}}}toDate(e,i,n){if(e==null||e==="")return;let r=e;if(r instanceof Date||(typeof e=="string"&&(r=this.getAbsoluteISOString(r)),r=new Date(r)),Number.isNaN(r.getTime()))return null;if(n==null||i==null)return r;const o=this.toDate(i);if(o==null)return r;const a=this.getComparableValue(r),s=this.getComparableValue(o);return n(a,s)===a?r:o}toValue(){return this.toDate.apply(this,arguments)}getComparableValue(e,i){const n=super.getComparableValue(e,i);if(n!=null)return this.toNumber(n.getTime())}getString(e,i=this.valuePath,n=this.formatter){const r=this.toValue(this.get(i,e));return r===void 0?"":r===null?"Invalid Date":this.renderValue(r,n)}getAbsoluteISOString(e){return e.length===19?e+this._getTimezoneString(e):e}_getTimezoneString(e){const i=-new Date(e).getTimezoneOffset()/60;return(i<0?"-":"+")+["0",Math.abs(i)].join("").substr(-2)+":00"}renderValue(e,i=this.formatter){if(i==null)return;const n=this.toValue(e);if(n!=null)return i.format(n)}_computeFormatter(e){return new Intl.DateTimeFormat(e||void 0)}_toInputString(e){const i=this.toValue(e);return i==null?null:this._toLocalISOString(i).slice(0,10)}_dateValueChanged(e){const i=e.currentTarget,n=i.value,r=e.model.item,o=this.get(this.valuePath,r),a=this._fromInputString(n);this.set(this.valuePath,a,r),this._fireItemChangeEvent(r,this.valuePath,o,this.renderValue.bind(this))}_toLocalISOString(e){return Yn(e)}};class yg extends Ko(_i(K)){render(){return _`
+			<style>
+				paper-dropdown-menu {
+					--iron-icon-width: 0;
+					display: block;
+					text-align: right;
+				}
 
-			   .dropdown-content h3 {
-				   font-weight: 500;
-				   font-size: 13px;
-				   margin: 0;
-				   font-family: var(--cosmoz-input-font-family, var(--paper-font-subhead_-_font-family, 'Inter', sans-serif));
-			   }
+				.dropdown-content h3 {
+					font-weight: 500;
+					font-size: 13px;
+					margin: 0;
+					font-family: var(
+						--cosmoz-input-font-family,
+						var(--paper-font-subhead_-_font-family, 'Inter', sans-serif)
+					);
+				}
 
-			   .dropdown-content {
-				   padding: 10px 10px 10px 10px;
-				   min-width: 120px;
-				   text-align: left;
-				   background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
-				   border-radius: 6px;
-				   backdrop-filter: blur(16px) saturate(180%);
-				   -webkit-backdrop-filter: blur(16px) saturate(180%);
-				   box-shadow: 0 4px 24px 0 rgba(0,0,0,0.18), 0 1.5px 6px 0 rgba(0,0,0,0.1);
-			   }
+				.dropdown-content {
+					padding: 10px 10px 10px 10px;
+					min-width: 120px;
+					text-align: left;
+					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
+					border-radius: 6px;
+					backdrop-filter: blur(16px) saturate(180%);
+					-webkit-backdrop-filter: blur(16px) saturate(180%);
+					box-shadow:
+						0 4px 24px 0 rgba(0, 0, 0, 0.18),
+						0 1.5px 6px 0 rgba(0, 0, 0, 0.1);
+				}
 
-			   cosmoz-input[type="date"] {
-				   background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
-				   border-radius: 6px;
-				   border: 1px solid #d1d1d6;
-				   box-shadow: 0 1px 2px 0 rgba(60,60,60,0.04);
-				   padding: 2px 8px;
-				   margin-bottom: 6px;
-				   min-height: 28px;
-				   transition: border-color 0.2s, box-shadow 0.2s;
-			   }
+				cosmoz-input[type='date'] {
+					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
+					border-radius: 6px;
+					border: 1px solid #d1d1d6;
+					box-shadow: 0 1px 2px 0 rgba(60, 60, 60, 0.04);
+					padding: 2px 8px;
+					margin-bottom: 6px;
+					min-height: 28px;
+					transition:
+						border-color 0.2s,
+						box-shadow 0.2s;
+				}
 
-			   cosmoz-input[type="date"]:focus-within {
-				   border-color: var(--cz-accent-color, #007aff);
-				   box-shadow: 0 0 0 1px rgba(0,122,255,0.15);
-				   background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
-			   }
-		   </style>
-		   <cosmoz-clear-button
-			   @click=${()=>this.resetFilter()}
-			   ?visible=${this.hasFilter()}
-		   ></cosmoz-clear-button>
-		   <paper-dropdown-menu
-			   label=${this.title}
-			   placeholder=${J(this._filterText)}
-			   class="external-values-${this.externalValues}"
-			   title=${this._tooltip}
-			   horizontal-align="right"
-			   ?opened=${this.headerFocused}
-			   @opened-changed=${e=>{this.headerFocused=e.detail.value}}
-		   >
-			   <div class="dropdown-content" slot="dropdown-content">
-				   <h3 style="margin: 0;">${this.title}</h3>
-				   <cosmoz-input
-					   type="date"
-					   label=${I("From date")}
-					   min=${this._toInputString(this._limit.fromMin)}
-					   max=${this._toInputString(this._limit.fromMax)}
-					   .value=${this._filterInput?.min}
-					   @value-changed=${e=>this.set("_filterInput.min",e.detail.value)}
-				   ></cosmoz-input>
-				   <cosmoz-input
-					   type="date"
-					   label=${I("Until date")}
-					   min=${this._toInputString(this._limit.toMin)}
-					   max=${this._toInputString(this._limit.toMax)}
-					   .value=${this._filterInput?.max}
-					   @value-changed=${e=>this.set("_filterInput.max",e.detail.value)}
-				   ></cosmoz-input>
-			   </div>
-		   </paper-dropdown-menu>
-	   `}_fromInputString(e,i){const n=this.toDate(e);if(n!=null)return i==="min"&&n.setHours(0,0,0,0),i==="max"&&n.setHours(23,59,59),n}_filterInputChanged(e,i){const n=e.path.split(".")[1],r=n&&e.value;if(r&&r.match(/^0+/u)){this._limitInputDebouncer.cancel();return}super._filterInputChanged(e,i)}}customElements.define("cosmoz-omnitable-date-range-input",yg);const vg=t=>{const e=-new Date(t).getTimezoneOffset()/60;return(e<0?"-":"+")+["0",Math.abs(e)].join("").substr(-2)+":00"},Wo=t=>t.length===19?t+vg(t):t,Jc=t=>{if(t==null||t==="")return;let e=t;return!(e instanceof Date)&&(typeof t=="string"&&(e=Wo(e)),e=cf(e),!e)||Number.isNaN(e.getTime())?null:e},Me=({valuePath:t},e)=>{if(e==null)return;let i=e;if(t!=null&&(i=k(e,t)),i=Jc(i),i!=null)return ce(i.getTime())},Q=(t,e,i)=>{const n=Jc(t);return n??null},Go=(t,e)=>{if(e==null)return;const i=Q(t);if(i!=null)return e.format(i)},Ri={},_g=t=>{const e=t||"";return Ri[e]||(Ri[e]=new Intl.DateTimeFormat(t||void 0)),Ri[e]},Cr=({valuePath:t,locale:e},i)=>{let n=k(i,t);return n===void 0?"":(n=Q(n),n===null?"Invalid Date":Go(n,_g(e)))},Xc=t=>{const e=Q(t);return e==null?null:Yn(e).slice(0,10)},xg=({valuePath:t},e)=>Xc(k(e,t)),Zc=(t,e)=>{const i=Q(t);if(i!=null)return i},ks=t=>{const e=Xc(t);return e??""},wg=({valuePath:t},e)=>{if(!t)return"";const i=Q(k(e,t));if(!i)return"";const n=Q(Yn(i));return n?(n.setHours(0,0,0,0),n):""},Qc=(t,e)=>i=>{const n=Me(t,i);if(n==null)return!1;const r=Me({...t,valuePath:"min"},e),o=Me({...t,valuePath:"max"},e);return!(n<r||n>o)};class Cg extends Se(K){static get properties(){return{min:{type:Number,value:null,notify:!0},max:{type:Number,value:null,notify:!0},limits:{type:Function},locale:{type:String,value:null,notify:!0},headerCellClass:{type:String,value:"date-header-cell"},width:{type:String,value:"100px"},minWidth:{type:String,value:"82px"},flex:{type:String,value:"0"}}}getConfig(e){return{limits:e.limits}}getFilterFn(e,i){const n=Me({...e,valuePath:"min"},i),r=Me({...e,valuePath:"max"},i);if(!(n==null&&r==null))return Qc(e,i)}getString(e,i){return Cr(e,i)}toXlsxValue(e,i){return wg(e,i)}cellTitleFn(e,i){return Cr(e,i)}getComparableValue(e,i){return Me(e,i)}serializeFilter(e,i){if(i==null)return;const n=Q(i.min),r=Q(i.max);if(!(n==null&&r==null))return ks(n)+"~"+ks(r)}deserializeFilter(e,i){if(i==null||i==="")return null;const n=i.match(/^([^~]+)?~([^~]+)?/iu);return Array.isArray(n)?{min:Q(n[1]),max:Q(n[2])}:null}renderCell(e,{item:i}){return _`<div class="omnitable-cell-date">
+				cosmoz-input[type='date']:focus-within {
+					border-color: var(--cz-accent-color, #007aff);
+					box-shadow: 0 0 0 1px rgba(0, 122, 255, 0.15);
+					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
+				}
+			</style>
+			<cosmoz-clear-button
+				@click=${()=>this.resetFilter()}
+				?visible=${this.hasFilter()}
+			></cosmoz-clear-button>
+			<paper-dropdown-menu
+				label=${this.title}
+				placeholder=${J(this._filterText)}
+				class="external-values-${this.externalValues}"
+				title=${this._tooltip}
+				horizontal-align="right"
+				?opened=${this.headerFocused}
+				@opened-changed=${e=>{this.headerFocused=e.detail.value}}
+			>
+				<div class="dropdown-content" slot="dropdown-content">
+					<h3 style="margin: 0;">${this.title}</h3>
+					<cosmoz-input
+						type="date"
+						label=${I("From date")}
+						min=${this._toInputString(this._limit.fromMin)}
+						max=${this._toInputString(this._limit.fromMax)}
+						.value=${this._filterInput?.min}
+						@value-changed=${e=>this.set("_filterInput.min",e.detail.value)}
+					></cosmoz-input>
+					<cosmoz-input
+						type="date"
+						label=${I("Until date")}
+						min=${this._toInputString(this._limit.toMin)}
+						max=${this._toInputString(this._limit.toMax)}
+						.value=${this._filterInput?.max}
+						@value-changed=${e=>this.set("_filterInput.max",e.detail.value)}
+					></cosmoz-input>
+				</div>
+			</paper-dropdown-menu>
+		`}_fromInputString(e,i){const n=this.toDate(e);if(n!=null)return i==="min"&&n.setHours(0,0,0,0),i==="max"&&n.setHours(23,59,59),n}_filterInputChanged(e,i){const n=e.path.split(".")[1],r=n&&e.value;if(r&&r.match(/^0+/u)){this._limitInputDebouncer.cancel();return}super._filterInputChanged(e,i)}}customElements.define("cosmoz-omnitable-date-range-input",yg);const vg=t=>{const e=-new Date(t).getTimezoneOffset()/60;return(e<0?"-":"+")+["0",Math.abs(e)].join("").substr(-2)+":00"},Wo=t=>t.length===19?t+vg(t):t,Jc=t=>{if(t==null||t==="")return;let e=t;return!(e instanceof Date)&&(typeof t=="string"&&(e=Wo(e)),e=cf(e),!e)||Number.isNaN(e.getTime())?null:e},Me=({valuePath:t},e)=>{if(e==null)return;let i=e;if(t!=null&&(i=k(e,t)),i=Jc(i),i!=null)return ce(i.getTime())},Q=(t,e,i)=>{const n=Jc(t);return n??null},Go=(t,e)=>{if(e==null)return;const i=Q(t);if(i!=null)return e.format(i)},Ri={},_g=t=>{const e=t||"";return Ri[e]||(Ri[e]=new Intl.DateTimeFormat(t||void 0)),Ri[e]},Cr=({valuePath:t,locale:e},i)=>{let n=k(i,t);return n===void 0?"":(n=Q(n),n===null?"Invalid Date":Go(n,_g(e)))},Xc=t=>{const e=Q(t);return e==null?null:Yn(e).slice(0,10)},xg=({valuePath:t},e)=>Xc(k(e,t)),Zc=(t,e)=>{const i=Q(t);if(i!=null)return i},ks=t=>{const e=Xc(t);return e??""},wg=({valuePath:t},e)=>{if(!t)return"";const i=Q(k(e,t));if(!i)return"";const n=Q(Yn(i));return n?(n.setHours(0,0,0,0),n):""},Qc=(t,e)=>i=>{const n=Me(t,i);if(n==null)return!1;const r=Me({...t,valuePath:"min"},e),o=Me({...t,valuePath:"max"},e);return!(n<r||n>o)};class Cg extends Se(K){static get properties(){return{min:{type:Number,value:null,notify:!0},max:{type:Number,value:null,notify:!0},limits:{type:Function},locale:{type:String,value:null,notify:!0},headerCellClass:{type:String,value:"date-header-cell"},width:{type:String,value:"100px"},minWidth:{type:String,value:"82px"},flex:{type:String,value:"0"}}}getConfig(e){return{limits:e.limits}}getFilterFn(e,i){const n=Me({...e,valuePath:"min"},i),r=Me({...e,valuePath:"max"},i);if(!(n==null&&r==null))return Qc(e,i)}getString(e,i){return Cr(e,i)}toXlsxValue(e,i){return wg(e,i)}cellTitleFn(e,i){return Cr(e,i)}getComparableValue(e,i){return Me(e,i)}serializeFilter(e,i){if(i==null)return;const n=Q(i.min),r=Q(i.max);if(!(n==null&&r==null))return ks(n)+"~"+ks(r)}deserializeFilter(e,i){if(i==null||i==="")return null;const n=i.match(/^([^~]+)?~([^~]+)?/iu);return Array.isArray(n)?{min:Q(n[1]),max:Q(n[2])}:null}renderCell(e,{item:i}){return _`<div class="omnitable-cell-date">
 			${Cr(e,i)}
 		</div>`}renderEditCell(e,{item:i},n){return _`<cosmoz-input
 			no-label-float
@@ -4503,14 +4525,21 @@ found at http://polymer.github.io/PATENTS.txt
 					display: inline;
 				}
 				ul li:after {
-					content: ", ";
+					content: ', ';
 				}
 				ul li:last-child:after {
-					content: "";
+					content: '';
 				}
 			</style>
-			<ul>${r}</ul>
-		`}renderEditCell(){return"not implemented"}renderHeader(e,{filter:i,query:n},r,o){const a=e.loading?_`<paper-spinner-lite style="width: 20px; height: 20px;" suffix slot="suffix" active></paper-spinner-lite>`:ne;return _`<cosmoz-autocomplete-ui
+			<ul>
+				${r}
+			</ul>
+		`}renderEditCell(){return"not implemented"}renderHeader(e,{filter:i,query:n},r,o){const a=e.loading?_`<paper-spinner-lite
+					style="width: 20px; height: 20px;"
+					suffix
+					slot="suffix"
+					active
+				></paper-spinner-lite>`:ne;return _`<cosmoz-autocomplete-ui
 			class="external-values-${e.externalValues}"
 			.label=${e.title}
 			.source=${o}
@@ -4520,50 +4549,56 @@ found at http://polymer.github.io/PATENTS.txt
 			.onChange=${Do(r)}
 			.onFocus=${qo(r)}
 			.onText=${Bo(r)}
-		>${a}</cosmoz-autocomplete-ui>
-	`}}customElements.define("cosmoz-omnitable-column-list-horizontal",Sg);window.Cosmoz=window.Cosmoz||{};class Ls extends Um(uf(af,K)){static get template(){return q`
-		<style>
-			:host {
-				display: block;
-			}
+			>${a}</cosmoz-autocomplete-ui
+		> `}}customElements.define("cosmoz-omnitable-column-list-horizontal",Sg);window.Cosmoz=window.Cosmoz||{};class Ls extends Um(uf(af,K)){static get template(){return q`
+			<style>
+				:host {
+					display: block;
+				}
 
-			:host a {
-				color: var(--primary-link-color, inherit);
-			}
+				:host a {
+					color: var(--primary-link-color, inherit);
+				}
 
-			[hidden] {
-				display: none;
-			}
+				[hidden] {
+					display: none;
+				}
 
-			ul {
-				list-style-type: none;
-				margin: 0.3em 0;
-				padding-left: 0;
-			}
+				ul {
+					list-style-type: none;
+					margin: 0.3em 0;
+					padding-left: 0;
+				}
 
-			li {
-				text-overflow: ellipsis;
-				overflow: hidden;
-			}
-		</style>
+				li {
+					text-overflow: ellipsis;
+					overflow: hidden;
+				}
+			</style>
 
-		<ul hidden$="[[ isEmpty(items) ]]">
-			<li>
-				<span>[[ _firstItem(items) ]]</span>
-			</li>
-			<li class="see-more" hidden$="[[_hideExpand(items, _expanded)]]">
-				<a href="#" on-tap="_toggleExpand">[[ _('and {0} more', _othersCount, t) ]]</a>
-			</li>
-			<template is="dom-repeat" items="[[ _otherItems(items, _expanded) ]]" as="item">
+			<ul hidden$="[[ isEmpty(items) ]]">
 				<li>
-					<span class="item">[[ item ]]</span>
+					<span>[[ _firstItem(items) ]]</span>
 				</li>
-			</template>
-			<li class="see-less" hidden$="[[ _hideCollapse(items, _expanded) ]]">
-				<a href="#" on-tap="_toggleExpand">[[ _('See less', t) ]]</a>
-			</li>
-		</ul>
-`}static get is(){return"cosmoz-omnitable-column-list-data"}static get properties(){return{items:{type:Array},_expanded:{type:Boolean,value:!1},_othersCount:{type:Number,computed:"_computeOthersCount(items)"}}}static get observers(){return["_itemsLengthChanged(items.length)"]}_itemsLengthChanged(){requestAnimationFrame(()=>this.dispatchEvent(new CustomEvent("expand",{bubbles:!0})))}_firstItem(e){if(e!=null&&e.length>0)return e[0]}_hideExpand(e,i){return e!==void 0&&e.length!==null?e.length<=2||i:!0}_hideCollapse(e,i){return e!==void 0&&e.length!==null?e.length<=2||!i:!0}_otherItems(e,i){if(e!=null&&(e.length<=2||i))return e.slice(1)}_computeOthersCount(e){if(e!=null)return e.length-1}_toggleExpand(e){this._expanded=!this._expanded,e.stopPropagation(),e.preventDefault()}}customElements.define(Ls.is,Ls);class zg extends jo(Se(K)){static get properties(){return{keepOpened:{type:Boolean,value:!0},keepQuery:{type:Boolean},textual:{type:Function}}}getConfig(e){return{...super.getConfig?.(e),keepOpened:e.keepOpened,keepQuery:e.keepQuery,textual:e.textual}}renderCell({valuePath:e,textProperty:i},{item:n}){return _`<cosmoz-omnitable-column-list-data
+				<li class="see-more" hidden$="[[_hideExpand(items, _expanded)]]">
+					<a href="#" on-tap="_toggleExpand"
+						>[[ _('and {0} more', _othersCount, t) ]]</a
+					>
+				</li>
+				<template
+					is="dom-repeat"
+					items="[[ _otherItems(items, _expanded) ]]"
+					as="item"
+				>
+					<li>
+						<span class="item">[[ item ]]</span>
+					</li>
+				</template>
+				<li class="see-less" hidden$="[[ _hideCollapse(items, _expanded) ]]">
+					<a href="#" on-tap="_toggleExpand">[[ _('See less', t) ]]</a>
+				</li>
+			</ul>
+		`}static get is(){return"cosmoz-omnitable-column-list-data"}static get properties(){return{items:{type:Array},_expanded:{type:Boolean,value:!1},_othersCount:{type:Number,computed:"_computeOthersCount(items)"}}}static get observers(){return["_itemsLengthChanged(items.length)"]}_itemsLengthChanged(){requestAnimationFrame(()=>this.dispatchEvent(new CustomEvent("expand",{bubbles:!0})))}_firstItem(e){if(e!=null&&e.length>0)return e[0]}_hideExpand(e,i){return e!==void 0&&e.length!==null?e.length<=2||i:!0}_hideCollapse(e,i){return e!==void 0&&e.length!==null?e.length<=2||!i:!0}_otherItems(e,i){if(e!=null&&(e.length<=2||i))return e.slice(1)}_computeOthersCount(e){if(e!=null)return e.length-1}_toggleExpand(e){this._expanded=!this._expanded,e.stopPropagation(),e.preventDefault()}}customElements.define(Ls.is,Ls);class zg extends jo(Se(K)){static get properties(){return{keepOpened:{type:Boolean,value:!0},keepQuery:{type:Boolean},textual:{type:Function}}}getConfig(e){return{...super.getConfig?.(e),keepOpened:e.keepOpened,keepQuery:e.keepQuery,textual:e.textual}}renderCell({valuePath:e,textProperty:i},{item:n}){return _`<cosmoz-omnitable-column-list-data
 			.items=${Vo(n,e,i)}
 		></cosmoz-omnitable-column-list-data>`}renderEditCell(e,{item:i},n){const r=o=>n(o.target.value.split(/,\s*/gu));return _`<cosmoz-input
 			no-label-float
@@ -4600,40 +4635,47 @@ found at http://polymer.github.io/PATENTS.txt
 					text-align: right;
 				}
 
-			   .dropdown-content h3 {
+				.dropdown-content h3 {
 					font-weight: 500;
 					font-size: 13px;
 					margin: 0;
-					font-family: var(--cosmoz-input-font-family, var(--paper-font-subhead_-_font-family, 'Inter', sans-serif));
+					font-family: var(
+						--cosmoz-input-font-family,
+						var(--paper-font-subhead_-_font-family, 'Inter', sans-serif)
+					);
 				}
 
-			   .dropdown-content {
-				   padding: 10px 10px 10px 10px;
-				   min-width: 120px;
-				   text-align: left;
-				   background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
-				   border-radius: 6px;
-				   backdrop-filter: blur(16px) saturate(180%);
-				   -webkit-backdrop-filter: blur(16px) saturate(180%);
-				   box-shadow: 0 4px 24px 0 rgba(0,0,0,0.18), 0 1.5px 6px 0 rgba(0,0,0,0.1);
-			   }
+				.dropdown-content {
+					padding: 10px 10px 10px 10px;
+					min-width: 120px;
+					text-align: left;
+					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
+					border-radius: 6px;
+					backdrop-filter: blur(16px) saturate(180%);
+					-webkit-backdrop-filter: blur(16px) saturate(180%);
+					box-shadow:
+						0 4px 24px 0 rgba(0, 0, 0, 0.18),
+						0 1.5px 6px 0 rgba(0, 0, 0, 0.1);
+				}
 
-			   cosmoz-input[type="number"] {
-				   background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
-				   border-radius: 6px;
-				   border: 1px solid #d1d1d6;
-				   box-shadow: 0 1px 2px 0 rgba(60,60,60,0.04);
-				   padding: 2px 8px;
-				   margin-bottom: 6px;
-				   min-height: 28px;
-				   transition: border-color 0.2s, box-shadow 0.2s;
-			   }
+				cosmoz-input[type='number'] {
+					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
+					border-radius: 6px;
+					border: 1px solid #d1d1d6;
+					box-shadow: 0 1px 2px 0 rgba(60, 60, 60, 0.04);
+					padding: 2px 8px;
+					margin-bottom: 6px;
+					min-height: 28px;
+					transition:
+						border-color 0.2s,
+						box-shadow 0.2s;
+				}
 
-			   cosmoz-input[type="number"]:focus-within {
-				   border-color: var(--cz-accent-color, #007aff);
-				   box-shadow: 0 0 0 1px rgba(0,122,255,0.15);
-				   background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
-			   }
+				cosmoz-input[type='number']:focus-within {
+					border-color: var(--cz-accent-color, #007aff);
+					box-shadow: 0 0 0 1px rgba(0, 122, 255, 0.15);
+					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
+				}
 			</style>
 
 			<cosmoz-clear-button
@@ -4703,7 +4745,10 @@ found at http://polymer.github.io/PATENTS.txt
 				}
 			</style>
 
-			<cosmoz-clear-button @click=${()=>this.resetFilter()} ?visible=${this.hasFilter()}></cosmoz-clear-button>
+			<cosmoz-clear-button
+				@click=${()=>this.resetFilter()}
+				?visible=${this.hasFilter()}
+			></cosmoz-clear-button>
 			<paper-dropdown-menu
 				label=${this.title}
 				placeholder=${J(this._filterText)}
@@ -4711,9 +4756,14 @@ found at http://polymer.github.io/PATENTS.txt
 				title=${this._tooltip}
 				horizontal-align="right"
 				?opened=${this.headerFocused}
-				@opened-changed=${e=>this.set("headerFocused",e.detail.value)}>
+				@opened-changed=${e=>this.set("headerFocused",e.detail.value)}
 			>
-				<div class="dropdown-content" slot="dropdown-content" style="padding: 15px; min-width: 100px;">
+				>
+				<div
+					class="dropdown-content"
+					slot="dropdown-content"
+					style="padding: 15px; min-width: 100px;"
+				>
 					<h3 style="margin: 0;">${this.title}</h3>
 					<cosmoz-input
 						type="time"
@@ -4771,85 +4821,92 @@ found at http://polymer.github.io/PATENTS.txt
 			.max="${u}"
 		></cosmoz-input>
 	`};customElements.define("cosmoz-datetime-input",V(Hg,{observedAttributes:["date-label","time-label","min","max","step"]}));const Ni={},Rg=t=>{const e=t||"";if(Ni[e])return Ni[e];const i={year:"numeric",month:"numeric",day:"numeric",hour:"numeric",minute:"numeric"};return Ni[e]=new Intl.DateTimeFormat(t||void 0,i),Ni[e]},Vi=({valuePath:t,locale:e},i)=>{const n=Q(k(i,t));return n===void 0?"":n===null?"Invalid Date":Go(n,Rg(e))},Fg=({valuePath:t},e)=>t?k(e,t):"",Is=t=>{const e=Q(t);return e==null?"":e.toISOString().slice(0,19).replace(/:/gu,".")},Hs=t=>{if(!(t==null||t===""))return Q(t.replace(/\./gu,":")+"Z")};class Ng extends Ko(_i(K)){render(){return _`
-		   <style>
-			   paper-dropdown-menu {
-				   --iron-icon-width: 0;
-				   display: block;
-				   text-align: right;
-			   }
+			<style>
+				paper-dropdown-menu {
+					--iron-icon-width: 0;
+					display: block;
+					text-align: right;
+				}
 
-			   .dropdown-content h3 {
-				   font-weight: 500;
-				   font-size: 13px;
-				   margin: 0;
-				   font-family: var(--cosmoz-input-font-family, var(--paper-font-subhead_-_font-family, 'Inter', sans-serif));
-			   }
+				.dropdown-content h3 {
+					font-weight: 500;
+					font-size: 13px;
+					margin: 0;
+					font-family: var(
+						--cosmoz-input-font-family,
+						var(--paper-font-subhead_-_font-family, 'Inter', sans-serif)
+					);
+				}
 
-			   .dropdown-content {
-				   padding: 10px 10px 10px 10px;
-				   min-width: 120px;
-				   text-align: left;
-				   background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
-				   border-radius: 6px;
-				   backdrop-filter: blur(16px) saturate(180%);
-				   -webkit-backdrop-filter: blur(16px) saturate(180%);
-				   box-shadow: 0 4px 24px 0 rgba(0,0,0,0.18), 0 1.5px 6px 0 rgba(0,0,0,0.1);
-			   }
+				.dropdown-content {
+					padding: 10px 10px 10px 10px;
+					min-width: 120px;
+					text-align: left;
+					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
+					border-radius: 6px;
+					backdrop-filter: blur(16px) saturate(180%);
+					-webkit-backdrop-filter: blur(16px) saturate(180%);
+					box-shadow:
+						0 4px 24px 0 rgba(0, 0, 0, 0.18),
+						0 1.5px 6px 0 rgba(0, 0, 0, 0.1);
+				}
 
-			   cosmoz-datetime-input {
-				   background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
-				   border-radius: 6px;
-				   border: 1px solid #d1d1d6;
-				   box-shadow: 0 1px 2px 0 rgba(60,60,60,0.04);
-				   padding: 2px 8px;
-				   margin-bottom: 6px;
-				   min-height: 28px;
-				   transition: border-color 0.2s, box-shadow 0.2s;
-			   }
+				cosmoz-datetime-input {
+					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
+					border-radius: 6px;
+					border: 1px solid #d1d1d6;
+					box-shadow: 0 1px 2px 0 rgba(60, 60, 60, 0.04);
+					padding: 2px 8px;
+					margin-bottom: 6px;
+					min-height: 28px;
+					transition:
+						border-color 0.2s,
+						box-shadow 0.2s;
+				}
 
-			   cosmoz-datetime-input:focus-within {
-				   border-color: var(--cz-accent-color, #007aff);
-				   box-shadow: 0 0 0 1px rgba(0,122,255,0.15);
-				   background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
-			   }
-		   </style>
+				cosmoz-datetime-input:focus-within {
+					border-color: var(--cz-accent-color, #007aff);
+					box-shadow: 0 0 0 1px rgba(0, 122, 255, 0.15);
+					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
+				}
+			</style>
 
-		   <cosmoz-clear-button
-			   @click=${()=>this.resetFilter()}
-			   ?visible=${this.hasFilter()}
-		   ></cosmoz-clear-button>
-		   <paper-dropdown-menu
-			   label=${this.title}
-			   placeholder=${J(this._filterText)}
-			   class="external-values-${this.externalValues}"
-			   title=${this._tooltip}
-			   horizontal-align="right"
-			   ?opened=${this.headerFocused}
-			   @opened-changed=${e=>this.set("headerFocused",e.detail.value)}
-		   >
-			   <div class="dropdown-content" slot="dropdown-content">
-				   <h3 style="margin: 0;">${this.title}</h3>
-				   <cosmoz-datetime-input
-					   date-label=${I("From date")}
-					   time-label=${I("From time")}
-					   min=${this._toInputString(this._limit.fromMin)}
-					   max=${this._toInputString(this._limit.fromMax)}
-					   step=${this.filterStep}
-					   .value=${this._filterInput?.min}
-					   @value-changed=${e=>this.set("_filterInput.min",e.detail.value)}
-				   ></cosmoz-datetime-input>
-				   <cosmoz-datetime-input
-					   date-label=${I("To date")}
-					   time-label=${I("To time")}
-					   min=${this._toInputString(this._limit.toMin)}
-					   max=${this._toInputString(this._limit.toMax)}
-					   step=${this.filterStep}
-					   .value=${this._filterInput?.max}
-					   @value-changed=${e=>this.set("_filterInput.max",e.detail.value)}
-				   ></cosmoz-datetime-input>
-			   </div>
-		   </paper-dropdown-menu>
-	   `}_toInputString(e){const i=this.toValue(e);if(i!=null)return this._toLocalISOString(i).slice(0,19)}_computeFormatter(e){const i={year:"numeric",month:"numeric",day:"numeric",hour:"numeric",minute:"numeric"};return new Intl.DateTimeFormat(e||void 0,i)}}customElements.define("cosmoz-omnitable-datetime-range-input",Ng);class Rs extends Se(K){static get is(){return"cosmoz-omnitable-column-datetime"}static get properties(){return{min:{type:Number,value:null,notify:!0},max:{type:Number,value:null,notify:!0},limits:{type:Function},locale:{type:String,value:null,notify:!0},headerCellClass:{type:String,value:"datetime-header-cell"},width:{type:String,value:"210px"},minWidth:{type:String,value:"128px"},flex:{type:String,value:"0"},filterStep:{type:Number,value:1}}}getConfig(e){return{limits:e.limits}}getFilterFn(e,i){const n=Me({...e,valuePath:"min"},i),r=Me({...e,valuePath:"max"},i);if(!(n==null&&r==null))return Qc(e,i)}getString(e,i){return Vi(e,i)}toXlsxValue(e,i){return Fg(e,i)}cellTitleFn(e,i){return Vi(e,i)}getComparableValue(e,i){return Me(e,i)}serializeFilter(e,i){if(i==null)return;const n=Q(i.min),r=Q(i.max);if(!(n==null&&r==null))return Is(n)+"~"+Is(r)}deserializeFilter(e,i){if(i==null||i==="")return null;const n=i.match(/^([^~]+)?~([^~]+)?/iu);return Array.isArray(n)?{min:Hs(n[1]),max:Hs(n[2])}:null}renderCell(e,{item:i}){return Vi(e,i)}renderEditCell(e,{item:i},n){return _`<cosmoz-input
+			<cosmoz-clear-button
+				@click=${()=>this.resetFilter()}
+				?visible=${this.hasFilter()}
+			></cosmoz-clear-button>
+			<paper-dropdown-menu
+				label=${this.title}
+				placeholder=${J(this._filterText)}
+				class="external-values-${this.externalValues}"
+				title=${this._tooltip}
+				horizontal-align="right"
+				?opened=${this.headerFocused}
+				@opened-changed=${e=>this.set("headerFocused",e.detail.value)}
+			>
+				<div class="dropdown-content" slot="dropdown-content">
+					<h3 style="margin: 0;">${this.title}</h3>
+					<cosmoz-datetime-input
+						date-label=${I("From date")}
+						time-label=${I("From time")}
+						min=${this._toInputString(this._limit.fromMin)}
+						max=${this._toInputString(this._limit.fromMax)}
+						step=${this.filterStep}
+						.value=${this._filterInput?.min}
+						@value-changed=${e=>this.set("_filterInput.min",e.detail.value)}
+					></cosmoz-datetime-input>
+					<cosmoz-datetime-input
+						date-label=${I("To date")}
+						time-label=${I("To time")}
+						min=${this._toInputString(this._limit.toMin)}
+						max=${this._toInputString(this._limit.toMax)}
+						step=${this.filterStep}
+						.value=${this._filterInput?.max}
+						@value-changed=${e=>this.set("_filterInput.max",e.detail.value)}
+					></cosmoz-datetime-input>
+				</div>
+			</paper-dropdown-menu>
+		`}_toInputString(e){const i=this.toValue(e);if(i!=null)return this._toLocalISOString(i).slice(0,19)}_computeFormatter(e){const i={year:"numeric",month:"numeric",day:"numeric",hour:"numeric",minute:"numeric"};return new Intl.DateTimeFormat(e||void 0,i)}}customElements.define("cosmoz-omnitable-datetime-range-input",Ng);class Rs extends Se(K){static get is(){return"cosmoz-omnitable-column-datetime"}static get properties(){return{min:{type:Number,value:null,notify:!0},max:{type:Number,value:null,notify:!0},limits:{type:Function},locale:{type:String,value:null,notify:!0},headerCellClass:{type:String,value:"datetime-header-cell"},width:{type:String,value:"210px"},minWidth:{type:String,value:"128px"},flex:{type:String,value:"0"},filterStep:{type:Number,value:1}}}getConfig(e){return{limits:e.limits}}getFilterFn(e,i){const n=Me({...e,valuePath:"min"},i),r=Me({...e,valuePath:"max"},i);if(!(n==null&&r==null))return Qc(e,i)}getString(e,i){return Vi(e,i)}toXlsxValue(e,i){return Fg(e,i)}cellTitleFn(e,i){return Vi(e,i)}getComparableValue(e,i){return Me(e,i)}serializeFilter(e,i){if(i==null)return;const n=Q(i.min),r=Q(i.max);if(!(n==null&&r==null))return Is(n)+"~"+Is(r)}deserializeFilter(e,i){if(i==null||i==="")return null;const n=i.match(/^([^~]+)?~([^~]+)?/iu);return Array.isArray(n)?{min:Hs(n[1]),max:Hs(n[2])}:null}renderCell(e,{item:i}){return Vi(e,i)}renderEditCell(e,{item:i},n){return _`<cosmoz-input
 			no-label-float
 			type="text"
 			@change=${o=>n(Zc(o.target.value))}
@@ -6193,10 +6250,10 @@ ${r(a.name)}`:c}).join(`
 				${cu}
 			</button>
 		</div>`,ub=({host:t,error:e,dataIsValid:i,processedItems:n,columns:r,collapsedColumns:o,miniColumns:a,sortAndGroupOptions:s,rowPartFn:l,...c})=>{const{loading:u=!1,displayEmptyGroups:d=!1,compareItemsFn:p}=t,h=mi({shiftKey:!1,ctrlKey:!1}),f=z(g=>{const x=g.target.dataItem,v=g.target.checked;h.current.shiftKey?t.shadowRoot.querySelector("#groupedList").toggleSelectTo(x,v):h.current.ctrlKey?(g.target.checked=!0,t.shadowRoot.querySelector("#groupedList").selectOnly(x)):t.shadowRoot.querySelector("#groupedList").toggleSelect(x,v),g.preventDefault(),g.stopPropagation()},[]);$(()=>{const g=({shiftKey:x,ctrlKey:v})=>{h.current={shiftKey:x,ctrlKey:v}};return window.addEventListener("keydown",g),window.addEventListener("keyup",g),()=>{window.removeEventListener("keydown",g),window.removeEventListener("keyup",g)}},[]);const m=z(g=>{const x=g.composedPath();x.slice(0,x.indexOf(g.currentTarget)).find(w=>w.matches?.("a, .checkbox, .expand"))||t.dispatchEvent(new window.CustomEvent("omnitable-item-click",{bubbles:!0,composed:!0,detail:{item:g.currentTarget.dataItem,index:g.currentTarget.dataIndex}}))},[]),{groupOnColumn:b}=s,y=z((g,x)=>v=>xm(t,g,x,v),[]);return{...c,processedItems:n,dataIsValid:i,filterIsTooStrict:i&&n.length<1,loading:u,compareItemsFn:p,displayEmptyGroups:d,error:e,renderItem:M(()=>lb({columns:r,collapsedColumns:o,miniColumns:a,onItemClick:m,onCheckboxChange:f,dataIsValid:i,groupOnColumn:b,onItemChange:y,rowPartFn:l}),[r,o,m,f,i,b,y,l]),renderGroup:M(()=>cb({onCheckboxChange:f,dataIsValid:i,groupOnColumn:b}),[f,i,b])}},db=(t,e)=>t===e?0:t==null?-1:e==null?1:typeof t=="object"&&typeof e=="object"?t.toString()<e.toString()?-1:1:typeof t=="number"&&typeof e=="number"?t-e:typeof t=="string"&&typeof e=="string"?t<e?-1:1:typeof t=="boolean"&&typeof e=="boolean"?t?-1:1:(console.warn("unsupported sort",typeof t,t,typeof e,e),0),Er=(t,e)=>(i,n)=>db(t(i),t(n))*(e?-1:1),pb=t=>t.replace(/([a-z0-9])([A-Z])/gu,"$1-$2").toLowerCase(),Us=(t,e)=>{!t||!e||Object.entries(e).forEach(([i,n])=>{t[Oe].__ownChange=!0,t[Oe][i]=n,t[Oe].__ownChange=!1,t[Oe].dispatchEvent(new CustomEvent(`${pb(i)}-changed`,{bubbles:!0,detail:{value:n}}))})},Mr=(t,e)=>Object.assign(t,{[Tn]:e}),Yi=Symbol("unparsed"),hb=({data:t,columns:e,hashParam:i,sortAndGroupOptions:n,noLocalSort:r,noLocalFilter:o})=>{const{groupOnColumn:a,groupOnDescending:s,sortOnColumn:l,descending:c}=n,u=z(([v,w])=>{const C=e.find(({name:S})=>S===v);return C==null?[v,void 0]:[v,w.filter&&C.serializeFilter(C,w.filter)]},[e]),d=z(([v,w])=>{const C=e.find(({name:E})=>E===v);if(C==null)return[v,{[Yi]:w}];const S={filter:C.deserializeFilter(C,w)};return Us(C,S),[v,S]},[e]),[p,h]=Dt({},i,{multi:!0,suffix:"-filter--",write:u,read:d}),f=z((v,w)=>h(C=>{const S=Vn(w,C[v]);return Us(e.find(E=>E.name===v),S),{...C,[v]:{...C[v],...S}}}),[e,h]),m=M(()=>Object.values(p).map(v=>v.filter),[p]),b=M(()=>Object.fromEntries(e.map(v=>[v.name,!v.noLocalFilter&&v.getFilterFn(v,p[v.name]?.filter)]).filter(([,v])=>!!v)),[e,...m]),y=M(()=>!Array.isArray(t)||t.length===0?[]:Object.entries(b).length===0||o?t.slice():t.filter(v=>Object.values(b).every(w=>w(v))),[t,b,o]),g=M(()=>{if(!r&&!a&&l!=null&&l.sortOn!=null)return y.slice().sort(Er(v=>l.getComparableValue({...l,valuePath:l.sortOn},v),c));if(a!=null&&a.groupOn!=null){const v=y.reduce((w,C)=>{const S=a.getComparableValue({...a,valuePath:a.groupOn},C);if(S===void 0)return w;let E=w.find(F=>F.id===S);return E?(E.items.push(C),w):(E={id:S,name:S,items:[C]},[...w,E])},[]);return v.sort(Er(w=>a.getComparableValue({...a,valuePath:a.groupOn},w.items[0]),s)),!l||r?v:v.filter(w=>Array.isArray(w.items)).map(w=>(w.items.sort(Er(C=>l.getComparableValue({...l,valuePath:l.sortOn},C),c)),w))}return y},[y,a,s,l,c,r]),x=M(()=>{let v=0,w=0;const C=[];return g.forEach(S=>{if(Array.isArray(S.items)){Mr(S,w++),S.items.forEach(E=>{Mr(E,v++),C.push(E)});return}return Mr(S,v++),C.push(S)},[]),C},[g]);return $(()=>{h(v=>Object.values(v).some(C=>C[Yi]!=null)?Object.fromEntries(Object.entries(v).map(([C,S])=>S[Yi]==null?[C,S]:d([C,S[Yi]]))):v)},[d]),{processedItems:g,visibleData:x,filters:p,filterFunctions:b,setFilterState:f}},fb=t=>{const e=n=>{const r=t.data.indexOf(n);if(r<0)return null;const o=t.data.splice(r,1);if(t.data=t.data.slice(),Array.isArray(o)&&o.length>0)return o[0]},i=(n,r)=>{t.data.splice(n,1,r),t.data=t.data.slice()};return{removeItem:e,removeItems(n){const r=[];for(let o=n.length-1;o>=0;o-=1){const a=t.removeItem(n[o]);a!=null&&r.push(a)}return r},replaceItemAtIndex:i,replaceItem(n,r){const o=t.data.indexOf(n);if(o>-1)return i(o,r)},selectItem(n){t.shadowRoot.querySelector("#groupedList").select(n)},selectAll(){t.shadowRoot.querySelector("#groupedList").selectAll()},deselectAll(){t.shadowRoot.querySelector("#groupedList").deselectAll()},deselectItem(n){t.shadowRoot.querySelector("#groupedList").deselect(n)},isItemSelected(n){return t.shadowRoot.querySelector("#groupedList").isItemSelected(n)}}},mb=({host:t,visibleData:e,filters:i,...n})=>{const{setFilterState:r}=n,o=M(()=>fb(t),[]);vt(n,Object.values(n)),vt(o,Object.values(o)),$(()=>{const s=l=>r(l.detail.name,c=>({...c,...l.detail.state}));return t.addEventListener("legacy-filter-changed",s),()=>t.removeEventListener("legacy-filter-changed",s)},[]),$e("visibleData",e),$e("sortedFilteredGroupedItems",n.sortedFilteredGroupedItems),$e("selectedItems",n.selectedItems),$e("sortOn",n.sortOn),$e("descending",n.descending),$e("isMini",n.isMini);const a=M(()=>Object.fromEntries(Object.entries(i).filter(([,{filter:s}])=>s!==void 0).map(([s,{filter:l}])=>[s,l])),[i]);$e("filters",a,Object.values(a))},gb=t=>{const{hashParam:e,settingsId:i,data:n,resizeSpeedFactor:r,noLocal:o,noLocalSort:a=o,noLocalFilter:s=o,error:l,rowPartFn:c}=t,u=B0({settingsId:i,host:t}),{settings:d,setSettings:p,columns:h,resetRef:f}=u,m=a0(h,e,d,p,f),{processedItems:b,visibleData:y,filters:g,setFilterState:x,filterFunctions:v}=hb({data:n,columns:h,hashParam:e,sortAndGroupOptions:m,noLocalSort:a,noLocalFilter:s}),{isMini:w,collapsedColumns:C,miniColumns:S}=nb({host:t,columns:h,settings:d,setSettings:p,resizeSpeedFactor:r,sortAndGroupOptions:m}),E=n&&Array.isArray(n)&&n.length>0,[F,T]=U([]);return mb({host:t,visibleData:y,sortedFilteredGroupedItems:b,columns:h,filters:g,setFilterState:x,selectedItems:F,isMini:w,...m}),{header:ob({host:t,selectedItems:F,sortAndGroupOptions:m,dataIsValid:E,data:n,columns:h,filters:g,collapsedColumns:C,settings:d,filterFunctions:v,settingS:u,setFilterState:x,hideSelectAll:t.hideSelectAll===!0}),list:ub({host:t,error:l,dataIsValid:E,processedItems:b,setSelectedItems:T,columns:h,collapsedColumns:C,miniColumns:S,sortAndGroupOptions:m,rowPartFn:c}),footer:rb({host:t,selectedItems:F,columns:h})}};customElements.define("cosmoz-grouped-list-row",class extends HTMLElement{get item(){return this._item}set item(e){this._item=e,this._render()}get index(){return this._index}set index(e){this._index=e,this._render()}get renderFn(){return this._renderFn}set renderFn(e){this._renderFn=e,this._render()}_render(){this._item==null||this._index==null||this._renderFn==null||on(this._renderFn(this._item,this._index),this)}});const bb={group:Symbol("group")},nr=(t,e)=>(e.has(t)||e.set(t,{}),e.get(t)),yb=(t,e)=>!!nr(t,e).expanded,vb=(t,e)=>!!nr(t,e).folded,Qr=t=>t?t.items instanceof Array:!1,_b=t=>{if(!Array.isArray(t)||t.length===0)return;const e=Array.isArray(t[0].items);if(!t.every(n=>Array.isArray(n.items)===e))throw new Error("Data must be homogeneous.")},xb=(t,e,i)=>Array.isArray(t)?(_b(t),t.reduce((r,o)=>o.items?o.items.length?nr(o,i).folded?r.concat(o):r.concat(o,o.items.map(a=>Object.assign(a,{[bb.group]:o}))):e?r.concat(o):r:r.concat(o),[])):void 0,wb=(t,...e)=>typeof t=="function"?t(...e):t,Cb=(t,e)=>t===e,Sb=()=>{const[t,e]=U(()=>[new WeakMap]);return{setItemState:z((n,r)=>e(([o])=>{const a=nr(n,o);return Object.assign(a,wb(r,a)),[o]}),[]),state:t[0],signal:t}},zb=()=>{const{setItemState:t,state:e,signal:i}=Sb(),n=z((o,a)=>{Qr(o)&&t(o,s=>({folded:a!==void 0?a:!s.folded}))},[]),r=z((o,a)=>{Qr(o)||t(o,s=>({expanded:a!==void 0?!a:!s.expanded}))},[]);return{state:e,signal:i,toggleFold:n,toggleCollapse:r}},Ab=({initial:t,compareItemsFn:e,data:i,flatData:n})=>{const[r,o]=U(t),[a,s]=U(),l=z(g=>r.includes(g),[r]),c=z(g=>g?.items?.every(l),[l]),u=z(g=>l(g)||c(g),[l,c]),d=z(g=>{const x=g.items??[g];o(v=>[...v,...x.filter(w=>!v.includes(w))]),s(g)},[]),p=z(g=>{const x=g.items??[g];o(v=>v.filter(w=>!x.includes(w))),s(g)},[]),h=z(g=>{o(g.items?.slice()||[g]),s(g)},[]),f=z(()=>{o(i.flatMap(g=>g.items||g)),s(void 0)},[i]),m=z(()=>{o([]),s(void 0)},[]),b=z((g,x=!u(g))=>x?d(g):p(g),[u]),y=z((g,x)=>{const v=a?n.findIndex(S=>e(S,a)):-1;if(v<0)return b(g,x);const[w,C]=[v,n.indexOf(g)].sort((S,E)=>S-E);n.slice(w,C+1).forEach((S,E,F)=>{E>0&&E<F.length-1&&Qr(S)||b(S,x)}),s(g)},[n,e,b]);return $(()=>o(g=>g.length>0?n.filter(x=>g.find(v=>e(x,v))):g),[n]),{selectedItems:r,isItemSelected:l,isGroupSelected:c,isSelected:u,select:d,deselect:p,selectOnly:h,selectAll:f,deselectAll:m,toggleSelect:b,toggleSelectTo:y}},Eb={host:{position:"relative",display:"flex",flexDirection:"column"}},Mb=t=>{const{data:e,renderItem:i,renderGroup:n,displayEmptyGroups:r,compareItemsFn:o=Cb}=t,{toggleFold:a,toggleCollapse:s,state:l,signal:c}=zb(),u=M(()=>xb(e,r,l),[e,r,c]),{selectedItems:d,isItemSelected:p,isGroupSelected:h,isSelected:f,select:m,deselect:b,selectOnly:y,selectAll:g,deselectAll:x,toggleSelect:v,toggleSelectTo:w}=Ab({initial:[],compareItemsFn:o,data:e,flatData:u}),C=z((E,F)=>Array.isArray(E.items)?n(E,F,{selected:h(E,d),folded:vb(E,l),toggleSelect:T=>v(E,typeof T=="boolean"?T:void 0),toggleFold:()=>a(E)}):i(E,F,{selected:d.includes(E),expanded:yb(E,l),toggleSelect:T=>v(E,typeof T=="boolean"?T:void 0),toggleCollapse:()=>s(E)}),[i,n,d,v,c]);si(()=>Object.assign(t.style,Eb.host),[]),$e("selectedItems",d);const S={toggleFold:a,toggleCollapse:s,isItemSelected:p,isGroupSelected:h,isSelected:f,select:m,deselect:b,selectOnly:y,selectAll:g,deselectAll:x,toggleSelect:v,toggleSelectTo:w};return vt(S,Object.values(S)),{renderRow:C,flatData:u}},kb=({renderRow:t,flatData:e})=>qc({items:e,renderItem:(i,n)=>_`<cosmoz-grouped-list-row
-				.item=${i}
-				.index=${n}
-				.renderFn=${t}
-			></cosmoz-grouped-list-row>`}),Lb=t=>kb(Mb(t));customElements.define("cosmoz-grouped-list",V(Lb,{useShadowDOM:!1}));const $b=t=>window.ShadyCSS?.ApplyShim?.transformCssText?.(t)||t,Ob=t=>{const{header:e,list:i,footer:n}=gb(t);return _`
+					.item=${i}
+					.index=${n}
+					.renderFn=${t}
+				></cosmoz-grouped-list-row>`}),Lb=t=>kb(Mb(t));customElements.define("cosmoz-grouped-list",V(Lb,{useShadowDOM:!1}));const $b=t=>window.ShadyCSS?.ApplyShim?.transformCssText?.(t)||t,Ob=t=>{const{header:e,list:i,footer:n}=gb(t);return _`
 		<style>
 			${uo([],()=>$b(f0))}
 		</style>
