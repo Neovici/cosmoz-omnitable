@@ -1,3 +1,10 @@
+## [14.12.2](https://github.com/neovici/cosmoz-omnitable/compare/v14.12.1...v14.12.2) (2025-09-08)
+
+
+### Bug Fixes
+
+* cleanup ([c9fb515](https://github.com/neovici/cosmoz-omnitable/commit/c9fb5153e61316aaba7bbf6118f9b2687b70f092))
+
 ## [14.12.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.12.0...v14.12.1) (2025-09-05)
 
 
