@@ -23,12 +23,7 @@ suite('xlsx-export-omnitable', () => {
 			amount: 12.4,
 			date: new Date(2017, 7 - 1, 10),
 		},
-		{
-			id: 1,
-			'first-name': 'Mia',
-			amount: 678,
-			date: new Date(),
-		},
+		{ id: 1, 'first-name': 'Mia', amount: 678, date: new Date() },
 		{
 			id: 2,
 			'first-name': 'Selena',
@@ -124,110 +119,77 @@ suite('toXlsx range tests', () => {
 	const data = [
 		{
 			number: 432,
-			amount: {
-				currency: 'GBP',
-				amount: 2781,
-			},
+			amount: { currency: 'GBP', amount: 2781 },
 			date: new Date(Date.UTC(2020, 2, 14, 11, 48, 13)),
 			time: new Date(Date.UTC(2020, 2, 14, 11, 48, 13)),
 			datetime: new Date(Date.UTC(2020, 2, 14, 11, 48, 13)),
 		},
 		{
 			number: 7001,
-			amount: {
-				currency: 'EUR',
-				amount: 845,
-			},
+			amount: { currency: 'EUR', amount: 845 },
 			date: new Date(Date.UTC(2029, 7, 30, 1, 27, 13)),
 			time: new Date(Date.UTC(2029, 7, 30, 1, 27, 13)),
 			datetime: new Date(Date.UTC(2029, 7, 30, 1, 27, 13)),
 		},
 		{
 			number: 2405,
-			amount: {
-				currency: 'USD',
-				amount: 107,
-			},
+			amount: { currency: 'USD', amount: 107 },
 			date: new Date(Date.UTC(2018, 4, 25, 2, 31, 29)),
 			time: new Date(Date.UTC(2018, 4, 25, 2, 31, 29)),
 			datetime: new Date(Date.UTC(2018, 4, 25, 2, 31, 29)),
 		},
 		{
 			number: 108,
-			amount: {
-				currency: 'BRL',
-				amount: 4406,
-			},
+			amount: { currency: 'BRL', amount: 4406 },
 			date: new Date(Date.UTC(2017, 0, 2, 7, 25, 11)),
 			time: new Date(Date.UTC(2017, 0, 2, 7, 25, 11)),
 			datetime: new Date(Date.UTC(2017, 0, 2, 7, 25, 11)),
 		},
 		{
 			number: 857,
-			amount: {
-				currency: 'JPY',
-				amount: 341,
-			},
+			amount: { currency: 'JPY', amount: 341 },
 			date: new Date(Date.UTC(2016, 1, 27, 17, 30, 51)),
 			time: new Date(Date.UTC(2016, 1, 27, 17, 30, 51)),
 			datetime: new Date(Date.UTC(2016, 1, 27, 17, 30, 51)),
 		},
 		{
 			number: 73,
-			amount: {
-				currency: 'DKK',
-				amount: 11,
-			},
+			amount: { currency: 'DKK', amount: 11 },
 			date: new Date(Date.UTC(2013, 9, 13, 5, 7, 29)),
 			time: new Date(Date.UTC(2013, 9, 13, 5, 7, 29)),
 			datetime: new Date(Date.UTC(2013, 9, 13, 5, 7, 29)),
 		},
 		{
 			number: 5774,
-			amount: {
-				currency: 'EUR',
-				amount: 932,
-			},
+			amount: { currency: 'EUR', amount: 932 },
 			date: '2024-03-14T13:05:07',
 			time: '2024-03-14T13:05:07',
 			datetime: '2024-03-14T13:05:07',
 		},
 		{
 			number: 0,
-			amount: {
-				currency: 'AED',
-				amount: 765432,
-			},
+			amount: { currency: 'AED', amount: 765432 },
 			date: 'Thu Mar 7 2009 06:25:52 GMT+0200 (EET)', // Bucharest, Romania
 			time: 'Thu Mar 7 2009 06:25:52 GMT+0200 (EET)',
 			datetime: 'Thu Mar 7 2009 06:25:52 GMT+0200 (EET)',
 		},
 		{
 			number: 59,
-			amount: {
-				currency: 'AUD',
-				amount: -101,
-			},
+			amount: { currency: 'AUD', amount: -101 },
 			date: '2012-10-12T07:22:46Z',
 			time: '2012-10-12T07:22:46Z',
 			datetime: '2012-10-12T07:22:46Z',
 		},
 		{
 			number: -340,
-			amount: {
-				currency: 'CAD',
-				amount: -4321,
-			},
+			amount: { currency: 'CAD', amount: -4321 },
 			date: 'Tue Jan 16 2018 05:47:40 -08:00', // Vancouver Canada
 			time: 'Tue Jan 16 2018 05:47:40 -08:00',
 			datetime: 'Tue Jan 16 2018 05:47:40 -08:00',
 		},
 		{
 			number: -22,
-			amount: {
-				currency: 'EUR',
-				amount: -22,
-			},
+			amount: { currency: 'EUR', amount: -22 },
 			date: 'Tue Jan 16 2018 14:06:29 +01:00', // Lisbon, Portugal (Lisboa)
 			time: 'Tue Jan 16 2018 14:06:29 +01:00',
 			datetime: 'Tue Jan 16 2018 14:06:29 +01:00',

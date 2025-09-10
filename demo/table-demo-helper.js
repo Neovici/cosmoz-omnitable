@@ -42,7 +42,6 @@ const leftPad = (stro, leno, cho) => {
 		);
 	};
 
-/* eslint-disable-next-line max-lines-per-function */
 export const generateTableDemoData = (min, max, maxRandomString) => {
 	const groupsCount = getRandomInt(min, max),
 		data = [],
@@ -67,10 +66,7 @@ export const generateTableDemoData = (min, max, maxRandomString) => {
 				listValueCount = n % 10;
 			for (let k = 0; k < listValueCount; k += 1) {
 				listValue.push('Item ' + k);
-				objectListValue.push({
-					name: 'Item ' + k,
-					value: 'item-value-' + k,
-				});
+				objectListValue.push({ name: 'Item ' + k, value: 'item-value-' + k });
 			}
 			data.push({
 				id: n,
@@ -81,9 +77,7 @@ export const generateTableDemoData = (min, max, maxRandomString) => {
 					value: getRandomInt(0, 10000),
 					label: 'Random string ' + getRandomInt(1, maxRandomString),
 				},
-				sub: {
-					subProp: descriptions[n % descriptions.length],
-				},
+				sub: { subProp: descriptions[n % descriptions.length] },
 				randomString: 'Random string ' + getRandomInt(1, maxRandomString),
 				randomString2: 'Random string 2 ' + getRandomInt(1, maxRandomString),
 				randomString3: 'Random string 3 ' + getRandomInt(1, maxRandomString),

@@ -50,7 +50,7 @@ const computeValue = (value, source) =>
 	deserializeFilter = (column, filter) => {
 		try {
 			return JSON.parse(filter);
-		} catch (e) {
+		} catch {
 			return null;
 		}
 	};

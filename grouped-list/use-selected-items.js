@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from '@pionjs/pion';
 import { isGroup } from './utils';
 
-// eslint-disable-next-line max-lines-per-function
 export const useSelectedItems = ({
 	initial,
 	compareItemsFn,

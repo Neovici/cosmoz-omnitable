@@ -1,4 +1,3 @@
-/* eslint-disable no-return-assign */
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import '@neovici/cosmoz-datetime-input';
 import './ui-helpers/cosmoz-clear-button';
@@ -98,10 +97,7 @@ class OmnitableColumnDatetime extends columnMixin(PolymerElement) {
 			return null;
 		}
 
-		return {
-			min: fromHashString(matches[1]),
-			max: fromHashString(matches[2]),
-		};
+		return { min: fromHashString(matches[1]), max: fromHashString(matches[2]) };
 	}
 
 	renderCell(column, { item }) {
@@ -119,7 +115,6 @@ class OmnitableColumnDatetime extends columnMixin(PolymerElement) {
 		></cosmoz-input>`;
 	}
 
-	// eslint-disable-next-line max-lines-per-function
 	renderHeader(
 		{ title, min, max, limits, locale, filterStep },
 		{ filter },

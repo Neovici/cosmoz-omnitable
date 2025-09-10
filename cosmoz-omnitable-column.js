@@ -1,4 +1,3 @@
-/* eslint-disable no-return-assign */
 import '@neovici/cosmoz-input';
 import './ui-helpers/cosmoz-clear-button';
 

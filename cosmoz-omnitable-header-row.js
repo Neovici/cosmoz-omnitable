@@ -5,61 +5,50 @@ import { render } from './lib/settings/cosmoz-omnitable-sort-group';
 import { when } from 'lit-html/directives/when.js';
 import { SortAndGroupContext } from './lib/use-sort-and-group-options';
 
-const /* eslint-disable-next-line max-lines-per-function */
-	renderHeaderRow = ({
-		data,
+const renderHeaderRow = ({
+	data,
+	columns,
+	groupOnColumn,
+	filters,
+	setFilterState,
+	sortAndGroup: {
+		sortOn: on,
+		setSortOn: setOn,
+		descending,
+		setDescending,
+	} = {},
+}) =>
+	repeat(
 		columns,
-		groupOnColumn,
-		filters,
-		setFilterState,
-		sortAndGroup: {
-			sortOn: on,
-			setSortOn: setOn,
-			descending,
-			setDescending,
-		} = {},
-	}) =>
-		repeat(
-			columns,
-			(column) => column.name,
-			(column) => [
-				html`<div
-					class="cell ${column.headerCellClass} header-cell"
-					part="cell header-cell cell-${column.name} header-cell-${column.name}"
-					?hidden="${column === groupOnColumn}"
-					title="${column.title}"
-					name="${column.name}"
-				>
-					${column.renderHeader(
-						column,
-						filters[column.name] ?? {},
-						(state) => setFilterState(column.name, state),
-						column.source(column, data),
-					)}
-					${render({
-						on,
-						setOn,
-						descending,
-						setDescending,
-						column,
-					})}
-				</div>`,
-				html`<cosmoz-omnitable-resize-nub
-					.column="${column}"
-					name="${column.name}"
-				></cosmoz-omnitable-resize-nub>`,
-			],
-		);
+		(column) => column.name,
+		(column) => [
+			html`<div
+				class="cell ${column.headerCellClass} header-cell"
+				part="cell header-cell cell-${column.name} header-cell-${column.name}"
+				?hidden="${column === groupOnColumn}"
+				title="${column.title}"
+				name="${column.name}"
+			>
+				${column.renderHeader(
+					column,
+					filters[column.name] ?? {},
+					(state) => setFilterState(column.name, state),
+					column.source(column, data),
+				)}
+				${render({ on, setOn, descending, setDescending, column })}
+			</div>`,
+			html`<cosmoz-omnitable-resize-nub
+				.column="${column}"
+				name="${column.name}"
+			></cosmoz-omnitable-resize-nub>`,
+		],
+	);
 
 const HeaderRow = ({ columns, settingsConfig, hideSelectAll, ...thru }) => {
 	const sortAndGroup = useContext(SortAndGroupContext);
 	return html`
 		${when(columns, (columns) =>
-			renderHeaderRow({
-				columns,
-				sortAndGroup,
-				...thru,
-			}),
+			renderHeaderRow({ columns, sortAndGroup, ...thru }),
 		)}
 		${when(
 			!hideSelectAll,

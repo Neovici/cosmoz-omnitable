@@ -1,4 +1,3 @@
-/* eslint-disable no-return-assign */
 import { html } from 'lit-html';
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
@@ -86,10 +85,7 @@ class OmnitableColumnDate extends columnMixin(PolymerElement) {
 			return null;
 		}
 
-		return {
-			min: toDate(matches[1]),
-			max: toDate(matches[2]),
-		};
+		return { min: toDate(matches[1]), max: toDate(matches[2]) };
 	}
 
 	renderCell(column, { item }) {
