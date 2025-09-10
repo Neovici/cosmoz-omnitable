@@ -1,4 +1,3 @@
-/* eslint-disable no-return-assign */
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import '@neovici/cosmoz-input';
 
@@ -93,10 +92,7 @@ class OmnitableColumnTime extends columnMixin(PolymerElement) {
 			return null;
 		}
 
-		return {
-			min: fromHashString(matches[1]),
-			max: fromHashString(matches[2]),
-		};
+		return { min: fromHashString(matches[1]), max: fromHashString(matches[2]) };
 	}
 
 	renderCell(column, { item }) {

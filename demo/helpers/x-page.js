@@ -16,7 +16,6 @@ import { translatable } from '@neovici/cosmoz-i18next';
 import { html as lit } from 'lit-html';
 
 class XPage extends translatable(PolymerElement) {
-	/* eslint-disable-next-line max-lines-per-function */
 	static get template() {
 		return html`
 			<style>
@@ -258,23 +257,11 @@ class XPage extends translatable(PolymerElement) {
 	}
 	static get properties() {
 		return {
-			data: {
-				type: Array,
-			},
-			selectedItems: {
-				type: Array,
-			},
-			locale: {
-				type: String,
-				value: 'sv',
-			},
-			hashParam: {
-				type: String,
-			},
-			hidden: {
-				type: Number,
-				value: false,
-			},
+			data: { type: Array },
+			selectedItems: { type: Array },
+			locale: { type: String, value: 'sv' },
+			hashParam: { type: String },
+			hidden: { type: Number, value: false },
 		};
 	}
 

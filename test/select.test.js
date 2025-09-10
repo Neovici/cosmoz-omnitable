@@ -1,4 +1,4 @@
-/* eslint-disable max-lines */
+ 
 import { assert, html, nextFrame } from '@open-wc/testing';
 
 import '../demo/helpers/cosmoz-translations';

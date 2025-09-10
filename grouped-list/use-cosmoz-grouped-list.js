@@ -9,13 +9,8 @@ import { byReference, isExpanded, isFolded, prepareData } from './utils';
 import { virtualize } from '@lit-labs/virtualizer/virtualize.js';
 
 const styles = {
-		host: {
-			position: 'relative',
-			display: 'flex',
-			flexDirection: 'column',
-		},
+		host: { position: 'relative', display: 'flex', flexDirection: 'column' },
 	},
-	// eslint-disable-next-line max-lines-per-function
 	useCosmozGroupedList = (host) => {
 		const {
 				data,
@@ -44,15 +39,9 @@ const styles = {
 				deselectAll,
 				toggleSelect,
 				toggleSelectTo,
-			} = useSelectedItems({
-				initial: [],
-				compareItemsFn,
-				data,
-				flatData,
-			}),
+			} = useSelectedItems({ initial: [], compareItemsFn, data, flatData }),
 			renderRow = useCallback(
 				(item, index) =>
-					// eslint-disable-next-line no-nested-ternary
 					Array.isArray(item.items)
 						? renderGroup(item, index, {
 								selected: isGroupSelected(item, selectedItems),
@@ -97,10 +86,7 @@ const styles = {
 
 		useImperativeApi(api, Object.values(api));
 
-		return {
-			renderRow,
-			flatData,
-		};
+		return { renderRow, flatData };
 	},
 	renderCosmozGroupedList = ({ renderRow, flatData }) =>
 		virtualize({

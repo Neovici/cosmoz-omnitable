@@ -1,4 +1,3 @@
-/* eslint-disable no-return-assign */
 import '@neovici/cosmoz-input';
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import './ui-helpers/cosmoz-clear-button';
@@ -96,10 +95,7 @@ class OmnitableColumnAmount extends columnMixin(PolymerElement) {
 			return null;
 		}
 
-		return {
-			min: fromHashString(matches[1]),
-			max: fromHashString(matches[2]),
-		};
+		return { min: fromHashString(matches[1]), max: fromHashString(matches[2]) };
 	}
 
 	renderCell(column, { item }) {

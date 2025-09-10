@@ -18,7 +18,6 @@ export const getString = ({ valuePath }, item) => get(item, valuePath),
 		},
 	serializeFilter = (column, filter) =>
 		filter === '' || filter == null ? null : filter,
-	// eslint-disable-next-line max-lines-per-function
 	columnMixin = (base) =>
 		class extends base {
 			static get properties() {
