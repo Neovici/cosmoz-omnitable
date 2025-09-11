@@ -1,4 +1,4 @@
-import{f as rl,B as ln,x as _,E as _e,T as ne,m as ol,i as Mu,p as Lu,v as Ue,s as Lt,M as sr}from"./iframe-BaFSf4X-.js";import{_ as ku}from"./preload-helper-D9Z9MdNV.js";/**
+import{f as rl,B as ln,x as _,E as _e,T as ne,m as ol,i as Mu,p as Lu,v as Ue,s as Lt,M as sr}from"./iframe-BAnTbUR6.js";import{_ as ku}from"./preload-helper-D9Z9MdNV.js";/**
  * @license
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
@@ -4046,7 +4046,7 @@ found at http://polymer.github.io/PATENTS.txt
 			.onChange=${Ko(r)}
 			.onFocus=${Wo(r)}
 			.onText=${Go(r)}
-			>${B(e.loading,()=>_`<cz-spinner style="flex:none;" slot="suffix"></cz-spinner>`)}</cosmoz-autocomplete-ui
+			>${B(e.loading,()=>_`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`)}</cosmoz-autocomplete-ui
 		>`}getComparableValue(e,i){return Dg(e,i)}}customElements.define("cosmoz-omnitable-column-autocomplete",qg);const Jo=(t,e)=>e.find(({value:i})=>t===i),Bg=(t,e,i)=>{const n=Jo(e,i);return n?n.text:t},Rs=(t,e,i,n)=>Bg(t,L(e,i),n),jg=({valuePath:t},e,i)=>Jo(L(e,t),i),Ug=t=>e=>{t(i=>({...i,filter:e?.[0]?.value??null}))},Kg=t=>e=>{t(i=>({...i,headerFocused:e}))},Wg=t=>e=>{t(i=>({...i,query:e}))},Gg=t=>e=>t(e?.[0]?.value),Ar=({valuePath:t,trueLabel:e,falseLabel:i},n)=>L(n,t)?e:i,Yg=({valuePath:t},e)=>i=>L(i,t)===e,Ri=Kc((t,e)=>[{text:t,value:!0},{text:e,value:!1}]),Jg=({valuePath:t,trueLabel:e,falseLabel:i},n)=>t?L(n,t)?e:i:"",Xg=(t,e)=>{try{return JSON.parse(e)}catch{return null}};class Zg extends ze(G){static get properties(){return{trueLabel:{type:String,value:"True"},falseLabel:{type:String,value:"False"},flex:{type:String,value:"0"},cellClass:{type:String,value:"boolean-cell"}}}getString(e,i){return Ar(e,i)}renderCell(e,{item:i}){return Ar(e,i)}cellTitleFn(e,i){return Ar(e,i)}renderEditCell(e,{item:i},n){const{trueLabel:r,falseLabel:o}=e;return _`<cosmoz-autocomplete
 			no-label-float
 			.title=${Rs(e.title,i,e.valuePath,Ri(r,o))}
@@ -4055,9 +4055,11 @@ found at http://polymer.github.io/PATENTS.txt
 			.value=${jg(e,i,Ri(r,o))}
 			.onChange=${Gg(n)}
 			.limit=${1}
-			>${B(e.loading,()=>_`<div slot="suffix">
-						<cz-spinner></cz-spinner>
-					</div>`)}</cosmoz-autocomplete
+			>${B(e.loading,()=>_`
+						<div slot="suffix">
+							<cosmoz-spinner></cosmoz-spinner>
+						</div>
+				`)}</cosmoz-autocomplete
 		>`}renderHeader(e,{filter:i,query:n},r,o){return _`<cosmoz-autocomplete-ui
 			.label=${e.title}
 			.title=${Rs(e.title,i,e.valuePath,o)}
@@ -4069,7 +4071,7 @@ found at http://polymer.github.io/PATENTS.txt
 			.onFocus=${Kg(r)}
 			.onText=${Wg(r)}
 			.limit=${1}
-			>${B(e.loading,()=>_`<cz-spinner style="flex:none;" slot="suffix"></cz-spinner>`)}</cosmoz-autocomplete-ui
+			>${B(e.loading,()=>_`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`)}</cosmoz-autocomplete-ui
 		>`}computeSource({trueLabel:e,falseLabel:i}){return Ri(e,i)}getFilterFn(e,i){if(i!=null)return Yg(e,i)}toXlsxValue(e,i){return Jg(e,i)}deserializeFilter(e,i){return Xg(e,i)}}customElements.define("cosmoz-omnitable-column-boolean",Zg);const Xo=t=>class extends qo(t){static get properties(){return{max:{type:Date,value:null},min:{type:Date,value:null},_filterText:{type:String,computed:"_computeFilterText(filter.*, formatter)"},formatter:{type:Object,computed:"_computeFormatter(locale)"}}}toDate(e,i,n){if(e==null||e==="")return;let r=e;if(r instanceof Date||(typeof e=="string"&&(r=this.getAbsoluteISOString(r)),r=new Date(r)),Number.isNaN(r.getTime()))return null;if(n==null||i==null)return r;const o=this.toDate(i);if(o==null)return r;const a=this.getComparableValue(r),s=this.getComparableValue(o);return n(a,s)===a?r:o}toValue(){return this.toDate.apply(this,arguments)}getComparableValue(e,i){const n=super.getComparableValue(e,i);if(n!=null)return this.toNumber(n.getTime())}getString(e,i=this.valuePath,n=this.formatter){const r=this.toValue(this.get(i,e));return r===void 0?"":r===null?"Invalid Date":this.renderValue(r,n)}getAbsoluteISOString(e){return e.length===19?e+this._getTimezoneString(e):e}_getTimezoneString(e){const i=-new Date(e).getTimezoneOffset()/60;return(i<0?"-":"+")+["0",Math.abs(i)].join("").substr(-2)+":00"}renderValue(e,i=this.formatter){if(i==null)return;const n=this.toValue(e);if(n!=null)return i.format(n)}_computeFormatter(e){return new Intl.DateTimeFormat(e||void 0)}_toInputString(e){const i=this.toValue(e);return i==null?null:this._toLocalISOString(i).slice(0,10)}_dateValueChanged(e){const i=e.currentTarget,n=i.value,r=e.model.item,o=this.get(this.valuePath,r),a=this._fromInputString(n);this.set(this.valuePath,a,r),this._fireItemChangeEvent(r,this.valuePath,o,this.renderValue.bind(this))}_toLocalISOString(e){return Zn(e)}};class Qg extends Xo(Ci(G)){render(){return _`
 			<style>
 				paper-dropdown-menu {
@@ -4200,7 +4202,7 @@ found at http://polymer.github.io/PATENTS.txt
 			.onChange=${Ko(r)}
 			.onFocus=${Wo(r)}
 			.onText=${Go(r)}
-			>${B(e.loading,()=>_`<cz-spinner style="flex:none;" slot="suffix"></cz-spinner>`)}</cosmoz-autocomplete-ui
+			>${B(e.loading,()=>_`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`)}</cosmoz-autocomplete-ui
 		> `}}customElements.define("cosmoz-omnitable-column-list-horizontal",o0);window.Cosmoz=window.Cosmoz||{};class qs extends x2(Hm($m,G)){static get template(){return U`
 			<style>
 				:host {
@@ -4272,7 +4274,7 @@ found at http://polymer.github.io/PATENTS.txt
 			.onChange=${Ko(r)}
 			.onFocus=${Wo(r)}
 			.onText=${Go(r)}
-			>${B(e.loading,()=>_`<cz-spinner style="flex:none;" slot="suffix"></cz-spinner>`)}</cosmoz-autocomplete-ui
+			>${B(e.loading,()=>_`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`)}</cosmoz-autocomplete-ui
 		>`}}customElements.define("cosmoz-omnitable-column-list",a0);class s0 extends qo(Ci(G)){static get properties(){return{maximumFractionDigits:{type:Number,value:null},minimumFractionDigits:{type:Number,value:null},formatter:{type:Object,computed:"_computeFormatter(locale, minimumFractionDigits, maximumFractionDigits)"},autoupdate:{type:String,value:!1},_filterText:{type:String,computed:"_computeFilterText(filter.*, formatter)"}}}render(){const e=i=>{this.headerFocused=i.detail.value,this._onDropdownOpenedChanged(i)};return _`
 			<style>
 				paper-dropdown-menu {
