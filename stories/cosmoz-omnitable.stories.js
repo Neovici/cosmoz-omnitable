@@ -1,5 +1,5 @@
 import { html } from 'lit-html';
-import '../cosmoz-omnitable.js';
+import '../src/cosmoz-omnitable.js';
 import demoData from './data.json';
 
 export default {

@@ -87,16 +87,24 @@ const styles = {
 		useImperativeApi(api, Object.values(api));
 
 		return { renderRow, flatData };
-	},
-	renderCosmozGroupedList = ({ renderRow, flatData }) =>
-		virtualize({
-			items: flatData,
-			renderItem: (item, index) =>
-				html`<cosmoz-grouped-list-row
-					.item=${item}
-					.index=${index}
-					.renderFn=${renderRow}
-				></cosmoz-grouped-list-row>`,
-		});
+	};
+
+/**
+ * @param {Object} params
+ * @param {Function} params.renderRow
+ * @param {Array} params.flatData
+ * @returns {*}
+ */
+const renderCosmozGroupedList = ({ renderRow, flatData }) => {
+	return virtualize({
+		items: flatData,
+		renderItem: (item, index) =>
+			html`<cosmoz-grouped-list-row
+				.item=${item}
+				.index=${index}
+				.renderFn=${renderRow}
+			></cosmoz-grouped-list-row>`,
+	});
+};
 
 export { renderCosmozGroupedList, useCosmozGroupedList };

@@ -10,11 +10,11 @@ import {
 	fromHashString,
 	toHashString,
 	toInputString,
-} from '../lib/utils-datetime';
+} from '../src/lib/utils-datetime';
 import { toLocalISOString } from '@neovici/cosmoz-utils/date';
-import { toDate } from '../lib/utils-date';
+import { toDate } from '../src/lib/utils-date';
 
-import '../cosmoz-omnitable';
+import '../src/cosmoz-omnitable';
 
 const data = [
 		{
