@@ -2,9 +2,9 @@ import { PolymerElement } from '@polymer/polymer/polymer-element';
 
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 
-import '@polymer/paper-spinner/paper-spinner-lite';
 import '@neovici/cosmoz-autocomplete';
-import { html, nothing } from 'lit-html';
+import { html } from 'lit-html';
+import { when } from 'lit-html/directives/when.js';
 import { get } from '@polymer/polymer/lib/utils/path';
 import { memooize } from '@neovici/cosmoz-utils/memoize';
 
@@ -83,15 +83,7 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 	}
 
 	renderEditCell(column, { item }, onItemChange) {
-		const { trueLabel, falseLabel } = column,
-			spinner = column.loading
-				? html`<paper-spinner-lite
-						style="width: 20px; height: 20px;"
-						suffix
-						slot="suffix"
-						active
-					></paper-spinner-lite>`
-				: nothing;
+		const { trueLabel, falseLabel } = column;
 
 		return html`<cosmoz-autocomplete
 			no-label-float
@@ -110,20 +102,17 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 			)}
 			.onChange=${onEditableChange(onItemChange)}
 			.limit=${1}
-			>${spinner}</cosmoz-autocomplete
+			>${when(
+				column.loading,
+				() =>
+					html`<div slot="suffix">
+						<cz-spinner></cz-spinner>
+					</div>`,
+			)}</cosmoz-autocomplete
 		>`;
 	}
 
 	renderHeader(column, { filter, query }, setState, source) {
-		const spinner = column.loading
-			? html`<paper-spinner-lite
-					style="width: 20px; height: 20px;"
-					suffix
-					slot="suffix"
-					active
-				></paper-spinner-lite>`
-			: nothing;
-
 		return html`<cosmoz-autocomplete-ui
 			.label=${column.title}
 			.title=${computeItemTooltip(
@@ -140,7 +129,10 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 			.onFocus=${onFocus(setState)}
 			.onText=${onText(setState)}
 			.limit=${1}
-			>${spinner}</cosmoz-autocomplete-ui
+			>${when(
+				column.loading,
+				() => html`<cz-spinner style="flex:none;" slot="suffix"></cz-spinner>`,
+			)}</cosmoz-autocomplete-ui
 		>`;
 	}
 

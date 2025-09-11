@@ -1,9 +1,9 @@
-import '@polymer/paper-spinner/paper-spinner-lite.js';
 import '@neovici/cosmoz-autocomplete';
 
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { html } from 'lit-html';
 import { when } from 'lit-html/directives/when.js';
+import '@neovici/cosmoz-spinner';
 
 import { columnMixin, getString } from './cosmoz-omnitable-column-mixin.js';
 import {
@@ -98,13 +98,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 			.onText=${onText(setState)}
 			>${when(
 				column.loading,
-				() =>
-					html`<paper-spinner-lite
-						style="width: 20px; height: 20px; flex:none;"
-						suffix
-						slot="suffix"
-						active
-					></paper-spinner-lite>`,
+				() => html`<cz-spinner style="flex:none;" slot="suffix"></cz-spinner>`,
 			)}</cosmoz-autocomplete-ui
 		>`;
 	}
