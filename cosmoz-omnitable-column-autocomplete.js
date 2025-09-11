@@ -98,7 +98,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 			.onText=${onText(setState)}
 			>${when(
 				column.loading,
-				() => html`<cz-spinner style="flex:none;" slot="suffix"></cz-spinner>`,
+				() => html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`,
 			)}</cosmoz-autocomplete-ui
 		>`;
 	}

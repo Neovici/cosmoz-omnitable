@@ -105,9 +105,11 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 			>${when(
 				column.loading,
 				() =>
-					html`<div slot="suffix">
-						<cz-spinner></cz-spinner>
-					</div>`,
+					html`
+						<div slot="suffix">
+							<cosmoz-spinner></cosmoz-spinner>
+						</div>
+				`,
 			)}</cosmoz-autocomplete
 		>`;
 	}
@@ -131,7 +133,7 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 			.limit=${1}
 			>${when(
 				column.loading,
-				() => html`<cz-spinner style="flex:none;" slot="suffix"></cz-spinner>`,
+				() => html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`,
 			)}</cosmoz-autocomplete-ui
 		>`;
 	}
