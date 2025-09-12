@@ -1,7 +1,9 @@
 import '@neovici/cosmoz-autocomplete';
+import '@neovici/cosmoz-spinner';
 
 import { PolymerElement } from '@polymer/polymer/polymer-element';
-import { html, nothing } from 'lit-html';
+import { html } from 'lit-html';
+import { when } from 'lit-html/directives/when.js';
 
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 import {
@@ -54,14 +56,6 @@ class OmnitableColumnListHorizontal extends listColumnMixin(
 	}
 
 	renderHeader(column, { filter, query }, setState, source) {
-		const spinner = column.loading
-			? html`<paper-spinner-lite
-					style="width: 20px; height: 20px;"
-					suffix
-					slot="suffix"
-					active
-				></paper-spinner-lite>`
-			: nothing;
 		return html`<cosmoz-autocomplete-ui
 			class="external-values-${column.externalValues}"
 			.label=${column.title}
@@ -72,7 +66,10 @@ class OmnitableColumnListHorizontal extends listColumnMixin(
 			.onChange=${onChange(setState)}
 			.onFocus=${onFocus(setState)}
 			.onText=${onText(setState)}
-			>${spinner}</cosmoz-autocomplete-ui
+			>${when(
+				column.loading,
+				() => html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`,
+			)}</cosmoz-autocomplete-ui
 		> `;
 	}
 }
