@@ -1,4 +1,4 @@
-import{f as rl,B as ln,x as _,E as _e,T as ne,m as ol,i as Mu,p as Lu,v as Ue,s as Lt,M as sr}from"./iframe-BAnTbUR6.js";import{_ as ku}from"./preload-helper-D9Z9MdNV.js";/**
+import{f as rl,B as ln,x as _,E as _e,T as ne,m as ol,i as Mu,p as Lu,v as Ue,s as Lt,M as sr}from"./iframe-5wAIItr_.js";import{_ as ku}from"./preload-helper-D9Z9MdNV.js";/**
  * @license
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
@@ -4055,11 +4055,7 @@ found at http://polymer.github.io/PATENTS.txt
 			.value=${jg(e,i,Ri(r,o))}
 			.onChange=${Gg(n)}
 			.limit=${1}
-			>${B(e.loading,()=>_`
-						<div slot="suffix">
-							<cosmoz-spinner></cosmoz-spinner>
-						</div>
-				`)}</cosmoz-autocomplete
+			>${B(!0,()=>_`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`)}</cosmoz-autocomplete
 		>`}renderHeader(e,{filter:i,query:n},r,o){return _`<cosmoz-autocomplete-ui
 			.label=${e.title}
 			.title=${Rs(e.title,i,e.valuePath,o)}
