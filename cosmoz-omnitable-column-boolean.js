@@ -105,10 +105,7 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 			>${when(
 				column.loading,
 				() =>
-					html`
-						<div slot="suffix">
-							<cosmoz-spinner></cosmoz-spinner>
-						</div>
+					html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>
 				`,
 			)}</cosmoz-autocomplete
 		>`;
