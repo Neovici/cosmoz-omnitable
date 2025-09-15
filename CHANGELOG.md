@@ -1,3 +1,10 @@
+## [14.12.4](https://github.com/neovici/cosmoz-omnitable/compare/v14.12.3...v14.12.4) (2025-09-15)
+
+
+### Bug Fixes
+
+* revert text-align change for date-range-input ([#683](https://github.com/neovici/cosmoz-omnitable/issues/683)) ([1e53a5e](https://github.com/neovici/cosmoz-omnitable/commit/1e53a5e74b15047817d3518f1eee4e5759193cb3))
+
 ## [14.12.3](https://github.com/neovici/cosmoz-omnitable/compare/v14.12.2...v14.12.3) (2025-09-10)
 
 
