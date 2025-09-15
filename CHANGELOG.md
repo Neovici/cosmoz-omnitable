@@ -1,3 +1,10 @@
+# [14.13.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.12.4...v14.13.0) (2025-09-15)
+
+
+### Features
+
+* variable to hide underlines in paper inputs ([#684](https://github.com/neovici/cosmoz-omnitable/issues/684)) ([f4d54d4](https://github.com/neovici/cosmoz-omnitable/commit/f4d54d4c7463ac8f941de91e65d0da4741d01a29))
+
 ## [14.12.4](https://github.com/neovici/cosmoz-omnitable/compare/v14.12.3...v14.12.4) (2025-09-15)
 
 
