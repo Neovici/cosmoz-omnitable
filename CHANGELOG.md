@@ -1,3 +1,10 @@
+# [14.14.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.13.0...v14.14.0) (2025-09-15)
+
+
+### Features
+
+* skeleton variables ([#685](https://github.com/neovici/cosmoz-omnitable/issues/685)) ([6d18153](https://github.com/neovici/cosmoz-omnitable/commit/6d18153a68ef0074bc929f44d401ae22cd038574))
+
 # [14.13.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.12.4...v14.13.0) (2025-09-15)
 
 
