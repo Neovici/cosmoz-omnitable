@@ -15,7 +15,12 @@ const styles = css`
 		padding: 11px 12px 11px 0;
 	}
 	.skeleton > div div:not(.handle) {
-		background-image: linear-gradient(90deg, #e0e0e0, #f5f5f5, #e0e0e0);
+		background-image: linear-gradient(
+			90deg, 
+			var(--cosmoz-omnitable-skeleton-bg-from, #e0e0e0), 
+			var(--cosmoz-omnitable-skeleton-bg-middle, #f5f5f5), 
+			var(--cosmoz-omnitable-skeleton-bg-to, #e0e0e0)
+		);
 		background-size: 1000%;
 		background-position: right;
 		border-radius: 4px;
