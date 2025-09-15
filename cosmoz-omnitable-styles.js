@@ -156,9 +156,11 @@ export default css`
 		}
 		--paper-input-container-underline: {
 			border-color: var(--cosmoz-omnitable-header-line-color);
+			display: var(--cosmoz-omnitable-paper-input-underline-display, block);
 		}
 		--paper-input-container-underline-focus {
 			border-color: var(--cosmoz-omnitable-header-line-focused-color);
+			display: var(--cosmoz-omnitable-paper-input-underline-display, block);
 		}
 
 		--paper-font-subhead_-_font-family: var(
