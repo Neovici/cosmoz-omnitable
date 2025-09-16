@@ -261,7 +261,7 @@ export default css`
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background-color: var(--cosmoz-omnitable-bg-color, #ffffffff);
+		color: #ccc;
 	}
 	.tableContent-empty.overlay {
 		background-color: (var(--cosmoz-omnitable-bg-color, #ffffffff));
