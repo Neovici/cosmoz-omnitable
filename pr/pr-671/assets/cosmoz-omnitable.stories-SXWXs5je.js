@@ -1,4 +1,4 @@
-import{f as rl,B as ln,x as _,E as _e,T as ne,m as ol,i as Mu,p as Lu,v as Ue,s as Lt,M as sr}from"./iframe-D7xyk5rc.js";import{_ as ku}from"./preload-helper-D9Z9MdNV.js";/**
+import{f as rl,B as ln,x as _,E as _e,T as ne,m as ol,i as Mu,p as Lu,v as Ue,s as Lt,M as sr}from"./iframe-CgxnWKjs.js";import{_ as ku}from"./preload-helper-D9Z9MdNV.js";/**
  * @license
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
@@ -4055,8 +4055,7 @@ found at http://polymer.github.io/PATENTS.txt
 			.value=${jg(e,i,Ri(r,o))}
 			.onChange=${Gg(n)}
 			.limit=${1}
-			>${B(e.loading,()=>_`<cosmoz-spinner slot="suffix"></cosmoz-spinner>
-				`)}</cosmoz-autocomplete
+			>${B(e.loading,()=>_`<cosmoz-spinner style="--label-translate-y: none" slot="suffix"></cosmoz-spinner>`)}</cosmoz-autocomplete
 		>`}renderHeader(e,{filter:i,query:n},r,o){return _`<cosmoz-autocomplete-ui
 			.label=${e.title}
 			.title=${Rs(e.title,i,e.valuePath,o)}
@@ -4074,7 +4073,6 @@ found at http://polymer.github.io/PATENTS.txt
 				paper-dropdown-menu {
 					--iron-icon-width: 0;
 					display: block;
-					text-align: right;
 				}
 
 				.dropdown-content h3 {
@@ -4855,9 +4853,11 @@ found at http://polymer.github.io/PATENTS.txt
 		}
 		--paper-input-container-underline: {
 			border-color: var(--cosmoz-omnitable-header-line-color);
+			display: var(--cosmoz-omnitable-paper-input-underline-display, block);
 		}
 		--paper-input-container-underline-focus {
 			border-color: var(--cosmoz-omnitable-header-line-focused-color);
+			display: var(--cosmoz-omnitable-paper-input-underline-display, block);
 		}
 
 		--paper-font-subhead_-_font-family: var(
@@ -4958,10 +4958,10 @@ found at http://polymer.github.io/PATENTS.txt
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		color: #ccc;
+		color: var(--cz-bg-color, #ccc);
 	}
 	.tableContent-empty.overlay {
-		background-color: rgba(255, 255, 255, 0.8);
+		background-color: (var(--cz-bg-color, #ccc));
 		color: #333;
 		z-index: 1;
 	}
@@ -5012,6 +5012,7 @@ found at http://polymer.github.io/PATENTS.txt
 		flex-basis: 0.000001px;
 		display: flex;
 		flex-direction: column;
+		color: var(--cz-bg-color, #ccc);
 	}
 
 	.itemRow {
@@ -5369,7 +5370,12 @@ found at http://polymer.github.io/PATENTS.txt
 		padding: 11px 12px 11px 0;
 	}
 	.skeleton > div div:not(.handle) {
-		background-image: linear-gradient(90deg, #e0e0e0, #f5f5f5, #e0e0e0);
+		background-image: linear-gradient(
+			90deg, 
+			var(--cosmoz-omnitable-skeleton-bg-from, #e0e0e0), 
+			var(--cosmoz-omnitable-skeleton-bg-middle, #f5f5f5), 
+			var(--cosmoz-omnitable-skeleton-bg-to, #e0e0e0)
+		);
 		background-size: 1000%;
 		background-position: right;
 		border-radius: 4px;
