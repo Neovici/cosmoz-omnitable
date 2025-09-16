@@ -1,4 +1,4 @@
-import{f as ol,B as ln,x as _,E as de,T as ne,m as al,i as Lu,p as Ou,v as Ue,s as kt,M as sr}from"./iframe-mYQCAeUS.js";import{_ as $u}from"./preload-helper-D9Z9MdNV.js";/**
+import{f as ol,B as ln,x as _,E as de,T as ne,m as al,i as Lu,p as Ou,v as Ue,s as kt,M as sr}from"./iframe-CVTRNCrY.js";import{_ as $u}from"./preload-helper-D9Z9MdNV.js";/**
  * @license
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
@@ -5332,7 +5332,7 @@ found at http://polymer.github.io/PATENTS.txt
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background-color: var(--cosmoz-omnitable-bg-color, #ffffffff);
+		color: #ccc;
 	}
 	.tableContent-empty.overlay {
 		background-color: (var(--cosmoz-omnitable-bg-color, #ffffffff));
