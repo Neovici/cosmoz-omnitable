@@ -1,3 +1,24 @@
+# [14.14.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.13.0...v14.14.0) (2025-09-15)
+
+
+### Features
+
+* skeleton variables ([#685](https://github.com/neovici/cosmoz-omnitable/issues/685)) ([6d18153](https://github.com/neovici/cosmoz-omnitable/commit/6d18153a68ef0074bc929f44d401ae22cd038574))
+
+# [14.13.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.12.4...v14.13.0) (2025-09-15)
+
+
+### Features
+
+* variable to hide underlines in paper inputs ([#684](https://github.com/neovici/cosmoz-omnitable/issues/684)) ([f4d54d4](https://github.com/neovici/cosmoz-omnitable/commit/f4d54d4c7463ac8f941de91e65d0da4741d01a29))
+
+## [14.12.4](https://github.com/neovici/cosmoz-omnitable/compare/v14.12.3...v14.12.4) (2025-09-15)
+
+
+### Bug Fixes
+
+* revert text-align change for date-range-input ([#683](https://github.com/neovici/cosmoz-omnitable/issues/683)) ([1e53a5e](https://github.com/neovici/cosmoz-omnitable/commit/1e53a5e74b15047817d3518f1eee4e5759193cb3))
+
 ## [14.12.3](https://github.com/neovici/cosmoz-omnitable/compare/v14.12.2...v14.12.3) (2025-09-10)
 
 ### Bug Fixes

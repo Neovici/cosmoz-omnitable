@@ -15,7 +15,6 @@ class DateRangeInput extends dateInputMixin(
 				paper-dropdown-menu {
 					--iron-icon-width: 0;
 					display: block;
-					text-align: right;
 				}
 
 				.dropdown-content h3 {

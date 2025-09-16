@@ -156,9 +156,11 @@ export default css`
 		}
 		--paper-input-container-underline: {
 			border-color: var(--cosmoz-omnitable-header-line-color);
+			display: var(--cosmoz-omnitable-paper-input-underline-display, block);
 		}
 		--paper-input-container-underline-focus {
 			border-color: var(--cosmoz-omnitable-header-line-focused-color);
+			display: var(--cosmoz-omnitable-paper-input-underline-display, block);
 		}
 
 		--paper-font-subhead_-_font-family: var(
@@ -259,10 +261,10 @@ export default css`
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		color: #ccc;
+		color: var(--cz-bg-color, #ccc);
 	}
 	.tableContent-empty.overlay {
-		background-color: rgba(255, 255, 255, 0.8);
+		background-color: (var(--cz-bg-color, #ccc));
 		color: #333;
 		z-index: 1;
 	}
@@ -313,6 +315,7 @@ export default css`
 		flex-basis: 0.000001px;
 		display: flex;
 		flex-direction: column;
+		color: var(--cz-bg-color, #ccc);
 	}
 
 	.itemRow {
