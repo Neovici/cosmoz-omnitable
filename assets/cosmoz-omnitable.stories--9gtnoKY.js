@@ -1,4 +1,4 @@
-import{f as rl,B as ln,x as _,E as _e,T as ne,m as ol,i as Mu,p as Lu,v as Ue,s as Lt,M as sr}from"./iframe-9BEx4WpR.js";import{_ as ku}from"./preload-helper-D9Z9MdNV.js";/**
+import{f as rl,B as ln,x as _,E as _e,T as ne,m as ol,i as Mu,p as Lu,v as Ue,s as Lt,M as sr}from"./iframe-DbVAG3PB.js";import{_ as ku}from"./preload-helper-D9Z9MdNV.js";/**
  * @license
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
@@ -4958,10 +4958,9 @@ found at http://polymer.github.io/PATENTS.txt
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		color: var(--cz-bg-color, #ccc);
+		color: #ccc;
 	}
 	.tableContent-empty.overlay {
-		background-color: (var(--cz-bg-color, #ccc));
 		color: #333;
 		z-index: 1;
 	}
@@ -5012,7 +5011,6 @@ found at http://polymer.github.io/PATENTS.txt
 		flex-basis: 0.000001px;
 		display: flex;
 		flex-direction: column;
-		color: var(--cz-bg-color, #ccc);
 	}
 
 	.itemRow {
