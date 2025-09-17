@@ -261,10 +261,9 @@ export default css`
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		color: var(--cz-bg-color, #ccc);
+		color: #ccc;
 	}
 	.tableContent-empty.overlay {
-		background-color: (var(--cz-bg-color, #ccc));
 		color: #333;
 		z-index: 1;
 	}
@@ -315,7 +314,6 @@ export default css`
 		flex-basis: 0.000001px;
 		display: flex;
 		flex-direction: column;
-		color: var(--cz-bg-color, #ccc);
 	}
 
 	.itemRow {
