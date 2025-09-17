@@ -1,3 +1,10 @@
+## [14.14.3](https://github.com/neovici/cosmoz-omnitable/compare/v14.14.2...v14.14.3) (2025-09-17)
+
+
+### Bug Fixes
+
+* cosmoz-spinner 1.0.0 was not published correctly ([44c43b2](https://github.com/neovici/cosmoz-omnitable/commit/44c43b24f2f9f2a986f2bceffa8b64243ebc9e66))
+
 ## [14.14.2](https://github.com/neovici/cosmoz-omnitable/compare/v14.14.1...v14.14.2) (2025-09-17)
 
 
