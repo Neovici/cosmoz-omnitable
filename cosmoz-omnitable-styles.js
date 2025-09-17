@@ -264,7 +264,6 @@ export default css`
 		color: #ccc;
 	}
 	.tableContent-empty.overlay {
-		background-color: (var(--cosmoz-omnitable-bg-color, #ffffffff));
 		color: #333;
 		z-index: 1;
 	}
