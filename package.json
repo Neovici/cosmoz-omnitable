@@ -72,7 +72,7 @@
     "@neovici/cosmoz-i18next": "^3.1.1",
     "@neovici/cosmoz-input": "^5.0.0",
     "@neovici/cosmoz-router": "^11.0.0",
-    "@neovici/cosmoz-spinner": "^1.0.0",
+    "@neovici/cosmoz-spinner": "^1.0.1",
     "@neovici/cosmoz-utils": "^6.14.2",
     "@neovici/nullxlsx": "^3.0.0",
     "@pionjs/pion": "^2.0.0",
