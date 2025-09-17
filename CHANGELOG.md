@@ -1,3 +1,10 @@
+## [14.14.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.14.0...v14.14.1) (2025-09-17)
+
+
+### Bug Fixes
+
+* override translate variable value ([31a960d](https://github.com/neovici/cosmoz-omnitable/commit/31a960de0d432075e414f31109d0daac8fea3cc0))
+
 # [14.14.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.13.0...v14.14.0) (2025-09-15)
 
 
