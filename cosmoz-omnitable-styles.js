@@ -315,7 +315,6 @@ export default css`
 		flex-basis: 0.000001px;
 		display: flex;
 		flex-direction: column;
-		background-color: var(--cosmoz-omnitable-bg-color, #ffffffff);
 	}
 
 	.itemRow {
