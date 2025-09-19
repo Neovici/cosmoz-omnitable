@@ -9,8 +9,8 @@ import {
 } from './helpers/utils';
 import { generateTableDemoData } from '../demo/table-demo-helper';
 
-import '../cosmoz-omnitable.js';
-import '../cosmoz-omnitable-columns.js';
+import '../src/cosmoz-omnitable.js';
+import '../src/cosmoz-omnitable-columns.js';
 
 suite('basic', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);

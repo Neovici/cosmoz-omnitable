@@ -6,14 +6,14 @@ import {
 	setupOmnitableFixture,
 } from './helpers/utils';
 
-import '../cosmoz-omnitable.js';
-import '../cosmoz-omnitable-columns.js';
-import { applySingleFilter } from '../cosmoz-omnitable-column-mixin';
+import '../src/cosmoz-omnitable.js';
+import '../src/cosmoz-omnitable-columns.js';
+import { applySingleFilter } from '../src/cosmoz-omnitable-column-mixin';
 import {
 	applyMultiFilter,
 	getString,
-} from '../cosmoz-omnitable-column-list-mixin';
-import { columnSymbol } from '../lib/use-dom-columns';
+} from '../src/cosmoz-omnitable-column-list-mixin';
+import { columnSymbol } from '../src/lib/use-dom-columns';
 
 suite('basic', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);

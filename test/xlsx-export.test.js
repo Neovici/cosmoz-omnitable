@@ -6,10 +6,10 @@ import {
 	setupOmnitableFixture,
 } from './helpers/utils';
 
-import '../cosmoz-omnitable.js';
-import '../cosmoz-omnitable-columns.js';
-import { prepareXlsxData } from '../lib/save-as-xlsx-action';
-import { toDate } from '../lib/utils-date';
+import '../src/cosmoz-omnitable.js';
+import '../src/cosmoz-omnitable-columns.js';
+import { prepareXlsxData } from '../src/lib/save-as-xlsx-action';
+import { toDate } from '../src/lib/utils-date';
 
 sinonAssert.expose(assert, { prefix: '' });
 
