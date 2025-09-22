@@ -20,22 +20,22 @@
   "exports": {
     "./cosmoz-omnitable.js": {
       "types": "./dist/cosmoz-omnitable.d.ts",
-      "import": "./dist/cosmoz-omnitable.js"
+      "default": "./dist/cosmoz-omnitable.js"
     },
     "./cosmoz-omnitable-*.js": {
       "types": "./dist/cosmoz-omnitable-*.d.ts",
-      "import": "./dist/cosmoz-omnitable-*.js"
+      "default": "./dist/cosmoz-omnitable-*.js"
     },
     "./lib/*.js": {
       "types": "./dist/lib/*.d.ts",
-      "import": "./dist/lib/*.js"
+      "default": "./dist/lib/*.js"
     },
     "./grouped-list/*.js": {
       "types": "./dist/grouped-list/*.d.ts",
-      "import": "./dist/grouped-list/*.js"
+      "default": "./dist/grouped-list/*.js"
     },
     "./ui-helpers/*": {
-      "import": "./dist/ui-helpers/*"
+      "default": "./dist/ui-helpers/*"
     }
   },
   "directories": {
