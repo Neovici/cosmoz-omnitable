@@ -1,3 +1,19 @@
+# [14.15.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.14.3...v14.15.0) (2025-09-22)
+
+
+### Bug Fixes
+
+* cleanup ([1a0a6c5](https://github.com/neovici/cosmoz-omnitable/commit/1a0a6c55f589a81f7d2c0a117f9bcbe5f5ef2037))
+* fix build error ([2e8dae3](https://github.com/neovici/cosmoz-omnitable/commit/2e8dae34e701e4cc61d9c8223cdb4b91d582cc07))
+* make package.json and package-lock.json in sync ([1b90317](https://github.com/neovici/cosmoz-omnitable/commit/1b90317ad8db849eb017ac6684547701378f6e57))
+* **package:** export from dist using default ([9aebc8d](https://github.com/neovici/cosmoz-omnitable/commit/9aebc8d116bfd0476653d5105242c83329eb5d41))
+* resolve cosmoz-omnitable path on stories ([fd2d36c](https://github.com/neovici/cosmoz-omnitable/commit/fd2d36c540a4cb460e9fc166b857a9a3dd7d2aad))
+
+
+### Features
+
+* convert to TS ([e8d3322](https://github.com/neovici/cosmoz-omnitable/commit/e8d33220694993291ac11e74833a380e3d6abf16))
+
 ## [14.14.3](https://github.com/neovici/cosmoz-omnitable/compare/v14.14.2...v14.14.3) (2025-09-17)
 
 

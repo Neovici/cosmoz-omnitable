@@ -1,6 +1,6 @@
 {
   "name": "@neovici/cosmoz-omnitable",
-  "version": "14.14.3",
+  "version": "14.15.0",
   "description": "[![Build Status](https://travis-ci.org/Neovici/cosmoz-omnitable.svg?branch=master)](https://travis-ci.org/Neovici/cosmoz-omnitable)",
   "keywords": [
     "web-components"
@@ -41,10 +41,10 @@
   "directories": {
     "test": "test"
   },
- "files": [
-      "dist/**/*.js",
-      "dist/**/*.d.ts",
-      "dist/**/*.d.ts.map"
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
+    "dist/**/*.d.ts.map"
   ],
   "scripts": {
     "build": "tsc",
