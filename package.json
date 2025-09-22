@@ -15,38 +15,36 @@
   },
   "license": "Apache-2.0",
   "author": "Neovici Development",
-  "main": "src/cosmoz-omnitable.js",
+  "main": "dist/cosmoz-omnitable.js",
   "types": "dist/cosmoz-omnitable.d.ts",
   "exports": {
     "./cosmoz-omnitable.js": {
       "types": "./dist/cosmoz-omnitable.d.ts",
-      "import": "./src/cosmoz-omnitable.js"
+      "import": "./dist/cosmoz-omnitable.js"
     },
     "./cosmoz-omnitable-*.js": {
       "types": "./dist/cosmoz-omnitable-*.d.ts",
-      "import": "./src/cosmoz-omnitable-*.js"
+      "import": "./dist/cosmoz-omnitable-*.js"
     },
     "./lib/*.js": {
       "types": "./dist/lib/*.d.ts",
-      "import": "./src/lib/*.js"
+      "import": "./dist/lib/*.js"
     },
     "./grouped-list/*.js": {
       "types": "./dist/grouped-list/*.d.ts",
-      "import": "./src/grouped-list/*.js"
+      "import": "./dist/grouped-list/*.js"
     },
     "./ui-helpers/*": {
-      "import": "./src/ui-helpers/*"
+      "import": "./dist/ui-helpers/*"
     }
   },
   "directories": {
     "test": "test"
   },
-  "files": [
-    "src/**/*.js",
-    "src/**/*.ts",
-    "dist/**/*.js",
-    "dist/**/*.d.ts",
-    "dist/**/*.d.ts.map"
+ "files": [
+      "dist/**/*.js",
+      "dist/**/*.d.ts",
+      "dist/**/*.d.ts.map"
   ],
   "scripts": {
     "build": "tsc",
