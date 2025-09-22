@@ -7,9 +7,9 @@ import {
 	setupOmnitableFixture,
 } from './helpers/utils';
 
-import '../cosmoz-omnitable.js';
-import { getComparableValue } from '../cosmoz-omnitable-column-autocomplete.js';
-import '../cosmoz-omnitable-column.js';
+import '../src/cosmoz-omnitable.js';
+import { getComparableValue } from '../src/cosmoz-omnitable-column-autocomplete.js';
+import '../src/cosmoz-omnitable-column.js';
 import {
 	unique,
 	computeSource,
@@ -17,8 +17,8 @@ import {
 	toXlsxValue,
 	getString,
 	applyMultiFilter,
-} from '../cosmoz-omnitable-column-list-mixin';
-import { applySingleFilter } from '../cosmoz-omnitable-column-mixin';
+} from '../src/cosmoz-omnitable-column-list-mixin';
+import { applySingleFilter } from '../src/cosmoz-omnitable-column-mixin';
 
 const data = [
 	{

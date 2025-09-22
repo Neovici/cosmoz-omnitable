@@ -6,3 +6,6 @@ yarn-error.log
 .DS_Store
 .idea
 storybook-static
+dist/
+tsconfig.tsbuildinfo
+

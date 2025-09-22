@@ -15,18 +15,41 @@
   },
   "license": "Apache-2.0",
   "author": "Neovici Development",
-  "main": "cosmoz-omnitable.js",
+  "main": "dist/cosmoz-omnitable.js",
+  "types": "dist/cosmoz-omnitable.d.ts",
+  "exports": {
+    "./cosmoz-omnitable.js": {
+      "types": "./dist/cosmoz-omnitable.d.ts",
+      "default": "./dist/cosmoz-omnitable.js"
+    },
+    "./cosmoz-omnitable-*.js": {
+      "types": "./dist/cosmoz-omnitable-*.d.ts",
+      "default": "./dist/cosmoz-omnitable-*.js"
+    },
+    "./lib/*.js": {
+      "types": "./dist/lib/*.d.ts",
+      "default": "./dist/lib/*.js"
+    },
+    "./grouped-list/*.js": {
+      "types": "./dist/grouped-list/*.d.ts",
+      "default": "./dist/grouped-list/*.js"
+    },
+    "./ui-helpers/*": {
+      "default": "./dist/ui-helpers/*"
+    }
+  },
   "directories": {
     "test": "test"
   },
-  "files": [
-    "cosmoz-*.js",
-    "ui-helpers",
-    "lib/**/*.js",
-    "grouped-list/*.js"
+ "files": [
+      "dist/**/*.js",
+      "dist/**/*.d.ts",
+      "dist/**/*.d.ts.map"
   ],
   "scripts": {
-    "lint": "eslint --cache --ext .js .",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "lint": "eslint --cache --ext .js,.ts src/",
     "start": "wds",
     "test": "wtr --coverage",
     "test:watch": "wtr --watch",
@@ -56,6 +79,11 @@
     ],
     "rules": {
       "body-max-line-length": [
+        1,
+        "always",
+        600
+      ],
+      "footer-max-line-length": [
         1,
         "always",
         600
@@ -97,9 +125,11 @@
     "@semantic-release/changelog": "^6.0.0",
     "@semantic-release/git": "^10.0.0",
     "@storybook/web-components-vite": "^9.1.3",
+    "@types/file-saver": "^2.0.0",
     "husky": "^9.0.0",
     "semantic-release": "^24.0.0",
     "sinon": "^20.0.0",
-    "storybook": "^9.1.3"
+    "storybook": "^9.1.3",
+    "typescript": "^5.0.0"
   }
 }

@@ -22,7 +22,7 @@
 			type="module"
 			src="/node_modules/@polymer/paper-button/paper-button.js"
 		></script>
-		<script type="module" src="../cosmoz-omnitable.js"></script>
+		<script type="module" src="../src/cosmoz-omnitable.js"></script>
 		<style>
 			body,
 			x-page {
@@ -177,7 +177,7 @@
 			import { translatable } from '@neovici/cosmoz-i18next';
 			import { generateTableDemoData } from './table-demo-helper';
 			import { html } from 'lit-html';
-			import { getInputString } from '../lib/utils-number';
+			import { getInputString } from '../src/lib/utils-number';
 
 			class XPage extends translatable(PolymerElement) {
 				static get is() {

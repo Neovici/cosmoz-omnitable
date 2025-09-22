@@ -9,10 +9,10 @@ import {
 } from './helpers/utils';
 import { flush } from '@polymer/polymer/lib/utils/flush';
 
-import '../cosmoz-omnitable.js';
-import '../cosmoz-omnitable-columns.js';
-import { getComparableValue, getString, toNumber } from '../lib/utils-number';
-import { columnSymbol } from '../lib/use-dom-columns';
+import '../src/cosmoz-omnitable.js';
+import '../src/cosmoz-omnitable-columns.js';
+import { getComparableValue, getString, toNumber } from '../src/lib/utils-number';
+import { columnSymbol } from '../src/lib/use-dom-columns';
 
 const data = [
 		{
