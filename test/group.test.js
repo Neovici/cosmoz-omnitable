@@ -1,10 +1,13 @@
 import { assert, html, nextFrame } from '@open-wc/testing';
 
-import { ignoreResizeObserverLoopErrors, setupOmnitableFixture } from './helpers/utils';
+import {
+	ignoreResizeObserverLoopErrors,
+	setupOmnitableFixture,
+} from './helpers/utils';
 import { generateTableDemoData } from '../demo/table-demo-helper';
 
-import '../cosmoz-omnitable.js';
-import '../cosmoz-omnitable-columns.js';
+import '../src/cosmoz-omnitable.js';
+import '../src/cosmoz-omnitable-columns.js';
 
 suite('id', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);

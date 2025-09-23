@@ -1,3 +1,101 @@
+# [14.15.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.14.3...v14.15.0) (2025-09-22)
+
+
+### Bug Fixes
+
+* cleanup ([1a0a6c5](https://github.com/neovici/cosmoz-omnitable/commit/1a0a6c55f589a81f7d2c0a117f9bcbe5f5ef2037))
+* fix build error ([2e8dae3](https://github.com/neovici/cosmoz-omnitable/commit/2e8dae34e701e4cc61d9c8223cdb4b91d582cc07))
+* make package.json and package-lock.json in sync ([1b90317](https://github.com/neovici/cosmoz-omnitable/commit/1b90317ad8db849eb017ac6684547701378f6e57))
+* **package:** export from dist using default ([9aebc8d](https://github.com/neovici/cosmoz-omnitable/commit/9aebc8d116bfd0476653d5105242c83329eb5d41))
+* resolve cosmoz-omnitable path on stories ([fd2d36c](https://github.com/neovici/cosmoz-omnitable/commit/fd2d36c540a4cb460e9fc166b857a9a3dd7d2aad))
+
+
+### Features
+
+* convert to TS ([e8d3322](https://github.com/neovici/cosmoz-omnitable/commit/e8d33220694993291ac11e74833a380e3d6abf16))
+
+## [14.14.3](https://github.com/neovici/cosmoz-omnitable/compare/v14.14.2...v14.14.3) (2025-09-17)
+
+
+### Bug Fixes
+
+* cosmoz-spinner 1.0.0 was not published correctly ([44c43b2](https://github.com/neovici/cosmoz-omnitable/commit/44c43b24f2f9f2a986f2bceffa8b64243ebc9e66))
+
+## [14.14.2](https://github.com/neovici/cosmoz-omnitable/compare/v14.14.1...v14.14.2) (2025-09-17)
+
+
+### Bug Fixes
+
+* omnitable content visual bug ([#686](https://github.com/neovici/cosmoz-omnitable/issues/686)) ([6e18e18](https://github.com/neovici/cosmoz-omnitable/commit/6e18e18ea2b7ebe86e6f29e9686ca78332a83694))
+
+## [14.14.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.14.0...v14.14.1) (2025-09-17)
+
+
+### Bug Fixes
+
+* override translate variable value ([31a960d](https://github.com/neovici/cosmoz-omnitable/commit/31a960de0d432075e414f31109d0daac8fea3cc0))
+
+# [14.14.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.13.0...v14.14.0) (2025-09-15)
+
+
+### Features
+
+* skeleton variables ([#685](https://github.com/neovici/cosmoz-omnitable/issues/685)) ([6d18153](https://github.com/neovici/cosmoz-omnitable/commit/6d18153a68ef0074bc929f44d401ae22cd038574))
+
+# [14.13.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.12.4...v14.13.0) (2025-09-15)
+
+
+### Features
+
+* variable to hide underlines in paper inputs ([#684](https://github.com/neovici/cosmoz-omnitable/issues/684)) ([f4d54d4](https://github.com/neovici/cosmoz-omnitable/commit/f4d54d4c7463ac8f941de91e65d0da4741d01a29))
+
+## [14.12.4](https://github.com/neovici/cosmoz-omnitable/compare/v14.12.3...v14.12.4) (2025-09-15)
+
+
+### Bug Fixes
+
+* revert text-align change for date-range-input ([#683](https://github.com/neovici/cosmoz-omnitable/issues/683)) ([1e53a5e](https://github.com/neovici/cosmoz-omnitable/commit/1e53a5e74b15047817d3518f1eee4e5759193cb3))
+
+## [14.12.3](https://github.com/neovici/cosmoz-omnitable/compare/v14.12.2...v14.12.3) (2025-09-10)
+
+
+### Bug Fixes
+
+* fix build error ([5e0d32a](https://github.com/neovici/cosmoz-omnitable/commit/5e0d32a272d1f59e47da1443fc9bc3e502d3e413))
+
+## [14.12.2](https://github.com/neovici/cosmoz-omnitable/compare/v14.12.1...v14.12.2) (2025-09-08)
+
+
+### Bug Fixes
+
+* cleanup ([c9fb515](https://github.com/neovici/cosmoz-omnitable/commit/c9fb5153e61316aaba7bbf6118f9b2687b70f092))
+
+## [14.12.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.12.0...v14.12.1) (2025-09-05)
+
+
+### Bug Fixes
+
+* lastIndex shim ([29d5dee](https://github.com/neovici/cosmoz-omnitable/commit/29d5dee82a0127bfe236b45c3392a44ac49883ac))
+
+# [14.12.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.11.1...v14.12.0) (2025-09-02)
+
+
+### Bug Fixes
+
+* incorrect variable names ([0bba476](https://github.com/neovici/cosmoz-omnitable/commit/0bba476f49aa855427cb98c4bfcbaf709eb67d35))
+
+
+### Features
+
+* color variables for omnitable settings ([fc64b4b](https://github.com/neovici/cosmoz-omnitable/commit/fc64b4bbac6c40ddc0904061bdcbfb7df54342bb))
+
+## [14.11.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.11.0...v14.11.1) (2025-08-29)
+
+
+### Bug Fixes
+
+* extract location utils to cosmoz-utils ([e787dd9](https://github.com/neovici/cosmoz-omnitable/commit/e787dd9472475622c7f0ed60b4374be107048a23))
+
 # [14.11.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.10.0...v14.11.0) (2025-08-12)
 
 

@@ -1,61 +1,46 @@
-/* eslint-disable max-lines */
 import { assert, html, nextFrame } from '@open-wc/testing';
 import { assert as sinonAssert } from 'sinon';
 
-import { ignoreResizeObserverLoopErrors, rowVisible, setupOmnitableFixture } from './helpers/utils';
+import {
+	ignoreResizeObserverLoopErrors,
+	rowVisible,
+	setupOmnitableFixture,
+} from './helpers/utils';
 import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
 
-import '../cosmoz-omnitable.js';
-import '../cosmoz-omnitable-columns.js';
-import { getComparableValue, toDate, getString } from '../lib/utils-date';
+import '../src/cosmoz-omnitable.js';
+import '../src/cosmoz-omnitable-columns.js';
+import { getComparableValue, toDate, getString } from '../src/lib/utils-date';
 import { toLocalISOString } from '@neovici/cosmoz-utils/date';
-import { columnSymbol } from '../lib/use-dom-columns';
+import { columnSymbol } from '../src/lib/use-dom-columns';
 
 const data = [
 		{
 			age: 17,
-			amount: {
-				amount: '12.4',
-				currency: 'USD',
-			},
+			amount: { amount: '12.4', currency: 'USD' },
 			date: '2023-03-21T00:00:00Z',
 			time: '',
 		},
-		{
-			amount: { amount: 2 },
-			date: new Date('2015-03-18T00:00:00Z'),
-		},
+		{ amount: { amount: 2 }, date: new Date('2015-03-18T00:00:00Z') },
 		{
 			age: -11,
-			amount: {
-				amount: 678,
-				currency: 'AUD',
-			},
+			amount: { amount: 678, currency: 'AUD' },
 			date: new Date(86400000), // Fri Jan 02 1970
 			time: 86400000,
 		},
 		{
 			age: 9,
-			amount: {
-				amount: -8,
-				currency: 'EUR',
-			},
+			amount: { amount: -8, currency: 'EUR' },
 			date: new Date(99, 5, 24, 11, 33, 30, 0), // Thu Jun 24 1999 11:33:30 GMT+0300 (EEST)
 			time: '86400000',
 		},
 		{
 			age: 5,
-			amount: {
-				amount: '3450',
-				currency: 'DKK',
-			},
+			amount: { amount: '3450', currency: 'DKK' },
 			date: new Date('2016-08-27'),
 			time: '2016-08-27T14:34:56Z',
 		},
-		{
-			date: '2017-12-22T23:00:00Z',
-			time: '00:00:00',
-		},
+		{ date: '2017-12-22T23:00:00Z', time: '00:00:00' },
 	],
 	rangeFixture = html`
 		<cosmoz-omnitable
@@ -134,12 +119,7 @@ suite('date', () => {
 
 		assert.isUndefined(omnitable.filters.date);
 
-		omnitable.setFilterState('date', {
-			filter: {
-				min,
-				max,
-			},
-		});
+		omnitable.setFilterState('date', { filter: { min, max } });
 		await nextFrame();
 
 		const { max: fMax, min: fMin } = columnHeaderInput._filterInput;
@@ -173,10 +153,7 @@ suite('date', () => {
 		assert.isNull(columnHeaderInput._filterInput.min);
 		assert.isNull(columnHeaderInput._filterInput.max);
 
-		columnHeaderInput._filterInput = {
-			min: '2015-03-18',
-			max: '2023-03-21',
-		};
+		columnHeaderInput._filterInput = { min: '2015-03-18', max: '2023-03-21' };
 		polymerFlush();
 		await nextFrame();
 		assert.equal(
@@ -208,10 +185,7 @@ suite('date', () => {
 			min: `2017-12-${day}`,
 			max: `2017-12-${day + 1}`,
 		};
-		columnHeaderInput._filterInput = {
-			min: '2017-12-22',
-			max: '2017-12-23',
-		};
+		columnHeaderInput._filterInput = { min: '2017-12-22', max: '2017-12-23' };
 		polymerFlush();
 		await nextFrame();
 

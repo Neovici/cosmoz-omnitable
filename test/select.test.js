@@ -1,12 +1,16 @@
-/* eslint-disable max-lines */
+ 
 import { assert, html, nextFrame } from '@open-wc/testing';
 
 import '../demo/helpers/cosmoz-translations';
-import { ignoreResizeObserverLoopErrors, rowVisible, setupOmnitableFixture } from './helpers/utils';
+import {
+	ignoreResizeObserverLoopErrors,
+	rowVisible,
+	setupOmnitableFixture,
+} from './helpers/utils';
 import { generateTableDemoData } from '../demo/table-demo-helper';
 
-import '../cosmoz-omnitable.js';
-import '../cosmoz-omnitable-columns.js';
+import '../src/cosmoz-omnitable.js';
+import '../src/cosmoz-omnitable-columns.js';
 
 suite('basic', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);

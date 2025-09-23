@@ -1,17 +1,20 @@
-/* eslint-disable max-lines */
+ 
 import { assert, html, nextFrame } from '@open-wc/testing';
 
-import { ignoreResizeObserverLoopErrors, setupOmnitableFixture } from './helpers/utils';
+import {
+	ignoreResizeObserverLoopErrors,
+	setupOmnitableFixture,
+} from './helpers/utils';
 import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
 import {
 	fromHashString,
 	toHashString,
 	toInputString,
-} from '../lib/utils-datetime';
+} from '../src/lib/utils-datetime';
 import { toLocalISOString } from '@neovici/cosmoz-utils/date';
-import { toDate } from '../lib/utils-date';
+import { toDate } from '../src/lib/utils-date';
 
-import '../cosmoz-omnitable';
+import '../src/cosmoz-omnitable';
 
 const data = [
 		{

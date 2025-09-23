@@ -1,0 +1,440 @@
+import { html } from 'lit-html';
+import '../cosmoz-omnitable.js';
+
+export default {
+	title: 'Components/CosmozOmnitable',
+	component: 'cosmoz-omnitable',
+	parameters: {
+		docs: {
+			description: {
+				component:
+					'A powerful data table component with sorting, filtering, grouping, and selection capabilities.',
+			},
+		},
+	},
+	argTypes: {
+		hashParam: {
+			control: 'text',
+			description: 'Hash parameter for URL state management',
+		},
+		sortOn: {
+			control: 'text',
+			description: 'Column to sort on',
+		},
+		groupOn: {
+			control: 'text',
+			description: 'Column to group on',
+		},
+		descending: {
+			control: 'boolean',
+			description: 'Sort in descending order',
+		},
+		groupOnDescending: {
+			control: 'boolean',
+			description: 'Group in descending order',
+		},
+		hideSelectAll: {
+			control: 'boolean',
+			description: 'Hide the select all checkbox',
+		},
+		settingsId: {
+			control: 'text',
+			description: 'ID for storing table settings',
+		},
+		noLocal: {
+			control: 'boolean',
+			description: 'Disable local data operations',
+		},
+		noLocalSort: {
+			control: 'boolean',
+			description: 'Disable local sorting',
+		},
+		noLocalFilter: {
+			control: 'boolean',
+			description: 'Disable local filtering',
+		},
+		loading: {
+			control: 'boolean',
+			description: 'Show loading state',
+		},
+		miniBreakpoint: {
+			control: 'text',
+			description: 'Breakpoint for mini/mobile view',
+		},
+	},
+};
+
+const sampleData = [
+	{
+		id: 1,
+		name: 'John Doe',
+		age: 30,
+		department: 'Engineering',
+		salary: 75000,
+		email: 'john.doe@example.com',
+	},
+	{
+		id: 2,
+		name: 'Jane Smith',
+		age: 28,
+		department: 'Design',
+		salary: 68000,
+		email: 'jane.smith@example.com',
+	},
+	{
+		id: 3,
+		name: 'Bob Johnson',
+		age: 35,
+		department: 'Engineering',
+		salary: 82000,
+		email: 'bob.johnson@example.com',
+	},
+	{
+		id: 4,
+		name: 'Alice Brown',
+		age: 32,
+		department: 'Marketing',
+		salary: 71000,
+		email: 'alice.brown@example.com',
+	},
+	{
+		id: 5,
+		name: 'Charlie Wilson',
+		age: 29,
+		department: 'Engineering',
+		salary: 77000,
+		email: 'charlie.wilson@example.com',
+	},
+];
+
+const Template = (args) => {
+	return html`
+		<style>
+			.omnitable-container {
+				height: 300px;
+				display: flex;
+				flex-direction: column;
+			}
+			cosmoz-omnitable {
+				flex: 1;
+				min-height: 0;
+				display: flex;
+				flex-direction: column;
+			}
+			cosmoz-omnitable-item-row {
+				border-bottom: 1px solid #e1e2e5;
+			}
+			cosmoz-omnitable-header-row {
+				border-bottom: 1px solid #e1e2e5;
+			}
+		</style>
+		<div class="omnitable-container">
+			<cosmoz-omnitable
+				.data=${sampleData}
+				hash-param=${args.hashParam || ''}
+				sort-on=${args.sortOn || ''}
+				group-on=${args.groupOn || ''}
+				?descending=${args.descending}
+				?group-on-descending=${args.groupOnDescending}
+				?hide-select-all=${args.hideSelectAll}
+				settings-id=${args.settingsId || ''}
+				?no-local=${args.noLocal}
+				?no-local-sort=${args.noLocalSort}
+				?no-local-filter=${args.noLocalFilter}
+				?loading=${args.loading}
+				mini-breakpoint=${args.miniBreakpoint || '768px'}
+			>
+				<cosmoz-omnitable-column
+					name="name"
+					title="Name"
+					value-path="name"
+					sort-on="name"
+					group-on="name"
+				>
+				</cosmoz-omnitable-column>
+
+				<cosmoz-omnitable-column
+					name="age"
+					title="Age"
+					value-path="age"
+					sort-on="age"
+				>
+				</cosmoz-omnitable-column>
+
+				<cosmoz-omnitable-column
+					name="department"
+					title="Department"
+					value-path="department"
+					sort-on="department"
+					group-on="department"
+				>
+				</cosmoz-omnitable-column>
+
+				<cosmoz-omnitable-column
+					name="salary"
+					title="Salary"
+					value-path="salary"
+					sort-on="salary"
+				>
+				</cosmoz-omnitable-column>
+
+				<cosmoz-omnitable-column
+					name="email"
+					title="Email"
+					value-path="email"
+					sort-on="email"
+				>
+				</cosmoz-omnitable-column>
+
+				<div slot="actions">
+					<button>Export</button>
+					<button>Settings</button>
+				</div>
+			</cosmoz-omnitable>
+		</div>
+	`;
+};
+
+export const Default = Template.bind({});
+Default.args = {};
+
+export const WithSorting = Template.bind({});
+WithSorting.args = {
+	sortOn: 'name',
+	descending: false,
+};
+
+export const WithGrouping = Template.bind({});
+WithGrouping.args = {
+	groupOn: 'department',
+	groupOnDescending: false,
+};
+
+export const Loading = Template.bind({});
+Loading.args = {
+	loading: true,
+};
+
+export const HideSelectAll = Template.bind({});
+HideSelectAll.args = {
+	hideSelectAll: true,
+};
+
+export const NoLocalOperations = Template.bind({});
+NoLocalOperations.args = {
+	noLocal: true,
+};
+
+export const CustomSettings = Template.bind({});
+CustomSettings.args = {
+	settingsId: 'my-table-settings',
+	hashParam: 'table-state',
+};
+
+const CompactTemplate = (args) => {
+	return html`
+		<style>
+			.omnitable-container-compact {
+				height: 300px;
+				display: flex;
+				flex-direction: column;
+				border: 1px solid #e1e2e5;
+				margin: 0;
+				padding: 0;
+			}
+			cosmoz-omnitable {
+				flex: 1;
+				min-height: 0;
+				display: flex;
+				flex-direction: column;
+			}
+		</style>
+		<div class="omnitable-container-compact">
+			<cosmoz-omnitable .data=${sampleData}>
+				<cosmoz-omnitable-column
+					name="name"
+					title="Name"
+					value-path="name"
+					sort-on="name"
+				>
+				</cosmoz-omnitable-column>
+
+				<cosmoz-omnitable-column
+					name="department"
+					title="Department"
+					value-path="department"
+					sort-on="department"
+				>
+				</cosmoz-omnitable-column>
+
+				<cosmoz-omnitable-column
+					name="salary"
+					title="Salary"
+					value-path="salary"
+					sort-on="salary"
+				>
+				</cosmoz-omnitable-column>
+			</cosmoz-omnitable>
+		</div>
+	`;
+};
+
+export const Compact = CompactTemplate.bind({});
+Compact.args = {};
+
+const FullHeightTemplate = (args) => {
+	return html`
+		<style>
+			.omnitable-container-full {
+				height: 600px;
+				display: flex;
+				flex-direction: column;
+				border: 1px solid #e1e2e5;
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+			}
+			cosmoz-omnitable {
+				flex: 1;
+				min-height: 0;
+				display: flex;
+				flex-direction: column;
+			}
+			/* Fix the gap issue with cosmoz-bottom-bar */
+			cosmoz-omnitable::part(bottom-bar) {
+				margin-top: 0;
+				border-top: none;
+			}
+			/* Ensure the main container takes full space */
+			cosmoz-omnitable .mainContainer {
+				height: 100%;
+				display: flex;
+				flex-direction: column;
+			}
+			/* Make sure table content fills available space */
+			cosmoz-omnitable .tableContent {
+				flex: 1;
+				min-height: 0;
+			}
+		</style>
+		<div class="omnitable-container-full">
+			<cosmoz-omnitable .data=${sampleData}>
+				<cosmoz-omnitable-column
+					name="name"
+					title="Name"
+					value-path="name"
+					sort-on="name"
+					group-on="name"
+				>
+				</cosmoz-omnitable-column>
+
+				<cosmoz-omnitable-column
+					name="age"
+					title="Age"
+					value-path="age"
+					sort-on="age"
+				>
+				</cosmoz-omnitable-column>
+
+				<cosmoz-omnitable-column
+					name="department"
+					title="Department"
+					value-path="department"
+					sort-on="department"
+					group-on="department"
+				>
+				</cosmoz-omnitable-column>
+
+				<cosmoz-omnitable-column
+					name="salary"
+					title="Salary"
+					value-path="salary"
+					sort-on="salary"
+				>
+				</cosmoz-omnitable-column>
+
+				<cosmoz-omnitable-column
+					name="email"
+					title="Email"
+					value-path="email"
+					sort-on="email"
+				>
+				</cosmoz-omnitable-column>
+
+				<div slot="actions">
+					<button>Export</button>
+					<button>Settings</button>
+				</div>
+			</cosmoz-omnitable>
+		</div>
+	`;
+};
+
+export const FullHeight = FullHeightTemplate.bind({});
+FullHeight.args = {};
+
+// Version specifically to test bottom bar alignment
+const BottomBarTestTemplate = (args) => {
+	return html`
+		<style>
+			.omnitable-container-bottom-bar-test {
+				height: 500px;
+				display: flex;
+				flex-direction: column;
+				border: 1px solid #e1e2e5;
+				margin: 0;
+				padding: 0;
+				background-color: #f5f5f5;
+			}
+			cosmoz-omnitable {
+				flex: 1;
+				min-height: 0;
+				display: flex;
+				flex-direction: column;
+				background-color: white;
+			}
+			/* Specific fixes for bottom bar gap */
+			cosmoz-omnitable cosmoz-bottom-bar {
+				margin: 0;
+				border: none;
+				flex-shrink: 0;
+			}
+		</style>
+		<div class="omnitable-container-bottom-bar-test">
+			<cosmoz-omnitable .data=${sampleData}>
+				<cosmoz-omnitable-column
+					name="name"
+					title="Name"
+					value-path="name"
+					sort-on="name"
+				>
+				</cosmoz-omnitable-column>
+
+				<cosmoz-omnitable-column
+					name="department"
+					title="Department"
+					value-path="department"
+					sort-on="department"
+				>
+				</cosmoz-omnitable-column>
+
+				<cosmoz-omnitable-column
+					name="salary"
+					title="Salary"
+					value-path="salary"
+					sort-on="salary"
+				>
+				</cosmoz-omnitable-column>
+
+				<div slot="actions">
+					<button>Export Data</button>
+					<button>Configure</button>
+					<button>Refresh</button>
+				</div>
+			</cosmoz-omnitable>
+		</div>
+	`;
+};
+
+export const BottomBarTest = BottomBarTestTemplate.bind({});
+BottomBarTest.args = {};
