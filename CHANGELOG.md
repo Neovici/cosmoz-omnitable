@@ -1,3 +1,10 @@
+## [14.15.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.15.0...v14.15.1) (2025-09-24)
+
+
+### Bug Fixes
+
+* resolve cosmoz-omnitable path ([0a27792](https://github.com/neovici/cosmoz-omnitable/commit/0a2779200464200541f5a09a47659c46fc753b07))
+
 # [14.15.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.14.3...v14.15.0) (2025-09-22)
 
 
