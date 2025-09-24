@@ -1,3 +1,10 @@
+# [14.16.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.15.1...v14.16.0) (2025-09-24)
+
+
+### Features
+
+* convert icons.js to typescript ([03dd7b7](https://github.com/neovici/cosmoz-omnitable/commit/03dd7b713d42ea9c6a9c7ba5b3cbf5b51d840351))
+
 ## [14.15.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.15.0...v14.15.1) (2025-09-24)
 
 
