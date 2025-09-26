@@ -5,10 +5,11 @@ type Currency = 'SEK' | 'USD' | 'EUR' | 'AUD';
 
 interface AmountValue {
 	amount: string | number;
-	currency: Currency;
+	currency: Currency | string;
 }
 
-type Rates = Partial<Record<Currency, number>>;
+type Rates = Partial<Record<Currency, number>> &
+	Record<string, number | undefined>;
 
 type Limit = number | null;
 
@@ -25,21 +26,22 @@ interface Column {
 const isValidAmountValue = (value: unknown): value is AmountValue => {
 	return (
 		typeof value === 'object' &&
-		value != null &&
+		value !== null &&
 		'currency' in value &&
 		'amount' in value &&
-		(value as AmountValue).currency != null
+		(value as AmountValue).currency !== null &&
+		(value as AmountValue).currency !== ''
 	);
 };
 
-const convertToAmount = (value: AmountValue): AmountValue | undefined => {
-	const number = toNumber(value.amount);
+const convertToAmount = (value: AmountValue): AmountValue | null => {
+	const number: unknown = toNumber(value.amount);
 
-	if (number === null || Number.isNaN(number)) {
-		return undefined;
+	if (typeof number === 'number') {
+		return { currency: value.currency, amount: number };
+	} else {
+		return null;
 	}
-
-	return { currency: value.currency, amount: number };
 };
 
 export const toAmount = (
@@ -47,20 +49,24 @@ export const toAmount = (
 	value: AmountValue | number | null | '' | unknown,
 	limit?: Limit | null,
 	limitFunc?: LimitFunc,
-): AmountValue | undefined => {
-	if (value === null || value === '' || !isValidAmountValue(value)) {
-		return undefined;
+): AmountValue | null | undefined => {
+	if (value === null || value === '' || value === undefined) {
+		return;
+	}
+
+	if (!isValidAmountValue(value)) {
+		return null;
 	}
 
 	const amount = convertToAmount(value);
 
-	if (amount === undefined || limitFunc === undefined || limit === undefined) {
+	if (amount === null || limitFunc === null || limit === null) {
 		return amount;
 	}
 
 	const limitAmount = toAmount(rates, limit);
 
-	if (limitAmount === undefined) {
+	if (limitAmount === null || limitAmount === undefined) {
 		return amount;
 	}
 
@@ -74,7 +80,7 @@ export const toAmount = (
 };
 
 interface GetComparableValueProps {
-	valuePath: ValuePath;
+	valuePath?: ValuePath;
 	rates?: Rates;
 	autodetect?: boolean;
 }
@@ -109,7 +115,6 @@ interface AmountObj {
 		subProp: string;
 	};
 	value: number;
-	Symbol(index: number): number;
 }
 
 type Item = FilterObj | AmountObj;
@@ -117,21 +122,21 @@ type Item = FilterObj | AmountObj;
 export const getComparableValue = (
 	{ valuePath, rates }: GetComparableValueProps,
 	item: Item,
-): number | null => {
+): number | undefined => {
 	if (item == null) {
-		return null;
+		return;
 	}
 
 	let value: unknown = item;
 
-	if (valuePath !== null) {
+	if (valuePath != null) {
 		value = get(item, valuePath);
 	}
 
 	const amountValue = toAmount(rates, value);
 
 	if (amountValue == null) {
-		return null;
+		return;
 	}
 
 	const amount = toNumber(amountValue.amount);
@@ -140,7 +145,7 @@ export const getComparableValue = (
 		return amount;
 	}
 
-	return amount * (rates?.[amountValue.currency] ?? 1);
+	return amount * (rates?.[amountValue.currency] || 1);
 };
 
 export const applySingleFilter =
@@ -148,16 +153,15 @@ export const applySingleFilter =
 	(item: Item): boolean => {
 		const value = getComparableValue(column, item);
 
-		if (value === null) {
+		if (value === undefined) {
 			return false;
 		}
 
 		const min = getComparableValue({ ...column, valuePath: 'min' }, filter);
 		const max = getComparableValue({ ...column, valuePath: 'max' }, filter);
 
-		// needs checking
-		if (min === null || max === null) {
-			return false;
+		if (min === undefined || max === undefined) {
+			return true;
 		}
 
 		return !(value < min || value > max);
@@ -166,9 +170,14 @@ export const applySingleFilter =
 const formatters: Record<string, Intl.NumberFormat> = {};
 
 export const getFormatter = (
-	currency: Currency,
+	currency: Currency | string,
 	locale?: Currency,
 ): Intl.NumberFormat => {
+	// // Return a basic number formatter if currency is empty
+	// if (!currency || currency === '') {
+	//  return new Intl.NumberFormat(locale || undefined);
+	// }
+
 	const id = locale ? locale : '';
 	const key = currency + id || '';
 	if (formatters[key]) {
@@ -190,7 +199,7 @@ export const renderValue = (
 ): Intl.NumberFormat | string => {
 	const amount = toAmount(rates, value);
 
-	if (amount == null) {
+	if (amount === undefined || amount === null) {
 		return '';
 	}
 
@@ -224,12 +233,12 @@ export const toHashString = (value: AmountValue | null): string => {
 export const fromHashString = (
 	value: string | null,
 ): AmountValue | null | undefined => {
-	if (value === null || value === '') {
-		return null;
+	if (value === null || value === '' || value === undefined) {
+		return undefined;
 	}
 	const params = value.match(/^(-?[\d]+)([\D]+?)$/iu);
 	if (!Array.isArray(params) || params.length < 0) {
-		return null;
+		return undefined;
 	}
 	return { amount: params[1], currency: params[2] as Currency };
 };
