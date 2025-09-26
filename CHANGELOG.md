@@ -1,3 +1,10 @@
+# [14.17.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.16.0...v14.17.0) (2025-09-26)
+
+
+### Features
+
+* add ts support in dev server ([1afd0d7](https://github.com/neovici/cosmoz-omnitable/commit/1afd0d796af145c9c29ff9eca295847ec239b70a))
+
 # [14.16.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.15.1...v14.16.0) (2025-09-24)
 
 
