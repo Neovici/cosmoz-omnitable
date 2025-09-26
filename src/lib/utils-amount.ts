@@ -32,11 +32,11 @@ const isValidAmountValue = (value: unknown): value is AmountValue => {
 	);
 };
 
-const convertToAmount = (value: AmountValue): AmountValue | null => {
+const convertToAmount = (value: AmountValue): AmountValue | undefined => {
 	const number = toNumber(value.amount);
 
 	if (number === null || Number.isNaN(number)) {
-		return null;
+		return undefined;
 	}
 
 	return { currency: value.currency, amount: number };
@@ -47,20 +47,20 @@ export const toAmount = (
 	value: AmountValue | number | null | '' | unknown,
 	limit?: Limit | null,
 	limitFunc?: LimitFunc,
-): AmountValue | null => {
+): AmountValue | undefined => {
 	if (value === null || value === '' || !isValidAmountValue(value)) {
-		return null;
+		return undefined;
 	}
 
 	const amount = convertToAmount(value);
 
-	if (amount === null || limitFunc === null || limit == null) {
+	if (amount === undefined || limitFunc === undefined || limit === undefined) {
 		return amount;
 	}
 
 	const limitAmount = toAmount(rates, limit);
 
-	if (limitAmount === null) {
+	if (limitAmount === undefined) {
 		return amount;
 	}
 
