@@ -39,9 +39,9 @@ const convertToAmount = (value: AmountValue): AmountValue | null => {
 
 	if (typeof number === 'number') {
 		return { currency: value.currency, amount: number };
-	} else {
-		return null;
 	}
+
+	return null;
 };
 
 export const toAmount = (
