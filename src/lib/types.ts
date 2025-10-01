@@ -10,7 +10,7 @@ export interface AmountValue {
 export type ValuePath = 'amount' | 'min' | 'max' | 'value';
 
 export interface Value {
-	valuePath: ValuePath;
+	valuePath?: ValuePath;
 	locale?: string;
 	minimumFractionDigits?: number | null;
 	maximumFractionDigits?: number | null;

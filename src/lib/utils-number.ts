@@ -1,6 +1,6 @@
 import { get } from '@polymer/polymer/lib/utils/path';
 import { memoooize } from '@neovici/cosmoz-utils/memoize';
-import { LimitFunction, Value, Item, FilterObj } from './types';
+import { LimitFunction, Value, Item, FilterObj } from './types.js';
 
 export const toNumber = (
 	value?: unknown,
@@ -44,9 +44,7 @@ export const getInputString = (
 	{ valuePath }: Pick<Value, 'valuePath'>,
 	item: Item,
 ): string | null => {
-	const value = toNumber(valuePath ? get(item, valuePath) : undefined);
-
-	console.log({ item });
+	const value = toNumber(valuePath ? get(item, valuePath) : item);
 
 	return toInputString(value);
 };
@@ -62,14 +60,14 @@ export const toHashString = (value: unknown): string => {
 };
 
 export const getComparableValue = (
-	{ valuePath, maximumFractionDigits }: Value,
+	{ valuePath, maximumFractionDigits }: Partial<Value>,
 	item?: Item | FilterObj,
 ): number | undefined => {
-	if (item == null || valuePath == null) {
+	if (item == null) {
 		return;
 	}
 
-	const value = get(item, valuePath);
+	const value = valuePath ? get(item, valuePath) : item;
 	const numValue = toNumber(value);
 
 	if (numValue == null) {
@@ -106,10 +104,15 @@ export const makeFormatter = memoooize(
 );
 
 export const getString = (
-	{ valuePath, locale, minimumFractionDigits, maximumFractionDigits }: Value,
+	{
+		valuePath,
+		locale,
+		minimumFractionDigits,
+		maximumFractionDigits,
+	}: Partial<Value>,
 	item: Item,
 ): string | undefined => {
-	const value = get(item, valuePath);
+	const value = valuePath ? get(item, valuePath) : item;
 
 	if (value == null) {
 		return '';
@@ -133,7 +136,6 @@ export const getString = (
 export const applySingleFilter =
 	(column: Value, filter: FilterObj) =>
 	(item: Item): boolean => {
-		console.log({ column, item, filter });
 		const value = getComparableValue(column, item);
 
 		if (value == null) {
