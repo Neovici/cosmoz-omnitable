@@ -26,7 +26,7 @@ interface Column {
 const isValidAmountValue = (value: unknown): value is AmountValue => {
 	return (
 		typeof value === 'object' &&
-		value !== null &&
+		value != null &&
 		'currency' in value &&
 		'amount' in value &&
 		(value as AmountValue).currency !== null &&
@@ -46,11 +46,11 @@ const convertToAmount = (value: AmountValue): AmountValue | null => {
 
 export const toAmount = (
 	rates: Rates = {},
-	value: AmountValue | number | null | '' | unknown,
+	value: unknown,
 	limit?: Limit | null,
 	limitFunc?: LimitFunc,
 ): AmountValue | null | undefined => {
-	if (value === null || value === '' || value === undefined) {
+	if (value == null || value === '') {
 		return;
 	}
 
@@ -60,13 +60,13 @@ export const toAmount = (
 
 	const amount = convertToAmount(value);
 
-	if (amount === null || limitFunc === null || limit === null) {
+	if (amount == null || limitFunc == null || limit == null) {
 		return amount;
 	}
 
 	const limitAmount = toAmount(rates, limit);
 
-	if (limitAmount === null || limitAmount === undefined) {
+	if (limitAmount == null || limitAmount == null) {
 		return amount;
 	}
 
@@ -141,7 +141,7 @@ export const getComparableValue = (
 
 	const amount = toNumber(amountValue.amount);
 
-	if (rates === null || amount === null) {
+	if (rates == null || amount == null) {
 		return amount;
 	}
 
@@ -173,11 +173,6 @@ export const getFormatter = (
 	currency: Currency | string,
 	locale?: Currency,
 ): Intl.NumberFormat => {
-	// // Return a basic number formatter if currency is empty
-	// if (!currency || currency === '') {
-	//  return new Intl.NumberFormat(locale || undefined);
-	// }
-
 	const id = locale ? locale : '';
 	const key = currency + id || '';
 	if (formatters[key]) {
@@ -199,7 +194,7 @@ export const renderValue = (
 ): Intl.NumberFormat | string => {
 	const amount = toAmount(rates, value);
 
-	if (amount === undefined || amount === null) {
+	if (amount == null) {
 		return '';
 	}
 
