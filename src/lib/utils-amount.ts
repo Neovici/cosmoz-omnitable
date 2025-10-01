@@ -8,7 +8,6 @@ import {
 	Item,
 	AmountLimit,
 	Rates,
-	Limit,
 	LimitFunction,
 } from './types';
 
@@ -67,39 +66,6 @@ export const toAmount = (
 
 	return lNumber === valueInBase ? amount : limitAmount;
 };
-
-interface GetComparableValueProps {
-	valuePath?: GetPath;
-	rates?: Rates;
-	autodetect?: boolean;
-}
-
-interface AmountObj {
-	amount: Amount;
-	bool: boolean;
-	date: Date;
-	dateJSON: string;
-	group: string;
-	id: number;
-	list: string[];
-	name: string;
-	object: {
-		label: string;
-		value: number;
-	};
-	objectList: Array<{
-		name: string;
-		value: number;
-	}>;
-	randomString: string;
-	randomString2: string;
-	randomString3: string;
-	randomString4: string;
-	sub: {
-		subProp: string;
-	};
-	value: number;
-}
 
 export const getComparableValue = <T extends AmountColumn>(
 	{ valuePath, rates }: T,
