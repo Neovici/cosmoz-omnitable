@@ -1,40 +1,29 @@
 import { get } from '@polymer/polymer/lib/utils/path';
 import { toNumber } from './utils-number';
+import {
+	Amount,
+	Currency,
+	GetPath,
+	AmountColumn,
+	Item,
+	AmountLimit,
+	Rates,
+	Limit,
+	LimitFunction,
+} from './types';
 
-type Currency = 'SEK' | 'USD' | 'EUR' | 'AUD';
-
-interface AmountValue {
-	amount: string | number;
-	currency: Currency | string;
-}
-
-type Rates = Partial<Record<Currency, number>> &
-	Record<string, number | undefined>;
-
-type Limit = number | null;
-
-type LimitFunc = (a: number, b: number) => number | undefined;
-
-type ValuePath = 'amount' | 'min' | 'max';
-
-interface Column {
-	valuePath?: ValuePath;
-	rates?: Rates;
-	locale?: Currency;
-}
-
-const isValidAmountValue = (value: unknown): value is AmountValue => {
+const isValidAmountValue = (value: unknown): value is Amount => {
 	return (
 		typeof value === 'object' &&
 		value != null &&
 		'currency' in value &&
 		'amount' in value &&
-		(value as AmountValue).currency !== null &&
-		(value as AmountValue).currency !== ''
+		(value as Amount).currency !== null &&
+		(value as Amount).currency !== ''
 	);
 };
 
-const convertToAmount = (value: AmountValue): AmountValue | null => {
+const convertToAmount = (value: Amount): Amount | null => {
 	const number: unknown = toNumber(value.amount);
 
 	if (typeof number === 'number') {
@@ -47,9 +36,9 @@ const convertToAmount = (value: AmountValue): AmountValue | null => {
 export const toAmount = (
 	rates: Rates = {},
 	value: unknown,
-	limit?: Limit | null,
-	limitFunc?: LimitFunc,
-): AmountValue | null | undefined => {
+	limit?: AmountLimit | null,
+	limitFunc?: LimitFunction,
+): Amount | null | undefined => {
 	if (value == null || value === '') {
 		return;
 	}
@@ -80,18 +69,13 @@ export const toAmount = (
 };
 
 interface GetComparableValueProps {
-	valuePath?: ValuePath;
+	valuePath?: GetPath;
 	rates?: Rates;
 	autodetect?: boolean;
 }
 
-interface FilterObj {
-	min: AmountValue;
-	max: AmountValue;
-}
-
 interface AmountObj {
-	amount: AmountValue;
+	amount: Amount;
 	bool: boolean;
 	date: Date;
 	dateJSON: string;
@@ -117,10 +101,8 @@ interface AmountObj {
 	value: number;
 }
 
-type Item = FilterObj | AmountObj;
-
-export const getComparableValue = (
-	{ valuePath, rates }: GetComparableValueProps,
+export const getComparableValue = <T extends AmountColumn>(
+	{ valuePath, rates }: T,
 	item: Item,
 ): number | undefined => {
 	if (item == null) {
@@ -149,7 +131,7 @@ export const getComparableValue = (
 };
 
 export const applySingleFilter =
-	(column: GetComparableValueProps, filter: FilterObj) =>
+	(column: AmountColumn, filter: AmountLimit) =>
 	(item: Item): boolean => {
 		const value = getComparableValue(column, item);
 
@@ -189,7 +171,7 @@ export const getFormatter = (
 
 export const renderValue = (
 	rates: Rates | undefined,
-	value: AmountValue | number | null | '' | unknown,
+	value: Amount | unknown,
 	locale?: Currency,
 ): Intl.NumberFormat | string => {
 	const amount = toAmount(rates, value);
@@ -201,8 +183,8 @@ export const renderValue = (
 	return getFormatter(amount.currency, locale).format(amount.amount as number);
 };
 
-export const getString = (
-	{ valuePath, rates, locale }: Column,
+export const getString = <T extends AmountColumn>(
+	{ valuePath, rates, locale }: T,
 	item: Item,
 ): Intl.NumberFormat | string => {
 	const value = toAmount(rates, valuePath ? get(item, valuePath) : undefined);
@@ -217,7 +199,7 @@ export const getString = (
 	return renderValue(rates, value, locale);
 };
 
-export const toHashString = (value: AmountValue | null): string => {
+export const toHashString = (value: Amount | null): string => {
 	if (!value) {
 		return '';
 	}
@@ -227,8 +209,8 @@ export const toHashString = (value: AmountValue | null): string => {
 
 export const fromHashString = (
 	value: string | null,
-): AmountValue | null | undefined => {
-	if (value === null || value === '' || value === undefined) {
+): Amount | null | undefined => {
+	if (value == null || value === '') {
 		return undefined;
 	}
 	const params = value.match(/^(-?[\d]+)([\D]+?)$/iu);
@@ -239,12 +221,12 @@ export const fromHashString = (
 };
 
 export const getCurrency = (
-	{ valuePath }: { valuePath?: ValuePath },
+	{ valuePath }: { valuePath?: GetPath },
 	item: Item,
 ): string | null => (valuePath ? get(item, valuePath)?.currency : null);
 
 export const getInputString = (
-	{ valuePath }: { valuePath?: ValuePath },
+	{ valuePath }: { valuePath?: GetPath },
 	item: Item,
 ): string | number | undefined =>
 	valuePath ? get(item, valuePath)?.amount : undefined;
