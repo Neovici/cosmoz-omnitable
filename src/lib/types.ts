@@ -19,7 +19,7 @@ export interface NumberColumn extends Column {
 	maximumFractionDigits?: number | null;
 }
 
-export interface DateColumn extends Column {}
+export type DateColumn = Column;
 
 export interface Limit<T> {
 	min: T;

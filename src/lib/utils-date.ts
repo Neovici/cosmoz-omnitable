@@ -236,7 +236,6 @@ export const toXlsxValue = <T extends DateColumn>(
 export const applySingleFilter =
 	(column: DateColumn, filter: Limit<Date | undefined>) => (item: Item) => {
 		const value = getComparableValue(column, item);
-		console.log({ filter, column, item });
 
 		if (value == null) {
 			return false;
