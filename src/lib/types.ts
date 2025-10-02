@@ -16,7 +16,7 @@ export interface Column {
 	locale?: Currency;
 }
 
-export interface NumberColumn {
+export interface NumberColumn extends Column {
 	minimumFractionDigits?: number | null;
 	maximumFractionDigits?: number | null;
 }

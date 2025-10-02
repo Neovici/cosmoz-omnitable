@@ -1,3 +1,23 @@
+# [14.18.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.17.0...v14.18.0) (2025-10-02)
+
+
+### Bug Fixes
+
+* change ts module ([55a3bfb](https://github.com/neovici/cosmoz-omnitable/commit/55a3bfb6fa924b9088b3c665b5071fb8b4c83dba))
+
+
+### Features
+
+* convert utils-number.js to typescript ([13c7352](https://github.com/neovici/cosmoz-omnitable/commit/13c73527e747245702a38aaf999ebdf3a6c1e8da))
+* **utils-number:** less specific types ([dc0e300](https://github.com/neovici/cosmoz-omnitable/commit/dc0e3003ae7a31f4d75216c3572d079cb2a0cd69))
+
+# [14.17.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.16.0...v14.17.0) (2025-09-26)
+
+
+### Features
+
+* add ts support in dev server ([1afd0d7](https://github.com/neovici/cosmoz-omnitable/commit/1afd0d796af145c9c29ff9eca295847ec239b70a))
+
 # [14.16.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.15.1...v14.16.0) (2025-09-24)
 
 
