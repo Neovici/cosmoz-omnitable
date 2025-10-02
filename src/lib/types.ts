@@ -9,12 +9,17 @@ export interface Amount {
 
 export type GetPath = string | (string | number)[];
 
-export interface NumberColumn {
+export interface Column {
 	valuePath?: GetPath;
 	locale?: string;
+}
+
+export interface NumberColumn extends Column {
 	minimumFractionDigits?: number | null;
 	maximumFractionDigits?: number | null;
 }
+
+export interface DateColumn extends Column {}
 
 export interface Limit<T> {
 	min: T;
