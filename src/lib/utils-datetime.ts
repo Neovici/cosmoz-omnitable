@@ -5,7 +5,7 @@ import { DateColumn, Item } from './types';
 
 export const formatters: Record<string, Intl.DateTimeFormat> = {};
 
-export const getFormatter = (locale?: string): Intl.DateTimeFormat => {
+export const getFormatter = (locale?: string) => {
 	const key = locale || '';
 
 	if (formatters[key]) {
@@ -82,7 +82,7 @@ export const toInputString = (value: unknown) => {
 
 	const localISOString = toLocalISOString(date);
 
-	return localISOString ? localISOString.slice(0, 19) : null;
+	return localISOString ? localISOString.slice(0, 19) : localISOString;
 };
 
 export const getInputString = ({ valuePath }: DateColumn, item: Item) =>
