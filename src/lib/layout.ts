@@ -1,6 +1,17 @@
-const finite = (num) => (Number.isFinite(num) ? num : 0);
+interface Column {
+	flex: number;
+	index: number;
+	minWidth: number;
+	width: number;
+	priority: number;
+	name: string;
+}
+
+type Columns = Column[];
+
+const finite = (num: number) => (Number.isFinite(num) ? num : 0);
 export const // eslint-disable-next-line max-statements
-	layout = (columns, container) => {
+	layout = (columns: Columns, container: number) => {
 		const result = [];
 
 		let [widthSum, lots] = columns.reduce(
