@@ -1,3 +1,17 @@
+# [14.19.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.18.0...v14.19.0) (2025-10-03)
+
+
+### Bug Fixes
+
+* fix lint error ([6004788](https://github.com/neovici/cosmoz-omnitable/commit/6004788a340e281c807c71d2db9391521563e86a))
+
+
+### Features
+
+* convert utils-date.js to typescript ([582f4b2](https://github.com/neovici/cosmoz-omnitable/commit/582f4b2a505d56b00b0a417aecc91dd9102bd619))
+* convert utils-date.js to typescript ([dc626f8](https://github.com/neovici/cosmoz-omnitable/commit/dc626f86bfa0800e372ec02e756f9be09a22412a))
+* convert utils-time.js to typescript ([4138b3c](https://github.com/neovici/cosmoz-omnitable/commit/4138b3cec95c615103b11e9f32e59fdee66becb5))
+
 # [14.18.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.17.0...v14.18.0) (2025-10-02)
 
 
