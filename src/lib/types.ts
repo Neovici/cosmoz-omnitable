@@ -12,7 +12,6 @@ export interface Amount {
 export type GetPath = string | (string | number)[];
 
 export interface Column {
-export interface Column {
 	valuePath?: GetPath;
 	locale?: Currency;
 }
