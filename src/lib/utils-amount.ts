@@ -32,6 +32,7 @@ const convertToAmount = (value: Amount): Amount | null => {
 	return null;
 };
 
+// Converts a value to an amount object optionaly limiting it.
 export const toAmount = (
 	rates: Rates = {},
 	value: unknown,
@@ -58,6 +59,7 @@ export const toAmount = (
 		return amount;
 	}
 
+	// calculate value and limit amounts with rates
 	const valueInBase = (amount.amount as number) * (rates[amount.currency] || 1);
 	const limitInBase =
 		(limitAmount.amount as number) * (rates[limitAmount.currency] || 1);
