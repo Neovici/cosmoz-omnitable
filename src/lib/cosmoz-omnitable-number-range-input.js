@@ -5,6 +5,7 @@ import { _ } from '@neovici/cosmoz-i18next';
 import '@neovici/cosmoz-input';
 import { rangeInputMixin } from './cosmoz-omnitable-range-input-mixin';
 import { polymerHauntedRender } from './polymer-haunted-render-mixin';
+import './components/cosmoz-omnitable-dropdown-menu/cosmoz-omnitable-dropdown-menu';
 
 class NumberRangeInput extends rangeInputMixin(
 	polymerHauntedRender(PolymerElement),
@@ -29,14 +30,12 @@ class NumberRangeInput extends rangeInputMixin(
 
 	render() {
 		const onOpenedChanged = (event) => {
-			this.headerFocused = event.detail.value;
 			this._onDropdownOpenedChanged(event);
 		};
 
 		return html`
 			<style>
-				paper-dropdown-menu {
-					--iron-icon-width: 0;
+				cosmoz-omnitable-dropdown-menu {
 					display: block;
 					text-align: right;
 				}
@@ -88,14 +87,15 @@ class NumberRangeInput extends rangeInputMixin(
 				@click=${() => this.resetFilter()}
 				?visible=${this.hasFilter()}
 			></cosmoz-clear-button>
-			<paper-dropdown-menu
+
+			<cosmoz-omnitable-dropdown-menu
 				label=${this.title}
 				placeholder=${ifDefined(this._filterText)}
 				class="external-values-${this.externalValues}"
 				title=${this._tooltip}
 				horizontal-align="right"
-				?opened=${this.headerFocused}
 				@opened-changed=${onOpenedChanged}
+				placement="bottom-start"
 			>
 				<div class="dropdown-content" slot="dropdown-content">
 					<h3 style="margin: 0;">${this.title}</h3>
@@ -104,6 +104,7 @@ class NumberRangeInput extends rangeInputMixin(
 						type="number"
 						label=${_('From')}
 						.value=${this._filterInput?.min}
+						@click=${(e) => e.currentTarget.focus()}
 						@value-changed=${(event) => {
 							this.set('_filterInput.min', event.detail.value);
 						}}
@@ -117,6 +118,7 @@ class NumberRangeInput extends rangeInputMixin(
 						type="number"
 						label=${_('To')}
 						.value=${this._filterInput?.max}
+						@click=${(e) => e.currentTarget.focus()}
 						@value-changed=${(event) => {
 							this.set('_filterInput.max', event.detail.value);
 						}}
@@ -126,7 +128,7 @@ class NumberRangeInput extends rangeInputMixin(
 						max=${this._toInputString(this._limit.toMax)}
 					></cosmoz-input>
 				</div>
-			</paper-dropdown-menu>
+			</cosmoz-omnitable-dropdown-menu>
 		`;
 	}
 
