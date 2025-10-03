@@ -185,7 +185,7 @@ export const fromHashString = (
 	if (!Array.isArray(params) || params.length < 0) {
 		return undefined;
 	}
-	return { amount: params[1], currency: params[2] as Currency };
+	return { amount: Number(params[1]), currency: params[2] as Currency };
 };
 
 export const getCurrency = (
