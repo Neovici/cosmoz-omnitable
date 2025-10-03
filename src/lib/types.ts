@@ -13,13 +13,8 @@ export type GetPath = string | (string | number)[];
 
 export interface Column {
 	valuePath?: GetPath;
-	locale?: Currency;
-	name?: string;
-	title?: string;
-	minWidth?: string;
-	priority?: number;
-	flex?: string;
-	width?: string;
+	locale?: string;
+	[key: symbol]: unknown;
 }
 
 export interface NumberColumn extends Column {
@@ -40,3 +35,5 @@ export interface Limit<T> {
 export type AmountLimit = Limit<Amount>;
 
 export type Item = object;
+
+export type Items = Item[];
