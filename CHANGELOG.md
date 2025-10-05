@@ -1,3 +1,23 @@
+# [14.21.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.20.0...v14.21.0) (2025-10-03)
+
+
+### Bug Fixes
+
+* fix build error ([e8da19c](https://github.com/neovici/cosmoz-omnitable/commit/e8da19ca071bd072a3f8f6c1ec1c0d12be2eb67f))
+
+
+### Features
+
+* convert utils.ts to typescript ([e74a4ea](https://github.com/neovici/cosmoz-omnitable/commit/e74a4ea1bdcc1aed8c280be5e4facfe736b1ed7d))
+
+# [14.20.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.19.0...v14.20.0) (2025-10-03)
+
+
+### Features
+
+* convert generic-sorter.ts to typescript ([5ce119f](https://github.com/neovici/cosmoz-omnitable/commit/5ce119fa6de75920dbfd6762b5f808dc241399c1))
+* convert layout.js to typescript ([05fef0a](https://github.com/neovici/cosmoz-omnitable/commit/05fef0a037a78225e823c368b33b3c683155c189))
+
 # [14.19.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.18.0...v14.19.0) (2025-10-03)
 
 

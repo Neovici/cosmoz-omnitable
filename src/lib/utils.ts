@@ -2,8 +2,12 @@ const indexSymbol = Symbol('index');
 
 export { indexSymbol };
 
-export const findLastIndex = (array, predicate) => {
-	if (Array.prototype.findLastIndex) {
+export const findLastIndex = (
+	array: number[],
+	predicate: (prop: number, index?: number, array?: number[]) => boolean
+) => {
+
+	if (typeof array.findLastIndex === 'function') {
 		return array.findLastIndex(predicate);
 	}
 
