@@ -11,27 +11,6 @@ import {
 	LimitFunction,
 } from './types';
 
-const isValidAmountValue = (value: unknown): value is Amount => {
-	return (
-		typeof value === 'object' &&
-		value != null &&
-		'currency' in value &&
-		'amount' in value &&
-		(value as Amount).currency !== null &&
-		(value as Amount).currency !== ''
-	);
-};
-
-const convertToAmount = (value: Amount): Amount | null => {
-	const number: unknown = toNumber(value.amount);
-
-	if (typeof number === 'number') {
-		return { currency: value.currency, amount: number };
-	}
-
-	return null;
-};
-
 // Converts a value to an amount object optionaly limiting it.
 export const toAmount = (
 	rates: Rates = {},
@@ -43,30 +22,38 @@ export const toAmount = (
 		return;
 	}
 
-	if (!isValidAmountValue(value)) {
+	if (
+		typeof value !== 'object' ||
+		(value as Amount).currency == null ||
+		(value as Amount).currency === ''
+	) {
 		return null;
 	}
 
-	const amount = convertToAmount(value);
+	const number = toNumber((value as Amount).amount);
 
-	if (amount == null || limitFunc == null || limit == null) {
+	if (number == null || Number.isNaN(number)) {
+		return null;
+	}
+
+	const amount = { currency: (value as Amount).currency, amount: number };
+
+	if (limitFunc == null || limit == null) {
 		return amount;
 	}
 
-	const limitAmount = toAmount(rates, limit);
+	const lAmount = toAmount(rates, limit);
 
-	if (limitAmount == null || limitAmount == null) {
+	if (lAmount == null) {
 		return amount;
 	}
 
 	// calculate value and limit amounts with rates
-	const valueInBase = (amount.amount as number) * (rates[amount.currency] || 1);
-	const limitInBase =
-		(limitAmount.amount as number) * (rates[limitAmount.currency] || 1);
+	const valAmount = amount.amount * (rates[amount.currency] || 1);
+	const limAmount = lAmount.amount * (rates[lAmount.currency] || 1);
+	const lNumber = toNumber(valAmount, limAmount, limitFunc);
 
-	const lNumber = toNumber(valueInBase, limitInBase, limitFunc);
-
-	return lNumber === valueInBase ? amount : limitAmount;
+	return lNumber === valAmount ? amount : lAmount;
 };
 
 export const getComparableValue = <T extends AmountColumn>(
