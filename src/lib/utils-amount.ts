@@ -104,7 +104,7 @@ export const applySingleFilter =
 		return !(value < min || value > max);
 	};
 
-const formatters: Record<string, Intl.NumberFormat> = {};
+export const formatters: Record<string, Intl.NumberFormat> = {};
 
 export const getFormatter = (
 	currency: Currency | string,
