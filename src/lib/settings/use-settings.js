@@ -41,6 +41,8 @@ export default ({ settingsId, host }) => {
 			[columns, ...normalizedSettings.columns.map((s) => s.name)],
 		);
 
+	console.log({ settings, savedSettings, initial });
+
 	return {
 		...rest,
 		opened,

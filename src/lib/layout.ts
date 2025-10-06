@@ -1,13 +1,14 @@
-interface Column {
+export interface ColumnConfig {
 	flex: number;
 	index: number;
 	minWidth: number;
 	width: number;
 	priority: number;
 	name: string;
+	hidden?: boolean;
 }
 
-type Columns = Column[];
+type Columns = ColumnConfig[];
 
 const finite = (num: number) => (Number.isFinite(num) ? num : 0);
 export const // eslint-disable-next-line max-statements
