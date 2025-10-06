@@ -1,12 +1,10 @@
-import { layout } from './layout';
+import { layout, ColumnConfig } from './layout';
 import { findLastIndex } from './utils';
-import { ColumnConfig } from './layout';
 
 type ItemName = ColumnConfig['name'];
 type Width = ColumnConfig['width'];
 
 const _toCss = (layout: number[], config: ColumnConfig[]) => {
-	console.log({ config });
 	const lastVisibleIndex = findLastIndex(
 		layout,
 		(width) => width != null && width > 0,
