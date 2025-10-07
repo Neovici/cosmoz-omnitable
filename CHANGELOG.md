@@ -1,3 +1,10 @@
+## [14.21.3](https://github.com/neovici/cosmoz-omnitable/compare/v14.21.2...v14.21.3) (2025-10-07)
+
+
+### Bug Fixes
+
+* drivers are no longer exported ([0111486](https://github.com/neovici/cosmoz-omnitable/commit/0111486f185c8344face1c745dd08cad050b3cc6))
+
 ## [14.21.2](https://github.com/neovici/cosmoz-omnitable/compare/v14.21.1...v14.21.2) (2025-10-07)
 
 
