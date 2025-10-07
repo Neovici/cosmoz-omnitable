@@ -1,3 +1,10 @@
+# [14.22.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.21.3...v14.22.0) (2025-10-07)
+
+
+### Features
+
+* compile to esnext ([0b431dc](https://github.com/neovici/cosmoz-omnitable/commit/0b431dcec5289f157bd61eca9c52d6be869b47f7))
+
 ## [14.21.3](https://github.com/neovici/cosmoz-omnitable/compare/v14.21.2...v14.21.3) (2025-10-07)
 
 
