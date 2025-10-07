@@ -1,3 +1,10 @@
+## [14.21.2](https://github.com/neovici/cosmoz-omnitable/compare/v14.21.1...v14.21.2) (2025-10-07)
+
+
+### Bug Fixes
+
+* loading state when filtering ([#706](https://github.com/neovici/cosmoz-omnitable/issues/706)) ([b8fa927](https://github.com/neovici/cosmoz-omnitable/commit/b8fa9274bd6da58f61220364abb72e329990a3fd))
+
 ## [14.21.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.21.0...v14.21.1) (2025-10-07)
 
 
