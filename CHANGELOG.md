@@ -1,3 +1,10 @@
+## [14.22.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.22.0...v14.22.1) (2025-10-07)
+
+
+### Bug Fixes
+
+* bare import does not work ([ebc6ea1](https://github.com/neovici/cosmoz-omnitable/commit/ebc6ea10a3765ff87a9ae3e49e032d3481d4425d))
+
 # [14.22.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.21.3...v14.22.0) (2025-10-07)
 
 
