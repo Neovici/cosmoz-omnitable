@@ -18,6 +18,10 @@
 	"main": "dist/cosmoz-omnitable.js",
 	"types": "dist/cosmoz-omnitable.d.ts",
 	"exports": {
+		".": {
+			"types": "./dist/cosmoz-omnitable.d.ts",
+			"default": "./dist/cosmoz-omnitable.js"
+		},
 		"./cosmoz-omnitable.js": {
 			"types": "./dist/cosmoz-omnitable.d.ts",
 			"default": "./dist/cosmoz-omnitable.js"
