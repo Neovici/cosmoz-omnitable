@@ -44,12 +44,19 @@ export const renderList = (header, list) => {
 				</div>`,
 		)}
 		${when(
-			loading,
+			loading && !processedItems.length,
 			() =>
 				html`<div class="tableContent-empty overlay">
 					<cosmoz-omnitable-skeleton
 						.settingsConfig=${settingsConfig}
 					></cosmoz-omnitable-skeleton>
+				</div>`,
+		)}
+		${when(
+			loading && processedItems.length,
+			() =>
+				html`<div class="tableContent-empty overlay spinner">
+					<cz-spinner></cz-spinner>
 				</div>`,
 		)}
 		${when(
