@@ -1,3 +1,10 @@
+## [14.21.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.21.0...v14.21.1) (2025-10-07)
+
+
+### Bug Fixes
+
+* convert compute-layout.js to typescript ([#704](https://github.com/neovici/cosmoz-omnitable/issues/704)) ([80abf8c](https://github.com/neovici/cosmoz-omnitable/commit/80abf8cf3c84af234587030ba659189646fefd35))
+
 # [14.21.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.20.0...v14.21.0) (2025-10-03)
 
 
