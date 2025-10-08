@@ -1,3 +1,10 @@
+## [14.26.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.26.0...v14.26.1) (2025-10-08)
+
+
+### Bug Fixes
+
+* cannot filter by date range with single parameter ([#715](https://github.com/neovici/cosmoz-omnitable/issues/715)) ([ed4cba3](https://github.com/neovici/cosmoz-omnitable/commit/ed4cba3ec8376d962138076fd09f36ad2a31bb1b))
+
 # [14.26.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.25.0...v14.26.0) (2025-10-08)
 
 
