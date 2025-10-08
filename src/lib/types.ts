@@ -13,7 +13,13 @@ export type GetPath = string | (string | number)[];
 
 export interface Column {
 	valuePath?: GetPath;
-	locale?: string;
+	locale?: Currency;
+	name?: string;
+	title?: string;
+	minWidth?: string;
+	priority?: number;
+	flex?: string;
+	width?: string;
 	[key: symbol]: unknown;
 }
 
