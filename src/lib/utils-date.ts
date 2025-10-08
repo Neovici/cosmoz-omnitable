@@ -250,9 +250,5 @@ export const applySingleFilter =
 				filter,
 			);
 
-		if (min == null || max == null) {
-			return false;
-		}
-
-		return !(value < min || value > max);
+		return !(value < (min ?? -Infinity) || value > (max ?? Infinity));
 	};
