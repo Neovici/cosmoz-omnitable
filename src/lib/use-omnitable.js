@@ -50,7 +50,6 @@ export const useOmnitable = (host) => {
 		dataIsValid = data && Array.isArray(data) && data.length > 0,
 		[selectedItems, setSelectedItems] = useState([]);
 
-	console.log({ settingS });
 	usePublicInterface({
 		host,
 		visibleData,

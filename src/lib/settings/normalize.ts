@@ -1,43 +1,50 @@
 import { props } from '@neovici/cosmoz-utils/object';
-import { Column } from '../types';
 import { ColumnConfig } from '../layout';
+import { Column } from '../types';
 
-interface NormalizedSetting {
-	columns: ColumnConfig[];
+interface NormalizedSettings {
+	columns: Omit<ColumnConfig, 'index'>[];
 }
 
-export interface OmnitableSettings {
+export const sgProps = [
+	'sortOn',
+	'descending',
+	'groupOn',
+	'groupOnDescending',
+] as const;
+
+type SgPropsKey = (typeof sgProps)[number];
+
+interface NormalizeProps {
 	columns: Column[];
-	settings: NormalizedSetting;
-	name?: string;
+	settings?: Partial<NormalizedSettings>;
+	savedSettings?: Partial<NormalizedSettings>;
+	initial?: Partial<Record<SgPropsKey, unknown>>;
 }
 
-export const sgProps = ['sortOn', 'descending', 'groupOn', 'groupOnDescending'];
-
-const byName = (name: Column['name']) => (item: { name: Column['name'] }) =>
+const byName = (name: string) => (item: unknown) =>
+	typeof item === 'object' &&
+	item !== null &&
+	'name' in item &&
 	item.name === name;
 
 export const normalizeColumns = (
-	columns: Column[] = [],
-	settings: OmnitableSettings[] = [],
-	savedSettings: OmnitableSettings[] = [],
-): NormalizedSetting => {
-	console.log('normalizeColumns', { columns, settings, savedSettings });
+	columns: NormalizeProps['columns'] = [],
+	settings: NormalizedSettings['columns'] = [],
+	savedSettings: NormalizedSettings['columns'] = [],
+): NormalizedSettings['columns'] => {
 	const _settings = settings.filter((setting) =>
-		setting?.name ? columns.some(byName(setting.name)) : false,
-	);
-
-	const cols = columns.filter((column) => {
-		if (column.name) {
-			return (
+			columns.some(byName(setting.name)),
+		),
+		cols = columns.filter(
+			(column) =>
+				column.name != null &&
 				!settings.some(byName(column.name)) &&
-				!savedSettings.some(byName(column.name))
-			);
-		}
-	});
-	const _savedSettings = savedSettings.filter(
-		(column) => !settings.some(byName(column.name)),
-	);
+				!savedSettings.some(byName(column.name)),
+		),
+		_savedSettings = savedSettings.filter(
+			(column) => !settings.some(byName(column.name)),
+		);
 
 	return [
 		..._settings,
@@ -50,62 +57,48 @@ export const normalizeColumns = (
 
 			return {
 				...setting,
-				title: column.title,
-				minWidth: parseInt(column.minWidth, 10),
+				title: column.title ?? setting.title ?? '',
+				minWidth: parseInt(column.minWidth ?? '0', 10),
 			};
 		}),
 		...cols.map((column) => {
 			const { name, title, priority, minWidth, width, flex } = column;
 			return {
-				name,
-				title,
-				priority,
-				minWidth: parseInt(minWidth, 10),
-				width: parseInt(width, 10),
-				flex: parseInt(flex, 10),
+				name: name ?? '',
+				title: title ?? '',
+				priority: priority ?? 0,
+				minWidth: parseInt(minWidth ?? '0', 10),
+				width: parseInt(width ?? '0', 10),
+				flex: parseInt(flex ?? '0', 10),
 			};
 		}),
 	];
 };
 
 export const normalizeStore = (
-	settings?: OmnitableSettings,
-	current?: OmnitableSettings,
-): NormalizedSetting[] => {
-	return {
-		...current,
-		...props(sgProps)(settings || {}),
-		columns: (settings?.columns ?? []).map(
-			props(['name', 'priority', 'width', 'flex', 'disabled']),
-		),
-	};
-};
+	settings: NormalizedSettings,
+	current: NormalizedSettings,
+) => ({
+	...current,
+	...props(Array.from(sgProps))(settings),
+	columns: settings.columns?.map(
+		props(['name', 'priority', 'width', 'flex', 'disabled']),
+	),
+});
 
 export default ({
 	columns,
 	settings,
 	savedSettings,
 	initial,
-}: {
-	columns: Column[];
-	settings?: OmnitableSettings;
-	savedSettings?: OmnitableSettings;
-	initial: {
-		sortOn?: unknown;
-		descending?: unknown;
-		groupOn?: unknown;
-		groupOnDescending?: unknown;
-	};
-}) => {
+}: NormalizeProps): NormalizedSettings => {
 	const init = Object.fromEntries(
-		sgProps.flatMap((k) => (initial[k] != null ? [[k, initial[k]]] : [])),
+		sgProps.flatMap((k) => (initial?.[k] != null ? [[k, initial[k]]] : [])),
 	);
-
-	console.log({ columns, settings, savedSettings, initial });
 
 	return {
 		...init,
-		...props(sgProps)(savedSettings),
+		...(savedSettings ? props(Array.from(sgProps))(savedSettings) : {}),
 		...settings,
 		columns: normalizeColumns(
 			columns,

@@ -5,6 +5,7 @@ export interface ColumnConfig {
 	width: number;
 	priority: number;
 	name: string;
+	title: string;
 	hidden?: boolean;
 }
 
