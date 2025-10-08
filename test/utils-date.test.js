@@ -1,4 +1,4 @@
-import { renderValue } from '../src/lib/utils-date';
+import { applySingleFilter, renderValue } from '../src/lib/utils-date';
 import { assert } from '@open-wc/testing';
 
 suite('utils-date', () => {
@@ -29,11 +29,53 @@ suite('utils-date', () => {
 			);
 		});
 
-		test('formats a date string to locale', () => {
+		test('formats a date number to locale', () => {
 			assert.equal(
 				renderValue(Date.UTC(2022, 1, 8, 13, 32, 0), formatter),
 				'08/02/2022, 13:32:00',
 			);
+		});
+	});
+
+	suite('applySingleFilter', () => {
+		test('creates a filter for a range', () => {
+			const filter = applySingleFilter(
+				{ valuePath: 'startDate' },
+				{ min: '2023-01-01', max: '2023-12-31' },
+			);
+			assert.isFalse(filter({ startDate: '2022-03-15' }));
+			assert.isTrue(filter({ startDate: '2023-03-15' }));
+			assert.isFalse(filter({ startDate: '2024-03-15' }));
+		});
+
+		test('creates a filter for a range with only a minimum value', () => {
+			const filter = applySingleFilter(
+				{ valuePath: 'startDate' },
+				{ min: '2023-01-01', max: null },
+			);
+			assert.isFalse(filter({ startDate: '2022-03-15' }));
+			assert.isTrue(filter({ startDate: '2023-03-15' }));
+			assert.isTrue(filter({ startDate: '2024-03-15' }));
+		});
+
+		test('creates a filter for a range with only a maximum value', () => {
+			const filter = applySingleFilter(
+				{ valuePath: 'startDate' },
+				{ min: null, max: '2023-12-31' },
+			);
+			assert.isTrue(filter({ startDate: '2022-03-15' }));
+			assert.isTrue(filter({ startDate: '2023-03-15' }));
+			assert.isFalse(filter({ startDate: '2024-03-15' }));
+		});
+
+		test('creates a filter for an empty range', () => {
+			const filter = applySingleFilter(
+				{ valuePath: 'startDate' },
+				{ min: null, max: null },
+			);
+			assert.isTrue(filter({ startDate: '2022-03-15' }));
+			assert.isTrue(filter({ startDate: '2023-03-15' }));
+			assert.isTrue(filter({ startDate: '2024-03-15' }));
 		});
 	});
 });
