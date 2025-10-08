@@ -1,3 +1,20 @@
+# [14.23.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.22.1...v14.23.0) (2025-10-08)
+
+
+### Bug Fixes
+
+* change currency and amount type ([a5920cc](https://github.com/neovici/cosmoz-omnitable/commit/a5920cc107288d88f7a059dbf18a2a2db220cd98))
+* changed toAmount return type to undefined to pass test ([7b47a2c](https://github.com/neovici/cosmoz-omnitable/commit/7b47a2c5fb69b5612301de8fae259ce4f1d7a796))
+* fix failing tests ([0f3e536](https://github.com/neovici/cosmoz-omnitable/commit/0f3e5361c7bb0c3ba596b0de427b205122e6d71f))
+* fix lint error ([86c80b1](https://github.com/neovici/cosmoz-omnitable/commit/86c80b17b381aae205faba6cc1a252fcdc487c4e))
+* remove merge conflicting code ([156c7b7](https://github.com/neovici/cosmoz-omnitable/commit/156c7b7f63f748cad5ee5204e7757c3e410ee4ec))
+
+
+### Features
+
+* convert the remaining functions to ts ([06803a8](https://github.com/neovici/cosmoz-omnitable/commit/06803a868fccae4157d9314ac62c2468ea25a7b5))
+* convert toAmount and getComparableValue to ts ([ee8d107](https://github.com/neovici/cosmoz-omnitable/commit/ee8d10704097aa0c39113ca156f820195f93a468))
+
 ## [14.22.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.22.0...v14.22.1) (2025-10-07)
 
 
