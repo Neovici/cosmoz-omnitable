@@ -1,3 +1,10 @@
+# [14.26.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.25.0...v14.26.0) (2025-10-08)
+
+
+### Features
+
+* implement headerTitleFn ([deb300b](https://github.com/neovici/cosmoz-omnitable/commit/deb300b4d3e169fa25f0decae5a8e2707cec8766))
+
 # [14.25.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.24.0...v14.25.0) (2025-10-08)
 
 
