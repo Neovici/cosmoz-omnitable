@@ -63,10 +63,6 @@ class OmnitableColumnNumber extends columnMixin(PolymerElement) {
 		return get(item, valuePath);
 	}
 
-	cellTitleFn(column, item) {
-		return getString(column, item);
-	}
-
 	getComparableValue(column, item) {
 		return getComparableValue(column, item);
 	}

@@ -114,7 +114,11 @@ export const getString = ({ valuePath }, item) => get(item, valuePath),
 			}
 
 			cellTitleFn(column, item) {
-				return getString(column, item);
+				return this.getString(column, item);
+			}
+
+			headerTitleFn(column) {
+				return column.title;
 			}
 
 			serializeFilter(column, filter) {

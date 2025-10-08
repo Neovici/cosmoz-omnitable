@@ -78,10 +78,6 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 		return getString(column, item);
 	}
 
-	cellTitleFn(column, item) {
-		return getString(column, item);
-	}
-
 	renderEditCell(column, { item }, onItemChange) {
 		const { trueLabel, falseLabel } = column;
 
@@ -104,8 +100,7 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 			.limit=${1}
 			>${when(
 				column.loading,
-				() =>
-					html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`,
+				() => html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`,
 			)}</cosmoz-autocomplete
 		>`;
 	}

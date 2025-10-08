@@ -54,10 +54,6 @@ class OmnitableColumnDate extends columnMixin(PolymerElement) {
 		return toXlsxValue(column, item);
 	}
 
-	cellTitleFn(column, item) {
-		return getString(column, item);
-	}
-
 	getComparableValue(column, item) {
 		return getComparableValue(column, item);
 	}

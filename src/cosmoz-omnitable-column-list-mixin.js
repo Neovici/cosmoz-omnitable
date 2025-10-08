@@ -140,10 +140,6 @@ const unique = (values, valueProperty) => {
 				return toXlsxValue(column, item);
 			}
 
-			cellTitleFn(column, item) {
-				return getString(column, item);
-			}
-
 			getComparableValue({ valuePath, valueProperty }, item) {
 				const value = get(item, valuePath);
 				if (valueProperty == null) {
