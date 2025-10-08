@@ -250,6 +250,9 @@ export default css`
 		position: relative;
 		flex: auto;
 	}
+	.tableContent:has(.tableContent-empty.spinner) {
+		opacity: 0.3;
+	}
 
 	/* Empty data set styling */
 	.tableContent-empty {
@@ -582,5 +585,15 @@ export default css`
 
 	:host([mini]) cosmoz-omnitable-settings::part(columns) {
 		display:none;
+	}
+
+	cz-spinner {
+		width: 48px;
+		height: 48px;
+		position: absolute;
+		top: 40%;
+		right: 50%;
+		border-color: rgba(0, 0, 0, 0.2);
+		border-top-color: #000;
 	}
 `;

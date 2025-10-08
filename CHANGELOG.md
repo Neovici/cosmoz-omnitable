@@ -1,3 +1,38 @@
+## [14.22.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.22.0...v14.22.1) (2025-10-07)
+
+
+### Bug Fixes
+
+* bare import does not work ([ebc6ea1](https://github.com/neovici/cosmoz-omnitable/commit/ebc6ea10a3765ff87a9ae3e49e032d3481d4425d))
+
+# [14.22.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.21.3...v14.22.0) (2025-10-07)
+
+
+### Features
+
+* compile to esnext ([0b431dc](https://github.com/neovici/cosmoz-omnitable/commit/0b431dcec5289f157bd61eca9c52d6be869b47f7))
+
+## [14.21.3](https://github.com/neovici/cosmoz-omnitable/compare/v14.21.2...v14.21.3) (2025-10-07)
+
+
+### Bug Fixes
+
+* drivers are no longer exported ([0111486](https://github.com/neovici/cosmoz-omnitable/commit/0111486f185c8344face1c745dd08cad050b3cc6))
+
+## [14.21.2](https://github.com/neovici/cosmoz-omnitable/compare/v14.21.1...v14.21.2) (2025-10-07)
+
+
+### Bug Fixes
+
+* loading state when filtering ([#706](https://github.com/neovici/cosmoz-omnitable/issues/706)) ([b8fa927](https://github.com/neovici/cosmoz-omnitable/commit/b8fa9274bd6da58f61220364abb72e329990a3fd))
+
+## [14.21.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.21.0...v14.21.1) (2025-10-07)
+
+
+### Bug Fixes
+
+* convert compute-layout.js to typescript ([#704](https://github.com/neovici/cosmoz-omnitable/issues/704)) ([80abf8c](https://github.com/neovici/cosmoz-omnitable/commit/80abf8cf3c84af234587030ba659189646fefd35))
+
 # [14.21.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.20.0...v14.21.0) (2025-10-03)
 
 
