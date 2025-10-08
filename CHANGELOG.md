@@ -1,3 +1,15 @@
+# [14.25.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.24.0...v14.25.0) (2025-10-08)
+
+
+### Bug Fixes
+
+* revert column type properties ([eb06944](https://github.com/neovici/cosmoz-omnitable/commit/eb069443bb29e5f26ee222dd00f085ddd6a41bc9))
+
+
+### Features
+
+* convert utils-data.js to typescript ([511f91d](https://github.com/neovici/cosmoz-omnitable/commit/511f91dffe9b18835a8272cdbdf1cec0d8fce19e))
+
 # [14.24.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.23.0...v14.24.0) (2025-10-08)
 
 
