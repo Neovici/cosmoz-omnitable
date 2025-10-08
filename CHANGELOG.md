@@ -1,3 +1,15 @@
+# [14.24.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.23.0...v14.24.0) (2025-10-08)
+
+
+### Bug Fixes
+
+* export interface ([2f53e2f](https://github.com/neovici/cosmoz-omnitable/commit/2f53e2fce5d0050ccd61b0951f212e96059b8173))
+
+
+### Features
+
+* convert normalize.js to typescript ([93dcf3b](https://github.com/neovici/cosmoz-omnitable/commit/93dcf3b4609159bb48cec5c771ff0494b3600313))
+
 # [14.23.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.22.1...v14.23.0) (2025-10-08)
 
 
