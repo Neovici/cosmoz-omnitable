@@ -1,17 +1,19 @@
 export type LimitFunction = (a: number, b: number) => number | undefined;
 
-export type Currency = 'SEK' | 'USD' | 'EUR' | 'AUD';
+export type Currency = string;
+
+export type Rates = Partial<Record<Currency, number>> & Record<string, number>;
 
 export interface Amount {
-	amount: string | number;
-	currency: Currency | string;
+	amount: number;
+	currency: Currency;
 }
 
 export type GetPath = string | (string | number)[];
 
 export interface Column {
 	valuePath?: GetPath;
-	locale?: string;
+	locale?: Currency;
 	name?: string;
 	title?: string;
 	minWidth?: string;
@@ -23,6 +25,10 @@ export interface Column {
 export interface NumberColumn extends Column {
 	minimumFractionDigits?: number | null;
 	maximumFractionDigits?: number | null;
+}
+
+export interface AmountColumn extends Column {
+	rates?: Rates;
 }
 
 export type DateColumn = Column;
