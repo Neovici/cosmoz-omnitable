@@ -2,7 +2,7 @@ import { props } from '@neovici/cosmoz-utils/object';
 import { ColumnConfig } from '../layout';
 import { Column } from '../types';
 
-interface NormalizedSettings {
+export interface NormalizedSettings {
 	columns: Omit<ColumnConfig, 'index'>[];
 }
 
