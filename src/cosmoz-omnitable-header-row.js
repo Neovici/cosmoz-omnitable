@@ -26,7 +26,7 @@ const renderHeaderRow = ({
 				class="cell ${column.headerCellClass} header-cell"
 				part="cell header-cell cell-${column.name} header-cell-${column.name}"
 				?hidden="${column === groupOnColumn}"
-				title="${column.title}"
+				title="${column.headerTitleFn(column)}"
 				name="${column.name}"
 			>
 				${column.renderHeader(

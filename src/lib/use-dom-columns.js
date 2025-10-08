@@ -61,6 +61,8 @@ const normalizeColumn = (column) => {
 		renderEditCell: column.renderEditCell,
 		renderGroup: column.renderGroup,
 		cellTitleFn: column.cellTitleFn,
+		headerTitleFn: column.headerTitleFn,
+
 		getFilterFn: column.getFilterFn,
 		headerCellClass: column.headerCellClass,
 		cellClass: column.cellClass,

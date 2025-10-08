@@ -64,10 +64,6 @@ class OmnitableColumnAmount extends columnMixin(PolymerElement) {
 		return getString(column, item);
 	}
 
-	cellTitleFn(column, item) {
-		return getString(column, item);
-	}
-
 	getComparableValue(column, item) {
 		return getComparableValue(column, item);
 	}
