@@ -20,6 +20,7 @@ export interface Column {
 	priority?: number;
 	flex?: string;
 	width?: string;
+	[key: symbol]: unknown;
 }
 
 export interface NumberColumn extends Column {
@@ -40,3 +41,5 @@ export interface Limit<T> {
 export type AmountLimit = Limit<Amount>;
 
 export type Item = object;
+
+export type Items = Item[];
