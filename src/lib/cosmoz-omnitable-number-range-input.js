@@ -186,7 +186,7 @@ class NumberRangeInput extends rangeInputMixin(
 				</div>
 
 				${this._filterText
-					? html`<div slot="label" class="filter-value">
+					? html`<div slot="button" class="filter-value">
 							${this._filterText}
 						</div>`
 					: nothing}
