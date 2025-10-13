@@ -1,3 +1,10 @@
+# [14.27.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.26.1...v14.27.0) (2025-10-13)
+
+
+### Features
+
+* underline variable ([#717](https://github.com/neovici/cosmoz-omnitable/issues/717)) ([d2d41d9](https://github.com/neovici/cosmoz-omnitable/commit/d2d41d95a56964b12098c427eb56e73c63c6a5c4))
+
 ## [14.26.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.26.0...v14.26.1) (2025-10-08)
 
 
