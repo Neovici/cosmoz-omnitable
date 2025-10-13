@@ -1,4 +1,4 @@
-import{f as ol,B as sn,x as _,E as de,T as ne,m as rl,i as Mu,p as Lu,v as Ke,s as Lt,M as ro}from"./iframe-B6laYtAo.js";import{_ as ku}from"./preload-helper-D9Z9MdNV.js";/**
+import{f as ol,B as sn,x as _,E as de,T as ne,m as rl,i as Mu,p as Lu,v as Ke,s as Lt,M as ro}from"./iframe-D4PaP4vU.js";import{_ as ku}from"./preload-helper-D9Z9MdNV.js";/**
  * @license
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
@@ -4882,6 +4882,7 @@ found at http://polymer.github.io/PATENTS.txt
 		--cosmoz-input-label-text-transform: var(--cosmoz-omnitable-header-text-transform, none);
 		--cosmoz-input-label-font-weight: var(--cosmoz-omnitable-header-font-weight, normal);
 		--cosmoz-input-line-color: var(--cosmoz-omnitable-header-line-color);
+		--cosmoz-input-line-display: var(--cosmoz-omnitable-header-line-display, block);
 		--cosmoz-input-focused-color: var(--cosmoz-omnitable-header-line-focused-color);
 	}
 
