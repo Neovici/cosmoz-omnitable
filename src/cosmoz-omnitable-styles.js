@@ -182,6 +182,7 @@ export default css`
 		--cosmoz-input-label-text-transform: var(--cosmoz-omnitable-header-text-transform, none);
 		--cosmoz-input-label-font-weight: var(--cosmoz-omnitable-header-font-weight, normal);
 		--cosmoz-input-line-color: var(--cosmoz-omnitable-header-line-color);
+		--cosmoz-input-line-display: var(--cosmoz-omnitable-header-line-display, block);
 		--cosmoz-input-focused-color: var(--cosmoz-omnitable-header-line-focused-color);
 	}
 
