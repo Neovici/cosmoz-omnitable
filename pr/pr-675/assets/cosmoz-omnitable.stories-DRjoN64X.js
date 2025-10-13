@@ -1,4 +1,4 @@
-import{f as ol,B as sn,x as _,E as de,T as ne,m as rl,i as Mu,p as Lu,v as Ke,s as Lt,M as ro}from"./iframe-BHzDxM-s.js";import{_ as ku}from"./preload-helper-D9Z9MdNV.js";/**
+import{f as ol,B as sn,x as _,E as de,T as ne,m as rl,i as Mu,p as Lu,v as Ke,s as Lt,M as ro}from"./iframe-D4jpgv-6.js";import{_ as ku}from"./preload-helper-D9Z9MdNV.js";/**
  * @license
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
@@ -4417,7 +4417,7 @@ found at http://polymer.github.io/PATENTS.txt
 					${this.title||this._tooltip}
 				</div>
 
-				${this._filterText?_`<div slot="label" class="filter-value">
+				${this._filterText?_`<div slot="button" class="filter-value">
 							${this._filterText}
 						</div>`:de}
 
