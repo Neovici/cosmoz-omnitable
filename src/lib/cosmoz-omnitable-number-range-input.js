@@ -1,11 +1,10 @@
 import { PolymerElement } from '@polymer/polymer';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { html } from 'lit-html';
+import { html, nothing } from 'lit-html';
 import { _ } from '@neovici/cosmoz-i18next';
 import '@neovici/cosmoz-input';
 import { rangeInputMixin } from './cosmoz-omnitable-range-input-mixin';
 import { polymerHauntedRender } from './polymer-haunted-render-mixin';
-import './components/cosmoz-omnitable-dropdown-menu/cosmoz-omnitable-dropdown-menu';
+import '@neovici/cosmoz-dropdown';
 
 class NumberRangeInput extends rangeInputMixin(
 	polymerHauntedRender(PolymerElement),
@@ -25,21 +24,22 @@ class NumberRangeInput extends rangeInputMixin(
 				type: String,
 				computed: '_computeFilterText(filter.*, formatter)',
 			},
+			headerFocused: { type: Boolean, value: false },
 		};
 	}
 
 	render() {
 		const onOpenedChanged = (event) => {
+			this.headerFocused = true;
 			this._onDropdownOpenedChanged(event);
+		};
+
+		const classNames = (...classes) => {
+			return classes.filter(Boolean).join(' ');
 		};
 
 		return html`
 			<style>
-				cosmoz-omnitable-dropdown-menu {
-					display: block;
-					text-align: right;
-				}
-
 				.dropdown-content h3 {
 					font-weight: 500;
 					font-size: 13px;
@@ -81,6 +81,91 @@ class NumberRangeInput extends rangeInputMixin(
 					box-shadow: 0 0 0 1px rgba(0, 122, 255, 0.15);
 					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
 				}
+
+				cosmoz-dropdown {
+					display: block;
+					position: relative;
+					font-family: var(--paper-font-common-base_-_font-family, inherit);
+					font-size: 16px;
+					font-weight: normal;
+					--divider-color: var(
+						--paper-input-container-color,
+						rgba(0, 0, 0, 0.42)
+					);
+					--focused-color: var(
+						--paper-input-container-focus-color,
+						var(--primary-color, #3f51b5)
+					);
+					width: 100%;
+				}
+
+				cosmoz-dropdown::before {
+					content: '';
+					position: absolute;
+					left: 0;
+					bottom: 0;
+					height: 1px;
+					width: 100%;
+					background: var(--divider-color);
+					pointer-events: none;
+					transition:
+						background 0.2s,
+						height 0.2s;
+				}
+
+				cosmoz-dropdown::after {
+					content: '';
+					position: absolute;
+					left: 0;
+					bottom: 0;
+					height: 1px;
+					width: 100%;
+					background: var(--focused-color);
+					transform-origin: center;
+					transform: scaleX(0);
+					pointer-events: none;
+					transition:
+						background 0.2s,
+						transform 0.2s,
+						height 0.2s;
+				}
+
+				cosmoz-dropdown.focused::after {
+					transform: scaleX(1);
+					height: 2px;
+				}
+
+				cosmoz-dropdown::part(button) {
+					background: transparent;
+					border-radius: unset;
+					position: relative;
+					width: 100%;
+					height: 100%;
+				}
+
+				cosmoz-dropdown .dropdown-button,
+				cosmoz-dropdown .filter-value {
+					font-size: 16px;
+					text-align: left;
+					padding-bottom: 6px;
+					box-sizing: border-box;
+					cursor: pointer;
+					color: #737373 !important;
+				}
+
+				cosmoz-dropdown .filter-value cosmoz-dropdown .filter-value {
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					color: var(--paper-input-container-color, rgba(0, 0, 0, 0.54));
+				}
+
+				cosmoz-dropdown.filtered .dropdown-button {
+					top: 0;
+					transform: translateY(0%);
+					font-size: 12px !important;
+					color: var(--paper-input-container-label-color, var(--focused-color));
+				}
 			</style>
 
 			<cosmoz-clear-button
@@ -88,23 +173,31 @@ class NumberRangeInput extends rangeInputMixin(
 				?visible=${this.hasFilter()}
 			></cosmoz-clear-button>
 
-			<cosmoz-omnitable-dropdown-menu
-				label=${this.title}
-				placeholder=${ifDefined(this._filterText)}
-				class="external-values-${this.externalValues}"
+			<cosmoz-dropdown
+				@focus=${onOpenedChanged}
+				class=${classNames(
+					this.headerFocused ? 'focused' : '',
+					this._filterText ? 'filtered' : '',
+				)}
 				title=${this._tooltip}
-				horizontal-align="right"
-				@opened-changed=${onOpenedChanged}
-				placement="bottom-start"
 			>
-				<div class="dropdown-content" slot="dropdown-content">
+				<div slot="button" class="dropdown-button label">
+					${this.title || this._tooltip}
+				</div>
+
+				${this._filterText
+					? html`<div slot="label" class="filter-value">
+							${this._filterText}
+						</div>`
+					: nothing}
+
+				<div class="dropdown-content">
 					<h3 style="margin: 0;">${this.title}</h3>
 					<cosmoz-input
 						class=${this._fromClasses}
 						type="number"
 						label=${_('From')}
 						.value=${this._filterInput?.min}
-						@click=${(e) => e.currentTarget.focus()}
 						@value-changed=${(event) => {
 							this.set('_filterInput.min', event.detail.value);
 						}}
@@ -118,7 +211,6 @@ class NumberRangeInput extends rangeInputMixin(
 						type="number"
 						label=${_('To')}
 						.value=${this._filterInput?.max}
-						@click=${(e) => e.currentTarget.focus()}
 						@value-changed=${(event) => {
 							this.set('_filterInput.max', event.detail.value);
 						}}
@@ -128,7 +220,7 @@ class NumberRangeInput extends rangeInputMixin(
 						max=${this._toInputString(this._limit.toMax)}
 					></cosmoz-input>
 				</div>
-			</cosmoz-omnitable-dropdown-menu>
+			</cosmoz-dropdown>
 		`;
 	}
 
