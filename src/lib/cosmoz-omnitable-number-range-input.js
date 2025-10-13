@@ -92,10 +92,7 @@ class NumberRangeInput extends rangeInputMixin(
 						--paper-input-container-color,
 						rgba(0, 0, 0, 0.42)
 					);
-					--focused-color: var(
-						--paper-input-container-focus-color,
-						var(--primary-color, #3f51b5)
-					);
+					--focused-color: #3f51b5;
 					width: 100%;
 				}
 
@@ -141,30 +138,48 @@ class NumberRangeInput extends rangeInputMixin(
 					position: relative;
 					width: 100%;
 					height: 100%;
+					min-height: 32px;
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
 				}
 
-				cosmoz-dropdown .dropdown-button,
-				cosmoz-dropdown .filter-value {
+				.dropdown-button {
+					font-size: 16px;
+					text-align: left;
+					box-sizing: border-box;
+					cursor: pointer;
+					color: var(--dropdown-button-color, rgba(0, 0, 0, 0.54));
+					position: absolute;
+					top: 50%;
+					transform: translateY(-50%);
+					transition:
+						transform 0.2s,
+						font-size 0.2s,
+						top 0.2s,
+						color 0.2s;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					width: 100%;
+					pointer-events: none;
+				}
+
+				.filter-value {
 					font-size: 16px;
 					text-align: left;
 					padding-bottom: 6px;
 					box-sizing: border-box;
-					cursor: pointer;
-					color: #737373 !important;
-				}
-
-				cosmoz-dropdown .filter-value cosmoz-dropdown .filter-value {
 					white-space: nowrap;
 					overflow: hidden;
 					text-overflow: ellipsis;
-					color: var(--paper-input-container-color, rgba(0, 0, 0, 0.54));
+					color: var(--dropdown-filter-color, rgba(0, 0, 0, 0.87));
 				}
 
 				cosmoz-dropdown.filtered .dropdown-button {
 					top: 0;
-					transform: translateY(0%);
-					font-size: 12px !important;
-					color: var(--paper-input-container-label-color, var(--focused-color));
+					transform: translateY(-100%);
+					font-size: 12px;
 				}
 			</style>
 
@@ -179,9 +194,9 @@ class NumberRangeInput extends rangeInputMixin(
 					this.headerFocused ? 'focused' : '',
 					this._filterText ? 'filtered' : '',
 				)}
-				title=${this._tooltip}
+				title=${this._tooltip || ''}
 			>
-				<div slot="button" class="dropdown-button label">
+				<div slot="button" class="dropdown-button">
 					${this.title || this._tooltip}
 				</div>
 
@@ -191,8 +206,8 @@ class NumberRangeInput extends rangeInputMixin(
 						</div>`
 					: nothing}
 
-				<div class="dropdown-content">
-					<h3 style="margin: 0;">${this.title}</h3>
+				<div class="dropdown-content" @mousedown=${(e) => e.stopPropagation()}>
+					<h3>${this.title}</h3>
 					<cosmoz-input
 						class=${this._fromClasses}
 						type="number"
