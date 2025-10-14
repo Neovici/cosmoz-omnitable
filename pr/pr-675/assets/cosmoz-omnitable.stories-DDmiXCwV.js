@@ -1,4 +1,4 @@
-import{f as ol,B as sn,x as _,E as de,T as te,m as rl,i as Mu,p as Lu,v as Ke,s as Lt,M as ro}from"./iframe-D_SA62m7.js";import{_ as ku}from"./preload-helper-D9Z9MdNV.js";/**
+import{f as ol,B as sn,x as _,E as de,T as te,m as rl,i as Mu,p as Lu,v as Ke,s as Lt,M as ro}from"./iframe-B5cZPoNy.js";import{_ as ku}from"./preload-helper-D9Z9MdNV.js";/**
  * @license
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
@@ -4292,6 +4292,8 @@ found at http://polymer.github.io/PATENTS.txt
 			.dropdown-content {
 				padding: 10px 10px 10px 10px;
 				min-width: 120px;
+				height: 100%;
+				position: relative;
 				text-align: left;
 				background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
 				border-radius: 6px;
@@ -4452,12 +4454,21 @@ found at http://polymer.github.io/PATENTS.txt
 					box-shadow: 0 0 0 1px rgba(0, 122, 255, 0.15);
 					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
 				}
+
+				.float {
+					display: block;
+					height: 16px;
+					width: 100%;
+					content: ' ';
+				}
 			</style>
 
 			<cosmoz-clear-button
 				@click=${()=>this.resetFilter()}
 				?visible=${this.hasFilter()}
 			></cosmoz-clear-button>
+
+			<div class="float"></div>
 
 			${l0({title:this.title,tooltip:this._tooltip,filterText:this._filterText,headerFocused:this.headerFocused,horizontalAlign:"right",onOpenedChanged:e,content:_`
 					<h3>${this.title}</h3>
