@@ -1,3 +1,10 @@
+## [14.27.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.27.0...v14.27.1) (2025-10-14)
+
+
+### Bug Fixes
+
+* convert grouped-list utils to ts ([#719](https://github.com/neovici/cosmoz-omnitable/issues/719)) ([76eb45b](https://github.com/neovici/cosmoz-omnitable/commit/76eb45baeecef39414b5f2e3634f0dc195f85102))
+
 # [14.27.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.26.1...v14.27.0) (2025-10-13)
 
 
