@@ -1,16 +1,16 @@
 import { Item } from '../lib/types';
 
-interface ItemState {
+export interface ItemState {
 	expanded?: boolean;
 	folded?: boolean;
 }
 
-interface GroupItem<T = unknown> {
+export interface GroupItem<T = unknown> {
 	items?: T[];
 	[key: string]: unknown;
 }
 
-type ItemsState = WeakMap<Item, ItemState>;
+export type ItemsState = WeakMap<Item, ItemState>;
 
 const symbols = {
 	group: Symbol('group'),
