@@ -30,7 +30,7 @@ class NumberRangeInput extends rangeInputMixin(
 
 	render() {
 		const onOpenedChanged = (event) => {
-			this.headerFocused = true;
+			this.headerFocused = event.type === 'focus';
 			this._onDropdownOpenedChanged(event);
 		};
 
