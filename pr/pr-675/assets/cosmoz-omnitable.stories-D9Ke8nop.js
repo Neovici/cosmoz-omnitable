@@ -1,4 +1,4 @@
-import{f as ol,B as sn,x as _,E as de,T as te,m as rl,i as Mu,p as Lu,v as Ke,s as Lt,M as ro}from"./iframe-DIH5nnf-.js";import{_ as ku}from"./preload-helper-D9Z9MdNV.js";/**
+import{f as ol,B as sn,x as _,E as de,T as te,m as rl,i as Mu,p as Lu,v as Ke,s as Lt,M as ro}from"./iframe-D_SA62m7.js";import{_ as ku}from"./preload-helper-D9Z9MdNV.js";/**
  * @license
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
@@ -4277,7 +4277,7 @@ found at http://polymer.github.io/PATENTS.txt
  * @license
  * Copyright 2018 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const s0=Ce(class extends nt{constructor(t){if(super(t),t.type!==pe.ATTRIBUTE||t.name!=="class"||t.strings?.length>2)throw Error("`classMap()` can only be used in the `class` attribute and must be the only part in the attribute.")}render(t){return" "+Object.keys(t).filter((e=>t[e])).join(" ")+" "}update(t,[e]){if(this.st===void 0){this.st=new Set,t.strings!==void 0&&(this.nt=new Set(t.strings.join(" ").split(/\s/).filter((n=>n!==""))));for(const n in e)e[n]&&!this.nt?.has(n)&&this.st.add(n);return this.render(e)}const i=t.element.classList;for(const n of this.st)n in e||(i.remove(n),this.st.delete(n));for(const n in e){const o=!!e[n];o===this.st.has(n)||this.nt?.has(n)||(o?(i.add(n),this.st.add(n)):(i.remove(n),this.st.delete(n)))}return te}}),l0=({title:t,tooltip:e="",filterText:i="",headerFocused:n=!1,onOpenedChanged:o,content:r})=>_`
+ */const s0=Ce(class extends nt{constructor(t){if(super(t),t.type!==pe.ATTRIBUTE||t.name!=="class"||t.strings?.length>2)throw Error("`classMap()` can only be used in the `class` attribute and must be the only part in the attribute.")}render(t){return" "+Object.keys(t).filter((e=>t[e])).join(" ")+" "}update(t,[e]){if(this.st===void 0){this.st=new Set,t.strings!==void 0&&(this.nt=new Set(t.strings.join(" ").split(/\s/).filter((n=>n!==""))));for(const n in e)e[n]&&!this.nt?.has(n)&&this.st.add(n);return this.render(e)}const i=t.element.classList;for(const n of this.st)n in e||(i.remove(n),this.st.delete(n));for(const n in e){const o=!!e[n];o===this.st.has(n)||this.nt?.has(n)||(o?(i.add(n),this.st.add(n)):(i.remove(n),this.st.delete(n)))}return te}}),l0=({title:t,tooltip:e="",filterText:i="",headerFocused:n=!1,onOpenedChanged:o,content:r,horizontalAlign:a="left"})=>_`
 		<style>
 			.dropdown-content h3 {
 				font-weight: 500;
@@ -4367,7 +4367,6 @@ found at http://polymer.github.io/PATENTS.txt
 
 			.dropdown-button {
 				font-size: 16px;
-				text-align: left;
 				box-sizing: border-box;
 				cursor: pointer;
 				color: var(--dropdown-button-color, rgba(0, 0, 0, 0.54));
@@ -4384,6 +4383,21 @@ found at http://polymer.github.io/PATENTS.txt
 				text-overflow: ellipsis;
 				width: 100%;
 				pointer-events: none;
+			}
+
+			.left .dropdown-button,
+			.left .filter-value {
+				text-align: left;
+			}
+
+			.right .dropdown-button,
+			.right .filter-value {
+				text-align: right;
+			}
+
+			.center .dropdown-button,
+			.center .filter-value {
+				text-align: center;
 			}
 
 			.filter-value {
@@ -4407,14 +4421,14 @@ found at http://polymer.github.io/PATENTS.txt
 		<cosmoz-dropdown
 			@focus=${o}
 			@focusout=${o}
-			class=${s0({focused:n,filtered:!!i})}
+			class=${s0({focused:n,filtered:!!i,left:a==="left",right:a==="right",center:a==="center"})}
 			title=${e||""}
 		>
 			<div slot="button" class="dropdown-button">${t||e}</div>
 
 			${i?_`<div slot="button" class="filter-value">${i}</div>`:de}
 
-			<div class="dropdown-content" @mousedown=${s=>s.stopPropagation()}>
+			<div class="dropdown-content" @mousedown=${l=>l.stopPropagation()}>
 				${r}
 			</div>
 		</cosmoz-dropdown>
@@ -4445,7 +4459,7 @@ found at http://polymer.github.io/PATENTS.txt
 				?visible=${this.hasFilter()}
 			></cosmoz-clear-button>
 
-			${l0({title:this.title,tooltip:this._tooltip,filterText:this._filterText,headerFocused:this.headerFocused,onOpenedChanged:e,content:_`
+			${l0({title:this.title,tooltip:this._tooltip,filterText:this._filterText,headerFocused:this.headerFocused,horizontalAlign:"right",onOpenedChanged:e,content:_`
 					<h3>${this.title}</h3>
 					<cosmoz-input
 						class=${this._fromClasses}
