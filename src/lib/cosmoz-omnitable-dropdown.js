@@ -34,6 +34,8 @@ export const renderDropdown = ({
 			.dropdown-content {
 				padding: 10px 10px 10px 10px;
 				min-width: 120px;
+				height: 100%;
+				position: relative;
 				text-align: left;
 				background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
 				border-radius: 6px;
