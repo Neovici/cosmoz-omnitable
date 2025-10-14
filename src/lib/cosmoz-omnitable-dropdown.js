@@ -1,4 +1,5 @@
 import { html, nothing } from 'lit-html';
+import { classMap } from 'lit-html/directives/class-map.js';
 import '@neovici/cosmoz-dropdown';
 
 export const renderDropdown = ({
@@ -9,8 +10,9 @@ export const renderDropdown = ({
 	onOpenedChanged,
 	content,
 }) => {
-	const classNames = (...classes) => {
-		return classes.filter(Boolean).join(' ');
+	const classes = {
+		focused: headerFocused,
+		filtered: Boolean(filterText),
 	};
 
 	return html`
@@ -50,6 +52,7 @@ export const renderDropdown = ({
 				);
 				--focused-color: #3f51b5;
 				width: 100%;
+				outline: none;
 			}
 
 			cosmoz-dropdown::before {
@@ -141,10 +144,8 @@ export const renderDropdown = ({
 
 		<cosmoz-dropdown
 			@focus=${onOpenedChanged}
-			class=${classNames(
-				headerFocused ? 'focused' : '',
-				filterText ? 'filtered' : '',
-			)}
+			@focusout=${onOpenedChanged}
+			class=${classMap(classes)}
 			title=${tooltip || ''}
 		>
 			<div slot="button" class="dropdown-button">${title || tooltip}</div>
