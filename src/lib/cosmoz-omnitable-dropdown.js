@@ -9,10 +9,14 @@ export const renderDropdown = ({
 	headerFocused = false,
 	onOpenedChanged,
 	content,
+	horizontalAlign = 'left',
 }) => {
 	const classes = {
 		focused: headerFocused,
 		filtered: Boolean(filterText),
+		left: horizontalAlign === 'left',
+		right: horizontalAlign === 'right',
+		center: horizontalAlign === 'center',
 	};
 
 	return html`
@@ -105,7 +109,6 @@ export const renderDropdown = ({
 
 			.dropdown-button {
 				font-size: 16px;
-				text-align: left;
 				box-sizing: border-box;
 				cursor: pointer;
 				color: var(--dropdown-button-color, rgba(0, 0, 0, 0.54));
@@ -122,6 +125,21 @@ export const renderDropdown = ({
 				text-overflow: ellipsis;
 				width: 100%;
 				pointer-events: none;
+			}
+
+			.left .dropdown-button,
+			.left .filter-value {
+				text-align: left;
+			}
+
+			.right .dropdown-button,
+			.right .filter-value {
+				text-align: right;
+			}
+
+			.center .dropdown-button,
+			.center .filter-value {
+				text-align: center;
 			}
 
 			.filter-value {
