@@ -3,8 +3,13 @@ import { timeOut } from '@polymer/polymer/lib/utils/async.js';
 import { enqueueDebouncer } from '@polymer/polymer/lib/utils/flush.js';
 import { invoke } from '@neovici/cosmoz-utils/function';
 
-const getCloseableParent = (el) =>
-	typeof el.close === 'function' ? el : getCloseableParent(el.parentElement);
+const getCloseableParent = (el) => {
+	if (!el) return null;
+
+	return typeof el.close === 'function'
+		? el
+		: getCloseableParent(el.parentElement);
+};
 
 /**
  * @polymer
@@ -323,7 +328,11 @@ export const rangeInputMixin = (base) =>
 		}
 
 		_closeParent(input) {
-			getCloseableParent(input).close();
+			const parent = getCloseableParent(input);
+
+			if (parent) {
+				parent.close();
+			}
 		}
 
 		_onDropdownOpenedChanged({ currentTarget, detail: { value } }) {
