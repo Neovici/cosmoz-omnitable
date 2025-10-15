@@ -327,29 +327,29 @@ export const rangeInputMixin = (base) =>
 			}
 		}
 
-	_closeParent(input) {
-		const parent = getCloseableParent(input);
+		_closeParent(input) {
+			const parent = getCloseableParent(input);
 
-		if (parent) {
-			parent.close();
-		}
-	}
-
-	_onDropdownOpenedChanged({ currentTarget, type, detail }) {
-		// Handle both old paper-dropdown-menu (opened-changed with detail.value)
-		// and new cosmoz-dropdown (focus/focusout events)
-		const isOpening = type === 'focus' || detail?.value === true;
-		
-		if (!isOpening) {
-			return;
+			if (parent) {
+				parent.close();
+			}
 		}
 
-		// focus the first input after the dropdown is visible
-		setTimeout(
-			() => currentTarget.querySelector('cosmoz-input')?.focus(),
-			100,
-		);
-	}		/**
+		_onDropdownOpenedChanged({ currentTarget, type, detail }) {
+			// Handle both old paper-dropdown-menu (opened-changed with detail.value)
+			// and new cosmoz-dropdown (focus/focusout events)
+			const isOpening = type === 'focus' || detail?.value === true;
+
+			if (!isOpening) {
+				return;
+			}
+
+			// focus the first input after the dropdown is visible
+			setTimeout(
+				() => currentTarget.querySelector('cosmoz-input')?.focus(),
+				100,
+			);
+		} /**
 		 * Debounced function called by `_filterInputChanged` when `_filterInput` changes.
 		 *
 		 * @returns {void}
