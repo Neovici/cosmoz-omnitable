@@ -1,13 +1,18 @@
 import { render } from 'lit-html';
+import { Item } from '../lib/types';
 
 customElements.define(
 	'cosmoz-grouped-list-row',
 	class Element extends HTMLElement {
+		private _item?: Item;
+		private _index?: number;
+		private _renderFn?: (item: Item, index: number) => unknown;
+
 		get item() {
 			return this._item;
 		}
 
-		set item(item) {
+		set item(item: Item | undefined) {
 			this._item = item;
 			this._render();
 		}
@@ -16,7 +21,7 @@ customElements.define(
 			return this._index;
 		}
 
-		set index(index) {
+		set index(index: number | undefined) {
 			this._index = index;
 			this._render();
 		}
@@ -25,7 +30,9 @@ customElements.define(
 			return this._renderFn;
 		}
 
-		set renderFn(renderFn) {
+		set renderFn(
+			renderFn: ((item: Item, index: number) => unknown) | undefined,
+		) {
 			this._renderFn = renderFn;
 			this._render();
 		}
