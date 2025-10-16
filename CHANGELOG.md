@@ -1,3 +1,10 @@
+## [14.27.2](https://github.com/neovici/cosmoz-omnitable/compare/v14.27.1...v14.27.2) (2025-10-16)
+
+
+### Bug Fixes
+
+* convert use-selected-items.js to ts ([#724](https://github.com/neovici/cosmoz-omnitable/issues/724)) ([e74231d](https://github.com/neovici/cosmoz-omnitable/commit/e74231d2dc76c0beb7878995548062d7d655cae5))
+
 ## [14.27.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.27.0...v14.27.1) (2025-10-14)
 
 
