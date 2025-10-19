@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import { html } from 'lit-html';
+import { fn } from 'storybook/test';
 
-// This default export determines where your story goes in the story list
 const meta: Meta = {
 	title: 'Components/Cosmoz Omnitable Input Date Range',
 	component: 'cosmoz-omnitable',
@@ -9,6 +9,8 @@ const meta: Meta = {
 	args: {
 		title: 'Date',
 		locale: 'en',
+		'filter-changed': fn(),
+		'header-focused-changed': fn(),
 	},
 	argTypes: {
 		title: {
@@ -37,7 +39,14 @@ const meta: Meta = {
 				defaultValue: { summary: 'en' },
 			},
 		},
+		'filter-changed': {
+			description: 'Event fired when the date range filter values change.',
+		},
+		'header-focused-changed': {
+			description: 'Event fired when the column header gains or loses focus.',
+		},
 	},
+
 	render: (args) => {
 		return html`
 			<cosmoz-omnitable-date-range-input
@@ -47,6 +56,9 @@ const meta: Meta = {
 				.min=${args.min}
 				.max=${args.max}
 				.locale=${args.locale}
+				.limits=${args.limits}
+				@filter-changed=${args['filter-changed']}
+				@header-focused-changed=${args['header-focused-changed']}
 			></cosmoz-omnitable-date-range-input>
 		`;
 	},
