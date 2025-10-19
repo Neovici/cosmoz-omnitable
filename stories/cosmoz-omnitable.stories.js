@@ -3,7 +3,7 @@ import '../src/cosmoz-omnitable.js';
 import demoData from './data.json';
 
 export default {
-	title: 'Components/CosmozOmnitable',
+	title: 'Tables/Cosmoz Omnitable',
 	component: 'cosmoz-omnitable',
 	parameters: {
 		docs: {
