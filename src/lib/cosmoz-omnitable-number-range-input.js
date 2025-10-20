@@ -54,21 +54,12 @@ class NumberRangeInput extends rangeInputMixin(
 					box-shadow: 0 0 0 1px rgba(0, 122, 255, 0.15);
 					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
 				}
-
-				.float {
-					display: block;
-					height: 16px;
-					width: 100%;
-					content: ' ';
-				}
 			</style>
 
 			<cosmoz-clear-button
 				@click=${() => this.resetFilter()}
 				?visible=${this.hasFilter()}
 			></cosmoz-clear-button>
-
-			<div class="float"></div>
 
 			${renderDropdown({
 				title: this.title,

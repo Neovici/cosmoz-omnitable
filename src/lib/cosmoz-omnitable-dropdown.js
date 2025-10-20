@@ -160,7 +160,16 @@ export const renderDropdown = ({
 				transform: translateY(-100%);
 				font-size: 12px;
 			}
+
+			.float {
+				display: block;
+				height: 16px;
+				width: 100%;
+				content: ' ';
+			}
 		</style>
+
+		<div class="float"></div>
 
 		<cosmoz-dropdown
 			@focus=${onOpenedChanged}
