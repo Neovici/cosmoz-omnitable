@@ -20,8 +20,7 @@ const meta: Meta = {
 	render: (args) => {
 		return html`<style>
 				.cell[name="skeleton"], cosmoz-omnitable-skeleton::part(cell-skeleton) {
-				width: 649px;
-				padding: 0 min(3px, 324.5px);
+				width: 100%;
 			</style>
 
 			<cosmoz-omnitable-skeleton

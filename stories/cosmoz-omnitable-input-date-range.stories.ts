@@ -16,7 +16,6 @@ const meta: Meta = {
 		title: {
 			control: 'text',
 			description: 'Column header title displayed in the table',
-			table: { defaultValue: { summary: 'Date' } },
 		},
 		min: {
 			control: 'text',
@@ -35,9 +34,6 @@ const meta: Meta = {
 			control: 'select',
 			options: ['en', 'fr', 'sv'],
 			description: 'Language locale',
-			table: {
-				defaultValue: { summary: 'en' },
-			},
 		},
 		'filter-changed': {
 			description: 'Event fired when the date range filter values change.',
@@ -51,14 +47,6 @@ const meta: Meta = {
 		return html`
 			<cosmoz-omnitable-date-range-input
 				.title=${args.title}
-				.filter=${args.filter}
-				.values=${args.source}
-				.min=${args.min}
-				.max=${args.max}
-				.locale=${args.locale}
-				.limits=${args.limits}
-				@filter-changed=${args['filter-changed']}
-				@header-focused-changed=${args['header-focused-changed']}
 			></cosmoz-omnitable-date-range-input>
 		`;
 	},

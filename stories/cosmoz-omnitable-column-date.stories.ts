@@ -12,17 +12,16 @@ const meta: Meta = {
 	},
 	args: {
 		data: dummyData.slice(0, 5),
+		loading: false,
 		title: 'Date',
 		name: 'date',
 		'value-path': 'date',
+		locale: 'en',
 	},
 	argTypes: {
 		loading: {
 			control: 'boolean',
 			description: 'Show loading state',
-			table: {
-				defaultValue: { summary: 'false' },
-			},
 		},
 		selectedItems: {
 			control: 'object',
@@ -35,10 +34,16 @@ const meta: Meta = {
 		'sort-on': {
 			control: 'text',
 			description: 'Column property name to sort on (e.g., "date")',
+			table: {
+				readonly: true,
+			},
 		},
 		'group-on': {
 			control: 'text',
 			description: 'Column property name to group on (e.g., "date")',
+			table: {
+				readonly: true,
+			},
 		},
 		descending: {
 			control: 'boolean',
@@ -47,38 +52,38 @@ const meta: Meta = {
 		'group-on-descending': {
 			control: 'boolean',
 			description: 'Group on descending',
+			table: {
+				readonly: true,
+			},
 		},
 		'hide-select-all': {
 			control: 'boolean',
 			description: 'Hide select All',
+			table: {
+				readonly: true,
+			},
 		},
 
 		title: {
 			control: 'text',
 			description: 'Title for the date column',
-			defaultValue: { summary: 'Date' },
 		},
 		name: {
 			control: 'text',
 			description: 'Column identifier for sorting and grouping',
-			table: {
-				defaultValue: { summary: 'date' },
-			},
 		},
 		'value-path': {
 			control: 'text',
 			description: 'Path to the data property that populates this column',
+
 			table: {
-				defaultValue: { summary: 'date' },
+				readonly: true,
 			},
 		},
 		locale: {
 			control: 'select',
 			options: ['en', 'fr', 'sv'],
 			description: 'Language locale',
-			table: {
-				defaultValue: { summary: 'en' },
-			},
 		},
 	},
 	render: (args) => {
@@ -105,7 +110,6 @@ const meta: Meta = {
 					title=${args.title}
 					name=${args.name}
 					value-path=${args['value-path']}
-					locale=${args.locale}
 				></cosmoz-omnitable-column-date>
 			</cosmoz-omnitable>
 		`;
@@ -161,13 +165,6 @@ export const NoData: Story = {
 	args: {
 		data: null,
 		'hide-select-all': true,
-	},
-};
-
-export const CheckedAll: Story = {
-	name: 'All selected',
-	args: {
-		selectedItems: [dummyData[0]],
 	},
 };
 
