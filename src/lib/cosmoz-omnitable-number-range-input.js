@@ -67,6 +67,7 @@ class NumberRangeInput extends rangeInputMixin(
 				filterText: this._filterText,
 				headerFocused: this.headerFocused,
 				horizontalAlign: 'right',
+				externalValues: this.externalValues,
 				onOpenedChanged,
 				content: html`
 					<h3>${this.title}</h3>

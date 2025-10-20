@@ -10,6 +10,7 @@ export const renderDropdown = ({
 	onOpenedChanged,
 	content,
 	horizontalAlign = 'left',
+	externalValues = null,
 }) => {
 	const classes = {
 		focused: headerFocused,
@@ -17,6 +18,9 @@ export const renderDropdown = ({
 		left: horizontalAlign === 'left',
 		right: horizontalAlign === 'right',
 		center: horizontalAlign === 'center',
+		...(externalValues != null && {
+			[`external-values-${externalValues}`]: true,
+		}),
 	};
 
 	return html`
