@@ -1,3 +1,10 @@
+## [14.27.3](https://github.com/neovici/cosmoz-omnitable/compare/v14.27.2...v14.27.3) (2025-10-20)
+
+
+### Bug Fixes
+
+* add sourcemaps to package ([#735](https://github.com/neovici/cosmoz-omnitable/issues/735)) ([976a9ad](https://github.com/neovici/cosmoz-omnitable/commit/976a9ad53179a6560640ed0be31d24007130707c))
+
 ## [14.27.2](https://github.com/neovici/cosmoz-omnitable/compare/v14.27.1...v14.27.2) (2025-10-16)
 
 
