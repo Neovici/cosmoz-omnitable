@@ -13,6 +13,7 @@ const meta: Meta = {
 	},
 	args: {
 		data: dummyData.slice(0, 5),
+		loading: false,
 		title: 'Boolean',
 		name: 'boolean',
 		'true-label': 'Yes',
@@ -23,9 +24,6 @@ const meta: Meta = {
 		loading: {
 			control: 'boolean',
 			description: 'Show loading state',
-			table: {
-				defaultValue: { summary: 'false' },
-			},
 		},
 		selectedItems: {
 			control: 'object',
@@ -38,55 +36,68 @@ const meta: Meta = {
 		'sort-on': {
 			control: 'text',
 			description: 'Column property name to sort on (e.g., "boolean")',
+			table: {
+				readonly: true,
+			},
 		},
 		'group-on': {
 			control: 'text',
 			description: 'Column property name to group on (e.g., "boolean")',
+			table: {
+				readonly: true,
+			},
 		},
 		descending: {
 			control: 'boolean',
 			description: 'Sort on descending',
+			table: {
+				readonly: true,
+			},
 		},
 		'group-on-descending': {
 			control: 'boolean',
 			description: 'Group on descending',
+			table: {
+				readonly: true,
+			},
 		},
 		'hide-select-all': {
 			control: 'boolean',
 			description: 'Hide select All',
+			table: {
+				readonly: true,
+			},
 		},
 
 		title: {
 			control: 'text',
 			description: 'Title for the boolean column',
-			defaultValue: { summary: 'Boolean' },
 		},
 		name: {
 			control: 'text',
 			description: 'Column identifier for sorting and grouping',
-			table: {
-				defaultValue: { summary: 'boolean' },
-			},
 		},
 		'value-path': {
 			control: 'text',
 			description: 'Path to the data property that populates this column',
 			table: {
-				defaultValue: { summary: 'boolean' },
+				readonly: true,
 			},
 		},
 		'true-label': {
 			control: 'text',
 			description: 'Text displayed when the boolean value is true',
+
 			table: {
-				defaultValue: { summary: 'Yes' },
+				readonly: true,
 			},
 		},
 		'false-label': {
 			control: 'text',
 			description: 'Text displayed when the boolean value is false',
+
 			table: {
-				defaultValue: { summary: 'No' },
+				readonly: true,
 			},
 		},
 	},
@@ -152,13 +163,6 @@ export const Refreshing: Story = {
 	args: {
 		loading: true,
 	},
-	parameters: {
-		docs: {
-			description: {
-				story: 'Component in refreshing state with spinner animation',
-			},
-		},
-	},
 };
 
 export const NoData: Story = {
@@ -169,17 +173,10 @@ export const NoData: Story = {
 	},
 };
 
-export const CheckedAll: Story = {
-	name: 'All selected',
-	args: {
-		selectedItems: [dummyData[0]],
-	},
-};
-
 export const SortOnAscending: Story = {
 	name: 'Sorted Ascending',
 	args: {
-		'sort-on': 'date',
+		'sort-on': 'boolean',
 		descending: false,
 	},
 };
@@ -187,7 +184,7 @@ export const SortOnAscending: Story = {
 export const SortOnDescending: Story = {
 	name: 'Sorted Descending',
 	args: {
-		'sort-on': 'date',
+		'sort-on': 'boolean',
 		descending: true,
 	},
 };
@@ -195,7 +192,7 @@ export const SortOnDescending: Story = {
 export const GroupOnAscending: Story = {
 	name: 'Grouped Ascending',
 	args: {
-		'group-on': 'date',
+		'group-on': 'boolean',
 		'group-on-descending': false,
 
 		selectedItems: [],
@@ -205,7 +202,7 @@ export const GroupOnAscending: Story = {
 export const GroupOnDescending: Story = {
 	name: 'Grouped Descending',
 	args: {
-		'group-on': 'date',
+		'group-on': 'boolean',
 		'group-on-descending': true,
 	},
 };
