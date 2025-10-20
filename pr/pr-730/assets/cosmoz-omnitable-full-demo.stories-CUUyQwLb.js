@@ -1,4 +1,4 @@
-import{x as m,B as Ie,E as Ve}from"./iframe-BwQKTzuj.js";import{t as K,c as T,g as C,P as A,u as M,a as ft,m as bt,s as Nt,D as jt,b as Pt,e as Bt,i as xe,h as Ae,o as ve,d as _,f as Gt,j as ye,p as ge,n as D,k as Ht,l as $e,q as Wt,r as qt,v as Xt,T as Ut,w as Kt,x as E,y as Jt,z as Yt,A as Qt,B as $,C as Zt,E as en,F as xt,G as Ee,H as I,I as vt,J as Te,K as tn,L as yt,N as nn,M as on,O as Le,Q as rn,R as Re,S as an,U as ln,V as Fe,W as Me,X as sn,Y as Oe,Z as P,_ as un,$ as ze,a0 as cn}from"./cosmoz-collapse-CmgHuFyy.js";import"./preload-helper-D9Z9MdNV.js";const dn=K`
+import{x as m,B as Ie,E as Ve}from"./iframe-DyBE-ih9.js";import{t as K,c as T,g as C,P as A,u as M,a as ft,m as bt,s as Nt,D as jt,b as Pt,e as Bt,i as xe,h as Ae,o as ve,d as _,f as Gt,j as ye,p as ge,n as D,k as Ht,l as $e,q as Wt,r as qt,v as Xt,T as Ut,w as Kt,x as E,y as Jt,z as Yt,A as Qt,B as $,C as Zt,E as en,F as xt,G as Ee,H as I,I as vt,J as Te,K as tn,L as yt,N as nn,M as on,O as Le,Q as rn,R as Re,S as an,U as ln,V as Fe,W as Me,X as sn,Y as Oe,Z as P,_ as un,$ as ze,a0 as cn}from"./cosmoz-collapse-CPWc2Muf.js";import"./preload-helper-D9Z9MdNV.js";const dn=K`
 	:host {
 		display: flex;
 	}
@@ -586,7 +586,16 @@ import{x as m,B as Ie,E as Ve}from"./iframe-BwQKTzuj.js";import{t as K,c as T,g 
 				transform: translateY(-100%);
 				font-size: 12px;
 			}
+
+			.float {
+				display: block;
+				height: 16px;
+				width: 100%;
+				content: ' ';
+			}
 		</style>
+
+		<div class="float"></div>
 
 		<cosmoz-dropdown
 			@focus=${r}
@@ -622,21 +631,12 @@ import{x as m,B as Ie,E as Ve}from"./iframe-BwQKTzuj.js";import{t as K,c as T,g 
 					box-shadow: 0 0 0 1px rgba(0, 122, 255, 0.15);
 					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
 				}
-
-				.float {
-					display: block;
-					height: 16px;
-					width: 100%;
-					content: ' ';
-				}
 			</style>
 
 			<cosmoz-clear-button
 				@click=${()=>this.resetFilter()}
 				?visible=${this.hasFilter()}
 			></cosmoz-clear-button>
-
-			<div class="float"></div>
 
 			${Ft({title:this.title,tooltip:this._tooltip,filterText:this._filterText,headerFocused:this.headerFocused,horizontalAlign:"right",onOpenedChanged:e,content:m`
 					<h3>${this.title}</h3>
@@ -762,21 +762,12 @@ import{x as m,B as Ie,E as Ve}from"./iframe-BwQKTzuj.js";import{t as K,c as T,g 
 					box-shadow: 0 0 0 1px rgba(0, 122, 255, 0.15);
 					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
 				}
-
-				.float {
-					display: block;
-					height: 16px;
-					width: 100%;
-					content: ' ';
-				}
 			</style>
 
 			<cosmoz-clear-button
 				@click=${()=>this.resetFilter()}
 				?visible=${this.hasFilter()}
 			></cosmoz-clear-button>
-
-			<div class="float"></div>
 
 			${Ft({title:this.title,tooltip:this._tooltip,filterText:this._filterText,headerFocused:this.headerFocused,horizontalAlign:"right",onOpenedChanged:e,content:m`
 					<h3 style="margin: 0;">${this.title}</h3>
