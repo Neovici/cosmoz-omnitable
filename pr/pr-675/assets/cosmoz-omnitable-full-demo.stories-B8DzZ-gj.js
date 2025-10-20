@@ -1,4 +1,4 @@
-import{x as m,B as Ie,E as Ve}from"./iframe-OgHulTeR.js";import{t as K,c as L,g as S,P as A,u as M,a as ft,m as bt,s as Mt,D as Nt,b as jt,e as Pt,i as ve,h as Ae,o as Q,d as _,f as Bt,j as ye,p as he,n as D,k as Gt,l as $e,q as Ht,r as Wt,v as qt,T as Xt,w as Ut,x as E,y as Kt,z as Jt,A as Yt,B as $,C as Qt,E as Zt,F as xt,G as Ee,H as I,I as vt,J as Le,K as en,L as yt,N as tn,M as nn,O as Te,Q as on,R as Re,S as rn,U as an,V as Fe,W as Me,X as ln,Y as Oe,Z as P,_ as sn,$ as ze,a0 as un}from"./cosmoz-collapse-n9WXLKGy.js";import"./preload-helper-D9Z9MdNV.js";const cn=K`
+import{x as m,B as Ie,E as Ve}from"./iframe-DzliiKlZ.js";import{t as K,c as L,g as S,P as A,u as M,a as ft,m as bt,s as Mt,D as Nt,b as jt,e as Pt,i as ve,h as Ae,o as Q,d as _,f as Bt,j as ye,p as he,n as D,k as Gt,l as $e,q as Ht,r as Wt,v as qt,T as Xt,w as Ut,x as E,y as Kt,z as Jt,A as Yt,B as $,C as Qt,E as Zt,F as xt,G as Ee,H as I,I as vt,J as Le,K as en,L as yt,N as tn,M as nn,O as Te,Q as on,R as Re,S as rn,U as an,V as Fe,W as Me,X as ln,Y as Oe,Z as P,_ as sn,$ as ze,a0 as un}from"./cosmoz-collapse-BtS1GK1S.js";import"./preload-helper-D9Z9MdNV.js";const cn=K`
 	:host {
 		display: flex;
 	}
@@ -445,7 +445,7 @@ import{x as m,B as Ie,E as Ve}from"./iframe-OgHulTeR.js";import{t as K,c as L,g 
 			.onFocus=${Ge(r)}
 			.onText=${He(r)}
 			>${D(e.loading,()=>m`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`)}</cosmoz-autocomplete-ui
-		>`}}customElements.define("cosmoz-omnitable-column-list",co);const mo=({title:n,tooltip:e="",filterText:t="",headerFocused:o=!1,onOpenedChanged:r,content:i,horizontalAlign:a="left"})=>m`
+		>`}}customElements.define("cosmoz-omnitable-column-list",co);const mo=({title:n,tooltip:e="",filterText:t="",headerFocused:o=!1,onOpenedChanged:r,content:i,horizontalAlign:a="left",externalValues:l=null})=>{const s={focused:o,filtered:!!t,left:a==="left",right:a==="right",center:a==="center",...l!=null&&{[`external-values-${l}`]:!0}};return m`
 		<style>
 			.dropdown-content h3 {
 				font-weight: 500;
@@ -600,18 +600,18 @@ import{x as m,B as Ie,E as Ve}from"./iframe-OgHulTeR.js";import{t as K,c as L,g 
 		<cosmoz-dropdown
 			@focus=${r}
 			@focusout=${r}
-			class=${Ut({focused:o,filtered:!!t,left:a==="left",right:a==="right",center:a==="center"})}
+			class=${Ut(s)}
 			title=${e||""}
 		>
 			<div slot="button" class="dropdown-button">${n||e}</div>
 
 			${t?m`<div slot="button" class="filter-value">${t}</div>`:Ve}
 
-			<div class="dropdown-content" @mousedown=${s=>s.stopPropagation()}>
+			<div class="dropdown-content" @mousedown=${u=>u.stopPropagation()}>
 				${i}
 			</div>
 		</cosmoz-dropdown>
-	`;class po extends Ne(ee(A)){static get properties(){return{maximumFractionDigits:{type:Number,value:null},minimumFractionDigits:{type:Number,value:null},formatter:{type:Object,computed:"_computeFormatter(locale, minimumFractionDigits, maximumFractionDigits)"},autoupdate:{type:String,value:!1},_filterText:{type:String,computed:"_computeFilterText(filter.*, formatter)"},headerFocused:{type:Boolean,value:!1}}}render(){const e=t=>{this.headerFocused=t.type==="focus",this._onDropdownOpenedChanged(t)};return m`
+	`};class po extends Ne(ee(A)){static get properties(){return{maximumFractionDigits:{type:Number,value:null},minimumFractionDigits:{type:Number,value:null},formatter:{type:Object,computed:"_computeFormatter(locale, minimumFractionDigits, maximumFractionDigits)"},autoupdate:{type:String,value:!1},_filterText:{type:String,computed:"_computeFilterText(filter.*, formatter)"},headerFocused:{type:Boolean,value:!1}}}render(){const e=t=>{this.headerFocused=t.type==="focus",this._onDropdownOpenedChanged(t)};return m`
 			<style>
 				cosmoz-input[type='number'] {
 					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
@@ -638,7 +638,7 @@ import{x as m,B as Ie,E as Ve}from"./iframe-OgHulTeR.js";import{t as K,c as L,g 
 				?visible=${this.hasFilter()}
 			></cosmoz-clear-button>
 
-			${mo({title:this.title,tooltip:this._tooltip,filterText:this._filterText,headerFocused:this.headerFocused,horizontalAlign:"right",onOpenedChanged:e,content:m`
+			${mo({title:this.title,tooltip:this._tooltip,filterText:this._filterText,headerFocused:this.headerFocused,horizontalAlign:"right",externalValues:this.externalValues,onOpenedChanged:e,content:m`
 					<h3>${this.title}</h3>
 					<cosmoz-input
 						class=${this._fromClasses}
