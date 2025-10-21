@@ -1,3 +1,10 @@
+# [14.28.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.27.3...v14.28.0) (2025-10-21)
+
+
+### Features
+
+* convert use-weak-state to ts ([#720](https://github.com/neovici/cosmoz-omnitable/issues/720)) ([10b27e7](https://github.com/neovici/cosmoz-omnitable/commit/10b27e76311212c7dacf512a4ae4476a932c6083))
+
 ## [14.27.3](https://github.com/neovici/cosmoz-omnitable/compare/v14.27.2...v14.27.3) (2025-10-20)
 
 
