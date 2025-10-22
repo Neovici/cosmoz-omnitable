@@ -1,3 +1,10 @@
+## [14.28.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.28.0...v14.28.1) (2025-10-22)
+
+
+### Bug Fixes
+
+* upgrade number range input ([#675](https://github.com/neovici/cosmoz-omnitable/issues/675)) ([c1d3915](https://github.com/neovici/cosmoz-omnitable/commit/c1d39154e83768edbade9073d86c01d1c33dbab7))
+
 # [14.28.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.27.3...v14.28.0) (2025-10-21)
 
 
