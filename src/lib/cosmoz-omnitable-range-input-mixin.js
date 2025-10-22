@@ -350,7 +350,7 @@ export const rangeInputMixin = (base) =>
 				100,
 			);
 		}
-		
+
 		/**
 		 * Debounced function called by `_filterInputChanged` when `_filterInput` changes.
 		 *
