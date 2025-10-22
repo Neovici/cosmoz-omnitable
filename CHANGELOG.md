@@ -1,3 +1,15 @@
+# [14.29.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.28.1...v14.29.0) (2025-10-22)
+
+
+### Bug Fixes
+
+* convert use-footer.js to ts ([#742](https://github.com/neovici/cosmoz-omnitable/issues/742)) ([06e0bce](https://github.com/neovici/cosmoz-omnitable/commit/06e0bce82084ac4a994dbe7e202a014b31de1034))
+
+
+### Features
+
+* convert use-canvas-width.js to ts ([#741](https://github.com/neovici/cosmoz-omnitable/issues/741)) ([3102e5f](https://github.com/neovici/cosmoz-omnitable/commit/3102e5fe1c83e1595bdde5882c3d651e0c403b2e))
+
 ## [14.28.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.28.0...v14.28.1) (2025-10-22)
 
 
