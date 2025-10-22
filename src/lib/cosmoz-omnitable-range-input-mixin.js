@@ -3,8 +3,13 @@ import { timeOut } from '@polymer/polymer/lib/utils/async.js';
 import { enqueueDebouncer } from '@polymer/polymer/lib/utils/flush.js';
 import { invoke } from '@neovici/cosmoz-utils/function';
 
-const getCloseableParent = (el) =>
-	typeof el.close === 'function' ? el : getCloseableParent(el.parentElement);
+const getCloseableParent = (el) => {
+	if (!el) return null;
+
+	return typeof el.close === 'function'
+		? el
+		: getCloseableParent(el.parentElement);
+};
 
 /**
  * @polymer
@@ -323,17 +328,25 @@ export const rangeInputMixin = (base) =>
 		}
 
 		_closeParent(input) {
-			getCloseableParent(input).close();
+			const parent = getCloseableParent(input);
+
+			if (parent) {
+				parent.close();
+			}
 		}
 
-		_onDropdownOpenedChanged({ currentTarget, detail: { value } }) {
-			if (!value) {
+		_onDropdownOpenedChanged({ currentTarget, type, detail }) {
+			// Handle both old paper-dropdown-menu (opened-changed with detail.value)
+			// and new cosmoz-dropdown (focus/focusout events)
+			const isOpening = type === 'focus' || detail?.value === true;
+
+			if (!isOpening) {
 				return;
 			}
 
 			// focus the first input after the dropdown is visible
 			setTimeout(
-				() => currentTarget.querySelector('cosmoz-input').focus(),
+				() => currentTarget.querySelector('cosmoz-input')?.focus(),
 				100,
 			);
 		}
