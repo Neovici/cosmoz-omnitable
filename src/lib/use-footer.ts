@@ -18,8 +18,6 @@ export const useFooter = ({ host, ...rest }: UseFooterParams) => {
 		topPlacement = 'top-end',
 	} = host;
 
-	console.log(csvFilename);
-
 	return {
 		csvFilename,
 		xlsxFilename,
