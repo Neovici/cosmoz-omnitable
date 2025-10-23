@@ -1,4 +1,4 @@
-import{x as m,B as Ie,E as Ve}from"./iframe-CoB0pGpf.js";import{t as K,c as T,g as C,P as A,u as M,a as ft,m as bt,s as Nt,D as jt,b as Pt,e as Bt,i as xe,h as Ae,o as ve,d as _,f as Gt,j as ye,p as ge,n as D,k as Ht,l as $e,q as Wt,r as qt,v as Xt,w as Ut,T as Kt,x as E,y as Jt,z as Yt,A as Qt,B as $,C as Zt,E as en,F as xt,G as Ee,H as I,I as vt,J as Te,K as tn,L as yt,N as nn,M as on,O as Le,Q as rn,R as Re,S as an,U as ln,V as Fe,W as Me,X as sn,Y as Oe,Z as P,_ as un,$ as ze,a0 as cn}from"./cosmoz-collapse-BZCwmlTV.js";import"./preload-helper-D9Z9MdNV.js";const dn=K`
+import{x as m,B as Ie,E as Ve}from"./iframe-DXcRe4b9.js";import{t as K,c as T,g as C,P as A,u as M,a as ft,m as bt,s as Nt,D as jt,b as Pt,e as Bt,i as xe,h as Ae,o as ve,d as _,f as Gt,j as ye,p as ge,n as D,k as Ht,l as $e,q as Wt,r as qt,v as Xt,w as Ut,T as Kt,x as E,y as Jt,z as Yt,A as Qt,B as $,C as Zt,E as en,F as xt,G as Ee,H as I,I as vt,J as Te,K as tn,L as yt,N as nn,M as on,O as Le,Q as rn,R as Re,S as an,U as ln,V as Fe,W as Me,X as sn,Y as Oe,Z as P,_ as un,$ as ze,a0 as cn}from"./cosmoz-collapse-DlkXvT9F.js";import"./preload-helper-PPVm8Dsz.js";const dn=K`
 	:host {
 		display: flex;
 	}
@@ -243,7 +243,7 @@ import{x as m,B as Ie,E as Ve}from"./iframe-CoB0pGpf.js";import{t as K,c as T,g 
 			.onText=${Qn(r)}
 			.limit=${1}
 			>${D(e.loading,()=>m`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`)}</cosmoz-autocomplete-ui
-		>`}computeSource({trueLabel:e,falseLabel:t}){return te(e,t)}getFilterFn(e,t){if(t!=null)return eo(e,t)}toXlsxValue(e,t){return to(e,t)}deserializeFilter(e,t){return no(e,t)}}customElements.define("cosmoz-omnitable-column-boolean",oo);const Xe=n=>class extends Ne(n){static get properties(){return{max:{type:Date,value:null},min:{type:Date,value:null},_filterText:{type:String,computed:"_computeFilterText(filter.*, formatter)"},formatter:{type:Object,computed:"_computeFormatter(locale)"}}}toDate(e,t,o){if(e==null||e==="")return;let r=e;if(r instanceof Date||(typeof e=="string"&&(r=this.getAbsoluteISOString(r)),r=new Date(r)),Number.isNaN(r.getTime()))return null;if(o==null||t==null)return r;const i=this.toDate(t);if(i==null)return r;const a=this.getComparableValue(r),l=this.getComparableValue(i);return o(a,l)===a?r:i}toValue(){return this.toDate.apply(this,arguments)}getComparableValue(e,t){const o=super.getComparableValue(e,t);if(o!=null)return this.toNumber(o.getTime())}getString(e,t=this.valuePath,o=this.formatter){const r=this.toValue(this.get(t,e));return r===void 0?"":r===null?"Invalid Date":this.renderValue(r,o)}getAbsoluteISOString(e){return e.length===19?e+this._getTimezoneString(e):e}_getTimezoneString(e){const t=-new Date(e).getTimezoneOffset()/60;return(t<0?"-":"+")+["0",Math.abs(t)].join("").substr(-2)+":00"}renderValue(e,t=this.formatter){if(t==null)return;const o=this.toValue(e);if(o!=null)return t.format(o)}_computeFormatter(e){return new Intl.DateTimeFormat(e||void 0)}_toInputString(e){const t=this.toValue(e);return t==null?null:this._toLocalISOString(t).slice(0,10)}_dateValueChanged(e){const t=e.currentTarget,o=t.value,r=e.model.item,i=this.get(this.valuePath,r),a=this._fromInputString(o);this.set(this.valuePath,a,r),this._fireItemChangeEvent(r,this.valuePath,i,this.renderValue.bind(this))}_toLocalISOString(e){return $e(e)}},St=({title:n,tooltip:e="",filterText:t="",headerFocused:o=!1,onOpenedChanged:r,content:i,horizontalAlign:a="left"})=>m`
+		>`}computeSource({trueLabel:e,falseLabel:t}){return te(e,t)}getFilterFn(e,t){if(t!=null)return eo(e,t)}toXlsxValue(e,t){return to(e,t)}deserializeFilter(e,t){return no(e,t)}}customElements.define("cosmoz-omnitable-column-boolean",oo);const Xe=n=>class extends Ne(n){static get properties(){return{max:{type:Date,value:null},min:{type:Date,value:null},_filterText:{type:String,computed:"_computeFilterText(filter.*, formatter)"},formatter:{type:Object,computed:"_computeFormatter(locale)"}}}toDate(e,t,o){if(e==null||e==="")return;let r=e;if(r instanceof Date||(typeof e=="string"&&(r=this.getAbsoluteISOString(r)),r=new Date(r)),Number.isNaN(r.getTime()))return null;if(o==null||t==null)return r;const i=this.toDate(t);if(i==null)return r;const a=this.getComparableValue(r),l=this.getComparableValue(i);return o(a,l)===a?r:i}toValue(){return this.toDate.apply(this,arguments)}getComparableValue(e,t){const o=super.getComparableValue(e,t);if(o!=null)return this.toNumber(o.getTime())}getString(e,t=this.valuePath,o=this.formatter){const r=this.toValue(this.get(t,e));return r===void 0?"":r===null?"Invalid Date":this.renderValue(r,o)}getAbsoluteISOString(e){return e.length===19?e+this._getTimezoneString(e):e}_getTimezoneString(e){const t=-new Date(e).getTimezoneOffset()/60;return(t<0?"-":"+")+["0",Math.abs(t)].join("").substr(-2)+":00"}renderValue(e,t=this.formatter){if(t==null)return;const o=this.toValue(e);if(o!=null)return t.format(o)}_computeFormatter(e){return new Intl.DateTimeFormat(e||void 0)}_toInputString(e){const t=this.toValue(e);return t==null?null:this._toLocalISOString(t).slice(0,10)}_dateValueChanged(e){const t=e.currentTarget,o=t.value,r=e.model.item,i=this.get(this.valuePath,r),a=this._fromInputString(o);this.set(this.valuePath,a,r),this._fireItemChangeEvent(r,this.valuePath,i,this.renderValue.bind(this))}_toLocalISOString(e){return $e(e)}},St=({title:n,tooltip:e="",filterText:t="",headerFocused:o=!1,onOpenedChanged:r,content:i,horizontalAlign:a="left",externalValues:l=null})=>{const s={focused:o,filtered:!!t,left:a==="left",right:a==="right",center:a==="center",...l!=null&&{[`external-values-${l}`]:!0}};return m`
 		<style>
 			.dropdown-content h3 {
 				font-weight: 500;
@@ -398,18 +398,18 @@ import{x as m,B as Ie,E as Ve}from"./iframe-CoB0pGpf.js";import{t as K,c as T,g 
 		<cosmoz-dropdown
 			@focus=${r}
 			@focusout=${r}
-			class=${Wt({focused:o,filtered:!!t,left:a==="left",right:a==="right",center:a==="center"})}
+			class=${Wt(s)}
 			title=${e||""}
 		>
 			<div slot="button" class="dropdown-button">${n||e}</div>
 
 			${t?m`<div slot="button" class="filter-value">${t}</div>`:Ve}
 
-			<div class="dropdown-content" @mousedown=${s=>s.stopPropagation()}>
+			<div class="dropdown-content" @mousedown=${u=>u.stopPropagation()}>
 				${i}
 			</div>
 		</cosmoz-dropdown>
-	`;class ro extends Xe(Z(A)){render(){const e=t=>{this.headerFocused=t.type==="focus",this._onDropdownOpenedChanged(t)};return m`
+	`};class ro extends Xe(Z(A)){render(){const e=t=>{this.headerFocused=t.type==="focus",this._onDropdownOpenedChanged(t)};return m`
 			<style>
 				cosmoz-input[type='date'] {
 					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
@@ -436,7 +436,7 @@ import{x as m,B as Ie,E as Ve}from"./iframe-CoB0pGpf.js";import{t as K,c as T,g 
 				?visible=${this.hasFilter()}
 			></cosmoz-clear-button>
 
-			${St({title:this.title,tooltip:this._tooltip,filterText:this._filterText,headerFocused:this.headerFocused,horizontalAlign:"right",onOpenedChanged:e,content:m`
+			${St({title:this.title,tooltip:this._tooltip,filterText:this._filterText,headerFocused:this.headerFocused,horizontalAlign:"right",externalValues:this.externalValues,onOpenedChanged:e,content:m`
 					<h3 style="margin: 0;">${this.title}</h3>
 					<cosmoz-input
 						type="date"
@@ -602,7 +602,7 @@ import{x as m,B as Ie,E as Ve}from"./iframe-CoB0pGpf.js";import{t as K,c as T,g 
 				?visible=${this.hasFilter()}
 			></cosmoz-clear-button>
 
-			${St({title:this.title,tooltip:this._tooltip,filterText:this._filterText,headerFocused:this.headerFocused,horizontalAlign:"right",onOpenedChanged:e,content:m`
+			${St({title:this.title,tooltip:this._tooltip,filterText:this._filterText,headerFocused:this.headerFocused,horizontalAlign:"right",externalValues:this.externalValues,onOpenedChanged:e,content:m`
 					<h3>${this.title}</h3>
 					<cosmoz-input
 						class=${this._fromClasses}
