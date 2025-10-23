@@ -1,3 +1,11 @@
+# [14.30.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.29.0...v14.30.0) (2025-10-23)
+
+
+### Features
+
+* convert cosmoz-grouped-list-row.js to ts ([3ab4165](https://github.com/neovici/cosmoz-omnitable/commit/3ab41655805bf3d5e2fe8ccaff4ca4b03a399705))
+* convert local.js to ts from drivers directory ([5c017ab](https://github.com/neovici/cosmoz-omnitable/commit/5c017aba6b715b750f19bd623a444cba869d8f9d))
+
 # [14.29.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.28.1...v14.29.0) (2025-10-22)
 
 
