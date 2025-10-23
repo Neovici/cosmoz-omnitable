@@ -1,10 +1,10 @@
 import { t } from 'i18next';
 import { PolymerElement } from '@polymer/polymer';
 import { html } from 'lit-html';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
 import '@neovici/cosmoz-input';
 import { rangeInputMixin } from './cosmoz-omnitable-range-input-mixin';
 import { polymerHauntedRender } from './polymer-haunted-render-mixin';
+import { renderDropdown } from './cosmoz-omnitable-dropdown';
 
 class AmountRangeInput extends rangeInputMixin(
 	polymerHauntedRender(PolymerElement),
@@ -99,16 +99,16 @@ class AmountRangeInput extends rangeInputMixin(
 				@click=${() => this.resetFilter()}
 				?visible=${this.hasFilter()}
 			></cosmoz-clear-button>
-			<paper-dropdown-menu
-				label=${this.title}
-				placeholder=${ifDefined(this._filterText)}
-				class="external-values-${this.externalValues}"
-				title=${this._tooltip}
-				horizontal-align="right"
-				?opened=${this.headerFocused}
-				@opened-changed=${onOpenedChanged}
-			>
-				<div class="dropdown-content" slot="dropdown-content">
+
+			${renderDropdown({
+				title: this.title,
+				tooltip: this._tooltip,
+				filterText: this._filterText,
+				headerFocused: this.headerFocused,
+				horizontalAlign: 'right',
+				externalValues: this.externalValues,
+				onOpenedChanged,
+				content: html`
 					<h3 style="margin: 0;">${this.title}</h3>
 					<cosmoz-input
 						class=${this._fromClasses}
@@ -142,8 +142,8 @@ class AmountRangeInput extends rangeInputMixin(
 					>
 						<div slot="suffix" suffix>${this.filter?.max?.currency}</div>
 					</cosmoz-input>
-				</div>
-			</paper-dropdown-menu>
+				`,
+			})}
 		`;
 	}
 
