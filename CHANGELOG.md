@@ -1,3 +1,12 @@
+## [14.30.2](https://github.com/neovici/cosmoz-omnitable/compare/v14.30.1...v14.30.2) (2025-10-23)
+
+
+### Bug Fixes
+
+* replace paper dropdown menu on amount range input with cosmoz-dropdown ([#729](https://github.com/neovici/cosmoz-omnitable/issues/729)) ([0333482](https://github.com/neovici/cosmoz-omnitable/commit/033348244c5b3a7e34399e276d63164cee99b635))
+* replace paper dropdown menu on date range input with cosmoz-dropdown ([#731](https://github.com/neovici/cosmoz-omnitable/issues/731)) ([08980ec](https://github.com/neovici/cosmoz-omnitable/commit/08980ec441baaf31a6f78cbb8eedf561d4ab7ba8))
+* replace paper dropdown menu on datetime range input with cosmoz-dropdown ([#730](https://github.com/neovici/cosmoz-omnitable/issues/730)) ([1558932](https://github.com/neovici/cosmoz-omnitable/commit/155893237976cfc82ee2ca637e2a2682d6722697))
+
 ## [14.30.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.30.0...v14.30.1) (2025-10-23)
 
 
