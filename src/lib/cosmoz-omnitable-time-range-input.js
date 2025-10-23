@@ -12,7 +12,6 @@ class TimeRangeInput extends dateInputMixin(
 	render() {
 		const onOpenedChanged = (event) => {
 			this.headerFocused = event.type === 'focus';
-			this._onDropdownOpenedChanged(event);
 		};
 
 		return html`
