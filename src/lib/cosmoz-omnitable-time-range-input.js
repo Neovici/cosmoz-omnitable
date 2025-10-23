@@ -1,43 +1,35 @@
 import { _ } from '@neovici/cosmoz-i18next';
 import { PolymerElement } from '@polymer/polymer';
 import { html } from 'lit-html';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
 import '@neovici/cosmoz-input';
 import { dateInputMixin } from './cosmoz-omnitable-date-input-mixin';
 import { polymerHauntedRender } from './polymer-haunted-render-mixin';
+import { renderDropdown } from './cosmoz-omnitable-dropdown';
 
 class TimeRangeInput extends dateInputMixin(
 	polymerHauntedRender(PolymerElement),
 ) {
 	render() {
-		return html`
-			<style>
-				paper-dropdown-menu {
-					--iron-icon-width: 0;
-					display: block;
-				}
-			</style>
+		const onOpenedChanged = (event) => {
+			this.headerFocused = event.type === 'focus';
+			this._onDropdownOpenedChanged(event);
+		};
 
+		return html`
 			<cosmoz-clear-button
 				@click=${() => this.resetFilter()}
 				?visible=${this.hasFilter()}
 			></cosmoz-clear-button>
-			<paper-dropdown-menu
-				label=${this.title}
-				placeholder=${ifDefined(this._filterText)}
-				class="external-values-${this.externalValues}"
-				title=${this._tooltip}
-				horizontal-align="right"
-				?opened=${this.headerFocused}
-				@opened-changed=${(event) =>
-					this.set('headerFocused', event.detail.value)}
-			>
-				>
-				<div
-					class="dropdown-content"
-					slot="dropdown-content"
-					style="padding: 15px; min-width: 100px;"
-				>
+
+			${renderDropdown({
+				title: this.title,
+				tooltip: this._tooltip,
+				filterText: this._filterText,
+				headerFocused: this.headerFocused,
+				horizontalAlign: 'right',
+				externalValues: this.externalValues,
+				onOpenedChanged,
+				content: html`
 					<h3 style="margin: 0;">${this.title}</h3>
 					<cosmoz-input
 						type="time"
@@ -55,8 +47,8 @@ class TimeRangeInput extends dateInputMixin(
 						@value-changed=${(event) =>
 							this.set('_filterInput.max', event.detail.value)}
 					></cosmoz-input>
-				</div>
-			</paper-dropdown-menu>
+				`,
+			})}
 		`;
 	}
 
