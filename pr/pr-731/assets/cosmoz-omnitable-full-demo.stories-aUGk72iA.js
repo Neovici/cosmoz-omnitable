@@ -1,4 +1,4 @@
-import{x as m,B as Ie,E as Ve}from"./iframe-DXcRe4b9.js";import{t as K,c as T,g as C,P as A,u as M,a as ft,m as bt,s as Nt,D as jt,b as Pt,e as Bt,i as xe,h as Ae,o as ve,d as _,f as Gt,j as ye,p as ge,n as D,k as Ht,l as $e,q as Wt,r as qt,v as Xt,w as Ut,T as Kt,x as E,y as Jt,z as Yt,A as Qt,B as $,C as Zt,E as en,F as xt,G as Ee,H as I,I as vt,J as Te,K as tn,L as yt,N as nn,M as on,O as Le,Q as rn,R as Re,S as an,U as ln,V as Fe,W as Me,X as sn,Y as Oe,Z as P,_ as un,$ as ze,a0 as cn}from"./cosmoz-collapse-DlkXvT9F.js";import"./preload-helper-PPVm8Dsz.js";const dn=K`
+import{x as m,B as Ie,E as Ve}from"./iframe-EAm1U4vm.js";import{t as K,c as T,g as C,P as A,u as M,a as ft,m as bt,s as Nt,D as jt,b as Pt,e as Bt,i as xe,h as Ae,o as ve,d as _,f as Gt,j as ye,p as ge,n as D,k as Ht,l as $e,q as Wt,r as qt,v as Xt,w as Ut,T as Kt,x as E,y as Jt,z as Yt,A as Qt,B as $,C as Zt,E as en,F as xt,G as Ee,H as I,I as vt,J as Te,K as tn,L as yt,N as nn,M as on,O as Le,Q as rn,R as Re,S as an,U as ln,V as Fe,W as Me,X as sn,Y as Oe,Z as P,_ as un,$ as ze,a0 as cn}from"./cosmoz-collapse-Clkn3x6a.js";import"./preload-helper-PPVm8Dsz.js";const dn=K`
 	:host {
 		display: flex;
 	}
@@ -409,7 +409,7 @@ import{x as m,B as Ie,E as Ve}from"./iframe-DXcRe4b9.js";import{t as K,c as T,g 
 				${i}
 			</div>
 		</cosmoz-dropdown>
-	`};class ro extends Xe(Z(A)){render(){const e=t=>{this.headerFocused=t.type==="focus",this._onDropdownOpenedChanged(t)};return m`
+	`};class ro extends Xe(Z(A)){render(){const e=t=>{this.headerFocused=t.type==="focus"};return m`
 			<style>
 				cosmoz-input[type='date'] {
 					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
