@@ -28,7 +28,6 @@ export const useLayout = ({
 				flex: c.flex,
 				priority: c.priority,
 				name: c.name,
-				title: c.title,
 				index,
 				hidden: c.name === groupOnColumn?.name || c.disabled,
 			}))
