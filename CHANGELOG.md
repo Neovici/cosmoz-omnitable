@@ -1,3 +1,10 @@
+# [14.31.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.30.2...v14.31.0) (2025-10-24)
+
+
+### Features
+
+* convert use-mini.js to ts ([68c487b](https://github.com/neovici/cosmoz-omnitable/commit/68c487b5d6a862eba5421a542300db134c5ab789))
+
 ## [14.30.2](https://github.com/neovici/cosmoz-omnitable/compare/v14.30.1...v14.30.2) (2025-10-23)
 
 
