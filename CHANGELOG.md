@@ -1,3 +1,16 @@
+# [14.32.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.31.0...v14.32.0) (2025-10-24)
+
+
+### Bug Fixes
+
+* fix build error ([5c8ce8c](https://github.com/neovici/cosmoz-omnitable/commit/5c8ce8c014fae31ef00b0a30ff1e21e1d888571a))
+
+
+### Features
+
+* convert context.js to ts ([9193e9a](https://github.com/neovici/cosmoz-omnitable/commit/9193e9a32c3156744f2924a638ff674f4f619bea))
+* convert save-as-csv-action.js to ts ([48e6f4c](https://github.com/neovici/cosmoz-omnitable/commit/48e6f4c6426e8207824126ae6138c3da2c8bcdfe))
+
 # [14.31.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.30.2...v14.31.0) (2025-10-24)
 
 
