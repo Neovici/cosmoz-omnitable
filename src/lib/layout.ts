@@ -7,6 +7,7 @@ export interface ColumnConfig {
 	name: string;
 	title: string;
 	hidden?: boolean;
+	disabled?: boolean;
 }
 
 type Columns = ColumnConfig[];
