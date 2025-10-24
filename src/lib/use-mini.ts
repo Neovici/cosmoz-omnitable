@@ -1,6 +1,17 @@
 import { useMemo, useEffect } from '@pionjs/pion';
+import { Column } from './types';
 
-export const useMini = ({ host, canvasWidth, columns: _columns }) => {
+export interface UseMiniParams {
+	host: HTMLElement & { miniBreakpoint?: number };
+	canvasWidth: number;
+	columns: Array<Column & { mini?: number }>;
+}
+
+export const useMini = ({
+	host,
+	canvasWidth,
+	columns: _columns,
+}: UseMiniParams) => {
 	const breakpoint = host.miniBreakpoint ?? 480;
 	const isMiniSize = useMemo(
 		() => canvasWidth <= breakpoint,
