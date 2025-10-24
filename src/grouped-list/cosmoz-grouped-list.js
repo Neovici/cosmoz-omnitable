@@ -1,7 +1,7 @@
 import {
 	renderCosmozGroupedList,
 	useCosmozGroupedList,
-} from './use-cosmoz-grouped-list.js';
+} from './use-cosmoz-grouped-list';
 import { component } from '@pionjs/pion';
 
 const CosmozGroupedList = (host) =>
