@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # [14.35.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.34.0...v14.35.0) (2025-10-29)
 
 
@@ -10,12 +11,27 @@
 
 * convert use-cosmoz-grouped-list.js to ts ([8303a4b](https://github.com/neovici/cosmoz-omnitable/commit/8303a4b09b135898a7068cb335807295e1bb4930))
 
+=======
+<<<<<<< HEAD
+>>>>>>> 7fdf11c (chore(release): 14.34.0-beta.1 [skip ci])
 # [14.34.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.33.0...v14.34.0) (2025-10-27)
+=======
+# [14.34.0-beta.1](https://github.com/neovici/cosmoz-omnitable/compare/v14.33.0...v14.34.0-beta.1) (2025-10-25)
+
+
+### Bug Fixes
+
+* make paper-dropdown a dev dependency ([5c352c9](https://github.com/neovici/cosmoz-omnitable/commit/5c352c9c5481c64f44aec6f8358aff7e1eb20f3a))
+>>>>>>> 11aac18 (chore(release): 14.34.0-beta.1 [skip ci])
 
 
 ### Features
 
+<<<<<<< HEAD
 * convert use-resizable-columns to ts ([33ffd0b](https://github.com/neovici/cosmoz-omnitable/commit/33ffd0bf0ece1b18020d027a13b591fc0ffa90dc))
+=======
+* cleanup paper-dropdown ([2405b08](https://github.com/neovici/cosmoz-omnitable/commit/2405b08363755135b374921c84cd46a609d5dde6))
+>>>>>>> 11aac18 (chore(release): 14.34.0-beta.1 [skip ci])
 
 # [14.33.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.32.0...v14.33.0) (2025-10-25)
 
