@@ -1,3 +1,16 @@
+# [14.33.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.32.0...v14.33.0) (2025-10-25)
+
+
+### Bug Fixes
+
+* **settings/drivers/remote:** less defensive ([1e6115e](https://github.com/neovici/cosmoz-omnitable/commit/1e6115efd84b3c9109e07de352fa7338049c2b95))
+
+
+### Features
+
+* convert remote.js to ts ([d02cc6a](https://github.com/neovici/cosmoz-omnitable/commit/d02cc6a83ce4b8d55e90830008d16465fcd500b1))
+* covert use-collapsible-items to ts ([4b54873](https://github.com/neovici/cosmoz-omnitable/commit/4b54873080820e59eeba635f0ea4813e16afe0a9))
+
 # [14.32.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.31.0...v14.32.0) (2025-10-24)
 
 
