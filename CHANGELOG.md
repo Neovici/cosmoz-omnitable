@@ -1,3 +1,10 @@
+# [14.34.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.33.0...v14.34.0) (2025-10-27)
+
+
+### Features
+
+* convert use-resizable-columns to ts ([33ffd0b](https://github.com/neovici/cosmoz-omnitable/commit/33ffd0bf0ece1b18020d027a13b591fc0ffa90dc))
+
 # [14.33.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.32.0...v14.33.0) (2025-10-25)
 
 
