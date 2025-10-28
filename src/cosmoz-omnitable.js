@@ -1,6 +1,4 @@
 import '@neovici/cosmoz-bottom-bar';
-import '@polymer/iron-icon/iron-icon';
-import '@polymer/iron-icons/iron-icons';
 
 import './cosmoz-omnitable-column';
 import './cosmoz-omnitable-columns';
