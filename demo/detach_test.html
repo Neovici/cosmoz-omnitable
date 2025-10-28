@@ -12,17 +12,65 @@
 		></script>
 		<script
 			type="module"
-			src="/node_modules/@polymer/iron-icons/editor-icons.js"
-		></script>
-		<script
-			type="module"
-			src="/node_modules/@polymer/iron-icons/iron-icons.js"
-		></script>
-		<script
-			type="module"
 			src="/node_modules/@polymer/paper-button/paper-button.js"
 		></script>
 
+		<script type="module">
+			import { deleteIcon } from '/node_modules/@neovici/cosmoz-icons/dist/delete.js';
+			import { PolymerElement } from '@polymer/polymer/polymer-element';
+			import { html } from '@polymer/polymer/lib/utils/html-tag';
+			import { render } from 'lit-html';
+
+			class CosmozIcon extends PolymerElement {
+				static get is() {
+					return 'cosmoz-icon';
+				}
+
+				static get properties() {
+					return {
+						icon: {
+							type: String,
+						},
+					};
+				}
+
+				static get template() {
+					return html`
+						<style>
+							:host {
+								display: inline-block;
+								width: 24px;
+								height: 24px;
+								fill: currentColor;
+								margin-right: 4px;
+							}
+						</style>
+						<div id="iconContainer"></div>
+					`;
+				}
+
+				connectedCallback() {
+					super.connectedCallback();
+					this._renderIcon();
+				}
+
+				_renderIcon() {
+					const iconMap = {
+						delete: deleteIcon,
+					};
+
+					const iconFunction = iconMap[this.icon];
+					if (iconFunction) {
+						render(
+							iconFunction({ width: '24', height: '24' }),
+							this.$.iconContainer,
+						);
+					}
+				}
+			}
+
+			customElements.define(CosmozIcon.is, CosmozIcon);
+		</script>
 		<script type="module" src="../src/cosmoz-omnitable.js"></script>
 		<style>
 			body,
@@ -225,7 +273,7 @@
 							</cosmoz-omnitable-column>
 
 							<paper-button slot="actions" on-run="removeItems">
-								<iron-icon icon="delete"></iron-icon>
+								<cosmoz-icon icon="delete"></cosmoz-icon>
 								<span>Remove [[ selectedItems.length ]] items</span>
 							</paper-button>
 							<paper-item slot="actions"
