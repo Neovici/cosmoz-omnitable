@@ -3,6 +3,7 @@ import { html } from 'lit-html';
 
 import '../src/cosmoz-omnitable.js';
 import '@neovici/cosmoz-utils/elements/cz-spinner';
+import { deleteIcon } from '@neovici/cosmoz-icons';
 
 import { generateTableDemoData } from '../demo/table-demo-helper.js';
 
@@ -216,7 +217,9 @@ const meta: Meta = {
 				></cosmoz-omnitable-column-number>
 
 				<paper-button slot="actions" on-run="removeItems">
-					<iron-icon icon="delete"></iron-icon>
+					${deleteIcon({
+						styles: 'vertical-align: middle; fill: currentColor;',
+					})}
 					<span>Remove items</span>
 				</paper-button>
 			</cosmoz-omnitable>
