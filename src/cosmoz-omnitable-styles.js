@@ -271,7 +271,7 @@ export default css`
 		color: #333;
 		z-index: 1;
 	}
-	.tableContent-empty iron-icon {
+	.tableContent-empty svg {
 		height: 96px;
 		min-height: 96px;
 		width: 96px;
