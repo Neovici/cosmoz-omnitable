@@ -1,4 +1,4 @@
-import{x as c,B as _e,E as Oe}from"./iframe-CCaPPW74.js";import{t as K,c as L,g as C,P as I,u as T,a as xt,m as vt,s as Pt,D as Nt,b as Rt,e as Bt,i as $e,h as Le,d as Gt,f as A,j as Ht,k as we,p as he,n as _,l as jt,o as Ce,q as Wt,r as Ut,v as Kt,T as Jt,w as M,x as Xt,y as Qt,z as Yt,A as Zt,B as $,C as ei,E as ti,F as yt,G as De,H as F,I as $t,J as Te,K as ii,L as wt,N as ai,M as ni,O as Ve,Q as oi,R as Ze,S as ri,U as Pe,V as li,W as si,X as Ee,Y as Ne,Z as ui,_ as Ie,$ as N,a0 as di,a1 as ze,a2 as ci}from"./cosmoz-collapse-HIz-Ru8x.js";import"./preload-helper-PPVm8Dsz.js";const mi=K`
+import{x as c,B as _e,E as Oe}from"./iframe-BiJrYApv.js";import{t as K,c as L,g as C,P as I,u as T,a as xt,m as vt,s as Pt,D as Nt,b as Rt,e as Bt,i as $e,h as Le,d as Gt,f as A,j as Ht,k as we,p as he,n as _,l as jt,o as Ce,q as Wt,r as Ut,v as Kt,T as Jt,w as M,x as Xt,y as Qt,z as Yt,A as Zt,B as $,C as ei,E as ti,F as yt,G as De,H as F,I as $t,J as Te,K as ii,L as wt,N as ai,M as ni,O as Ve,Q as oi,R as Ze,S as ri,U as Pe,V as li,W as si,X as Ee,Y as Ne,Z as ui,_ as Ie,$ as N,a0 as di,a1 as ze,a2 as ci}from"./cosmoz-collapse-CCa5j_7e.js";import"./preload-helper-PPVm8Dsz.js";const mi=K`
 	:host {
 		display: flex;
 	}
@@ -1142,13 +1142,6 @@ import{x as c,B as _e,E as Oe}from"./iframe-CCaPPW74.js";import{t as K,c as L,g 
 	.tableContent-empty.overlay {
 		color: #333;
 		z-index: 1;
-	}
-	.tableContent-empty svg {
-		height: 96px;
-		min-height: 96px;
-		width: 96px;
-		min-width: 96px;
-		margin-right: 24px;
 	}
 	.tableContent-empty > div {
 		display: flex;
