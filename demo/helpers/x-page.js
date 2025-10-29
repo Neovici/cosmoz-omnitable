@@ -6,61 +6,14 @@ import '@polymer/paper-toggle-button/paper-toggle-button';
 
 import '../../src/cosmoz-omnitable';
 import './cosmoz-translations';
+import '../cosmoz-omnitable-icon';
 
 import { translatable } from '@neovici/cosmoz-i18next';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { generateTableDemoData } from '../table-demo-helper';
 
-import { html as lit, render } from 'lit-html';
-import { deleteIcon } from '@neovici/cosmoz-icons';
-
-class CosmozIcon extends PolymerElement {
-	static get is() {
-		return 'cosmoz-icon';
-	}
-
-	static get properties() {
-		return {
-			icon: {
-				type: String,
-			},
-		};
-	}
-
-	static get template() {
-		return html`
-			<style>
-				:host {
-					display: inline-block;
-					width: 24px;
-					height: 24px;
-					fill: currentColor;
-					margin-right: 4px;
-				}
-			</style>
-			<div id="iconContainer"></div>
-		`;
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-		this._renderIcon();
-	}
-
-	_renderIcon() {
-		const iconMap = {
-			delete: deleteIcon,
-		};
-
-		const iconFunction = iconMap[this.icon];
-		if (iconFunction) {
-			render(iconFunction({ width: '24', height: '24' }), this.$.iconContainer);
-		}
-	}
-}
-
-customElements.define(CosmozIcon.is, CosmozIcon);
+import { html as lit } from 'lit-html';
 
 class XPage extends translatable(PolymerElement) {
 	static get template() {
@@ -283,7 +236,7 @@ class XPage extends translatable(PolymerElement) {
 					</template>
 
 					<paper-button slot="actions" on-run="removeItems">
-						<cosmoz-icon icon="delete"></cosmoz-icon>
+						<cosmoz-omnitable-icon icon="delete"></cosmoz-omnitable-icon>
 						<span>Remove [[ selectedItems.length ]] items</span>
 					</paper-button>
 					<paper-item slot="actions"
