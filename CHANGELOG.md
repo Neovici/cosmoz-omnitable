@@ -1,3 +1,19 @@
+# [14.37.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.36.0...v14.37.0) (2025-10-29)
+
+
+### Bug Fixes
+
+* fix lint error ([af9e5e2](https://github.com/neovici/cosmoz-omnitable/commit/af9e5e2efbc2bca646bbf3e27cc8b7a96aec0dda))
+* fix test error ([5749173](https://github.com/neovici/cosmoz-omnitable/commit/5749173b3c6e21392a39693400cb8a36f323feca))
+
+
+### Features
+
+* add more config ([c7ceeb1](https://github.com/neovici/cosmoz-omnitable/commit/c7ceeb15efb3b8135ccbb5e31a3a8f5e60329f1e))
+* convert cosmoz-grouped-list.js to ts ([6c10b73](https://github.com/neovici/cosmoz-omnitable/commit/6c10b738c7cf32aebba7b2ea1f5760644f316dff))
+* convert use-layout.js to ts ([7968a14](https://github.com/neovici/cosmoz-omnitable/commit/7968a14e5456f094d439e400077d3a8a71b2f6a1))
+* replace iron-icons with cosmoz-icons ([b912522](https://github.com/neovici/cosmoz-omnitable/commit/b912522c464d2644f7b7be3db4355225e0339d6c))
+
 # [14.36.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.35.0...v14.36.0) (2025-10-29)
 
 
