@@ -3,6 +3,7 @@ import '../cosmoz-omnitable-skeleton.js';
 import { _ } from '@neovici/cosmoz-i18next';
 import { html } from 'lit-html';
 import { when } from 'lit-html/directives/when.js';
+import { announcementIcon, errorIcon } from '@neovici/cosmoz-icons';
 
 export const renderList = (header, list) => {
 	const { settingsConfig } = header,
@@ -24,7 +25,11 @@ export const renderList = (header, list) => {
 			() =>
 				html`<div class="tableContent-empty">
 					<slot name="empty-set-message">
-						<iron-icon icon="icons:announcement"></iron-icon>
+						${announcementIcon({
+							width: '96px',
+							height: '96px',
+							styles: 'margin-right: 24px; fill: currentColor;',
+						})}
 						<div class="tableContent-empty-message">
 							<h3>${_('Working set empty')}</h3>
 							<p>${_('No data to display')}</p>
@@ -36,7 +41,11 @@ export const renderList = (header, list) => {
 			filterIsTooStrict,
 			() =>
 				html`<div class="tableContent-empty">
-					<iron-icon icon="icons:announcement"></iron-icon>
+					${announcementIcon({
+						width: '96px',
+						height: '96px',
+						styles: 'margin-right: 24px; fill: currentColor;',
+					})}
 					<div>
 						<h3>${_('Filter too strict')}</h3>
 						<p>${_('No matches for selection')}</p>
@@ -63,7 +72,11 @@ export const renderList = (header, list) => {
 			error,
 			() =>
 				html`<div class="tableContent-empty overlay">
-					<iron-icon icon="icons:error"></iron-icon>
+					${errorIcon({
+						width: '96px',
+						height: '96px',
+						styles: 'margin-right: 24px; fill: currentColor;',
+					})}
 					<div class="tableContent-empty-message">
 						<h3>${_('Error loading data')}</h3>
 						<p>${error.message}</p>
