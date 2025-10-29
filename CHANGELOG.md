@@ -1,3 +1,15 @@
+# [14.36.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.35.0...v14.36.0) (2025-10-29)
+
+
+### Bug Fixes
+
+* make paper-dropdown a dev dependency ([3257b30](https://github.com/neovici/cosmoz-omnitable/commit/3257b305debafd11c6f1e2304ad9eb13af58e3e4))
+
+
+### Features
+
+* cleanup paper-dropdown ([7fb4a85](https://github.com/neovici/cosmoz-omnitable/commit/7fb4a850df9bca6ab6fb87dd3949ded622f4852c))
+
 <<<<<<< HEAD
 # [14.35.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.34.0...v14.35.0) (2025-10-29)
 
