@@ -1,4 +1,4 @@
-import { _ } from '@neovici/cosmoz-i18next';
+import { t } from 'i18next';
 import { PolymerElement } from '@polymer/polymer';
 import { html } from 'lit-html';
 import '@neovici/cosmoz-input';
@@ -53,7 +53,7 @@ class DateRangeInput extends dateInputMixin(
 					<h3 style="margin: 0;">${this.title}</h3>
 					<cosmoz-input
 						type="date"
-						label=${_('From date')}
+						label=${t('From date')}
 						min=${this._toInputString(this._limit.fromMin)}
 						max=${this._toInputString(this._limit.fromMax)}
 						.value=${this._filterInput?.min}
@@ -62,7 +62,7 @@ class DateRangeInput extends dateInputMixin(
 					></cosmoz-input>
 					<cosmoz-input
 						type="date"
-						label=${_('Until date')}
+						label=${t('Until date')}
 						min=${this._toInputString(this._limit.toMin)}
 						max=${this._toInputString(this._limit.toMax)}
 						.value=${this._filterInput?.max}
