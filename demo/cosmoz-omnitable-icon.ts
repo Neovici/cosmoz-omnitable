@@ -82,6 +82,9 @@ class CosmozOmnitableIcon extends PolymerElement {
 	width!: string;
 	height!: string;
 	styles!: string;
+	slot!: string;
+	title!: string;
+	className!: string;
 	$!: { iconContainer: HTMLElement };
 
 	static get is() {
@@ -104,6 +107,15 @@ class CosmozOmnitableIcon extends PolymerElement {
 			styles: {
 				type: String,
 				value: 'fill: currentColor;',
+			},
+			slot: {
+				type: String,
+			},
+			title: {
+				type: String,
+			},
+			className: {
+				type: String,
 			},
 		};
 	}
@@ -147,6 +159,9 @@ class CosmozOmnitableIcon extends PolymerElement {
 			width: this.width,
 			height: this.height,
 			styles: this.styles,
+			className: this.className,
+			slot: this.slot,
+			title: this.title,
 		};
 
 		render(iconFunction(iconConfig), this.$.iconContainer as HTMLElement);
