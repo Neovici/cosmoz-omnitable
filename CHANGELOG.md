@@ -1,3 +1,15 @@
+# [14.35.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.34.0...v14.35.0) (2025-10-29)
+
+
+### Bug Fixes
+
+* fix build error ([8f1265b](https://github.com/neovici/cosmoz-omnitable/commit/8f1265bf6a340aa6277280ed8fe520d8bc10e77c))
+
+
+### Features
+
+* convert use-cosmoz-grouped-list.js to ts ([8303a4b](https://github.com/neovici/cosmoz-omnitable/commit/8303a4b09b135898a7068cb335807295e1bb4930))
+
 # [14.34.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.33.0...v14.34.0) (2025-10-27)
 
 
