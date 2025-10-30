@@ -1,4 +1,4 @@
-import{x as d,B as Ie,E as Ae,b as jt}from"./iframe-CqXPIJFs.js";import{t as K,c as T,g as C,P as A,u as M,a as xt,m as vt,s as Pt,D as Bt,b as Gt,e as Ht,i as ve,h as Ee,d as Wt,f as _,j as qt,k as ye,p as he,n as V,l as Xt,o as $e,q as Ut,r as Kt,v as Yt,T as Jt,w as E,x as Fe,y as Qt,z as Zt,A as en,B as $,C as tn,E as nn,F as yt,G as Te,H as I,I as $t,J as Le,K as on,L as wt,N as rn,M as Re,O as an,Q as Qe,R as ln,S as Me,U as sn,V as un,W as Oe,X as Ne,Y as cn,Z as Ve,_ as P,$ as dn,a0 as ze,a1 as mn}from"./cosmoz-collapse-DzqMy66Y.js";import"./preload-helper-PPVm8Dsz.js";const pn=K`
+import{x as d,B as Ie,E as Ae,b as jt}from"./iframe-BBnTJQCR.js";import{t as K,c as T,g as C,P as A,u as M,a as xt,m as vt,s as Pt,D as Bt,b as Gt,e as Ht,i as ve,h as Ee,d as Wt,f as _,j as qt,k as ye,p as he,n as V,l as Xt,o as $e,q as Ut,r as Kt,v as Yt,T as Jt,w as E,x as Fe,y as Qt,z as Zt,A as en,B as $,C as tn,E as nn,F as yt,G as Te,H as I,I as $t,J as Le,K as on,L as wt,N as rn,M as Re,O as an,Q as Qe,R as ln,S as Me,U as sn,V as un,W as Oe,X as Ne,Y as cn,Z as Ve,_ as P,$ as dn,a0 as ze,a1 as mn}from"./cosmoz-collapse-UNRZeYRZ.js";import"./preload-helper-PPVm8Dsz.js";const pn=K`
 	:host {
 		display: flex;
 	}
@@ -1471,7 +1471,7 @@ import{x as d,B as Ie,E as Ae,b as jt}from"./iframe-CqXPIJFs.js";import{t as K,c
 		exportparts="bar: bottomBar-bar, info: bottomBar-info, buttons: bottomBar-buttons"
 	>
 		<slot name="info" slot="info">
-			${_("{0} selected items",{count:e.length})}
+			${_("{count} selected item",{count:e.length})}
 		</slot>
 		<slot name="actions" id="actions"></slot>
 		<!-- These slots are needed by cosmoz-bottom-bar
