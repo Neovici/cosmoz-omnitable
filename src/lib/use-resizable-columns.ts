@@ -2,11 +2,12 @@ import { useEffect, useRef } from '@pionjs/pion';
 import { Column } from './types';
 import { ColumnConfig } from './layout';
 import { NormalizedSettings } from './settings/normalize';
+import { TweenedLayout } from './use-layout';
 
 export type UseResizableColumnsParams = {
 	host: HTMLElement;
 	canvasWidth: number;
-	layout: number[];
+	layout: TweenedLayout;
 	setSettings: (
 		update: (settings: NormalizedSettings) => NormalizedSettings,
 	) => void;

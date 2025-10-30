@@ -6,16 +6,18 @@ import { Column } from './types';
 interface UseLayoutParams {
 	canvasWidth: number | null | undefined;
 	groupOnColumn?: Column | null;
-	config: ColumnConfig[];
+	config: Omit<ColumnConfig, 'index'>[];
 	miniColumn?: Column | null;
 }
+
+export type TweenedLayout = (number | undefined)[];
 
 export const useLayout = ({
 	canvasWidth,
 	groupOnColumn,
 	config,
 	miniColumn,
-}: UseLayoutParams): (number | undefined)[] =>
+}: UseLayoutParams): TweenedLayout =>
 	useMemo(() => {
 		if (!Array.isArray(config) || canvasWidth == null || canvasWidth === 0) {
 			return [];
