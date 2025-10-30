@@ -3,7 +3,8 @@ import '@neovici/cosmoz-viewinfo';
 import '@polymer/iron-icons/editor-icons';
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/paper-button/paper-button';
-import '@polymer/paper-dropdown-menu/paper-dropdown-menu-light';
+import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
+import '@polymer/paper-listbox';
 import '@polymer/paper-toggle-button/paper-toggle-button';
 
 import '../../src/cosmoz-omnitable';

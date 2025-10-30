@@ -1,4 +1,4 @@
-import { _ } from '@neovici/cosmoz-i18next';
+import { t } from 'i18next';
 import { PolymerElement } from '@polymer/polymer';
 import { html } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -77,8 +77,8 @@ class DatetimeRangeInput extends dateInputMixin(
 				<div class="dropdown-content" slot="dropdown-content">
 					<h3 style="margin: 0;">${this.title}</h3>
 					<cosmoz-datetime-input
-						date-label=${_('From date')}
-						time-label=${_('From time')}
+						date-label=${t('From date')}
+						time-label=${t('From time')}
 						min=${this._toInputString(this._limit.fromMin)}
 						max=${this._toInputString(this._limit.fromMax)}
 						step=${this.filterStep}
@@ -87,8 +87,8 @@ class DatetimeRangeInput extends dateInputMixin(
 							this.set('_filterInput.min', event.detail.value)}
 					></cosmoz-datetime-input>
 					<cosmoz-datetime-input
-						date-label=${_('To date')}
-						time-label=${_('To time')}
+						date-label=${t('To date')}
+						time-label=${t('To time')}
 						min=${this._toInputString(this._limit.toMin)}
 						max=${this._toInputString(this._limit.toMax)}
 						step=${this.filterStep}
