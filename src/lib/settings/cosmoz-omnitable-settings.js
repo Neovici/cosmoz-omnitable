@@ -1,5 +1,5 @@
 import { html, component } from '@pionjs/pion';
-import { _ } from '@neovici/cosmoz-i18next';
+import { t } from 'i18next';
 import { isEmpty } from '@neovici/cosmoz-utils/template';
 import { defaultMiddleware, size } from '@neovici/cosmoz-dropdown/use-floating';
 import '@neovici/cosmoz-collapse';
@@ -73,7 +73,7 @@ const SettingsUI = (host) => {
 		...thru
 	} = useSettingsUi(host);
 	return html` <div class="headline">
-			${_('Sort and filter')}
+			${t('Sort and filter')}
 			<button
 				class="close"
 				@click=${(e) => {
@@ -93,7 +93,7 @@ const SettingsUI = (host) => {
 				@click=${() => setOpened((c) => ({ ...c, columns: !c.columns }))}
 				part="columns columns-heading"
 			>
-				${_('Columns')} ${arrow}
+				${t('Columns')} ${arrow}
 			</div>
 			<cosmoz-collapse
 				?opened="${opened.columns}"
@@ -107,7 +107,7 @@ const SettingsUI = (host) => {
 				?data-opened=${opened.sort}
 				@click=${() => setOpened((c) => ({ ...c, sort: !c.sort }))}
 			>
-				${_('Sort on')} ${arrow}
+				${t('Sort on')} ${arrow}
 			</div>
 			<cosmoz-collapse ?opened=${opened.sort}> ${sort()} </cosmoz-collapse>
 
@@ -117,7 +117,7 @@ const SettingsUI = (host) => {
 				@click=${() => setOpened((c) => ({ ...c, group: !c.group }))}
 				part="groups groups-heading"
 			>
-				${_('Group on')} ${arrow}
+				${t('Group on')} ${arrow}
 			</div>
 			<cosmoz-collapse ?opened=${opened.group} part="groups groups-heading"
 				>${group()}</cosmoz-collapse
@@ -133,10 +133,10 @@ const SettingsUI = (host) => {
 						@click=${onReset}
 						?disabled=${!hasChanges}
 					>
-						${_('Reset')}
+						${t('Reset')}
 					</button>
 					<button class="button" @click=${onSave} ?disabled=${!hasChanges}>
-						${_('Save')}
+						${t('Save')}
 					</button>
 				</div>`,
 		)}`;

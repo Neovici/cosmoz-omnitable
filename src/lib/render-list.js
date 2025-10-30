@@ -1,6 +1,6 @@
 import '../cosmoz-omnitable-skeleton.js';
 
-import { _ } from '@neovici/cosmoz-i18next';
+import { t } from 'i18next';
 import { html } from 'lit-html';
 import { when } from 'lit-html/directives/when.js';
 
@@ -26,8 +26,8 @@ export const renderList = (header, list) => {
 					<slot name="empty-set-message">
 						<iron-icon icon="icons:announcement"></iron-icon>
 						<div class="tableContent-empty-message">
-							<h3>${_('Working set empty')}</h3>
-							<p>${_('No data to display')}</p>
+							<h3>${t('Working set empty')}</h3>
+							<p>${t('No data to display')}</p>
 						</div>
 					</slot>
 				</div>`,
@@ -38,8 +38,8 @@ export const renderList = (header, list) => {
 				html`<div class="tableContent-empty">
 					<iron-icon icon="icons:announcement"></iron-icon>
 					<div>
-						<h3>${_('Filter too strict')}</h3>
-						<p>${_('No matches for selection')}</p>
+						<h3>${t('Filter too strict')}</h3>
+						<p>${t('No matches for selection')}</p>
 					</div>
 				</div>`,
 		)}
@@ -65,7 +65,7 @@ export const renderList = (header, list) => {
 				html`<div class="tableContent-empty overlay">
 					<iron-icon icon="icons:error"></iron-icon>
 					<div class="tableContent-empty-message">
-						<h3>${_('Error loading data')}</h3>
+						<h3>${t('Error loading data')}</h3>
 						<p>${error.message}</p>
 					</div>
 				</div>`,

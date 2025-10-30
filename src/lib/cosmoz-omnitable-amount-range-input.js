@@ -1,4 +1,4 @@
-import { _ } from '@neovici/cosmoz-i18next';
+import { t } from 'i18next';
 import { PolymerElement } from '@polymer/polymer';
 import { html } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -113,8 +113,8 @@ class AmountRangeInput extends rangeInputMixin(
 					<cosmoz-input
 						class=${this._fromClasses}
 						type="number"
-						title=${_('Minimum amount')}
-						label=${_('Min amount')}
+						title=${t('Minimum amount')}
+						label=${t('Min amount')}
 						.value=${this._filterInput?.min}
 						@value-changed=${(event) => {
 							this.set('_filterInput.min', event.detail.value);
@@ -129,8 +129,8 @@ class AmountRangeInput extends rangeInputMixin(
 					<cosmoz-input
 						class=${this._toClasses}
 						type="number"
-						title=${_('Maximum amount')}
-						label=${_('Max amount')}
+						title=${t('Maximum amount')}
+						label=${t('Max amount')}
 						.value=${this._filterInput?.max}
 						@value-changed=${(event) => {
 							this.set('_filterInput.max', event.detail.value);

@@ -1,7 +1,7 @@
 import { PolymerElement } from '@polymer/polymer';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { html } from 'lit-html';
-import { _ } from '@neovici/cosmoz-i18next';
+import { t } from 'i18next';
 import '@neovici/cosmoz-input';
 import { rangeInputMixin } from './cosmoz-omnitable-range-input-mixin';
 import { polymerHauntedRender } from './polymer-haunted-render-mixin';
@@ -102,7 +102,7 @@ class NumberRangeInput extends rangeInputMixin(
 					<cosmoz-input
 						class=${this._fromClasses}
 						type="number"
-						label=${_('From')}
+						label=${t('From')}
 						.value=${this._filterInput?.min}
 						@value-changed=${(event) => {
 							this.set('_filterInput.min', event.detail.value);
@@ -115,7 +115,7 @@ class NumberRangeInput extends rangeInputMixin(
 					<cosmoz-input
 						class=${this._toClasses}
 						type="number"
-						label=${_('To')}
+						label=${t('To')}
 						.value=${this._filterInput?.max}
 						@value-changed=${(event) => {
 							this.set('_filterInput.max', event.detail.value);

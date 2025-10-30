@@ -1,5 +1,5 @@
 import { html } from 'lit-html';
-import { ngettext, _ } from '@neovici/cosmoz-i18next';
+import { t } from 'i18next';
 import { saveAsCsvAction } from './save-as-csv-action';
 import { saveAsXlsxAction } from './save-as-xlsx-action';
 import { isEmpty } from '@neovici/cosmoz-utils/template';
@@ -19,11 +19,7 @@ export const renderFooter = ({
 		exportparts="bar: bottomBar-bar, info: bottomBar-info, buttons: bottomBar-buttons"
 	>
 		<slot name="info" slot="info">
-			${ngettext(
-				'{0} selected item',
-				'{0} selected items',
-				selectedItems.length,
-			)}
+			${t('{count} selected item', { count: selectedItems.length })}
 		</slot>
 		<slot name="actions" id="actions"></slot>
 		<!-- These slots are needed by cosmoz-bottom-bar
@@ -52,13 +48,13 @@ export const renderFooter = ({
 			<button
 				@click=${() => saveAsCsvAction(columns, selectedItems, csvFilename)}
 			>
-				${_('Save as CSV')}
+				${t('Save as CSV')}
 			</button>
 			<button
 				@click=${() =>
 					saveAsXlsxAction(columns, selectedItems, xlsxFilename, xlsxSheetname)}
 			>
-				${_('Save as XLSX')}
+				${t('Save as XLSX')}
 			</button>
 			<slot name="download-menu"></slot>
 		</cosmoz-dropdown-menu>
