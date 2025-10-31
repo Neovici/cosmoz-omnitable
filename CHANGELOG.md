@@ -1,3 +1,10 @@
+# [15.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v15.0.0...v15.1.0) (2025-10-31)
+
+
+### Features
+
+* use i18next ([#761](https://github.com/neovici/cosmoz-omnitable/issues/761)) ([2dcdb5a](https://github.com/neovici/cosmoz-omnitable/commit/2dcdb5a8295cf2edb7afa161f5fef193b9a4e7ae)), closes [AB#21733](https://github.com/AB/issues/21733)
+
 # [15.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.38.0...v15.0.0) (2025-10-31)
 
 
