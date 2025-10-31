@@ -271,6 +271,13 @@ export default css`
 		color: #333;
 		z-index: 1;
 	}
+	.tableContent-empty iron-icon {
+		height: 96px;
+		min-height: 96px;
+		width: 96px;
+		min-width: 96px;
+		margin-right: 24px;
+	}
 	.tableContent-empty > div {
 		display: flex;
 		flex-direction: column;

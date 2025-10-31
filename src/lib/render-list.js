@@ -1,9 +1,8 @@
 import '../cosmoz-omnitable-skeleton.js';
 
-import { t } from 'i18next';
+import { _ } from '@neovici/cosmoz-i18next';
 import { html } from 'lit-html';
 import { when } from 'lit-html/directives/when.js';
-import { announcementIcon, errorIcon } from '@neovici/cosmoz-icons';
 
 export const renderList = (header, list) => {
 	const { settingsConfig } = header,
@@ -25,14 +24,10 @@ export const renderList = (header, list) => {
 			() =>
 				html`<div class="tableContent-empty">
 					<slot name="empty-set-message">
-						${announcementIcon({
-							width: '96px',
-							height: '96px',
-							styles: 'margin-right: 24px; fill: currentColor;',
-						})}
+						<iron-icon icon="icons:announcement"></iron-icon>
 						<div class="tableContent-empty-message">
-							<h3>${t('Working set empty')}</h3>
-							<p>${t('No data to display')}</p>
+							<h3>${_('Working set empty')}</h3>
+							<p>${_('No data to display')}</p>
 						</div>
 					</slot>
 				</div>`,
@@ -41,14 +36,10 @@ export const renderList = (header, list) => {
 			filterIsTooStrict,
 			() =>
 				html`<div class="tableContent-empty">
-					${announcementIcon({
-						width: '96px',
-						height: '96px',
-						styles: 'margin-right: 24px; fill: currentColor;',
-					})}
+					<iron-icon icon="icons:announcement"></iron-icon>
 					<div>
-						<h3>${t('Filter too strict')}</h3>
-						<p>${t('No matches for selection')}</p>
+						<h3>${_('Filter too strict')}</h3>
+						<p>${_('No matches for selection')}</p>
 					</div>
 				</div>`,
 		)}
@@ -72,13 +63,9 @@ export const renderList = (header, list) => {
 			error,
 			() =>
 				html`<div class="tableContent-empty overlay">
-					${errorIcon({
-						width: '96px',
-						height: '96px',
-						styles: 'margin-right: 24px; fill: currentColor;',
-					})}
+					<iron-icon icon="icons:error"></iron-icon>
 					<div class="tableContent-empty-message">
-						<h3>${t('Error loading data')}</h3>
+						<h3>${_('Error loading data')}</h3>
 						<p>${error.message}</p>
 					</div>
 				</div>`,

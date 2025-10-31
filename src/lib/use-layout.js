@@ -1,27 +1,13 @@
 import { useMemo } from '@pionjs/pion';
 import { computeLayout } from './compute-layout';
-import { ColumnConfig } from './layout';
-import { Column } from './types';
 
-interface UseLayoutParams {
-	canvasWidth: number | null | undefined;
-	groupOnColumn?: Column | null;
-	config: ColumnConfig[];
-	miniColumn?: Column | null;
-}
-
-export const useLayout = ({
-	canvasWidth,
-	groupOnColumn,
-	config,
-	miniColumn,
-}: UseLayoutParams): (number | undefined)[] =>
+export const useLayout = ({ canvasWidth, groupOnColumn, config, miniColumn }) =>
 	useMemo(() => {
 		if (!Array.isArray(config) || canvasWidth == null || canvasWidth === 0) {
 			return [];
 		}
 
-		const columnConfigs: ColumnConfig[] = config
+		const columnConfigs = config
 			.map((c, index) => ({
 				minWidth: c.minWidth,
 				width: c.width,

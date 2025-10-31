@@ -1,40 +1,23 @@
 import { useEffect, useRef } from '@pionjs/pion';
-import { Column } from './types';
-import { ColumnConfig } from './layout';
-import { NormalizedSettings } from './settings/normalize';
-
-export type UseResizableColumnsParams = {
-	host: HTMLElement;
-	canvasWidth: number;
-	layout: number[];
-	setSettings: (
-		update: (settings: NormalizedSettings) => NormalizedSettings,
-	) => void;
-};
 
 export const useResizableColumns = ({
 	host,
 	canvasWidth,
 	layout,
 	setSettings,
-}: UseResizableColumnsParams) => {
-	const onColumnResizeRef =
-		useRef<(ev: CustomEvent<{ newWidth: number; column: Column }>) => void>();
+}) => {
+	const onColumnResizeRef = useRef();
 
-	onColumnResizeRef.current = (
-		ev: CustomEvent<{ newWidth: number; column: Column }>,
-	) =>
+	onColumnResizeRef.current = (ev) =>
 		setSettings((settings) => {
-			const config = settings.columns as Omit<ColumnConfig, 'index'>[],
+			const config = settings.columns,
 				{
 					detail: { newWidth, column },
 				} = ev,
-				columnIndex = config.findIndex(
-					(c: Omit<ColumnConfig, 'index'>) => c.name === column.name,
-				),
+				columnIndex = config.findIndex((c) => c.name === column.name),
 				newConfig = [],
 				maxPriority = config.reduce(
-					(p: number, c) => Math.max(p, c.priority),
+					(p, c) => Math.max(p, c.priority),
 					-Infinity,
 				);
 
@@ -73,10 +56,7 @@ export const useResizableColumns = ({
 		});
 
 	useEffect(() => {
-		const handler = (ev: Event) =>
-			onColumnResizeRef.current?.(
-				ev as CustomEvent<{ newWidth: number; column: Column }>,
-			);
+		const handler = (ev) => onColumnResizeRef.current(ev);
 		host.addEventListener('column-resize', handler);
 		return () => host.removeEventListener('column-resize', handler);
 	}, []);

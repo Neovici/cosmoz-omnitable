@@ -1,14 +1,10 @@
 import { useCallback, useState } from '@pionjs/pion';
-import { callFn, getItemState, ItemsState, ItemState } from './utils';
-import { Item } from '../lib/types';
+import { callFn, getItemState } from './utils';
 
 export const useWeakState = () => {
-	const [wrapper, setState] = useState<[ItemsState]>(() => [new WeakMap()]),
+	const [wrapper, setState] = useState(() => [new WeakMap()]),
 		setItemState = useCallback(
-			(
-				item: Item,
-				newItemState: ItemState | ((state: ItemState) => ItemState),
-			) =>
+			(item, newItemState) =>
 				setState(([state]) => {
 					const itemState = getItemState(item, state);
 					Object.assign(itemState, callFn(newItemState, itemState));

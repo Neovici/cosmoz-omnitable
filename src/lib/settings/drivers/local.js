@@ -1,27 +1,18 @@
 export default ({ prefix = 'omnitable-' } = {}) => {
-	const read = async (settingsId: string) => {
+	const read = async (settingsId) => {
 		if (!settingsId) {
 			return;
 		}
-
 		try {
-			const item = localStorage.getItem(prefix + settingsId);
-
-			if (item == null) {
-				return;
-			}
-
-			return JSON.parse(item);
+			return JSON.parse(localStorage.getItem(prefix + settingsId));
 		} catch (e) {
 			// eslint-disable-next-line no-console
 			console.error(e);
 		}
 	};
-
 	return {
-		write: async (settingsId: string, settings: string) => {
+		write: async (settingsId, settings) => {
 			const key = prefix + settingsId;
-
 			try {
 				if (settings) {
 					localStorage.setItem(key, JSON.stringify(settings));

@@ -1,15 +1,6 @@
 import { saveAs } from 'file-saver-es';
-import { Column, Item } from './types';
 
-interface CsvColumn extends Column {
-	title: string;
-	getString: (
-		column: CsvColumn,
-		item: Item,
-	) => string | number | null | undefined;
-}
-
-const makeCsvField = (str: string): string => {
+const makeCsvField = (str) => {
 	const result = str.replace(/"/gu, '""');
 	if (result.search(/("|,|\n)/gu) >= 0) {
 		return '"' + result + '"';
@@ -17,11 +8,7 @@ const makeCsvField = (str: string): string => {
 	return str;
 };
 
-export const saveAsCsvAction = (
-	columns: CsvColumn[],
-	selectedItems: Item[],
-	csvFilename: string,
-): void => {
+export const saveAsCsvAction = (columns, selectedItems, csvFilename) => {
 	const separator = ';',
 		lf = '\n',
 		header = columns.map((col) => makeCsvField(col.title)).join(separator) + lf,
@@ -33,7 +20,6 @@ export const saveAsCsvAction = (
 						if (cell === undefined || cell === null) {
 							return '';
 						}
-
 						return makeCsvField(String(cell));
 					})
 					.join(separator) + lf
