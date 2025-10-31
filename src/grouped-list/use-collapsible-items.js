@@ -1,11 +1,10 @@
 import { useCallback } from '@pionjs/pion';
 import { useWeakState } from './use-weak-state';
 import { isGroup } from './utils';
-import type { Item } from '../lib/types';
 
 export const useCollapsibleItems = () => {
 	const { setItemState, state, signal } = useWeakState(),
-		toggleFold = useCallback((item: Item, folded?: boolean) => {
+		toggleFold = useCallback((item, folded) => {
 			if (!isGroup(item)) {
 				return;
 			}
@@ -14,7 +13,7 @@ export const useCollapsibleItems = () => {
 				folded: folded !== undefined ? folded : !state.folded,
 			}));
 		}, []),
-		toggleCollapse = useCallback((item: Item, collapsed?: boolean) => {
+		toggleCollapse = useCallback((item, collapsed) => {
 			if (isGroup(item)) {
 				return;
 			}

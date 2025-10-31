@@ -12,9 +12,16 @@
 		></script>
 		<script
 			type="module"
+			src="/node_modules/@polymer/iron-icons/editor-icons.js"
+		></script>
+		<script
+			type="module"
+			src="/node_modules/@polymer/iron-icons/iron-icons.js"
+		></script>
+		<script
+			type="module"
 			src="/node_modules/@polymer/paper-button/paper-button.js"
 		></script>
-		<script type="module" src="./cosmoz-omnitable-icon.ts"></script>
 
 		<script type="module" src="../src/cosmoz-omnitable.js"></script>
 
@@ -163,7 +170,7 @@
 						</cosmoz-omnitable-column>
 
 						<paper-button slot="actions" on-run="removeItems">
-							<cosmoz-omnitable-icon icon="delete"></cosmoz-omnitable-icon>
+							<iron-icon icon="delete"></iron-icon>
 							<span>{{ _computeLabel('Remove', selectedItems.length)}}</span>
 						</paper-button>
 					</cosmoz-omnitable>

@@ -1,1 +1,1 @@
-import './cosmoz-grouped-list';
+import './cosmoz-grouped-list.js';

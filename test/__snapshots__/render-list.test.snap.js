@@ -6,6 +6,8 @@ snapshots['render-list error'] = `<div
   id="tableContent"
 >
   <div class="overlay tableContent-empty">
+    <iron-icon icon="icons:error">
+    </iron-icon>
     <div class="tableContent-empty-message">
       <h3>
         Error loading data

@@ -1,5 +1,6 @@
 import { html } from 'lit-html';
 import { PolymerElement } from '@polymer/polymer/polymer-element';
+import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import '@neovici/cosmoz-input';
 
 import './ui-helpers/cosmoz-clear-button';

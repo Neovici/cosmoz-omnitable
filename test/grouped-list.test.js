@@ -5,11 +5,6 @@ import { setupIgnoreWindowResizeObserverLoopErrors } from '@lit-labs/virtualizer
 
 import '../src/grouped-list/index.js';
 
-const nextEvent = (element, eventName) =>
-	new Promise((resolve) =>
-		element.addEventListener(eventName, resolve, { once: true }),
-	);
-
 const renderItem = (item, index, { selected, expanded }) => html`
 		I:${item.id}-${item.name}-${item.value}-${selected}-${expanded}
 	`,
@@ -55,7 +50,6 @@ suite('empty', () => {
 		const data = [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }];
 
 		element.data = data;
-		await nextEvent(element, 'visibilityChanged');
 
 		element.select(data[2]);
 		element.select(data[3]);
@@ -104,7 +98,6 @@ suite('empty', () => {
 		const data = [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }];
 
 		element.data = data;
-		await nextEvent(element, 'visibilityChanged');
 
 		element.select(data[2]);
 		element.select(data[3]);
@@ -223,7 +216,8 @@ suite('empty-groups', () => {
 				],
 			},
 		];
-		await nextEvent(element, 'visibilityChanged');
+		await nextFrame();
+		await nextFrame();
 	});
 
 	test('does not render empty groups by default', () => {
