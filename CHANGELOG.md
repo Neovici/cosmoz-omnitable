@@ -1,3 +1,14 @@
+# [15.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.38.0...v15.0.0) (2025-10-31)
+
+
+* feat!: revert all changes after 14.27.3 ([df87324](https://github.com/neovici/cosmoz-omnitable/commit/df87324f15d8c74509b4f2222db7c72fb52b291d))
+
+
+### BREAKING CHANGES
+
+* ugprading to 15.0.0 from 14.27.3 should not require any
+changes, as they identical in code.
+
 # [14.38.0](https://github.com/neovici/cosmoz-omnitable/compare/v14.37.0...v14.38.0) (2025-10-30)
 
 
