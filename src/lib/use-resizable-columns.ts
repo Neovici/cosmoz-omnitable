@@ -26,26 +26,25 @@ export const useResizableColumns = ({
 		ev: CustomEvent<{ newWidth: number; column: Column }>,
 	) =>
 		setSettings((settings) => {
-			const config = settings.columns as Omit<ColumnConfig, 'index'>[],
-				{
-					detail: { newWidth, column },
-				} = ev,
-				columnIndex = config.findIndex(
-					(c: Omit<ColumnConfig, 'index'>) => c.name === column.name,
-				),
-				newConfig = [],
-				maxPriority = config.reduce(
-					(p: number, c) => Math.max(p, c.priority),
-					-Infinity,
-				);
+			const config = settings.columns as Omit<ColumnConfig, 'index'>[];
+			const {
+				detail: { newWidth, column },
+			} = ev;
+
+			const columnIndex = config.findIndex((c) => c.name === column.name);
+			const newConfig: Omit<ColumnConfig, 'index'>[] = [];
+			const maxPriority = config.reduce(
+				(p, c) => Math.max(p, c.priority),
+				-Infinity,
+			);
 
 			for (let i = 0; i < layout.length; i++) {
 				newConfig[i] = { ...config[i] };
 
 				// for visible columns to the left of the resized column
-				if (i < columnIndex && layout[i]) {
+				if (i < columnIndex && layout[i] != null) {
 					// save the current width
-					newConfig[i].width = layout[i];
+					newConfig[i].width = layout[i]!;
 					// make them fixed width
 					newConfig[i].flex = 0;
 					// keep them visible
@@ -54,7 +53,7 @@ export const useResizableColumns = ({
 
 				// update the width of the resized column
 				if (i === columnIndex) {
-					const maxNewSize = layout.reduce((acc, cur, i) => {
+					const maxNewSize = layout.reduce((acc: number, cur, i) => {
 						if (i < columnIndex) {
 							return cur ? acc - cur : acc;
 						}
@@ -72,7 +71,6 @@ export const useResizableColumns = ({
 
 			return { ...settings, columns: newConfig };
 		});
-
 	useEffect(() => {
 		const handler = (ev: Event) =>
 			onColumnResizeRef.current?.(
