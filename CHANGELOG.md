@@ -1,3 +1,41 @@
+# [15.2.0-beta.1](https://github.com/neovici/cosmoz-omnitable/compare/v15.1.0...v15.2.0-beta.1) (2025-10-31)
+
+
+### Bug Fixes
+
+* convert use-footer.js to ts ([#742](https://github.com/neovici/cosmoz-omnitable/issues/742)) ([b90d557](https://github.com/neovici/cosmoz-omnitable/commit/b90d5572f0bb460f3c6c28ebde395ef5df6d47d8))
+* fix build error ([04cfbbc](https://github.com/neovici/cosmoz-omnitable/commit/04cfbbca5fe7bc6ca619ad319addf58ff6811988))
+* fix build error ([dc1c4ac](https://github.com/neovici/cosmoz-omnitable/commit/dc1c4ac27ba47679f514f9b3153316fc786d3631))
+* fix lint error ([6aa3360](https://github.com/neovici/cosmoz-omnitable/commit/6aa336059f194e575e8f277228bac815c23e7fee))
+* fix test error ([b5dbea9](https://github.com/neovici/cosmoz-omnitable/commit/b5dbea9de87908b87794080531f5b823ea4869c5))
+* make paper-dropdown a dev dependency ([d18232d](https://github.com/neovici/cosmoz-omnitable/commit/d18232d281e52399d476df045bd0434db75cbb9c))
+* replace paper dropdown menu on amount range input with cosmoz-dropdown ([#729](https://github.com/neovici/cosmoz-omnitable/issues/729)) ([5a4d962](https://github.com/neovici/cosmoz-omnitable/commit/5a4d962d2a413f92fc27af5bb96b9cbb49fea622))
+* replace paper dropdown menu on date range input with cosmoz-dropdown ([#731](https://github.com/neovici/cosmoz-omnitable/issues/731)) ([79fa7d0](https://github.com/neovici/cosmoz-omnitable/commit/79fa7d0bd1cd90a3151d3153a5ff2546073e6eb8))
+* replace paper dropdown menu on datetime range input with cosmoz-dropdown ([#730](https://github.com/neovici/cosmoz-omnitable/issues/730)) ([2b6e4ff](https://github.com/neovici/cosmoz-omnitable/commit/2b6e4ff926aaa61752c48d3bbac9fe89a9664bf7))
+* replace paper dropdown menu on time range input with cosmoz-dropdown ([#732](https://github.com/neovici/cosmoz-omnitable/issues/732)) ([c2b2661](https://github.com/neovici/cosmoz-omnitable/commit/c2b26614f349cd754b676385a66e598063f38ef9))
+* **settings/drivers/remote:** less defensive ([07f50ec](https://github.com/neovici/cosmoz-omnitable/commit/07f50ec1fc3fe136b454fd7b02da510a5b9dafe0))
+* upgrade number range input ([#675](https://github.com/neovici/cosmoz-omnitable/issues/675)) ([328898a](https://github.com/neovici/cosmoz-omnitable/commit/328898a5d4eacf90f2b424e50a2e063f68a95621))
+
+
+### Features
+
+* add more config ([3d99349](https://github.com/neovici/cosmoz-omnitable/commit/3d993498ea93017e71d4fd5f3764f4785a29af6a))
+* cleanup paper-dropdown ([4b08ac9](https://github.com/neovici/cosmoz-omnitable/commit/4b08ac9662476a8ffe942f8e828768181a340e76))
+* convert context.js to ts ([523d7b3](https://github.com/neovici/cosmoz-omnitable/commit/523d7b3cdd095167671ecede54cbc45d8081d7d4))
+* convert cosmoz-grouped-list-row.js to ts ([facfb0a](https://github.com/neovici/cosmoz-omnitable/commit/facfb0a668539e5b0339ea15537126b450db250d))
+* convert cosmoz-grouped-list.js to ts ([ee10787](https://github.com/neovici/cosmoz-omnitable/commit/ee10787f57536e3b80687d0c9b43e36fc8107fe8))
+* convert local.js to ts from drivers directory ([fad0037](https://github.com/neovici/cosmoz-omnitable/commit/fad0037426e4a1c15879dd9b09c5b39ff0304678))
+* convert remote.js to ts ([77233a0](https://github.com/neovici/cosmoz-omnitable/commit/77233a0cde91fdc9c24e173c633e94f8207ce1f9))
+* convert save-as-csv-action.js to ts ([7140f82](https://github.com/neovici/cosmoz-omnitable/commit/7140f825bdc19532c859f2d4de3bcdf84ce50a90))
+* convert use-canvas-width.js to ts ([#741](https://github.com/neovici/cosmoz-omnitable/issues/741)) ([b3f2df2](https://github.com/neovici/cosmoz-omnitable/commit/b3f2df21b2fd9b89f6b930105d647a840e890d4c))
+* convert use-cosmoz-grouped-list.js to ts ([d0025b1](https://github.com/neovici/cosmoz-omnitable/commit/d0025b1a9b3cb30169f719609566cbefc43331ad))
+* convert use-layout.js to ts ([aab84cd](https://github.com/neovici/cosmoz-omnitable/commit/aab84cd7b9787f8f679718667cdaecacb451a923))
+* convert use-mini.js to ts ([f336b88](https://github.com/neovici/cosmoz-omnitable/commit/f336b88617b161021724efa6cdbf02c285caa5ec))
+* convert use-resizable-columns to ts ([b5cee24](https://github.com/neovici/cosmoz-omnitable/commit/b5cee241150f48171a36232031ff3f8c0d9ee461))
+* convert use-weak-state to ts ([#720](https://github.com/neovici/cosmoz-omnitable/issues/720)) ([5c9e26f](https://github.com/neovici/cosmoz-omnitable/commit/5c9e26f88955aa759dead572b3f62377e32b51f5))
+* covert use-collapsible-items to ts ([02d65bf](https://github.com/neovici/cosmoz-omnitable/commit/02d65bf34726fe3116dacec93c5c421d0d79529d))
+* replace iron-icons with cosmoz-icons ([36573d7](https://github.com/neovici/cosmoz-omnitable/commit/36573d7fa760433a2a05c36fff666945844f4af2))
+
 # [15.1.0](https://github.com/neovici/cosmoz-omnitable/compare/v15.0.0...v15.1.0) (2025-10-31)
 
 
