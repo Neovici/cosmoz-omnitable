@@ -1,4 +1,4 @@
-import { html, nothing } from 'lit-html';
+import { html } from 'lit-html';
 import { classMap } from 'lit-html/directives/class-map.js';
 import '@neovici/cosmoz-dropdown';
 
@@ -13,6 +13,7 @@ export const renderDropdown = ({
 	externalValues = null,
 }) => {
 	const classes = {
+		dropdown: true,
 		focused: headerFocused,
 		filtered: Boolean(filterText),
 		left: horizontalAlign === 'left',
@@ -25,7 +26,7 @@ export const renderDropdown = ({
 
 	return html`
 		<style>
-			.dropdown-content h3 {
+			.content h3 {
 				font-weight: 500;
 				font-size: 13px;
 				margin: 0;
@@ -35,7 +36,7 @@ export const renderDropdown = ({
 				);
 			}
 
-			.dropdown-content {
+			.content {
 				padding: 10px 10px 10px 10px;
 				min-width: 120px;
 				height: 100%;
@@ -50,130 +51,46 @@ export const renderDropdown = ({
 					0 1.5px 6px 0 rgba(0, 0, 0, 0.1);
 			}
 
-			cosmoz-dropdown {
+			.dropdown {
 				display: block;
 				position: relative;
 				font-family: var(--paper-font-common-base_-_font-family, inherit);
 				font-size: 16px;
 				font-weight: normal;
-				--divider-color: var(
-					--paper-input-container-color,
-					rgba(0, 0, 0, 0.42)
-				);
-				--focused-color: #3f51b5;
 				width: 100%;
 				outline: none;
 			}
 
-			cosmoz-dropdown::before {
-				content: '';
-				position: absolute;
-				left: 0;
-				bottom: 0;
-				height: 1px;
-				width: 100%;
-				background: var(--divider-color);
-				pointer-events: none;
-				transition:
-					background 0.2s,
-					height 0.2s;
-			}
-
-			cosmoz-dropdown::after {
-				content: '';
-				position: absolute;
-				left: 0;
-				bottom: 0;
-				height: 1px;
-				width: 100%;
-				background: var(--focused-color);
-				transform-origin: center;
-				transform: scaleX(0);
-				pointer-events: none;
-				transition:
-					background 0.2s,
-					transform 0.2s,
-					height 0.2s;
-			}
-
-			cosmoz-dropdown.focused::after {
-				transform: scaleX(1);
-				height: 2px;
-			}
-
-			cosmoz-dropdown::part(button) {
+			.dropdown::part(button) {
 				background: transparent;
 				border-radius: unset;
 				position: relative;
 				width: 100%;
 				height: 100%;
-				min-height: 32px;
+				min-height: 24px;
 				display: flex;
 				flex-direction: column;
 				justify-content: center;
 			}
 
-			.dropdown-button {
-				font-size: 16px;
-				box-sizing: border-box;
-				cursor: pointer;
-				color: var(--dropdown-button-color, rgba(0, 0, 0, 0.54));
-				position: absolute;
-				top: 50%;
-				transform: translateY(-50%);
-				transition:
-					transform 0.2s,
-					font-size 0.2s,
-					top 0.2s,
-					color 0.2s;
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				width: 100%;
-				pointer-events: none;
-			}
-
-			.left .dropdown-button,
+			.left .label,
 			.left .filter-value {
 				text-align: left;
 			}
 
-			.right .dropdown-button,
+			.right .label,
 			.right .filter-value {
 				text-align: right;
 			}
 
-			.center .dropdown-button,
+			.center .label,
 			.center .filter-value {
 				text-align: center;
 			}
-
-			.filter-value {
-				font-size: 16px;
-				text-align: left;
-				padding-bottom: 6px;
-				box-sizing: border-box;
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				color: var(--dropdown-filter-color, rgba(0, 0, 0, 0.87));
-			}
-
-			cosmoz-dropdown.filtered .dropdown-button {
-				top: 0;
-				transform: translateY(-100%);
-				font-size: 12px;
-			}
-
-			.float {
-				display: block;
-				height: 16px;
-				width: 100%;
-				content: ' ';
+			.dropdown:focus-within .input {
+					--make-it-focus: 1;
 			}
 		</style>
-
-		<div class="float"></div>
 
 		<cosmoz-dropdown
 			@focus=${onOpenedChanged}
@@ -181,13 +98,14 @@ export const renderDropdown = ({
 			class=${classMap(classes)}
 			title=${tooltip || ''}
 		>
-			<div slot="button" class="dropdown-button">${title || tooltip}</div>
+				<cosmoz-omnitable-dropdown-input
+					class="input"
+					slot="button"
+					.label="${title || tooltip}"
+					.value="${filterText}"
+				></cosmoz-omnitable-dropdown-input>
 
-			${filterText
-				? html`<div slot="button" class="filter-value">${filterText}</div>`
-				: nothing}
-
-			<div class="dropdown-content" @mousedown=${(e) => e.stopPropagation()}>
+			<div class="content" @mousedown=${(e) => e.stopPropagation()}>
 				${content}
 			</div>
 		</cosmoz-dropdown>
