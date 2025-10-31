@@ -3,7 +3,7 @@ import { spy as sinonSpy } from 'sinon';
 import { assert, html, fixture, nextFrame } from '@open-wc/testing';
 import { setupIgnoreWindowResizeObserverLoopErrors } from '@lit-labs/virtualizer/support/resize-observer-errors.js';
 
-import '../src/grouped-list/index.js';
+import '../src/grouped-list/index';
 
 const nextEvent = (element, eventName) =>
 	new Promise((resolve) =>
