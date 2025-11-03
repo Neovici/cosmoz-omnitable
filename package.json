@@ -127,7 +127,7 @@
     "lit-html": "^2.0.0 || ^3.0.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.0.0",
+    "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^19.0.0",
     "@neovici/cfg": "^2.5.1",
     "@neovici/cosmoz-viewinfo": "^4.0.0",
