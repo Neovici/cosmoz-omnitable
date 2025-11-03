@@ -121,7 +121,7 @@
     "@pionjs/pion": "^2.0.0",
     "@polymer/polymer": "^3.3.0",
     "file-saver-es": "^2.0.0",
-    "i18next": "^23.16.8",
+    "i18next": "^25.6.0",
     "lit-html": "^2.0.0 || ^3.0.0"
   },
   "devDependencies": {
