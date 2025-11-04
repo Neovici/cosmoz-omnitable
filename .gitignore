@@ -9,3 +9,5 @@ storybook-static
 dist/
 tsconfig.tsbuildinfo
 
+.direnv
+.envrc
