@@ -1,4 +1,4 @@
-import{x as c,B as ke,E as xt}from"./iframe-3MEW8cY1.js";import{t as K,c as O,g as C,P as I,u as T,a as vt,m as yt,s as Rt,D as Nt,b as Bt,e as Gt,i as $e,h as Oe,d as Ye,f as Ht,j as M,r as jt,k as Wt,l as A,n as Ut,o as we,p as he,q as k,v as Kt,w as Ce,x as Jt,y as Xt,z as Qt,T as Yt,A as Zt,B as ei,C as ti,E as ii,F as $,G as ai,H as ni,I as $t,J as Le,K as F,L as wt,M as De,N as oi,O as Ct,Q as ri,R as Te,S as li,U as Ze,V as si,W as Ve,X as ui,Y as di,Z as Ee,_ as Pe,$ as ci,a0 as Ie,a1 as R,a2 as mi,a3 as ze,a4 as pi}from"./cosmoz-collapse-B94RNRbS.js";import"./preload-helper-D9Z9MdNV.js";const gi=K`
+import{x as c,B as ke,E as xt}from"./iframe-CSNNINQe.js";import{t as K,c as O,g as C,P as I,u as T,a as vt,m as yt,s as Rt,D as Nt,b as Bt,e as Gt,i as $e,h as Oe,d as Ye,f as Ht,j as M,r as jt,k as Wt,l as A,n as Ut,o as we,p as he,q as k,v as Kt,w as Ce,x as Jt,y as Xt,z as Qt,T as Yt,A as Zt,B as ei,C as ti,E as ii,F as $,G as ai,H as ni,I as $t,J as Le,K as F,L as wt,M as De,N as oi,O as Ct,Q as ri,R as Te,S as li,U as Ze,V as si,W as Ve,X as ui,Y as di,Z as Ee,_ as Pe,$ as ci,a0 as Ie,a1 as R,a2 as mi,a3 as ze,a4 as pi}from"./cosmoz-collapse-D3OqPdlV.js";import"./preload-helper-D9Z9MdNV.js";const gi=K`
 	:host {
 		display: flex;
 	}
@@ -148,6 +148,11 @@ import{x as c,B as ke,E as xt}from"./iframe-3MEW8cY1.js";import{t as K,c as O,g 
 				justify-content: center;
 			}
 
+			.dropdown-content {
+				position: absolute;
+				top: 100%;
+			}
+
 			.dropdown-content h3 {
 				font-weight: 500;
 				font-size: 13px;
@@ -193,7 +198,7 @@ import{x as c,B as ke,E as xt}from"./iframe-3MEW8cY1.js";import{t as K,c as O,g 
 				${n}
 			</div>
 		</cosmoz-dropdown>
-	`};class Di extends Re(ae(I)){static get properties(){return{currency:{type:String},autodetect:{type:Boolean,value:!1},rates:{type:Object},autoupdate:{type:String,value:!1},_filterText:{type:String,computed:"_computeFilterText(filter.*, _formatters)"}}}static get observers(){return["_valuesChanged(autodetect, currency, values)"]}render(){const e=t=>{this.headerFocused=t.detail.value,this._onDropdownOpenedChanged(t)};return c`
+	`};class Di extends Re(ae(I)){static get properties(){return{currency:{type:String},autodetect:{type:Boolean,value:!1},rates:{type:Object},autoupdate:{type:String,value:!1},_filterText:{type:String,computed:"_computeFilterText(filter.*, _formatters)"},headerFocused:{type:Boolean,value:!1}}}static get observers(){return["_valuesChanged(autodetect, currency, values)"]}render(){const e=t=>{this.headerFocused=t.type==="focus",this._onDropdownOpenedChanged(t)};return c`
 			<style>
 				paper-dropdown-menu {
 					--iron-icon-width: 0;

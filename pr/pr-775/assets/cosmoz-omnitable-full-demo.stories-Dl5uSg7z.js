@@ -1,4 +1,4 @@
-import{x as d,B as Ie,E as xt,b as Pt}from"./iframe-3MEW8cY1.js";import{t as K,c as T,g as C,P as A,u as M,a as vt,m as yt,s as Bt,D as Gt,b as Ht,e as Wt,i as ve,h as Ae,d as Je,f as qt,j as E,r as Xt,k as Ut,l as _,n as Kt,o as ye,p as he,q as D,v as Yt,w as $e,x as Jt,y as Qt,z as Zt,T as en,A as Fe,B as tn,C as nn,E as rn,F as $,G as on,H as an,I as $t,J as Ee,K as I,L as wt,M as Te,N as ln,O as zt,Q as sn,R as Le,S as un,U as Qe,V as cn,W as Re,X as dn,Y as mn,Z as Oe,_ as Me,$ as pn,a0 as De,a1 as P,a2 as gn,a3 as ze,a4 as hn}from"./cosmoz-collapse-B94RNRbS.js";import"./preload-helper-D9Z9MdNV.js";const fn=K`
+import{x as d,B as Ie,E as xt,b as Pt}from"./iframe-CSNNINQe.js";import{t as K,c as T,g as C,P as A,u as M,a as vt,m as yt,s as Bt,D as Gt,b as Ht,e as Wt,i as ve,h as Ae,d as Je,f as qt,j as E,r as Xt,k as Ut,l as _,n as Kt,o as ye,p as he,q as D,v as Yt,w as $e,x as Jt,y as Qt,z as Zt,T as en,A as Fe,B as tn,C as nn,E as rn,F as $,G as on,H as an,I as $t,J as Ee,K as I,L as wt,M as Te,N as ln,O as zt,Q as sn,R as Le,S as un,U as Qe,V as cn,W as Re,X as dn,Y as mn,Z as Oe,_ as Me,$ as pn,a0 as De,a1 as P,a2 as gn,a3 as ze,a4 as hn}from"./cosmoz-collapse-D3OqPdlV.js";import"./preload-helper-D9Z9MdNV.js";const fn=K`
 	:host {
 		display: flex;
 	}
@@ -148,6 +148,11 @@ import{x as d,B as Ie,E as xt,b as Pt}from"./iframe-3MEW8cY1.js";import{t as K,c
 				justify-content: center;
 			}
 
+			.dropdown-content {
+				position: absolute;
+				top: 100%;
+			}
+
 			.dropdown-content h3 {
 				font-weight: 500;
 				font-size: 13px;
@@ -193,7 +198,7 @@ import{x as d,B as Ie,E as xt,b as Pt}from"./iframe-3MEW8cY1.js";import{t as K,c
 				${o}
 			</div>
 		</cosmoz-dropdown>
-	`};class Mn extends Ne(Z(A)){static get properties(){return{currency:{type:String},autodetect:{type:Boolean,value:!1},rates:{type:Object},autoupdate:{type:String,value:!1},_filterText:{type:String,computed:"_computeFilterText(filter.*, _formatters)"}}}static get observers(){return["_valuesChanged(autodetect, currency, values)"]}render(){const e=t=>{this.headerFocused=t.detail.value,this._onDropdownOpenedChanged(t)};return d`
+	`};class Mn extends Ne(Z(A)){static get properties(){return{currency:{type:String},autodetect:{type:Boolean,value:!1},rates:{type:Object},autoupdate:{type:String,value:!1},_filterText:{type:String,computed:"_computeFilterText(filter.*, _formatters)"},headerFocused:{type:Boolean,value:!1}}}static get observers(){return["_valuesChanged(autodetect, currency, values)"]}render(){const e=t=>{this.headerFocused=t.type==="focus",this._onDropdownOpenedChanged(t)};return d`
 			<style>
 				paper-dropdown-menu {
 					--iron-icon-width: 0;
