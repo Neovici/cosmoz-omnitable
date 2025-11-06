@@ -41,6 +41,8 @@ The `value-path` attribute is a dot separated string like (`foo`
 or `foo.bar.baz`) representing the path to value of an item displayed by
 the column.
 
+The `sort-path` attribute (with fallback to `value-path`) is the property path used for local sorting of items by this column.
+
 ### Rendering data cells
 
 The `cosmoz-omnitable-column` element uses the following template to render a column data cell
@@ -77,13 +79,13 @@ TBD
 	name="name"
 	title="[[ _('Invoice number', t) ]]"
 	value-path="invoiceNumber"
-	sort-on="invoiceNumber"
+	sort-path="invoiceNumber"
 	group-on="invoiceNumber"
 >
 </cosmoz-omnitable-column>
 ```
 
-The `sort-on` and `group-on` attributes accepts the values of the unique `name` attributes of each column.
+The `sort-path` and `group-on` attributes accepts the values of the unique `name` attributes of each column.
 
 When these attributes are present on a column, `cosmoz-omnitable` adds this column
 to the dropdown lists used to change sorting and grouping of the data items.
@@ -95,8 +97,8 @@ In order to compare column values when sorting and grouping, `cosmoz-omnitable` 
 values returned by the following function from `Cosmoz.OmnitableColumnBehavior` :
 
 ```js
-getComparableValue: function (item, sortOn_path_or_groupOn_path) {
-   return this.get(sortOn_path_or_groupOn_path, item);
+getComparableValue: function (item, sortPath_or_groupOn_path) {
+   return this.get(sortPath_or_groupOn_path, item);
 },
 ```
 

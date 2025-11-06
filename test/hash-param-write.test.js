@@ -47,7 +47,7 @@ const data = [
 						title="Id"
 						name="id"
 						value-path="id"
-						sort-on="id"
+						sort-path="id"
 						group-on="id"
 					>
 					</cosmoz-omnitable-column-autocomplete>
@@ -63,7 +63,7 @@ const data = [
 						title="Name"
 						name="name"
 						value-path="name"
-						sort-on="name"
+						sort-path="name"
 						group-on="name"
 						flex="2"
 					>
@@ -77,6 +77,7 @@ const data = [
 
 suite('basic-write', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);
+
 	setup(async () => {
 		location.hash = '#!/';
 		await instantiate();
