@@ -63,7 +63,7 @@ export const sort = () => html`
 			setDescending,
 		} = {}) =>
 			renderAll({
-				columns: columns?.filter?.((c) => c['sortOn']),
+				columns: columns?.filter?.((c) => c['sortPath']),
 				on,
 				setOn,
 				descending,

@@ -363,9 +363,11 @@ suite('pure functions', () => {
 		const values = computeSource({ valuePath: 'id' }, data);
 		assert.deepEqual(values, [0, 1, 2, 3]);
 	});
+
 	test('toAutocompleteSource', () => {
 		assert.deepEqual(toAutocompleteSource([0, 1, 1, 2, 0, 3]), [0, 1, 2, 3]);
 	});
+
 	test('toAutocompleteSource key/value values', () => {
 		assert.deepEqual(
 			toAutocompleteSource(
@@ -402,7 +404,7 @@ const basicFixture = html`
 			title="Id"
 			name="id"
 			value-path="id"
-			sort-on="id"
+			sort-path="id"
 			group-on="id"
 		>
 		</cosmoz-omnitable-column-autocomplete>
@@ -418,7 +420,7 @@ const basicFixture = html`
 			title="Name"
 			name="name"
 			value-path="name"
-			sort-on="name"
+			sort-path="name"
 			group-on="name"
 			flex="2"
 		>
@@ -462,6 +464,7 @@ suite('autocomplete unit tests', () => {
 
 suite('values as function', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);
+
 	test('displays values from a source function', async () => {
 		const data = [
 				{
@@ -520,7 +523,7 @@ suite('values as function', () => {
 							title="Id"
 							name="id"
 							value-path="id"
-							sort-on="id"
+							sort-path="id"
 							group-on="id"
 							external-values
 							.values=${idSource}
