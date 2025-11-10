@@ -1,4 +1,4 @@
-import{x as c,B as ke,E as xt}from"./iframe-Fd6JbpsV.js";import{t as K,c as O,g as C,P as I,u as T,a as vt,m as yt,s as Nt,D as Rt,b as Bt,e as Gt,i as $e,h as Oe,d as Ye,f as Ht,r as jt,j as Wt,k as A,l as Ut,n as we,p as he,o as k,q as Kt,v as Ce,w as Jt,x as Xt,y as Qt,T as Yt,z as M,A as Zt,B as ei,C as ti,E as ii,F as $,G as ai,H as ni,I as $t,J as Le,K as F,L as wt,M as De,N as oi,O as Ct,Q as ri,R as Te,S as li,U as Ze,V as si,W as Ve,X as ui,Y as di,Z as Ee,_ as Pe,$ as ci,a0 as Ie,a1 as N,a2 as mi,a3 as ze,a4 as pi}from"./cosmoz-collapse-C2wE3osN.js";import"./preload-helper-D9Z9MdNV.js";const gi=K`
+import{x as c,B as ke,E as xt}from"./iframe-V-mZkRRt.js";import{t as K,c as O,g as C,P as I,u as T,a as vt,m as yt,s as Nt,D as Rt,b as Bt,e as Gt,i as $e,h as Oe,d as Ye,f as Ht,r as jt,j as Wt,k as A,l as Ut,n as we,p as he,o as k,q as Kt,v as Ce,w as Jt,x as Xt,y as Qt,T as Yt,z as M,A as Zt,B as ei,C as ti,E as ii,F as $,G as ai,H as ni,I as $t,J as Le,K as F,L as wt,M as De,N as oi,O as Ct,Q as ri,R as Te,S as li,U as Ze,V as si,W as Ve,X as ui,Y as di,Z as Ee,_ as Pe,$ as ci,a0 as Ie,a1 as N,a2 as mi,a3 as ze,a4 as pi}from"./cosmoz-collapse-Du6IlH5G.js";import"./preload-helper-D9Z9MdNV.js";const gi=K`
 	:host {
 		display: flex;
 	}
@@ -92,6 +92,7 @@ import{x as c,B as ke,E as xt}from"./iframe-Fd6JbpsV.js";import{t as K,c as O,g 
 	</div>`;return jt(n,{label:e})};customElements.define("cosmoz-omnitable-dropdown-input",O(Li,{observedAttributes:Oi,styleSheets:[Ye(Ht),Ye`
 				:host {
 					--text-align: left;
+					--input-state: initial;
 				}
 
 				:host([text-align='right']) {
@@ -100,10 +101,6 @@ import{x as c,B as ke,E as xt}from"./iframe-Fd6JbpsV.js";import{t as K,c as O,g 
 
 				:host([text-align='center']) {
 					--text-align: center;
-				}
-
-				:host([input-focused='true']) {
-					--cosmoz-input-is-focused: 1;
 				}
 
 				#input {
@@ -119,11 +116,16 @@ import{x as c,B as ke,E as xt}from"./iframe-Fd6JbpsV.js";import{t as K,c as O,g 
 				}
 
 				.wrap:has(#input:not(:placeholder-shown)) {
-					--with-value: 0;
+					--input-state: initial;
 				}
 
+				:host([input-focused='true']) {
+					--input-state: focus;
+				}
+
+				/* Only set with-value state when has-value attribute is present */
 				.wrap:has(#input[has-value]) {
-					--with-value: 1;
+					--input-state: with-value;
 				}
 			`]}));const ne=({title:i,tooltip:e="",filterText:t="",onOpenedChanged:a,content:n,horizontalAlign:o="left",externalValues:r=null,headerFocused:l})=>{const s={filtered:!!t,...r!=null&&{[`external-values-${r}`]:!0}};return c`
 		<style>
