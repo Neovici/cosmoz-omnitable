@@ -35,9 +35,9 @@ const renderHeaderRow = ({
 					(state) => setFilterState(column.name, state),
 					column.source(column, data),
 				)}
-				${column.noSort
-					? ''
-					: render({ on, setOn, descending, setDescending, column })}
+				${when(!column.noSort, () =>
+					render({ on, setOn, descending, setDescending, column }),
+				)}
 			</div>`,
 			html`<cosmoz-omnitable-resize-nub
 				.column="${column}"
