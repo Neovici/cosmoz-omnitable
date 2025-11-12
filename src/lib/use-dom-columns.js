@@ -44,6 +44,7 @@ const normalizeColumn = (column) => {
 		valuePath,
 		groupOn: column.groupOn ?? valuePath,
 		sortOn: column.sortOn ?? valuePath,
+		noSort: column.noSort,
 
 		minWidth: column.minWidth,
 		width: column.width,

@@ -51,6 +51,10 @@ export const getString = ({ valuePath }, item) => get(item, valuePath),
 					name: { type: String },
 					sortOn: { type: String },
 					groupOn: { type: String },
+					/**
+					 * If true, the column cannot be sorted
+					 */
+					noSort: { type: Boolean, value: false },
 					width: { type: String, value: '75px' },
 					minWidth: { type: String, value: '40px' },
 					flex: { type: String, value: '1' },
