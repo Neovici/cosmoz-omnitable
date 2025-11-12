@@ -82,12 +82,6 @@ export const useSortAndGroupOptions = (
 		// eslint-disable-next-line no-void
 		useEffect(() => void (resetRef.current = setSG), []);
 
-		useEffect(() => {
-			if (sortOn && sortOnColumn?.noSort) {
-				setSortOn(undefined);
-			}
-		}, [sortOn, sortOnColumn, setSortOn]);
-
 		return { ...sortAndGroup, sortAndGroup, groupOnColumn, sortOnColumn };
 	},
 	SortAndGroupContext = createContext();
