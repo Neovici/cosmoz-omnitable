@@ -32,6 +32,7 @@ class AmountRangeInput extends rangeInputMixin(
 				type: String,
 				computed: '_computeFilterText(filter.*, _formatters)',
 			},
+			headerFocused: { type: Boolean, value: false },
 		};
 	}
 
@@ -41,7 +42,7 @@ class AmountRangeInput extends rangeInputMixin(
 
 	render() {
 		const onOpenedChanged = (event) => {
-			this.headerFocused = event.detail.value;
+			this.headerFocused = event.type === 'focus';
 			this._onDropdownOpenedChanged(event);
 		};
 
