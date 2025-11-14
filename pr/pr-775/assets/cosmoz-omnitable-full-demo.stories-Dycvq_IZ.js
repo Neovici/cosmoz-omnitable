@@ -1,4 +1,4 @@
-import{x as d,B as Ie,E as bt,f as Pt}from"./iframe-BSi74Mbm.js";import{t as K,c as E,g as S,P as A,u as M,a as xt,m as yt,s as Bt,D as Gt,b as Ht,e as Wt,i as ye,h as Ae,d as qt,f as vt,r as Xt,j as Ut,k as _,l as Kt,n as ve,p as he,o as D,q as Jt,v as $e,w as Qt,x as Yt,y as Zt,T as en,z as T,A as Fe,B as tn,C as nn,E as on,F as $,G as rn,H as an,I as $t,J as Ee,K as I,L as wt,M as Te,N as ln,O as zt,Q as sn,R as Le,S as Qe,U as un,V as Re,W as cn,X as dn,Y as Oe,Z as Me,_ as mn,$ as De,a0 as P,a1 as pn,a2 as ze,a3 as gn}from"./cosmoz-collapse-BwDFl84t.js";import"./preload-helper-PPVm8Dsz.js";const hn=K`
+import{x as d,B as Ie,E as bt,f as Pt}from"./iframe-BJqOusrP.js";import{t as K,c as E,g as S,P as A,u as M,a as xt,m as yt,s as Bt,D as Gt,b as Ht,e as Wt,i as ye,h as Ae,d as qt,f as vt,r as Xt,j as Ut,k as _,l as Kt,n as ve,p as he,o as D,q as Jt,v as $e,w as Qt,x as Yt,y as Zt,T as en,z as T,A as Fe,B as tn,C as nn,E as on,F as $,G as rn,H as an,I as $t,J as Ee,K as I,L as wt,M as Te,N as ln,O as zt,Q as sn,R as Le,S as Qe,U as un,V as Re,W as cn,X as dn,Y as Oe,Z as Me,_ as mn,$ as De,a0 as P,a1 as pn,a2 as ze,a3 as gn}from"./cosmoz-collapse-CEsJ5JFg.js";import"./preload-helper-PPVm8Dsz.js";const hn=K`
 	:host {
 		display: flex;
 	}
@@ -119,10 +119,13 @@ import{x as d,B as Ie,E as bt,f as Pt}from"./iframe-BSi74Mbm.js";import{t as K,c
 		slot=${o}
 	>
 		${t||""}
-	</div>`;return Xt(r,{label:e})};customElements.define("cosmoz-omnitable-dropdown-input",E(Rn,{observedAttributes:Tn,styleSheets:[Ln]}));const ee=({title:n,tooltip:e="",filterText:t="",onOpenedChanged:o,content:r,horizontalAlign:i="left",externalValues:a=null,headerFocused:l})=>{const s={filtered:!!t,...a!=null&&{[`external-values-${a}`]:!0}};return d`
+	</div>`;return Xt(r,{label:e})};customElements.define("cosmoz-omnitable-dropdown-input",E(Rn,{observedAttributes:Tn,styleSheets:[Ln]}));const ee=({title:n,tooltip:e="",filterText:t="",onOpenedChanged:o,content:r,horizontalAlign:i="left",externalValues:a=null})=>{const l={filtered:!!t,...a!=null&&{[`external-values-${a}`]:!0}};return d`
 		<style>
 			.dropdown {
 				outline: none;
+			}
+			.dropdown:focus-within .input {
+				--focused: focused;
 			}
 
 			.dropdown::part(button) {
@@ -171,11 +174,11 @@ import{x as d,B as Ie,E as bt,f as Pt}from"./iframe-BSi74Mbm.js";import{t as K,c
 		<cosmoz-dropdown
 			@focus=${o}
 			@focusout=${o}
-			class=${`${Ut(s)} dropdown`}
+			class=${`${Ut(l)} dropdown`}
 			title=${e||""}
 		>
 			<cosmoz-omnitable-dropdown-input
-				style="${l?"--focused: focused;":""}"
+				class="input"
 				slot="button"
 				.label=${n}
 				.placeholder=${n}
@@ -185,8 +188,8 @@ import{x as d,B as Ie,E as bt,f as Pt}from"./iframe-BSi74Mbm.js";import{t as K,c
 			></cosmoz-omnitable-dropdown-input>
 			<div
 				class="dropdown-content"
-				@mousedown=${u=>u.preventDefault()}
-				@focus=${u=>u.stopPropagation()}
+				@mousedown=${s=>s.preventDefault()}
+				@focus=${s=>s.stopPropagation()}
 			>
 				${r}
 			</div>
