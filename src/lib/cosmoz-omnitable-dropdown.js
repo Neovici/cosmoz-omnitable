@@ -11,7 +11,6 @@ export const renderDropdown = ({
 	content,
 	horizontalAlign = 'left',
 	externalValues = null,
-	headerFocused,
 }) => {
 	const classes = {
 		filtered: Boolean(filterText),
@@ -24,6 +23,9 @@ export const renderDropdown = ({
 		<style>
 			.dropdown {
 				outline: none;
+			}
+			.dropdown:focus-within .input {
+				--focused: focused;
 			}
 
 			.dropdown::part(button) {
@@ -76,7 +78,7 @@ export const renderDropdown = ({
 			title=${tooltip || ''}
 		>
 			<cosmoz-omnitable-dropdown-input
-				style="${headerFocused ? '--focused: focused;' : ''}"
+				class="input"
 				slot="button"
 				.label=${title}
 				.placeholder=${title}
