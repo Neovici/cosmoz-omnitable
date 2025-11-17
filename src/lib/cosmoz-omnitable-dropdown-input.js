@@ -1,0 +1,63 @@
+import { component, css } from '@pionjs/pion';
+import { html } from 'lit-html';
+import { render, styles as inputStyles } from '@neovici/cosmoz-input';
+
+const observedAttributes = ['label', 'value', 'slot', 'always-float-label'];
+
+const style = css`
+	${inputStyles}
+
+	:host {
+		--text-align: left;
+	}
+
+	:host([text-align='right']) {
+		--text-align: right;
+	}
+
+	:host([text-align='center']) {
+		--text-align: center;
+	}
+
+	#input {
+		color: #737373;
+		user-select: none;
+		cursor: pointer;
+		min-height: var(--line-height);
+		text-align: var(--text-align);
+	}
+
+	label {
+		display: block;
+		text-align: var(--text-align);
+		transform-origin: (var(--text-align));
+	}
+
+	:host(:not([always-float-label])) label {
+		transform: none !important;
+	}
+`;
+
+const DropdownInput = (host) => {
+	const { label, value, slot } = host;
+
+	const control = html`<div
+		id="input"
+		part="input"
+		role="button"
+		class="control"
+		slot=${slot}
+	>
+		${value || ''}
+	</div>`;
+
+	return render(control, { label });
+};
+
+customElements.define(
+	'cosmoz-omnitable-dropdown-input',
+	component(DropdownInput, {
+		observedAttributes,
+		styleSheets: [style],
+	}),
+);
