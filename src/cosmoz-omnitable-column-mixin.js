@@ -49,7 +49,7 @@ export const getString = ({ valuePath }, item) => get(item, valuePath),
 					 * Column name for use with enabledColumns
 					 */
 					name: { type: String },
-					sortOn: { type: String },
+					sortPath: { type: String },
 					groupOn: { type: String },
 					/**
 					 * If true, the column cannot be sorted

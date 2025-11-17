@@ -22,7 +22,7 @@ suite('id', () => {
 						title="Id"
 						name="id"
 						value-path="id"
-						sort-on="id"
+						sort-path="id"
 					></cosmoz-omnitable-column>
 				</cosmoz-omnitable>
 			`,
@@ -78,14 +78,14 @@ suite('bool', () => {
 						title="Id"
 						name="id"
 						value-path="id"
-						sort-on="id"
+						sort-path="id"
 					>
 					</cosmoz-omnitable-column>
 					<cosmoz-omnitable-column-boolean
 						title="Boolean"
 						name="bool"
 						value-path="bool"
-						sort-on="bool"
+						sort-path="bool"
 						group-on="bool"
 						true-label="Yes"
 						false-label="No"
@@ -95,7 +95,7 @@ suite('bool', () => {
 						title="Value"
 						name="value"
 						value-path="value"
-						sort-on="value"
+						sort-path="value"
 					>
 					</cosmoz-omnitable-column-number>
 				</cosmoz-omnitable>
@@ -135,14 +135,14 @@ suite('amount', () => {
 						title="Id"
 						name="id"
 						value-path="id"
-						sort-on="id"
+						sort-path="id"
 					>
 					</cosmoz-omnitable-column>
 					<cosmoz-omnitable-column-amount
 						title="Amount"
 						name="amount"
 						value-path="amount"
-						sort-on="amount"
+						sort-path="amount"
 					>
 					</cosmoz-omnitable-column-amount>
 				</cosmoz-omnitable>

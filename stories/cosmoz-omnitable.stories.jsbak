@@ -148,7 +148,7 @@ const Template = (args) => {
 					name="name"
 					title="Name"
 					value-path="name"
-					sort-on="name"
+					sort-path="name"
 					group-on="name"
 				>
 				</cosmoz-omnitable-column>
@@ -157,7 +157,7 @@ const Template = (args) => {
 					name="age"
 					title="Age"
 					value-path="age"
-					sort-on="age"
+					sort-path="age"
 				>
 				</cosmoz-omnitable-column>
 
@@ -165,7 +165,7 @@ const Template = (args) => {
 					name="department"
 					title="Department"
 					value-path="department"
-					sort-on="department"
+					sort-path="department"
 					group-on="department"
 				>
 				</cosmoz-omnitable-column>
@@ -174,7 +174,7 @@ const Template = (args) => {
 					name="salary"
 					title="Salary"
 					value-path="salary"
-					sort-on="salary"
+					sort-path="salary"
 				>
 				</cosmoz-omnitable-column>
 
@@ -182,7 +182,7 @@ const Template = (args) => {
 					name="email"
 					title="Email"
 					value-path="email"
-					sort-on="email"
+					sort-path="email"
 				>
 				</cosmoz-omnitable-column>
 
@@ -255,7 +255,7 @@ const CompactTemplate = (args) => {
 					name="name"
 					title="Name"
 					value-path="name"
-					sort-on="name"
+					sort-path="name"
 				>
 				</cosmoz-omnitable-column>
 
@@ -263,7 +263,7 @@ const CompactTemplate = (args) => {
 					name="department"
 					title="Department"
 					value-path="department"
-					sort-on="department"
+					sort-path="department"
 				>
 				</cosmoz-omnitable-column>
 
@@ -271,7 +271,7 @@ const CompactTemplate = (args) => {
 					name="salary"
 					title="Salary"
 					value-path="salary"
-					sort-on="salary"
+					sort-path="salary"
 				>
 				</cosmoz-omnitable-column>
 			</cosmoz-omnitable>
@@ -323,7 +323,7 @@ const FullHeightTemplate = (args) => {
 					name="name"
 					title="Name"
 					value-path="name"
-					sort-on="name"
+					sort-path="name"
 					group-on="name"
 				>
 				</cosmoz-omnitable-column>
@@ -332,7 +332,7 @@ const FullHeightTemplate = (args) => {
 					name="age"
 					title="Age"
 					value-path="age"
-					sort-on="age"
+					sort-path="age"
 				>
 				</cosmoz-omnitable-column>
 
@@ -340,7 +340,7 @@ const FullHeightTemplate = (args) => {
 					name="department"
 					title="Department"
 					value-path="department"
-					sort-on="department"
+					sort-path="department"
 					group-on="department"
 				>
 				</cosmoz-omnitable-column>
@@ -349,7 +349,7 @@ const FullHeightTemplate = (args) => {
 					name="salary"
 					title="Salary"
 					value-path="salary"
-					sort-on="salary"
+					sort-path="salary"
 				>
 				</cosmoz-omnitable-column>
 
@@ -357,7 +357,7 @@ const FullHeightTemplate = (args) => {
 					name="email"
 					title="Email"
 					value-path="email"
-					sort-on="email"
+					sort-path="email"
 				>
 				</cosmoz-omnitable-column>
 
@@ -406,7 +406,7 @@ const BottomBarTestTemplate = (args) => {
 					name="name"
 					title="Name"
 					value-path="name"
-					sort-on="name"
+					sort-path="name"
 				>
 				</cosmoz-omnitable-column>
 
@@ -414,7 +414,7 @@ const BottomBarTestTemplate = (args) => {
 					name="department"
 					title="Department"
 					value-path="department"
-					sort-on="department"
+					sort-path="department"
 				>
 				</cosmoz-omnitable-column>
 
@@ -422,7 +422,7 @@ const BottomBarTestTemplate = (args) => {
 					name="salary"
 					title="Salary"
 					value-path="salary"
-					sort-on="salary"
+					sort-path="salary"
 				>
 				</cosmoz-omnitable-column>
 

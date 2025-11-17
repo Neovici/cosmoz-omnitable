@@ -73,7 +73,7 @@ export const useSortAndGroupOptions = (
 			},
 			sortAndGroup = useMemo(() => sortAndGroup_, Object.values(sortAndGroup_)),
 			setSG = useCallback((c) => {
-				setSortOn(c.sortOn);
+				setSortOn(c.sortPath);
 				setGroupOn(c.groupOn);
 				setDescending(c.descending);
 				setGroupOnDescending(c.groupOnDescending);
