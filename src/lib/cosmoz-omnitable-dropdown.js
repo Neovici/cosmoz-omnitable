@@ -46,6 +46,7 @@ export const renderDropdown = ({
 				top: -30px;
 				left: 0;
 				right: 0;
+				width: fit-content;
 			}
 
 			.dropdown-content h3 {
@@ -89,11 +90,7 @@ export const renderDropdown = ({
 				text-align=${horizontalAlign}
 				?always-float-label=${filterText?.length > 0}
 			></cosmoz-omnitable-dropdown-input>
-			<div
-				class="dropdown-content"
-				@mousedown=${(e) => e.preventDefault()}
-				@focus=${(e) => e.stopPropagation()}
-			>
+			<div class="dropdown-content" @mousedown=${(e) => e.preventDefault()}>
 				${content}
 			</div>
 		</cosmoz-dropdown>
