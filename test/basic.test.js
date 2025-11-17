@@ -59,7 +59,7 @@ suite('basic', () => {
 					<cosmoz-omnitable-column
 						name="columnWithSortOn"
 						value-path="valuePath"
-						sort-on="sortOnValuePath"
+						sort-path="sortOnValuePath"
 					>
 					</cosmoz-omnitable-column>
 					<cosmoz-omnitable-column
@@ -92,17 +92,18 @@ suite('basic', () => {
 		assert.equal(column.groupOn, 'groupOnValuePath');
 	});
 
-	test('sets column sortOn property to valuePath when sort-on attribute is missing', () => {
+	test('sets column sortPath property to valuePath when sort-path attribute is missing', () => {
 		const column = omnitable.columns.find(
 			(col) => col.name === 'columnWithoutSortOn',
 		);
-		assert.equal(column.sortOn, 'valuePath');
+		assert.equal(column.sortPath, 'valuePath');
 	});
-	test('sets column sortOn property to sort-on attribute', () => {
+
+	test('sets column sortPath property to sort-path attribute', () => {
 		const column = omnitable.columns.find(
 			(col) => col.name === 'columnWithSortOn',
 		);
-		assert.equal(column.sortOn, 'sortOnValuePath');
+		assert.equal(column.sortPath, 'sortOnValuePath');
 	});
 
 	test('serializeFilter returns filter', () => {

@@ -121,7 +121,7 @@ export const useProcessedItems = ({
 				!noLocalSort &&
 				!groupOnColumn &&
 				sortOnColumn != null &&
-				sortOnColumn.sortOn != null
+				sortOnColumn.sortPath != null
 			) {
 				return filteredItems
 					.slice()
@@ -129,7 +129,7 @@ export const useProcessedItems = ({
 						sortBy(
 							(a) =>
 								sortOnColumn.getComparableValue(
-									{ ...sortOnColumn, valuePath: sortOnColumn.sortOn },
+									{ ...sortOnColumn, valuePath: sortOnColumn.sortPath },
 									a,
 								),
 							descending,
@@ -181,7 +181,7 @@ export const useProcessedItems = ({
 							sortBy(
 								(a) =>
 									sortOnColumn.getComparableValue(
-										{ ...sortOnColumn, valuePath: sortOnColumn.sortOn },
+										{ ...sortOnColumn, valuePath: sortOnColumn.sortPath },
 										a,
 									),
 								descending,
