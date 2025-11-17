@@ -77,7 +77,6 @@ export const renderDropdown = ({
 
 		<cosmoz-dropdown
 			@focus=${onOpenedChanged}
-			@focusout=${onOpenedChanged}
 			class=${`${classMap(classes)} dropdown`}
 			title=${tooltip || ''}
 		>
@@ -90,9 +89,7 @@ export const renderDropdown = ({
 				text-align=${horizontalAlign}
 				?always-float-label=${filterText?.length > 0}
 			></cosmoz-omnitable-dropdown-input>
-			<div class="dropdown-content" @mousedown=${(e) => e.preventDefault()}>
-				${content}
-			</div>
+			<div class="dropdown-content">${content}</div>
 		</cosmoz-dropdown>
 	`;
 };
