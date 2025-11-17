@@ -19,12 +19,19 @@ const style = css`
 		--text-align: center;
 	}
 
+	:host::part(control) {
+		width: 100%;
+	}
+
 	#input {
 		color: #737373;
 		user-select: none;
 		cursor: pointer;
 		min-height: var(--line-height);
 		text-align: var(--text-align);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	label {
