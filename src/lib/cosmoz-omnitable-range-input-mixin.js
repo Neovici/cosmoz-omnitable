@@ -345,13 +345,13 @@ export const rangeInputMixin = (base) =>
 			}
 
 			// focus the first input after the dropdown is visible
-			setTimeout(
-				() => currentTarget.querySelector('cosmoz-input')?.focus(),
-				100,
-			);
-		}
-
-		/**
+			setTimeout(() => {
+				// Double-check that no input has focus before forcing focus
+				if (!currentTarget.querySelector('cosmoz-input:focus')) {
+					currentTarget.querySelector('cosmoz-input')?.focus();
+				}
+			}, 100);
+		} /**
 		 * Debounced function called by `_filterInputChanged` when `_filterInput` changes.
 		 *
 		 * @returns {void}
