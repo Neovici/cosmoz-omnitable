@@ -25,6 +25,7 @@ class NumberRangeInput extends rangeInputMixin(
 				computed: '_computeFilterText(filter.*, formatter)',
 			},
 			headerFocused: { type: Boolean, value: false },
+			sortHandle: { type: Object, value: null },
 		};
 	}
 
@@ -68,6 +69,7 @@ class NumberRangeInput extends rangeInputMixin(
 				headerFocused: this.headerFocused,
 				horizontalAlign: 'right',
 				externalValues: this.externalValues,
+				sortHandle: this.sortHandle,
 				onOpenedChanged,
 				content: html`
 					<h3>${this.title}</h3>
