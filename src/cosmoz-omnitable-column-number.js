@@ -122,11 +122,11 @@ class OmnitableColumnNumber extends columnMixin(PolymerElement) {
 			maximumFractionDigits,
 			minimumFractionDigits,
 			autoupdate,
+			noSort,
 		},
 		{ filter },
 		setState,
 		source,
-		{ sortHandle } = {},
 	) {
 		return html`<cosmoz-omnitable-number-range-input
 			.title=${title}
@@ -139,7 +139,7 @@ class OmnitableColumnNumber extends columnMixin(PolymerElement) {
 			.maximumFractionDigits=${maximumFractionDigits}
 			.minimumFractionDigsits=${minimumFractionDigits}
 			.autoupdate=${autoupdate}
-			.sortHandle=${sortHandle}
+			.column=${{ noSort }}
 			@filter-changed=${({ detail: { value } }) =>
 				setState((state) => ({ ...state, filter: value }))}
 			@header-focused-changed=${({ detail: { value } }) =>

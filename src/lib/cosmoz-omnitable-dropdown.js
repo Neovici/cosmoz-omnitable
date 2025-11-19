@@ -11,7 +11,7 @@ export const renderDropdown = ({
 	content,
 	horizontalAlign = 'left',
 	externalValues = null,
-	sortHandle = null,
+	column = null,
 }) => {
 	const classes = {
 		filtered: Boolean(filterText),
@@ -88,7 +88,7 @@ export const renderDropdown = ({
 				.label=${title}
 				.placeholder=${title}
 				.value=${filterText ?? ''}
-				.sortHandle=${sortHandle}
+				.column=${column}
 				text-align=${horizontalAlign}
 				?always-float-label=${filterText?.length > 0}
 			></cosmoz-omnitable-dropdown-input>

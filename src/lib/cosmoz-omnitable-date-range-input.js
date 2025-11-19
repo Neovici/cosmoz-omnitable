@@ -47,9 +47,8 @@ class DateRangeInput extends dateInputMixin(
 				filterText: this._filterText,
 				headerFocused: this.headerFocused,
 				externalValues: this.externalValues,
-				sortHandle: this.sortHandle,
 				onOpenedChanged,
-				content: html`
+				column: this.column,				content: html`
 					<h3 style="margin: 0;">${this.title}</h3>
 					<cosmoz-input
 						type="date"
