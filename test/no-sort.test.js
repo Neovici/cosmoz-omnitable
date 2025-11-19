@@ -32,7 +32,7 @@ suite('no-sort', () => {
 						title="ID"
 						name="id"
 						value-path="id"
-						sort-on="id"
+						sort-path="id"
 						no-sort
 					>
 					</cosmoz-omnitable-column>
@@ -40,14 +40,14 @@ suite('no-sort', () => {
 						title="Name"
 						name="name"
 						value-path="name"
-						sort-on="name"
+						sort-path="name"
 					>
 					</cosmoz-omnitable-column>
 					<cosmoz-omnitable-column-number
 						title="Age"
 						name="age"
 						value-path="age"
-						sort-on="age"
+						sort-path="age"
 					>
 					</cosmoz-omnitable-column-number>
 				</cosmoz-omnitable>

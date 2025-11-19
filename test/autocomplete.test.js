@@ -402,7 +402,7 @@ const basicFixture = html`
 			title="Id"
 			name="id"
 			value-path="id"
-			sort-on="id"
+			sort-path="id"
 			group-on="id"
 		>
 		</cosmoz-omnitable-column-autocomplete>
@@ -418,7 +418,7 @@ const basicFixture = html`
 			title="Name"
 			name="name"
 			value-path="name"
-			sort-on="name"
+			sort-path="name"
 			group-on="name"
 			flex="2"
 		>
@@ -520,7 +520,7 @@ suite('values as function', () => {
 							title="Id"
 							name="id"
 							value-path="id"
-							sort-on="id"
+							sort-path="id"
 							group-on="id"
 							external-values
 							.values=${idSource}
