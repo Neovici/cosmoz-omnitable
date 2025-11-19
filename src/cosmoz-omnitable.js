@@ -19,7 +19,7 @@ import { renderHeader } from './lib/render-header';
 import { renderList } from './lib/render-list';
 import { useOmnitable } from './lib/use-omnitable';
 
-import './grouped-list/index.js';
+import './grouped-list/index';
 
 const shimCSS = (s) => window.ShadyCSS?.ApplyShim?.transformCssText?.(s) || s;
 
