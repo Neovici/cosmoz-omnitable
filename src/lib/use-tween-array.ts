@@ -44,7 +44,7 @@ const useAnimationLoop = (
 		animationLoop.start();
 	}, trigger);
 
-	useEffect(() => () => animationLoop.stop(), [animationLoop]);
+	useEffect(() => () => animationLoop.stop(), []);
 };
 
 export const isCloseEnough = (a = 0, b = 0) => Math.abs(a - b) < 0.1;
