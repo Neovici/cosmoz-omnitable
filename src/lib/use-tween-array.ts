@@ -12,7 +12,10 @@ interface TweenState {
 	tween?: number[];
 }
 
-const useAnimationLoop = (animate: () => boolean, trigger: unknown[]) => {
+const useAnimationLoop = (
+	animate: () => boolean | undefined,
+	trigger: unknown[],
+) => {
 	const animationLoop = useMemo((): AnimationLoop => {
 		let running = false;
 		let af: number;
@@ -35,7 +38,7 @@ const useAnimationLoop = (animate: () => boolean, trigger: unknown[]) => {
 				cancelAnimationFrame(af);
 			},
 		};
-	}, [animate]);
+	}, []);
 
 	useEffect(() => {
 		animationLoop.start();
@@ -69,8 +72,7 @@ export const useTweenArray = (
 		);
 
 		callback(state.tween);
-		return false;
-	}, [state, callback, speedFactor]);
+	}, []);
 
 	useAnimationLoop(animate, [target]);
 };
