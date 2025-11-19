@@ -483,36 +483,6 @@ export default css`
 	.groupRow .expand {
 		margin: 8px;
 	}
-
-	.sg {
-		display: inline-flex;
-		width: 10px;
-		cursor: pointer;
-		align-items: center;
-		margin-top: 18px;
-		overflow: hidden;
-		flex: none;
-		background: none;
-		border: none;
-		outline: none;
-		color: inherit;
-		padding: 0;
-	}
-	.sg span {
-		display: none;
-	}
-	.sg svg {
-		display: block;
-	}
-	.sg[data-on] {
-		color: var(--cosmoz-omnitable-checkbox-checked-color, var(--primary-color));
-	}
-	.sg:not([data-on='desc']) {
-		transform: scaleY(-1);
-	}
-	:not(:hover) > .sg:not([data-on]) {
-		display: none;
-	}
 	.header-cell {
 		display: inline-flex;
 		position: relative;
