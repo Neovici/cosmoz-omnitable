@@ -115,6 +115,7 @@ class OmnitableColumnDatetime extends columnMixin(PolymerElement) {
 		{ filter },
 		setState,
 		source,
+		{ sortHandle } = {},
 	) {
 		return html`<cosmoz-omnitable-datetime-range-input
 			.title=${title}
@@ -125,6 +126,7 @@ class OmnitableColumnDatetime extends columnMixin(PolymerElement) {
 			.limits=${limits}
 			.locale=${locale}
 			.filterStep=${filterStep}
+			.sortHandle=${sortHandle}
 			@filter-changed=${({ detail: { value } }) =>
 				setState((state) => ({ ...state, filter: value }))}
 			@header-focused-changed=${({ detail: { value } }) =>

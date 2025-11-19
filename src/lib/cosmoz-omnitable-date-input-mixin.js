@@ -26,6 +26,8 @@ export const dateInputMixin = (base) =>
 				},
 
 				formatter: { type: Object, computed: '_computeFormatter(locale)' },
+
+				sortHandle: { type: Object, value: null },
 			};
 		}
 

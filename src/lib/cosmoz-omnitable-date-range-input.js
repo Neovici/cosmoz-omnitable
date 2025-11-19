@@ -48,6 +48,7 @@ class DateRangeInput extends dateInputMixin(
 				headerFocused: this.headerFocused,
 				horizontalAlign: 'right',
 				externalValues: this.externalValues,
+				sortHandle: this.sortHandle,
 				onOpenedChanged,
 				content: html`
 					<h3 style="margin: 0;">${this.title}</h3>
