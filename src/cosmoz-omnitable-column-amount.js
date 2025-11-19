@@ -129,6 +129,7 @@ class OmnitableColumnAmount extends columnMixin(PolymerElement) {
 		{ filter },
 		setState,
 		source,
+		{ sortHandle } = {},
 	) {
 		return html`<cosmoz-omnitable-amount-range-input
 			.title=${title}
@@ -142,6 +143,7 @@ class OmnitableColumnAmount extends columnMixin(PolymerElement) {
 			.currency=${currency}
 			.autoupdate=${autoupdate}
 			.autodetect=${autodetect}
+			.sortHandle=${sortHandle}
 			@filter-changed=${({ detail: { value } }) =>
 				setState((state) => ({ ...state, filter: value }))}
 			@header-focused-changed=${({ detail: { value } }) =>
