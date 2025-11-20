@@ -105,7 +105,7 @@ class OmnitableColumnTime extends columnMixin(PolymerElement) {
 	}
 
 	renderHeader(
-		{ title, min, max, locale, filterStep, noSort },
+		{ title, min, max, locale, filterStep, noSort, name },
 		{ filter },
 		setState,
 		source,
@@ -118,7 +118,7 @@ class OmnitableColumnTime extends columnMixin(PolymerElement) {
 			.max=${max}
 			.locale=${locale}
 			.filterStep=${filterStep}
-			.column=${{ noSort }}
+			.column=${{ noSort, name, title }}
 			@filter-changed=${({ detail: { value } }) =>
 				setState((state) => ({ ...state, filter: value }))}
 			@header-focused-changed=${({ detail: { value } }) =>

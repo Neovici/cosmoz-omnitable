@@ -33,7 +33,8 @@ class AmountRangeInput extends rangeInputMixin(
 				computed: '_computeFilterText(filter.*, _formatters)',
 			},
 			headerFocused: { type: Boolean, value: false },
-			column: { type: Object, value: null },		};
+			column: { type: Object, value: null },
+		};
 	}
 
 	static get observers() {
@@ -79,7 +80,8 @@ class AmountRangeInput extends rangeInputMixin(
 				headerFocused: this.headerFocused,
 				externalValues: this.externalValues,
 				onOpenedChanged,
-				column: this.column,				content: html`
+				column: this.column,
+				content: html`
 					<h3 style="margin: 0;">${this.title}</h3>
 					<cosmoz-input
 						class=${this._fromClasses}
