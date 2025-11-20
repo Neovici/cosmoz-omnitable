@@ -106,6 +106,7 @@ const renderLabel = (label, column, sortAndGroup) => {
 		descending,
 		setDescending,
 	} = sortAndGroup;
+
 	const sortHandle = renderSortHandle({
 		column,
 		on,

@@ -8,7 +8,8 @@ export const render = ({ column, on, descending, setOn, setDescending }) => {
 		class="sg"
 		title=${title}
 		data-on=${ifDefined(
-			(name === on && (descending ? 'desc' : 'asc')) || undefined,
+			(name != null && name === on && (descending ? 'desc' : 'asc')) ||
+				undefined,
 		)}
 		@click=${(e) => {
 			const on = e.currentTarget?.dataset.on;
