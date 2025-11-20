@@ -1,4 +1,4 @@
-import{x as c,B as ke,E as ht}from"./iframe-B_78UJ4m.js";import{t as K,c as O,g as S,P as I,u as T,a as xt,m as yt,s as Nt,D as Rt,b as Bt,e as Ht,i as $e,h as Oe,d as Gt,f as jt,j as Wt,k as $,n as Ut,l as Kt,o as vt,p as Le,q as F,r as M,v as Jt,w as Xt,x as $t,y as Qt,z as Yt,A,B as Zt,C as we,E as he,F as k,G as ei,H as Ce,I as ti,J as ii,K as ai,T as ni,L as wt,M as De,N as oi,O as Ct,Q as ri,R as Te,S as Ye,U as li,V as Ve,W as si,X as ui,Y as Ee,Z as Pe,_ as ci,$ as Ie,a0 as N,a1 as di,a2 as ze,a3 as mi}from"./cosmoz-collapse-BS74j_aa.js";import"./preload-helper-PPVm8Dsz.js";const pi=K`
+import{x as c,B as ke,E as ht}from"./iframe-5aJrSD_0.js";import{t as K,c as O,g as S,P as I,u as T,a as xt,m as yt,s as Nt,D as Rt,b as Bt,e as Ht,i as $e,h as Oe,d as Gt,f as jt,j as Wt,k as $,n as Ut,l as Kt,o as vt,p as Le,q as F,r as M,v as Jt,w as Xt,x as $t,y as Qt,z as Yt,A,B as Zt,C as we,E as he,F as k,G as ei,H as Ce,I as ti,J as ii,K as ai,T as ni,L as wt,M as De,N as oi,O as Ct,Q as ri,R as Te,S as Ye,U as li,V as Ve,W as si,X as ui,Y as Ee,Z as Pe,_ as ci,$ as Ie,a0 as N,a1 as di,a2 as ze,a3 as mi}from"./cosmoz-collapse-DW_f6su3.js";import"./preload-helper-PPVm8Dsz.js";const pi=K`
 	:host {
 		display: flex;
 	}
@@ -139,7 +139,7 @@ import{x as c,B as ke,E as ht}from"./iframe-B_78UJ4m.js";import{t as K,c as O,g 
 </svg> `,Ft=({column:i,on:e,descending:t,setOn:a,setDescending:n})=>{const{name:o,title:r}=i??{};return c`<button
 		class="sg"
 		title=${r}
-		data-on=${Jt(o!=null&&o===e&&(t?"desc":"asc")||void 0)}
+		data-on=${Jt(o===e&&(t?"desc":"asc")||void 0)}
 		@click=${l=>{const s=l.currentTarget?.dataset.on;s||(a(o),n(!1)),s==="asc"?n(!0):s==="desc"&&(a(),n(!1))}}
 	>
 		<span>${r}</span> ${Pi}
