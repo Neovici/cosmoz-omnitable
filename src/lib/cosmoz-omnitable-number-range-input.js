@@ -25,7 +25,8 @@ class NumberRangeInput extends rangeInputMixin(
 				computed: '_computeFilterText(filter.*, formatter)',
 			},
 			headerFocused: { type: Boolean, value: false },
-			column: { type: Object, value: null },		};
+			column: { type: Object, value: null },
+		};
 	}
 
 	render() {
@@ -69,7 +70,8 @@ class NumberRangeInput extends rangeInputMixin(
 				horizontalAlign: 'right',
 				externalValues: this.externalValues,
 				onOpenedChanged,
-				column: this.column,				content: html`
+				column: this.column,
+				content: html`
 					<h3>${this.title}</h3>
 					<cosmoz-input
 						class=${this._fromClasses}
