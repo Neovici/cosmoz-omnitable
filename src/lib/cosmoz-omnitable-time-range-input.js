@@ -28,6 +28,7 @@ class TimeRangeInput extends dateInputMixin(
 				horizontalAlign: 'right',
 				externalValues: this.externalValues,
 				onOpenedChanged,
+				column: this.column,
 				content: html`
 					<h3 style="margin: 0;">${this.title}</h3>
 					<cosmoz-input
