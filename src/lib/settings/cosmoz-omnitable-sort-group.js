@@ -11,6 +11,8 @@ export const render = ({ column, on, descending, setOn, setDescending }) => {
 			(name === on && (descending ? 'desc' : 'asc')) || undefined,
 		)}
 		@click=${(e) => {
+			e.stopPropagation();
+
 			const on = e.currentTarget?.dataset.on;
 			if (!on) {
 				setOn(name);
