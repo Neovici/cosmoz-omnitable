@@ -70,6 +70,7 @@ suite('no-sort', () => {
 		const idHeaderCell = omnitable.shadowRoot.querySelector(
 			'.header-cell[name="id"]',
 		);
+		// For basic columns (cosmoz-omnitable-column), check directly in header cell
 		const sortButton = idHeaderCell.querySelector('button.sg');
 		assert.isNull(
 			sortButton,
@@ -78,10 +79,25 @@ suite('no-sort', () => {
 	});
 
 	test('renders sort button in header for sortable columns', () => {
-		const nameHeaderCell = omnitable.shadowRoot.querySelector(
-			'.header-cell[name="name"]',
+		// Check the Age column which uses cosmoz-omnitable-column-number (has dropdown)
+		const ageHeaderCell = omnitable.shadowRoot.querySelector(
+			'.header-cell[name="age"]',
 		);
-		const sortButton = nameHeaderCell.querySelector('button.sg');
+		// For dropdown-based columns, navigate through the range input and dropdown
+		const rangeInput = ageHeaderCell.querySelector(
+			'cosmoz-omnitable-number-range-input',
+		);
+		assert.isNotNull(rangeInput, 'range input should exist');
+		
+		const dropdown = rangeInput.shadowRoot.querySelector('cosmoz-dropdown');
+		assert.isNotNull(dropdown, 'dropdown should exist');
+		
+		const dropdownInput = dropdown.querySelector(
+			'cosmoz-omnitable-dropdown-input',
+		);
+		assert.isNotNull(dropdownInput, 'cosmoz-omnitable-dropdown-input should exist');
+		
+		const sortButton = dropdownInput.shadowRoot.querySelector('button.sg');
 		assert.isNotNull(
 			sortButton,
 			'Sort button should exist for sortable column',
