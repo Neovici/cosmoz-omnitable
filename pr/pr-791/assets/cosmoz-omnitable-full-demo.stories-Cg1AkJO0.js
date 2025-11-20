@@ -1,4 +1,4 @@
-import{x as c,B as Ie,E as bt,f as Pt}from"./iframe-5aJrSD_0.js";import{t as K,c as E,g as S,P as A,u as M,a as xt,m as yt,s as Bt,D as Ht,b as Gt,e as Wt,i as ye,h as Ae,d as qt,f as Xt,j as Ut,k as $,n as Kt,l as Jt,o as vt,p as Ee,q as I,r as T,v as Fe,w as Qt,x as $t,y as Yt,z as Zt,A as _,B as en,C as ve,E as he,F as D,G as tn,H as $e,I as nn,J as on,K as rn,T as an,L as wt,M as Te,N as ln,O as zt,Q as sn,R as Le,S as Qe,U as un,V as Re,W as cn,X as dn,Y as Oe,Z as Me,_ as mn,$ as De,a0 as P,a1 as pn,a2 as ze,a3 as gn}from"./cosmoz-collapse-DW_f6su3.js";import"./preload-helper-PPVm8Dsz.js";const hn=K`
+import{x as c,B as Ie,E as bt,f as Pt}from"./iframe-DeX1mp_s.js";import{t as K,c as E,g as S,P as A,u as M,a as xt,m as yt,s as Bt,D as Ht,b as Gt,e as Wt,i as ye,h as Ae,d as qt,f as Xt,j as Ut,k as $,n as Kt,l as Jt,o as vt,p as Ee,q as I,r as T,v as Fe,w as Qt,x as $t,y as Yt,z as Zt,A as _,B as en,C as ve,E as he,F as D,G as tn,H as $e,I as nn,J as on,K as rn,T as an,L as wt,M as Te,N as ln,O as zt,Q as sn,R as Le,S as Qe,U as un,V as Re,W as cn,X as dn,Y as Oe,Z as Me,_ as mn,$ as De,a0 as P,a1 as pn,a2 as ze,a3 as gn}from"./cosmoz-collapse-DU3naH4M.js";import"./preload-helper-PPVm8Dsz.js";const hn=K`
 	:host {
 		display: flex;
 	}
@@ -140,7 +140,7 @@ import{x as c,B as Ie,E as bt,f as Pt}from"./iframe-5aJrSD_0.js";import{t as K,c
 		class="sg"
 		title=${a}
 		data-on=${Fe(i===e&&(t?"desc":"asc")||void 0)}
-		@click=${l=>{const s=l.currentTarget?.dataset.on;s||(o(i),r(!1)),s==="asc"?r(!0):s==="desc"&&(o(),r(!1))}}
+		@click=${l=>{l.stopPropagation();const s=l.currentTarget?.dataset.on;s||(o(i),r(!1)),s==="asc"?r(!0):s==="desc"&&(o(),r(!1))}}
 	>
 		<span>${a}</span> ${Pn}
 	</button>`},Ft=({columns:n,...e})=>n?.map(t=>It({column:t,...e})),Bn=()=>c`
