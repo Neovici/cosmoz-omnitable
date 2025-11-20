@@ -44,7 +44,8 @@ export const render = ({
 		class="sg"
 		title=${ifDefined(title)}
 		data-on=${ifDefined(
-			(name === on && (descending ? 'desc' : 'asc')) || undefined,
+			(name != null && name === on && (descending ? 'desc' : 'asc')) ||
+				undefined,
 		)}
 		@click=${(e: Event) => {
 			const target = e.currentTarget as HTMLElement;

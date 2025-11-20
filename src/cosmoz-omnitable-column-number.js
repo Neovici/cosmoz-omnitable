@@ -123,6 +123,7 @@ class OmnitableColumnNumber extends columnMixin(PolymerElement) {
 			minimumFractionDigits,
 			autoupdate,
 			noSort,
+			name,
 		},
 		{ filter },
 		setState,
@@ -139,7 +140,7 @@ class OmnitableColumnNumber extends columnMixin(PolymerElement) {
 			.maximumFractionDigits=${maximumFractionDigits}
 			.minimumFractionDigsits=${minimumFractionDigits}
 			.autoupdate=${autoupdate}
-			.column=${{ noSort }}
+			.column=${{ noSort, name, title }}
 			@filter-changed=${({ detail: { value } }) =>
 				setState((state) => ({ ...state, filter: value }))}
 			@header-focused-changed=${({ detail: { value } }) =>

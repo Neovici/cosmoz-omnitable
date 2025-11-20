@@ -101,7 +101,7 @@ class OmnitableColumnDate extends columnMixin(PolymerElement) {
 	}
 
 	renderHeader(
-		{ title, min, max, limits, locale, noSort },
+		{ title, min, max, limits, locale, noSort, name },
 		{ filter },
 		setState,
 		source,
@@ -114,7 +114,7 @@ class OmnitableColumnDate extends columnMixin(PolymerElement) {
 			.max=${max}
 			.limits=${limits}
 			.locale=${locale}
-			.column=${{ noSort }}
+			.column=${{ noSort, name, title }}
 			@filter-changed=${({ detail: { value } }) =>
 				setState((state) => ({ ...state, filter: value }))}
 			@header-focused-changed=${({ detail: { value } }) =>
