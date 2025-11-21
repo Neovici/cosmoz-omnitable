@@ -20,6 +20,9 @@ export interface Column {
 	priority?: number;
 	flex?: string;
 	width?: string;
+	sortOn?: boolean;
+	groupOn?: boolean;
+	noSort?: boolean;
 	[key: symbol]: unknown;
 }
 
