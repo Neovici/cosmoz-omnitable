@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo } from '@pionjs/pion';
 import { useMeta } from '@neovici/cosmoz-utils/hooks/use-meta';
 import { noop } from '@neovici/cosmoz-utils/function';
+import { TweenedLayout } from './use-layout';
 
 interface AnimationLoop {
 	start: () => void;
@@ -8,14 +9,11 @@ interface AnimationLoop {
 }
 
 interface TweenState {
-	target: number[];
-	tween?: number[];
+	target: TweenedLayout;
+	tween?: TweenedLayout;
 }
 
-const useAnimationLoop = (
-	animate: () => boolean | undefined,
-	trigger: unknown[],
-) => {
+const useAnimationLoop = (animate: () => boolean, trigger: unknown[]) => {
 	const animationLoop = useMemo((): AnimationLoop => {
 		let running = false;
 		let af: number;
@@ -38,21 +36,24 @@ const useAnimationLoop = (
 				cancelAnimationFrame(af);
 			},
 		};
-	}, []);
+	}, [animate]);
 
 	useEffect(() => {
 		animationLoop.start();
 	}, trigger);
 
-	useEffect(() => () => animationLoop.stop(), []);
+	useEffect(() => () => animationLoop.stop(), [animationLoop]);
 };
 
-export const isCloseEnough = (a = 0, b = 0) => Math.abs(a - b) < 0.1;
+export const isCloseEnough = (
+	a: number | undefined = 0,
+	b: number | undefined = 0,
+) => Math.abs((a ?? 0) - (b ?? 0)) < 0.1;
 
 export const useTweenArray = (
-	target: number[],
+	target: TweenedLayout,
 	speedFactor = 1.9,
-	callback: (tween: number[]) => void = noop,
+	callback: (tween: TweenedLayout) => void = noop,
 ): void => {
 	const state = useMeta<TweenState>({ target });
 
@@ -72,7 +73,8 @@ export const useTweenArray = (
 		);
 
 		callback(state.tween);
-	}, []);
+		return false;
+	}, [state, callback, speedFactor]);
 
 	useAnimationLoop(animate, [target]);
 };
