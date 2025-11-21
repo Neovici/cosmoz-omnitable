@@ -13,7 +13,10 @@ interface TweenState {
 	tween?: TweenedLayout;
 }
 
-const useAnimationLoop = (animate: () => boolean, trigger: unknown[]) => {
+const useAnimationLoop = (
+	animate: () => boolean | undefined,
+	trigger: unknown[],
+) => {
 	const animationLoop = useMemo((): AnimationLoop => {
 		let running = false;
 		let af: number;
@@ -36,13 +39,13 @@ const useAnimationLoop = (animate: () => boolean, trigger: unknown[]) => {
 				cancelAnimationFrame(af);
 			},
 		};
-	}, [animate]);
+	}, []);
 
 	useEffect(() => {
 		animationLoop.start();
 	}, trigger);
 
-	useEffect(() => () => animationLoop.stop(), [animationLoop]);
+	useEffect(() => () => animationLoop.stop(), []);
 };
 
 export const isCloseEnough = (
@@ -73,8 +76,7 @@ export const useTweenArray = (
 		);
 
 		callback(state.tween);
-		return false;
-	}, [state, callback, speedFactor]);
+	}, []);
 
 	useAnimationLoop(animate, [target]);
 };
