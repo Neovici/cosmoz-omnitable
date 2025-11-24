@@ -69,7 +69,7 @@ const renderMinis =
 	({ item, index }: { item: Item; index: number }) =>
 	(columns: Column[]) =>
 		when(
-			columns?.length ?? 0 > 0,
+			(columns?.length ?? 0) > 0,
 			() => html`
 				<div class="itemRow-minis" part="item-minis">
 					${columns!.map(
