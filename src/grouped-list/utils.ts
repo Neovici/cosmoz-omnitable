@@ -1,4 +1,5 @@
 import { Item } from '../lib/types';
+import { indexSymbol } from '../lib/utils';
 
 export interface ItemState {
 	expanded?: boolean;
@@ -7,7 +8,7 @@ export interface ItemState {
 
 export interface GroupItem<T = unknown> {
 	items?: T[];
-	[key: string]: unknown;
+	[indexSymbol]: number;
 }
 
 export type ItemsState = WeakMap<Item, ItemState>;
@@ -75,12 +76,12 @@ const prepareData = <T extends Item>(
 				if (getItemState(item, itemsState).folded) {
 					return acc.concat(item);
 				}
-				return acc.concat(
-					item,
-					groupItem.items.map((i) =>
-						Object.assign(i as Item, { [symbols.group]: item }),
-					),
-				);
+
+				const groupedItems = groupItem.items.map((i) =>
+					Object.assign(i as Item, { [symbols.group]: item }),
+				) as T[];
+
+				return acc.concat(item, groupedItems);
 			}
 
 			// groups without items
