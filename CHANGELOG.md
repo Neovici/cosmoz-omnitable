@@ -1,3 +1,10 @@
+# [16.0.0-beta.2](https://github.com/neovici/cosmoz-omnitable/compare/v16.0.0-beta.1...v16.0.0-beta.2) (2025-11-25)
+
+
+### Features
+
+* convert cosmoz-omnitable-sort-group.js to ts ([685afc9](https://github.com/neovici/cosmoz-omnitable/commit/685afc95bf6d4c814c8d6642dd16268011c6e588))
+
 # [16.0.0-beta.1](https://github.com/neovici/cosmoz-omnitable/compare/v15.1.0...v16.0.0-beta.1) (2025-11-19)
 
 
