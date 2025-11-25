@@ -1,17 +1,54 @@
 import { html } from '@pionjs/pion';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { triangle } from '../icons';
+import { Column } from '../types';
 
-export const render = ({ column, on, descending, setOn, setDescending }) => {
+interface RenderProps {
+	column?: Pick<Column, 'name' | 'title'>;
+	on?: string;
+	descending?: boolean;
+	setOn: (name?: string) => void;
+	setDescending: (value: boolean) => void;
+}
+
+interface RenderAllProps {
+	columns?: Column[];
+	on?: string;
+	descending?: boolean;
+	setOn: (name?: string) => void;
+	setDescending: (value: boolean) => void;
+}
+
+interface SortAndGroupConsumerProps {
+	columns?: Column[];
+	groupOn?: string;
+	setGroupOn?: (name?: string) => void;
+	groupOnDescending?: boolean;
+	setGroupOnDescending?: (value: boolean) => void;
+	sortOn?: string;
+	setSortOn?: (name?: string) => void;
+	descending?: boolean;
+	setDescending?: (value: boolean) => void;
+}
+
+export const render = ({
+	column,
+	on,
+	descending,
+	setOn,
+	setDescending,
+}: RenderProps) => {
 	const { name, title } = column ?? {};
+
 	return html`<button
 		class="sg"
-		title=${title}
+		title=${ifDefined(title)}
 		data-on=${ifDefined(
 			(name === on && (descending ? 'desc' : 'asc')) || undefined,
 		)}
-		@click=${(e) => {
-			const on = e.currentTarget?.dataset.on;
+		@click=${(e: Event) => {
+			const target = e.currentTarget as HTMLElement;
+			const on = target?.dataset.on;
 			if (!on) {
 				setOn(name);
 				setDescending(false);
@@ -28,7 +65,7 @@ export const render = ({ column, on, descending, setOn, setDescending }) => {
 	</button>`;
 };
 
-export const renderAll = ({ columns, ...thru }) =>
+export const renderAll = ({ columns, ...thru }: RenderAllProps) =>
 	columns?.map((column) => render({ column, ...thru }));
 
 export const group = () => html`
@@ -40,13 +77,13 @@ export const group = () => html`
 			setGroupOn: setOn,
 			groupOnDescending: descending,
 			setGroupOnDescending: setDescending,
-		} = {}) =>
+		}: SortAndGroupConsumerProps = {}) =>
 			renderAll({
 				columns: columns?.filter?.((c) => c['groupOn']),
 				on,
-				setOn,
+				setOn: setOn!,
 				descending,
-				setDescending,
+				setDescending: setDescending!,
 			})}
 	>
 	</sort-and-group-consumer>
@@ -61,13 +98,13 @@ export const sort = () => html`
 			setSortOn: setOn,
 			descending,
 			setDescending,
-		} = {}) =>
+		}: SortAndGroupConsumerProps = {}) =>
 			renderAll({
 				columns: columns?.filter?.((c) => c['sortOn'] && !c.noSort),
 				on,
-				setOn,
+				setOn: setOn!,
 				descending,
-				setDescending,
+				setDescending: setDescending!,
 			})}
 	>
 	</sort-and-group-consumer>
