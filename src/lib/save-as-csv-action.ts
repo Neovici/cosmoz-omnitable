@@ -1,7 +1,7 @@
 import { saveAs } from 'file-saver-es';
 import { Column, Item } from './types';
 
-interface CsvColumn extends Column {
+export interface CsvColumn extends Column {
 	title: string;
 	getString: (
 		column: CsvColumn,
