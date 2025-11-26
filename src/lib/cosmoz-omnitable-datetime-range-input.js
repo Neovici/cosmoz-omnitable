@@ -48,7 +48,7 @@ class DatetimeRangeInput extends dateInputMixin(
 				horizontalAlign: 'right',
 				externalValues: this.externalValues,
 				onOpenedChanged,
-				content: html`
+				column: this.column,				content: html`
 					<h3 style="margin: 0;">${this.title}</h3>
 					<cosmoz-datetime-input
 						date-label=${t('From date')}

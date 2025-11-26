@@ -47,6 +47,8 @@ export const render = ({
 			(name === on && (descending ? 'desc' : 'asc')) || undefined,
 		)}
 		@click=${(e: Event) => {
+			e.stopPropagation();
+
 			const target = e.currentTarget as HTMLElement;
 			const on = target?.dataset.on;
 			if (!on) {
