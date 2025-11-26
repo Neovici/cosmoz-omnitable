@@ -44,7 +44,6 @@ class DatetimeRangeInput extends dateInputMixin(
 				title: this.title,
 				tooltip: this._tooltip,
 				filterText: this._filterText,
-				headerFocused: this.headerFocused,
 				horizontalAlign: 'right',
 				externalValues: this.externalValues,
 				onOpenedChanged,
