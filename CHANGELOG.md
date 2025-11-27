@@ -1,3 +1,12 @@
+# [16.0.0-beta.3](https://github.com/neovici/cosmoz-omnitable/compare/v16.0.0-beta.2...v16.0.0-beta.3) (2025-11-27)
+
+
+### Bug Fixes
+
+* adapt style ([05ef9f1](https://github.com/neovici/cosmoz-omnitable/commit/05ef9f12ea9cfe7fcf2d072fc4b5f4f21a1588ec))
+* default text-align left ([293f695](https://github.com/neovici/cosmoz-omnitable/commit/293f6957bcbf38fd0955f634d49b84348a3face9))
+* keep compatible style ([1f3a8aa](https://github.com/neovici/cosmoz-omnitable/commit/1f3a8aa3685478ee167e85443dfbb9e7a6ae2d2c))
+
 # [16.0.0-beta.2](https://github.com/neovici/cosmoz-omnitable/compare/v16.0.0-beta.1...v16.0.0-beta.2) (2025-11-25)
 
 
