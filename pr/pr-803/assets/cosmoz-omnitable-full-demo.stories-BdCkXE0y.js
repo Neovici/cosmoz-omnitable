@@ -1,4 +1,4 @@
-import{x as d,B as Fe,E as bt,f as Pt}from"./iframe-M1BrpnTp.js";import{t as K,c as E,g as S,P as A,u as M,a as xt,m as yt,s as Bt,D as Gt,b as Ht,e as Wt,i as ve,h as Ae,d as qt,f as vt,r as Xt,j as Ut,k as _,l as Kt,n as $e,p as he,o as D,q as Jt,v as we,w as Qt,x as Yt,y as Zt,T as en,z as T,A as fe,B as tn,C as nn,E as on,F as $,G as rn,H as an,I as $t,J as Ee,K as I,L as wt,M as Te,N as ln,O as zt,Q as sn,R as Le,S as Qe,U as un,V as Re,W as cn,X as dn,Y as Oe,Z as Me,_ as mn,$ as De,a0 as P,a1 as pn,a2 as Se,a3 as gn}from"./cosmoz-collapse-YUlGNk53.js";import"./preload-helper-PPVm8Dsz.js";const hn=K`
+import{x as d,B as Fe,E as bt,f as Pt}from"./iframe-DhWJegHA.js";import{t as K,c as E,g as S,P as A,u as M,a as xt,m as yt,s as Bt,D as Gt,b as Ht,e as Wt,i as ve,h as Ae,d as qt,f as vt,r as Xt,j as Ut,k as _,l as Kt,n as $e,p as he,o as D,q as Jt,v as we,w as Qt,x as Yt,y as Zt,T as en,z as T,A as fe,B as tn,C as nn,E as on,F as $,G as rn,H as an,I as $t,J as Ee,K as I,L as wt,M as Te,N as ln,O as zt,Q as sn,R as Le,S as Qe,U as un,V as Re,W as cn,X as dn,Y as Oe,Z as Me,_ as mn,$ as De,a0 as P,a1 as pn,a2 as Se,a3 as gn}from"./cosmoz-collapse-_6t3USXs.js";import"./preload-helper-PPVm8Dsz.js";const hn=K`
 	:host {
 		display: flex;
 	}
@@ -100,20 +100,24 @@ import{x as d,B as Fe,E as bt,f as Pt}from"./iframe-M1BrpnTp.js";import{t as K,c
 	}
 
 	#input {
-		color: #737373;
+		color: var(--color);
 		user-select: none;
 		cursor: pointer;
 		min-height: var(--line-height);
 		text-align: var(--text-align);
-		overflow: hidden;
-		text-overflow: ellipsis;
 		white-space: nowrap;
+		overflow: clip;
+		/* TODO: Remove later on, for compat only */
+		font-size: 16px;
+		font-family: sans-serif, Verdana, Arial;
 	}
 
 	label {
 		display: block;
 		text-align: var(--text-align);
-		transform-origin: (var(--text-align));
+		transform-origin: var(--text-align) top;
+		/* TODO: Remove later on, for compat only */
+		font-size: 13px;
 	}
 
 	:host(:not([always-float-label])) label {
@@ -181,6 +185,7 @@ import{x as d,B as Fe,E as bt,f as Pt}from"./iframe-M1BrpnTp.js";import{t as K,c
 					0 4px 24px 0 rgba(0, 0, 0, 0.18),
 					0 1.5px 6px 0 rgba(0, 0, 0, 0.1);
 			}
+
 		</style>
 
 		<cosmoz-dropdown
@@ -988,18 +993,19 @@ import{x as d,B as Fe,E as bt,f as Pt}from"./iframe-M1BrpnTp.js";import{t as K,c
 			display: var(--cosmoz-omnitable-paper-input-underline-display, block);
 		}
 
-		--paper-font-subhead_-_font-family: var(
-			--cosmoz-omnitable-header-font-family,
-			'Roboto',
-			'Noto',
-			sans-serif
-		);
 		text-transform: var(--cosmoz-omnitable-header-text-transform, none);
 		--paper-font-subhead_-_font-weight: var(
 			--cosmoz-omnitable-header-font-weight,
 			normal
 		);
-		--paper-font-subhead_-_font-size: var(
+
+		--cosmoz-input-font-family: var(
+			--cosmoz-omnitable-header-font-family,
+			'Roboto',
+			'Noto',
+			sans-serif
+		);
+		--cosmoz-input-font-size: var(
 			--cosmoz-omnitable-header-font-size,
 			16px
 		);
