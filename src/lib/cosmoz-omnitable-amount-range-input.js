@@ -106,7 +106,6 @@ class AmountRangeInput extends rangeInputMixin(
 				tooltip: this._tooltip,
 				filterText: this._filterText,
 				headerFocused: this.headerFocused,
-				horizontalAlign: 'right',
 				externalValues: this.externalValues,
 				onOpenedChanged,
 				content: html`
