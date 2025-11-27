@@ -48,35 +48,6 @@ class AmountRangeInput extends rangeInputMixin(
 
 		return html`
 			<style>
-				paper-dropdown-menu {
-					--iron-icon-width: 0;
-					display: block;
-					text-align: right;
-				}
-
-				.dropdown-content h3 {
-					font-weight: 500;
-					font-size: 13px;
-					margin: 0;
-					font-family: var(
-						--cosmoz-input-font-family,
-						var(--paper-font-subhead_-_font-family, 'Inter', sans-serif)
-					);
-				}
-
-				.dropdown-content {
-					padding: 10px 10px 10px 10px;
-					min-width: 150px;
-					text-align: left;
-					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
-					border-radius: 6px;
-					backdrop-filter: blur(16px) saturate(180%);
-					-webkit-backdrop-filter: blur(16px) saturate(180%);
-					box-shadow:
-						0 4px 24px 0 rgba(0, 0, 0, 0.18),
-						0 1.5px 6px 0 rgba(0, 0, 0, 0.1);
-				}
-
 				cosmoz-input[type='number'] {
 					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
 					border-radius: 6px;
