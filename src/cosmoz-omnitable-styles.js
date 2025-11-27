@@ -163,18 +163,19 @@ export default css`
 			display: var(--cosmoz-omnitable-paper-input-underline-display, block);
 		}
 
-		--paper-font-subhead_-_font-family: var(
-			--cosmoz-omnitable-header-font-family,
-			'Roboto',
-			'Noto',
-			sans-serif
-		);
 		text-transform: var(--cosmoz-omnitable-header-text-transform, none);
 		--paper-font-subhead_-_font-weight: var(
 			--cosmoz-omnitable-header-font-weight,
 			normal
 		);
-		--paper-font-subhead_-_font-size: var(
+
+		--cosmoz-input-font-family: var(
+			--cosmoz-omnitable-header-font-family,
+			'Roboto',
+			'Noto',
+			sans-serif
+		);
+		--cosmoz-input-font-size: var(
 			--cosmoz-omnitable-header-font-size,
 			16px
 		);

@@ -73,6 +73,7 @@ export const renderDropdown = ({
 					0 4px 24px 0 rgba(0, 0, 0, 0.18),
 					0 1.5px 6px 0 rgba(0, 0, 0, 0.1);
 			}
+
 		</style>
 
 		<cosmoz-dropdown
