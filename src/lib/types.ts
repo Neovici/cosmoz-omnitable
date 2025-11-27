@@ -11,6 +11,16 @@ export interface Amount {
 
 export type GetPath = string | (string | number)[];
 
+export interface RenderContext {
+	item: Item;
+	index: number;
+}
+
+export type RenderFunction = (
+	column: Column,
+	context: RenderContext,
+) => unknown;
+
 export interface Column {
 	valuePath?: GetPath;
 	locale?: Currency;
@@ -23,6 +33,8 @@ export interface Column {
 	sortOn?: boolean;
 	groupOn?: boolean;
 	noSort?: boolean;
+	renderCell?: RenderFunction;
+	renderMini?: RenderFunction;
 	[key: symbol]: unknown;
 }
 
