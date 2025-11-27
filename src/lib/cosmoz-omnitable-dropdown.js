@@ -53,6 +53,7 @@ export const renderDropdown = ({
 				font-weight: 500;
 				font-size: 13px;
 				margin: 0;
+				color: var(--cosmoz-omnitable-text-color);
 				font-family: var(
 					--cosmoz-input-font-family,
 					var(--paper-font-subhead_-_font-family, 'Inter', sans-serif)
@@ -73,7 +74,6 @@ export const renderDropdown = ({
 					0 4px 24px 0 rgba(0, 0, 0, 0.18),
 					0 1.5px 6px 0 rgba(0, 0, 0, 0.1);
 			}
-
 		</style>
 
 		<cosmoz-dropdown
