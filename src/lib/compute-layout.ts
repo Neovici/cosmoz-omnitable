@@ -1,10 +1,14 @@
 import { layout, ColumnConfig } from './layout';
 import { findLastIndex } from './utils';
+import { TweenedLayout } from './use-layout';
 
 type ItemName = ColumnConfig['name'];
 type Width = ColumnConfig['width'];
 
-const _toCss = (layout: number[], config: ColumnConfig[]) => {
+const _toCss = (
+	layout: TweenedLayout,
+	config: Omit<ColumnConfig, 'index'>[],
+) => {
 	const lastVisibleIndex = findLastIndex(
 		layout,
 		(width) => width != null && width > 0,
@@ -81,5 +85,7 @@ export const computeLayout = (
 	}, new Array(numColumns).fill(undefined));
 };
 
-export const toCss = (layout: number[], config: ColumnConfig[]) =>
-	layout.length === 0 ? '.cell {display: none;}' : _toCss(layout, config);
+export const toCss = (
+	layout: TweenedLayout,
+	config: Omit<ColumnConfig, 'index'>[],
+) => (layout.length === 0 ? '.cell {display: none;}' : _toCss(layout, config));
