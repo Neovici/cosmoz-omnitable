@@ -1,6 +1,4 @@
 import '@neovici/cosmoz-bottom-bar';
-import '@polymer/iron-icon/iron-icon';
-import '@polymer/iron-icons/iron-icons';
 
 import './cosmoz-omnitable-column';
 import './cosmoz-omnitable-columns';
@@ -21,7 +19,7 @@ import { renderHeader } from './lib/render-header';
 import { renderList } from './lib/render-list';
 import { useOmnitable } from './lib/use-omnitable';
 
-import './grouped-list/index.js';
+import './grouped-list/index';
 
 const shimCSS = (s) => window.ShadyCSS?.ApplyShim?.transformCssText?.(s) || s;
 
