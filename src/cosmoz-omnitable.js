@@ -61,6 +61,7 @@ customElements.define(
 			'no-local-filter',
 			'loading',
 			'mini-breakpoint',
+			'skip-bottom-bar-animation-on-mount',
 		],
 	}) {
 		connectedCallback() {

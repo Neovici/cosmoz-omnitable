@@ -1,8 +1,8 @@
-import { html } from 'lit-html';
+import { isEmpty } from '@neovici/cosmoz-utils/template';
 import { t } from 'i18next';
+import { html } from 'lit-html';
 import { saveAsCsvAction } from './save-as-csv-action';
 import { saveAsXlsxAction } from './save-as-xlsx-action';
-import { isEmpty } from '@neovici/cosmoz-utils/template';
 
 export const renderFooter = ({
 	columns,
@@ -11,10 +11,12 @@ export const renderFooter = ({
 	xlsxFilename,
 	xlsxSheetname,
 	topPlacement,
+	skipBottomBarAnimationOnMount,
 }) =>
 	html`<cosmoz-bottom-bar
 		id="bottomBar"
 		?active=${!isEmpty(selectedItems.length)}
+		?skip-animation-on-mount=${skipBottomBarAnimationOnMount}
 		part="bottomBar"
 		exportparts="bar: bottomBar-bar, info: bottomBar-info, buttons: bottomBar-buttons"
 	>

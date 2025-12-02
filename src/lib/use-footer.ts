@@ -3,6 +3,7 @@ interface FooterHost extends HTMLElement {
 	xlsxFilename?: string;
 	xlsxSheetname?: string;
 	topPlacement?: string;
+	skipBottomBarAnimationOnMount?: boolean;
 }
 
 interface UseFooterParams {
@@ -16,6 +17,7 @@ export const useFooter = ({ host, ...rest }: UseFooterParams) => {
 		xlsxFilename = 'omnitable.xlsx',
 		xlsxSheetname = 'Omnitable',
 		topPlacement = 'top-end',
+		skipBottomBarAnimationOnMount,
 	} = host;
 
 	return {
@@ -23,6 +25,7 @@ export const useFooter = ({ host, ...rest }: UseFooterParams) => {
 		xlsxFilename,
 		xlsxSheetname,
 		topPlacement,
+		skipBottomBarAnimationOnMount,
 		...rest,
 	};
 };
