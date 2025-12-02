@@ -1,3 +1,10 @@
+# [16.1.0-beta.1](https://github.com/neovici/cosmoz-omnitable/compare/v16.0.0...v16.1.0-beta.1) (2025-12-01)
+
+
+### Features
+
+* convert save-as-xlsx-action.js to ts ([2271f19](https://github.com/neovici/cosmoz-omnitable/commit/2271f190dd9fa7f98362d41f8f0c601868b7fff9))
+
 # [16.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v15.1.0...v16.0.0) (2025-12-01)
 
 
