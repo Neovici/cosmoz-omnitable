@@ -51,6 +51,8 @@ export const getString = ({ valuePath }, item) => get(item, valuePath),
 					name: { type: String },
 					sortPath: { type: String },
 					groupOn: { type: String },
+					// @deprecated
+					sortOn: { type: String }, // use sortPath instead
 					/**
 					 * If true, the column cannot be sorted
 					 */
