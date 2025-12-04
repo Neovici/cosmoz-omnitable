@@ -61,6 +61,7 @@ customElements.define(
 			'no-local-filter',
 			'loading',
 			'mini-breakpoint',
+			'enable-select-all',
 		],
 	}) {
 		connectedCallback() {

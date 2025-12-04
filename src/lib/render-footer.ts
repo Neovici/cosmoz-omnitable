@@ -4,14 +4,19 @@ import { saveAsCsvAction, CsvColumn } from './save-as-csv-action';
 import { saveAsXlsxAction, XlsxColumn } from './save-as-xlsx-action';
 import { isEmpty } from '@neovici/cosmoz-utils/template';
 import { Item } from './types';
+import { when } from 'lit-html/directives/when.js';
+import { All } from './select-all-symbol';
 
 interface RenderFooterParams {
 	columns: (CsvColumn & XlsxColumn)[];
-	selectedItems: Item[];
+	selectedItems: Item[] | typeof All;
 	csvFilename: string;
 	xlsxFilename: string;
 	xlsxSheetname: string;
 	topPlacement: string;
+	enableSelectAll: boolean;
+	onSelectAllMatching: () => void;
+	visibleData?: Item[];
 }
 
 export const renderFooter = ({
@@ -21,15 +26,37 @@ export const renderFooter = ({
 	xlsxFilename,
 	xlsxSheetname,
 	topPlacement,
-}: RenderFooterParams): TemplateResult =>
-	html`<cosmoz-bottom-bar
+	enableSelectAll,
+	onSelectAllMatching,
+	visibleData = [],
+}: RenderFooterParams): TemplateResult => {
+	const hasSelection = selectedItems === All || !isEmpty(selectedItems);
+	const selectedCount =
+		selectedItems === All ? visibleData.length : selectedItems.length;
+
+	return html`<cosmoz-bottom-bar
 		id="bottomBar"
-		?active=${!isEmpty(selectedItems.length)}
+		?active=${hasSelection}
 		part="bottomBar"
 		exportparts="bar: bottomBar-bar, info: bottomBar-info, buttons: bottomBar-buttons"
 	>
+		${when(
+			enableSelectAll,
+			() =>
+				html`<div slot="info" style="color: white">
+					${selectedCount} selected items.
+					${selectedItems === All
+						? html`All matching items selected.`
+						: html`<button
+								@click=${onSelectAllMatching}
+								style="border: none; background: none; color: white; cursor: pointer; text-decoration: underline;"
+							>
+								Select all matching items
+							</button>`}
+				</div>`,
+		)}
 		<slot name="info" slot="info">
-			${t('{count} selected item', { count: selectedItems.length })}
+			${t('{count} selected item', { count: selectedCount })}
 		</slot>
 		<slot name="actions" id="actions"></slot>
 		<!-- These slots are needed by cosmoz-bottom-bar
@@ -56,16 +83,27 @@ export const renderFooter = ({
 				<path d="M7 1V13" stroke-width="2" stroke-linecap="round" />
 			</svg>
 			<button
-				@click=${() => saveAsCsvAction(columns, selectedItems, csvFilename)}
+				@click=${() =>
+					saveAsCsvAction(
+						columns,
+						selectedItems === All ? visibleData : selectedItems,
+						csvFilename,
+					)}
 			>
 				${t('Save as CSV')}
 			</button>
 			<button
 				@click=${() =>
-					saveAsXlsxAction(columns, selectedItems, xlsxFilename, xlsxSheetname)}
+					saveAsXlsxAction(
+						columns,
+						selectedItems === All ? visibleData : selectedItems,
+						xlsxFilename,
+						xlsxSheetname,
+					)}
 			>
 				${t('Save as XLSX')}
 			</button>
 			<slot name="download-menu"></slot>
 		</cosmoz-dropdown-menu>
 	</cosmoz-bottom-bar>`;
+};
