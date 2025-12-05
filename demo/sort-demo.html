@@ -103,21 +103,21 @@
 						data="[[data]]"
 						selection-enabled
 						selected-items="{{selectedItems}}"
-						sort-on="name"
+						sort-path="name"
 						descending
 					>
 						<cosmoz-omnitable-column
 							title="Id"
 							name="id"
 							value-path="id"
-							sort-on="id"
+							sort-path="id"
 						>
 						</cosmoz-omnitable-column>
 						<cosmoz-omnitable-column-boolean
 							title="Boolean"
 							name="bool"
 							value-path="bool"
-							sort-on="bool"
+							sort-path="bool"
 							true-label="Yes"
 							false-label="No"
 						>
@@ -127,7 +127,7 @@
 							name="value"
 							value-path="value"
 							locale="{{locale}}"
-							sort-on="value"
+							sort-path="value"
 						></cosmoz-omnitable-column-number>
 						<cosmoz-omnitable-column
 							title="Group"
@@ -139,14 +139,14 @@
 							title="Amount"
 							name="amount"
 							value-path="amount"
-							sort-on="amount"
+							sort-path="amount"
 						></cosmoz-omnitable-column-amount>
 						<cosmoz-omnitable-column-date
 							title="Date"
 							name="date"
 							value-path="date"
 							locale="{{locale}}"
-							sort-on="date"
+							sort-path="date"
 						></cosmoz-omnitable-column-date>
 						<cosmoz-omnitable-column-date
 							title="DateJSON"
@@ -158,14 +158,14 @@
 							title="Sub-property"
 							name="subproperty"
 							value-path="sub.subProp"
-							sort-on="sub.subProp"
+							sort-path="sub.subProp"
 						></cosmoz-omnitable-column>
 						<cosmoz-omnitable-column
 							title="Name"
 							name="name"
 							value-path="name"
 							bind-values
-							sort-on="name"
+							sort-path="name"
 						>
 						</cosmoz-omnitable-column>
 					</cosmoz-omnitable>

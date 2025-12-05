@@ -100,7 +100,7 @@ export const sort = () => html`
 			setDescending,
 		}: SortAndGroupConsumerProps = {}) =>
 			renderAll({
-				columns: columns?.filter?.((c) => c['sortOn'] && !c.noSort),
+				columns: columns?.filter?.((c) => c['sortPath'] && !c.noSort),
 				on,
 				setOn: setOn!,
 				descending,

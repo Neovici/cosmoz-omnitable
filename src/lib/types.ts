@@ -30,8 +30,8 @@ export interface Column {
 	priority?: number;
 	flex?: string;
 	width?: string;
-	sortOn?: boolean;
-	groupOn?: boolean;
+	sortPath?: string;
+	groupOn?: string;
 	noSort?: boolean;
 	renderCell?: RenderFunction;
 	renderMini?: RenderFunction;

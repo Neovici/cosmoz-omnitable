@@ -55,7 +55,7 @@ const Template = (args) => {
 					name="company"
 					title="Company"
 					value-path="company"
-					sort-on="company"
+					sort-path="company"
 					group-on="company"
 				>
 				</cosmoz-omnitable-column>
@@ -64,7 +64,7 @@ const Template = (args) => {
 					name="age"
 					title="Age"
 					value-path="age"
-					sort-on="age"
+					sort-path="age"
 				>
 				</cosmoz-omnitable-column>
 
@@ -72,7 +72,7 @@ const Template = (args) => {
 					name="eyeColor"
 					title="Eye Color"
 					value-path="eyeColor"
-					sort-on="eyeColor"
+					sort-path="eyeColor"
 					group-on="eyeColor"
 				>
 				</cosmoz-omnitable-column>
@@ -81,7 +81,7 @@ const Template = (args) => {
 					name="balance"
 					title="Balance"
 					value-path="balance"
-					sort-on="balance"
+					sort-path="balance"
 				>
 				</cosmoz-omnitable-column>
 
@@ -89,7 +89,7 @@ const Template = (args) => {
 					name="registered"
 					title="Registered"
 					value-path="registered"
-					sort-on="registered"
+					sort-path="registered"
 				>
 				</cosmoz-omnitable-column>
 
