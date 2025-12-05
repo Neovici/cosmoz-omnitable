@@ -1,11 +1,9 @@
 import { html, TemplateResult } from 'lit-html';
 import { t } from 'i18next';
-import { saveAsCsvAction } from './save-as-csv-action';
-import { saveAsXlsxAction } from './save-as-xlsx-action';
+import { saveAsCsvAction, CsvColumn } from './save-as-csv-action';
+import { saveAsXlsxAction, XlsxColumn } from './save-as-xlsx-action';
 import { isEmpty } from '@neovici/cosmoz-utils/template';
 import { Item } from './types';
-import { CsvColumn } from './save-as-csv-action';
-import { XlsxColumn } from './save-as-xlsx-action';
 
 interface RenderFooterParams {
 	columns: (CsvColumn & XlsxColumn)[];
