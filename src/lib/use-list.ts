@@ -151,7 +151,7 @@ const renderItem =
 				<button
 					class="expand"
 					?hidden="${isEmpty(collapsedColumns.length)}"
-					.aria-expanded="${expanded}"
+					?aria-expanded="${expanded}"
 					@click="${toggleCollapse}"
 				>
 					${arrow}
@@ -207,7 +207,7 @@ const renderGroup =
 				></cosmoz-omnitable-group-row>
 			</h3>
 			<div class="groupRow-badge">${item.items?.length ?? 0}</div>
-			<button class="expand" .aria-expanded="${folded}" @click=${toggleFold}>
+			<button class="expand" ?aria-expanded="${folded}" @click=${toggleFold}>
 				${arrow}
 			</button>
 		</div>`;
