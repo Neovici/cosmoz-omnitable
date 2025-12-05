@@ -3,10 +3,13 @@ const indexSymbol = Symbol('index');
 export { indexSymbol };
 
 export const findLastIndex = (
-	array: number[],
-	predicate: (prop: number, index?: number, array?: number[]) => boolean
+	array: (number | undefined)[],
+	predicate: (
+		prop: number | undefined,
+		index?: number,
+		array?: (number | undefined)[],
+	) => boolean,
 ) => {
-
 	if (typeof array.findLastIndex === 'function') {
 		return array.findLastIndex(predicate);
 	}
