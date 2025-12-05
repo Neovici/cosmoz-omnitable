@@ -14,7 +14,12 @@ import {
 } from './utils';
 import { virtualize } from '@lit-labs/virtualizer/virtualize.js';
 import type { DirectiveResult } from 'lit/directive.js';
-import type { Item } from '../lib/types';
+import type { Item as BaseItem } from '../lib/types';
+import { indexSymbol } from '../lib/utils';
+
+export interface Item extends BaseItem {
+	[indexSymbol]: number;
+}
 
 export interface RenderItemParams {
 	selected: boolean;
@@ -30,14 +35,22 @@ export interface RenderGroupParams {
 	toggleFold: () => void;
 }
 
+export type RenderItemFunction = (
+	item: Item,
+	index: number,
+	params: RenderItemParams,
+) => unknown;
+
+export type RenderGroupFunction = (
+	item: GroupItem<Item>,
+	index: number,
+	params: RenderGroupParams,
+) => unknown;
+
 export interface UseCosmozGroupedListHost extends HTMLElement {
 	data: (Item | GroupItem<Item>)[];
-	renderItem: (item: Item, index: number, params: RenderItemParams) => unknown;
-	renderGroup: (
-		item: GroupItem<Item>,
-		index: number,
-		params: RenderGroupParams,
-	) => unknown;
+	renderItem: RenderItemFunction;
+	renderGroup: RenderGroupFunction;
 	displayEmptyGroups: boolean;
 	compareItemsFn?: <T>(a: T, b: T) => boolean;
 	style: CSSStyleDeclaration;
@@ -132,12 +145,15 @@ const renderCosmozGroupedList = ({
 	renderRow,
 	flatData,
 }: {
-	renderRow: (item: Item | GroupItem<Item>, index: number) => unknown;
+	renderRow: (
+		item: Item | GroupItem<Item>,
+		index: number,
+	) => unknown | undefined;
 	flatData: (Item | GroupItem<Item>)[] | undefined;
 }): DirectiveResult => {
 	return virtualize({
 		items: flatData,
-		renderItem: (item: Item, index: number) =>
+		renderItem: (item: Item | GroupItem<Item>, index: number) =>
 			html`<cosmoz-grouped-list-row
 				.item=${item}
 				.index=${index}
