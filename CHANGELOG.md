@@ -1,3 +1,10 @@
+# [16.1.0-beta.3](https://github.com/neovici/cosmoz-omnitable/compare/v16.1.0-beta.2...v16.1.0-beta.3) (2025-12-05)
+
+
+### Features
+
+* converted use-fast-layout.js to ts ([#763](https://github.com/neovici/cosmoz-omnitable/issues/763)) ([3790dc9](https://github.com/neovici/cosmoz-omnitable/commit/3790dc9ee86ebe5d283b9985a8192a00f1094d16))
+
 # [16.1.0-beta.2](https://github.com/neovici/cosmoz-omnitable/compare/v16.1.0-beta.1...v16.1.0-beta.2) (2025-12-05)
 
 
