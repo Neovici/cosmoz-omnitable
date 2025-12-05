@@ -1,8 +1,18 @@
-import { html } from 'lit-html';
+import { html, TemplateResult } from 'lit-html';
 import { t } from 'i18next';
-import { saveAsCsvAction } from './save-as-csv-action';
-import { saveAsXlsxAction } from './save-as-xlsx-action';
+import { saveAsCsvAction, CsvColumn } from './save-as-csv-action';
+import { saveAsXlsxAction, XlsxColumn } from './save-as-xlsx-action';
 import { isEmpty } from '@neovici/cosmoz-utils/template';
+import { Item } from './types';
+
+interface RenderFooterParams {
+	columns: (CsvColumn & XlsxColumn)[];
+	selectedItems: Item[];
+	csvFilename: string;
+	xlsxFilename: string;
+	xlsxSheetname: string;
+	topPlacement: string;
+}
 
 export const renderFooter = ({
 	columns,
@@ -11,7 +21,7 @@ export const renderFooter = ({
 	xlsxFilename,
 	xlsxSheetname,
 	topPlacement,
-}) =>
+}: RenderFooterParams): TemplateResult =>
 	html`<cosmoz-bottom-bar
 		id="bottomBar"
 		?active=${!isEmpty(selectedItems.length)}

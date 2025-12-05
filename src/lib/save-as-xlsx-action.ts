@@ -2,7 +2,7 @@ import { saveAs } from 'file-saver-es';
 import { NullXlsx } from '@neovici/nullxlsx';
 import { Column, Item } from './types';
 
-interface XlsxColumn extends Column {
+export interface XlsxColumn extends Column {
 	title: string;
 	toXlsxValue: (column: XlsxColumn, item: Item) => string;
 }
