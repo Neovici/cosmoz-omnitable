@@ -16,7 +16,6 @@ import { virtualize } from '@lit-labs/virtualizer/virtualize.js';
 import type { DirectiveResult } from 'lit/directive.js';
 import type { Item as BaseItem } from '../lib/types';
 import { indexSymbol } from '../lib/utils';
-import { All } from '../lib/select-all-symbol';
 
 export interface Item extends BaseItem {
 	[indexSymbol]: number;
