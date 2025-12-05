@@ -100,6 +100,7 @@ const meta: Meta = {
 				.descending=${args.descending}
 				.group-on-descending=${args.groupOnDescending}
 				settings-id=${args.settingsId}
+				enable-select-all
 			>
 				<cosmoz-omnitable-column
 					priority="-1"
