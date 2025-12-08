@@ -1,3 +1,11 @@
+## [16.0.1](https://github.com/neovici/cosmoz-omnitable/compare/v16.0.0...v16.0.1) (2025-12-08)
+
+
+### Bug Fixes
+
+* column config is invalidated every time the contents of the slot changes ([#818](https://github.com/neovici/cosmoz-omnitable/issues/818)) ([b6b9192](https://github.com/neovici/cosmoz-omnitable/commit/b6b9192e7d07f2ddc2de113386d716b239f6a9a1))
+* remove unused headerFocused parameter from renderDropdown ([#800](https://github.com/neovici/cosmoz-omnitable/issues/800)) ([40b8bae](https://github.com/neovici/cosmoz-omnitable/commit/40b8baedbda25e3d96bf1343d2a49492fa3fd155))
+
 # [16.1.0-beta.1](https://github.com/neovici/cosmoz-omnitable/compare/v16.0.0...v16.1.0-beta.1) (2025-12-01)
 
 
