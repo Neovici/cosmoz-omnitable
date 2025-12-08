@@ -1,5 +1,5 @@
-import { useLayoutEffect, useState } from '@pionjs/pion';
 import { memooize } from '@neovici/cosmoz-utils/memoize';
+import { useLayoutEffect, useState } from '@pionjs/pion';
 
 const columnSymbol = Symbol('column');
 const verifyColumnSetup = (columns) => {
@@ -120,10 +120,8 @@ const normalizeColumn = (column) => {
 
 const isVisibleColumn = (child) => child.isOmnitableColumn && !child.hidden;
 
-const collectDomColumns = (slot) => {
-	const domColumns = slot
-		.assignedElements({ flatten: true })
-		.filter(isVisibleColumn);
+const collectDomColumns = (assignedElements) => {
+	const domColumns = assignedElements.filter(isVisibleColumn);
 
 	if (!verifyColumnSetup(domColumns)) return [];
 	return domColumns;
@@ -142,13 +140,33 @@ export const useDOMColumns = (host, { enabledColumns }) => {
 
 	useLayoutEffect(() => {
 		let sched;
+		let previous = [];
 		const slot = host.shadowRoot.querySelector('#columnsSlot');
-		const update = () => {
-			setColumns(normalizeColumns(collectDomColumns(slot), enabledColumns));
+		const update = (force) => () => {
+			const current = slot.assignedNodes({ flatten: true });
+
+			if (!force) {
+				const added = current.filter((n) => !previous.includes(n));
+				const removed = previous.filter((n) => !current.includes(n));
+				const columnsChanged = [...added, ...removed].some(
+					(element) => element.isOmnitableColumn,
+				);
+
+				previous = current;
+
+				if (!columnsChanged) return;
+			} else {
+				previous = current;
+			}
+
+			setColumns(normalizeColumns(collectDomColumns(current), enabledColumns));
 		};
-		const scheduleUpdate = () => {
+
+		const scheduleUpdate = (ev) => {
 			cancelAnimationFrame(sched);
-			sched = requestAnimationFrame(update);
+			sched = requestAnimationFrame(
+				update(ev?.type === 'cosmoz-column-prop-changed'),
+			);
 		};
 
 		scheduleUpdate();

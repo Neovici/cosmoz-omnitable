@@ -3,18 +3,18 @@ import { assert, expect, html, nextFrame } from '@open-wc/testing';
 
 import { assert as sinonAssert, spy } from 'sinon';
 
+import { flush } from '@polymer/polymer/lib/utils/flush';
 import '../demo/helpers/cosmoz-translations';
+import { generateTableDemoData } from '../demo/table-demo-helper';
 import {
 	ignoreResizeObserverLoopErrors,
 	rowVisible,
 	setupOmnitableFixture,
 } from './helpers/utils';
-import { generateTableDemoData } from '../demo/table-demo-helper';
-import { flush } from '@polymer/polymer/lib/utils/flush';
 
-import '../src/cosmoz-omnitable.js';
-import '../src/cosmoz-omnitable-columns.js';
 import '@polymer/paper-toggle-button';
+import '../src/cosmoz-omnitable-columns.js';
+import '../src/cosmoz-omnitable.js';
 import { columnSymbol } from '../src/lib/use-dom-columns';
 
 sinonAssert.expose(assert, { prefix: '' });
@@ -98,6 +98,7 @@ suite('basic', () => {
 		);
 		assert.equal(column.sortOn, 'valuePath');
 	});
+
 	test('sets column sortOn property to sort-on attribute', () => {
 		const column = omnitable.columns.find(
 			(col) => col.name === 'columnWithSortOn',
@@ -146,6 +147,7 @@ suite('basic', () => {
 
 suite('default-config', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);
+
 	test('default valuePath is name', async () => {
 		const omnitable = await setupOmnitableFixture(
 				html`
@@ -512,6 +514,7 @@ suite('render group function', () => {
 
 suite('enabled columns', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);
+
 	test('displays only enabled columns', async () => {
 		const omnitable = await setupOmnitableFixture(
 			html` <cosmoz-omnitable

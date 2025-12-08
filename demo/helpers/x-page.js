@@ -84,6 +84,9 @@ class XPage extends translatable(PolymerElement) {
 					>
 						Hide Sub-property column
 					</paper-toggle-button>
+					<button class="action" on-tap="addToSlot">
+						Add something to the slot
+					</button>
 				</div>
 
 				<cosmoz-omnitable
@@ -94,6 +97,7 @@ class XPage extends translatable(PolymerElement) {
 					selected-items="{{ selectedItems }}"
 					hash-param="[[ hashParam ]]"
 					settings-id="test"
+					on-visible-data-changed="onVisibleDataChanged"
 				>
 					<cosmoz-omnitable-column
 						priority="-1"
@@ -328,6 +332,14 @@ class XPage extends translatable(PolymerElement) {
 
 	renderCustomNameCell(column, { item }) {
 		return lit`<span style="background: red;" @click=${this.onTap}>${item.name}</span>`;
+	}
+
+	onVisibleDataChanged(data) {
+		console.log('visible data changed', data);
+	}
+
+	addToSlot() {
+		this.$.omnitable.appendChild(document.createElement('span'));
 	}
 }
 customElements.define(XPage.is, XPage);
