@@ -106,27 +106,38 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 	}
 
 	renderHeader(column, { filter, query }, setState, source) {
-		return html`<cosmoz-autocomplete-ui
-			.label=${column.title}
-			.title=${computeItemTooltip(
-				column.title,
-				filter,
-				column.valuePath,
-				source,
-			)}
-			.source=${source}
-			.textProperty=${'text'}
-			.value=${computeValue(filter, source)}
-			.text=${query}
-			.onChange=${onChange(setState)}
-			.onFocus=${onFocus(setState)}
-			.onText=${onText(setState)}
-			.limit=${1}
-			>${when(
-				column.loading,
-				() => html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`,
-			)}</cosmoz-autocomplete-ui
-		>`;
+		return html`<style>
+				cosmoz-autocomplete-ui[data-filter='true']::part(chip) {
+					background: var(--cz-autocomplete-chip-bg-color, rgb(227, 249, 223));
+					color: var(--cz-status-chip-text-color--ok, #142114);
+				}
+				cosmoz-autocomplete-ui[data-filter='false']::part(chip) {
+					background: var(--cz-autocomplete-chip-bg-color, rgb(255, 216, 223));
+					color: var(--cz-status-chip-text-color--error, #4d1011);
+				}
+			</style>
+			<cosmoz-autocomplete-ui
+				data-filter=${filter}
+				.label=${column.title}
+				.title=${computeItemTooltip(
+					column.title,
+					filter,
+					column.valuePath,
+					source,
+				)}
+				.source=${source}
+				.textProperty=${'text'}
+				.value=${computeValue(filter, source)}
+				.text=${query}
+				.onChange=${onChange(setState)}
+				.onFocus=${onFocus(setState)}
+				.onText=${onText(setState)}
+				.limit=${1}
+				>${when(
+					column.loading,
+					() => html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`,
+				)}</cosmoz-autocomplete-ui
+			>`;
 	}
 
 	computeSource({ trueLabel, falseLabel }) {
