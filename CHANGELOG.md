@@ -1,3 +1,10 @@
+## [16.0.3](https://github.com/Neovici/cosmoz-omnitable/compare/v16.0.2...v16.0.3) (2025-12-10)
+
+
+### Bug Fixes
+
+* repository URL case sensitivity ([ea5ef78](https://github.com/Neovici/cosmoz-omnitable/commit/ea5ef783696ae5778767a9c71da5cd2edcda6fdd))
+
 ## [16.0.2](https://github.com/neovici/cosmoz-omnitable/compare/v16.0.1...v16.0.2) (2025-12-10)
 
 
