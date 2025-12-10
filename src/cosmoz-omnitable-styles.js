@@ -407,10 +407,15 @@ export default css`
 	}
 
 	cosmoz-bottom-bar {
-		background-color: var(--cosmoz-omnitable-bottom-bar-color, #5f5a92);
+		--cosmoz-bottom-bar-button-bg-color: #24365a;
+		--cosmoz-bottom-bar-button-hover-bg-color: #1b2a45;
+		--cosmoz-dropdown-button-bg-color: #24365a;
+		--cosmoz-dropdown-button-hover-bg-color: #1b2a45;
+
+		background-color: var(--cosmoz-omnitable-bottom-bar-color, #eeeff3);
 		overflow: hidden;
 	}
-	cosmoz-bottom-bar::part(bar) {
+	cosmoz-bottom-bar::part(bar) {	
 		padding: 0 24px;
 	}
 
