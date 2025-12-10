@@ -1,3 +1,11 @@
+## [16.0.2](https://github.com/neovici/cosmoz-omnitable/compare/v16.0.1...v16.0.2) (2025-12-10)
+
+
+### Bug Fixes
+
+* add permissions to workflow configuration ([2b45704](https://github.com/neovici/cosmoz-omnitable/commit/2b45704f73aa796d4c21dc857ed81ce35bcf1766))
+* test npm publishing ([8c719bf](https://github.com/neovici/cosmoz-omnitable/commit/8c719bf97a0d9afe344d0009030d4fce1a90a1ea))
+
 ## [16.0.1](https://github.com/neovici/cosmoz-omnitable/compare/v16.0.0...v16.0.1) (2025-12-08)
 
 
