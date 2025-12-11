@@ -1,4 +1,4 @@
-import{x as c,B as qe,E as pt}from"./iframe-DTZ9kBmF.js";import{t as K,c as O,g as C,P as M,u as T,a as gt,m as bt,s as Dt,D as Tt,b as Vt,e as Pt,i as fe,h as _e,d as Nt,f as ft,r as Rt,j as Bt,k as z,l as Gt,n as he,p as me,o as k,q as Ht,v as xe,w as jt,x as Wt,y as Ut,T as Kt,z as E,A as Ue,B as Jt,C as Xt,E as Qt,F as $,G as Yt,H as Zt,I as ht,J as ke,K as F,L as xt,M as Ie,N as ei,O as vt,Q as ti,R as Me,S as Ke,U as ii,V as Ee,W as ai,X as ni,Y as Ae,Z as Oe,_ as oi,$ as ze,a0 as N,a1 as ri,a2 as ye,a3 as li}from"./cosmoz-collapse-DJEJauFv.js";const si=K`
+import{x as c,B as qe,E as pt}from"./iframe-Q7rZW2R8.js";import{t as K,c as O,g as C,P as M,u as T,a as gt,m as bt,s as Dt,D as Tt,b as Vt,e as Pt,i as fe,h as _e,d as Nt,f as ft,r as Rt,j as Bt,k as z,l as Gt,n as he,p as me,o as k,q as Ht,v as xe,w as jt,x as Wt,y as Ut,T as Kt,z as E,A as Ue,B as Jt,C as Xt,E as Qt,F as $,G as Yt,H as Zt,I as ht,J as ke,K as F,L as xt,M as Ie,N as ei,O as vt,Q as ti,R as Me,S as Ke,U as ii,V as Ee,W as ai,X as ni,Y as Ae,Z as Oe,_ as oi,$ as ze,a0 as N,a1 as ri,a2 as ye,a3 as li}from"./cosmoz-collapse-6xS9XTxF.js";const si=K`
 	:host {
 		display: flex;
 	}
@@ -1219,10 +1219,10 @@ import{x as c,B as qe,E as pt}from"./iframe-DTZ9kBmF.js";import{t as K,c as O,g 
 	}
 
 	cosmoz-bottom-bar {
-		--cosmoz-bottom-bar-button-bg-color: (--cz-bottom-bar-button-bg-color, #24365a);
-		--cosmoz-bottom-bar-button-hover-bg-color: (--cz-bottom-bar-button-hover-bg-color, #1b2a45);
-		--cosmoz-dropdown-button-bg-color: (--cz-dropdown-button-bg-color, #24365a);
-		--cosmoz-dropdown-button-hover-bg-color: (--cz-dropdown-button-hover-bg-color, #1b2a45);
+		--cosmoz-bottom-bar-button-bg-color: var(--cz-bottom-bar-button-bg-color, #24365a);
+		--cosmoz-bottom-bar-button-hover-bg-color: var(--cz-bottom-bar-button-hover-bg-color, #1b2a45);
+		--cosmoz-dropdown-button-bg-color: var(--cz-dropdown-button-bg-color, #24365a);
+		--cosmoz-dropdown-button-hover-bg-color: var(--cz-dropdown-button-hover-bg-color, #1b2a45);
 
 		background-color: var(--cosmoz-omnitable-bottom-bar-color, #eeeff3);
 		overflow: hidden;
