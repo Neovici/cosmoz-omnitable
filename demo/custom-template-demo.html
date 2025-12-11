@@ -179,7 +179,9 @@
 				}
 
 				renderAmountCell(column, { item }) {
-					return html`<span style="background: red;" @tap=${onTap}
+					return html`<span
+						style="display: inline-block;background: #FFDFEC; color: #F36087; border-radius: 20px; padding: 4px; font-size: 14px;"
+						@tap=${onTap}
 						>${item.amount.amount}</span
 					>`;
 				}

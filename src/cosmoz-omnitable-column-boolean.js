@@ -81,28 +81,38 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 	renderEditCell(column, { item }, onItemChange) {
 		const { trueLabel, falseLabel } = column;
 
-		return html`<cosmoz-autocomplete
-			no-label-float
-			.title=${computeItemTooltip(
-				column.title,
-				item,
-				column.valuePath,
-				computeSource(trueLabel, falseLabel),
-			)}
-			.source=${computeSource(trueLabel, falseLabel)}
-			.textProperty=${'text'}
-			.value=${computeItemValue(
-				column,
-				item,
-				computeSource(trueLabel, falseLabel),
-			)}
-			.onChange=${onEditableChange(onItemChange)}
-			.limit=${1}
-			>${when(
-				column.loading,
-				() => html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`,
-			)}</cosmoz-autocomplete
-		>`;
+		return html`<style>
+				cosmoz-autocomplete[title='Yes']::part(chip) {
+					background: var(--cz-status-chip-bg-color--ok, rgb(227, 249, 223));
+					color: var(--cz-status-chip-text-color--ok, #142114);
+				}
+				cosmoz-autocomplete[title='No']::part(chip) {
+					background: var(--cz-status-chip-bg-color--error, rgb(255, 216, 223));
+					color: var(--cz-status-chip-text-color--error, #4d1011);
+				}
+			</style>
+			<cosmoz-autocomplete
+				no-label-float
+				.title=${computeItemTooltip(
+					column.title,
+					item,
+					column.valuePath,
+					computeSource(trueLabel, falseLabel),
+				)}
+				.source=${computeSource(trueLabel, falseLabel)}
+				.textProperty=${'text'}
+				.value=${computeItemValue(
+					column,
+					item,
+					computeSource(trueLabel, falseLabel),
+				)}
+				.onChange=${onEditableChange(onItemChange)}
+				.limit=${1}
+				>${when(
+					column.loading,
+					() => html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`,
+				)}</cosmoz-autocomplete
+			>`;
 	}
 
 	renderHeader(column, { filter, query }, setState, source) {
