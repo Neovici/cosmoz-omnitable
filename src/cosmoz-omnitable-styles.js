@@ -88,6 +88,27 @@ export default css`
 		position: relative;
 		overflow: hidden;
 		color: var(--cosmoz-omnitable-text-color, rgb(89, 102, 121));
+
+		--cosmoz-bottom-bar-button-bg-color: var(
+			--cz-bottom-bar-button-bg-color,
+			#24365a
+		);
+		--cosmoz-bottom-bar-button-hover-bg-color: var(
+			--cz-bottom-bar-button-hover-bg-color,
+			#1b2a45
+		);
+		--cosmoz-dropdown-button-bg-color: var(
+			--cz-dropdown-button-bg-color,
+			#24365a
+		);
+		--cosmoz-dropdown-button-hover-bg-color: var(
+			--cz-dropdown-button-hover-bg-color,
+			#1b2a45
+		);
+		--cosmoz-bottom-bar-button-color: var(
+			--cz-bottom-bar-button-color,
+			var(--cosmoz-button-color, #fff)
+		);
 	}
 	:host a {
 		color: var(--primary-link-color, inherit);
@@ -396,23 +417,6 @@ export default css`
 	}
 
 	cosmoz-bottom-bar {
-		--cosmoz-bottom-bar-button-bg-color: var(
-			--cz-bottom-bar-button-bg-color,
-			#24365a
-		);
-		--cosmoz-bottom-bar-button-hover-bg-color: var(
-			--cz-bottom-bar-button-hover-bg-color,
-			#1b2a45
-		);
-		--cosmoz-dropdown-button-bg-color: var(
-			--cz-dropdown-button-bg-color,
-			#24365a
-		);
-		--cosmoz-dropdown-button-hover-bg-color: var(
-			--cz-dropdown-button-hover-bg-color,
-			#1b2a45
-		);
-
 		background-color: var(--cosmoz-omnitable-bottom-bar-color, #eeeff3);
 		overflow: hidden;
 	}
