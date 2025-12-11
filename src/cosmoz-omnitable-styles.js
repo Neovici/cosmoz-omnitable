@@ -118,10 +118,22 @@ export default css`
 		display: flex;
 		align-items: flex-end;
 		background-color: var(--cosmoz-omnitable-header-bg-color, inherit);
-		border-top-left-radius: var(--cosmoz-omnitable-header-border-radius-top-left, 8px);
-		border-top-right-radius: var(--cosmoz-omnitable-header-border-radius-top-right, 8px);
-		border-bottom-left-radius: var(--cosmoz-omnitable-header-border-radius-bottom-left, 2px);
-		border-bottom-right-radius: var(--cosmoz-omnitable-header-border-radius-bottom-right, 2px);
+		border-top-left-radius: var(
+			--cosmoz-omnitable-header-border-radius-top-left,
+			8px
+		);
+		border-top-right-radius: var(
+			--cosmoz-omnitable-header-border-radius-top-right,
+			8px
+		);
+		border-bottom-left-radius: var(
+			--cosmoz-omnitable-header-border-radius-bottom-left,
+			2px
+		);
+		border-bottom-right-radius: var(
+			--cosmoz-omnitable-header-border-radius-bottom-right,
+			2px
+		);
 	}
 
 	[hidden] {
@@ -132,42 +144,12 @@ export default css`
 		width: 100%;
 	}
 
-	cosmoz-omnitable-header-row .external-values-false {
-		--paper-input-container-color: var(
-			--cosmoz-omnitable-local-filter-header-color
-		);
-	}
-
-	cosmoz-omnitable-header-row .external-values-true {
-		--paper-input-container-color: var(
-			--cosmoz-omnitable-remote-filter-header-color
-		);
-	}
-
 	.header > cosmoz-omnitable-header-row {
 		flex: auto;
 	}
 
 	.header-cell {
-		--paper-input-container: {
-			padding-top: 0;
-			padding-bottom: 1px;
-			--paper-font-caption_-_line-height: 18px;
-		}
-		--paper-input-container-underline: {
-			border-color: var(--cosmoz-omnitable-header-line-color);
-			display: var(--cosmoz-omnitable-paper-input-underline-display, block);
-		}
-		--paper-input-container-underline-focus {
-			border-color: var(--cosmoz-omnitable-header-line-focused-color);
-			display: var(--cosmoz-omnitable-paper-input-underline-display, block);
-		}
-
 		text-transform: var(--cosmoz-omnitable-header-text-transform, none);
-		--paper-font-subhead_-_font-weight: var(
-			--cosmoz-omnitable-header-font-weight,
-			normal
-		);
 
 		--cosmoz-input-font-family: var(
 			--cosmoz-omnitable-header-font-family,
@@ -175,16 +157,24 @@ export default css`
 			'Noto',
 			sans-serif
 		);
-		--cosmoz-input-font-size: var(
-			--cosmoz-omnitable-header-font-size,
-			16px
-		);
+		--cosmoz-input-font-size: var(--cosmoz-omnitable-header-font-size, 16px);
 		--cosmoz-input-padding: var(--cosmoz-omnitable-header-input-padding, 0);
-		--cosmoz-input-label-text-transform: var(--cosmoz-omnitable-header-text-transform, none);
-		--cosmoz-input-label-font-weight: var(--cosmoz-omnitable-header-font-weight, normal);
+		--cosmoz-input-label-text-transform: var(
+			--cosmoz-omnitable-header-text-transform,
+			none
+		);
+		--cosmoz-input-label-font-weight: var(
+			--cosmoz-omnitable-header-font-weight,
+			normal
+		);
 		--cosmoz-input-line-color: var(--cosmoz-omnitable-header-line-color);
-		--cosmoz-input-line-display: var(--cosmoz-omnitable-header-line-display, block);
-		--cosmoz-input-focused-color: var(--cosmoz-omnitable-header-line-focused-color);
+		--cosmoz-input-line-display: var(
+			--cosmoz-omnitable-header-line-display,
+			block
+		);
+		--cosmoz-input-focused-color: var(
+			--cosmoz-omnitable-header-line-focused-color
+		);
 	}
 
 	cosmoz-omnitable-header-row {
@@ -285,8 +275,9 @@ export default css`
 		align-items: flex-start;
 	}
 	.tableContent-empty div.tableContent-empty-message {
-		@apply --layout-vertical;
-		@apply --layout-center-justified;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 		padding-bottom: 24px;
 	}
 	.tableContent-empty.overlay div.tableContent-empty-message {
@@ -335,12 +326,10 @@ export default css`
 			--cosmoz-omnitable-selection-color,
 			rgb(195, 212, 248)
 		);
-		@apply --cosmoz-omnitable-selected-row;
 	}
 
 	.tableContent .itemRow-cell paper-dropdown-menu {
 		margin-top: -20px;
-
 	}
 
 	cosmoz-omnitable-item-expand[expanded] {
@@ -407,15 +396,27 @@ export default css`
 	}
 
 	cosmoz-bottom-bar {
-		--cosmoz-bottom-bar-button-bg-color: var(--cz-bottom-bar-button-bg-color, #24365a);
-		--cosmoz-bottom-bar-button-hover-bg-color: var(--cz-bottom-bar-button-hover-bg-color, #1b2a45);
-		--cosmoz-dropdown-button-bg-color: var(--cz-dropdown-button-bg-color, #24365a);
-		--cosmoz-dropdown-button-hover-bg-color: var(--cz-dropdown-button-hover-bg-color, #1b2a45);
+		--cosmoz-bottom-bar-button-bg-color: var(
+			--cz-bottom-bar-button-bg-color,
+			#24365a
+		);
+		--cosmoz-bottom-bar-button-hover-bg-color: var(
+			--cz-bottom-bar-button-hover-bg-color,
+			#1b2a45
+		);
+		--cosmoz-dropdown-button-bg-color: var(
+			--cz-dropdown-button-bg-color,
+			#24365a
+		);
+		--cosmoz-dropdown-button-hover-bg-color: var(
+			--cz-dropdown-button-hover-bg-color,
+			#1b2a45
+		);
 
 		background-color: var(--cosmoz-omnitable-bottom-bar-color, #eeeff3);
 		overflow: hidden;
 	}
-	cosmoz-bottom-bar::part(bar) {	
+	cosmoz-bottom-bar::part(bar) {
 		padding: 0 24px;
 	}
 
@@ -435,19 +436,27 @@ export default css`
 		overflow: initial;
 	}
 
-	.omnitable-cell-number, .omnitable-cell-date {
+	.omnitable-cell-number,
+	.omnitable-cell-date {
 		font-variant-numeric: tabular-nums;
 	}
 
 	.itemRow:hover {
-		box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0,
-			0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
+		box-shadow:
+			inset 1px 0 0 #dadce0,
+			inset -1px 0 0 #dadce0,
+			0 1px 2px 0 rgb(60 64 67 / 30%),
+			0 1px 3px 1px rgb(60 64 67 / 15%);
 		background-color: var(--cosmoz-omnitable-row-hover-color);
 	}
 	.groupRow:hover .checkbox:not(:checked):not(:hover),
 	.itemRow:hover .checkbox:not(:checked):not(:hover) {
-		box-shadow: 0 0 0 2px var(--cosmoz-omnitable-checkbox-shadow-color-not-hover, rgba(0, 0, 0, 0.54))
-		inset;
+		box-shadow: 0 0 0 2px
+			var(
+				--cosmoz-omnitable-checkbox-shadow-color-not-hover,
+				rgba(0, 0, 0, 0.54)
+			)
+			inset;
 	}
 	.groupRow:hover .expand:not(:hover),
 	.itemRow:hover .expand:not(:hover) {
@@ -510,7 +519,10 @@ export default css`
 		display: block;
 	}
 	.sg[data-on] {
-		color: var(--cosmoz-omnitable-checkbox-checked-color, var(--primary-color, #508aef));
+		color: var(
+			--cosmoz-omnitable-checkbox-checked-color,
+			var(--primary-color, #508aef)
+		);
 	}
 	.sg:not([data-on='desc']) {
 		transform: scaleY(-1);
@@ -571,20 +583,20 @@ export default css`
 	}
 
 	:host([mini]) .tableContent-scroller::-webkit-scrollbar-thumb {
-	background: transparent;
+		background: transparent;
 	}
 
 	:host([mini]) .tableContent-scroller:hover::-webkit-scrollbar-thumb {
-	background: var(--cosmoz-omnitable-mini-scrollbar-thumb-bg, #aaa);
+		background: var(--cosmoz-omnitable-mini-scrollbar-thumb-bg, #aaa);
 	}
 
 	:host([mini]) .tableContent-scroller::-webkit-scrollbar-button:decrement,
 	:host([mini]) .tableContent-scroller::-webkit-scrollbar-button:increment {
-	width: 0px;
+		width: 0px;
 	}
 
 	:host([mini]) cosmoz-omnitable-settings::part(columns) {
-		display:none;
+		display: none;
 	}
 
 	cz-spinner {
