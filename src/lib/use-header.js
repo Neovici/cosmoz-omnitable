@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from '@pionjs/pion';
+import { All } from './select-all-symbol';
 
 export const useHeader = ({
 	host,
@@ -13,7 +14,8 @@ export const useHeader = ({
 	...rest
 }) => {
 	const allSelected =
-			data && data.length > 0 && selectedItems.length === data.length,
+			selectedItems === All ||
+			(data && data.length > 0 && selectedItems.length === data.length),
 		onAllCheckboxChange = (event) => {
 			if (event.target.checked) {
 				host.shadowRoot.querySelector('#groupedList').selectAll();
