@@ -18,6 +18,7 @@ import { renderFooter } from './lib/render-footer';
 import { renderHeader } from './lib/render-header';
 import { renderList } from './lib/render-list';
 import { useOmnitable } from './lib/use-omnitable';
+import { All } from './lib/select-all-symbol';
 
 import './grouped-list/index';
 
@@ -61,6 +62,7 @@ customElements.define(
 			'no-local-filter',
 			'loading',
 			'mini-breakpoint',
+			'enable-select-all',
 		],
 	}) {
 		connectedCallback() {
@@ -78,3 +80,5 @@ const tmplt = `
 
 export const actionSlots = html(Object.assign([tmplt], { raw: [tmplt] })),
 	actionSlotsPolymer = polymerHtml(Object.assign([tmplt], { raw: [tmplt] }));
+
+export { All };

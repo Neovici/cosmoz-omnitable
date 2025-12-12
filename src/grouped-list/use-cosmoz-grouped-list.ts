@@ -89,9 +89,10 @@ const useCosmozGroupedList = (host: UseCosmozGroupedListHost) => {
 			toggleSelect,
 			toggleSelectTo,
 		} = useSelectedItems({ initial: [], compareItemsFn, data, flatData });
+
 	const renderRow = useCallback(
-		(item: Item | GroupItem<Item>, index: number) =>
-			Array.isArray((item as GroupItem<Item>).items)
+		(item: Item | GroupItem<Item>, index: number) => {
+			return Array.isArray((item as GroupItem<Item>).items)
 				? renderGroup(item as GroupItem<Item>, index, {
 						selected: isGroupSelected(item as GroupItem<Item>),
 						folded: isFolded(item as Item, state),
@@ -103,7 +104,7 @@ const useCosmozGroupedList = (host: UseCosmozGroupedListHost) => {
 						toggleFold: () => toggleFold(item as Item),
 					})
 				: renderItem(item as Item, index, {
-						selected: selectedItems.includes(item as Item),
+						selected: isItemSelected(item),
 						expanded: isExpanded(item as Item, state),
 						toggleSelect: (selected?: boolean) =>
 							toggleSelect(
@@ -111,7 +112,8 @@ const useCosmozGroupedList = (host: UseCosmozGroupedListHost) => {
 								typeof selected === 'boolean' ? selected : undefined,
 							),
 						toggleCollapse: () => toggleCollapse(item as Item),
-					}),
+					});
+		},
 		[renderItem, renderGroup, selectedItems, toggleSelect, signal],
 	);
 
