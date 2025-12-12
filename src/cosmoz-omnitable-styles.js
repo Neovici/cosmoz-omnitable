@@ -345,7 +345,7 @@ export default css`
 	.itemRow[selected] {
 		background-color: var(
 			--cosmoz-omnitable-selection-color,
-			rgb(195, 212, 248)
+			rgba(58, 145, 226, 0.1)
 		);
 	}
 
@@ -451,7 +451,10 @@ export default css`
 			inset -1px 0 0 #dadce0,
 			0 1px 2px 0 rgb(60 64 67 / 30%),
 			0 1px 3px 1px rgb(60 64 67 / 15%);
-		background-color: var(--cosmoz-omnitable-row-hover-color);
+		background-color: var(
+			--cosmoz-omnitable-row-hover-color,
+			rgba(58, 145, 226, 0.2)
+		);
 	}
 	.groupRow:hover .checkbox:not(:checked):not(:hover),
 	.itemRow:hover .checkbox:not(:checked):not(:hover) {
