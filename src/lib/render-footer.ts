@@ -41,7 +41,7 @@ export const renderFooter = ({
 		exportparts="bar: bottomBar-bar, info: bottomBar-info, buttons: bottomBar-buttons"
 	>
 		${when(
-			true,
+			enableSelectAll,
 			() =>
 				html`<div slot="info" style="color: white">
 					${selectedItems === All
