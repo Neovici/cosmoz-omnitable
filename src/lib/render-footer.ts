@@ -41,18 +41,18 @@ export const renderFooter = ({
 		exportparts="bar: bottomBar-bar, info: bottomBar-info, buttons: bottomBar-buttons"
 	>
 		${when(
-			enableSelectAll,
+			true,
 			() =>
 				html`<div slot="info" style="color: white">
-					${selectedCount} selected items.
 					${selectedItems === All
 						? html`All matching items selected.`
-						: html`<button
-								@click=${onSelectAllMatching}
-								style="border: none; background: none; color: white; cursor: pointer; text-decoration: underline;"
-							>
-								Select all matching items
-							</button>`}
+						: html` ${selectedCount} selected items.
+								<button
+									@click=${onSelectAllMatching}
+									style="border: none; background: none; color: white; cursor: pointer; text-decoration: underline;"
+								>
+									Select all matching items
+								</button>`}
 				</div>`,
 		)}
 		<slot name="info" slot="info">
