@@ -1,4 +1,4 @@
-import{x as c,B as qe,E as pt}from"./iframe-DKjuY8eV.js";import{t as K,c as O,g as C,P as M,u as T,a as gt,m as bt,s as Dt,D as Tt,b as Vt,e as Pt,i as fe,h as _e,d as Nt,f as ft,r as Rt,j as Bt,k as z,l as Gt,n as he,p as me,o as k,q as Ht,v as xe,w as jt,x as Wt,y as Ut,T as Kt,z as E,A as Ue,B as Jt,C as Xt,E as Qt,F as $,G as Yt,H as Zt,I as ht,J as ke,K as F,L as xt,M as Ie,N as ei,O as vt,Q as ti,R as Me,S as Ke,U as ii,V as Ee,W as ai,X as oi,Y as Ae,Z as Oe,_ as ni,$ as ze,a0 as N,a1 as ri,a2 as ye,a3 as li}from"./cosmoz-collapse-DX8sGeUt.js";const si=K`
+import{x as c,B as qe,E as pt}from"./iframe-CiSZgu8t.js";import{t as K,c as O,g as C,P as M,u as T,a as gt,m as bt,s as Dt,D as Tt,b as Vt,e as Pt,i as fe,h as _e,d as Nt,f as ft,r as Rt,j as Bt,k as z,l as Gt,n as he,p as me,o as k,q as Ht,v as xe,w as jt,x as Wt,y as Ut,T as Kt,z as E,A as Ue,B as Jt,C as Xt,E as Qt,F as $,G as Yt,H as Zt,I as ht,J as ke,K as F,L as xt,M as Ie,N as ei,O as vt,Q as ti,R as Me,S as Ke,U as ii,V as Ee,W as ai,X as oi,Y as Ae,Z as Oe,_ as ni,$ as ze,a0 as N,a1 as ri,a2 as ye,a3 as li}from"./cosmoz-collapse-BLPT6Xe3.js";const si=K`
 	:host {
 		display: flex;
 	}
@@ -1167,7 +1167,7 @@ import{x as c,B as qe,E as pt}from"./iframe-DKjuY8eV.js";import{t as K,c as O,g 
 	.itemRow[selected] {
 		background-color: var(
 			--cosmoz-omnitable-selection-color,
-			rgb(195, 212, 248)
+			rgba(58, 145, 226, 0.1)
 		);
 	}
 
@@ -1273,7 +1273,10 @@ import{x as c,B as qe,E as pt}from"./iframe-DKjuY8eV.js";import{t as K,c as O,g 
 			inset -1px 0 0 #dadce0,
 			0 1px 2px 0 rgb(60 64 67 / 30%),
 			0 1px 3px 1px rgb(60 64 67 / 15%);
-		background-color: var(--cosmoz-omnitable-row-hover-color);
+		background-color: var(
+			--cosmoz-omnitable-row-hover-color,
+			rgba(58, 145, 226, 0.2)
+		);
 	}
 	.groupRow:hover .checkbox:not(:checked):not(:hover),
 	.itemRow:hover .checkbox:not(:checked):not(:hover) {
