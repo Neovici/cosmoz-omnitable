@@ -1,4 +1,4 @@
-import{x as c,B as Fe,E as ft,b as Nt}from"./iframe-BvinzX61.js";import{t as K,c as E,g as C,u as M,i as jt,m as Pt,s as Bt,a as $,b as xe,n as Ht,h as Gt,d as bt,e as ye,f as I,j as L,o as pe,k as Wt,l as Ae,r as qt,P as A,p as xt,q as yt,v as Xt,D as Ut,w as Kt,x as Jt,y as Ee,z as Qt,A as _,B as Yt,C as ve,E as ge,F as V,G as Zt,H as $e,I as en,J as tn,K as nn,T as on,L as vt,M as Le,N as rn,O as $t,Q as ln,R as Te,S as Je,U as an,V as Re,W as sn,X as un,Y as Oe,Z as Me,_ as cn,$ as Ve,a0 as P,a1 as dn,a2 as Ce,a3 as mn}from"./cosmoz-collapse-D8mwmvj2.js";const pn=K`
+import{x as c,B as Fe,E as ft,b as Nt}from"./iframe-XNbt5u5N.js";import{t as K,c as E,g as C,u as M,i as jt,m as Pt,s as Bt,a as $,b as xe,n as Ht,h as Gt,d as bt,e as ye,f as I,j as L,o as pe,k as Wt,l as Ae,r as qt,P as A,p as xt,q as yt,v as Xt,D as Ut,w as Kt,x as Jt,y as Ee,z as Qt,A as _,B as Yt,C as ve,E as ge,F as V,G as Zt,H as $e,I as en,J as tn,K as nn,T as on,L as vt,M as Le,N as rn,O as $t,Q as ln,R as Te,S as Je,U as an,V as Re,W as sn,X as un,Y as Oe,Z as Me,_ as cn,$ as Ve,a0 as P,a1 as dn,a2 as Ce,a3 as mn}from"./cosmoz-collapse-B8GdYYsp.js";const pn=K`
 	:host {
 		display: flex;
 	}
@@ -2093,10 +2093,10 @@ ${r(l.name)}`:u}).join(`
                 .data=${n.data}
                 .selectedItems=${n.selectedItems}
                 hash-param=${n.hashParam}
-                sort-on=${n.sortOn}
-                group-on=${n.groupOn}
+                .sortOn=${n.sortOn}
+                .groupOn=${n.groupOn}
                 .descending=${n.descending}
-                .group-on-descending=${n.groupOnDescending}
+                .groupOnDescending=${n.groupOnDescending}
                 settings-id=${n.settingsId}
             >
                 <cosmoz-omnitable-column
