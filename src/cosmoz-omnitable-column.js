@@ -9,6 +9,8 @@ import {
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from 'lit-html';
 
+import { renderLabel } from './lib/cosmoz-omnitable-dropdown-input';
+
 const onChange = (setState) => (event) =>
 		setState((state) => {
 			// skip the event emitted during cosmoz-input initialization
@@ -72,9 +74,15 @@ class OmnitableColumn extends columnMixin(PolymerElement) {
 		></cosmoz-input>`;
 	}
 
-	renderHeader(column, { filter, inputValue, headerFocused }, setState) {
+	renderHeader(
+		column,
+		{ filter, inputValue, headerFocused },
+		setState,
+		_source,
+		sortAndGroup,
+	) {
 		return html`<cosmoz-input
-			label=${column.title}
+			.label=${renderLabel(column.title, column, sortAndGroup)}
 			.value=${inputValue ?? filter}
 			@value-changed=${onChange(setState)}
 			focused=${headerFocused}
