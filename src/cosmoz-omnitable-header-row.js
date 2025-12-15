@@ -1,7 +1,8 @@
-import { html, component } from '@pionjs/pion';
+import { html, component, useContext } from '@pionjs/pion';
 import { repeat } from 'lit-html/directives/repeat.js';
 import './lib/cosmoz-omnitable-resize-nub';
 import { when } from 'lit-html/directives/when.js';
+import { SortAndGroupContext } from './lib/use-sort-and-group-options';
 
 const renderHeaderRow = ({
 	data,
@@ -9,6 +10,7 @@ const renderHeaderRow = ({
 	groupOnColumn,
 	filters,
 	setFilterState,
+	sortAndGroup,
 }) =>
 	repeat(
 		columns,
@@ -26,6 +28,7 @@ const renderHeaderRow = ({
 					filters[column.name] ?? {},
 					(state) => setFilterState(column.name, state),
 					column.source(column, data),
+					sortAndGroup,
 				)}
 			</div>`,
 			html`<cosmoz-omnitable-resize-nub
@@ -35,9 +38,13 @@ const renderHeaderRow = ({
 		],
 	);
 
-const HeaderRow = ({ columns, settingsConfig, hideSelectAll, ...thru }) =>
-	html`
-		${when(columns, (columns) => renderHeaderRow({ columns, ...thru }))}
+const HeaderRow = ({ columns, settingsConfig, hideSelectAll, ...thru }) => {
+	const sortAndGroup = useContext(SortAndGroupContext);
+
+	return html`
+		${when(columns, (columns) =>
+			renderHeaderRow({ columns, sortAndGroup, ...thru }),
+		)}
 		${when(
 			!hideSelectAll,
 			() =>
@@ -47,6 +54,7 @@ const HeaderRow = ({ columns, settingsConfig, hideSelectAll, ...thru }) =>
 				></cosmoz-omnitable-settings>`,
 		)}
 	`;
+};
 
 customElements.define(
 	'cosmoz-omnitable-header-row',

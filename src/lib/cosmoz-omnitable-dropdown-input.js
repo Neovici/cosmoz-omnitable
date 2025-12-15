@@ -53,7 +53,9 @@ const style = css`
 	:host(:not([always-float-label])) label {
 		transform: none !important;
 	}
+`;
 
+const sortHandleStyles = css`
 	/* Sort handle button when embedded in label */
 	label .sg {
 		display: inline-flex;
@@ -97,7 +99,7 @@ const renderControl = (value, slot) =>
 		${value || ''}
 	</div>`;
 
-const renderLabel = (label, column, sortAndGroup) => {
+export const renderLabel = (label, column, sortAndGroup) => {
 	if (!column || column.noSort || !sortAndGroup) {
 		return label;
 	}
@@ -116,7 +118,10 @@ const renderLabel = (label, column, sortAndGroup) => {
 		descending,
 		setDescending,
 	});
-	return html`${sortHandle} ${label}`;
+	return html`<style>
+			${sortHandleStyles}
+		</style>
+		${sortHandle} ${label}`;
 };
 
 const DropdownInput = ({ label, value, slot, column }) => {
