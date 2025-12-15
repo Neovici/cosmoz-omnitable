@@ -1,6 +1,6 @@
 import { html } from '@pionjs/pion';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { triangle } from '../icons';
+import { sortArrow } from '../icons';
 import { Column } from '../types';
 
 interface RenderProps {
@@ -63,7 +63,7 @@ export const render = ({
 			}
 		}}
 	>
-		<span>${title}</span> ${triangle}
+		<span>${title}</span> ${sortArrow}
 	</button>`;
 };
 

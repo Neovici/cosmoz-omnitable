@@ -48,8 +48,6 @@ const style = css`
 		display: block;
 		text-align: var(--text-align);
 		transform-origin: var(--text-align) top;
-		/* TODO: Remove later on, for compat only */
-		font-size: 13px;
 	}
 
 	:host(:not([always-float-label])) label {
@@ -59,7 +57,6 @@ const style = css`
 	/* Sort handle button when embedded in label */
 	label .sg {
 		display: inline-flex;
-		width: 10px;
 		cursor: pointer;
 		align-items: center;
 		margin-bottom: 6px;
@@ -79,6 +76,7 @@ const style = css`
 
 	label .sg svg {
 		display: block;
+		scale: 0.7;
 	}
 
 	label .sg[data-on] {
