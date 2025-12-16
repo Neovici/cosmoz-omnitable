@@ -1,4 +1,4 @@
-import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g as C,P as M,u as T,a as gt,m as bt,s as Dt,D as Tt,b as Vt,e as Pt,i as fe,h as _e,d as Nt,f as ft,r as Rt,j as Bt,k as z,l as Gt,n as he,p as me,o as k,q as Ht,v as xe,w as jt,x as Wt,y as Ut,T as Kt,z as E,A as Ue,B as Jt,C as Xt,E as Qt,F as $,G as Yt,H as Zt,I as ht,J as ke,K as F,L as xt,M as Ie,N as ei,O as vt,Q as ti,R as Me,S as Ke,U as ii,V as Ee,W as ai,X as oi,Y as Ae,Z as Oe,_ as ni,$ as ze,a0 as N,a1 as ri,a2 as ye,a3 as li}from"./cosmoz-collapse-D78fP9I8.js";const si=K`
+import{x as c,B as qe,E as pt}from"./iframe-CD0bUbeX.js";import{t as K,c as O,g as C,P as M,u as T,a as gt,m as bt,s as Dt,D as Tt,b as Vt,e as Pt,i as fe,h as _e,d as Nt,f as ft,r as Rt,j as Bt,k as A,l as Gt,n as he,p as me,o as k,q as Ht,v as xe,w as jt,x as Wt,y as Ut,T as Kt,z as E,A as Ue,B as Jt,C as Xt,E as Qt,F as $,G as Yt,H as Zt,I as ht,J as ke,K as F,L as xt,M as Ie,N as ei,O as vt,Q as ti,R as Me,S as Ke,U as ii,V as Ee,W as ai,X as oi,Y as ze,Z as Oe,_ as ni,$ as Ae,a0 as N,a1 as ri,a2 as ye,a3 as li}from"./cosmoz-collapse-CzX-uogG.js";const si=K`
 	:host {
 		display: flex;
 	}
@@ -80,7 +80,7 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 				light
 				@click=${xi(n)}
 			></cosmoz-clear-button>
-		</cosmoz-input>`}legacyFilterToState(e){return{filter:e,inputValue:e}}}customElements.define("cosmoz-omnitable-column",yi);const R=Symbol("column"),$i=i=>{let e=!0;const t=i.map(a=>a.name);return i.forEach(a=>{a.name==null&&(e=!1,console.error("The name attribute needs to be set on all columns! Missing on column",a))}),i.forEach(a=>{t.indexOf(a.name)!==t.lastIndexOf(a.name)&&(e=!1,console.error("The name attribute needs to be unique among all columns! Not unique on column",a))}),e},wi=i=>{const e=i.valuePath??i.name;return{name:i.name,title:i.title,valuePath:e,groupOn:i.groupOn??e,sortPath:i.sortPath??i.sortOn??e,noSort:i.noSort,minWidth:i.minWidth,width:i.width,flex:i.flex,priority:i.priority,getString:i.getString,getComparableValue:i.getComparableValue,serializeFilter:i.serializeFilter,deserializeFilter:i.deserializeFilter,toXlsxValue:i.toXlsxValue,renderHeader:i.renderHeader,renderCell:i.renderCell,renderEditCell:i.renderEditCell,renderGroup:i.renderGroup,cellTitleFn:i.cellTitleFn,headerTitleFn:i.headerTitleFn,getFilterFn:i.getFilterFn,headerCellClass:i.headerCellClass,cellClass:i.cellClass,editable:i.editable,values:i.values,source:bt(i.computeSource),noLocalFilter:i.noLocalFilter,mini:i.mini,renderMini:i.renderMini,loading:i.loading,externalValues:i.externalValues,computeSource:i.computeSource,trueLabel:i.trueLabel,falseLabel:i.falseLabel,valueProperty:i.valueProperty,textProperty:i.textProperty,emptyLabel:i.emptyLabel,emptyValue:i.emptyValue,min:i.min,max:i.max,locale:i.locale,autoupdate:i.autoupdate,maximumFractionDigits:i.maximumFractionDigits,minimumFractionDigits:i.minimumFractionDigits,currency:i.currency,rates:i.rates,autodetect:i.autodetect,ownerTree:i.ownerTree,keyProperty:i.keyProperty,...i.getConfig?.(i),[R]:i}},Ci=i=>i.isOmnitableColumn&&!i.hidden,Si=i=>{const e=i.assignedElements({flatten:!0}).filter(Ci);return $i(e)?e:[]},qi=(i,e)=>(Array.isArray(e)?i.filter(a=>e.includes(a.name)):i.filter(a=>!a.disabled)).map(wi),Ai=(i,{enabledColumns:e})=>{const[t,a]=T([]);return gt(()=>{let o;const n=i.shadowRoot.querySelector("#columnsSlot"),r=()=>{a(qi(Si(n),e))},l=()=>{cancelAnimationFrame(o),o=requestAnimationFrame(r)};return l(),n.addEventListener("slotchange",l),i.addEventListener("cosmoz-column-prop-changed",l),()=>{n.removeEventListener("slotchange",l),i.removeEventListener("cosmoz-column-prop-changed",l),cancelAnimationFrame(o)}},[e]),t},yt=(i,e)=>Array.isArray(i)?i.map(t=>C(t,e)).filter((t,a,o)=>t!=null&&o.indexOf(t)===a):void 0,Q=({externalValues:i,values:e,valuePath:t},a)=>{if(i)return i;if(typeof e=="function")return e;if(t!==void 0)return yt(a,t)},zi=(i,e,t,a)=>{const{valuePath:o}=e,n=o!==void 0?C(t,o):void 0;if(a===n)return;o!==void 0&&Dt(t,o,a);const r={item:t,valuePath:o,value:a,oldValue:n,column:e[R]};i.dispatchEvent(new CustomEvent("column-item-changed",{bubbles:!0,composed:!0,detail:r}))},$t=i=>i?typeof i.close=="function"?i:$t(i.parentElement):null,Le=i=>class extends i{static get properties(){return{filter:{type:Object,notify:!0},values:{type:Array,value(){return[]}},headerFocused:{type:Boolean,notify:!0},min:{type:Number,value:null},max:{type:Number,value:null},limits:{type:Function},autoupdate:{type:String,value:!0},locale:{type:String,value:null},_filterInput:{type:Object,value(){return{min:null,max:null}}},_range:{type:Object,computed:"_computeRange(values.*)"},_limit:{type:Object,computed:"_computeLimit(_range, _filterInput.*, min, max)",value(){return{}}},_tooltip:{type:String,computed:"_computeTooltip(title, _filterText)"},_fromClasses:{type:String,computed:"_computeInputClasses(_filterInput.min)"},_toClasses:{type:String,computed:"_computeInputClasses(_filterInput.max)"}}}static get observers(){return["_filterInputChanged(_filterInput.*, autoupdate)","_filterChanged(filter.*)","_updateLimits(limits, headerFocused)"]}disconnectedCallback(){this._limitInputDebouncer&&this._limitInputDebouncer.cancel(),super.disconnectedCallback()}_computeInputClasses(e){return e!=null&&e!==""?"has-value":""}toNumber(e,t,a){if(e==null||e==="")return;const o=typeof e=="number"?e:Number(e);if(Number.isNaN(o))return;if(a==null||t==null)return o;const n=this.toNumber(t);return n==null?o:a(o,n)}toValue(){return this.toNumber.apply(this,arguments)}getComparableValue(e,t){if(e==null)return;let a=e;return t!=null&&(a=this.get(t,e)),this.toValue(a)}renderValue(){}getInputString(e,t=this.valuePath){const a=this.toValue(this.get(t,e));return this._toInputString(a)}_computeRange(e){const t=e.base,a=Array.isArray(t)&&t.length&&t.map(o=>this.toValue(o)).filter(o=>o!=null);return!a||a.length<1?{min:null,max:null}:a.reduce((o,n)=>({min:this.toValue(n,o.min,Math.min),max:this.toValue(n,o.max,Math.max)}),{})}_computeLimit(e,t,a,o){if(!e)return;const n=t.base,r=this.toValue(a),l=this.toValue(o),u=r??this.toValue(e.min),s=l??this.toValue(e.max);return{fromMin:u,fromMax:this.toValue(s,this._fromInputString(n.max,"max"),Math.min),toMin:this.toValue(u,this._fromInputString(n.min,"min"),Math.max),toMax:s}}_computeFilterText(e){if(e.base==null)return;const t=e.base,a=this.toValue(t.min),o=this.toValue(t.max),n=[];return a!=null&&n.push(this.renderValue(a)),n.push(" - "),o!=null&&n.push(this.renderValue(o)),n.length>1?n.join(""):void 0}_computeTooltip(e,t){return t==null?e:`${e}: ${t}`}_fromInputString(e){return this.toValue(e)}_toInputString(e){const t=this.toValue(e);return t??null}_getDefaultFilter(){return{min:null,max:null}}_filterInputChanged(e,t){const a=e.path.split(".")[1];this.__inputChangePath=a||null,t&&(this._limitInputDebouncer=Tt.debounce(this._limitInputDebouncer,Vt.after(600),()=>{this._limitInput(),this._updateFilter()}),Pt(this._limitInputDebouncer))}_clearFrom(){this.set("_filterInput.min",null),this._updateFilter()}_clearTo(){this.set("_filterInput.max",null),this._updateFilter()}_onBlur(){this._limitInput(),this._updateFilter()}_onKeyDown(e){const t=e.currentTarget,a=Array.from(t.parentElement.querySelectorAll("cosmoz-input")),o=a[a.findIndex(l=>l===t)+1],n=!o,r=a[0]===t;switch(e.keyCode){case 13:if(e.preventDefault(),!n)o.focus();else{const l=this._limitInput();this._updateFilter(),l||this._closeParent(t)}break;case 9:(n&&!e.shiftKey||r&&e.shiftKey)&&this._closeParent(t)}}_closeParent(e){const t=$t(e);t&&t.close()}_onDropdownOpenedChanged({currentTarget:e,type:t,detail:a}){(t==="focus"||a?.value===!0)&&setTimeout(()=>{e.querySelector("cosmoz-input:focus")||e.querySelector("cosmoz-input")?.focus()},100)}_limitInput(){const e=this._filterInput,t=this.__inputChangePath,a=t?this._fromInputString(this.get(t,e),t):null;if(this.__inputChangePath=null,a==null)return!1;const o=this._limit,n=t==="min"?"from":"to",r=this.get(n+"Min",o),l=this.get(n+"Max",o),u=this.toValue(a,r,Math.max),s=this.toValue(u,l,Math.min);return this.getComparableValue(a)!==this.getComparableValue(s)?(this.set(["_filterInput",t],this._toInputString(s,t)),this._limitInputDebouncer&&this._limitInputDebouncer.cancel(),!0):!1}_updateFilter(){const e=this._filterInput,t=this.filter,a=this._fromInputString(e.min,"min"),o=this._fromInputString(e.max,"max");this.getComparableValue(a)===this.getComparableValue(t,"min")&&this.getComparableValue(o)===this.getComparableValue(t,"max")||this.set("filter",{min:a,max:o})}_filterChanged(e){if(this._filterInput==null)return;const t=this._filterInput,a=e.base,o=this._fromInputString(t.min,"min"),n=this._fromInputString(t.max,"max");this.getComparableValue(o)===this.getComparableValue(a,"min")&&this.getComparableValue(n)===this.getComparableValue(a,"max")||(this.set("_filterInput",{min:this._toInputString(a.min),max:this._toInputString(a.max)}),this._limitInputDebouncer&&this._limitInputDebouncer.cancel())}hasFilter(){const e=this.filter;return e==null?!1:this.toValue(e.min)!=null||this.toValue(e.max)!=null}resetFilter(){this.filter=this._getDefaultFilter()}_updateLimits(e,t){e&&Promise.resolve(fe(e,{active:t})).then(a=>{const{min:o,max:n}=a??{};Object.assign(this,{...o!=null?{min:o}:{},...n!=null?{max:n}:{}})})}},Y=i=>class extends i{static get template(){return _e`<div id="output" style="position:relative;"></div>`}connectedCallback(){super.connectedCallback(),qe(this.render(),this.$.output)}_propertiesChanged(e,t,a){super._propertiesChanged(e,t,a),requestAnimationFrame(()=>qe(this.render(),this.$.output))}},Fi=["label","value","slot","always-float-label"],_i=ft`
+		</cosmoz-input>`}legacyFilterToState(e){return{filter:e,inputValue:e}}}customElements.define("cosmoz-omnitable-column",yi);const R=Symbol("column"),$i=i=>{let e=!0;const t=i.map(a=>a.name);return i.forEach(a=>{a.name==null&&(e=!1,console.error("The name attribute needs to be set on all columns! Missing on column",a))}),i.forEach(a=>{t.indexOf(a.name)!==t.lastIndexOf(a.name)&&(e=!1,console.error("The name attribute needs to be unique among all columns! Not unique on column",a))}),e},wi=i=>{const e=i.valuePath??i.name;return{name:i.name,title:i.title,valuePath:e,groupOn:i.groupOn??e,sortPath:i.sortPath??i.sortOn??e,noSort:i.noSort,minWidth:i.minWidth,width:i.width,flex:i.flex,priority:i.priority,getString:i.getString,getComparableValue:i.getComparableValue,serializeFilter:i.serializeFilter,deserializeFilter:i.deserializeFilter,toXlsxValue:i.toXlsxValue,renderHeader:i.renderHeader,renderCell:i.renderCell,renderEditCell:i.renderEditCell,renderGroup:i.renderGroup,cellTitleFn:i.cellTitleFn,headerTitleFn:i.headerTitleFn,getFilterFn:i.getFilterFn,headerCellClass:i.headerCellClass,cellClass:i.cellClass,editable:i.editable,values:i.values,source:bt(i.computeSource),noLocalFilter:i.noLocalFilter,mini:i.mini,renderMini:i.renderMini,loading:i.loading,externalValues:i.externalValues,computeSource:i.computeSource,trueLabel:i.trueLabel,falseLabel:i.falseLabel,valueProperty:i.valueProperty,textProperty:i.textProperty,emptyLabel:i.emptyLabel,emptyValue:i.emptyValue,min:i.min,max:i.max,locale:i.locale,autoupdate:i.autoupdate,maximumFractionDigits:i.maximumFractionDigits,minimumFractionDigits:i.minimumFractionDigits,currency:i.currency,rates:i.rates,autodetect:i.autodetect,ownerTree:i.ownerTree,keyProperty:i.keyProperty,...i.getConfig?.(i),[R]:i}},Ci=i=>i.isOmnitableColumn&&!i.hidden,Si=i=>{const e=i.assignedElements({flatten:!0}).filter(Ci);return $i(e)?e:[]},qi=(i,e)=>(Array.isArray(e)?i.filter(a=>e.includes(a.name)):i.filter(a=>!a.disabled)).map(wi),zi=(i,{enabledColumns:e})=>{const[t,a]=T([]);return gt(()=>{let o;const n=i.shadowRoot.querySelector("#columnsSlot"),r=()=>{a(qi(Si(n),e))},l=()=>{cancelAnimationFrame(o),o=requestAnimationFrame(r)};return l(),n.addEventListener("slotchange",l),i.addEventListener("cosmoz-column-prop-changed",l),()=>{n.removeEventListener("slotchange",l),i.removeEventListener("cosmoz-column-prop-changed",l),cancelAnimationFrame(o)}},[e]),t},yt=(i,e)=>Array.isArray(i)?i.map(t=>C(t,e)).filter((t,a,o)=>t!=null&&o.indexOf(t)===a):void 0,Q=({externalValues:i,values:e,valuePath:t},a)=>{if(i)return i;if(typeof e=="function")return e;if(t!==void 0)return yt(a,t)},Ai=(i,e,t,a)=>{const{valuePath:o}=e,n=o!==void 0?C(t,o):void 0;if(a===n)return;o!==void 0&&Dt(t,o,a);const r={item:t,valuePath:o,value:a,oldValue:n,column:e[R]};i.dispatchEvent(new CustomEvent("column-item-changed",{bubbles:!0,composed:!0,detail:r}))},$t=i=>i?typeof i.close=="function"?i:$t(i.parentElement):null,Le=i=>class extends i{static get properties(){return{filter:{type:Object,notify:!0},values:{type:Array,value(){return[]}},headerFocused:{type:Boolean,notify:!0},min:{type:Number,value:null},max:{type:Number,value:null},limits:{type:Function},autoupdate:{type:String,value:!0},locale:{type:String,value:null},_filterInput:{type:Object,value(){return{min:null,max:null}}},_range:{type:Object,computed:"_computeRange(values.*)"},_limit:{type:Object,computed:"_computeLimit(_range, _filterInput.*, min, max)",value(){return{}}},_tooltip:{type:String,computed:"_computeTooltip(title, _filterText)"},_fromClasses:{type:String,computed:"_computeInputClasses(_filterInput.min)"},_toClasses:{type:String,computed:"_computeInputClasses(_filterInput.max)"}}}static get observers(){return["_filterInputChanged(_filterInput.*, autoupdate)","_filterChanged(filter.*)","_updateLimits(limits, headerFocused)"]}disconnectedCallback(){this._limitInputDebouncer&&this._limitInputDebouncer.cancel(),super.disconnectedCallback()}_computeInputClasses(e){return e!=null&&e!==""?"has-value":""}toNumber(e,t,a){if(e==null||e==="")return;const o=typeof e=="number"?e:Number(e);if(Number.isNaN(o))return;if(a==null||t==null)return o;const n=this.toNumber(t);return n==null?o:a(o,n)}toValue(){return this.toNumber.apply(this,arguments)}getComparableValue(e,t){if(e==null)return;let a=e;return t!=null&&(a=this.get(t,e)),this.toValue(a)}renderValue(){}getInputString(e,t=this.valuePath){const a=this.toValue(this.get(t,e));return this._toInputString(a)}_computeRange(e){const t=e.base,a=Array.isArray(t)&&t.length&&t.map(o=>this.toValue(o)).filter(o=>o!=null);return!a||a.length<1?{min:null,max:null}:a.reduce((o,n)=>({min:this.toValue(n,o.min,Math.min),max:this.toValue(n,o.max,Math.max)}),{})}_computeLimit(e,t,a,o){if(!e)return;const n=t.base,r=this.toValue(a),l=this.toValue(o),u=r??this.toValue(e.min),s=l??this.toValue(e.max);return{fromMin:u,fromMax:this.toValue(s,this._fromInputString(n.max,"max"),Math.min),toMin:this.toValue(u,this._fromInputString(n.min,"min"),Math.max),toMax:s}}_computeFilterText(e){if(e.base==null)return;const t=e.base,a=this.toValue(t.min),o=this.toValue(t.max),n=[];return a!=null&&n.push(this.renderValue(a)),n.push(" - "),o!=null&&n.push(this.renderValue(o)),n.length>1?n.join(""):void 0}_computeTooltip(e,t){return t==null?e:`${e}: ${t}`}_fromInputString(e){return this.toValue(e)}_toInputString(e){const t=this.toValue(e);return t??null}_getDefaultFilter(){return{min:null,max:null}}_filterInputChanged(e,t){const a=e.path.split(".")[1];this.__inputChangePath=a||null,t&&(this._limitInputDebouncer=Tt.debounce(this._limitInputDebouncer,Vt.after(600),()=>{this._limitInput(),this._updateFilter()}),Pt(this._limitInputDebouncer))}_clearFrom(){this.set("_filterInput.min",null),this._updateFilter()}_clearTo(){this.set("_filterInput.max",null),this._updateFilter()}_onBlur(){this._limitInput(),this._updateFilter()}_onKeyDown(e){const t=e.currentTarget,a=Array.from(t.parentElement.querySelectorAll("cosmoz-input")),o=a[a.findIndex(l=>l===t)+1],n=!o,r=a[0]===t;switch(e.keyCode){case 13:if(e.preventDefault(),!n)o.focus();else{const l=this._limitInput();this._updateFilter(),l||this._closeParent(t)}break;case 9:(n&&!e.shiftKey||r&&e.shiftKey)&&this._closeParent(t)}}_closeParent(e){const t=$t(e);t&&t.close()}_onDropdownOpenedChanged({currentTarget:e,type:t,detail:a}){(t==="focus"||a?.value===!0)&&setTimeout(()=>{e.querySelector("cosmoz-input:focus")||e.querySelector("cosmoz-input")?.focus()},100)}_limitInput(){const e=this._filterInput,t=this.__inputChangePath,a=t?this._fromInputString(this.get(t,e),t):null;if(this.__inputChangePath=null,a==null)return!1;const o=this._limit,n=t==="min"?"from":"to",r=this.get(n+"Min",o),l=this.get(n+"Max",o),u=this.toValue(a,r,Math.max),s=this.toValue(u,l,Math.min);return this.getComparableValue(a)!==this.getComparableValue(s)?(this.set(["_filterInput",t],this._toInputString(s,t)),this._limitInputDebouncer&&this._limitInputDebouncer.cancel(),!0):!1}_updateFilter(){const e=this._filterInput,t=this.filter,a=this._fromInputString(e.min,"min"),o=this._fromInputString(e.max,"max");this.getComparableValue(a)===this.getComparableValue(t,"min")&&this.getComparableValue(o)===this.getComparableValue(t,"max")||this.set("filter",{min:a,max:o})}_filterChanged(e){if(this._filterInput==null)return;const t=this._filterInput,a=e.base,o=this._fromInputString(t.min,"min"),n=this._fromInputString(t.max,"max");this.getComparableValue(o)===this.getComparableValue(a,"min")&&this.getComparableValue(n)===this.getComparableValue(a,"max")||(this.set("_filterInput",{min:this._toInputString(a.min),max:this._toInputString(a.max)}),this._limitInputDebouncer&&this._limitInputDebouncer.cancel())}hasFilter(){const e=this.filter;return e==null?!1:this.toValue(e.min)!=null||this.toValue(e.max)!=null}resetFilter(){this.filter=this._getDefaultFilter()}_updateLimits(e,t){e&&Promise.resolve(fe(e,{active:t})).then(a=>{const{min:o,max:n}=a??{};Object.assign(this,{...o!=null?{min:o}:{},...n!=null?{max:n}:{}})})}},Y=i=>class extends i{static get template(){return _e`<div id="output" style="position:relative;"></div>`}connectedCallback(){super.connectedCallback(),qe(this.render(),this.$.output)}_propertiesChanged(e,t,a){super._propertiesChanged(e,t,a),requestAnimationFrame(()=>qe(this.render(),this.$.output))}},Fi=["label","value","slot","always-float-label"],_i=ft`
 	${Nt}
 
 	:host {
@@ -235,8 +235,8 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 					<cosmoz-input
 						class=${this._fromClasses}
 						type="number"
-						title=${z("Minimum amount")}
-						label=${z("Min amount")}
+						title=${A("Minimum amount")}
+						label=${A("Min amount")}
 						.value=${this._filterInput?.min}
 						@value-changed=${t=>{this.set("_filterInput.min",t.detail.value)}}
 						@blur=${t=>this._onBlur(t)}
@@ -249,8 +249,8 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 					<cosmoz-input
 						class=${this._toClasses}
 						type="number"
-						title=${z("Maximum amount")}
-						label=${z("Max amount")}
+						title=${A("Maximum amount")}
+						label=${A("Max amount")}
 						.value=${this._filterInput?.max}
 						@value-changed=${t=>{this.set("_filterInput.max",t.detail.value)}}
 						@blur=${t=>this._onBlur(t)}
@@ -381,7 +381,7 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 					<h3 style="margin: 0;">${this.title}</h3>
 					<cosmoz-input
 						type="date"
-						label=${z("From date")}
+						label=${A("From date")}
 						min=${this._toInputString(this._limit.fromMin)}
 						max=${this._toInputString(this._limit.fromMax)}
 						.value=${this._filterInput?.min}
@@ -389,19 +389,19 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 					></cosmoz-input>
 					<cosmoz-input
 						type="date"
-						label=${z("Until date")}
+						label=${A("Until date")}
 						min=${this._toInputString(this._limit.toMin)}
 						max=${this._toInputString(this._limit.toMax)}
 						.value=${this._filterInput?.max}
 						@value-changed=${t=>this.set("_filterInput.max",t.detail.value)}
 					></cosmoz-input>
 				`})}
-		`}_fromInputString(e,t){const a=this.toDate(e);if(a!=null)return t==="min"&&a.setHours(0,0,0,0),t==="max"&&a.setHours(23,59,59),a}_filterInputChanged(e,t){const a=e.path.split(".")[1],o=a&&e.value;if(o&&o.match(/^0+/u)){this._limitInputDebouncer.cancel();return}super._filterInputChanged(e,t)}}customElements.define("cosmoz-omnitable-date-range-input",oa);const na=i=>{const e=-new Date(i).getTimezoneOffset()/60;return(e<0?"-":"+")+["0",Math.abs(e)].join("").substr(-2)+":00"},He=i=>i.length===19?i+na(i):i,St=i=>{if(i==null||i==="")return;let e=i;return!(e instanceof Date)&&(typeof i=="string"&&(e=He(e)),e=jt(e),!e)||Number.isNaN(e.getTime())?null:e},P=({valuePath:i},e)=>{if(e==null)return;let t=e;i!=null&&(t=C(e,i));const a=St(t);if(a!=null)return L(a.getTime())},I=(i,e,t)=>{const a=St(i);return a??null},je=(i,e)=>{if(e==null)return;const t=I(i);if(t!=null)return e.format(t)},ae={},ra=i=>{const e=i||"";return ae[e]||(ae[e]=new Intl.DateTimeFormat(i||void 0)),ae[e]},it=({valuePath:i,locale:e},t)=>{let a=C(t,i||"");return a===void 0?"":(a=I(a),a===null?"Invalid Date":je(a,ra(e)))},qt=i=>{const e=I(i);if(e==null)return null;const t=xe(e);return t==null?null:t.slice(0,10)},la=({valuePath:i},e)=>qt(C(e,i||"")),At=(i,e)=>{const t=I(i);if(t!=null)return t},at=i=>{const e=qt(i);return e??""},sa=({valuePath:i},e)=>{if(!i)return"";const t=I(C(e,i));if(!t)return"";const a=I(xe(t));return a?(a.setHours(0,0,0,0),a):""},zt=(i,e)=>t=>{const a=P(i,t);if(a==null)return!1;const o=P({...i,valuePath:"min"},e),n=P({...i,valuePath:"max"},e);return!(a<(o??-1/0)||a>(n??1/0))};class ua extends V(M){static get properties(){return{min:{type:Number,value:null,notify:!0},max:{type:Number,value:null,notify:!0},limits:{type:Function},locale:{type:String,value:null,notify:!0},headerCellClass:{type:String,value:"date-header-cell"},width:{type:String,value:"100px"},minWidth:{type:String,value:"82px"},flex:{type:String,value:"0"}}}getConfig(e){return{limits:e.limits}}getFilterFn(e,t){const a=P({...e,valuePath:"min"},t),o=P({...e,valuePath:"max"},t);if(!(a==null&&o==null))return zt(e,t)}getString(e,t){return it(e,t)}toXlsxValue(e,t){return sa(e,t)}getComparableValue(e,t){return P(e,t)}serializeFilter(e,t){if(t==null)return;const a=I(t.min),o=I(t.max);if(!(a==null&&o==null))return at(a)+"~"+at(o)}deserializeFilter(e,t){if(t==null||t==="")return null;const a=t.match(/^([^~]+)?~([^~]+)?/iu);return Array.isArray(a)?{min:I(a[1]),max:I(a[2])}:null}renderCell(e,{item:t}){return c`<div class="omnitable-cell-date">
+		`}_fromInputString(e,t){const a=this.toDate(e);if(a!=null)return t==="min"&&a.setHours(0,0,0,0),t==="max"&&a.setHours(23,59,59),a}_filterInputChanged(e,t){const a=e.path.split(".")[1],o=a&&e.value;if(o&&o.match(/^0+/u)){this._limitInputDebouncer.cancel();return}super._filterInputChanged(e,t)}}customElements.define("cosmoz-omnitable-date-range-input",oa);const na=i=>{const e=-new Date(i).getTimezoneOffset()/60;return(e<0?"-":"+")+["0",Math.abs(e)].join("").substr(-2)+":00"},He=i=>i.length===19?i+na(i):i,St=i=>{if(i==null||i==="")return;let e=i;return!(e instanceof Date)&&(typeof i=="string"&&(e=He(e)),e=jt(e),!e)||Number.isNaN(e.getTime())?null:e},P=({valuePath:i},e)=>{if(e==null)return;let t=e;i!=null&&(t=C(e,i));const a=St(t);if(a!=null)return L(a.getTime())},I=(i,e,t)=>{const a=St(i);return a??null},je=(i,e)=>{if(e==null)return;const t=I(i);if(t!=null)return e.format(t)},ae={},ra=i=>{const e=i||"";return ae[e]||(ae[e]=new Intl.DateTimeFormat(i||void 0)),ae[e]},it=({valuePath:i,locale:e},t)=>{let a=C(t,i||"");return a===void 0?"":(a=I(a),a===null?"Invalid Date":je(a,ra(e)))},qt=i=>{const e=I(i);if(e==null)return null;const t=xe(e);return t==null?null:t.slice(0,10)},la=({valuePath:i},e)=>qt(C(e,i||"")),zt=(i,e)=>{const t=I(i);if(t!=null)return t},at=i=>{const e=qt(i);return e??""},sa=({valuePath:i},e)=>{if(!i)return"";const t=I(C(e,i));if(!t)return"";const a=I(xe(t));return a?(a.setHours(0,0,0,0),a):""},At=(i,e)=>t=>{const a=P(i,t);if(a==null)return!1;const o=P({...i,valuePath:"min"},e),n=P({...i,valuePath:"max"},e);return!(a<(o??-1/0)||a>(n??1/0))};class ua extends V(M){static get properties(){return{min:{type:Number,value:null,notify:!0},max:{type:Number,value:null,notify:!0},limits:{type:Function},locale:{type:String,value:null,notify:!0},headerCellClass:{type:String,value:"date-header-cell"},width:{type:String,value:"100px"},minWidth:{type:String,value:"82px"},flex:{type:String,value:"0"}}}getConfig(e){return{limits:e.limits}}getFilterFn(e,t){const a=P({...e,valuePath:"min"},t),o=P({...e,valuePath:"max"},t);if(!(a==null&&o==null))return At(e,t)}getString(e,t){return it(e,t)}toXlsxValue(e,t){return sa(e,t)}getComparableValue(e,t){return P(e,t)}serializeFilter(e,t){if(t==null)return;const a=I(t.min),o=I(t.max);if(!(a==null&&o==null))return at(a)+"~"+at(o)}deserializeFilter(e,t){if(t==null||t==="")return null;const a=t.match(/^([^~]+)?~([^~]+)?/iu);return Array.isArray(a)?{min:I(a[1]),max:I(a[2])}:null}renderCell(e,{item:t}){return c`<div class="omnitable-cell-date">
 			${it(e,t)}
 		</div>`}renderEditCell(e,{item:t},a){return c`<cosmoz-input
 			no-label-float
 			type="date"
-			@change=${n=>a(At(n.target.value))}
+			@change=${n=>a(zt(n.target.value))}
 			.value=${la(e,t)}
 		></cosmoz-input>`}renderHeader({title:e,min:t,max:a,limits:o,locale:n},{filter:r},l,u){return c`<cosmoz-omnitable-date-range-input
 			.title=${e}
@@ -548,7 +548,7 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 					<cosmoz-input
 						class=${this._fromClasses}
 						type="number"
-						label=${z("From")}
+						label=${A("From")}
 						.value=${this._filterInput?.min}
 						@value-changed=${t=>{this.set("_filterInput.min",t.detail.value)}}
 						@blur=${t=>this._onBlur(t)}
@@ -559,7 +559,7 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 					<cosmoz-input
 						class=${this._toClasses}
 						type="number"
-						label=${z("To")}
+						label=${A("To")}
 						.value=${this._filterInput?.max}
 						@value-changed=${t=>{this.set("_filterInput.max",t.detail.value)}}
 						@blur=${t=>this._onBlur(t)}
@@ -598,14 +598,14 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 					<h3 style="margin: 0;">${this.title}</h3>
 					<cosmoz-input
 						type="time"
-						label=${z("From time")}
+						label=${A("From time")}
 						step=${this.filterStep}
 						.value=${this._filterInput.min}
 						@value-changed=${t=>this.set("_filterInput.min",t.detail.value)}
 					></cosmoz-input>
 					<cosmoz-input
 						type="time"
-						label=${z("Until time")}
+						label=${A("Until time")}
 						step=${this.filterStep}
 						.value=${this._filterInput.max}
 						@value-changed=${t=>this.set("_filterInput.max",t.detail.value)}
@@ -656,8 +656,8 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 			${Z({title:this.title,tooltip:this._tooltip,filterText:this._filterText,headerFocused:this.headerFocused,externalValues:this.externalValues,onOpenedChanged:e,content:c`
 					<h3 style="margin: 0;">${this.title}</h3>
 					<cosmoz-datetime-input
-						date-label=${z("From date")}
-						time-label=${z("From time")}
+						date-label=${A("From date")}
+						time-label=${A("From time")}
 						min=${this._toInputString(this._limit.fromMin)}
 						max=${this._toInputString(this._limit.fromMax)}
 						step=${this.filterStep}
@@ -665,8 +665,8 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 						@value-changed=${t=>this.set("_filterInput.min",t.detail.value)}
 					></cosmoz-datetime-input>
 					<cosmoz-datetime-input
-						date-label=${z("To date")}
-						time-label=${z("To time")}
+						date-label=${A("To date")}
+						time-label=${A("To time")}
 						min=${this._toInputString(this._limit.toMin)}
 						max=${this._toInputString(this._limit.toMax)}
 						step=${this.filterStep}
@@ -674,10 +674,10 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 						@value-changed=${t=>this.set("_filterInput.max",t.detail.value)}
 					></cosmoz-datetime-input>
 				`})}
-		`}_toInputString(e){const t=this.toValue(e);if(t!=null)return this._toLocalISOString(t).slice(0,19)}_computeFormatter(e){const t={year:"numeric",month:"numeric",day:"numeric",hour:"numeric",minute:"numeric"};return new Intl.DateTimeFormat(e||void 0,t)}}customElements.define("cosmoz-omnitable-datetime-range-input",wa);class ut extends V(M){static get is(){return"cosmoz-omnitable-column-datetime"}static get properties(){return{min:{type:Number,value:null,notify:!0},max:{type:Number,value:null,notify:!0},limits:{type:Function},locale:{type:String,value:null,notify:!0},headerCellClass:{type:String,value:"datetime-header-cell"},width:{type:String,value:"210px"},minWidth:{type:String,value:"128px"},flex:{type:String,value:"0"},filterStep:{type:Number,value:1}}}getConfig(e){return{limits:e.limits}}getFilterFn(e,t){const a=P({...e,valuePath:"min"},t),o=P({...e,valuePath:"max"},t);if(!(a==null&&o==null))return zt(e,t)}getString(e,t){return $e(e,t)}toXlsxValue(e,t){return $a(e,t)}getComparableValue(e,t){return P(e,t)}serializeFilter(e,t){if(t==null)return;const a=I(t.min),o=I(t.max);if(!(a==null&&o==null))return lt(a)+"~"+lt(o)}deserializeFilter(e,t){if(t==null||t==="")return null;const a=t.match(/^([^~]+)?~([^~]+)?/iu);return Array.isArray(a)?{min:st(a[1]),max:st(a[2])}:null}renderCell(e,{item:t}){return $e(e,t)}renderEditCell(e,{item:t},a){return c`<cosmoz-input
+		`}_toInputString(e){const t=this.toValue(e);if(t!=null)return this._toLocalISOString(t).slice(0,19)}_computeFormatter(e){const t={year:"numeric",month:"numeric",day:"numeric",hour:"numeric",minute:"numeric"};return new Intl.DateTimeFormat(e||void 0,t)}}customElements.define("cosmoz-omnitable-datetime-range-input",wa);class ut extends V(M){static get is(){return"cosmoz-omnitable-column-datetime"}static get properties(){return{min:{type:Number,value:null,notify:!0},max:{type:Number,value:null,notify:!0},limits:{type:Function},locale:{type:String,value:null,notify:!0},headerCellClass:{type:String,value:"datetime-header-cell"},width:{type:String,value:"210px"},minWidth:{type:String,value:"128px"},flex:{type:String,value:"0"},filterStep:{type:Number,value:1}}}getConfig(e){return{limits:e.limits}}getFilterFn(e,t){const a=P({...e,valuePath:"min"},t),o=P({...e,valuePath:"max"},t);if(!(a==null&&o==null))return At(e,t)}getString(e,t){return $e(e,t)}toXlsxValue(e,t){return $a(e,t)}getComparableValue(e,t){return P(e,t)}serializeFilter(e,t){if(t==null)return;const a=I(t.min),o=I(t.max);if(!(a==null&&o==null))return lt(a)+"~"+lt(o)}deserializeFilter(e,t){if(t==null||t==="")return null;const a=t.match(/^([^~]+)?~([^~]+)?/iu);return Array.isArray(a)?{min:st(a[1]),max:st(a[2])}:null}renderCell(e,{item:t}){return $e(e,t)}renderEditCell(e,{item:t},a){return c`<cosmoz-input
 			no-label-float
 			type="text"
-			@change=${n=>a(At(n.target.value))}
+			@change=${n=>a(zt(n.target.value))}
 			.value=${$e(e,t)}
 		></cosmoz-input>`}renderHeader({title:e,min:t,max:a,limits:o,locale:n,filterStep:r},{filter:l},u,s){return c`<cosmoz-omnitable-datetime-range-input
 			.title=${e}
@@ -711,7 +711,7 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 		y2="0.530331"
 		stroke-width="1.5"
 	/>
-</svg>`,Aa=c`
+</svg>`,za=c`
 	<svg
 		width="16"
 		height="6"
@@ -735,7 +735,7 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 		stroke-width="1.5"
 		stroke-linejoin="round"
 	/>
-</svg>`,za=c`<svg
+</svg>`,Aa=c`<svg
 	width="8"
 	height="6"
 	viewBox="0 0 8 6"
@@ -752,7 +752,7 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 		data-on=${Ue(n===e&&(t?"desc":"asc")||void 0)}
 		@click=${l=>{const s=l.currentTarget?.dataset.on;s||(a(n),o(!1)),s==="asc"?o(!0):s==="desc"&&(a(),o(!1))}}
 	>
-		<span>${r}</span> ${za}
+		<span>${r}</span> ${Aa}
 	</button>`},kt=({columns:i,...e})=>i?.map(t=>_t({column:t,...e})),Fa=()=>c`
 	<sort-and-group-consumer
 		class="sgs"
@@ -910,7 +910,6 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 		position: relative;
 		overflow: hidden;
 		color: var(--cosmoz-omnitable-text-color, rgb(89, 102, 121));
-
 		--cosmoz-bottom-bar-button-bg-color: var(
 			--cz-bottom-bar-button-bg-color,
 			#24365a
@@ -987,12 +986,42 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 		width: 100%;
 	}
 
+	cosmoz-omnitable-header-row .external-values-false {
+		--paper-input-container-color: var(
+			--cosmoz-omnitable-local-filter-header-color
+		);
+	}
+
+	cosmoz-omnitable-header-row .external-values-true {
+		--paper-input-container-color: var(
+			--cosmoz-omnitable-remote-filter-header-color
+		);
+	}
+
 	.header > cosmoz-omnitable-header-row {
 		flex: auto;
 	}
 
 	.header-cell {
+		--paper-input-container: {
+			padding-top: 0;
+			padding-bottom: 1px;
+			--paper-font-caption_-_line-height: 18px;
+		}
+		--paper-input-container-underline: {
+			border-color: var(--cosmoz-omnitable-header-line-color);
+			display: var(--cosmoz-omnitable-paper-input-underline-display, block);
+		}
+		--paper-input-container-underline-focus {
+			border-color: var(--cosmoz-omnitable-header-line-focused-color);
+			display: var(--cosmoz-omnitable-paper-input-underline-display, block);
+		}
+
 		text-transform: var(--cosmoz-omnitable-header-text-transform, none);
+		--paper-font-subhead_-_font-weight: var(
+			--cosmoz-omnitable-header-font-weight,
+			normal
+		);
 
 		--cosmoz-input-font-family: var(
 			--cosmoz-omnitable-header-font-family,
@@ -1000,24 +1029,16 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 			'Noto',
 			sans-serif
 		);
-		--cosmoz-input-font-size: var(--cosmoz-omnitable-header-font-size, 16px);
+		--cosmoz-input-font-size: var(
+			--cosmoz-omnitable-header-font-size,
+			16px
+		);
 		--cosmoz-input-padding: var(--cosmoz-omnitable-header-input-padding, 0);
-		--cosmoz-input-label-text-transform: var(
-			--cosmoz-omnitable-header-text-transform,
-			none
-		);
-		--cosmoz-input-label-font-weight: var(
-			--cosmoz-omnitable-header-font-weight,
-			normal
-		);
+		--cosmoz-input-label-text-transform: var(--cosmoz-omnitable-header-text-transform, none);
+		--cosmoz-input-label-font-weight: var(--cosmoz-omnitable-header-font-weight, normal);
 		--cosmoz-input-line-color: var(--cosmoz-omnitable-header-line-color);
-		--cosmoz-input-line-display: var(
-			--cosmoz-omnitable-header-line-display,
-			block
-		);
-		--cosmoz-input-focused-color: var(
-			--cosmoz-omnitable-header-line-focused-color
-		);
+		--cosmoz-input-line-display: var(--cosmoz-omnitable-header-line-display, block);
+		--cosmoz-input-focused-color: var(--cosmoz-omnitable-header-line-focused-color);
 	}
 
 	cosmoz-omnitable-header-row {
@@ -1118,9 +1139,8 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 		align-items: flex-start;
 	}
 	.tableContent-empty div.tableContent-empty-message {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
+		@apply --layout-vertical;
+		@apply --layout-center-justified;
 		padding-bottom: 24px;
 	}
 	.tableContent-empty.overlay div.tableContent-empty-message {
@@ -1169,6 +1189,7 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 			--cosmoz-omnitable-selection-color,
 			rgba(58, 145, 226, 0.1)
 		);
+		@apply --cosmoz-omnitable-selected-row;
 	}
 
 	.tableContent .itemRow-cell paper-dropdown-menu {
@@ -1239,10 +1260,15 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 	}
 
 	cosmoz-bottom-bar {
+		--cosmoz-bottom-bar-button-bg-color: var(--cz-bottom-bar-button-bg-color, #24365a);
+		--cosmoz-bottom-bar-button-hover-bg-color: var(--cz-bottom-bar-button-hover-bg-color, #1b2a45);
+		--cosmoz-dropdown-button-bg-color: var(--cz-dropdown-button-bg-color, #24365a);
+		--cosmoz-dropdown-button-hover-bg-color: var(--cz-dropdown-button-hover-bg-color, #1b2a45);
+
 		background-color: var(--cosmoz-omnitable-bottom-bar-color, #eeeff3);
 		overflow: hidden;
 	}
-	cosmoz-bottom-bar::part(bar) {
+	cosmoz-bottom-bar::part(bar) {	
 		padding: 0 24px;
 	}
 
@@ -1262,30 +1288,19 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 		overflow: initial;
 	}
 
-	.omnitable-cell-number,
-	.omnitable-cell-date {
+	.omnitable-cell-number, .omnitable-cell-date {
 		font-variant-numeric: tabular-nums;
 	}
 
 	.itemRow:hover {
-		box-shadow:
-			inset 1px 0 0 #dadce0,
-			inset -1px 0 0 #dadce0,
-			0 1px 2px 0 rgb(60 64 67 / 30%),
-			0 1px 3px 1px rgb(60 64 67 / 15%);
-		background-color: var(
-			--cosmoz-omnitable-row-hover-color,
-			rgba(58, 145, 226, 0.2)
-		);
+		box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0,
+			0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
+		background-color: var(--cosmoz-omnitable-row-hover-color);
 	}
 	.groupRow:hover .checkbox:not(:checked):not(:hover),
 	.itemRow:hover .checkbox:not(:checked):not(:hover) {
-		box-shadow: 0 0 0 2px
-			var(
-				--cosmoz-omnitable-checkbox-shadow-color-not-hover,
-				rgba(0, 0, 0, 0.54)
-			)
-			inset;
+		box-shadow: 0 0 0 2px var(--cosmoz-omnitable-checkbox-shadow-color-not-hover, rgba(0, 0, 0, 0.54))
+		inset;
 	}
 	.groupRow:hover .expand:not(:hover),
 	.itemRow:hover .expand:not(:hover) {
@@ -1446,7 +1461,7 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 		exportparts="bar: bottomBar-bar, info: bottomBar-info, buttons: bottomBar-buttons"
 	>
 		<slot name="info" slot="info">
-			${z("{count} selected item",{count:e.length})}
+			${A("{count} selected item",{count:e.length})}
 		</slot>
 		<slot name="actions" id="actions"></slot>
 		<!-- These slots are needed by cosmoz-bottom-bar
@@ -1475,12 +1490,12 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 			<button
 				@click=${()=>Ba(i,e,t)}
 			>
-				${z("Save as CSV")}
+				${A("Save as CSV")}
 			</button>
 			<button
 				@click=${()=>Ha(i,e,a,o)}
 			>
-				${z("Save as XLSX")}
+				${A("Save as XLSX")}
 			</button>
 			<slot name="download-menu"></slot>
 		</cosmoz-dropdown-menu>
@@ -1565,16 +1580,16 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 					<slot name="empty-set-message">
 						${Ke({width:"96px",height:"96px",styles:"margin-right: 24px; fill: currentColor;"})}
 						<div class="tableContent-empty-message">
-							<h3>${z("Working set empty")}</h3>
-							<p>${z("No data to display")}</p>
+							<h3>${A("Working set empty")}</h3>
+							<p>${A("No data to display")}</p>
 						</div>
 					</slot>
 				</div>`)}
 		${k(n,()=>c`<div class="tableContent-empty">
 					${Ke({width:"96px",height:"96px",styles:"margin-right: 24px; fill: currentColor;"})}
 					<div>
-						<h3>${z("Filter too strict")}</h3>
-						<p>${z("No matches for selection")}</p>
+						<h3>${A("Filter too strict")}</h3>
+						<p>${A("No matches for selection")}</p>
 					</div>
 				</div>`)}
 		${k(r&&!a.length,()=>c`<div class="tableContent-empty overlay">
@@ -1588,7 +1603,7 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 		${k(f,()=>c`<div class="tableContent-empty overlay">
 					${ii({width:"96px",height:"96px",styles:"margin-right: 24px; fill: currentColor;"})}
 					<div class="tableContent-empty-message">
-						<h3>${z("Error loading data")}</h3>
+						<h3>${A("Error loading data")}</h3>
 						<p>${f.message}</p>
 					</div>
 				</div>`)}
@@ -1869,7 +1884,7 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 			@dragleave=${a}
 			@drop=${o}
 		>
-			<button class="pull">${Aa}</button>
+			<button class="pull">${za}</button>
 			<label class="title" ?has-filter=${!Me(u[s.name]?.filter)}
 				>${s.title}</label
 			>
@@ -1881,7 +1896,7 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 				.indeterminate=${m}
 			/>
 		</div>`},to=i=>{const{settings:e,settingsId:t,onSave:a,onReset:o,hasChanges:n,opened:r,setOpened:l,...u}=Ya(i);return c` <div class="headline">
-			${z("Sort and filter")}
+			${A("Sort and filter")}
 			<button
 				class="close"
 				@click=${s=>{const d=s.currentTarget;d?.focus(),d?.blur()}}
@@ -1897,7 +1912,7 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 				@click=${()=>l(s=>({...s,columns:!s.columns}))}
 				part="columns columns-heading"
 			>
-				${z("Columns")} ${we}
+				${A("Columns")} ${we}
 			</div>
 			<cosmoz-collapse
 				?opened="${r.columns}"
@@ -1911,7 +1926,7 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 				?data-opened=${r.sort}
 				@click=${()=>l(s=>({...s,sort:!s.sort}))}
 			>
-				${z("Sort on")} ${we}
+				${A("Sort on")} ${we}
 			</div>
 			<cosmoz-collapse ?opened=${r.sort}> ${_a()} </cosmoz-collapse>
 
@@ -1921,7 +1936,7 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 				@click=${()=>l(s=>({...s,group:!s.group}))}
 				part="groups groups-heading"
 			>
-				${z("Group on")} ${we}
+				${A("Group on")} ${we}
 			</div>
 			<cosmoz-collapse ?opened=${r.group} part="groups groups-heading"
 				>${Fa()}</cosmoz-collapse
@@ -1934,10 +1949,10 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 						@click=${o}
 						?disabled=${!n}
 					>
-						${z("Reset")}
+						${A("Reset")}
 					</button>
 					<button class="button" @click=${a} ?disabled=${!n}>
-						${z("Save")}
+						${A("Save")}
 					</button>
 				</div>`)}`};customElements.define("cosmoz-omnitable-settings-ui",O(to,{styleSheets:[Ie(Xa)]}));const io=({config:i,newLayout:e})=>c`
 	<cosmoz-dropdown
@@ -1960,9 +1975,9 @@ import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g 
 			.config=${i}
 		></cosmoz-omnitable-settings-ui>
 	</cosmoz-dropdown>
-`;customElements.define("cosmoz-omnitable-settings",O(io,{styleSheets:[Ie(Qa)]}));const pe=["sortOn","descending","groupOn","groupOnDescending"],ue=i=>e=>typeof e=="object"&&e!==null&&"name"in e&&e.name===i,ao=(i=[],e=[],t=[])=>{const a=e.filter(r=>i.some(ue(r.name))),o=i.filter(r=>r.name!=null&&!e.some(ue(r.name))&&!t.some(ue(r.name))),n=t.filter(r=>!e.some(ue(r.name)));return[...a,...n.flatMap(r=>{const l=i.find(u=>u.name===r.name);return l?{...r,title:l.title??r.title??"",minWidth:parseInt(l.minWidth??"0",10)}:[]}),...o.map(r=>{const{name:l,title:u,priority:s,minWidth:d,width:m,flex:f}=r;return{name:l??"",title:u??"",priority:s??0,minWidth:parseInt(d??"0",10),width:parseInt(m??"0",10),flex:parseInt(f??"0",10)}})]},oo=(i,e)=>({...e,...Ae(Array.from(pe))(i),columns:i.columns?.map(Ae(["name","priority","width","flex","disabled"]))}),no=({columns:i,settings:e,savedSettings:t,initial:a})=>({...Object.fromEntries(pe.flatMap(n=>a?.[n]!=null?[[n,a[n]]]:[])),...t?Ae(Array.from(pe))(t):{},...e,columns:ao(i,e?.columns,t?.columns)}),ro=({prefix:i="omnitable-"}={})=>({write:async(t,a)=>{const o=i+t;try{a?localStorage.setItem(o,JSON.stringify(a)):localStorage.removeItem(o)}catch(n){console.error(n)}},read:async t=>{if(t)try{const a=localStorage.getItem(i+t);return a==null?void 0:JSON.parse(a)}catch(a){console.error(a)}}}),lo=ht(ro),so=()=>{const i=ke(lo);return F(()=>i(),[i])},uo=(i,e,t,a)=>{const[o,n]=T(),{read:r,write:l}=so();return E(async()=>{i&&n(await r(i))},[i,r]),{settingsId:i,savedSettings:o,onSave:$(async()=>{if(!i)return;const u=oo(e,o);await l(i,u),t(),n(u)},[e,o]),onReset:$(async u=>{t(),u.shiftKey&&(await l(i),n()),a?.()},[a]),hasChanges:e!=null}},co=({settingsId:i,host:e})=>{const t=F(()=>Object.fromEntries(pe.map(h=>[h,e[h]])),[]),a=Oe(),o=$(()=>{a.current?.(t)},[t]),[n,r]=T(),[l,u]=T({columns:!0,sort:!0}),{savedSettings:s,...d}=uo(i,n,r,o),{enabledColumns:m}=e,f=Ai(e,{enabledColumns:m}),p=F(()=>no({columns:f,settings:n,savedSettings:s,initial:t}),[f,n,s]),q=F(()=>p.columns.map(h=>f.find(y=>y.name===h.name)).filter(Boolean),[f,...p.columns.map(h=>h.name)]);return{...d,opened:l,setOpened:u,settings:p,columns:q,setSettings:r,resetRef:a}},ct=i=>Number.isFinite(i)?i:0,mo=(i,e)=>{const t=[];let[a,o]=i.reduce(([d,m],{width:f,flex:p})=>[d+f,m+p],[0,0]),n=e-a,r=ct(n/o),l=0,u=0,s=0;for(let d=0;d<i.length;d++){const{width:m,minWidth:f,flex:p}=i[d],q=n>=0?r*p:m*n/a;if(f>m+q){l+=m,u+=f,s+=p,t[d]=f;continue}if(p===0){l+=m,u+=m,t[d]=m;continue}}a-=l,n=e-u-a,o-=s,r=ct(n/o);for(let d=0;d<i.length;d++){if(t[d]!=null)continue;const{width:m,flex:f}=i[d],p=n>=0?r*f:m*n/a;t[d]=m+p}return t},ge=Symbol("index"),po=(i,e)=>{if(typeof i.findLastIndex=="function")return i.findLastIndex(e);for(let t=i.length-1;t>=0;t--)if(e(i[t],t,i))return t;return-1},go=(i,e)=>{const t=po(i,r=>r!=null&&r>0),a=(r,l)=>`.cell[name="${r}"], cosmoz-omnitable-skeleton::part(cell-${r}){width: ${Math.floor(l)}px;padding: 0 min(3px, ${l/2}px)}`,o=r=>`cosmoz-omnitable-resize-nub[name="${r}"]{display:none}`,n=r=>`cosmoz-omnitable-resize-nub[name="${r}"], .cell[name="${r}"]{display:none}`;return e.map((r,l)=>{const u=i[l];if(u==null||u===0)return n(r.name);const s=a(r.name,u);return l===t?`${s}
+`;customElements.define("cosmoz-omnitable-settings",O(io,{styleSheets:[Ie(Qa)]}));const pe=["sortOn","descending","groupOn","groupOnDescending"],ue=i=>e=>typeof e=="object"&&e!==null&&"name"in e&&e.name===i,ao=(i=[],e=[],t=[])=>{const a=e.filter(r=>i.some(ue(r.name))),o=i.filter(r=>r.name!=null&&!e.some(ue(r.name))&&!t.some(ue(r.name))),n=t.filter(r=>!e.some(ue(r.name)));return[...a,...n.flatMap(r=>{const l=i.find(u=>u.name===r.name);return l?{...r,title:l.title??r.title??"",minWidth:parseInt(l.minWidth??"0",10)}:[]}),...o.map(r=>{const{name:l,title:u,priority:s,minWidth:d,width:m,flex:f}=r;return{name:l??"",title:u??"",priority:s??0,minWidth:parseInt(d??"0",10),width:parseInt(m??"0",10),flex:parseInt(f??"0",10)}})]},oo=(i,e)=>({...e,...ze(Array.from(pe))(i),columns:i.columns?.map(ze(["name","priority","width","flex","disabled"]))}),no=({columns:i,settings:e,savedSettings:t,initial:a})=>({...Object.fromEntries(pe.flatMap(n=>a?.[n]!=null?[[n,a[n]]]:[])),...t?ze(Array.from(pe))(t):{},...e,columns:ao(i,e?.columns,t?.columns)}),ro=({prefix:i="omnitable-"}={})=>({write:async(t,a)=>{const o=i+t;try{a?localStorage.setItem(o,JSON.stringify(a)):localStorage.removeItem(o)}catch(n){console.error(n)}},read:async t=>{if(t)try{const a=localStorage.getItem(i+t);return a==null?void 0:JSON.parse(a)}catch(a){console.error(a)}}}),lo=ht(ro),so=()=>{const i=ke(lo);return F(()=>i(),[i])},uo=(i,e,t,a)=>{const[o,n]=T(),{read:r,write:l}=so();return E(async()=>{i&&n(await r(i))},[i,r]),{settingsId:i,savedSettings:o,onSave:$(async()=>{if(!i)return;const u=oo(e,o);await l(i,u),t(),n(u)},[e,o]),onReset:$(async u=>{t(),u.shiftKey&&(await l(i),n()),a?.()},[a]),hasChanges:e!=null}},co=({settingsId:i,host:e})=>{const t=F(()=>Object.fromEntries(pe.map(h=>[h,e[h]])),[]),a=Oe(),o=$(()=>{a.current?.(t)},[t]),[n,r]=T(),[l,u]=T({columns:!0,sort:!0}),{savedSettings:s,...d}=uo(i,n,r,o),{enabledColumns:m}=e,f=zi(e,{enabledColumns:m}),p=F(()=>no({columns:f,settings:n,savedSettings:s,initial:t}),[f,n,s]),q=F(()=>p.columns.map(h=>f.find(y=>y.name===h.name)).filter(Boolean),[f,...p.columns.map(h=>h.name)]);return{...d,opened:l,setOpened:u,settings:p,columns:q,setSettings:r,resetRef:a}},ct=i=>Number.isFinite(i)?i:0,mo=(i,e)=>{const t=[];let[a,o]=i.reduce(([d,m],{width:f,flex:p})=>[d+f,m+p],[0,0]),n=e-a,r=ct(n/o),l=0,u=0,s=0;for(let d=0;d<i.length;d++){const{width:m,minWidth:f,flex:p}=i[d],q=n>=0?r*p:m*n/a;if(f>m+q){l+=m,u+=f,s+=p,t[d]=f;continue}if(p===0){l+=m,u+=m,t[d]=m;continue}}a-=l,n=e-u-a,o-=s,r=ct(n/o);for(let d=0;d<i.length;d++){if(t[d]!=null)continue;const{width:m,flex:f}=i[d],p=n>=0?r*f:m*n/a;t[d]=m+p}return t},ge=Symbol("index"),po=(i,e)=>{if(typeof i.findLastIndex=="function")return i.findLastIndex(e);for(let t=i.length-1;t>=0;t--)if(e(i[t],t,i))return t;return-1},go=(i,e)=>{const t=po(i,r=>r!=null&&r>0),a=(r,l)=>`.cell[name="${r}"], cosmoz-omnitable-skeleton::part(cell-${r}){width: ${Math.floor(l)}px;padding: 0 min(3px, ${l/2}px)}`,o=r=>`cosmoz-omnitable-resize-nub[name="${r}"]{display:none}`,n=r=>`cosmoz-omnitable-resize-nub[name="${r}"], .cell[name="${r}"]{display:none}`;return e.map((r,l)=>{const u=i[l];if(u==null||u===0)return n(r.name);const s=a(r.name,u);return l===t?`${s}
 ${o(r.name)}`:s}).join(`
-`)},Ot=(i,e,t)=>{const a=i.filter(l=>!l.hidden),o=a.reduce((l,{width:u})=>l+u,0);if(a.length>1&&o>e)return Ot(a.slice(1),e,t);const n=a.reduce(([l,u],s,d)=>[Math.max(l,s.index),s.index>l?d:u],[-1,-1])[1];return n!==-1&&(a[n].flex=1),mo(a,e).reduce((l,u,s)=>(l[a[s].index]=u,l),new Array(t).fill(void 0))},bo=(i,e)=>i.length===0?".cell {display: none;}":go(i,e),fo=({host:i,canvasWidth:e,layout:t,setSettings:a})=>{const o=Oe();o.current=n=>a(r=>{const l=r.columns,{detail:{newWidth:u,column:s}}=n,d=l.findIndex(p=>p.name===s.name),m=[],f=l.reduce((p,q)=>Math.max(p,q.priority),-1/0);for(let p=0;p<t.length;p++)if(m[p]={...l[p]},p<d&&t[p]!=null&&(m[p].width=t[p],m[p].flex=0,m[p].priority=f),p===d){const q=t.reduce((h,y,_)=>_<d&&y?h-y:h,e);m[p].width=Math.min(q,Math.max(u,l[p].minWidth)),m[p].flex=0,m[p].priority=f}return{...r,columns:m}}),E(()=>{const n=r=>o.current?.(r);return i.addEventListener("column-resize",n),()=>i.removeEventListener("column-resize",n)},[])},ho=(i,e)=>E(()=>{const t=([o])=>{o.contentRect?.width!==0&&requestAnimationFrame(()=>e(o.contentRect?.width-20-44-24))},a=new ResizeObserver(t);return a.observe(i),()=>a.unobserve(i)},[]),xo=i=>{const[e,t]=T(()=>i.getBoundingClientRect().width);return ho(i,t),e},vo=(i,e)=>{const t=F(()=>{let a=!1,o;const n=()=>{if(!a)return;o=requestAnimationFrame(n),i()&&(a=!1)};return{start:()=>{a=!0,cancelAnimationFrame(o),o=requestAnimationFrame(n)},stop:()=>{a=!1,cancelAnimationFrame(o)}}},[]);E(()=>{t.start()},e),E(()=>()=>t.stop(),[])},yo=(i=0,e=0)=>Math.abs((i??0)-(e??0))<.1,$o=(i,e=1.9,t=ni)=>{const a=Ee({target:i}),o=$(()=>{if(a.tween||(a.tween=a.target),a.target.every((n,r)=>a.tween[r]===n))return t(a.tween),!0;a.tween=a.target.map((n,r)=>yo(a.tween[r],n)?n:(a.tween[r]??0)+((n??0)-(a.tween[r]??0))/e||0),t(a.tween)},[]);vo(o,[i])},wo=({canvasWidth:i,groupOnColumn:e,config:t,miniColumn:a})=>F(()=>{if(!Array.isArray(t)||i==null||i===0)return[];const o=t.map((n,r)=>({minWidth:n.minWidth,width:n.width,flex:n.flex,priority:n.priority,name:n.name,index:r,hidden:n.name===e?.name||n.disabled})).map(n=>a?{...n,hidden:a.name!==n.name}:n).sort(({index:n,priority:r},{index:l,priority:u})=>r===u?l-n:r-u);return Ot(o,i,o.length)},[i,e,t]),Co=({host:i,canvasWidth:e,columns:t})=>{const a=i.miniBreakpoint??480,o=F(()=>e<=a,[e,a]),n=F(()=>o?t?.filter(s=>s.mini!=null).sort((s,d)=>(s.mini??0)-(d.mini??0)):[],[t,o]),[r,...l]=n??[],u=!!r;return E(()=>{i.toggleAttribute("mini",u)},[u]),{isMini:u&&o,miniColumn:r,miniColumns:l}},So=i=>{const e=F(()=>new CSSStyleSheet,[]);return E(()=>{i.shadowRoot.adoptedStyleSheets=[...i.shadowRoot.adoptedStyleSheets,e]},[]),e},qo=({host:i,columns:e,settings:t,setSettings:a,resizeSpeedFactor:o,sortAndGroupOptions:n})=>{const r=xo(i),{isMini:l,miniColumn:u,miniColumns:s}=Co({host:i,canvasWidth:r,columns:e}),{groupOnColumn:d}=n,m=wo({canvasWidth:r,groupOnColumn:d,miniColumn:u,config:t.columns}),f=So(i),p=F(()=>t.columns.reduce((h,y,_)=>m[_]!=null||y.name===d?.name||y.disabled?h:[...h,e.find(g=>g.name===y.name)].filter(g=>g!=null),[]),[e,t,m,d]),q=Ee({columns:t.columns});return $o(m,o,h=>{const y=bo(h,q.columns);f.replace(y)}),fo({host:i,canvasWidth:r,layout:m,setSettings:h=>a(h(t))}),{isMini:l,collapsedColumns:p,miniColumns:s}},Ao=({host:i,...e})=>{const{csvFilename:t="omnitable.csv",xlsxFilename:a="omnitable.xlsx",xlsxSheetname:o="Omnitable",topPlacement:n="top-end"}=i;return{csvFilename:t,xlsxFilename:a,xlsxSheetname:o,topPlacement:n,...e}},zo=({host:i,selectedItems:e,data:t,sortAndGroupOptions:a,collapsedColumns:o,settings:n,filterFunctions:r,settingS:l,filters:u,...s})=>{const d=t&&t.length>0&&e.length===t.length,m=h=>{h.target.checked?i.shadowRoot.querySelector("#groupedList").selectAll():i.shadowRoot.querySelector("#groupedList").deselectAll()},{groupOnColumn:f}=a,p=F(()=>[f,...o,...n.columns.filter(h=>h.disabled)].some(h=>h&&Object.keys(r).includes(h.name)),[r,n,o]),q=F(()=>({...l,collapsed:o,badge:p,filters:u}),[l,o,p,u]);return E(()=>{const h=i.shadowRoot.querySelector("#tableContent"),y=new ResizeObserver(_=>requestAnimationFrame(()=>{i.style.setProperty("--ot-height",_[0]?.contentRect.height+"px")}));return y.observe(h),()=>y.unobserve(h)},[]),{allSelected:d,onAllCheckboxChange:m,data:t,settingsConfig:q,filters:u,groupOnColumn:f,sortAndGroup:a.sortAndGroup,...s}},Lt=c`
+`)},Ot=(i,e,t)=>{const a=i.filter(l=>!l.hidden),o=a.reduce((l,{width:u})=>l+u,0);if(a.length>1&&o>e)return Ot(a.slice(1),e,t);const n=a.reduce(([l,u],s,d)=>[Math.max(l,s.index),s.index>l?d:u],[-1,-1])[1];return n!==-1&&(a[n].flex=1),mo(a,e).reduce((l,u,s)=>(l[a[s].index]=u,l),new Array(t).fill(void 0))},bo=(i,e)=>i.length===0?".cell {display: none;}":go(i,e),fo=({host:i,canvasWidth:e,layout:t,setSettings:a})=>{const o=Oe();o.current=n=>a(r=>{const l=r.columns,{detail:{newWidth:u,column:s}}=n,d=l.findIndex(p=>p.name===s.name),m=[],f=l.reduce((p,q)=>Math.max(p,q.priority),-1/0);for(let p=0;p<t.length;p++)if(m[p]={...l[p]},p<d&&t[p]!=null&&(m[p].width=t[p],m[p].flex=0,m[p].priority=f),p===d){const q=t.reduce((h,y,_)=>_<d&&y?h-y:h,e);m[p].width=Math.min(q,Math.max(u,l[p].minWidth)),m[p].flex=0,m[p].priority=f}return{...r,columns:m}}),E(()=>{const n=r=>o.current?.(r);return i.addEventListener("column-resize",n),()=>i.removeEventListener("column-resize",n)},[])},ho=(i,e)=>E(()=>{const t=([o])=>{o.contentRect?.width!==0&&requestAnimationFrame(()=>e(o.contentRect?.width-20-44-24))},a=new ResizeObserver(t);return a.observe(i),()=>a.unobserve(i)},[]),xo=i=>{const[e,t]=T(()=>i.getBoundingClientRect().width);return ho(i,t),e},vo=(i,e)=>{const t=F(()=>{let a=!1,o;const n=()=>{if(!a)return;o=requestAnimationFrame(n),i()&&(a=!1)};return{start:()=>{a=!0,cancelAnimationFrame(o),o=requestAnimationFrame(n)},stop:()=>{a=!1,cancelAnimationFrame(o)}}},[]);E(()=>{t.start()},e),E(()=>()=>t.stop(),[])},yo=(i=0,e=0)=>Math.abs((i??0)-(e??0))<.1,$o=(i,e=1.9,t=ni)=>{const a=Ee({target:i}),o=$(()=>{if(a.tween||(a.tween=a.target),a.target.every((n,r)=>a.tween[r]===n))return t(a.tween),!0;a.tween=a.target.map((n,r)=>yo(a.tween[r],n)?n:(a.tween[r]??0)+((n??0)-(a.tween[r]??0))/e||0),t(a.tween)},[]);vo(o,[i])},wo=({canvasWidth:i,groupOnColumn:e,config:t,miniColumn:a})=>F(()=>{if(!Array.isArray(t)||i==null||i===0)return[];const o=t.map((n,r)=>({minWidth:n.minWidth,width:n.width,flex:n.flex,priority:n.priority,name:n.name,index:r,hidden:n.name===e?.name||n.disabled})).map(n=>a?{...n,hidden:a.name!==n.name}:n).sort(({index:n,priority:r},{index:l,priority:u})=>r===u?l-n:r-u);return Ot(o,i,o.length)},[i,e,t]),Co=({host:i,canvasWidth:e,columns:t})=>{const a=i.miniBreakpoint??480,o=F(()=>e<=a,[e,a]),n=F(()=>o?t?.filter(s=>s.mini!=null).sort((s,d)=>(s.mini??0)-(d.mini??0)):[],[t,o]),[r,...l]=n??[],u=!!r;return E(()=>{i.toggleAttribute("mini",u)},[u]),{isMini:u&&o,miniColumn:r,miniColumns:l}},So=i=>{const e=F(()=>new CSSStyleSheet,[]);return E(()=>{i.shadowRoot.adoptedStyleSheets=[...i.shadowRoot.adoptedStyleSheets,e]},[]),e},qo=({host:i,columns:e,settings:t,setSettings:a,resizeSpeedFactor:o,sortAndGroupOptions:n})=>{const r=xo(i),{isMini:l,miniColumn:u,miniColumns:s}=Co({host:i,canvasWidth:r,columns:e}),{groupOnColumn:d}=n,m=wo({canvasWidth:r,groupOnColumn:d,miniColumn:u,config:t.columns}),f=So(i),p=F(()=>t.columns.reduce((h,y,_)=>m[_]!=null||y.name===d?.name||y.disabled?h:[...h,e.find(g=>g.name===y.name)].filter(g=>g!=null),[]),[e,t,m,d]),q=Ee({columns:t.columns});return $o(m,o,h=>{const y=bo(h,q.columns);f.replace(y)}),fo({host:i,canvasWidth:r,layout:m,setSettings:h=>a(h(t))}),{isMini:l,collapsedColumns:p,miniColumns:s}},zo=({host:i,...e})=>{const{csvFilename:t="omnitable.csv",xlsxFilename:a="omnitable.xlsx",xlsxSheetname:o="Omnitable",topPlacement:n="top-end"}=i;return{csvFilename:t,xlsxFilename:a,xlsxSheetname:o,topPlacement:n,...e}},Ao=({host:i,selectedItems:e,data:t,sortAndGroupOptions:a,collapsedColumns:o,settings:n,filterFunctions:r,settingS:l,filters:u,...s})=>{const d=t&&t.length>0&&e.length===t.length,m=h=>{h.target.checked?i.shadowRoot.querySelector("#groupedList").selectAll():i.shadowRoot.querySelector("#groupedList").deselectAll()},{groupOnColumn:f}=a,p=F(()=>[f,...o,...n.columns.filter(h=>h.disabled)].some(h=>h&&Object.keys(r).includes(h.name)),[r,n,o]),q=F(()=>({...l,collapsed:o,badge:p,filters:u}),[l,o,p,u]);return E(()=>{const h=i.shadowRoot.querySelector("#tableContent"),y=new ResizeObserver(_=>requestAnimationFrame(()=>{i.style.setProperty("--ot-height",_[0]?.contentRect.height+"px")}));return y.observe(h),()=>y.unobserve(h)},[]),{allSelected:d,onAllCheckboxChange:m,data:t,settingsConfig:q,filters:u,groupOnColumn:f,sortAndGroup:a.sortAndGroup,...s}},Lt=c`
 	<svg
 		viewBox="0 0 24 24"
 		preserveAspectRatio="xMidYMid meet"
@@ -2058,7 +2073,7 @@ ${o(r.name)}`:s}).join(`
 			<button class="expand" ?aria-expanded="${r}" @click=${l}>
 				${Lt}
 			</button>
-		</div>`,Mo=({host:i,error:e,dataIsValid:t,processedItems:a,columns:o,collapsedColumns:n,miniColumns:r,sortAndGroupOptions:l,rowPartFn:u,...s})=>{const{loading:d=!1,displayEmptyGroups:m=!1,compareItemsFn:f}=i,p=Oe({shiftKey:!1,ctrlKey:!1}),q=$(g=>{const A=g.target,b=A.dataItem,v=A.checked,x=i.shadowRoot.querySelector("#groupedList");p.current.shiftKey?x.toggleSelectTo(b,v):p.current.ctrlKey?(A.checked=!0,x.selectOnly(b)):x.toggleSelect(b,v),g.preventDefault(),g.stopPropagation()},[]);E(()=>{const g=({shiftKey:A,ctrlKey:b})=>{p.current={shiftKey:A,ctrlKey:b}};return window.addEventListener("keydown",g),window.addEventListener("keyup",g),()=>{window.removeEventListener("keydown",g),window.removeEventListener("keyup",g)}},[]);const h=$(g=>{const A=g.currentTarget,b=g.composedPath();b.slice(0,b.indexOf(A)).find(x=>x.matches?.("a, .checkbox, .expand"))||i.dispatchEvent(new window.CustomEvent("omnitable-item-click",{bubbles:!0,composed:!0,detail:{item:A.dataItem,index:A.dataIndex}}))},[]),{groupOnColumn:y}=l,_=$((g,A)=>b=>zi(i,g,A,b),[]);return{...s,processedItems:a,dataIsValid:t,filterIsTooStrict:t&&a.length<1,loading:d,compareItemsFn:f,displayEmptyGroups:m,error:e,renderItem:F(()=>ko({columns:o,collapsedColumns:n,miniColumns:r,onItemClick:h,onCheckboxChange:q,dataIsValid:t,groupOnColumn:y,onItemChange:_,rowPartFn:u}),[o,n,h,q,t,y,_,u]),renderGroup:F(()=>Io({onCheckboxChange:q,dataIsValid:t,groupOnColumn:y}),[q,t,y])}},Eo=(i,e)=>{if(i===e)return 0;if(i==null)return-1;if(e==null)return 1;const t=typeof i,a=typeof e;return t==="object"&&a==="object"?i.toString()<e.toString()?-1:1:t==="number"&&a==="number"?i-e:t==="string"&&a==="string"?i<e?-1:1:t==="boolean"&&a==="boolean"?i?-1:1:(console.warn("unsupported sort",t,i,a,e),0)},Ce=(i,e)=>(t,a)=>Eo(i(t),i(a))*(e?-1:1),Oo=i=>i.replace(/([a-z0-9])([A-Z])/gu,"$1-$2").toLowerCase(),mt=(i,e)=>{!i||!e||Object.entries(e).forEach(([t,a])=>{i[R].__ownChange=!0,i[R][t]=a,i[R].__ownChange=!1,i[R].dispatchEvent(new CustomEvent(`${Oo(t)}-changed`,{bubbles:!0,detail:{value:a}}))})},Se=(i,e)=>Object.assign(i,{[ge]:e}),de=Symbol("unparsed"),Lo=({data:i,columns:e,hashParam:t,sortAndGroupOptions:a,noLocalSort:o,noLocalFilter:n})=>{const{groupOnColumn:r,groupOnDescending:l,sortOnColumn:u,descending:s}=a,d=$(([b,v])=>{const x=e.find(({name:w})=>w===b);return x==null?[b,void 0]:[b,v.filter&&x.serializeFilter(x,v.filter)]},[e]),m=$(([b,v])=>{const x=e.find(({name:S})=>S===b);if(x==null)return[b,{[de]:v}];const w={filter:x.deserializeFilter(x,v)};return mt(x,w),[b,w]},[e]),[f,p]=J({},t,{multi:!0,suffix:"-filter--",write:d,read:m}),q=$((b,v)=>p(x=>{const w=fe(v,x[b]);return mt(e.find(S=>S.name===b),w),{...x,[b]:{...x[b],...w}}}),[e,p]),h=F(()=>Object.values(f).map(b=>b.filter),[f]),y=F(()=>Object.fromEntries(e.map(b=>[b.name,!b.noLocalFilter&&b.getFilterFn(b,f[b.name]?.filter)]).filter(([,b])=>!!b)),[e,...h]),_=F(()=>!Array.isArray(i)||i.length===0?[]:Object.entries(y).length===0||n?i.slice():i.filter(b=>Object.values(y).every(v=>v(b))),[i,y,n]),g=F(()=>{if(!o&&!r&&u!=null&&u.sortPath!=null)return _.slice().sort(Ce(b=>u.getComparableValue({...u,valuePath:u.sortPath},b),s));if(r!=null&&r.groupOn!=null){const b=_.reduce((v,x)=>{const w=r.getComparableValue({...r,valuePath:r.groupOn},x);if(w===void 0)return v;let S=v.find(D=>D.id===w);return S?(S.items.push(x),v):(S={id:w,name:w,items:[x]},[...v,S])},[]);return b.sort(Ce(v=>r.getComparableValue({...r,valuePath:r.groupOn},v.items[0]),l)),!u||o?b:b.filter(v=>Array.isArray(v.items)).map(v=>(v.items.sort(Ce(x=>u.getComparableValue({...u,valuePath:u.sortPath},x),s)),v))}return _},[_,r,l,u,s,o]),A=F(()=>{let b=0,v=0;const x=[];return g.forEach(w=>{if(Array.isArray(w.items)){Se(w,v++),w.items.forEach(S=>{Se(S,b++),x.push(S)});return}return Se(w,b++),x.push(w)},[]),x},[g]);return E(()=>{p(b=>Object.values(b).some(x=>x[de]!=null)?Object.fromEntries(Object.entries(b).map(([x,w])=>w[de]==null?[x,w]:m([x,w[de]]))):b)},[m]),{processedItems:g,visibleData:A,filters:f,filterFunctions:y,setFilterState:q}},Do=i=>{const e=a=>{const o=i.data.indexOf(a);if(o<0)return null;const n=i.data.splice(o,1);if(i.data=i.data.slice(),Array.isArray(n)&&n.length>0)return n[0]},t=(a,o)=>{i.data.splice(a,1,o),i.data=i.data.slice()};return{removeItem:e,removeItems(a){const o=[];for(let n=a.length-1;n>=0;n-=1){const r=i.removeItem(a[n]);r!=null&&o.push(r)}return o},replaceItemAtIndex:t,replaceItem(a,o){const n=i.data.indexOf(a);if(n>-1)return t(n,o)},selectItem(a){i.shadowRoot.querySelector("#groupedList").select(a)},selectAll(){i.shadowRoot.querySelector("#groupedList").selectAll()},deselectAll(){i.shadowRoot.querySelector("#groupedList").deselectAll()},deselectItem(a){i.shadowRoot.querySelector("#groupedList").deselect(a)},isItemSelected(a){return i.shadowRoot.querySelector("#groupedList").isItemSelected(a)}}},To=({host:i,visibleData:e,filters:t,...a})=>{const{setFilterState:o}=a,n=F(()=>Do(i),[]);ze(a,Object.values(a)),ze(n,Object.values(n)),E(()=>{const l=u=>o(u.detail.name,s=>({...s,...u.detail.state}));return i.addEventListener("legacy-filter-changed",l),()=>i.removeEventListener("legacy-filter-changed",l)},[]),N("visibleData",e),N("sortedFilteredGroupedItems",a.sortedFilteredGroupedItems),N("selectedItems",a.selectedItems),N("sortOn",a.sortOn),N("descending",a.descending),N("isMini",a.isMini);const r=F(()=>Object.fromEntries(Object.entries(t).filter(([,{filter:l}])=>l!==void 0).map(([l,{filter:u}])=>[l,u])),[t]);N("filters",r,Object.values(r))},Vo=i=>{const{hashParam:e,settingsId:t,data:a,resizeSpeedFactor:o,noLocal:n,noLocalSort:r=n,noLocalFilter:l=n,error:u,rowPartFn:s}=i,d=co({settingsId:t,host:i}),{settings:m,setSettings:f,columns:p,resetRef:q}=d,h=Ea(p,e,m,f,q),{processedItems:y,visibleData:_,filters:g,setFilterState:A,filterFunctions:b}=Lo({data:a,columns:p,hashParam:e,sortAndGroupOptions:h,noLocalSort:r,noLocalFilter:l}),{isMini:v,collapsedColumns:x,miniColumns:w}=qo({host:i,columns:p,settings:m,setSettings:f,resizeSpeedFactor:o,sortAndGroupOptions:h}),S=a&&Array.isArray(a)&&a.length>0,[D,G]=T([]);return To({host:i,visibleData:_,sortedFilteredGroupedItems:y,columns:p,filters:g,setFilterState:A,selectedItems:D,isMini:v,...h}),{header:zo({host:i,selectedItems:D,sortAndGroupOptions:h,dataIsValid:S,data:a,columns:p,filters:g,collapsedColumns:x,settings:m,filterFunctions:b,settingS:d,setFilterState:A,hideSelectAll:i.hideSelectAll===!0}),list:Mo({host:i,error:u,dataIsValid:S,processedItems:y,setSelectedItems:G,columns:p,collapsedColumns:x,miniColumns:w,sortAndGroupOptions:h,rowPartFn:s}),footer:Ao({host:i,selectedItems:D,columns:p})}};customElements.define("cosmoz-grouped-list-row",class extends HTMLElement{get item(){return this._item}set item(e){this._item=e,this._render()}get index(){return this._index}set index(e){this._index=e,this._render()}get renderFn(){return this._renderFn}set renderFn(e){this._renderFn=e,this._render()}_render(){this._item==null||this._index==null||this._renderFn==null||qe(this._renderFn(this._item,this._index),this)}});const Po={group:Symbol("group")},ve=(i,e)=>(e.has(i)||e.set(i,{}),e.get(i)),No=(i,e)=>!!ve(i,e).expanded,Ro=(i,e)=>!!ve(i,e).folded,Fe=i=>i?i.items instanceof Array:!1,Bo=i=>{if(!Array.isArray(i)||i.length===0)return;const e=Array.isArray(i[0]?.items);if(!i.every(a=>Array.isArray(a.items)===e))throw new Error("Data must be homogeneous.")},Go=(i,e,t)=>Array.isArray(i)?(Bo(i),i.reduce((o,n)=>{const r=n;if(!r.items)return o.concat(n);if(r.items.length){if(ve(n,t).folded)return o.concat(n);const l=r.items.map(u=>Object.assign(u,{[Po.group]:n}));return o.concat(n,l)}return e?o.concat(n):o},[])):void 0,Ho=(i,...e)=>typeof i=="function"?i(...e):i,jo=(i,e)=>i===e,Wo=()=>{const[i,e]=T(()=>[new WeakMap]);return{setItemState:$((a,o)=>e(([n])=>{const r=ve(a,n);return Object.assign(r,Ho(o,r)),[n]}),[]),state:i[0],signal:i}},Uo=()=>{const{setItemState:i,state:e,signal:t}=Wo(),a=$((n,r)=>{Fe(n)&&i(n,l=>({folded:r!==void 0?r:!l.folded}))},[]),o=$((n,r)=>{Fe(n)||i(n,l=>({expanded:r!==void 0?!r:!l.expanded}))},[]);return{state:e,signal:t,toggleFold:a,toggleCollapse:o}},Ko=({initial:i,compareItemsFn:e,data:t,flatData:a})=>{const[o,n]=T(i),[r,l]=T(),u=$(g=>o.includes(g),[o]),s=$(g=>g?.items?.every(u)??!1,[u]),d=$(g=>u(g)||s(g),[u,s]),m=$(g=>{const b=g.items??[g];n(v=>[...v,...b.filter(x=>!v.includes(x))]),l(g)},[]),f=$(g=>{const b=g.items??[g];n(v=>v.filter(x=>!b.includes(x))),l(g)},[]),p=$(g=>{n(g.items?.slice()||[g]),l(g)},[]),q=$(()=>{n(t.flatMap(g=>g.items||g)),l(void 0)},[t]),h=$(()=>{n([]),l(void 0)},[]),y=$((g,A=!d(g))=>A?m(g):f(g),[d]),_=$((g,A)=>{if(!a)return;const b=r?a.findIndex(w=>e(w,r)):-1;if(b<0)return y(g,A);const[v,x]=[b,a.indexOf(g)].sort((w,S)=>w-S);a.slice(v,x+1).forEach((w,S,D)=>{S>0&&S<D.length-1&&Fe(w)||y(w,A)}),l(g)},[a,e,y]);return E(()=>n(g=>g.length>0&&a?a.filter(A=>g.find(b=>e(A,b))):g),[a]),{selectedItems:o,isItemSelected:u,isGroupSelected:s,isSelected:d,select:m,deselect:f,selectOnly:p,selectAll:q,deselectAll:h,toggleSelect:y,toggleSelectTo:_}},Jo={host:{position:"relative",display:"flex",flexDirection:"column"}},Xo=i=>{const{data:e,renderItem:t,renderGroup:a,displayEmptyGroups:o,compareItemsFn:n=jo}=i,{toggleFold:r,toggleCollapse:l,state:u,signal:s}=Uo(),d=F(()=>Go(e,o,u),[e,o,s]),{selectedItems:m,isItemSelected:f,isGroupSelected:p,isSelected:q,select:h,deselect:y,selectOnly:_,selectAll:g,deselectAll:A,toggleSelect:b,toggleSelectTo:v}=Ko({initial:[],compareItemsFn:n,data:e,flatData:d}),x=$((S,D)=>Array.isArray(S.items)?a(S,D,{selected:p(S),folded:Ro(S,u),toggleSelect:G=>b(S,typeof G=="boolean"?G:void 0),toggleFold:()=>r(S)}):t(S,D,{selected:m.includes(S),expanded:No(S,u),toggleSelect:G=>b(S,typeof G=="boolean"?G:void 0),toggleCollapse:()=>l(S)}),[t,a,m,b,s]);gt(()=>{Object.assign(i.style,Jo.host)},[]),N("selectedItems",m);const w={toggleFold:r,toggleCollapse:l,isItemSelected:f,isGroupSelected:p,isSelected:q,select:h,deselect:y,selectOnly:_,selectAll:g,deselectAll:A,toggleSelect:b,toggleSelectTo:v};return ze(w,Object.values(w)),{renderRow:x,flatData:d}},Qo=({renderRow:i,flatData:e})=>ri({items:e,renderItem:(t,a)=>c`<cosmoz-grouped-list-row
+		</div>`,Mo=({host:i,error:e,dataIsValid:t,processedItems:a,columns:o,collapsedColumns:n,miniColumns:r,sortAndGroupOptions:l,rowPartFn:u,...s})=>{const{loading:d=!1,displayEmptyGroups:m=!1,compareItemsFn:f}=i,p=Oe({shiftKey:!1,ctrlKey:!1}),q=$(g=>{const z=g.target,b=z.dataItem,v=z.checked,x=i.shadowRoot.querySelector("#groupedList");p.current.shiftKey?x.toggleSelectTo(b,v):p.current.ctrlKey?(z.checked=!0,x.selectOnly(b)):x.toggleSelect(b,v),g.preventDefault(),g.stopPropagation()},[]);E(()=>{const g=({shiftKey:z,ctrlKey:b})=>{p.current={shiftKey:z,ctrlKey:b}};return window.addEventListener("keydown",g),window.addEventListener("keyup",g),()=>{window.removeEventListener("keydown",g),window.removeEventListener("keyup",g)}},[]);const h=$(g=>{const z=g.currentTarget,b=g.composedPath();b.slice(0,b.indexOf(z)).find(x=>x.matches?.("a, .checkbox, .expand"))||i.dispatchEvent(new window.CustomEvent("omnitable-item-click",{bubbles:!0,composed:!0,detail:{item:z.dataItem,index:z.dataIndex}}))},[]),{groupOnColumn:y}=l,_=$((g,z)=>b=>Ai(i,g,z,b),[]);return{...s,processedItems:a,dataIsValid:t,filterIsTooStrict:t&&a.length<1,loading:d,compareItemsFn:f,displayEmptyGroups:m,error:e,renderItem:F(()=>ko({columns:o,collapsedColumns:n,miniColumns:r,onItemClick:h,onCheckboxChange:q,dataIsValid:t,groupOnColumn:y,onItemChange:_,rowPartFn:u}),[o,n,h,q,t,y,_,u]),renderGroup:F(()=>Io({onCheckboxChange:q,dataIsValid:t,groupOnColumn:y}),[q,t,y])}},Eo=(i,e)=>{if(i===e)return 0;if(i==null)return-1;if(e==null)return 1;const t=typeof i,a=typeof e;return t==="object"&&a==="object"?i.toString()<e.toString()?-1:1:t==="number"&&a==="number"?i-e:t==="string"&&a==="string"?i<e?-1:1:t==="boolean"&&a==="boolean"?i?-1:1:(console.warn("unsupported sort",t,i,a,e),0)},Ce=(i,e)=>(t,a)=>Eo(i(t),i(a))*(e?-1:1),Oo=i=>i.replace(/([a-z0-9])([A-Z])/gu,"$1-$2").toLowerCase(),mt=(i,e)=>{!i||!e||Object.entries(e).forEach(([t,a])=>{i[R].__ownChange=!0,i[R][t]=a,i[R].__ownChange=!1,i[R].dispatchEvent(new CustomEvent(`${Oo(t)}-changed`,{bubbles:!0,detail:{value:a}}))})},Se=(i,e)=>Object.assign(i,{[ge]:e}),de=Symbol("unparsed"),Lo=({data:i,columns:e,hashParam:t,sortAndGroupOptions:a,noLocalSort:o,noLocalFilter:n})=>{const{groupOnColumn:r,groupOnDescending:l,sortOnColumn:u,descending:s}=a,d=$(([b,v])=>{const x=e.find(({name:w})=>w===b);return x==null?[b,void 0]:[b,v.filter&&x.serializeFilter(x,v.filter)]},[e]),m=$(([b,v])=>{const x=e.find(({name:S})=>S===b);if(x==null)return[b,{[de]:v}];const w={filter:x.deserializeFilter(x,v)};return mt(x,w),[b,w]},[e]),[f,p]=J({},t,{multi:!0,suffix:"-filter--",write:d,read:m}),q=$((b,v)=>p(x=>{const w=fe(v,x[b]);return mt(e.find(S=>S.name===b),w),{...x,[b]:{...x[b],...w}}}),[e,p]),h=F(()=>Object.values(f).map(b=>b.filter),[f]),y=F(()=>Object.fromEntries(e.map(b=>[b.name,!b.noLocalFilter&&b.getFilterFn(b,f[b.name]?.filter)]).filter(([,b])=>!!b)),[e,...h]),_=F(()=>!Array.isArray(i)||i.length===0?[]:Object.entries(y).length===0||n?i.slice():i.filter(b=>Object.values(y).every(v=>v(b))),[i,y,n]),g=F(()=>{if(!o&&!r&&u!=null&&u.sortPath!=null)return _.slice().sort(Ce(b=>u.getComparableValue({...u,valuePath:u.sortPath},b),s));if(r!=null&&r.groupOn!=null){const b=_.reduce((v,x)=>{const w=r.getComparableValue({...r,valuePath:r.groupOn},x);if(w===void 0)return v;let S=v.find(D=>D.id===w);return S?(S.items.push(x),v):(S={id:w,name:w,items:[x]},[...v,S])},[]);return b.sort(Ce(v=>r.getComparableValue({...r,valuePath:r.groupOn},v.items[0]),l)),!u||o?b:b.filter(v=>Array.isArray(v.items)).map(v=>(v.items.sort(Ce(x=>u.getComparableValue({...u,valuePath:u.sortPath},x),s)),v))}return _},[_,r,l,u,s,o]),z=F(()=>{let b=0,v=0;const x=[];return g.forEach(w=>{if(Array.isArray(w.items)){Se(w,v++),w.items.forEach(S=>{Se(S,b++),x.push(S)});return}return Se(w,b++),x.push(w)},[]),x},[g]);return E(()=>{p(b=>Object.values(b).some(x=>x[de]!=null)?Object.fromEntries(Object.entries(b).map(([x,w])=>w[de]==null?[x,w]:m([x,w[de]]))):b)},[m]),{processedItems:g,visibleData:z,filters:f,filterFunctions:y,setFilterState:q}},Do=i=>{const e=a=>{const o=i.data.indexOf(a);if(o<0)return null;const n=i.data.splice(o,1);if(i.data=i.data.slice(),Array.isArray(n)&&n.length>0)return n[0]},t=(a,o)=>{i.data.splice(a,1,o),i.data=i.data.slice()};return{removeItem:e,removeItems(a){const o=[];for(let n=a.length-1;n>=0;n-=1){const r=i.removeItem(a[n]);r!=null&&o.push(r)}return o},replaceItemAtIndex:t,replaceItem(a,o){const n=i.data.indexOf(a);if(n>-1)return t(n,o)},selectItem(a){i.shadowRoot.querySelector("#groupedList").select(a)},selectAll(){i.shadowRoot.querySelector("#groupedList").selectAll()},deselectAll(){i.shadowRoot.querySelector("#groupedList").deselectAll()},deselectItem(a){i.shadowRoot.querySelector("#groupedList").deselect(a)},isItemSelected(a){return i.shadowRoot.querySelector("#groupedList").isItemSelected(a)}}},To=({host:i,visibleData:e,filters:t,...a})=>{const{setFilterState:o}=a,n=F(()=>Do(i),[]);Ae(a,Object.values(a)),Ae(n,Object.values(n)),E(()=>{const l=u=>o(u.detail.name,s=>({...s,...u.detail.state}));return i.addEventListener("legacy-filter-changed",l),()=>i.removeEventListener("legacy-filter-changed",l)},[]),N("visibleData",e),N("sortedFilteredGroupedItems",a.sortedFilteredGroupedItems),N("selectedItems",a.selectedItems),N("sortOn",a.sortOn),N("descending",a.descending),N("isMini",a.isMini);const r=F(()=>Object.fromEntries(Object.entries(t).filter(([,{filter:l}])=>l!==void 0).map(([l,{filter:u}])=>[l,u])),[t]);N("filters",r,Object.values(r))},Vo=i=>{const{hashParam:e,settingsId:t,data:a,resizeSpeedFactor:o,noLocal:n,noLocalSort:r=n,noLocalFilter:l=n,error:u,rowPartFn:s}=i,d=co({settingsId:t,host:i}),{settings:m,setSettings:f,columns:p,resetRef:q}=d,h=Ea(p,e,m,f,q),{processedItems:y,visibleData:_,filters:g,setFilterState:z,filterFunctions:b}=Lo({data:a,columns:p,hashParam:e,sortAndGroupOptions:h,noLocalSort:r,noLocalFilter:l}),{isMini:v,collapsedColumns:x,miniColumns:w}=qo({host:i,columns:p,settings:m,setSettings:f,resizeSpeedFactor:o,sortAndGroupOptions:h}),S=a&&Array.isArray(a)&&a.length>0,[D,G]=T([]);return To({host:i,visibleData:_,sortedFilteredGroupedItems:y,columns:p,filters:g,setFilterState:z,selectedItems:D,isMini:v,...h}),{header:Ao({host:i,selectedItems:D,sortAndGroupOptions:h,dataIsValid:S,data:a,columns:p,filters:g,collapsedColumns:x,settings:m,filterFunctions:b,settingS:d,setFilterState:z,hideSelectAll:i.hideSelectAll===!0}),list:Mo({host:i,error:u,dataIsValid:S,processedItems:y,setSelectedItems:G,columns:p,collapsedColumns:x,miniColumns:w,sortAndGroupOptions:h,rowPartFn:s}),footer:zo({host:i,selectedItems:D,columns:p})}};customElements.define("cosmoz-grouped-list-row",class extends HTMLElement{get item(){return this._item}set item(e){this._item=e,this._render()}get index(){return this._index}set index(e){this._index=e,this._render()}get renderFn(){return this._renderFn}set renderFn(e){this._renderFn=e,this._render()}_render(){this._item==null||this._index==null||this._renderFn==null||qe(this._renderFn(this._item,this._index),this)}});const Po={group:Symbol("group")},ve=(i,e)=>(e.has(i)||e.set(i,{}),e.get(i)),No=(i,e)=>!!ve(i,e).expanded,Ro=(i,e)=>!!ve(i,e).folded,Fe=i=>i?i.items instanceof Array:!1,Bo=i=>{if(!Array.isArray(i)||i.length===0)return;const e=Array.isArray(i[0]?.items);if(!i.every(a=>Array.isArray(a.items)===e))throw new Error("Data must be homogeneous.")},Go=(i,e,t)=>Array.isArray(i)?(Bo(i),i.reduce((o,n)=>{const r=n;if(!r.items)return o.concat(n);if(r.items.length){if(ve(n,t).folded)return o.concat(n);const l=r.items.map(u=>Object.assign(u,{[Po.group]:n}));return o.concat(n,l)}return e?o.concat(n):o},[])):void 0,Ho=(i,...e)=>typeof i=="function"?i(...e):i,jo=(i,e)=>i===e,Wo=()=>{const[i,e]=T(()=>[new WeakMap]);return{setItemState:$((a,o)=>e(([n])=>{const r=ve(a,n);return Object.assign(r,Ho(o,r)),[n]}),[]),state:i[0],signal:i}},Uo=()=>{const{setItemState:i,state:e,signal:t}=Wo(),a=$((n,r)=>{Fe(n)&&i(n,l=>({folded:r!==void 0?r:!l.folded}))},[]),o=$((n,r)=>{Fe(n)||i(n,l=>({expanded:r!==void 0?!r:!l.expanded}))},[]);return{state:e,signal:t,toggleFold:a,toggleCollapse:o}},Ko=({initial:i,compareItemsFn:e,data:t,flatData:a})=>{const[o,n]=T(i),[r,l]=T(),u=$(g=>o.includes(g),[o]),s=$(g=>g?.items?.every(u)??!1,[u]),d=$(g=>u(g)||s(g),[u,s]),m=$(g=>{const b=g.items??[g];n(v=>[...v,...b.filter(x=>!v.includes(x))]),l(g)},[]),f=$(g=>{const b=g.items??[g];n(v=>v.filter(x=>!b.includes(x))),l(g)},[]),p=$(g=>{n(g.items?.slice()||[g]),l(g)},[]),q=$(()=>{n(t.flatMap(g=>g.items||g)),l(void 0)},[t]),h=$(()=>{n([]),l(void 0)},[]),y=$((g,z=!d(g))=>z?m(g):f(g),[d]),_=$((g,z)=>{if(!a)return;const b=r?a.findIndex(w=>e(w,r)):-1;if(b<0)return y(g,z);const[v,x]=[b,a.indexOf(g)].sort((w,S)=>w-S);a.slice(v,x+1).forEach((w,S,D)=>{S>0&&S<D.length-1&&Fe(w)||y(w,z)}),l(g)},[a,e,y]);return E(()=>n(g=>g.length>0&&a?a.filter(z=>g.find(b=>e(z,b))):g),[a]),{selectedItems:o,isItemSelected:u,isGroupSelected:s,isSelected:d,select:m,deselect:f,selectOnly:p,selectAll:q,deselectAll:h,toggleSelect:y,toggleSelectTo:_}},Jo={host:{position:"relative",display:"flex",flexDirection:"column"}},Xo=i=>{const{data:e,renderItem:t,renderGroup:a,displayEmptyGroups:o,compareItemsFn:n=jo}=i,{toggleFold:r,toggleCollapse:l,state:u,signal:s}=Uo(),d=F(()=>Go(e,o,u),[e,o,s]),{selectedItems:m,isItemSelected:f,isGroupSelected:p,isSelected:q,select:h,deselect:y,selectOnly:_,selectAll:g,deselectAll:z,toggleSelect:b,toggleSelectTo:v}=Ko({initial:[],compareItemsFn:n,data:e,flatData:d}),x=$((S,D)=>Array.isArray(S.items)?a(S,D,{selected:p(S),folded:Ro(S,u),toggleSelect:G=>b(S,typeof G=="boolean"?G:void 0),toggleFold:()=>r(S)}):t(S,D,{selected:m.includes(S),expanded:No(S,u),toggleSelect:G=>b(S,typeof G=="boolean"?G:void 0),toggleCollapse:()=>l(S)}),[t,a,m,b,s]);gt(()=>{Object.assign(i.style,Jo.host)},[]),N("selectedItems",m);const w={toggleFold:r,toggleCollapse:l,isItemSelected:f,isGroupSelected:p,isSelected:q,select:h,deselect:y,selectOnly:_,selectAll:g,deselectAll:z,toggleSelect:b,toggleSelectTo:v};return Ae(w,Object.values(w)),{renderRow:x,flatData:d}},Qo=({renderRow:i,flatData:e})=>ri({items:e,renderItem:(t,a)=>c`<cosmoz-grouped-list-row
 				.item=${t}
 				.index=${a}
 				.renderFn=${i}
