@@ -194,7 +194,7 @@ export default css`
 	.sg[data-on] {
 		background: var(
 			--cosmoz-omnitable-checkbox-checked-color,
-			var(--primary-color, #508aef)
+			var(--cosmoz-omnitable-primary-color, #508aef)
 		);
 	}
 	.sg svg {
@@ -238,7 +238,7 @@ export const dropdown = css`
 		right: -4px;
 		background-color: var(
 			--cosmoz-omnitable-checkbox-checked-color,
-			var(--primary-color, #508aef)
+			var(--cosmoz-omnitable-primary-color, #508aef)
 		);
 		width: 8px;
 		height: 8px;

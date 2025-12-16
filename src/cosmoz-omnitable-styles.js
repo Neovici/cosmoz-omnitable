@@ -27,7 +27,7 @@ export const checkbox = css`
 	.checkbox:checked {
 		background-color: var(
 			--cosmoz-omnitable-checkbox-checked-color,
-			var(--primary-color, #508aef)
+			var(--cosmoz-omnitable-primary-color, #508aef)
 		);
 		box-shadow: none;
 	}
@@ -76,7 +76,7 @@ export const checkbox = css`
 		top: 8px;
 		background-color: var(
 			--cosmoz-omnitable-checkbox-checked-color,
-			var(--primary-color, #508aef)
+			var(--cosmoz-omnitable-primary-color, #508aef)
 		);
 	}
 `;
@@ -528,7 +528,7 @@ export default css`
 	.sg[data-on] {
 		color: var(
 			--cosmoz-omnitable-checkbox-checked-color,
-			var(--primary-color, #508aef)
+			var(--cosmoz-omnitable-primary-color, #508aef)
 		);
 	}
 	.sg:not([data-on='desc']) {
