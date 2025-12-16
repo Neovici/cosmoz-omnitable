@@ -1,7 +1,6 @@
 import { html, component, useContext } from '@pionjs/pion';
 import { repeat } from 'lit-html/directives/repeat.js';
 import './lib/cosmoz-omnitable-resize-nub';
-import { render } from './lib/settings/cosmoz-omnitable-sort-group';
 import { when } from 'lit-html/directives/when.js';
 import { SortAndGroupContext } from './lib/use-sort-and-group-options';
 
@@ -11,12 +10,7 @@ const renderHeaderRow = ({
 	groupOnColumn,
 	filters,
 	setFilterState,
-	sortAndGroup: {
-		sortOn: on,
-		setSortOn: setOn,
-		descending,
-		setDescending,
-	} = {},
+	sortAndGroup,
 }) =>
 	repeat(
 		columns,
@@ -34,9 +28,7 @@ const renderHeaderRow = ({
 					filters[column.name] ?? {},
 					(state) => setFilterState(column.name, state),
 					column.source(column, data),
-				)}
-				${when(!column.noSort, () =>
-					render({ on, setOn, descending, setDescending, column }),
+					sortAndGroup,
 				)}
 			</div>`,
 			html`<cosmoz-omnitable-resize-nub
@@ -48,6 +40,7 @@ const renderHeaderRow = ({
 
 const HeaderRow = ({ columns, settingsConfig, hideSelectAll, ...thru }) => {
 	const sortAndGroup = useContext(SortAndGroupContext);
+
 	return html`
 		${when(columns, (columns) =>
 			renderHeaderRow({ columns, sortAndGroup, ...thru }),

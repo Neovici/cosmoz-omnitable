@@ -51,15 +51,18 @@ export const arrow = html` <svg
 	/>
 </svg>`;
 
-export const triangle = html`<svg
-	width="8"
-	height="6"
-	viewBox="0 0 8 6"
-	fill="currentColor"
+export const sortArrow = html`<svg
 	xmlns="http://www.w3.org/2000/svg"
+	width="8"
+	height="20"
+	viewBox="0 0 8 20"
+	fill="currentColor"
 >
 	<path
-		d="M0.5,0.5h7c0.4,0,0.6,0.4,0.4,0.7L4.4,5.3c-0.2,0.2-0.5,0.2-0.7,0L0.1,1.2
-		C-0.1,0.9,0.1,0.5,0.5,0.5z"
+		d="M1 16L4 19M4 19L7 16M4 19V1"
+		stroke="currentColor"
+		stroke-width="2"
+		stroke-linecap="round"
+		stroke-linejoin="round"
 	/>
-</svg> `;
+</svg>`;

@@ -16,6 +16,8 @@ import {
 import '@neovici/cosmoz-autocomplete';
 import { columnSymbol } from './lib/use-dom-columns';
 
+import { renderLabel } from './lib/cosmoz-omnitable-dropdown-input';
+
 /**
  * @polymer
  * @customElement
@@ -58,14 +60,14 @@ class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
 		></cosmoz-input>`;
 	}
 
-	renderHeader(column, { filter, query }, setState, source) {
+	renderHeader(column, { filter, query }, setState, source, sortAndGroup) {
 		return html`<cosmoz-autocomplete-ui
 			class="external-values-${column.externalValues}"
 			?keep-opened=${column.keepOpened}
 			?keep-query=${column.keepQuery}
 			.textual=${column.textual}
 			.column=${column}
-			.label=${column.title}
+			.label=${renderLabel(column.title, column, sortAndGroup)}
 			.source=${source}
 			.textProperty=${column.textProperty}
 			.valueProperty=${column.valueProperty}

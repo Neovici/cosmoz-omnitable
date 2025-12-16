@@ -14,6 +14,8 @@ import {
 	onText,
 } from './cosmoz-omnitable-column-list-mixin';
 
+import { renderLabel } from './lib/cosmoz-omnitable-dropdown-input';
+
 /**
  * @polymer
  * @customElement
@@ -55,10 +57,10 @@ class OmnitableColumnListHorizontal extends listColumnMixin(
 		return 'not implemented';
 	}
 
-	renderHeader(column, { filter, query }, setState, source) {
+	renderHeader(column, { filter, query }, setState, source, sortAndGroup) {
 		return html`<cosmoz-autocomplete-ui
 			class="external-values-${column.externalValues}"
-			.label=${column.title}
+			.label=${renderLabel(column.title, column, sortAndGroup)}
 			.source=${source}
 			.textProperty=${column.textProperty}
 			.value=${filter}

@@ -95,10 +95,10 @@ const meta: Meta = {
 				.data=${args.data}
 				.selectedItems=${args.selectedItems}
 				hash-param=${args.hashParam}
-				sort-on=${args.sortOn}
-				group-on=${args.groupOn}
+				.sortOn=${args.sortOn}
+				.groupOn=${args.groupOn}
 				.descending=${args.descending}
-				.group-on-descending=${args.groupOnDescending}
+				.groupOnDescending=${args.groupOnDescending}
 				settings-id=${args.settingsId}
 			>
 				<cosmoz-omnitable-column

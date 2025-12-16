@@ -18,6 +18,8 @@ import { array } from '@neovici/cosmoz-utils/array';
 import { columnSymbol } from './lib/use-dom-columns';
 import { get } from '@polymer/polymer/lib/utils/path';
 
+import { renderLabel } from './lib/cosmoz-omnitable-dropdown-input';
+
 export const getComparableValue = (
 	{ valuePath, textProperty, valueProperty },
 	item,
@@ -77,7 +79,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 		></cosmoz-input>`;
 	}
 
-	renderHeader(column, { filter, query }, setState, source) {
+	renderHeader(column, { filter, query }, setState, source, sortAndGroup) {
 		return html`<cosmoz-autocomplete-ui
 			class="external-values-${column.externalValues}"
 			?keep-opened=${column.keepOpened}
@@ -85,7 +87,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 			?show-single=${column.showSingle}
 			?preserve-order=${column.preserveOrder}
 			.textual=${column.textual}
-			.label=${column.title}
+			.label=${renderLabel(column.title, column, sortAndGroup)}
 			.source=${source}
 			.textProperty=${column.textProperty}
 			.valueProperty=${column.valueProperty}
