@@ -1,4 +1,4 @@
-import{x as c,B as qe,E as pt}from"./iframe-B6vZIUyj.js";import{t as K,c as O,g as C,P as M,u as T,a as gt,m as bt,s as Dt,D as Tt,b as Vt,e as Pt,i as fe,h as _e,d as Nt,f as ft,r as Rt,j as Bt,k as z,l as Gt,n as he,p as me,o as k,q as Ht,v as xe,w as jt,x as Wt,y as Ut,T as Kt,z as E,A as Ue,B as Jt,C as Xt,E as Qt,F as $,G as Yt,H as Zt,I as ht,J as ke,K as F,L as xt,M as Ie,N as ei,O as vt,Q as ti,R as Me,S as Ke,U as ii,V as Ee,W as ai,X as oi,Y as Ae,Z as Oe,_ as ni,$ as ze,a0 as N,a1 as ri,a2 as ye,a3 as li}from"./cosmoz-collapse-BrWPvGbB.js";const si=K`
+import{x as c,B as qe,E as pt}from"./iframe-d8UpFy5g.js";import{t as K,c as O,g as C,P as M,u as T,a as gt,m as bt,s as Dt,D as Tt,b as Vt,e as Pt,i as fe,h as _e,d as Nt,f as ft,r as Rt,j as Bt,k as z,l as Gt,n as he,p as me,o as k,q as Ht,v as xe,w as jt,x as Wt,y as Ut,T as Kt,z as E,A as Ue,B as Jt,C as Xt,E as Qt,F as $,G as Yt,H as Zt,I as ht,J as ke,K as F,L as xt,M as Ie,N as ei,O as vt,Q as ti,R as Me,S as Ke,U as ii,V as Ee,W as ai,X as oi,Y as Ae,Z as Oe,_ as ni,$ as ze,a0 as N,a1 as ri,a2 as ye,a3 as li}from"./cosmoz-collapse-D78fP9I8.js";const si=K`
 	:host {
 		display: flex;
 	}
@@ -900,7 +900,7 @@ import{x as c,B as qe,E as pt}from"./iframe-B6vZIUyj.js";import{t as K,c as O,g 
 		top: 8px;
 		background-color: var(
 			--cosmoz-omnitable-checkbox-checked-color,
-			var(--comoz-omnitable-primary-color, #508aef)
+			var(--cosmoz-omnitable-primary-color, #508aef)
 		);
 	}
 `,Ra=K`
@@ -1350,7 +1350,7 @@ import{x as c,B as qe,E as pt}from"./iframe-B6vZIUyj.js";import{t as K,c as O,g 
 	.sg[data-on] {
 		color: var(
 			--cosmoz-omnitable-checkbox-checked-color,
-			var(--comoz-omnitable-primary-color, #508aef)
+			var(--cosmoz-omnitable-primary-color, #508aef)
 		);
 	}
 	.sg:not([data-on='desc']) {
@@ -1796,7 +1796,7 @@ import{x as c,B as qe,E as pt}from"./iframe-B6vZIUyj.js";import{t as K,c as O,g 
 	.sg[data-on] {
 		background: var(
 			--cosmoz-omnitable-checkbox-checked-color,
-			var(--comoz-omnitable-primary-color #508aef)
+			var(--cosmoz-omnitable-primary-color, #508aef)
 		);
 	}
 	.sg svg {
@@ -1838,7 +1838,7 @@ import{x as c,B as qe,E as pt}from"./iframe-B6vZIUyj.js";import{t as K,c as O,g 
 		right: -4px;
 		background-color: var(
 			--cosmoz-omnitable-checkbox-checked-color,
-			var(--comoz-omnitable-primary-color, #508aef)
+			var(--cosmoz-omnitable-primary-color, #508aef)
 		);
 		width: 8px;
 		height: 8px;
