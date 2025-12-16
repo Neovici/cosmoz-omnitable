@@ -40,8 +40,6 @@ const style = css`
 		display: block;
 		text-align: var(--text-align);
 		transform-origin: var(--text-align) top;
-		/* TODO: Remove later on, for compat only */
-		font-size: 13px;
 	}
 
 	:host(:not([always-float-label])) label {
