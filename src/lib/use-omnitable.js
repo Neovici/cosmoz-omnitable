@@ -7,6 +7,7 @@ import { useList } from './use-list';
 import { useProcessedItems } from './use-processed-items';
 import { usePublicInterface } from './use-public-interface';
 import { useSortAndGroupOptions } from './use-sort-and-group-options';
+import { All } from './select-all-symbol';
 
 export const useOmnitable = (host) => {
 	const {
@@ -19,6 +20,7 @@ export const useOmnitable = (host) => {
 			noLocalFilter = noLocal,
 			error,
 			rowPartFn,
+			enableSelectAll,
 		} = host,
 		settingS = useSettings({ settingsId, host }),
 		{ settings, setSettings, columns, resetRef } = settingS,
@@ -48,7 +50,8 @@ export const useOmnitable = (host) => {
 			sortAndGroupOptions,
 		}),
 		dataIsValid = data && Array.isArray(data) && data.length > 0,
-		[selectedItems, setSelectedItems] = useState([]);
+		[selectedItems, setSelectedItems] = useState([]),
+		onSelectAllMatching = () => setSelectedItems(All);
 
 	usePublicInterface({
 		host,
@@ -94,6 +97,9 @@ export const useOmnitable = (host) => {
 			host,
 			selectedItems,
 			columns,
+			enableSelectAll,
+			onSelectAllMatching,
+			visibleData,
 		}),
 	};
 };
