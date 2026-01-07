@@ -1,14 +1,14 @@
-import { html, component } from '@pionjs/pion';
-import { t } from 'i18next';
-import { isEmpty } from '@neovici/cosmoz-utils/template';
-import { defaultMiddleware, size } from '@neovici/cosmoz-dropdown/use-floating';
 import '@neovici/cosmoz-collapse';
-import { sort, group } from './cosmoz-omnitable-sort-group';
+import { defaultMiddleware, size } from '@neovici/cosmoz-dropdown/use-floating';
+import { sheet } from '@neovici/cosmoz-utils';
+import { isEmpty } from '@neovici/cosmoz-utils/template';
+import { component, html } from '@pionjs/pion';
+import { t } from 'i18next';
+import { when } from 'lit-html/directives/when.js';
+import { arrow, close, pull } from '../icons';
+import { group, sort } from './cosmoz-omnitable-sort-group';
 import style, { dropdown as dropdownStyle } from './style.css';
 import useSettingsUi from './use-settings-ui';
-import { close, pull, arrow } from '../icons';
-import { when } from 'lit-html/directives/when.js';
-import { sheet } from '@neovici/cosmoz-utils';
 
 const middleware = [
 	size({
@@ -152,22 +152,19 @@ const Settings = ({ config, newLayout }) => html`
 		.placement="${newLayout ? 'bottom-start' : 'bottom-end'}"
 		.middleware="${middleware}"
 	>
-		${when(
-			newLayout,
-			() => html`<div class="headerDots" slot="button">...</div>`,
-			() =>
-				html` <svg
-					viewBox="0 0 24 24"
-					width="24"
-					slot="button"
-					fill="currentColor"
-				>
-					<circle cx="10" cy="18" r="2"></circle>
-					<circle cx="10" cy="12" r="2"></circle>
-					<circle cx="10" cy="6" r="2"></circle>
-				</svg>`,
-		)}
-		${when(config?.badge, () => html`<div class="badge" slot="button"></div>`)}
+		<div title="${t('Sort and filter')}" slot="button">
+			${when(
+				newLayout,
+				() => html`<div class="headerDots">...</div>`,
+				() =>
+					html` <svg viewBox="0 0 24 24" width="24" fill="currentColor">
+						<circle cx="10" cy="18" r="2"></circle>
+						<circle cx="10" cy="12" r="2"></circle>
+						<circle cx="10" cy="6" r="2"></circle>
+					</svg>`,
+			)}
+			${when(config?.badge, () => html`<div class="badge"></div>`)}
+		</div>
 		<cosmoz-omnitable-settings-ui
 			exportparts="columns, groups"
 			.config=${config}
