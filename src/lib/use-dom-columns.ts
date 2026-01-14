@@ -4,23 +4,7 @@ import { Column, RenderFunction } from './types';
 
 const columnSymbol = Symbol('column');
 
-interface DOMColumn extends HTMLElement {
-	isOmnitableColumn: boolean;
-	hidden: boolean;
-	name: string;
-	title: string;
-	valuePath?: string;
-	groupOn?: string;
-	sortPath?: string;
-	sortOn?: string;
-	noSort?: boolean;
-	disabled?: boolean;
-
-	minWidth?: string;
-	width?: string;
-	flex?: string;
-	priority?: number;
-
+interface ColumnProperties {
 	getString?: (item: unknown, valuePath?: string) => string;
 	getComparableValue?: (item: unknown, valuePath?: string) => unknown;
 	serializeFilter?: (filter: unknown) => string | undefined;
@@ -28,7 +12,6 @@ interface DOMColumn extends HTMLElement {
 	toXlsxValue?: (item: unknown, valuePath?: string) => unknown;
 
 	renderHeader?: RenderFunction;
-	renderCell?: RenderFunction;
 	renderEditCell?: RenderFunction;
 	renderGroup?: RenderFunction;
 	cellTitleFn?: (item: unknown) => string;
@@ -39,14 +22,9 @@ interface DOMColumn extends HTMLElement {
 	cellClass?: string;
 
 	editable?: boolean;
-
 	values?: unknown[];
-	computeSource?: (valuePath: string, values: unknown[]) => unknown[];
-
 	noLocalFilter?: boolean;
-
 	mini?: boolean;
-	renderMini?: RenderFunction;
 
 	// @deprecated
 	loading?: boolean;
@@ -80,68 +58,42 @@ interface DOMColumn extends HTMLElement {
 	// treenode columns
 	ownerTree?: unknown;
 	keyProperty?: string;
+}
 
+interface DOMColumn extends HTMLElement, ColumnProperties {
+	// DOM-specific properties
+	isOmnitableColumn: boolean;
+	hidden: boolean;
+	name: string;
+	title: string;
+	disabled?: boolean;
+
+	// Column configuration
+	valuePath?: string;
+	groupOn?: string;
+	sortPath?: string;
+	sortOn?: string;
+	noSort?: boolean;
+
+	// Layout
+	minWidth?: string;
+	width?: string;
+	flex?: string;
+	priority?: number;
+
+	// DOM-specific render functions
+	renderCell?: RenderFunction;
+	renderMini?: RenderFunction;
+
+	computeSource?: (valuePath: string, values: unknown[]) => unknown[];
 	getConfig?: (column: DOMColumn) => Record<string, unknown>;
 }
 
-interface NormalizedColumn extends Column {
-	getString?: (item: unknown, valuePath?: string) => string;
-	getComparableValue?: (item: unknown, valuePath?: string) => unknown;
-	serializeFilter?: (filter: unknown) => string | undefined;
-	deserializeFilter?: (filter: string) => unknown;
-	toXlsxValue?: (item: unknown, valuePath?: string) => unknown;
-
-	renderHeader?: RenderFunction;
-	renderEditCell?: RenderFunction;
-	renderGroup?: RenderFunction;
-	cellTitleFn?: (item: unknown) => string;
-	headerTitleFn?: () => string;
-
-	getFilterFn?: (filter: unknown) => (item: unknown) => boolean;
-	headerCellClass?: string;
-	cellClass?: string;
-
-	editable?: boolean;
-
-	values?: unknown[];
+interface NormalizedColumn extends Column, ColumnProperties {
 	source?: (valuePath: string, values: unknown[]) => unknown[];
 
-	noLocalFilter?: boolean;
-
-	mini?: boolean;
-
 	// @deprecated
-	loading?: boolean;
-	externalValues?: unknown[];
 	computeSource?: (valuePath: string, values: unknown[]) => unknown[];
-
-	// boolean columns
-	trueLabel?: string;
-	falseLabel?: string;
-
-	// list columns
-	valueProperty?: string;
-	textProperty?: string;
-	emptyLabel?: string;
-	emptyValue?: unknown;
-
-	// range columns
-	min?: unknown;
-	max?: unknown;
-	autoupdate?: boolean;
-
-	// number columns
-	maximumFractionDigits?: number;
-	minimumFractionDigits?: number;
-
-	// amount columns
-	currency?: string;
-	rates?: Record<string, number>;
-	autodetect?: boolean;
-
-	// treenode columns
-	ownerTree?: unknown;
-	keyProperty?: string;
 
 	[columnSymbol]: DOMColumn;
 	[key: string]: unknown;
