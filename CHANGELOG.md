@@ -1,3 +1,20 @@
+# [16.1.0-beta.4](https://github.com/Neovici/cosmoz-omnitable/compare/v16.1.0-beta.3...v16.1.0-beta.4) (2026-01-14)
+
+
+### Bug Fixes
+
+* add permissions to workflow configuration ([2b45704](https://github.com/Neovici/cosmoz-omnitable/commit/2b45704f73aa796d4c21dc857ed81ce35bcf1766))
+* column config is invalidated every time the contents of the slot changes ([#818](https://github.com/Neovici/cosmoz-omnitable/issues/818)) ([b6b9192](https://github.com/Neovici/cosmoz-omnitable/commit/b6b9192e7d07f2ddc2de113386d716b239f6a9a1))
+* remove unused headerFocused parameter from renderDropdown ([#800](https://github.com/Neovici/cosmoz-omnitable/issues/800)) ([40b8bae](https://github.com/Neovici/cosmoz-omnitable/commit/40b8baedbda25e3d96bf1343d2a49492fa3fd155))
+* repository URL case sensitivity ([ea5ef78](https://github.com/Neovici/cosmoz-omnitable/commit/ea5ef783696ae5778767a9c71da5cd2edcda6fdd))
+* test npm publishing ([8c719bf](https://github.com/Neovici/cosmoz-omnitable/commit/8c719bf97a0d9afe344d0009030d4fce1a90a1ea))
+
+
+### Features
+
+* add title to settings toggle button ([5f27654](https://github.com/Neovici/cosmoz-omnitable/commit/5f276540cdbfdf1da0c8b4e0ae562ca33c0030fb))
+* convert use-track-size.js to typescript ([#851](https://github.com/Neovici/cosmoz-omnitable/issues/851)) ([8d2349a](https://github.com/Neovici/cosmoz-omnitable/commit/8d2349a3b02ca0cc638531947df6c1325b8e8a00))
+
 # [16.1.0-beta.3](https://github.com/neovici/cosmoz-omnitable/compare/v16.1.0-beta.2...v16.1.0-beta.3) (2025-12-05)
 
 
