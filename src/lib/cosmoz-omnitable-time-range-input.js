@@ -24,7 +24,6 @@ class TimeRangeInput extends dateInputMixin(
 				title: this.title,
 				tooltip: this._tooltip,
 				filterText: this._filterText,
-				headerFocused: this.headerFocused,
 				externalValues: this.externalValues,
 				onOpenedChanged,
 				content: html`

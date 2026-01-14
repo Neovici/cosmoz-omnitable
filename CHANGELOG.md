@@ -19,6 +19,29 @@
 
 * convert save-as-xlsx-action.js to ts ([2271f19](https://github.com/neovici/cosmoz-omnitable/commit/2271f190dd9fa7f98362d41f8f0c601868b7fff9))
 
+## [16.0.3](https://github.com/Neovici/cosmoz-omnitable/compare/v16.0.2...v16.0.3) (2025-12-10)
+
+
+### Bug Fixes
+
+* repository URL case sensitivity ([ea5ef78](https://github.com/Neovici/cosmoz-omnitable/commit/ea5ef783696ae5778767a9c71da5cd2edcda6fdd))
+
+## [16.0.2](https://github.com/neovici/cosmoz-omnitable/compare/v16.0.1...v16.0.2) (2025-12-10)
+
+
+### Bug Fixes
+
+* add permissions to workflow configuration ([2b45704](https://github.com/neovici/cosmoz-omnitable/commit/2b45704f73aa796d4c21dc857ed81ce35bcf1766))
+* test npm publishing ([8c719bf](https://github.com/neovici/cosmoz-omnitable/commit/8c719bf97a0d9afe344d0009030d4fce1a90a1ea))
+
+## [16.0.1](https://github.com/neovici/cosmoz-omnitable/compare/v16.0.0...v16.0.1) (2025-12-08)
+
+
+### Bug Fixes
+
+* column config is invalidated every time the contents of the slot changes ([#818](https://github.com/neovici/cosmoz-omnitable/issues/818)) ([b6b9192](https://github.com/neovici/cosmoz-omnitable/commit/b6b9192e7d07f2ddc2de113386d716b239f6a9a1))
+* remove unused headerFocused parameter from renderDropdown ([#800](https://github.com/neovici/cosmoz-omnitable/issues/800)) ([40b8bae](https://github.com/neovici/cosmoz-omnitable/commit/40b8baedbda25e3d96bf1343d2a49492fa3fd155))
+
 # [16.0.0](https://github.com/neovici/cosmoz-omnitable/compare/v15.1.0...v16.0.0) (2025-12-01)
 
 

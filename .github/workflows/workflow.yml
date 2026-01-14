@@ -8,6 +8,13 @@ on:
     branches:
       - beta
       - master
+      
+permissions:
+  contents: write 
+  issues: write
+  pull-requests: write
+  id-token: write
+  
 jobs:
   build:
     uses: Neovici/cfg/.github/workflows/forge.yml@master
