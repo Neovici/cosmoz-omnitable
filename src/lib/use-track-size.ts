@@ -1,15 +1,18 @@
-import { useEffect } from '@pionjs/pion';
+import { StateUpdater, useEffect } from '@pionjs/pion';
 
-export const useTrackSize = (host, setCanvasWidth) =>
+export const useTrackSize = (
+	host: HTMLElement,
+	setCanvasWidth: StateUpdater<number>,
+) =>
 	useEffect(() => {
-		const onResize = ([entry]) => {
+		const onResize = ([entry]: ResizeObserverEntry[]) => {
 				if (entry.contentRect?.width === 0) {
 					return;
 				}
 
 				requestAnimationFrame(() =>
 					setCanvasWidth(
-						entry.contentRect?.width -
+						entry.contentRect.width -
 							20 /* scrollbar width */ -
 							44 /* checkbox width */ -
 							24 /* expand button width */,
