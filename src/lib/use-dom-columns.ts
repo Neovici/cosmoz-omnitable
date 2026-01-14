@@ -1,0 +1,332 @@
+import { memooize } from '@neovici/cosmoz-utils/memoize';
+import { useLayoutEffect, useState } from '@pionjs/pion';
+import { Column, RenderFunction } from './types';
+
+const columnSymbol = Symbol('column');
+
+interface DOMColumn extends HTMLElement {
+	isOmnitableColumn: boolean;
+	hidden: boolean;
+	name: string;
+	title: string;
+	valuePath?: string;
+	groupOn?: string;
+	sortPath?: string;
+	sortOn?: string;
+	noSort?: boolean;
+	disabled?: boolean;
+
+	minWidth?: string;
+	width?: string;
+	flex?: string;
+	priority?: number;
+
+	getString?: (item: unknown, valuePath?: string) => string;
+	getComparableValue?: (item: unknown, valuePath?: string) => unknown;
+	serializeFilter?: (filter: unknown) => string | undefined;
+	deserializeFilter?: (filter: string) => unknown;
+	toXlsxValue?: (item: unknown, valuePath?: string) => unknown;
+
+	renderHeader?: RenderFunction;
+	renderCell?: RenderFunction;
+	renderEditCell?: RenderFunction;
+	renderGroup?: RenderFunction;
+	cellTitleFn?: (item: unknown) => string;
+	headerTitleFn?: () => string;
+
+	getFilterFn?: (filter: unknown) => (item: unknown) => boolean;
+	headerCellClass?: string;
+	cellClass?: string;
+
+	editable?: boolean;
+
+	values?: unknown[];
+	computeSource?: (valuePath: string, values: unknown[]) => unknown[];
+
+	noLocalFilter?: boolean;
+
+	mini?: boolean;
+	renderMini?: RenderFunction;
+
+	// @deprecated
+	loading?: boolean;
+	externalValues?: unknown[];
+
+	// boolean columns
+	trueLabel?: string;
+	falseLabel?: string;
+
+	// list columns
+	valueProperty?: string;
+	textProperty?: string;
+	emptyLabel?: string;
+	emptyValue?: unknown;
+
+	// range columns
+	min?: unknown;
+	max?: unknown;
+	locale?: string;
+	autoupdate?: boolean;
+
+	// number columns
+	maximumFractionDigits?: number;
+	minimumFractionDigits?: number;
+
+	// amount columns
+	currency?: string;
+	rates?: Record<string, number>;
+	autodetect?: boolean;
+
+	// treenode columns
+	ownerTree?: unknown;
+	keyProperty?: string;
+
+	getConfig?: (column: DOMColumn) => Record<string, unknown>;
+}
+
+interface NormalizedColumn extends Column {
+	getString?: (item: unknown, valuePath?: string) => string;
+	getComparableValue?: (item: unknown, valuePath?: string) => unknown;
+	serializeFilter?: (filter: unknown) => string | undefined;
+	deserializeFilter?: (filter: string) => unknown;
+	toXlsxValue?: (item: unknown, valuePath?: string) => unknown;
+
+	renderHeader?: RenderFunction;
+	renderEditCell?: RenderFunction;
+	renderGroup?: RenderFunction;
+	cellTitleFn?: (item: unknown) => string;
+	headerTitleFn?: () => string;
+
+	getFilterFn?: (filter: unknown) => (item: unknown) => boolean;
+	headerCellClass?: string;
+	cellClass?: string;
+
+	editable?: boolean;
+
+	values?: unknown[];
+	source?: (valuePath: string, values: unknown[]) => unknown[];
+
+	noLocalFilter?: boolean;
+
+	mini?: boolean;
+
+	// @deprecated
+	loading?: boolean;
+	externalValues?: unknown[];
+	computeSource?: (valuePath: string, values: unknown[]) => unknown[];
+
+	// boolean columns
+	trueLabel?: string;
+	falseLabel?: string;
+
+	// list columns
+	valueProperty?: string;
+	textProperty?: string;
+	emptyLabel?: string;
+	emptyValue?: unknown;
+
+	// range columns
+	min?: unknown;
+	max?: unknown;
+	autoupdate?: boolean;
+
+	// number columns
+	maximumFractionDigits?: number;
+	minimumFractionDigits?: number;
+
+	// amount columns
+	currency?: string;
+	rates?: Record<string, number>;
+	autodetect?: boolean;
+
+	// treenode columns
+	ownerTree?: unknown;
+	keyProperty?: string;
+
+	[columnSymbol]: DOMColumn;
+	[key: string]: unknown;
+}
+
+interface Host extends HTMLElement {
+	shadowRoot: ShadowRoot;
+}
+
+const verifyColumnSetup = (columns: DOMColumn[]) => {
+	let ok = true;
+	const columnNames = columns.map((c) => c.name);
+	// Check if column names are set
+	columns.forEach((column) => {
+		if (column.name != null) {
+			return;
+		}
+		ok = false;
+		// eslint-disable-next-line no-console
+		console.error(
+			'The name attribute needs to be set on all columns! Missing on column',
+			column,
+		);
+	});
+
+	columns.forEach((column) => {
+		if (
+			columnNames.indexOf(column.name) === columnNames.lastIndexOf(column.name)
+		) {
+			return;
+		}
+		ok = false;
+		// eslint-disable-next-line no-console
+		console.error(
+			'The name attribute needs to be unique among all columns! Not unique on column',
+			column,
+		);
+	});
+	return ok;
+};
+
+const normalizeColumn = (column: DOMColumn): NormalizedColumn => {
+	const valuePath = column.valuePath ?? column.name;
+
+	const normalized: NormalizedColumn = {
+		name: column.name,
+		title: column.title,
+
+		valuePath,
+		groupOn: column.groupOn ?? valuePath,
+		sortPath: column.sortPath ?? column.sortOn ?? valuePath,
+		noSort: column.noSort,
+
+		minWidth: column.minWidth,
+		width: column.width,
+		flex: column.flex,
+		priority: column.priority,
+
+		getString: column.getString,
+		getComparableValue: column.getComparableValue,
+		serializeFilter: column.serializeFilter,
+		deserializeFilter: column.deserializeFilter,
+		toXlsxValue: column.toXlsxValue,
+
+		renderHeader: column.renderHeader,
+		renderCell: column.renderCell,
+		renderEditCell: column.renderEditCell,
+		renderGroup: column.renderGroup,
+		cellTitleFn: column.cellTitleFn,
+		headerTitleFn: column.headerTitleFn,
+
+		getFilterFn: column.getFilterFn,
+		headerCellClass: column.headerCellClass,
+		cellClass: column.cellClass,
+
+		editable: column.editable,
+
+		values: column.values,
+		source: column.computeSource ? memooize(column.computeSource) : undefined,
+
+		noLocalFilter: column.noLocalFilter,
+
+		mini: column.mini,
+		renderMini: column.renderMini,
+
+		// @deprecated
+		loading: column.loading,
+		externalValues: column.externalValues,
+		computeSource: column.computeSource,
+
+		// boolean columns
+		trueLabel: column.trueLabel,
+		falseLabel: column.falseLabel,
+
+		// list columns
+		valueProperty: column.valueProperty,
+		textProperty: column.textProperty,
+		emptyLabel: column.emptyLabel,
+		emptyValue: column.emptyValue,
+
+		// range columns
+		min: column.min,
+		max: column.max,
+		locale: column.locale,
+		autoupdate: column.autoupdate,
+
+		// number columns
+		maximumFractionDigits: column.maximumFractionDigits,
+		minimumFractionDigits: column.minimumFractionDigits,
+
+		// amount columns
+		currency: column.currency,
+		rates: column.rates,
+		autodetect: column.autodetect,
+
+		// treenode columns
+		ownerTree: column.ownerTree,
+		keyProperty: column.keyProperty,
+
+		...column.getConfig?.(column),
+
+		[columnSymbol]: column,
+	};
+
+	return normalized;
+};
+
+const isVisibleColumn = (child: Element): child is DOMColumn => {
+	const column = child as Partial<DOMColumn>;
+	return Boolean(column.isOmnitableColumn && !column.hidden);
+};
+
+const collectDomColumns = (slot: HTMLSlotElement): DOMColumn[] => {
+	const domColumns = slot
+		.assignedElements({ flatten: true })
+		.filter(isVisibleColumn);
+
+	if (!verifyColumnSetup(domColumns)) return [];
+	return domColumns;
+};
+
+const normalizeColumns = (
+	domColumns: DOMColumn[],
+	enabledColumns: string[] | undefined,
+): NormalizedColumn[] => {
+	const columns = Array.isArray(enabledColumns)
+		? domColumns.filter((column) => enabledColumns.includes(column.name))
+		: domColumns.filter((column) => !column.disabled);
+
+	return columns.map(normalizeColumn);
+};
+
+export const useDOMColumns = (
+	host: Host,
+	{ enabledColumns }: { enabledColumns?: string[] },
+): NormalizedColumn[] => {
+	const [columns, setColumns] = useState<NormalizedColumn[]>([]);
+
+	useLayoutEffect(() => {
+		let sched: number;
+		const slot = host.shadowRoot.querySelector(
+			'#columnsSlot',
+		) as HTMLSlotElement;
+		const update = () => {
+			setColumns(normalizeColumns(collectDomColumns(slot), enabledColumns));
+		};
+		const scheduleUpdate = () => {
+			cancelAnimationFrame(sched);
+			sched = requestAnimationFrame(update);
+		};
+
+		scheduleUpdate();
+
+		slot.addEventListener('slotchange', scheduleUpdate);
+		host.addEventListener('cosmoz-column-prop-changed', scheduleUpdate);
+
+		return () => {
+			slot.removeEventListener('slotchange', scheduleUpdate);
+			host.removeEventListener('cosmoz-column-prop-changed', scheduleUpdate);
+			cancelAnimationFrame(sched);
+		};
+	}, [enabledColumns]);
+
+	return columns;
+};
+
+export { columnSymbol };
+export type { DOMColumn, NormalizedColumn };
