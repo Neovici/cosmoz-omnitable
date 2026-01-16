@@ -1,18 +1,19 @@
 import { useCallback, useEffect, useState } from '@pionjs/pion';
 import { isGroup, GroupItem } from './utils';
 import type { Item } from '../lib/types';
+import { All } from '../lib/select-all-symbol';
 
 export type CompareItemsFunction = <T>(a: T, b: T) => boolean;
 
 export interface UseSelectedItemsParams {
-	initial: Item[];
+	initial: Item[] | typeof All;
 	compareItemsFn: CompareItemsFunction;
 	data: (Item | GroupItem<Item>)[];
 	flatData: (Item | GroupItem<Item>)[] | undefined;
 }
 
 export interface UseSelectedItemsResult {
-	selectedItems: Item[];
+	selectedItems: Item[] | typeof All;
 	isItemSelected: (item: Item) => boolean;
 	isGroupSelected: (group: GroupItem<Item>) => boolean;
 	isSelected: (item: Item | GroupItem<Item>) => boolean;
@@ -31,13 +32,18 @@ export const useSelectedItems = ({
 	data,
 	flatData,
 }: UseSelectedItemsParams): UseSelectedItemsResult => {
-	const [selectedItems, setSelectedItems] = useState<Item[]>(initial);
+	const [selectedItems, setSelectedItems] = useState<Item[] | typeof All>(
+		initial,
+	);
 	const [lastSelection, setLastSelection] = useState<Item | GroupItem<Item>>();
+
 	/**
 	 * Check if item is selected.
 	 */
 	const isItemSelected = useCallback(
-		(item: Item) => selectedItems.includes(item),
+		(item: Item) =>
+			(Array.isArray(selectedItems) && selectedItems.includes(item)) ||
+			selectedItems === All,
 		[selectedItems],
 	);
 	/**
@@ -61,10 +67,13 @@ export const useSelectedItems = ({
 	const select = useCallback((item: Item | GroupItem<Item>) => {
 		const groupItem = item as GroupItem<Item>;
 		const items = groupItem.items ?? [item as Item];
-		setSelectedItems((selection) => [
-			...selection,
-			...items.filter((i: Item) => !selection.includes(i)),
-		]);
+		setSelectedItems((selection) => {
+			if (selection === All) return selection;
+			return [
+				...selection,
+				...items.filter((i: Item) => !selection.includes(i)),
+			];
+		});
 		setLastSelection(item);
 	}, []);
 	/**
@@ -73,9 +82,10 @@ export const useSelectedItems = ({
 	const deselect = useCallback((item: Item | GroupItem<Item>) => {
 		const groupItem = item as GroupItem<Item>;
 		const items = groupItem.items ?? [item as Item];
-		setSelectedItems((selection) =>
-			selection.filter((i) => !items.includes(i)),
-		);
+		setSelectedItems((selection) => {
+			if (selection === All) return selection;
+			return selection.filter((i: Item) => !items.includes(i));
+		});
 		setLastSelection(item);
 	}, []);
 
@@ -136,13 +146,14 @@ export const useSelectedItems = ({
 	// keep selected items across data updates
 	useEffect(
 		() =>
-			setSelectedItems((selectedItems) =>
-				selectedItems.length > 0 && flatData
-					? (flatData.filter((i) =>
-							selectedItems.find((item) => compareItemsFn(i, item)),
-						) as Item[])
-					: selectedItems,
-			),
+			setSelectedItems((selectedItems) => {
+				if (selectedItems === All || selectedItems.length === 0 || !flatData) {
+					return selectedItems;
+				}
+				return flatData.filter((i) =>
+					selectedItems.find((item: Item) => compareItemsFn(i, item)),
+				) as Item[];
+			}),
 		[flatData],
 	);
 
