@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState, type Ref } from '@pionjs/pion';
+import { useCallback, useMemo, useRef, useState } from '@pionjs/pion';
 import { Host as BaseHost } from '../types';
 import { NormalizedColumn, useDOMColumns } from '../use-dom-columns';
 import normalize, {
