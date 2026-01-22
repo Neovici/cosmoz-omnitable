@@ -8,27 +8,27 @@ import { indexSymbol } from './utils';
 
 const unparsed = Symbol('unparsed');
 
-interface GroupItem {
+export interface GroupItem {
 	id: unknown;
 	name: unknown;
 	items: Item[];
 	[indexSymbol]?: number;
 }
 
-interface FilterState {
+export interface FilterState {
 	filter?: unknown;
 	[unparsed]?: string | null;
 	[key: string]: unknown;
 }
 
-interface SortAndGroupOptions {
+export interface SortAndGroupOptions {
 	groupOnColumn?: NormalizedColumn;
 	groupOnDescending?: boolean;
 	sortOnColumn?: NormalizedColumn;
 	descending?: boolean;
 }
 
-interface UseProcessedItems {
+export interface UseProcessedItemsParams {
 	data: Item[];
 	columns: NormalizedColumn[];
 	hashParam?: string;
@@ -79,7 +79,7 @@ export const useProcessedItems = ({
 	sortAndGroupOptions,
 	noLocalSort,
 	noLocalFilter,
-}: UseProcessedItems) => {
+}: UseProcessedItemsParams) => {
 	const { groupOnColumn, groupOnDescending, sortOnColumn, descending } =
 			sortAndGroupOptions,
 		write = useCallback(
@@ -90,7 +90,7 @@ export const useProcessedItems = ({
 				}
 				const serialized =
 					value.filter && column.serializeFilter?.(column, value.filter);
-				return [filter, serialized as string | undefined];
+				return [filter, serialized];
 			},
 			[columns],
 		),
@@ -108,25 +108,24 @@ export const useProcessedItems = ({
 				return [filter, state];
 			},
 			[columns],
-		),
-		[filters, setFilters] = useHashState<Record<string, FilterState>>(
-			{},
-			hashParam,
-			{
-				multi: true,
-				suffix: '-filter--',
-				write: write as unknown as (value: unknown) => string,
-				read: read as unknown as (value: string) => Record<string, FilterState>,
-			},
-		),
-		// TODO: drop extra info from state
+		);
+
+	type FiltersType = Record<string, FilterState>;
+	const [filters, setFilters] = useHashState({} as FiltersType, hashParam, {
+		multi: true,
+		suffix: '-filter--',
+		write: write as unknown as (value: unknown) => string,
+		read: read as unknown as (value: string) => FiltersType,
+	});
+
+	const // TODO: drop extra info from state
 		setFilterState = useCallback(
 			(
 				name: string,
 				state: FilterState | ((prev: FilterState) => FilterState),
 			) =>
 				setFilters((filters) => {
-					const newState = invoke(state, filters[name]) as FilterState;
+					const newState = invoke(state, filters[name]);
 
 					notifyChanges(
 						columns.find((c) => c.name === name),
