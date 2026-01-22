@@ -1,23 +1,32 @@
 import { memooize } from '@neovici/cosmoz-utils/memoize';
 import { useLayoutEffect, useState } from '@pionjs/pion';
-import { Column, RenderFunction } from './types';
+import { Column, Host, Item, RenderFunction } from './types';
 
 const columnSymbol = Symbol('column');
 
 interface ColumnProperties {
-	getString?: (item: unknown, valuePath?: string) => string;
-	getComparableValue?: (item: unknown, valuePath?: string) => unknown;
-	serializeFilter?: (filter: unknown) => string | undefined;
-	deserializeFilter?: (filter: string) => unknown;
-	toXlsxValue?: (item: unknown, valuePath?: string) => unknown;
+	getString?: (item: Item, valuePath?: string) => string;
+	getComparableValue?: (column: NormalizedColumn, item: Item) => unknown;
+	serializeFilter?: (
+		column: NormalizedColumn,
+		filter: unknown,
+	) => string | undefined;
+	deserializeFilter?: (
+		column: NormalizedColumn,
+		filter: string | null,
+	) => unknown;
+	toXlsxValue?: (item: Item, valuePath?: string) => unknown;
 
 	renderHeader?: RenderFunction;
 	renderEditCell?: RenderFunction;
 	renderGroup?: RenderFunction;
-	cellTitleFn?: (item: unknown) => string;
+	cellTitleFn?: (item: Item) => string;
 	headerTitleFn?: () => string;
 
-	getFilterFn?: (filter: unknown) => (item: unknown) => boolean;
+	getFilterFn?: (
+		column: NormalizedColumn,
+		filter: unknown,
+	) => ((item: Item) => boolean) | null | undefined;
 	headerCellClass?: string;
 	cellClass?: string;
 
@@ -87,6 +96,9 @@ interface DOMColumn extends HTMLElement, ColumnProperties {
 
 	computeSource?: (valuePath: string, values: unknown[]) => unknown[];
 	getConfig?: (column: DOMColumn) => Record<string, unknown>;
+
+	__ownChange?: boolean;
+	[key: string]: unknown;
 }
 
 interface NormalizedColumn extends Column, ColumnProperties {
@@ -97,10 +109,6 @@ interface NormalizedColumn extends Column, ColumnProperties {
 
 	[columnSymbol]: DOMColumn;
 	[key: string]: unknown;
-}
-
-interface Host extends HTMLElement {
-	shadowRoot: ShadowRoot;
 }
 
 const verifyColumnSetup = (columns: DOMColumn[]) => {
@@ -281,4 +289,4 @@ export const useDOMColumns = (
 };
 
 export { columnSymbol };
-export type { DOMColumn, NormalizedColumn };
+export type { ColumnProperties, DOMColumn, NormalizedColumn };
