@@ -65,3 +65,7 @@ export type AmountLimit = Limit<Amount>;
 export type Item = object;
 
 export type Items = Item[];
+
+export interface Host extends HTMLElement {
+	shadowRoot: ShadowRoot;
+}
