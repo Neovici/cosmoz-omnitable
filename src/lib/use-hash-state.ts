@@ -11,6 +11,9 @@ type Codec = (value: unknown) => string;
 type Reader<T> = (value: string) => T;
 type Parser = <T>(param: string, reader?: Reader<T>) => T | null;
 
+type MultiReadCodec<T> = (entry: [string, string | null]) => [string, T];
+type MultiWriteCodec<T> = (entry: [string, T]) => [string, string | undefined];
+
 type Parameterize = (
 	hashParam: string,
 	value: unknown,
@@ -20,8 +23,8 @@ type Parameterize = (
 
 interface UseHashStateOptions<T> {
 	suffix?: string;
-	read?: Reader<T>;
-	write?: Codec;
+	read?: Reader<T> | MultiReadCodec<T>;
+	write?: Codec | MultiWriteCodec<T>;
 	multi?: boolean;
 }
 
@@ -70,7 +73,9 @@ export const useHashState = <T>(
 			? [multiLink, multiParse as Parser]
 			: [singleLink, singleParse as Parser],
 		[state, _setState] = useState<T>(() =>
-			param == null ? initial : (parseHash<T>(param + suffix, read) ?? initial),
+			param == null
+				? initial
+				: (parseHash<T>(param + suffix, read as Reader<T>) ?? initial),
 		),
 		setState = useCallback(
 			(state: T | ((prevState: T) => T)) =>
@@ -78,7 +83,7 @@ export const useHashState = <T>(
 					const newState = invoke(state, oldState) as T;
 
 					if (param != null) {
-						navigate(link(param + suffix, newState, write), null, {
+						navigate(link(param + suffix, newState, write as Codec), null, {
 							notify: false,
 						});
 					}
