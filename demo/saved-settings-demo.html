@@ -1,0 +1,421 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Saved Settings Demo - NEO-653</title>
+		<style>
+			* {
+				box-sizing: border-box;
+			}
+			html, body {
+				margin: 0;
+				height: 100%;
+				font-family: system-ui, sans-serif;
+				font-size: 14px;
+			}
+			demo-app,
+			demo-app > cosmoz-router,
+			test-page,
+			omnitable-settings-driver-provider {
+				display: block;
+				height: 100%;
+			}
+			.test-page {
+				display: flex;
+				flex-direction: column;
+				height: 100%;
+				padding: 16px;
+				gap: 16px;
+				overflow: hidden;
+			}
+			.panels {
+				display: flex;
+				gap: 16px;
+				flex-wrap: wrap;
+				flex-shrink: 0;
+			}
+			.panel {
+				border: 1px solid #ccc;
+				border-radius: 8px;
+				padding: 12px;
+				background: #f9f9f9;
+			}
+			.panel h3 {
+				margin: 0 0 12px 0;
+				font-size: 14px;
+				color: #333;
+			}
+			.debug-grid {
+				display: grid;
+				grid-template-columns: auto 1fr;
+				gap: 4px 12px;
+				font-family: monospace;
+				font-size: 12px;
+			}
+			.debug-grid dt {
+				color: #666;
+			}
+			.debug-grid dd {
+				margin: 0;
+				color: #000;
+				word-break: break-all;
+			}
+			.controls {
+				display: flex;
+				flex-direction: column;
+				gap: 8px;
+			}
+			.control-row {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				flex-wrap: wrap;
+			}
+			.nav-links {
+				display: flex;
+				gap: 8px;
+				flex-wrap: wrap;
+			}
+			.nav-links a {
+				padding: 8px 12px;
+				background: #e0e0e0;
+				border-radius: 4px;
+				text-decoration: none;
+				color: #333;
+			}
+			.nav-links a:hover {
+				background: #d0d0d0;
+			}
+			.nav-links a.current {
+				background: #1976d2;
+				color: white;
+			}
+			button {
+				padding: 6px 12px;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				background: #fff;
+				cursor: pointer;
+			}
+			button:hover {
+				background: #f0f0f0;
+			}
+			select, input[type="number"] {
+				padding: 4px 8px;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+			}
+			label {
+				display: flex;
+				align-items: center;
+				gap: 4px;
+			}
+			.omnitable-container {
+				height: 400px;
+				border: 1px solid #ccc;
+				border-radius: 8px;
+				overflow: hidden;
+			}
+			cosmoz-omnitable {
+				height: 100%;
+			}
+			.page-title {
+				margin: 0;
+				font-size: 18px;
+				color: #1976d2;
+				flex-shrink: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<demo-app></demo-app>
+		<script type="module">
+			import { html, component, useState, useEffect, useMemo, useCallback } from '@pionjs/pion';
+			import { hashbang } from '@neovici/cosmoz-router';
+			import '@neovici/cosmoz-viewinfo';
+			import '../src/cosmoz-omnitable.js';
+			import { generateTableDemoData } from './table-demo-helper.js';
+			import { DriverContext, registerProvider, local } from '../src/lib/settings/drivers/index.js';
+
+			// Register the provider custom element
+			registerProvider();
+
+			const SETTINGS_KEY = 'omnitable-demo-settings';
+
+			// ============================================
+			// Delay Driver - wraps local driver with delay
+			// ============================================
+			const createDelayDriver = (delay = 0) => () => {
+				const localDriver = local();
+				return {
+					read: async (settingsId) => {
+						if (delay > 0) {
+							await new Promise(r => setTimeout(r, delay));
+						}
+						return localDriver.read(settingsId);
+					},
+					write: localDriver.write
+				};
+			};
+
+			// ============================================
+			// Test Page Component
+			// ============================================
+			const TestPage = ({ page }) => {
+				const [data] = useState(() => generateTableDemoData(3, 5, 10));
+				const [delay, setDelay] = useState(500);
+				const [delayEnabled, setDelayEnabled] = useState(true);
+				const [savedSortOn, setSavedSortOn] = useState('id');
+				const [savedGroupOn, setSavedGroupOn] = useState('');
+				const [refreshKey, setRefreshKey] = useState(0);
+				const [currentState, setCurrentState] = useState({});
+				const [savedSettingsDisplay, setSavedSettingsDisplay] = useState('');
+
+				// Create the driver based on delay settings
+				const driver = useMemo(
+					() => createDelayDriver(delayEnabled ? delay : 0),
+					[delay, delayEnabled, refreshKey]
+				);
+
+				// Read current saved settings from localStorage for display
+				const refreshSavedSettingsDisplay = useCallback(() => {
+					const stored = localStorage.getItem(SETTINGS_KEY);
+					setSavedSettingsDisplay(stored || '(none)');
+				}, []);
+
+				useEffect(() => {
+					refreshSavedSettingsDisplay();
+					const interval = setInterval(refreshSavedSettingsDisplay, 500);
+					return () => clearInterval(interval);
+				}, []);
+
+				// Update current state display from omnitable
+				useEffect(() => {
+					const interval = setInterval(() => {
+						const omnitable = document.querySelector('cosmoz-omnitable');
+						if (omnitable) {
+							setCurrentState({
+								sortOn: omnitable.sortOn ?? '(none)',
+								groupOn: omnitable.groupOn ?? '(none)',
+								descending: String(omnitable.descending ?? false),
+								groupOnDescending: String(omnitable.groupOnDescending ?? false),
+							});
+						}
+					}, 200);
+					return () => clearInterval(interval);
+				}, []);
+
+				const handleSetSavedSettings = () => {
+					const settings = {};
+					if (savedSortOn) settings.sortOn = savedSortOn;
+					if (savedGroupOn) settings.groupOn = savedGroupOn;
+					settings.columns = []; // minimal columns config
+					localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+					refreshSavedSettingsDisplay();
+				};
+
+				const handleClearSavedSettings = () => {
+					localStorage.removeItem(SETTINGS_KEY);
+					refreshSavedSettingsDisplay();
+				};
+
+				const handleRefresh = () => {
+					// Force re-mount of omnitable by changing the key
+					setRefreshKey(k => k + 1);
+				};
+
+				const currentHash = location.hash || '#/';
+
+				return html`
+					<omnitable-settings-driver-provider .value=${driver}>
+						<div class="test-page">
+							<h1 class="page-title">Page ${page} - Saved Settings Test (NEO-653)</h1>
+
+							<div class="panels">
+								<!-- Debug Panel -->
+								<div class="panel">
+									<h3>Current State</h3>
+									<dl class="debug-grid">
+										<dt>sortOn:</dt>
+										<dd>${currentState.sortOn}</dd>
+										<dt>groupOn:</dt>
+										<dd>${currentState.groupOn}</dd>
+										<dt>descending:</dt>
+										<dd>${currentState.descending}</dd>
+										<dt>groupOnDescending:</dt>
+										<dd>${currentState.groupOnDescending}</dd>
+										<dt>URL hash:</dt>
+										<dd>${currentHash}</dd>
+										<dt>Saved settings:</dt>
+										<dd>${savedSettingsDisplay}</dd>
+									</dl>
+								</div>
+
+								<!-- Controls Panel -->
+								<div class="panel">
+									<h3>Test Controls</h3>
+									<div class="controls">
+										<div class="control-row">
+											<label>
+												Saved sortOn:
+												<select .value=${savedSortOn} @change=${(e) => setSavedSortOn(e.target.value)}>
+													<option value="">none</option>
+													<option value="name">name</option>
+													<option value="id">id</option>
+													<option value="date">date</option>
+													<option value="group">group</option>
+												</select>
+											</label>
+											<label>
+												Saved groupOn:
+												<select .value=${savedGroupOn} @change=${(e) => setSavedGroupOn(e.target.value)}>
+													<option value="">none</option>
+													<option value="name">name</option>
+													<option value="id">id</option>
+													<option value="date">date</option>
+													<option value="group">group</option>
+												</select>
+											</label>
+										</div>
+										<div class="control-row">
+											<button @click=${handleSetSavedSettings}>Set Saved Settings</button>
+											<button @click=${handleClearSavedSettings}>Clear Saved Settings</button>
+											<button @click=${handleRefresh}>Refresh Omnitable</button>
+										</div>
+										<div class="control-row">
+											<label>
+												Load delay (ms):
+												<input
+													type="number"
+													min="0"
+													max="5000"
+													step="100"
+													.value=${String(delay)}
+													@change=${(e) => setDelay(Number(e.target.value))}
+													style="width: 80px"
+												/>
+											</label>
+											<label>
+												<input
+													type="checkbox"
+													?checked=${delayEnabled}
+													@change=${(e) => setDelayEnabled(e.target.checked)}
+												/>
+												Enable delay
+											</label>
+										</div>
+									</div>
+								</div>
+
+								<!-- Navigation Panel -->
+								<div class="panel">
+									<h3>Navigation</h3>
+									<div class="nav-links">
+										<a href="#!/page1" class=${currentHash.startsWith('#!/page1') ? 'current' : ''}>
+											Page 1 (no hash)
+										</a>
+										<a href="#!/page1#demo-sortOn=id&demo-descending=true">
+											Page 1 (sortOn=id, desc)
+										</a>
+										<a href="#!/page2" class=${currentHash.startsWith('#!/page2') ? 'current' : ''}>
+											Page 2 (no hash)
+										</a>
+										<a href="#!/page2#demo-sortOn=date">
+											Page 2 (sortOn=date)
+										</a>
+									</div>
+								</div>
+							</div>
+
+							<!-- Expected Behavior Reference -->
+							<div class="panel" style="background: #fff3cd; border-color: #ffc107; flex-shrink: 0;">
+								<h3>Expected Behavior (per NEO-657)</h3>
+								<ol style="margin: 0; padding-left: 20px; font-size: 12px;">
+									<li>If hash param exists in URL → use it</li>
+									<li>Otherwise, if saved settings exist → use them and update hash passively</li>
+									<li>Otherwise, if host attribute is set (sort-on="name") → use it and update hash passively</li>
+									<li>Hash should always reflect current state</li>
+								</ol>
+							</div>
+
+							<!-- Omnitable -->
+							<div class="omnitable-container">
+								<cosmoz-viewinfo style="display: block; height: 100%;">
+									<cosmoz-omnitable
+										style="height: 600px;"
+										id="omnitable"
+										.data=${data}
+										hash-param="demo"
+										settings-id="demo-settings"
+										sort-on="name"
+									>
+										<cosmoz-omnitable-column
+											name="name"
+											title="Name"
+											value-path="name"
+											flex="2"
+										></cosmoz-omnitable-column>
+										<cosmoz-omnitable-column
+											name="id"
+											title="ID"
+											value-path="id"
+											flex="1"
+										></cosmoz-omnitable-column>
+										<cosmoz-omnitable-column-date
+											name="date"
+											title="Date"
+											value-path="date"
+											flex="1"
+										></cosmoz-omnitable-column-date>
+										<cosmoz-omnitable-column
+											name="group"
+											title="Group"
+											value-path="group"
+											flex="1"
+										></cosmoz-omnitable-column>
+									</cosmoz-omnitable>
+								</cosmoz-viewinfo>
+							</div>
+						</div>
+					</omnitable-settings-driver-provider>
+				`;
+			};
+
+			customElements.define('test-page', component(TestPage));
+
+			// ============================================
+			// Demo App (Router)
+			// ============================================
+			const DemoApp = () => {
+				const routes = [
+					{
+						rule: hashbang(/^\/page1/u),
+						handle: () => html`<test-page page="1"></test-page>`,
+					},
+					{
+						rule: hashbang(/^\/page2/u),
+						handle: () => html`<test-page page="2"></test-page>`,
+					},
+					{
+						rule: hashbang(/^\/$/u),
+						handle: () => {
+							// Redirect to page1
+							location.hash = '#!/page1';
+							return html`<div>Redirecting...</div>`;
+						},
+					},
+				];
+
+				return html`<cosmoz-router .routes=${routes}></cosmoz-router>`;
+			};
+
+			customElements.define('demo-app', component(DemoApp));
+
+			// Redirect if no hash
+			if (!location.hash) {
+				location.hash = '#!/page1';
+			}
+		</script>
+	</body>
+</html>

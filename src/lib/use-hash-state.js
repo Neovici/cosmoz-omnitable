@@ -1,4 +1,4 @@
-import { useCallback, useState } from '@pionjs/pion';
+import { useCallback, useEffect, useMemo, useState } from '@pionjs/pion';
 import { navigate } from '@neovici/cosmoz-router';
 import { identity, invoke } from '@neovici/cosmoz-utils/function';
 import {
@@ -48,6 +48,11 @@ export const useHashState = (
 	const [link, parseHash] = multi
 			? [multiLink, multiParse]
 			: [singleLink, singleParse],
+		// Track if hash param was explicitly in URL on mount
+		hashWasExplicit = useMemo(
+			() => param != null && parseHash(param + suffix, read) != null,
+			[],
+		),
 		[state, _setState] = useState(() =>
 			param == null ? initial : (parseHash(param + suffix, read) ?? initial),
 		),
@@ -66,6 +71,18 @@ export const useHashState = (
 				}),
 			[param, suffix, link, write],
 		);
+
+	// Sync state with initial when:
+	// - initial changes (e.g., savedSettings loaded async)
+	// - AND hash was NOT explicitly provided in URL on mount
+	useEffect(() => {
+		if (param == null) return;
+		if (hashWasExplicit) return;
+
+		if (initial != null) {
+			setState(initial);
+		}
+	}, [initial, param, hashWasExplicit, setState]);
 
 	return [state, setState];
 };
