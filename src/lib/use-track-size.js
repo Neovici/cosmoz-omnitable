@@ -1,5 +1,11 @@
 import { useEffect } from '@pionjs/pion';
 
+export const SCROLLBAR_WIDTH = 20;
+export const CHECKBOX_WIDTH = 44;
+export const EXPAND_BUTTON_WIDTH = 24;
+export const LAYOUT_OFFSET =
+	SCROLLBAR_WIDTH + CHECKBOX_WIDTH + EXPAND_BUTTON_WIDTH;
+
 export const useTrackSize = (host, setCanvasWidth) =>
 	useEffect(() => {
 		const onResize = ([entry]) => {
@@ -8,12 +14,7 @@ export const useTrackSize = (host, setCanvasWidth) =>
 				}
 
 				requestAnimationFrame(() =>
-					setCanvasWidth(
-						entry.contentRect?.width -
-							20 /* scrollbar width */ -
-							44 /* checkbox width */ -
-							24 /* expand button width */,
-					),
+					setCanvasWidth(entry.contentRect?.width - LAYOUT_OFFSET),
 				);
 			},
 			observer = new ResizeObserver(onResize);
