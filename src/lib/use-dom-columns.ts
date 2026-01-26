@@ -234,10 +234,8 @@ const isVisibleColumn = (child: Element): child is DOMColumn => {
 	return Boolean(column.isOmnitableColumn && !column.hidden);
 };
 
-const collectDomColumns = (slot: HTMLSlotElement): DOMColumn[] => {
-	const domColumns = slot
-		.assignedElements({ flatten: true })
-		.filter(isVisibleColumn);
+const collectDomColumns = (assignedElements: Element[]): DOMColumn[] => {
+	const domColumns = assignedElements.filter(isVisibleColumn);
 
 	if (!verifyColumnSetup(domColumns)) return [];
 	return domColumns;
@@ -262,15 +260,39 @@ export const useDOMColumns = (
 
 	useLayoutEffect(() => {
 		let sched: number;
+		let previous: Node[] = [];
 		const slot = host.shadowRoot.querySelector(
 			'#columnsSlot',
 		) as HTMLSlotElement;
-		const update = () => {
-			setColumns(normalizeColumns(collectDomColumns(slot), enabledColumns));
+		const update = (force?: boolean) => () => {
+			const current = slot.assignedNodes({ flatten: true });
+
+			if (!force) {
+				const added = current.filter((n) => !previous.includes(n));
+				const removed = previous.filter((n) => !current.includes(n));
+				const columnsChanged = [...added, ...removed].some(
+					(element) => (element as Partial<DOMColumn>).isOmnitableColumn,
+				);
+
+				previous = current;
+
+				if (!columnsChanged) return;
+			} else {
+				previous = current;
+			}
+
+			setColumns(
+				normalizeColumns(
+					collectDomColumns(current as Element[]),
+					enabledColumns,
+				),
+			);
 		};
-		const scheduleUpdate = () => {
+		const scheduleUpdate = (ev?: Event) => {
 			cancelAnimationFrame(sched);
-			sched = requestAnimationFrame(update);
+			sched = requestAnimationFrame(
+				update(ev?.type === 'cosmoz-column-prop-changed'),
+			);
 		};
 
 		scheduleUpdate();
