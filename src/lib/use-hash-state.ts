@@ -70,7 +70,7 @@ export const useHashState = <T>(
 	initial: T,
 	param?: string,
 	{ suffix = '', read, write, multi }: UseHashStateOptions<T> = {},
-) => {
+): [T, (state: T | ((prevState: T) => T)) => void] => {
 	const [link, parseHash] = multi
 			? [multiLink, multiParse as Parser]
 			: [singleLink, singleParse as Parser],
@@ -80,7 +80,7 @@ export const useHashState = <T>(
 				: (parseHash<T>(param + suffix, read as Reader<T>) ?? initial),
 		),
 		setState = useCallback(
-			(state: T) =>
+			(state: T | ((prevState: T) => T)) =>
 				_setState((oldState) => {
 					const newState = invoke(state, oldState);
 
