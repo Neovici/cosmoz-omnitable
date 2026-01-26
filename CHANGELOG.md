@@ -1,3 +1,10 @@
+## [16.1.1](https://github.com/Neovici/cosmoz-omnitable/compare/v16.1.0...v16.1.1) (2026-01-26)
+
+
+### Bug Fixes
+
+* skip initial column layout animation for faster perceived load ([#859](https://github.com/Neovici/cosmoz-omnitable/issues/859)) ([619fbbc](https://github.com/Neovici/cosmoz-omnitable/commit/619fbbc7955614f70a3aade945d152c7661233c3))
+
 # [16.1.0](https://github.com/Neovici/cosmoz-omnitable/compare/v16.0.3...v16.1.0) (2026-01-26)
 
 
