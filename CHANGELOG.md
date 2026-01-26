@@ -1,3 +1,10 @@
+# [16.1.0](https://github.com/Neovici/cosmoz-omnitable/compare/v16.0.3...v16.1.0) (2026-01-26)
+
+
+### Features
+
+* add title to settings toggle button ([5f27654](https://github.com/Neovici/cosmoz-omnitable/commit/5f276540cdbfdf1da0c8b4e0ae562ca33c0030fb))
+
 ## [16.0.3](https://github.com/Neovici/cosmoz-omnitable/compare/v16.0.2...v16.0.3) (2025-12-10)
 
 
