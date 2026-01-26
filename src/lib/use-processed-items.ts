@@ -6,8 +6,6 @@ import { columnSymbol, NormalizedColumn } from './use-dom-columns';
 import { useHashState } from './use-hash-state';
 import { indexSymbol } from './utils';
 
-const unparsed = Symbol('unparsed');
-
 export interface GroupItem {
 	id: unknown;
 	name: unknown;
@@ -38,39 +36,36 @@ export interface UseProcessedItemsParams {
 }
 
 const sortBy =
-	(valueFn: (item: Item | GroupItem) => unknown, descending?: boolean) =>
-	(a: Item | GroupItem, b: Item | GroupItem) =>
-		genericSorter(valueFn(a), valueFn(b)) * (descending ? -1 : 1);
+		(valueFn: (item: Item | GroupItem) => unknown, descending?: boolean) =>
+		(a: Item | GroupItem, b: Item | GroupItem) =>
+			genericSorter(valueFn(a), valueFn(b)) * (descending ? -1 : 1),
+	kebab = (input: string) =>
+		input.replace(/([a-z0-9])([A-Z])/gu, '$1-$2').toLowerCase(),
+	notifyChanges = (
+		column: NormalizedColumn | undefined,
+		changes: Record<string, unknown> | undefined,
+	): void => {
+		if (!column || !changes || !column[columnSymbol]) {
+			return;
+		}
 
-const kebab = (input: string) =>
-	input.replace(/([a-z0-9])([A-Z])/gu, '$1-$2').toLowerCase();
+		Object.entries(changes).forEach(([key, value]) => {
+			const colSymbol = column[columnSymbol];
 
-const notifyChanges = (
-	column: NormalizedColumn | undefined,
-	changes: Record<string, unknown> | undefined,
-): void => {
-	if (!column || !changes || !column[columnSymbol]) {
-		return;
-	}
-
-	Object.entries(changes).forEach(([key, value]) => {
-		const colSymbol = column[columnSymbol];
-		if (!colSymbol) return;
-
-		colSymbol.__ownChange = true;
-		colSymbol[key] = value;
-		colSymbol.__ownChange = false;
-		colSymbol.dispatchEvent(
-			new CustomEvent(`${kebab(key)}-changed`, {
-				bubbles: true,
-				detail: { value },
-			}),
-		);
-	});
-};
-
-const assignIndex = (item: Item | GroupItem, index: number): Item | GroupItem =>
-	Object.assign(item, { [indexSymbol]: index });
+			colSymbol.__ownChange = true;
+			colSymbol[key] = value;
+			colSymbol.__ownChange = false;
+			colSymbol.dispatchEvent(
+				new CustomEvent(`${kebab(key)}-changed`, {
+					bubbles: true,
+					detail: { value },
+				}),
+			);
+		});
+	},
+	assignIndex = (item: Item | GroupItem, index: number): Item | GroupItem =>
+		Object.assign(item, { [indexSymbol]: index }),
+	unparsed = Symbol('unparsed');
 
 export const useProcessedItems = ({
 	data,
@@ -112,13 +107,12 @@ export const useProcessedItems = ({
 
 	type FiltersType = Record<string, FilterState>;
 	const [filters, setFilters] = useHashState({} as FiltersType, hashParam, {
-		multi: true,
-		suffix: '-filter--',
-		write: write as unknown as (value: unknown) => string,
-		read: read as unknown as (value: string) => FiltersType,
-	});
-
-	const // TODO: drop extra info from state
+			multi: true,
+			suffix: '-filter--',
+			write: write as unknown as (value: unknown) => string,
+			read: read as unknown as (value: string) => FiltersType,
+		}),
+		// TODO: drop extra info from state
 		setFilterState = useCallback(
 			(
 				name: string,
@@ -180,7 +174,7 @@ export const useProcessedItems = ({
 							(a) =>
 								sortOnColumn.getComparableValue?.(
 									{ ...sortOnColumn, valuePath: sortOnColumn.sortPath },
-									a as Item,
+									a,
 								),
 							descending,
 						),
@@ -235,7 +229,7 @@ export const useProcessedItems = ({
 								(a) =>
 									sortOnColumn.getComparableValue?.(
 										{ ...sortOnColumn, valuePath: sortOnColumn.sortPath },
-										a as Item,
+										a,
 									),
 								descending,
 							),
