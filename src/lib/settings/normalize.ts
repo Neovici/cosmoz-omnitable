@@ -13,7 +13,7 @@ export const sgProps = [
 	'groupOnDescending',
 ] as const;
 
-type SgPropsKey = (typeof sgProps)[number];
+export type SgPropsKey = (typeof sgProps)[number];
 
 interface NormalizeProps {
 	columns: Column[];

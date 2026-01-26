@@ -1,4 +1,6 @@
-interface FooterHost extends HTMLElement {
+import { Host as BaseHost } from './types';
+
+interface FooterHost extends BaseHost {
 	csvFilename?: string;
 	xlsxFilename?: string;
 	xlsxSheetname?: string;

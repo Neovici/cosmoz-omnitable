@@ -3,7 +3,7 @@ import { when } from 'lit-html/directives/when.js';
 import { isEmpty } from '@neovici/cosmoz-utils/template';
 import { indexSymbol } from './utils';
 import { onItemChange as _onItemChange } from './utils-data';
-import type { Column, Item as BaseItem } from './types';
+import type { Column, Item as BaseItem, Host as BaseHost } from './types';
 import type { TemplateResult } from 'lit-html';
 import type {
 	RenderItemFunction,
@@ -20,11 +20,10 @@ interface KeyState {
 	ctrlKey: boolean;
 }
 
-interface UseListHost extends HTMLElement {
+interface UseListHost extends BaseHost {
 	loading?: boolean;
 	displayEmptyGroups?: boolean;
 	compareItemsFn?: CompareItemsFunction;
-	shadowRoot: ShadowRoot;
 	dispatchEvent(event: Event): boolean;
 }
 
