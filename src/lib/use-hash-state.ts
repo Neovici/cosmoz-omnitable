@@ -29,46 +29,48 @@ interface UseHashStateOptions<T> {
 }
 
 const makeLinker =
-	(parameterize: Parameterize) =>
-	(hashParam: string, value: unknown, codec?: Codec): string => {
-		const url = hashUrl(),
-			searchParams = new URLSearchParams(url.hash.replace('#', ''));
+		(parameterize: Parameterize) =>
+		(hashParam: string, value: unknown, codec?: Codec): string => {
+			const url = hashUrl(),
+				searchParams = new URLSearchParams(url.hash.replace('#', ''));
 
-		// TODO: make parameterize pure
-		parameterize(hashParam, value, codec ?? (identity as Codec), searchParams);
+			// TODO: make parameterize pure
+			parameterize(
+				hashParam,
+				value,
+				codec ?? (identity as Codec),
+				searchParams,
+			);
 
-		return (
-			'#!' +
-			Object.assign(url, { hash: searchParams }).href.replace(
-				location.origin,
-				'',
-			)
-		);
-	};
-
-const isEmpty = (v: unknown): boolean => v == null || v === '';
-
-const singleLink = makeLinker((hashParam, value, codec, searchParams) =>
-	!isEmpty(codec(value))
-		? searchParams.set(hashParam, codec(value))
-		: searchParams.delete(hashParam),
-);
-
-const multiLink = makeLinker((hashParam, value, codec, searchParams) =>
-	Object.entries(value as Record<string, unknown>)
-		.map((entry) => codec(entry))
-		.forEach(([key, value]) =>
-			!isEmpty(value)
-				? searchParams.set(hashParam + key, value as string)
-				: searchParams.delete(hashParam + key),
-		),
-);
+			return (
+				'#!' +
+				Object.assign(url, { hash: searchParams }).href.replace(
+					location.origin,
+					'',
+				)
+			);
+		},
+	isEmpty = (v: unknown): boolean => v == null || v === '',
+	singleLink = makeLinker((hashParam, value, codec, searchParams) =>
+		!isEmpty(codec(value))
+			? searchParams.set(hashParam, codec(value))
+			: searchParams.delete(hashParam),
+	),
+	multiLink = makeLinker((hashParam, value, codec, searchParams) =>
+		Object.entries(value as Record<string, unknown>)
+			.map(codec)
+			.forEach(([key, value]) =>
+				!isEmpty(value)
+					? searchParams.set(hashParam + key, value)
+					: searchParams.delete(hashParam + key),
+			),
+	);
 
 export const useHashState = <T>(
 	initial: T,
 	param?: string,
 	{ suffix = '', read, write, multi }: UseHashStateOptions<T> = {},
-): [T, (state: T | ((prevState: T) => T)) => void] => {
+) => {
 	const [link, parseHash] = multi
 			? [multiLink, multiParse as Parser]
 			: [singleLink, singleParse as Parser],
@@ -78,9 +80,9 @@ export const useHashState = <T>(
 				: (parseHash<T>(param + suffix, read as Reader<T>) ?? initial),
 		),
 		setState = useCallback(
-			(state: T | ((prevState: T) => T)) =>
+			(state: T) =>
 				_setState((oldState) => {
-					const newState = invoke(state, oldState) as T;
+					const newState = invoke(state, oldState);
 
 					if (param != null) {
 						navigate(link(param + suffix, newState, write as Codec), null, {
