@@ -94,7 +94,7 @@ interface DOMColumn extends HTMLElement, ColumnProperties {
 	renderCell?: RenderFunction;
 	renderMini?: RenderFunction;
 
-	computeSource?: (valuePath: string, values: unknown[]) => unknown[];
+	computeSource: (valuePath: string, values: unknown[]) => unknown[];
 	getConfig?: (column: DOMColumn) => Record<string, unknown>;
 
 	__ownChange?: boolean;
@@ -105,7 +105,7 @@ interface NormalizedColumn extends Column, ColumnProperties {
 	source?: (valuePath: string, values: unknown[]) => unknown[];
 
 	// @deprecated
-	computeSource?: (valuePath: string, values: unknown[]) => unknown[];
+	computeSource: (valuePath: string, values: unknown[]) => unknown[];
 
 	[columnSymbol]: DOMColumn;
 	[key: string]: unknown;
@@ -180,7 +180,7 @@ const normalizeColumn = (column: DOMColumn): NormalizedColumn => {
 		editable: column.editable,
 
 		values: column.values,
-		source: column.computeSource ? memooize(column.computeSource) : undefined,
+		source: memooize(column.computeSource),
 
 		noLocalFilter: column.noLocalFilter,
 
