@@ -1,115 +1,12 @@
 import { memooize } from '@neovici/cosmoz-utils/memoize';
 import { useLayoutEffect, useState } from '@pionjs/pion';
-import { Column, Host, Item, RenderFunction } from './types';
-
-const columnSymbol = Symbol('column');
-
-interface ColumnProperties {
-	getString?: (item: Item, valuePath?: string) => string;
-	getComparableValue?: (column: NormalizedColumn, item: Item) => unknown;
-	serializeFilter?: (
-		column: NormalizedColumn,
-		filter: unknown,
-	) => string | undefined;
-	deserializeFilter?: (
-		column: NormalizedColumn,
-		filter: string | null,
-	) => unknown;
-	toXlsxValue?: (item: Item, valuePath?: string) => unknown;
-
-	renderHeader?: RenderFunction;
-	renderEditCell?: RenderFunction;
-	renderGroup?: RenderFunction;
-	cellTitleFn?: (item: Item) => string;
-	headerTitleFn?: () => string;
-
-	getFilterFn?: (
-		column: NormalizedColumn,
-		filter: unknown,
-	) => ((item: Item) => boolean) | null | undefined;
-	headerCellClass?: string;
-	cellClass?: string;
-
-	editable?: boolean;
-	values?: unknown[];
-	noLocalFilter?: boolean;
-	mini?: boolean;
-
-	// @deprecated
-	loading?: boolean;
-	externalValues?: unknown[];
-
-	// boolean columns
-	trueLabel?: string;
-	falseLabel?: string;
-
-	// list columns
-	valueProperty?: string;
-	textProperty?: string;
-	emptyLabel?: string;
-	emptyValue?: unknown;
-
-	// range columns
-	min?: unknown;
-	max?: unknown;
-	locale?: string;
-	autoupdate?: boolean;
-
-	// number columns
-	maximumFractionDigits?: number;
-	minimumFractionDigits?: number;
-
-	// amount columns
-	currency?: string;
-	rates?: Record<string, number>;
-	autodetect?: boolean;
-
-	// treenode columns
-	ownerTree?: unknown;
-	keyProperty?: string;
-}
-
-interface DOMColumn extends HTMLElement, ColumnProperties {
-	// DOM-specific properties
-	isOmnitableColumn: boolean;
-	hidden: boolean;
-	name: string;
-	title: string;
-	disabled?: boolean;
-
-	// Column configuration
-	valuePath?: string;
-	groupOn?: string;
-	sortPath?: string;
-	sortOn?: string;
-	noSort?: boolean;
-
-	// Layout
-	minWidth?: string;
-	width?: string;
-	flex?: string;
-	priority?: number;
-
-	// DOM-specific render functions
-	renderCell?: RenderFunction;
-	renderMini?: RenderFunction;
-
-	computeSource: (valuePath: string, values: unknown[]) => unknown[];
-	getConfig?: (column: DOMColumn) => Record<string, unknown>;
-
-	__ownChange?: boolean;
-	[key: string]: unknown;
-}
-
-interface NormalizedColumn extends Column, ColumnProperties {
-	source?: (valuePath: string, values: unknown[]) => unknown[];
-
-	// @deprecated
-	computeSource: (valuePath: string, values: unknown[]) => unknown[];
-
-	[columnSymbol]: DOMColumn;
-	[key: string]: unknown;
-}
+import {
+	columnSymbol,
+	DOMColumn,
+	Host,
+	NormalizedColumn,
+	RenderFunction,
+} from './types';
 
 const verifyColumnSetup = (columns: DOMColumn[]) => {
 	let ok = true;
@@ -166,10 +63,10 @@ const normalizeColumn = (column: DOMColumn): NormalizedColumn => {
 		deserializeFilter: column.deserializeFilter,
 		toXlsxValue: column.toXlsxValue,
 
-		renderHeader: column.renderHeader,
+		renderHeader: column.renderHeader as RenderFunction,
 		renderCell: column.renderCell,
-		renderEditCell: column.renderEditCell,
-		renderGroup: column.renderGroup,
+		renderEditCell: column.renderEditCell as RenderFunction,
+		renderGroup: column.renderGroup as RenderFunction,
 		cellTitleFn: column.cellTitleFn,
 		headerTitleFn: column.headerTitleFn,
 
@@ -310,5 +207,5 @@ export const useDOMColumns = (
 	return columns;
 };
 
-export { columnSymbol };
-export type { ColumnProperties, DOMColumn, NormalizedColumn };
+// Re-export for backwards compatibility
+export { columnSymbol } from './types';

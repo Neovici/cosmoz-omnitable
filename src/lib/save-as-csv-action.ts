@@ -1,13 +1,13 @@
 import { saveAs } from 'file-saver-es';
 import { Column, Item } from './types';
 
-export interface CsvColumn extends Column {
+export type CsvColumn = Omit<Column, 'getString'> & {
 	title: string;
 	getString: (
 		column: CsvColumn,
 		item: Item,
 	) => string | number | null | undefined;
-}
+};
 
 const makeCsvField = (str: string): string => {
 	const result = str.replace(/"/gu, '""');
