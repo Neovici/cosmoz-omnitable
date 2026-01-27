@@ -1,10 +1,16 @@
-import { html, useCallback, useEffect, useMemo, useRef } from '@pionjs/pion';
+import {
+	html,
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	type Renderable,
+} from '@pionjs/pion';
 import { when } from 'lit-html/directives/when.js';
 import { isEmpty } from '@neovici/cosmoz-utils/template';
 import { indexSymbol } from './utils';
 import { onItemChange as _onItemChange } from './utils-data';
 import type { Column, Item as BaseItem } from './types';
-import type { TemplateResult } from 'lit-html';
 import type {
 	RenderItemFunction,
 	RenderGroupFunction,
@@ -183,7 +189,7 @@ const renderGroup =
 		dataIsValid,
 		groupOnColumn,
 	}: RenderGroupConfig): RenderGroupFunction =>
-	(item, index, { selected, folded, toggleFold }): TemplateResult =>
+	(item, index, { selected, folded, toggleFold }): Renderable =>
 		html` <div
 			class="${_getGroupRowClasses(folded)}"
 			part="groupRow groupRow-${item[indexSymbol]}"

@@ -1,4 +1,5 @@
-import { html, TemplateResult } from 'lit-html';
+import { html } from 'lit-html';
+import type { Renderable } from '@pionjs/pion';
 import { t } from 'i18next';
 import { saveAsCsvAction, CsvColumn } from './save-as-csv-action';
 import { saveAsXlsxAction, XlsxColumn } from './save-as-xlsx-action';
@@ -21,7 +22,7 @@ export const renderFooter = ({
 	xlsxFilename,
 	xlsxSheetname,
 	topPlacement,
-}: RenderFooterParams): TemplateResult =>
+}: RenderFooterParams): Renderable =>
 	html`<cosmoz-bottom-bar
 		id="bottomBar"
 		?active=${!isEmpty(selectedItems.length)}
