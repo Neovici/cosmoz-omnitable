@@ -1,3 +1,13 @@
+# [16.2.0-beta.1](https://github.com/Neovici/cosmoz-omnitable/compare/v16.1.1...v16.2.0-beta.1) (2026-01-27)
+
+
+### Features
+
+* convert save-as-xlsx-action.js to ts ([2271f19](https://github.com/Neovici/cosmoz-omnitable/commit/2271f190dd9fa7f98362d41f8f0c601868b7fff9))
+* convert use-track-size.js to typescript ([#851](https://github.com/Neovici/cosmoz-omnitable/issues/851)) ([8d2349a](https://github.com/Neovici/cosmoz-omnitable/commit/8d2349a3b02ca0cc638531947df6c1325b8e8a00))
+* converted cosmoz-omnitable-sort-group.js to ts  ([#799](https://github.com/Neovici/cosmoz-omnitable/issues/799)) ([549be2e](https://github.com/Neovici/cosmoz-omnitable/commit/549be2e03ee1c831d29528f318ba11738ac8c1a7))
+* converted use-fast-layout.js to ts ([#763](https://github.com/Neovici/cosmoz-omnitable/issues/763)) ([3790dc9](https://github.com/Neovici/cosmoz-omnitable/commit/3790dc9ee86ebe5d283b9985a8192a00f1094d16))
+
 # [16.1.0-beta.4](https://github.com/Neovici/cosmoz-omnitable/compare/v16.1.0-beta.3...v16.1.0-beta.4) (2026-01-14)
 
 
