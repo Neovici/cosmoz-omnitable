@@ -1,4 +1,4 @@
-import type { Renderable } from '@pionjs/pion/lib/core.js';
+import type { Renderable } from '@pionjs/pion';
 
 export type LimitFunction = (a: number, b: number) => number | undefined;
 

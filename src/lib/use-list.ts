@@ -1,10 +1,16 @@
-import { html, useCallback, useEffect, useMemo, useRef } from '@pionjs/pion';
+import {
+	html,
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	type Renderable,
+} from '@pionjs/pion';
 import { when } from 'lit-html/directives/when.js';
 import { isEmpty } from '@neovici/cosmoz-utils/template';
 import { indexSymbol } from './utils';
 import { onItemChange as _onItemChange } from './utils-data';
 import type { Column, Item as BaseItem } from './types';
-import type { Renderable } from '@pionjs/pion/lib/core.js';
 import type {
 	RenderItemFunction,
 	RenderGroupFunction,

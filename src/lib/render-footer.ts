@@ -1,5 +1,5 @@
 import { html } from 'lit-html';
-import type { Renderable } from '@pionjs/pion/lib/core.js';
+import type { Renderable } from '@pionjs/pion';
 import { t } from 'i18next';
 import { saveAsCsvAction, CsvColumn } from './save-as-csv-action';
 import { saveAsXlsxAction, XlsxColumn } from './save-as-xlsx-action';
