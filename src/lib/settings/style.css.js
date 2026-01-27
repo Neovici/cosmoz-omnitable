@@ -225,6 +225,9 @@ export const dropdown = css`
 		outline: none;
 	}
 	cosmoz-dropdown::part(button) {
+		border: none;
+		cursor: pointer;
+		outline: none;
 		padding: 0;
 		background: transparent;
 		color: inherit;

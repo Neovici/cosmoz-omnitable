@@ -29,6 +29,9 @@ export const renderDropdown = ({
 			}
 
 			.dropdown::part(button) {
+				border: none;
+				cursor: pointer;
+				outline: none;
 				background: transparent;
 				border-radius: unset;
 				position: relative;
