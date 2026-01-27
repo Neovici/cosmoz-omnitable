@@ -1,3 +1,6 @@
+import { nothing } from 'lit-html';
+import type { Renderable } from '@pionjs/pion/lib/core.js';
+
 export type LimitFunction = (a: number, b: number) => number | undefined;
 
 export type Currency = string;
@@ -13,13 +16,17 @@ export type GetPath = string | (string | number)[];
 
 export interface RenderContext {
 	item: Item;
-	index: number;
+	index?: number;
+	selected?: boolean;
+	expanded?: boolean;
+	folded?: boolean;
+	group?: unknown;
 }
 
 export type RenderFunction = (
 	column: Column,
 	context: RenderContext,
-) => unknown;
+) => Renderable;
 
 export interface Column {
 	valuePath?: GetPath;
@@ -35,6 +42,7 @@ export interface Column {
 	noSort?: boolean;
 	renderCell?: RenderFunction;
 	renderMini?: RenderFunction;
+	renderGroup?: RenderFunction;
 	[key: symbol]: unknown;
 }
 
