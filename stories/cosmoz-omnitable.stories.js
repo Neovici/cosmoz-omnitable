@@ -27,6 +27,29 @@ const Template = (args) => {
 				min-height: 0;
 				display: flex;
 				flex-direction: column;
+
+				--cz-bottom-bar-button-bg-color: transparent;
+				--cz-bottom-bar-button-hover-bg-color: transparent;
+				--cz-bottom-bar-button-color: #101010;
+			}
+			div[slot='actions'] button {
+				background: #24365a;
+				min-height: 40px;
+				text-overflow: ellipsis;
+				border-radius: 6px;
+				font-weight: 500;
+				line-height: 35px;
+				overflow: hidden;
+				flex: 0 0 auto;
+				margin: 0px 0.29em;
+				min-width: 40px;
+				font-size: 14px;
+				padding: 0px 18px;
+				white-space: nowrap;
+				color: #fff;
+			}
+			div[slot='actions'] button:hover {
+				background: #1b2a45;
 			}
 			cosmoz-omnitable-item-row {
 				border-bottom: 1px solid #e1e2e5;

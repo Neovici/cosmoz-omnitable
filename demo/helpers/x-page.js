@@ -331,7 +331,7 @@ class XPage extends translatable(PolymerElement) {
 	}
 
 	renderCustomNameCell(column, { item }) {
-		return lit`<span style="background: red;" @click=${this.onTap}>${item.name}</span>`;
+		return lit`<span style="display: inline-block;background: #FFDFEC; color: #F36087; border-radius: 20px; padding: 2px 4px; font-size: 14px;" @click=${this.onTap}>${item.name}</span>`;
 	}
 
 	onVisibleDataChanged(data) {

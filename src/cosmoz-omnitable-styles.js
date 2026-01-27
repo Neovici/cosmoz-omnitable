@@ -27,7 +27,7 @@ export const checkbox = css`
 	.checkbox:checked {
 		background-color: var(
 			--cosmoz-omnitable-checkbox-checked-color,
-			var(--primary-color)
+			var(--cosmoz-omnitable-primary-color, #508aef)
 		);
 		box-shadow: none;
 	}
@@ -76,7 +76,7 @@ export const checkbox = css`
 		top: 8px;
 		background-color: var(
 			--cosmoz-omnitable-checkbox-checked-color,
-			var(--primary-color)
+			var(--cosmoz-omnitable-primary-color, #508aef)
 		);
 	}
 `;
@@ -88,6 +88,26 @@ export default css`
 		position: relative;
 		overflow: hidden;
 		color: var(--cosmoz-omnitable-text-color, rgb(89, 102, 121));
+		--cosmoz-bottom-bar-button-bg-color: var(
+			--cz-bottom-bar-button-bg-color,
+			#24365a
+		);
+		--cosmoz-bottom-bar-button-hover-bg-color: var(
+			--cz-bottom-bar-button-hover-bg-color,
+			#1b2a45
+		);
+		--cosmoz-dropdown-button-bg-color: var(
+			--cz-dropdown-button-bg-color,
+			#24365a
+		);
+		--cosmoz-dropdown-button-hover-bg-color: var(
+			--cz-dropdown-button-hover-bg-color,
+			#1b2a45
+		);
+		--cosmoz-bottom-bar-button-color: var(
+			--cz-bottom-bar-button-color,
+			var(--cosmoz-button-color, #fff)
+		);
 	}
 	:host a {
 		color: var(--primary-link-color, inherit);
@@ -327,7 +347,7 @@ export default css`
 	.itemRow[selected] {
 		background-color: var(
 			--cosmoz-omnitable-selection-color,
-			rgb(195, 212, 248)
+			rgba(58, 145, 226, 0.1)
 		);
 		@apply --cosmoz-omnitable-selected-row;
 	}
@@ -400,10 +420,15 @@ export default css`
 	}
 
 	cosmoz-bottom-bar {
-		background-color: var(--cosmoz-omnitable-bottom-bar-color, #5f5a92);
+		--cosmoz-bottom-bar-button-bg-color: var(--cz-bottom-bar-button-bg-color, #24365a);
+		--cosmoz-bottom-bar-button-hover-bg-color: var(--cz-bottom-bar-button-hover-bg-color, #1b2a45);
+		--cosmoz-dropdown-button-bg-color: var(--cz-dropdown-button-bg-color, #24365a);
+		--cosmoz-dropdown-button-hover-bg-color: var(--cz-dropdown-button-hover-bg-color, #1b2a45);
+
+		background-color: var(--cosmoz-omnitable-bottom-bar-color, #eeeff3);
 		overflow: hidden;
 	}
-	cosmoz-bottom-bar::part(bar) {
+	cosmoz-bottom-bar::part(bar) {	
 		padding: 0 24px;
 	}
 
@@ -506,7 +531,10 @@ export default css`
 		display: block;
 	}
 	.sg[data-on] {
-		color: var(--cosmoz-omnitable-checkbox-checked-color, var(--primary-color));
+		color: var(
+			--cosmoz-omnitable-checkbox-checked-color,
+			var(--cosmoz-omnitable-primary-color, #508aef)
+		);
 	}
 	.sg:not([data-on='desc']) {
 		transform: scaleY(-1);
