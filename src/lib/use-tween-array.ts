@@ -61,7 +61,12 @@ export const useTweenArray = (
 	const state = useMeta<TweenState>({ target });
 
 	const animate = useCallback(() => {
-		if (!state.tween) state.tween = state.target;
+		// On initial load, skip animation and apply target values immediately
+		if (!state.tween) {
+			state.tween = state.target;
+			callback(state.tween);
+			return true;
+		}
 
 		if (state.target.every((t, idx) => state.tween![idx] === t)) {
 			callback(state.tween);
