@@ -1,7 +1,6 @@
 import { component } from '@pionjs/pion';
 import { nothing } from 'lit-html';
-import { GroupItem } from './grouped-list/utils';
-import { Column, RenderContext } from './lib/types';
+import { GroupItem, Column, RenderContext } from './lib/types';
 
 interface GroupRowProps {
 	column: Column;

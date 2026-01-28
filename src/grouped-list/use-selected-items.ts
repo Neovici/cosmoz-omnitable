@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from '@pionjs/pion';
-import { isGroup, GroupItem } from './utils';
-import type { Item } from '../lib/types';
-
+import type { GroupItem, Item } from '../lib/types';
+import { isGroup } from './utils';
 export type CompareItemsFunction = <T>(a: T, b: T) => boolean;
 
 export interface UseSelectedItemsParams {

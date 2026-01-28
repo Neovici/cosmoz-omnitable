@@ -1,14 +1,9 @@
-import { Item } from '../lib/types';
+import { Item, GroupItem } from '../lib/types';
 import { indexSymbol } from '../lib/utils';
 
 export interface ItemState {
 	expanded?: boolean;
 	folded?: boolean;
-}
-
-export interface GroupItem<T = unknown> {
-	items?: T[];
-	[indexSymbol]: number;
 }
 
 export type ItemsState = WeakMap<Item, ItemState>;

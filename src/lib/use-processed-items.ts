@@ -1,14 +1,24 @@
 import { invoke } from '@neovici/cosmoz-utils/function';
 import { useCallback, useEffect, useMemo } from '@pionjs/pion';
 import { genericSorter } from './generic-sorter';
-import type { Item, NormalizedColumn } from './types';
+import type {
+	FilterState,
+	Item,
+	NormalizedColumn,
+	ProcessedGroupItem,
+	SortAndGroupOptions,
+} from './types';
+import { unparsed } from './types';
 import { columnSymbol } from './use-dom-columns';
 import { useHashState } from './use-hash-state';
 import { indexSymbol } from './utils';
 
 const sortBy =
-		(valueFn: (item: Item | GroupItem) => unknown, descending?: boolean) =>
-		(a: Item | GroupItem, b: Item | GroupItem) =>
+		(
+			valueFn: (item: Item | ProcessedGroupItem) => unknown,
+			descending?: boolean,
+		) =>
+		(a: Item | ProcessedGroupItem, b: Item | ProcessedGroupItem) =>
 			genericSorter(valueFn(a), valueFn(b)) * (descending ? -1 : 1),
 	kebab = (input: string) =>
 		input.replace(/([a-z0-9])([A-Z])/gu, '$1-$2').toLowerCase(),
@@ -34,29 +44,10 @@ const sortBy =
 			);
 		});
 	},
-	assignIndex = (item: Item | GroupItem, index: number): Item | GroupItem =>
-		Object.assign(item, { [indexSymbol]: index }),
-	unparsed = Symbol('unparsed');
-
-export interface GroupItem {
-	id: unknown;
-	name: unknown;
-	items: Item[];
-	[indexSymbol]?: number;
-}
-
-export interface FilterState {
-	filter?: unknown;
-	[unparsed]?: string | null;
-	[key: string]: unknown;
-}
-
-export interface SortAndGroupOptions {
-	groupOnColumn?: NormalizedColumn;
-	groupOnDescending?: boolean;
-	sortOnColumn?: NormalizedColumn;
-	descending?: boolean;
-}
+	assignIndex = (
+		item: Item | ProcessedGroupItem,
+		index: number,
+	): Item | ProcessedGroupItem => Object.assign(item, { [indexSymbol]: index });
 
 export interface UseProcessedItemsParams {
 	data: Item[];
@@ -182,7 +173,7 @@ export const useProcessedItems = ({
 			}
 
 			if (groupOnColumn != null && groupOnColumn.groupOn != null) {
-				const groupedResults = filteredItems.reduce<GroupItem[]>(
+				const groupedResults = filteredItems.reduce<ProcessedGroupItem[]>(
 					(acc, item) => {
 						const gval = groupOnColumn.getComparableValue?.(
 							{ ...groupOnColumn, valuePath: groupOnColumn.groupOn },
@@ -211,7 +202,7 @@ export const useProcessedItems = ({
 						(a) =>
 							groupOnColumn.getComparableValue?.(
 								{ ...groupOnColumn, valuePath: groupOnColumn.groupOn },
-								(a as GroupItem).items[0],
+								(a as ProcessedGroupItem).items[0],
 							),
 						groupOnDescending,
 					),

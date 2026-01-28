@@ -10,11 +10,10 @@ import {
 	isExpanded,
 	isFolded,
 	prepareData,
-	GroupItem,
 } from './utils';
 import { virtualize } from '@lit-labs/virtualizer/virtualize.js';
 import type { DirectiveResult } from 'lit/directive.js';
-import type { Item as BaseItem } from '../lib/types';
+import type { Item as BaseItem, GroupItem } from '../lib/types';
 import { indexSymbol } from '../lib/utils';
 
 export interface Item extends BaseItem {
