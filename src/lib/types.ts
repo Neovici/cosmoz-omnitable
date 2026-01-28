@@ -110,7 +110,10 @@ export interface Column {
 	[key: symbol]: unknown;
 }
 
-export type RenderFunction = (column: Column, context: RenderContext) => unknown;
+export type RenderFunction = (
+	column: Column,
+	context: RenderContext,
+) => Renderable;
 
 // DOM Column - represents a column element in the DOM
 export interface DOMColumn extends HTMLElement, Column {

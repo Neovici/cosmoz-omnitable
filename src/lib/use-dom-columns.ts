@@ -43,7 +43,7 @@ const verifyColumnSetup = (columns: DOMColumn[]) => {
 const normalizeColumn = (column: DOMColumn): NormalizedColumn => {
 	const valuePath = column.valuePath ?? column.name;
 
-	const normalized: NormalizedColumn = {
+	return {
 		name: column.name,
 		title: column.title,
 
@@ -122,8 +122,6 @@ const normalizeColumn = (column: DOMColumn): NormalizedColumn => {
 
 		[columnSymbol]: column,
 	};
-
-	return normalized;
 };
 
 const isVisibleColumn = (child: Element): child is DOMColumn => {
