@@ -1,3 +1,10 @@
+# [16.2.0](https://github.com/Neovici/cosmoz-omnitable/compare/v16.1.1...v16.2.0) (2026-01-28)
+
+
+### Features
+
+* sync hash state when initial value changes asynchronously ([#858](https://github.com/Neovici/cosmoz-omnitable/issues/858)) ([cd80a01](https://github.com/Neovici/cosmoz-omnitable/commit/cd80a01dff934c7703e6198c95633bb669862059))
+
 ## [16.1.1](https://github.com/Neovici/cosmoz-omnitable/compare/v16.1.0...v16.1.1) (2026-01-26)
 
 
