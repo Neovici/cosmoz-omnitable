@@ -1,39 +1,10 @@
 import { invoke } from '@neovici/cosmoz-utils/function';
 import { useCallback, useEffect, useMemo } from '@pionjs/pion';
 import { genericSorter } from './generic-sorter';
-import type { Item } from './types';
-import { columnSymbol, NormalizedColumn } from './use-dom-columns';
+import type { Item, NormalizedColumn } from './types';
+import { columnSymbol } from './use-dom-columns';
 import { useHashState } from './use-hash-state';
 import { indexSymbol } from './utils';
-
-export interface GroupItem {
-	id: unknown;
-	name: unknown;
-	items: Item[];
-	[indexSymbol]?: number;
-}
-
-export interface FilterState {
-	filter?: unknown;
-	[unparsed]?: string | null;
-	[key: string]: unknown;
-}
-
-export interface SortAndGroupOptions {
-	groupOnColumn?: NormalizedColumn;
-	groupOnDescending?: boolean;
-	sortOnColumn?: NormalizedColumn;
-	descending?: boolean;
-}
-
-export interface UseProcessedItemsParams {
-	data: Item[];
-	columns: NormalizedColumn[];
-	hashParam?: string;
-	sortAndGroupOptions: SortAndGroupOptions;
-	noLocalSort?: boolean;
-	noLocalFilter?: boolean;
-}
 
 const sortBy =
 		(valueFn: (item: Item | GroupItem) => unknown, descending?: boolean) =>
@@ -66,6 +37,35 @@ const sortBy =
 	assignIndex = (item: Item | GroupItem, index: number): Item | GroupItem =>
 		Object.assign(item, { [indexSymbol]: index }),
 	unparsed = Symbol('unparsed');
+
+export interface GroupItem {
+	id: unknown;
+	name: unknown;
+	items: Item[];
+	[indexSymbol]?: number;
+}
+
+export interface FilterState {
+	filter?: unknown;
+	[unparsed]?: string | null;
+	[key: string]: unknown;
+}
+
+export interface SortAndGroupOptions {
+	groupOnColumn?: NormalizedColumn;
+	groupOnDescending?: boolean;
+	sortOnColumn?: NormalizedColumn;
+	descending?: boolean;
+}
+
+export interface UseProcessedItemsParams {
+	data: Item[];
+	columns: NormalizedColumn[];
+	hashParam?: string;
+	sortAndGroupOptions: SortAndGroupOptions;
+	noLocalSort?: boolean;
+	noLocalFilter?: boolean;
+}
 
 export const useProcessedItems = ({
 	data,
