@@ -1,14 +1,8 @@
-import { Item } from '../lib/types';
-import { indexSymbol } from '../lib/utils';
+import { GroupItem, Item } from '../lib/types';
 
 export interface ItemState {
 	expanded?: boolean;
 	folded?: boolean;
-}
-
-export interface GroupItem<T = unknown> {
-	items?: T[];
-	[indexSymbol]: number;
 }
 
 export type ItemsState = WeakMap<Item, ItemState>;
@@ -111,12 +105,12 @@ const callFn = <T, A extends unknown[]>(
 const byReference = <T>(a: T, b: T): boolean => a === b;
 
 export {
-	symbols,
-	prepareData,
+	byReference,
+	callFn,
 	getItemState,
 	isExpanded,
 	isFolded,
 	isGroup,
-	callFn,
-	byReference,
+	prepareData,
+	symbols,
 };

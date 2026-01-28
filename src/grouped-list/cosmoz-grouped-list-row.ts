@@ -1,6 +1,6 @@
 import { render } from 'lit-html';
 import type { Item } from './use-cosmoz-grouped-list';
-import type { GroupItem } from './utils';
+import type { GroupItem } from '../lib/types';
 
 customElements.define(
 	'cosmoz-grouped-list-row',

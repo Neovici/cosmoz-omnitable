@@ -132,6 +132,8 @@ export interface DOMColumn extends HTMLElement, Column {
 export type ColumnSymbol = typeof columnSymbol;
 export const columnSymbol: unique symbol = Symbol('column');
 
+export const unparsed = Symbol('unparsed');
+
 // Normalized Column - internal representation after processing
 export interface NormalizedColumn extends Column {
 	name: string; // required after normalization
@@ -162,4 +164,27 @@ export type AmountLimit = Limit<Amount>;
 
 export interface Host extends HTMLElement {
 	shadowRoot: ShadowRoot;
+}
+export interface GroupItem<T = Item> {
+	items?: T[];
+	[key: string]: unknown;
+}
+
+export interface ProcessedGroupItem extends GroupItem<Item> {
+	id: unknown;
+	name: unknown;
+	items: Item[];
+}
+
+export interface FilterState {
+	filter?: unknown;
+	[key: string]: unknown;
+	[unparsed]?: string | null;
+}
+
+export interface SortAndGroupOptions {
+	groupOnColumn?: NormalizedColumn;
+	groupOnDescending?: boolean;
+	sortOnColumn?: NormalizedColumn;
+	descending?: boolean;
 }

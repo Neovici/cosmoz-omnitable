@@ -1,24 +1,42 @@
-import { useCallback, useEffect, useMemo } from '@pionjs/pion';
 import { invoke } from '@neovici/cosmoz-utils/function';
+import { useCallback, useEffect, useMemo } from '@pionjs/pion';
 import { genericSorter } from './generic-sorter';
+import {
+	FilterState,
+	Item,
+	NormalizedColumn,
+	ProcessedGroupItem,
+	SortAndGroupOptions,
+	unparsed,
+} from './types';
 import { columnSymbol } from './use-dom-columns';
 import { useHashState } from './use-hash-state';
 import { indexSymbol } from './utils';
 
-const sortBy = (valueFn, descending) => (a, b) =>
-		genericSorter(valueFn(a), valueFn(b)) * (descending ? -1 : 1),
-	kebab = (input) =>
+const sortBy =
+		(
+			valueFn: (item: Item | ProcessedGroupItem) => unknown,
+			descending?: boolean,
+		) =>
+		(a: Item | ProcessedGroupItem, b: Item | ProcessedGroupItem) =>
+			genericSorter(valueFn(a), valueFn(b)) * (descending ? -1 : 1),
+	kebab = (input: string) =>
 		input.replace(/([a-z0-9])([A-Z])/gu, '$1-$2').toLowerCase(),
-	notifyChanges = (column, changes) => {
-		if (!column || !changes) {
+	notifyChanges = (
+		column: NormalizedColumn | undefined,
+		changes: Record<string, unknown> | undefined,
+	): void => {
+		if (!column || !changes || !column[columnSymbol]) {
 			return;
 		}
 
 		Object.entries(changes).forEach(([key, value]) => {
-			column[columnSymbol].__ownChange = true;
-			column[columnSymbol][key] = value;
-			column[columnSymbol].__ownChange = false;
-			column[columnSymbol].dispatchEvent(
+			const colSymbol = column[columnSymbol];
+
+			colSymbol.__ownChange = true;
+			colSymbol[key] = value;
+			colSymbol.__ownChange = false;
+			colSymbol.dispatchEvent(
 				new CustomEvent(`${kebab(key)}-changed`, {
 					bubbles: true,
 					detail: { value },
@@ -26,8 +44,19 @@ const sortBy = (valueFn, descending) => (a, b) =>
 			);
 		});
 	},
-	assignIndex = (item, index) => Object.assign(item, { [indexSymbol]: index }),
-	unparsed = Symbol('unparsed');
+	assignIndex = (
+		item: Item | ProcessedGroupItem,
+		index: number,
+	): Item | ProcessedGroupItem => Object.assign(item, { [indexSymbol]: index });
+
+export interface UseProcessedItemsParams {
+	data: Item[];
+	columns: NormalizedColumn[];
+	hashParam?: string;
+	sortAndGroupOptions: SortAndGroupOptions;
+	noLocalSort?: boolean;
+	noLocalFilter?: boolean;
+}
 
 export const useProcessedItems = ({
 	data,
@@ -36,44 +65,50 @@ export const useProcessedItems = ({
 	sortAndGroupOptions,
 	noLocalSort,
 	noLocalFilter,
-}) => {
+}: UseProcessedItemsParams) => {
 	const { groupOnColumn, groupOnDescending, sortOnColumn, descending } =
 			sortAndGroupOptions,
 		write = useCallback(
-			([filter, value]) => {
+			([filter, value]: [string, FilterState]) => {
 				const column = columns.find(({ name }) => name === filter);
 				if (column == null) {
 					return [filter, undefined];
 				}
-				return [
-					filter,
-					value.filter && column.serializeFilter(column, value.filter),
-				];
+				const serialized =
+					value.filter && column.serializeFilter?.(column, value.filter);
+				return [filter, serialized];
 			},
 			[columns],
 		),
 		read = useCallback(
-			([filter, value]) => {
+			([filter, value]: [string, string | null]) => {
 				const column = columns.find(({ name }) => name === filter);
 				if (column == null) {
 					return [filter, { [unparsed]: value }];
 				}
 
-				const state = { filter: column.deserializeFilter(column, value) };
+				const state: FilterState = {
+					filter: column.deserializeFilter?.(column, value),
+				};
 				notifyChanges(column, state);
 				return [filter, state];
 			},
 			[columns],
-		),
-		[filters, setFilters] = useHashState({}, hashParam, {
+		);
+
+	type FiltersType = Record<string, FilterState>;
+	const [filters, setFilters] = useHashState({} as FiltersType, hashParam, {
 			multi: true,
 			suffix: '-filter--',
-			write,
-			read,
+			write: write as unknown as (value: unknown) => string,
+			read: read as unknown as (value: string) => FiltersType,
 		}),
 		// TODO: drop extra info from state
 		setFilterState = useCallback(
-			(name, state) =>
+			(
+				name: string,
+				state: FilterState | ((prev: FilterState) => FilterState),
+			) =>
 				setFilters((filters) => {
 					const newState = invoke(state, filters[name]);
 
@@ -96,10 +131,10 @@ export const useProcessedItems = ({
 					.map((col) => [
 						col.name,
 						!col.noLocalFilter &&
-							col.getFilterFn(col, filters[col.name]?.filter),
+							col.getFilterFn?.(col, filters[col.name!]?.filter),
 					])
 					.filter(([, fn]) => !!fn),
-			);
+			) as Record<string, (item: Item) => boolean>;
 		}, [columns, ...filterValues]),
 		filteredItems = useMemo(() => {
 			if (!Array.isArray(data) || data.length === 0) {
@@ -128,7 +163,7 @@ export const useProcessedItems = ({
 					.sort(
 						sortBy(
 							(a) =>
-								sortOnColumn.getComparableValue(
+								sortOnColumn.getComparableValue?.(
 									{ ...sortOnColumn, valuePath: sortOnColumn.sortPath },
 									a,
 								),
@@ -138,33 +173,36 @@ export const useProcessedItems = ({
 			}
 
 			if (groupOnColumn != null && groupOnColumn.groupOn != null) {
-				const groupedResults = filteredItems.reduce((acc, item) => {
-					const gval = groupOnColumn.getComparableValue(
-						{ ...groupOnColumn, valuePath: groupOnColumn.groupOn },
-						item,
-					);
+				const groupedResults = filteredItems.reduce<ProcessedGroupItem[]>(
+					(acc, item) => {
+						const gval = groupOnColumn.getComparableValue?.(
+							{ ...groupOnColumn, valuePath: groupOnColumn.groupOn },
+							item,
+						);
 
-					if (gval === undefined) {
+						if (gval === undefined) {
+							return acc;
+						}
+
+						let group = acc.find((g) => g.id === gval);
+
+						if (!group) {
+							group = { id: gval, name: gval, items: [item] };
+							return [...acc, group];
+						}
+
+						group.items.push(item);
 						return acc;
-					}
-
-					let group = acc.find((g) => g.id === gval);
-
-					if (!group) {
-						group = { id: gval, name: gval, items: [item] };
-						return [...acc, group];
-					}
-
-					group.items.push(item);
-					return acc;
-				}, []);
+					},
+					[],
+				);
 
 				groupedResults.sort(
 					sortBy(
 						(a) =>
-							groupOnColumn.getComparableValue(
+							groupOnColumn.getComparableValue?.(
 								{ ...groupOnColumn, valuePath: groupOnColumn.groupOn },
-								a.items[0],
+								(a as ProcessedGroupItem).items[0],
 							),
 						groupOnDescending,
 					),
@@ -180,7 +218,7 @@ export const useProcessedItems = ({
 						group.items.sort(
 							sortBy(
 								(a) =>
-									sortOnColumn.getComparableValue(
+									sortOnColumn.getComparableValue?.(
 										{ ...sortOnColumn, valuePath: sortOnColumn.sortPath },
 										a,
 									),
@@ -203,9 +241,9 @@ export const useProcessedItems = ({
 		visibleData = useMemo(() => {
 			let index = 0,
 				groupIndex = 0;
-			const result = [];
+			const result: Item[] = [];
 			processedItems.forEach((item) => {
-				if (Array.isArray(item.items)) {
+				if ('items' in item && Array.isArray(item.items)) {
 					assignIndex(item, groupIndex++);
 					item.items.forEach((groupItem) => {
 						assignIndex(groupItem, index++);
@@ -215,8 +253,8 @@ export const useProcessedItems = ({
 				}
 
 				assignIndex(item, index++);
-				return result.push(item);
-			}, []);
+				result.push(item as Item);
+			});
 			return result;
 		}, [processedItems]);
 
@@ -242,7 +280,7 @@ export const useProcessedItems = ({
 				}),
 			);
 		});
-	}, [read]);
+	}, [read, setFilters]);
 
 	return {
 		processedItems,
