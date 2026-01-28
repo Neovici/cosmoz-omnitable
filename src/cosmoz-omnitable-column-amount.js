@@ -125,6 +125,8 @@ class OmnitableColumnAmount extends columnMixin(PolymerElement) {
 			currency,
 			autoupdate,
 			autodetect,
+			noSort,
+			name,
 		},
 		{ filter },
 		setState,
@@ -142,6 +144,7 @@ class OmnitableColumnAmount extends columnMixin(PolymerElement) {
 			.currency=${currency}
 			.autoupdate=${autoupdate}
 			.autodetect=${autodetect}
+			.column=${{ noSort, name, title }}
 			@filter-changed=${({ detail: { value } }) =>
 				setState((state) => ({ ...state, filter: value }))}
 			@header-focused-changed=${({ detail: { value } }) =>

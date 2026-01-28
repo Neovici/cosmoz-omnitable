@@ -1,5 +1,4 @@
 import { PolymerElement } from '@polymer/polymer/polymer-element';
-
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 
 import '@neovici/cosmoz-autocomplete';
@@ -7,6 +6,7 @@ import { html } from 'lit-html';
 import { when } from 'lit-html/directives/when.js';
 import { get } from '@polymer/polymer/lib/utils/path';
 import { memooize } from '@neovici/cosmoz-utils/memoize';
+import { renderLabel } from './lib/cosmoz-omnitable-dropdown-input';
 
 const computeValue = (value, source) =>
 		source.find(({ value: valueProp }) => value === valueProp),
@@ -105,9 +105,9 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 		>`;
 	}
 
-	renderHeader(column, { filter, query }, setState, source) {
-		return html`<cosmoz-autocomplete-ui
-			.label=${column.title}
+	renderHeader(column, { filter, query }, setState, source, sortAndGroup) {
+		return html` <cosmoz-autocomplete-ui
+			.label=${renderLabel(column.title, column, sortAndGroup)}
 			.title=${computeItemTooltip(
 				column.title,
 				filter,

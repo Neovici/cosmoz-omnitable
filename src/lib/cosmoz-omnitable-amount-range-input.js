@@ -33,6 +33,7 @@ class AmountRangeInput extends rangeInputMixin(
 				computed: '_computeFilterText(filter.*, _formatters)',
 			},
 			headerFocused: { type: Boolean, value: false },
+			column: { type: Object, value: null },
 		};
 	}
 
@@ -78,6 +79,7 @@ class AmountRangeInput extends rangeInputMixin(
 				filterText: this._filterText,
 				externalValues: this.externalValues,
 				onOpenedChanged,
+				column: this.column,
 				content: html`
 					<h3 style="margin: 0;">${this.title}</h3>
 					<cosmoz-input

@@ -25,11 +25,11 @@ export const dateInputMixin = (base) =>
 					computed: '_computeFilterText(filter.*, formatter)',
 				},
 
-				formatter: { type: Object, computed: '_computeFormatter(locale)' },
-			};
-		}
-
-		/**
+			formatter: { type: Object, computed: '_computeFormatter(locale)' },
+			headerFocused: { type: Boolean, value: false },
+			column: { type: Object, value: null },
+		};
+	}		/**
 		 * Converts an value to date optionaly limiting it.
 		 *
 		 * @param	 {Date|String} value	 Value to convert to date
