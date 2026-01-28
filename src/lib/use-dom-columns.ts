@@ -1,8 +1,14 @@
 import { memooize } from '@neovici/cosmoz-utils/memoize';
 import { useLayoutEffect, useState } from '@pionjs/pion';
+import {
+	columnSymbol,
+	DOMColumn,
+	Host,
+	NormalizedColumn,
+	RenderFunction,
+} from './types';
 
-const columnSymbol = Symbol('column');
-const verifyColumnSetup = (columns) => {
+const verifyColumnSetup = (columns: DOMColumn[]) => {
 	let ok = true;
 	const columnNames = columns.map((c) => c.name);
 	// Check if column names are set
@@ -34,7 +40,7 @@ const verifyColumnSetup = (columns) => {
 	return ok;
 };
 
-const normalizeColumn = (column) => {
+const normalizeColumn = (column: DOMColumn): NormalizedColumn => {
 	const valuePath = column.valuePath ?? column.name;
 
 	return {
@@ -57,10 +63,10 @@ const normalizeColumn = (column) => {
 		deserializeFilter: column.deserializeFilter,
 		toXlsxValue: column.toXlsxValue,
 
-		renderHeader: column.renderHeader,
+		renderHeader: column.renderHeader as RenderFunction,
 		renderCell: column.renderCell,
-		renderEditCell: column.renderEditCell,
-		renderGroup: column.renderGroup,
+		renderEditCell: column.renderEditCell as RenderFunction,
+		renderGroup: column.renderGroup as RenderFunction,
 		cellTitleFn: column.cellTitleFn,
 		headerTitleFn: column.headerTitleFn,
 
@@ -118,16 +124,22 @@ const normalizeColumn = (column) => {
 	};
 };
 
-const isVisibleColumn = (child) => child.isOmnitableColumn && !child.hidden;
+const isVisibleColumn = (child: Element): child is DOMColumn => {
+	const column = child as Partial<DOMColumn>;
+	return Boolean(column.isOmnitableColumn && !column.hidden);
+};
 
-const collectDomColumns = (assignedElements) => {
+const collectDomColumns = (assignedElements: Element[]): DOMColumn[] => {
 	const domColumns = assignedElements.filter(isVisibleColumn);
 
 	if (!verifyColumnSetup(domColumns)) return [];
 	return domColumns;
 };
 
-const normalizeColumns = (domColumns, enabledColumns) => {
+const normalizeColumns = (
+	domColumns: DOMColumn[],
+	enabledColumns: string[] | undefined,
+): NormalizedColumn[] => {
 	const columns = Array.isArray(enabledColumns)
 		? domColumns.filter((column) => enabledColumns.includes(column.name))
 		: domColumns.filter((column) => !column.disabled);
@@ -135,21 +147,26 @@ const normalizeColumns = (domColumns, enabledColumns) => {
 	return columns.map(normalizeColumn);
 };
 
-export const useDOMColumns = (host, { enabledColumns }) => {
-	const [columns, setColumns] = useState([]);
+export const useDOMColumns = (
+	host: Host,
+	{ enabledColumns }: { enabledColumns?: string[] },
+): NormalizedColumn[] => {
+	const [columns, setColumns] = useState<NormalizedColumn[]>([]);
 
 	useLayoutEffect(() => {
-		let sched;
-		let previous = [];
-		const slot = host.shadowRoot.querySelector('#columnsSlot');
-		const update = (force) => () => {
+		let sched: number;
+		let previous: Node[] = [];
+		const slot = host.shadowRoot.querySelector(
+			'#columnsSlot',
+		) as HTMLSlotElement;
+		const update = (force?: boolean) => () => {
 			const current = slot.assignedNodes({ flatten: true });
 
 			if (!force) {
 				const added = current.filter((n) => !previous.includes(n));
 				const removed = previous.filter((n) => !current.includes(n));
 				const columnsChanged = [...added, ...removed].some(
-					(element) => element.isOmnitableColumn,
+					(element) => (element as Partial<DOMColumn>).isOmnitableColumn,
 				);
 
 				previous = current;
@@ -159,10 +176,14 @@ export const useDOMColumns = (host, { enabledColumns }) => {
 				previous = current;
 			}
 
-			setColumns(normalizeColumns(collectDomColumns(current), enabledColumns));
+			setColumns(
+				normalizeColumns(
+					collectDomColumns(current as Element[]),
+					enabledColumns,
+				),
+			);
 		};
-
-		const scheduleUpdate = (ev) => {
+		const scheduleUpdate = (ev?: Event) => {
 			cancelAnimationFrame(sched);
 			sched = requestAnimationFrame(
 				update(ev?.type === 'cosmoz-column-prop-changed'),
@@ -184,4 +205,5 @@ export const useDOMColumns = (host, { enabledColumns }) => {
 	return columns;
 };
 
-export { columnSymbol };
+// Re-export for backwards compatibility
+export { columnSymbol } from './types';

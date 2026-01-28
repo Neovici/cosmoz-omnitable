@@ -2,10 +2,10 @@ import { saveAs } from 'file-saver-es';
 import { NullXlsx } from '@neovici/nullxlsx';
 import { Column, Item } from './types';
 
-export interface XlsxColumn extends Column {
+export type XlsxColumn = Omit<Column, 'toXlsxValue'> & {
 	title: string;
 	toXlsxValue: (column: XlsxColumn, item: Item) => string;
-}
+};
 
 export const prepareXlsxData = (
 	columns: XlsxColumn[],
