@@ -129,6 +129,7 @@
     "@commitlint/config-conventional": "^20.0.0",
     "@neovici/cfg": "^2.5.1",
     "@neovici/cosmoz-viewinfo": "^4.0.0",
+    "@neovici/testing": "^2.1.1",
     "@open-wc/testing": "^4.0.0",
     "@polymer/iron-test-helpers": "^3.0.0",
     "@polymer/paper-button": "^3.0.0",
