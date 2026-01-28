@@ -1,14 +1,14 @@
 import { invoke } from '@neovici/cosmoz-utils/function';
 import { useCallback, useEffect, useMemo } from '@pionjs/pion';
 import { genericSorter } from './generic-sorter';
-import type {
+import {
 	FilterState,
 	Item,
 	NormalizedColumn,
 	ProcessedGroupItem,
 	SortAndGroupOptions,
+	unparsed,
 } from './types';
-import { unparsed } from './types';
 import { columnSymbol } from './use-dom-columns';
 import { useHashState } from './use-hash-state';
 import { indexSymbol } from './utils';
