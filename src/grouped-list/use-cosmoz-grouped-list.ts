@@ -1,21 +1,21 @@
+import { virtualize } from '@lit-labs/virtualizer/virtualize.js';
 import { useImperativeApi } from '@neovici/cosmoz-utils/hooks/use-imperative-api';
 import { useNotifyProperty } from '@neovici/cosmoz-utils/hooks/use-notify-property';
 import { useCallback, useLayoutEffect, useMemo } from '@pionjs/pion';
 import { html } from 'lit-html';
+import type { DirectiveResult } from 'lit/directive.js';
+import type { Item as BaseItem } from '../lib/types';
+import { indexSymbol } from '../lib/utils';
 import './cosmoz-grouped-list-row';
 import { useCollapsibleItems } from './use-collapsible-items';
 import { useSelectedItems } from './use-selected-items';
 import {
 	byReference,
+	GroupItem,
 	isExpanded,
 	isFolded,
 	prepareData,
-	GroupItem,
 } from './utils';
-import { virtualize } from '@lit-labs/virtualizer/virtualize.js';
-import type { DirectiveResult } from 'lit/directive.js';
-import type { Item as BaseItem } from '../lib/types';
-import { indexSymbol } from '../lib/utils';
 
 export interface Item extends BaseItem {
 	[indexSymbol]: number;
@@ -73,7 +73,10 @@ const useCosmozGroupedList = (host: UseCosmozGroupedListHost) => {
 	// it only makes sense to do it when a group is folded
 	// suggested fix: separate signal for item collapse and group fold
 	const flatData = useMemo(
-			() => prepareData(data, displayEmptyGroups, state),
+			() =>
+				prepareData(data, displayEmptyGroups, state) as
+					| (Item | GroupItem<Item>)[]
+					| undefined,
 			[data, displayEmptyGroups, signal],
 		),
 		{
