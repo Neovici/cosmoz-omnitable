@@ -1,11 +1,11 @@
-import { GroupItem, Item } from '../lib/types';
+import { type GroupItem, Item } from '../lib/types';
 
 export interface ItemState {
 	expanded?: boolean;
 	folded?: boolean;
 }
 
-export { GroupItem };
+export type { GroupItem };
 
 export type ItemsState = WeakMap<Item, ItemState>;
 
