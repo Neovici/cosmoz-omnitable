@@ -134,7 +134,7 @@ export const useProcessedItems = ({
 							col.getFilterFn?.(col, filters[col.name!]?.filter),
 					])
 					.filter(([, fn]) => !!fn),
-			) as Record<string, (item: Item) => boolean>;
+			);
 		}, [columns, ...filterValues]),
 		filteredItems = useMemo(() => {
 			if (!Array.isArray(data) || data.length === 0) {
@@ -253,7 +253,7 @@ export const useProcessedItems = ({
 				}
 
 				assignIndex(item, index++);
-				result.push(item as Item);
+				result.push(item);
 			});
 			return result;
 		}, [processedItems]);
