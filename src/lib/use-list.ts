@@ -1,3 +1,4 @@
+import { isEmpty } from '@neovici/cosmoz-utils/template';
 import {
 	html,
 	useCallback,
@@ -7,15 +8,14 @@ import {
 	type Renderable,
 } from '@pionjs/pion';
 import { when } from 'lit-html/directives/when.js';
-import { isEmpty } from '@neovici/cosmoz-utils/template';
-import { indexSymbol } from './utils';
-import { onItemChange as _onItemChange } from './utils-data';
-import type { Column, Item as BaseItem } from './types';
 import type {
-	RenderItemFunction,
 	RenderGroupFunction,
+	RenderItemFunction,
 } from '../grouped-list/use-cosmoz-grouped-list';
 import type { CompareItemsFunction } from '../grouped-list/use-selected-items';
+import type { Host as BaseHost, Item as BaseItem, Column } from './types';
+import { indexSymbol } from './utils';
+import { onItemChange as _onItemChange } from './utils-data';
 
 export interface Item extends BaseItem {
 	[indexSymbol]: number;
@@ -26,7 +26,7 @@ interface KeyState {
 	ctrlKey: boolean;
 }
 
-interface UseListHost extends HTMLElement {
+interface UseListHost extends BaseHost {
 	loading?: boolean;
 	displayEmptyGroups?: boolean;
 	compareItemsFn?: CompareItemsFunction;
