@@ -1,3 +1,15 @@
+# [17.0.0](https://github.com/Neovici/cosmoz-omnitable/compare/v16.2.0...v17.0.0) (2026-01-29)
+
+
+### Features
+
+* add button styling for cosmoz-dropdown v7 compatibility ([#866](https://github.com/Neovici/cosmoz-omnitable/issues/866)) ([0b10fd4](https://github.com/Neovici/cosmoz-omnitable/commit/0b10fd4ee9d6120fc371e5efed24305e885f298e))
+
+
+### BREAKING CHANGES
+
+* requires @neovici/cosmoz-dropdown@^7.0.0
+
 # [16.2.0](https://github.com/Neovici/cosmoz-omnitable/compare/v16.1.1...v16.2.0) (2026-01-28)
 
 
