@@ -1,4 +1,5 @@
 import type { Renderable } from '@pionjs/pion';
+import { indexSymbol } from './utils';
 
 export type LimitFunction = (a: number, b: number) => number | undefined;
 
@@ -162,4 +163,17 @@ export type AmountLimit = Limit<Amount>;
 
 export interface Host extends HTMLElement {
 	shadowRoot: ShadowRoot;
+}
+
+export interface GroupItem<T = Item> {
+	items: T[];
+	[key: string]: unknown;
+	[indexSymbol]?: number;
+}
+
+export interface SortAndGroupOptions {
+	groupOnColumn?: NormalizedColumn;
+	groupOnDescending?: boolean;
+	sortOnColumn?: NormalizedColumn;
+	descending?: boolean;
 }

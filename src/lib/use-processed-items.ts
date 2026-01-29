@@ -1,7 +1,12 @@
 import { invoke } from '@neovici/cosmoz-utils/function';
 import { useCallback, useEffect, useMemo } from '@pionjs/pion';
 import { genericSorter } from './generic-sorter';
-import type { Item, NormalizedColumn } from './types';
+import type {
+	GroupItem,
+	Item,
+	NormalizedColumn,
+	SortAndGroupOptions,
+} from './types';
 import { columnSymbol } from './use-dom-columns';
 import { useHashState } from './use-hash-state';
 import { indexSymbol } from './utils';
@@ -38,24 +43,10 @@ const sortBy =
 		Object.assign(item, { [indexSymbol]: index }),
 	unparsed = Symbol('unparsed');
 
-export interface GroupItem {
-	id: unknown;
-	name: unknown;
-	items: Item[];
-	[indexSymbol]?: number;
-}
-
 export interface FilterState {
 	filter?: unknown;
 	[unparsed]?: string | null;
 	[key: string]: unknown;
-}
-
-export interface SortAndGroupOptions {
-	groupOnColumn?: NormalizedColumn;
-	groupOnDescending?: boolean;
-	sortOnColumn?: NormalizedColumn;
-	descending?: boolean;
 }
 
 export interface UseProcessedItemsParams {
@@ -289,7 +280,7 @@ export const useProcessedItems = ({
 				}),
 			);
 		});
-	}, [read, setFilters]);
+	}, [read]);
 
 	return {
 		processedItems,
