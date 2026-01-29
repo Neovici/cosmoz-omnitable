@@ -1,5 +1,4 @@
 import { useCallback, useMemo, useRef, useState } from '@pionjs/pion';
-import type { NormalizedColumn } from '../types';
 import { Host as BaseHost } from '../types';
 import { useDOMColumns } from '../use-dom-columns';
 import normalize, {
@@ -59,7 +58,7 @@ export default ({ settingsId, host }: UseSettingsParams) => {
 			() =>
 				normalizedSettings.columns
 					.map((s) => columns.find((c) => c.name === s.name))
-					.filter(Boolean) as NormalizedColumn[],
+					.filter(Boolean),
 			[columns, ...normalizedSettings.columns.map((s) => s.name)],
 		);
 
