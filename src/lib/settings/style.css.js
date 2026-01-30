@@ -231,6 +231,8 @@ export const dropdown = css`
 		padding: 0;
 		background: transparent;
 		color: inherit;
+		width: 40px;
+		height: 40px;
 	}
 	cosmoz-dropdown::part(anchor) {
 		display: inline-block;
