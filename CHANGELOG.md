@@ -1,3 +1,10 @@
+## [17.0.1](https://github.com/Neovici/cosmoz-omnitable/compare/v17.0.0...v17.0.1) (2026-01-30)
+
+
+### Bug Fixes
+
+* fix settings button placement ([#870](https://github.com/Neovici/cosmoz-omnitable/issues/870)) ([5a6234f](https://github.com/Neovici/cosmoz-omnitable/commit/5a6234fcdc16288dcfd3f120f9404b4210fe2cef))
+
 # [17.0.0](https://github.com/Neovici/cosmoz-omnitable/compare/v16.2.0...v17.0.0) (2026-01-29)
 
 
