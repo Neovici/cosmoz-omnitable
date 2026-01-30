@@ -1,4 +1,4 @@
-import{b as d,D as ke,A as xt}from"./iframe-B-cHhAz5.js";import{t as K,c as O,g as S,P as I,u as T,a as yt,m as vt,s as Bt,D as Ht,b as Gt,e as Wt,i as $e,h as Oe,d as jt,f as $t,r as Ut,j as Kt,k as q,l as Jt,n as Ce,p as he,o as k,q as Xt,v as we,w as Qt,x as Yt,y as Zt,T as ei,z as M,A as Ye,B as F,C,E as ti,F as ii,G as ai,H as ni,I as oi,J as Ct,K as Le,L as wt,M as De,N as ri,O as St,Q as li,R as Te,S as Ze,U as si,V as Ve,W as ui,X as ci,Y as Ee,Z as Re,_ as di,$ as Ie,a0 as N,a1 as mi,a2 as ze,a3 as pi}from"./cosmoz-collapse-B8WrWzt_.js";import"./preload-helper-PPVm8Dsz.js";const gi=K`
+import{b as d,D as ke,A as xt}from"./iframe-Bcji7rs1.js";import{t as K,c as O,g as S,P as I,u as T,a as yt,m as vt,s as Bt,D as Ht,b as Gt,e as Wt,i as $e,h as Oe,d as jt,f as $t,r as Ut,j as Kt,k as q,l as Jt,n as Ce,p as he,o as k,q as Xt,v as we,w as Qt,x as Yt,y as Zt,T as ei,z as M,A as Ye,B as F,C,E as ti,F as ii,G as ai,H as ni,I as oi,J as Ct,K as Le,L as wt,M as De,N as ri,O as St,Q as li,R as Te,S as Ze,U as si,V as Ve,W as ui,X as ci,Y as Ee,Z as Re,_ as di,$ as Ie,a0 as N,a1 as mi,a2 as ze,a3 as pi}from"./cosmoz-collapse-BuLcf8PN.js";import"./preload-helper-PPVm8Dsz.js";const gi=K`
 	:host {
 		display: flex;
 	}
@@ -1789,6 +1789,8 @@ import{b as d,D as ke,A as xt}from"./iframe-B-cHhAz5.js";import{t as K,c as O,g 
 		padding: 0;
 		background: transparent;
 		color: inherit;
+		width: 40px;
+		height: 40px;
 	}
 	cosmoz-dropdown::part(anchor) {
 		display: inline-block;
