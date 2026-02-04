@@ -1,3 +1,10 @@
+# [17.1.0](https://github.com/Neovici/cosmoz-omnitable/compare/v17.0.1...v17.1.0) (2026-02-04)
+
+
+### Features
+
+* sort filter dropdown values alphabetically using localeCompare ([#878](https://github.com/Neovici/cosmoz-omnitable/issues/878)) ([c5665f1](https://github.com/Neovici/cosmoz-omnitable/commit/c5665f1ef60666d0a0f1866bef8e59e6ddccdc81))
+
 ## [17.0.1](https://github.com/Neovici/cosmoz-omnitable/compare/v17.0.0...v17.0.1) (2026-01-30)
 
 
