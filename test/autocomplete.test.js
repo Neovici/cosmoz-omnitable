@@ -7,18 +7,18 @@ import {
 	setupOmnitableFixture,
 } from './helpers/utils';
 
-import '../src/cosmoz-omnitable.js';
 import { getComparableValue } from '../src/cosmoz-omnitable-column-autocomplete.js';
-import '../src/cosmoz-omnitable-column.js';
 import {
-	unique,
+	applyMultiFilter,
 	computeSource,
+	getString,
 	toAutocompleteSource,
 	toXlsxValue,
-	getString,
-	applyMultiFilter,
+	unique,
 } from '../src/cosmoz-omnitable-column-list-mixin';
 import { applySingleFilter } from '../src/cosmoz-omnitable-column-mixin';
+import '../src/cosmoz-omnitable-column.js';
+import '../src/cosmoz-omnitable.js';
 
 const data = [
 	{
@@ -363,9 +363,67 @@ suite('pure functions', () => {
 		const values = computeSource({ valuePath: 'id' }, data);
 		assert.deepEqual(values, [0, 1, 2, 3]);
 	});
-	test('toAutocompleteSource', () => {
-		assert.deepEqual(toAutocompleteSource([0, 1, 1, 2, 0, 3]), [0, 1, 2, 3]);
+
+	test('toAutocompleteSource sorts primitive arrays', () => {
+		assert.deepEqual(toAutocompleteSource([3, 1, 1, 2, 0, 3]), [0, 1, 2, 3]);
 	});
+
+	test('toAutocompleteSource sorts string arrays alphabetically', () => {
+		assert.deepEqual(
+			toAutocompleteSource(['Zebra', 'Apple', 'Mango', 'Apple']),
+			['Apple', 'Mango', 'Zebra'],
+		);
+	});
+
+	test('toAutocompleteSource sorts string arrays using localeCompare', () => {
+		// éclair (é = U+00E9) sorts after "z" with < / > operators (code point order),
+		// but near "e" with localeCompare — verifying locale-aware sorting is used
+		assert.deepEqual(toAutocompleteSource(['egg', 'éclair', 'apple']), [
+			'apple',
+			'éclair',
+			'egg',
+		]);
+	});
+
+	test('toAutocompleteSource sorts object arrays by textProperty', () => {
+		assert.deepEqual(
+			toAutocompleteSource(
+				[
+					{ id: '3', name: 'Zebra' },
+					{ id: '1', name: 'Apple' },
+					{ id: '2', name: 'Mango' },
+				],
+				'id',
+				'name',
+			),
+			[
+				{ id: '1', name: 'Apple' },
+				{ id: '2', name: 'Mango' },
+				{ id: '3', name: 'Zebra' },
+			],
+		);
+	});
+
+	test('toAutocompleteSource sorts object arrays by default label property', () => {
+		assert.deepEqual(
+			toAutocompleteSource([
+				{ id: '3', label: 'Zebra' },
+				{ id: '1', label: 'Apple' },
+				{ id: '2', label: 'Mango' },
+			]),
+			[
+				{ id: '1', label: 'Apple' },
+				{ id: '2', label: 'Mango' },
+				{ id: '3', label: 'Zebra' },
+			],
+		);
+	});
+
+	test('toAutocompleteSource handles null and empty arrays', () => {
+		assert.deepEqual(toAutocompleteSource(null), []);
+		assert.deepEqual(toAutocompleteSource([]), []);
+	});
+
 	test('toAutocompleteSource key/value values', () => {
 		assert.deepEqual(
 			toAutocompleteSource(
@@ -390,6 +448,27 @@ suite('pure functions', () => {
 					id: 'id3',
 					label: 2,
 				},
+			],
+		);
+	});
+
+	test('toAutocompleteSource key/value values sorts by localeCompare', () => {
+		// éclair (é = U+00E9) sorts after "z" with < / > operators (code point order),
+		// but near "e" with localeCompare — verifying locale-aware sorting is used
+		assert.deepEqual(
+			toAutocompleteSource(
+				{
+					id1: 'éclair',
+					id2: 'egg',
+					id3: 'apple',
+				},
+				'id',
+				'label',
+			),
+			[
+				{ id: 'id3', label: 'apple' },
+				{ id: 'id1', label: 'éclair' },
+				{ id: 'id2', label: 'egg' },
 			],
 		);
 	});
@@ -462,6 +541,7 @@ suite('autocomplete unit tests', () => {
 
 suite('values as function', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);
+
 	test('displays values from a source function', async () => {
 		const data = [
 				{

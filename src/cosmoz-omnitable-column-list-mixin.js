@@ -1,6 +1,6 @@
-import { prop } from '@neovici/cosmoz-utils/object';
 import { array } from '@neovici/cosmoz-utils/array';
 import { invoke } from '@neovici/cosmoz-utils/function';
+import { prop } from '@neovici/cosmoz-utils/object';
 import { get } from '@polymer/polymer/lib/utils/path';
 import { valuesFrom } from './lib/utils-data';
 
@@ -40,7 +40,14 @@ const unique = (values, valueProperty) => {
 		}
 
 		if (Array.isArray(values)) {
-			return unique(values, valueProperty);
+			const result = unique(values, valueProperty);
+			if (!result?.length) return result;
+			const textProp = textProperty ?? 'label';
+			const getText = (item) =>
+				typeof item === 'object' && item != null
+					? String(get(item, textProp) ?? '')
+					: String(item ?? '');
+			return result.sort((a, b) => getText(a).localeCompare(getText(b)));
 		}
 
 		if (typeof values === 'object') {
@@ -51,15 +58,9 @@ const unique = (values, valueProperty) => {
 					[valProp]: id,
 					[textProp]: label,
 				}))
-				.sort((a, b) => {
-					if (a[textProp] < b[textProp]) {
-						return -1;
-					}
-					if (a[textProp] > b[textProp]) {
-						return 1;
-					}
-					return 0;
-				});
+				.sort((a, b) =>
+					String(a[textProp] ?? '').localeCompare(String(b[textProp] ?? '')),
+				);
 		}
 
 		return [];
@@ -180,15 +181,15 @@ const unique = (values, valueProperty) => {
 		};
 
 export {
-	unique,
-	getTexts,
-	getString,
-	toXlsxValue,
 	applyMultiFilter,
+	computeSource,
+	getString,
+	getTexts,
+	listColumnMixin,
 	onChange,
 	onFocus,
 	onText,
-	computeSource,
 	toAutocompleteSource,
-	listColumnMixin,
+	toXlsxValue,
+	unique,
 };
