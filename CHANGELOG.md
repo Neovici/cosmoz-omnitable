@@ -1,3 +1,10 @@
+## [17.1.1](https://github.com/Neovici/cosmoz-omnitable/compare/v17.1.0...v17.1.1) (2026-02-06)
+
+
+### Bug Fixes
+
+* remove deprecated bottom-bar-toolbar and bottom-bar-menu slots ([#879](https://github.com/Neovici/cosmoz-omnitable/issues/879)) ([026b8e8](https://github.com/Neovici/cosmoz-omnitable/commit/026b8e8875f1a80bdabd3d933170f07747ef2c1c))
+
 # [17.1.0](https://github.com/Neovici/cosmoz-omnitable/compare/v17.0.1...v17.1.0) (2026-02-04)
 
 
