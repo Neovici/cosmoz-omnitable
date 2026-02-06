@@ -1,4 +1,4 @@
-import{b as d,D as Fe,A as bt,w as Bt}from"./iframe-CSGDoJbY.js";import{t as K,c as T,g as S,P as A,u as M,a as xt,m as vt,s as Ht,D as Gt,b as Wt,e as qt,i as ye,h as Ae,d as Xt,f as yt,r as Ut,j as Kt,k as _,l as Jt,n as $e,p as he,o as D,q as Yt,v as we,w as Qt,x as Zt,y as en,T as tn,z as E,A as fe,B as I,C as w,E as nn,F as on,G as rn,H as ln,I as an,J as $t,K as Ee,L as wt,M as Te,N as sn,O as zt,Q as un,R as Le,S as Ye,U as cn,V as Re,W as dn,X as mn,Y as Oe,Z as Me,_ as pn,$ as De,a0 as P,a1 as gn,a2 as Se,a3 as hn}from"./cosmoz-collapse-BpFxER4G.js";import"./preload-helper-PPVm8Dsz.js";const fn=K`
+import{b as d,D as Fe,A as bt,w as Bt}from"./iframe-CBWJ6MEG.js";import{t as K,c as T,g as S,P as A,u as M,a as xt,m as vt,s as Ht,D as Gt,b as Wt,e as qt,i as ye,h as Ae,d as Xt,f as yt,r as Ut,j as Kt,k as _,l as Jt,n as $e,p as he,o as D,q as Yt,v as we,w as Qt,x as Zt,y as en,T as tn,z as E,A as fe,B as I,C as w,E as nn,F as on,G as rn,H as ln,I as an,J as $t,K as Ee,L as wt,M as Te,N as sn,O as zt,Q as un,R as Le,S as Ye,U as cn,V as Re,W as dn,X as mn,Y as Oe,Z as Me,_ as pn,$ as De,a0 as P,a1 as gn,a2 as Se,a3 as hn}from"./cosmoz-collapse-B-ps1Tur.js";import"./preload-helper-PPVm8Dsz.js";const fn=K`
 	:host {
 		display: flex;
 	}
@@ -1429,12 +1429,12 @@ import{b as d,D as Fe,A as bt,w as Bt}from"./iframe-CSGDoJbY.js";import{t as K,c
 			<button
 				@click=${()=>Yo(n,e,t)}
 			>
-				${_("Save as CSV")}
+				${_("Save selected items as CSV")}
 			</button>
 			<button
 				@click=${()=>Zo(n,e,o,r)}
 			>
-				${_("Save as XLSX")}
+				${_("Save selected items as XLSX")}
 			</button>
 			<slot name="download-menu"></slot>
 		</cosmoz-dropdown-menu>
