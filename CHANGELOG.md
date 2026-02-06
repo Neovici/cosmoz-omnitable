@@ -1,3 +1,10 @@
+# [17.2.0](https://github.com/Neovici/cosmoz-omnitable/compare/v17.1.1...v17.2.0) (2026-02-06)
+
+
+### Features
+
+* improve button labels for saving items as CSV and XLSX ([#880](https://github.com/Neovici/cosmoz-omnitable/issues/880)) ([b59509e](https://github.com/Neovici/cosmoz-omnitable/commit/b59509efc9238c35ff4d743ba4e0667a12cf112e))
+
 ## [17.1.1](https://github.com/Neovici/cosmoz-omnitable/compare/v17.1.0...v17.1.1) (2026-02-06)
 
 
