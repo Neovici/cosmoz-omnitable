@@ -39,6 +39,11 @@ export const useOmnitable = (host) => {
 				noLocalSort,
 				noLocalFilter,
 			}),
+		autoWidthEnabled =
+			host.autoWidth !== false &&
+			host.autoWidth !== 'false' &&
+			!settingS.hasChanges &&
+			settingS.savedSettings == null,
 		{ isMini, collapsedColumns, miniColumns } = useFastLayout({
 			host,
 			columns,
@@ -46,6 +51,8 @@ export const useOmnitable = (host) => {
 			setSettings,
 			resizeSpeedFactor,
 			sortAndGroupOptions,
+			autoWidthEnabled,
+			autoWidthData: visibleData,
 		}),
 		dataIsValid = data && Array.isArray(data) && data.length > 0,
 		[selectedItems, setSelectedItems] = useState([]);

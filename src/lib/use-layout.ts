@@ -8,13 +8,14 @@ interface UseLayoutParams {
 	groupOnColumn?: Column | null;
 	config: ColumnConfig[];
 	miniColumn?: Column | null;
+	contentWidths?: Record<string, number>;
 }
-
 export const useLayout = ({
 	canvasWidth,
 	groupOnColumn,
 	config,
 	miniColumn,
+	contentWidths,
 }: UseLayoutParams): (number | undefined)[] =>
 	useMemo(() => {
 		if (!Array.isArray(config) || canvasWidth == null || canvasWidth === 0) {
@@ -22,15 +23,22 @@ export const useLayout = ({
 		}
 
 		const columnConfigs: ColumnConfig[] = config
-			.map((c, index) => ({
-				minWidth: c.minWidth,
-				width: c.width,
-				flex: c.flex,
-				priority: c.priority,
-				name: c.name,
-				index,
-				hidden: c.name === groupOnColumn?.name || c.disabled,
-			}))
+			.map((c, index) => {
+				const measuredWidth = contentWidths?.[c.name];
+				const resolvedWidth =
+					typeof measuredWidth === 'number' && Number.isFinite(measuredWidth)
+						? measuredWidth
+						: c.width;
+				return {
+					minWidth: c.minWidth,
+					width: resolvedWidth,
+					flex: c.flex,
+					priority: c.priority,
+					name: c.name,
+					index,
+					hidden: c.name === groupOnColumn?.name || c.disabled,
+				};
+			})
 			.map((c) =>
 				miniColumn ? { ...c, hidden: miniColumn.name !== c.name } : c,
 			)
@@ -43,4 +51,4 @@ export const useLayout = ({
 			);
 
 		return computeLayout(columnConfigs, canvasWidth, columnConfigs.length);
-	}, [canvasWidth, groupOnColumn, config]);
+	}, [canvasWidth, groupOnColumn, config, miniColumn, contentWidths]);

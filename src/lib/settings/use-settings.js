@@ -1,8 +1,8 @@
-import { useMemo, useState, useRef, useCallback } from '@pionjs/pion';
+import { useCallback, useMemo, useRef, useState } from '@pionjs/pion';
 
-import useSavedSettings from './use-saved-settings';
-import normalize, { sgProps } from './normalize';
 import { useDOMColumns } from '../use-dom-columns';
+import normalize, { sgProps } from './normalize';
+import useSavedSettings from './use-saved-settings';
 
 export default ({ settingsId, host }) => {
 	const initial = useMemo(
@@ -43,6 +43,7 @@ export default ({ settingsId, host }) => {
 
 	return {
 		...rest,
+		savedSettings,
 		opened,
 		setOpened,
 		settings: normalizedSettings,

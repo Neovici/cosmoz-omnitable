@@ -61,6 +61,9 @@ customElements.define(
 			'no-local-filter',
 			'loading',
 			'mini-breakpoint',
+			'auto-width',
+			'auto-width-max',
+			'auto-width-sample-size',
 		],
 	}) {
 		connectedCallback() {

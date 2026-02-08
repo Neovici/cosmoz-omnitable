@@ -1,11 +1,12 @@
+import { useMeta } from '@neovici/cosmoz-utils/hooks/use-meta';
 import { useEffect, useMemo } from '@pionjs/pion';
 import { toCss } from './compute-layout';
-import { useResizableColumns } from './use-resizable-columns';
+import { useAutoColumnWidths } from './use-auto-column-widths';
 import { useCanvasWidth } from './use-canvas-width';
-import { useTweenArray } from './use-tween-array';
 import { useLayout } from './use-layout';
 import { useMini } from './use-mini';
-import { useMeta } from '@neovici/cosmoz-utils/hooks/use-meta';
+import { useResizableColumns } from './use-resizable-columns';
+import { useTweenArray } from './use-tween-array';
 
 const useAdoptedStyleSheet = (host) => {
 	const styleSheet = useMemo(() => new CSSStyleSheet(), []);
@@ -27,8 +28,19 @@ export const useFastLayout = ({
 	setSettings,
 	resizeSpeedFactor,
 	sortAndGroupOptions,
+	autoWidthEnabled,
+	autoWidthData,
 }) => {
 	const canvasWidth = useCanvasWidth(host),
+		autoWidths = useAutoColumnWidths({
+			host,
+			columns,
+			data: autoWidthData,
+			canvasWidth,
+			enabled: autoWidthEnabled,
+			maxWidth: Number.parseFloat(host.autoWidthMax),
+			sampleSize: Number.parseInt(host.autoWidthSampleSize, 10),
+		}),
 		{ isMini, miniColumn, miniColumns } = useMini({
 			host,
 			canvasWidth,
@@ -40,6 +52,7 @@ export const useFastLayout = ({
 			groupOnColumn,
 			miniColumn,
 			config: settings.columns,
+			contentWidths: autoWidths,
 		}),
 		styleSheet = useAdoptedStyleSheet(host),
 		collapsedColumns = useMemo(
