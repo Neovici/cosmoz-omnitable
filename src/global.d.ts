@@ -6,3 +6,7 @@ declare module '@neovici/nullxlsx' {
 	}
 	export { NullXlsx };
 }
+
+declare module 'file-saver-es' {
+	export { saveAs } from 'file-saver';
+}
