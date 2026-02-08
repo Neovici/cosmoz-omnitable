@@ -70,7 +70,11 @@ export const useFastLayout = ({
 		);
 
 	const meta = useMeta({ columns: settings.columns });
-	useTweenArray(layout, resizeSpeedFactor, (tweenedlayout) => {
+	const normalizedLayout = useMemo(
+		() => layout.map((width) => width ?? 0),
+		[layout],
+	);
+	useTweenArray(normalizedLayout, resizeSpeedFactor, (tweenedlayout) => {
 		const layoutCss = toCss(tweenedlayout, meta.columns);
 		styleSheet.replace(layoutCss);
 	});
