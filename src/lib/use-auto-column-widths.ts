@@ -181,6 +181,47 @@ const buildWidths = (options: {
 		{} as Record<string, number>,
 	);
 
+const resolveSampleSize = (sampleSize?: number) =>
+	Number.isFinite(sampleSize) ? sampleSize : DEFAULT_SAMPLE_SIZE;
+
+const getSampleItems = (data: unknown[] | undefined, sampleSize: number) =>
+	Array.isArray(data) ? data.slice(0, sampleSize) : [];
+
+const getAutoWidthContext = (options: {
+	host: HTMLElement;
+	columns: ColumnLike[];
+	data?: unknown[];
+	canvasWidth?: number;
+	maxWidth?: number;
+	sampleSize?: number;
+	ctx: CanvasRenderingContext2D | null;
+}) => {
+	if (
+		!options.ctx ||
+		!Array.isArray(options.columns) ||
+		options.columns.length === 0
+	) {
+		return null;
+	}
+
+	const hostRoot = options.host.shadowRoot;
+	const headerCell = hostRoot?.querySelector('.header-cell') ?? options.host;
+	const itemCell = hostRoot?.querySelector('.itemRow-cell') ?? options.host;
+	const resolvedSampleSize = resolveSampleSize(options.sampleSize);
+
+	return {
+		headerFont: buildFont(getComputedStyle(headerCell)),
+		cellFont: buildFont(getComputedStyle(itemCell)),
+		headerPadding: getPadding(headerCell),
+		cellPadding: getPadding(itemCell),
+		resolvedMaxWidth: getResolvedMaxWidth(
+			options.canvasWidth,
+			options.maxWidth,
+		),
+		sampleItems: getSampleItems(options.data, resolvedSampleSize),
+	};
+};
+
 export const useAutoColumnWidths = ({
 	host,
 	columns,
@@ -197,41 +238,38 @@ export const useAutoColumnWidths = ({
 	);
 
 	useEffect(() => {
-		if (!ctx || !enabled || !Array.isArray(columns) || columns.length === 0) {
+		if (!enabled) {
+			setWidths({});
+			return;
+		}
+
+		const context = getAutoWidthContext({
+			host,
+			columns,
+			data,
+			canvasWidth,
+			maxWidth,
+			sampleSize,
+			ctx,
+		});
+
+		if (!context) {
 			setWidths({});
 			return;
 		}
 
 		let cancelled = false;
-		const hostRoot = host.shadowRoot;
-
-		const headerCell = hostRoot?.querySelector('.header-cell') ?? host;
-		const itemCell = hostRoot?.querySelector('.itemRow-cell') ?? host;
-
-		const headerFont = buildFont(getComputedStyle(headerCell));
-		const cellFont = buildFont(getComputedStyle(itemCell));
-		const headerPadding = getPadding(headerCell);
-		const cellPadding = getPadding(itemCell);
-		const resolvedMaxWidth = getResolvedMaxWidth(canvasWidth, maxWidth);
-
-		const resolvedSampleSize = Number.isFinite(sampleSize)
-			? sampleSize
-			: DEFAULT_SAMPLE_SIZE;
-
-		const sampleItems = Array.isArray(data)
-			? data.slice(0, resolvedSampleSize)
-			: [];
 
 		const computeWidths = () => {
 			const next = buildWidths({
 				columns,
 				ctx,
-				headerFont,
-				cellFont,
-				headerPadding,
-				cellPadding,
-				maxWidth: resolvedMaxWidth,
-				sampleItems,
+				headerFont: context.headerFont,
+				cellFont: context.cellFont,
+				headerPadding: context.headerPadding,
+				cellPadding: context.cellPadding,
+				maxWidth: context.resolvedMaxWidth,
+				sampleItems: context.sampleItems,
 			});
 
 			if (!cancelled) {
