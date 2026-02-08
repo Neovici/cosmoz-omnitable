@@ -50,6 +50,9 @@ const Template = (args) => {
 				?no-local-filter=${args.noLocalFilter}
 				?loading=${args.loading}
 				mini-breakpoint=${args.miniBreakpoint || '768px'}
+				?auto-width=${args.autoWidth}
+				auto-width-max=${args.autoWidthMax || ''}
+				auto-width-sample-size=${args.autoWidthSampleSize || ''}
 			>
 				<cosmoz-omnitable-column
 					name="company"
@@ -125,4 +128,11 @@ Loading.args = {
 export const HideSelectAll = Template.bind({});
 HideSelectAll.args = {
 	hideSelectAll: true,
+};
+
+export const AutoWidth = Template.bind({});
+AutoWidth.args = {
+	autoWidth: true,
+	autoWidthMax: 420,
+	autoWidthSampleSize: 25,
 };
