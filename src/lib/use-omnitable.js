@@ -39,11 +39,12 @@ export const useOmnitable = (host) => {
 				noLocalSort,
 				noLocalFilter,
 			}),
+		hasAutoWidth =
+			host.hasAttribute?.('auto-width') ||
+			host.autoWidth === true ||
+			host.autoWidth === 'true',
 		autoWidthEnabled =
-			host.autoWidth !== false &&
-			host.autoWidth !== 'false' &&
-			!settingS.hasChanges &&
-			settingS.savedSettings == null,
+			hasAutoWidth && !settingS.hasChanges && settingS.savedSettings == null,
 		{ isMini, collapsedColumns, miniColumns } = useFastLayout({
 			host,
 			columns,
