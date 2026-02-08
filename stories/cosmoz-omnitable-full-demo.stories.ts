@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit-html';
 
-import '../src/cosmoz-omnitable.js';
-import '@neovici/cosmoz-utils/elements/cz-spinner';
 import { deleteIcon } from '@neovici/cosmoz-icons';
+import '@neovici/cosmoz-utils/elements/cz-spinner';
+import '../src/cosmoz-omnitable.js';
 
 import { generateTableDemoData } from '../demo/table-demo-helper.js';
 
@@ -22,6 +22,9 @@ const meta: Meta = {
 		settingsId: '',
 		selectedItems: [],
 		disabled: false,
+		autoWidth: true,
+		autoWidthMax: 420,
+		autoWidthSampleSize: 25,
 	},
 	argTypes: {
 		loading: {
@@ -73,6 +76,18 @@ const meta: Meta = {
 			control: 'text',
 			description: 'ID for storing table settings',
 		},
+		autoWidth: {
+			control: 'boolean',
+			description: 'Enable automatic column widths',
+		},
+		autoWidthMax: {
+			control: 'number',
+			description: 'Maximum auto width per column',
+		},
+		autoWidthSampleSize: {
+			control: 'number',
+			description: 'Number of rows to sample for auto width',
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Hide one column',
@@ -100,6 +115,9 @@ const meta: Meta = {
 				.descending=${args.descending}
 				.group-on-descending=${args.groupOnDescending}
 				settings-id=${args.settingsId}
+				?auto-width=${args.autoWidth}
+				auto-width-max=${args.autoWidthMax}
+				auto-width-sample-size=${args.autoWidthSampleSize}
 			>
 				<cosmoz-omnitable-column
 					priority="-1"
@@ -224,11 +242,6 @@ const meta: Meta = {
 				</paper-button>
 			</cosmoz-omnitable>
 		`;
-	},
-
-	play: async () => {
-		// play function to see if hash-param is set
-		console.log('Current hash:', window.location.hash);
 	},
 };
 
