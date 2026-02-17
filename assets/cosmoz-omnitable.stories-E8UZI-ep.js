@@ -1,4 +1,4 @@
-import{b as d,D as ke,A as xt}from"./iframe-ChqYVfqG.js";import{t as K,c as O,g as S,P as I,u as T,a as vt,m as yt,s as Bt,D as Ht,b as Gt,e as Wt,i as $e,h as Oe,d as jt,f as $t,r as Ut,j as Kt,k as q,l as Jt,n as Ce,p as he,o as k,q as Xt,v as we,w as Qt,x as Yt,y as Zt,T as ei,z as M,A as Ye,B as F,C,E as ti,F as ii,G as ai,H as ni,I as oi,J as Ct,K as Le,L as wt,M as De,N as ri,O as St,Q as li,R as Te,S as Ze,U as si,V as Ve,W as ui,X as ci,Y as Ee,Z as Re,_ as di,$ as Ie,a0 as N,a1 as mi,a2 as ze,a3 as pi}from"./cosmoz-collapse-Dm9fy60x.js";import"./preload-helper-PPVm8Dsz.js";const gi=K`
+import{b as d,D as ke,A as xt}from"./iframe-BtvHnI89.js";import{t as K,c as O,g as S,P as I,u as T,a as vt,m as yt,s as Bt,D as Ht,b as Gt,e as Wt,i as $e,h as Oe,d as jt,f as $t,r as Ut,j as Kt,k as q,l as Jt,n as Ce,p as he,o as k,q as Xt,v as we,w as Qt,x as Yt,y as Zt,T as ei,z as M,A as Ye,B as F,C,E as ti,F as ii,G as ai,H as ni,I as oi,J as Ct,K as Le,L as wt,M as De,N as ri,O as St,Q as li,R as Te,S as Ze,U as si,V as Ve,W as ui,X as ci,Y as Ee,Z as Re,_ as di,$ as Ie,a0 as N,a1 as mi,a2 as ze,a3 as pi}from"./cosmoz-collapse-DVd0Ma0e.js";import"./preload-helper-PPVm8Dsz.js";const gi=K`
 	:host {
 		display: flex;
 	}
@@ -308,7 +308,7 @@ import{b as d,D as ke,A as xt}from"./iframe-ChqYVfqG.js";import{t as K,c as O,g 
 			.text=${a}
 			.limit=${e.limit}
 			.onChange=${He(n)}
-			.onFocus=${Ge(n)}
+			@opened-changed=${r=>Ge(n)(r.detail.value)}
 			.onText=${We(n)}
 			>${k(e.loading,()=>d`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`)}</cosmoz-autocomplete-ui
 		>`}getComparableValue(e,t){return Yi(e,t)}}customElements.define("cosmoz-omnitable-column-autocomplete",Zi);const Ue=(i,e)=>e.find(({value:t})=>i===t),ea=(i,e,t)=>{const a=Ue(e,t);return a?a.text:i},ot=(i,e,t,a)=>ea(i,S(e,t),a),ta=({valuePath:i},e,t)=>Ue(S(e,i),t),ia=i=>e=>{i(t=>({...t,filter:e?.[0]?.value??null}))},aa=i=>e=>{i(t=>({...t,headerFocused:e}))},na=i=>e=>{i(t=>({...t,query:e}))},oa=i=>e=>i(e?.[0]?.value),rt=({valuePath:i,trueLabel:e,falseLabel:t},a)=>S(a,i)?e:t,ra=({valuePath:i},e)=>t=>S(t,i)===e,le=yt((i,e)=>[{text:i,value:!0},{text:e,value:!1}]),la=({valuePath:i,trueLabel:e,falseLabel:t},a)=>i?S(a,i)?e:t:"",sa=(i,e)=>{try{return JSON.parse(e)}catch{return null}};class ua extends V(I){static get properties(){return{trueLabel:{type:String,value:"True"},falseLabel:{type:String,value:"False"},flex:{type:String,value:"0"},cellClass:{type:String,value:"boolean-cell"}}}getString(e,t){return rt(e,t)}renderCell(e,{item:t}){return rt(e,t)}renderEditCell(e,{item:t},a){const{trueLabel:n,falseLabel:o}=e;return d`<cosmoz-autocomplete
@@ -328,7 +328,7 @@ import{b as d,D as ke,A as xt}from"./iframe-ChqYVfqG.js";import{t as K,c as O,g 
 			.value=${Ue(t,o)}
 			.text=${a}
 			.onChange=${ia(n)}
-			.onFocus=${aa(n)}
+			@opened-changed=${r=>aa(n)(r.detail.value)}
 			.onText=${na(n)}
 			.limit=${1}
 			>${k(e.loading,()=>d`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`)}</cosmoz-autocomplete-ui
@@ -423,7 +423,7 @@ import{b as d,D as ke,A as xt}from"./iframe-ChqYVfqG.js";import{t as K,c as O,g 
 			.value=${t}
 			.text=${a}
 			.onChange=${He(n)}
-			.onFocus=${Ge(n)}
+			@opened-changed=${r=>Ge(n)(r.detail.value)}
 			.onText=${We(n)}
 			>${k(e.loading,()=>d`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`)}</cosmoz-autocomplete-ui
 		> `}}customElements.define("cosmoz-omnitable-column-list-horizontal",fa);window.Cosmoz=window.Cosmoz||{};class ut extends Yt(Zt(ei,I)){static get template(){return Oe`
@@ -495,7 +495,7 @@ import{b as d,D as ke,A as xt}from"./iframe-ChqYVfqG.js";import{t as K,c as O,g 
 			.value=${t}
 			.text=${a}
 			.onChange=${He(n)}
-			.onFocus=${Ge(n)}
+			@opened-changed=${r=>Ge(n)(r.detail.value)}
 			.onText=${We(n)}
 			>${k(e.loading,()=>d`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`)}</cosmoz-autocomplete-ui
 		>`}}customElements.define("cosmoz-omnitable-column-list",ha);class xa extends Ne(ae(I)){static get properties(){return{maximumFractionDigits:{type:Number,value:null},minimumFractionDigits:{type:Number,value:null},formatter:{type:Object,computed:"_computeFormatter(locale, minimumFractionDigits, maximumFractionDigits)"},autoupdate:{type:String,value:!1},_filterText:{type:String,computed:"_computeFilterText(filter.*, formatter)"},headerFocused:{type:Boolean,value:!1}}}render(){const e=t=>{this.headerFocused=t.type==="focus",this._onDropdownOpenedChanged(t)};return d`
