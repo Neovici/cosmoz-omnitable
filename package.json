@@ -107,7 +107,7 @@
   },
   "dependencies": {
     "@lit-labs/virtualizer": "^2.1.0",
-    "@neovici/cosmoz-autocomplete": "^10.0.0 || ^11.0.0 || ^12.0.0 || ^13.0.0",
+    "@neovici/cosmoz-autocomplete": "^12.0.0 || ^13.0.0",
     "@neovici/cosmoz-bottom-bar": "^9.0.5 || ^10.0.0",
     "@neovici/cosmoz-collapse": "^1.1.0",
     "@neovici/cosmoz-datetime-input": "^4.0.1",
