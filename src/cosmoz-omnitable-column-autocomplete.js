@@ -1,22 +1,22 @@
 import '@neovici/cosmoz-autocomplete';
 
+import '@neovici/cosmoz-spinner';
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { html } from 'lit-html';
 import { when } from 'lit-html/directives/when.js';
-import '@neovici/cosmoz-spinner';
 
-import { columnMixin, getString } from './cosmoz-omnitable-column-mixin.js';
+import { array } from '@neovici/cosmoz-utils/array';
+import { prop, strProp } from '@neovici/cosmoz-utils/object';
 import {
 	listColumnMixin,
 	onChange,
 	onFocus,
 	onText,
 } from './cosmoz-omnitable-column-list-mixin';
-import { prop, strProp } from '@neovici/cosmoz-utils/object';
-import { array } from '@neovici/cosmoz-utils/array';
+import { columnMixin, getString } from './cosmoz-omnitable-column-mixin.js';
 
-import { columnSymbol } from './lib/use-dom-columns';
 import { get } from '@polymer/polymer/lib/utils/path';
+import { columnSymbol } from './lib/use-dom-columns';
 
 export const getComparableValue = (
 	{ valuePath, textProperty, valueProperty },
@@ -94,7 +94,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 			.text=${query}
 			.limit=${column.limit}
 			.onChange=${onChange(setState)}
-			.onFocus=${onFocus(setState)}
+			@opened-changed=${(e) => onFocus(setState)(e.detail.value)}
 			.onText=${onText(setState)}
 			>${when(
 				column.loading,

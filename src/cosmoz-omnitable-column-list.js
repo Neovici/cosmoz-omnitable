@@ -4,7 +4,7 @@ import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from 'lit-html';
 import { when } from 'lit-html/directives/when.js';
 
-import { columnMixin } from './cosmoz-omnitable-column-mixin';
+import '@neovici/cosmoz-autocomplete';
 import {
 	getString,
 	getTexts,
@@ -13,7 +13,7 @@ import {
 	onFocus,
 	onText,
 } from './cosmoz-omnitable-column-list-mixin';
-import '@neovici/cosmoz-autocomplete';
+import { columnMixin } from './cosmoz-omnitable-column-mixin';
 import { columnSymbol } from './lib/use-dom-columns';
 
 /**
@@ -73,7 +73,7 @@ class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
 			.value=${filter}
 			.text=${query}
 			.onChange=${onChange(setState)}
-			.onFocus=${onFocus(setState)}
+			@opened-changed=${(e) => onFocus(setState)(e.detail.value)}
 			.onText=${onText(setState)}
 			>${when(
 				column.loading,

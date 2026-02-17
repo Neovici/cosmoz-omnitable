@@ -3,10 +3,10 @@ import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 
 import '@neovici/cosmoz-autocomplete';
+import { memooize } from '@neovici/cosmoz-utils/memoize';
+import { get } from '@polymer/polymer/lib/utils/path';
 import { html } from 'lit-html';
 import { when } from 'lit-html/directives/when.js';
-import { get } from '@polymer/polymer/lib/utils/path';
-import { memooize } from '@neovici/cosmoz-utils/memoize';
 
 const computeValue = (value, source) =>
 		source.find(({ value: valueProp }) => value === valueProp),
@@ -119,7 +119,7 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 			.value=${computeValue(filter, source)}
 			.text=${query}
 			.onChange=${onChange(setState)}
-			.onFocus=${onFocus(setState)}
+			@opened-changed=${(e) => onFocus(setState)(e.detail.value)}
 			.onText=${onText(setState)}
 			.limit=${1}
 			>${when(
@@ -154,10 +154,10 @@ customElements.define(
 );
 
 export {
-	getString,
 	computeItemValue,
 	computeSource,
-	toXlsxValue,
-	onChange,
 	deserializeFilter,
+	getString,
+	onChange,
+	toXlsxValue,
 };
