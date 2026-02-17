@@ -1,3 +1,15 @@
+# [18.0.0](https://github.com/Neovici/cosmoz-omnitable/compare/v17.2.1...v18.0.0) (2026-02-17)
+
+
+### Bug Fixes
+
+* use opened-changed event instead of onFocus prop for autocomplete v12+ ([#898](https://github.com/Neovici/cosmoz-omnitable/issues/898)) ([7679f52](https://github.com/Neovici/cosmoz-omnitable/commit/7679f520aad5fe1ebacb2bc2cabcdf73f1d4af26))
+
+
+### BREAKING CHANGES
+
+* requires @neovici/cosmoz-autocomplete >=12.0.0
+
 ## [17.2.1](https://github.com/Neovici/cosmoz-omnitable/compare/v17.2.0...v17.2.1) (2026-02-17)
 
 
