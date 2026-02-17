@@ -1,3 +1,10 @@
+## [17.2.1](https://github.com/Neovici/cosmoz-omnitable/compare/v17.2.0...v17.2.1) (2026-02-17)
+
+
+### Bug Fixes
+
+* **deps:** support cosmoz-autocomplete v11–v13 ([#897](https://github.com/Neovici/cosmoz-omnitable/issues/897)) ([e453697](https://github.com/Neovici/cosmoz-omnitable/commit/e45369725acefbd8c082914f6cc862fc9fa2ebad))
+
 # [17.2.0](https://github.com/Neovici/cosmoz-omnitable/compare/v17.1.1...v17.2.0) (2026-02-06)
 
 
