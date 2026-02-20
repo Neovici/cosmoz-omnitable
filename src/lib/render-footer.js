@@ -22,6 +22,8 @@ export const renderFooter = ({
 			${t('{count} selected item', { count: selectedItems.length })}
 		</slot>
 		<slot name="actions" id="actions"></slot>
+		<slot name="bottom-bar-toolbar" slot="bottom-bar-toolbar"></slot>
+		<slot name="bottom-bar-menu" slot="bottom-bar-menu"></slot>
 		<cosmoz-dropdown-menu part="extra" slot="extra" .placement=${topPlacement}>
 			<svg
 				slot="button"
