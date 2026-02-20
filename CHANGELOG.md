@@ -1,3 +1,10 @@
+# [18.1.0](https://github.com/Neovici/cosmoz-omnitable/compare/v18.0.0...v18.1.0) (2026-02-20)
+
+
+### Features
+
+* support cosmoz-bottom-bar v11 and re-add slot redistributions ([#899](https://github.com/Neovici/cosmoz-omnitable/issues/899)) ([9223fe5](https://github.com/Neovici/cosmoz-omnitable/commit/9223fe5de81557abad583cd224d62595def54bb8))
+
 # [18.0.0](https://github.com/Neovici/cosmoz-omnitable/compare/v17.2.1...v18.0.0) (2026-02-17)
 
 
