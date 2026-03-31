@@ -15,6 +15,7 @@ import {
 } from './cosmoz-omnitable-column-list-mixin';
 import { columnMixin, getString } from './cosmoz-omnitable-column-mixin.js';
 
+import { lift } from '@pionjs/pion';
 import { get } from '@polymer/polymer/lib/utils/path';
 import { columnSymbol } from './lib/use-dom-columns';
 
@@ -78,7 +79,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 	}
 
 	renderHeader(column, { filter, query }, setState, source) {
-		return html`<cosmoz-autocomplete-ui
+		return html`<cosmoz-autocomplete-excluding
 			class="external-values-${column.externalValues}"
 			?keep-opened=${column.keepOpened}
 			?keep-query=${column.keepQuery}
@@ -93,13 +94,13 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 			.value=${filter}
 			.text=${query}
 			.limit=${column.limit}
-			.onChange=${onChange(setState)}
 			@opened-changed=${(e) => onFocus(setState)(e.detail.value)}
-			.onText=${onText(setState)}
+			@value-changed=${lift(onChange(setState))}
+			@text-changed=${lift(onText(setState))}
 			>${when(
 				column.loading,
 				() => html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`,
-			)}</cosmoz-autocomplete-ui
+			)}</cosmoz-autocomplete-excluding
 		>`;
 	}
 
@@ -108,6 +109,6 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 	}
 }
 customElements.define(
-	'cosmoz-omnitable-column-autocomplete',
+	'cosmoz-omnitable-column-autocomplete-excluding',
 	OmnitableColumnAutocomplete,
 );
