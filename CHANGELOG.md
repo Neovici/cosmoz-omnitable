@@ -1,3 +1,10 @@
+# [18.2.0](https://github.com/Neovici/cosmoz-omnitable/compare/v18.1.0...v18.2.0) (2026-04-01)
+
+
+### Features
+
+* add autocomplete exclude column ([#946](https://github.com/Neovici/cosmoz-omnitable/issues/946)) ([ae55fea](https://github.com/Neovici/cosmoz-omnitable/commit/ae55feaedc216d4505f3020296605c40c85d46b7))
+
 # [18.1.0](https://github.com/Neovici/cosmoz-omnitable/compare/v18.0.0...v18.1.0) (2026-02-20)
 
 
