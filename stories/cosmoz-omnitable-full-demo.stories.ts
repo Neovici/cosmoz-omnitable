@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit-html';
 
-import '../src/cosmoz-omnitable.js';
-import '@neovici/cosmoz-utils/elements/cz-spinner';
 import { deleteIcon } from '@neovici/cosmoz-icons';
+import '@neovici/cosmoz-utils/elements/cz-spinner';
+import '../src/cosmoz-omnitable.js';
 
 import { generateTableDemoData } from '../demo/table-demo-helper.js';
 
@@ -161,6 +161,17 @@ const meta: Meta = {
 					empty-value="nada"
 				></cosmoz-omnitable-column-autocomplete>
 
+				<cosmoz-omnitable-column-autocomplete-excluding
+					title="Categories"
+					name="categories"
+					value-path="categories"
+					value-property="value"
+					text-property="label"
+					width="150px"
+					empty-label="None"
+					empty-value="nada"
+				></cosmoz-omnitable-column-autocomplete-excluding>
+
 				<cosmoz-omnitable-column-date
 					title="DateJSON"
 					name="datejson"
@@ -228,6 +239,7 @@ const meta: Meta = {
 
 	play: async () => {
 		// play function to see if hash-param is set
+		// eslint-disable-next-line no-console
 		console.log('Current hash:', window.location.hash);
 	},
 };
