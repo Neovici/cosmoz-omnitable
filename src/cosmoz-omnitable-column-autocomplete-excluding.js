@@ -20,13 +20,43 @@ import { get } from '@polymer/polymer/lib/utils/path';
 import { columnSymbol } from './lib/use-dom-columns';
 
 export const getComparableValue = (
-	{ valuePath, textProperty, valueProperty },
-	item,
-) => {
-	const property = textProperty ? strProp(textProperty) : prop(valueProperty),
-		values = array(valuePath && get(item, valuePath)).map(property);
-	return values.length > 1 ? values.filter(Boolean).join(',') : values[0];
-};
+		{ valuePath, textProperty, valueProperty },
+		item,
+	) => {
+		const property = textProperty ? strProp(textProperty) : prop(valueProperty),
+			values = array(valuePath && get(item, valuePath)).map(property);
+		return values.length > 1 ? values.filter(Boolean).join(',') : values[0];
+	},
+	applyExcludingMultiFilter = (
+		{ valueProperty, valuePath, emptyValue, emptyProperty },
+		filters,
+	) => {
+		const val = prop(valueProperty),
+			emptyVal = prop(emptyProperty || valueProperty),
+			excluded = new Set(
+				filters.filter((f) => f.excluded).map((f) => val(f.item)),
+			),
+			included = new Set(
+				filters.filter((f) => !f.excluded).map((f) => val(f.item)),
+			),
+			emptyExcluded = filters.some(
+				(f) => f.excluded && emptyVal(f.item) === emptyValue,
+			),
+			emptyIncluded = filters.some(
+				(f) => !f.excluded && emptyVal(f.item) === emptyValue,
+			);
+
+		return (item) => {
+			const values = array(get(item, valuePath)).map(val);
+			if (values.length === 0) {
+				return !emptyExcluded && (emptyIncluded || included.size === 0);
+			}
+			return (
+				!values.some((v) => excluded.has(v)) &&
+				(included.size === 0 || values.some((v) => included.has(v)))
+			);
+		};
+	};
 
 /**
  * @polymer
@@ -106,6 +136,14 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 
 	getComparableValue(column, item) {
 		return getComparableValue(column, item);
+	}
+
+	getFilterFn(column, filters) {
+		if (!filters || !Array.isArray(filters) || filters.length === 0) {
+			return;
+		}
+
+		return applyExcludingMultiFilter(column, filters);
 	}
 }
 customElements.define(
