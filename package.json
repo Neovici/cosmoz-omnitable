@@ -150,6 +150,6 @@
     "semantic-release": "^25.0.2",
     "sinon": "^21.0.0",
     "storybook": "^10.0.4",
-    "typescript": "^5.0.0"
+    "typescript": "^6.0.2"
   }
 }
