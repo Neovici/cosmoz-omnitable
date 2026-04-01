@@ -63,10 +63,12 @@ export const generateTableDemoData = (min, max, maxRandomString) => {
 		for (let j = 0; j < itemsCount; j += 1) {
 			const listValue = [],
 				objectListValue = [],
+				categoriesValue = [],
 				listValueCount = n % 10;
 			for (let k = 0; k < listValueCount; k += 1) {
 				listValue.push('Item ' + k);
 				objectListValue.push({ name: 'Item ' + k, value: 'item-value-' + k });
+				categoriesValue.push({ value: 'cat-' + k, label: 'Category ' + k });
 			}
 			data.push({
 				id: n,
@@ -91,6 +93,7 @@ export const generateTableDemoData = (min, max, maxRandomString) => {
 				group,
 				list: listValue,
 				objectList: objectListValue,
+				categories: n % 7 === 0 ? null : categoriesValue,
 			});
 			n += 1;
 		}
