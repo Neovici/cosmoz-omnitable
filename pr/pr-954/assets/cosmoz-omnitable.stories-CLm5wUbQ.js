@@ -1,4 +1,4 @@
-import{d as m,D as Le,A as vt}from"./iframe-Cb-ubfP0.js";import{t as J,c as M,g as w,P as E,s as Wt,a as $t,r as jt,e as Ut,D as Kt,b as Jt,d as Xt,i as we,h as Re,f as q,m as Qt,u as V,j as Ct,k as wt,l as Yt,n as X,p as G,o as Ze,q as _,v as St,w as Se,x as Zt,y as ei,z as ti,T as ii,A as O,B as et,C as F,E as C,F as ai,G as ni,H as oi,I as ri,J as li,K as zt,L as Pe,M as qt,N as Ne,O as si,Q as At,R as ui,S as Be,U as tt,V as di,W as He,X as ci,Y as mi,Z as De,_ as Ge,$ as pi,a0 as Te,a1 as N,a2 as gi,a3 as _e,a4 as bi}from"./cosmoz-collapse-DzM-Opp-.js";import"./preload-helper-PPVm8Dsz.js";const fi=J`
+import{d as m,D as Le,A as vt}from"./iframe-aSCaQZOP.js";import{t as J,c as M,g as w,P as E,s as Wt,a as $t,r as jt,e as Ut,D as Kt,b as Jt,d as Xt,i as we,h as Re,f as q,m as Qt,u as V,j as Ct,k as wt,l as Yt,n as X,p as G,o as Ze,q as _,v as St,w as Se,x as Zt,y as ei,z as ti,T as ii,A as O,B as et,C as F,E as C,F as ai,G as ni,H as oi,I as ri,J as li,K as zt,L as Pe,M as qt,N as Ne,O as si,Q as At,R as ui,S as Be,U as tt,V as di,W as He,X as ci,Y as mi,Z as De,_ as Ge,$ as pi,a0 as Te,a1 as N,a2 as gi,a3 as _e,a4 as bi}from"./cosmoz-collapse-Br4wXTwP.js";import"./preload-helper-PPVm8Dsz.js";const fi=J`
 	:host {
 		display: flex;
 	}
@@ -128,7 +128,7 @@ import{d as m,D as Le,A as vt}from"./iframe-Cb-ubfP0.js";import{t as J,c as M,g 
 
 	:host([disabled]) {
 		pointer-events: none;
-		opacity: 0.5;
+		cursor: default;
 	}
 `,Ei=i=>{const{label:e,value:t,slot:a}=i,n=m`<div
 		id="input"
@@ -1034,6 +1034,14 @@ import{d as m,D as Le,A as vt}from"./iframe-Cb-ubfP0.js";import{t as J,c as M,g 
 		--cosmoz-input-line-color: var(--cosmoz-omnitable-header-line-color);
 		--cosmoz-input-line-display: var(--cosmoz-omnitable-header-line-display, block);
 		--cosmoz-input-focused-color: var(--cosmoz-omnitable-header-line-focused-color);
+	}
+
+	.header-cell cosmoz-input[disabled],
+	.header-cell cosmoz-autocomplete-ui[disabled],
+	.header-cell cosmoz-autocomplete-excluding[disabled] {
+		pointer-events: none;
+		cursor: default;
+		--cosmoz-input-disabled-opacity: 1;
 	}
 
 	cosmoz-omnitable-header-row {
