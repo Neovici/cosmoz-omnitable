@@ -61,6 +61,7 @@ class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
 	renderHeader(column, { filter, query }, setState, source) {
 		return html`<cosmoz-autocomplete-ui
 			class="external-values-${column.externalValues}"
+			?disabled=${column.disabledFiltering}
 			?keep-opened=${column.keepOpened}
 			?keep-query=${column.keepQuery}
 			.textual=${column.textual}

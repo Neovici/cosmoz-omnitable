@@ -1,21 +1,21 @@
-import { html } from 'lit-html';
-import { PolymerElement } from '@polymer/polymer/polymer-element';
 import '@neovici/cosmoz-input';
+import { PolymerElement } from '@polymer/polymer/polymer-element';
+import { html } from 'lit-html';
 
-import './ui-helpers/cosmoz-clear-button';
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 import './lib/cosmoz-omnitable-date-range-input';
 import { defaultComputeSource } from './lib/utils-data';
 import {
-	getString,
+	applySingleFilter,
+	fromInputString,
 	getComparableValue,
+	getInputString,
+	getString,
 	toDate,
 	toHashString,
 	toXlsxValue,
-	applySingleFilter,
-	getInputString,
-	fromInputString,
 } from './lib/utils-date';
+import './ui-helpers/cosmoz-clear-button';
 
 class OmnitableColumnDate extends columnMixin(PolymerElement) {
 	static get properties() {
@@ -101,13 +101,14 @@ class OmnitableColumnDate extends columnMixin(PolymerElement) {
 	}
 
 	renderHeader(
-		{ title, min, max, limits, locale },
+		{ title, min, max, limits, locale, disabledFiltering },
 		{ filter },
 		setState,
 		source,
 	) {
 		return html`<cosmoz-omnitable-date-range-input
 			.title=${title}
+			?disabled=${disabledFiltering}
 			.filter=${filter}
 			.values=${source}
 			.min=${min}

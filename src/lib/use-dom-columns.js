@@ -34,7 +34,7 @@ const verifyColumnSetup = (columns) => {
 	return ok;
 };
 
-const normalizeColumn = (column) => {
+const normalizeColumn = (column, disabledFiltering) => {
 	const valuePath = column.valuePath ?? column.name;
 
 	return {
@@ -45,6 +45,7 @@ const normalizeColumn = (column) => {
 		groupOn: column.groupOn ?? valuePath,
 		sortOn: column.sortOn ?? valuePath,
 		noSort: column.noSort,
+		disabledFiltering: disabledFiltering || column.disabledFiltering,
 
 		minWidth: column.minWidth,
 		width: column.width,
@@ -127,15 +128,15 @@ const collectDomColumns = (assignedElements) => {
 	return domColumns;
 };
 
-const normalizeColumns = (domColumns, enabledColumns) => {
+const normalizeColumns = (domColumns, enabledColumns, disabledFiltering) => {
 	const columns = Array.isArray(enabledColumns)
 		? domColumns.filter((column) => enabledColumns.includes(column.name))
 		: domColumns.filter((column) => !column.disabled);
 
-	return columns.map(normalizeColumn);
+	return columns.map((col) => normalizeColumn(col, disabledFiltering));
 };
 
-export const useDOMColumns = (host, { enabledColumns }) => {
+export const useDOMColumns = (host, { enabledColumns, disabledFiltering }) => {
 	const [columns, setColumns] = useState([]);
 
 	useLayoutEffect(() => {
@@ -159,7 +160,13 @@ export const useDOMColumns = (host, { enabledColumns }) => {
 				previous = current;
 			}
 
-			setColumns(normalizeColumns(collectDomColumns(current), enabledColumns));
+			setColumns(
+				normalizeColumns(
+					collectDomColumns(current),
+					enabledColumns,
+					disabledFiltering,
+				),
+			);
 		};
 
 		const scheduleUpdate = (ev) => {
@@ -179,7 +186,7 @@ export const useDOMColumns = (host, { enabledColumns }) => {
 			host.removeEventListener('cosmoz-column-prop-changed', scheduleUpdate);
 			cancelAnimationFrame(sched);
 		};
-	}, [enabledColumns]);
+	}, [enabledColumns, disabledFiltering]);
 
 	return columns;
 };

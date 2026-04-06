@@ -1,12 +1,13 @@
+import '@neovici/cosmoz-dropdown';
 import { html } from 'lit-html';
 import { classMap } from 'lit-html/directives/class-map.js';
-import '@neovici/cosmoz-dropdown';
 import './cosmoz-omnitable-dropdown-input';
 
 export const renderDropdown = ({
 	title,
 	tooltip = '',
 	filterText = '',
+	disabled = false,
 	onOpenedChanged,
 	content,
 	horizontalAlign = 'left',
@@ -83,6 +84,7 @@ export const renderDropdown = ({
 			@focus=${onOpenedChanged}
 			class=${`${classMap(classes)} dropdown`}
 			title=${tooltip || ''}
+			?disabled=${disabled}
 		>
 			<cosmoz-omnitable-dropdown-input
 				class="input"
@@ -92,6 +94,7 @@ export const renderDropdown = ({
 				.value=${filterText ?? ''}
 				text-align=${horizontalAlign}
 				?always-float-label=${filterText?.length > 0}
+				?disabled=${disabled}
 			></cosmoz-omnitable-dropdown-input>
 			<div class="dropdown-content">${content}</div>
 		</cosmoz-dropdown>

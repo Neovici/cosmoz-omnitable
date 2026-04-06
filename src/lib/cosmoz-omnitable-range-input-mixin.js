@@ -1,7 +1,7 @@
-import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
-import { timeOut } from '@polymer/polymer/lib/utils/async.js';
-import { enqueueDebouncer } from '@polymer/polymer/lib/utils/flush.js';
 import { invoke } from '@neovici/cosmoz-utils/function';
+import { timeOut } from '@polymer/polymer/lib/utils/async.js';
+import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
+import { enqueueDebouncer } from '@polymer/polymer/lib/utils/flush.js';
 
 const getCloseableParent = (el) => {
 	if (!el) return null;
@@ -25,6 +25,7 @@ export const rangeInputMixin = (base) =>
 	class extends base {
 		static get properties() {
 			return {
+				disabled: { type: Boolean, value: false },
 				filter: { type: Object, notify: true },
 
 				values: {

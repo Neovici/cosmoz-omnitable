@@ -55,6 +55,10 @@ export const getString = ({ valuePath }, item) => get(item, valuePath),
 					 * If true, the column cannot be sorted
 					 */
 					noSort: { type: Boolean, value: false },
+					/**
+					 * If true, the column header filter input is disabled
+					 */
+					disabledFiltering: { type: Boolean, value: false },
 					width: { type: String, value: '75px' },
 					minWidth: { type: String, value: '40px' },
 					flex: { type: String, value: '1' },

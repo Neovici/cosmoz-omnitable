@@ -6,17 +6,17 @@ import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from 'lit-html';
 
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
-import {
-	getComparableValue,
-	getString,
-	toXlsxValue,
-	applySingleFilter,
-	toDate,
-	toHashString,
-	fromHashString,
-} from './lib/utils-time';
 import './lib/cosmoz-omnitable-time-range-input';
 import { defaultComputeSource } from './lib/utils-data';
+import {
+	applySingleFilter,
+	fromHashString,
+	getComparableValue,
+	getString,
+	toDate,
+	toHashString,
+	toXlsxValue,
+} from './lib/utils-time';
 
 /**
  * @polymer
@@ -105,13 +105,14 @@ class OmnitableColumnTime extends columnMixin(PolymerElement) {
 	}
 
 	renderHeader(
-		{ title, min, max, locale, filterStep },
+		{ title, min, max, locale, filterStep, disabledFiltering },
 		{ filter },
 		setState,
 		source,
 	) {
 		return html`<cosmoz-omnitable-time-range-input
 			.title=${title}
+			?disabled=${disabledFiltering}
 			.filter=${filter}
 			.values=${source}
 			.min=${min}
