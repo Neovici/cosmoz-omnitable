@@ -22,6 +22,7 @@ const meta: Meta = {
 		settingsId: '',
 		selectedItems: [],
 		disabled: false,
+		disabledFiltering: false,
 	},
 	argTypes: {
 		loading: {
@@ -80,6 +81,13 @@ const meta: Meta = {
 				defaultValue: { summary: 'false' },
 			},
 		},
+		disabledFiltering: {
+			control: 'boolean',
+			description: 'Disable filter inputs in all column headers',
+			table: {
+				defaultValue: { summary: 'false' },
+			},
+		},
 	},
 	render: (args) => {
 		return html`
@@ -100,6 +108,7 @@ const meta: Meta = {
 				.descending=${args.descending}
 				.group-on-descending=${args.groupOnDescending}
 				settings-id=${args.settingsId}
+				?disabled-filtering=${args.disabledFiltering}
 			>
 				<cosmoz-omnitable-column
 					priority="-1"
