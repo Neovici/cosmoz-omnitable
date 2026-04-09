@@ -1,10 +1,10 @@
-import { t } from 'i18next';
-import { PolymerElement } from '@polymer/polymer';
-import { html } from 'lit-html';
 import '@neovici/cosmoz-input';
+import { PolymerElement } from '@polymer/polymer';
+import { t } from 'i18next';
+import { html } from 'lit-html';
+import { renderDropdown } from './cosmoz-omnitable-dropdown';
 import { rangeInputMixin } from './cosmoz-omnitable-range-input-mixin';
 import { polymerHauntedRender } from './polymer-haunted-render-mixin';
-import { renderDropdown } from './cosmoz-omnitable-dropdown';
 
 class AmountRangeInput extends rangeInputMixin(
 	polymerHauntedRender(PolymerElement),
@@ -76,6 +76,7 @@ class AmountRangeInput extends rangeInputMixin(
 				title: this.title,
 				tooltip: this._tooltip,
 				filterText: this._filterText,
+				disabled: this.disabled,
 				externalValues: this.externalValues,
 				onOpenedChanged,
 				content: html`

@@ -1,23 +1,23 @@
 import '@neovici/cosmoz-datetime-input';
 import './ui-helpers/cosmoz-clear-button';
 
-import { columnMixin } from './cosmoz-omnitable-column-mixin';
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from 'lit-html';
-import {
-	fromHashString,
-	getString,
-	toHashString,
-	toXlsxValue,
-} from './lib/utils-datetime';
+import { columnMixin } from './cosmoz-omnitable-column-mixin';
+import './lib/cosmoz-omnitable-datetime-range-input';
+import { defaultComputeSource } from './lib/utils-data';
 import {
 	applySingleFilter,
 	fromInputString,
 	getComparableValue,
 	toDate,
 } from './lib/utils-date';
-import { defaultComputeSource } from './lib/utils-data';
-import './lib/cosmoz-omnitable-datetime-range-input';
+import {
+	fromHashString,
+	getString,
+	toHashString,
+	toXlsxValue,
+} from './lib/utils-datetime';
 
 /**
  * @polymer
@@ -111,13 +111,14 @@ class OmnitableColumnDatetime extends columnMixin(PolymerElement) {
 	}
 
 	renderHeader(
-		{ title, min, max, limits, locale, filterStep },
+		{ title, min, max, limits, locale, filterStep, disabledFiltering },
 		{ filter },
 		setState,
 		source,
 	) {
 		return html`<cosmoz-omnitable-datetime-range-input
 			.title=${title}
+			?disabled=${disabledFiltering}
 			.filter=${filter}
 			.values=${source}
 			.min=${min}

@@ -48,6 +48,7 @@ const Template = (args) => {
 				?no-local=${args.noLocal}
 				?no-local-sort=${args.noLocalSort}
 				?no-local-filter=${args.noLocalFilter}
+				?disabled-filtering=${args.disabledFiltering}
 				?loading=${args.loading}
 				mini-breakpoint=${args.miniBreakpoint || '768px'}
 			>
@@ -125,4 +126,9 @@ Loading.args = {
 export const HideSelectAll = Template.bind({});
 HideSelectAll.args = {
 	hideSelectAll: true,
+};
+
+export const DisabledFiltering = Template.bind({});
+DisabledFiltering.args = {
+	disabledFiltering: true,
 };

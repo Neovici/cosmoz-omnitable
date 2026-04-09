@@ -4,20 +4,20 @@ import './ui-helpers/cosmoz-clear-button';
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from 'lit-html';
 
+import { get } from '@polymer/polymer/lib/utils/path';
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
-import { defaultComputeSource } from './lib/utils-data';
 import './lib/cosmoz-omnitable-amount-range-input';
 import {
+	applySingleFilter,
+	fromHashString,
 	getComparableValue,
 	getCurrency,
-	applySingleFilter,
-	getString,
 	getInputString,
+	getString,
 	toAmount,
 	toHashString,
-	fromHashString,
 } from './lib/utils-amount';
-import { get } from '@polymer/polymer/lib/utils/path';
+import { defaultComputeSource } from './lib/utils-data';
 
 /**
  * @polymer
@@ -125,6 +125,7 @@ class OmnitableColumnAmount extends columnMixin(PolymerElement) {
 			currency,
 			autoupdate,
 			autodetect,
+			disabledFiltering,
 		},
 		{ filter },
 		setState,
@@ -132,6 +133,7 @@ class OmnitableColumnAmount extends columnMixin(PolymerElement) {
 	) {
 		return html`<cosmoz-omnitable-amount-range-input
 			.title=${title}
+			?disabled=${disabledFiltering}
 			.filter=${filter}
 			.values=${source}
 			.rates=${rates}
