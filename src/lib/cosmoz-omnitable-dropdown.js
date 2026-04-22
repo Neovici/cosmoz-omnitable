@@ -23,14 +23,17 @@ export const renderDropdown = ({
 
 	return html`
 		<style>
+			.dropdown-wrapper {
+				display: block;
+			}
+			.dropdown-wrapper[disabled] {
+				pointer-events: none;
+			}
 			.dropdown {
 				outline: none;
 			}
 			.dropdown:focus-within .input {
 				--focused: focused;
-			}
-			.dropdown.disabled {
-				pointer-events: none;
 			}
 			.dropdown.disabled::part(button) {
 				cursor: default;
@@ -103,23 +106,25 @@ export const renderDropdown = ({
 			}
 		</style>
 
-		<cosmoz-dropdown
-			@focus=${onOpenedChanged}
-			class=${classMap({ ...classes, dropdown: true })}
-			title=${tooltip || ''}
-			?disabled=${disabled}
-		>
-			<cosmoz-omnitable-dropdown-input
-				class="input"
-				slot="button"
-				.label=${title}
-				.placeholder=${title}
-				.value=${filterText ?? ''}
-				text-align=${horizontalAlign}
-				?always-float-label=${filterText?.length > 0}
+		<div class="dropdown-wrapper" ?disabled=${disabled}>
+			<cosmoz-dropdown
+				@focus=${onOpenedChanged}
+				class=${classMap({ ...classes, dropdown: true })}
+				title=${tooltip || ''}
 				?disabled=${disabled}
-			></cosmoz-omnitable-dropdown-input>
-			<div class="dropdown-content" ?disabled=${disabled}>${content}</div>
-		</cosmoz-dropdown>
+			>
+				<cosmoz-omnitable-dropdown-input
+					class="input"
+					slot="button"
+					.label=${title}
+					.placeholder=${title}
+					.value=${filterText ?? ''}
+					text-align=${horizontalAlign}
+					?always-float-label=${filterText?.length > 0}
+					?disabled=${disabled}
+				></cosmoz-omnitable-dropdown-input>
+				<div class="dropdown-content" ?disabled=${disabled}>${content}</div>
+			</cosmoz-dropdown>
+		</div>
 	`;
 };
