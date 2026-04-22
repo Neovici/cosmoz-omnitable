@@ -57,9 +57,10 @@ const style = css`
 	:host([disabled]) {
 		pointer-events: none;
 		cursor: default;
+		--cosmoz-input-disabled-opacity: 1;
 	}
 
-	:host([disabled])::part(line) {
+	:host([disabled]) .line {
 		border-bottom-style: solid;
 	}
 `;
