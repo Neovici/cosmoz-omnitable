@@ -70,14 +70,6 @@ class AmountRangeInput extends rangeInputMixin(
 				}
 			</style>
 			${when(
-				!this.disabled,
-				() =>
-					html`<cosmoz-clear-button
-						@click=${() => this.resetFilter()}
-						?visible=${this.hasFilter()}
-					></cosmoz-clear-button>`,
-			)}
-			${when(
 				this.disabled,
 				() => html`
 					<cosmoz-omnitable-dropdown-input
@@ -86,8 +78,12 @@ class AmountRangeInput extends rangeInputMixin(
 						.value=${this._filterText ?? ''}
 					></cosmoz-omnitable-dropdown-input>
 				`,
-				() =>
-					renderDropdown({
+				() => html`
+					<cosmoz-clear-button
+						@click=${() => this.resetFilter()}
+						?visible=${this.hasFilter()}
+					></cosmoz-clear-button>
+					${renderDropdown({
 						title: this.title,
 						tooltip: this._tooltip,
 						filterText: this._filterText,
@@ -128,7 +124,8 @@ class AmountRangeInput extends rangeInputMixin(
 								<div slot="suffix" suffix>${this.filter?.max?.currency}</div>
 							</cosmoz-input>
 						`,
-					}),
+					})}
+				`,
 			)}
 		`;
 	}
