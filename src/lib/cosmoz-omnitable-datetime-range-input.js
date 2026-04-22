@@ -15,7 +15,7 @@ class DatetimeRangeInput extends dateInputMixin(
 			this.headerFocused = event.type === 'focus';
 		};
 
-		return html`
+			return html`
 			<style>
 				cosmoz-datetime-input {
 					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);

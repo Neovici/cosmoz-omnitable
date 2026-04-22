@@ -16,27 +16,8 @@ class DateRangeInput extends dateInputMixin(
 			this.headerFocused = event.type === 'focus';
 		};
 
-		return html`
-			<style>
-				cosmoz-input[type='date'] {
-					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
-					border-radius: 6px;
-					border: 1px solid #d1d1d6;
-					box-shadow: 0 1px 2px 0 rgba(60, 60, 60, 0.04);
-					padding: 2px 8px;
-					margin-bottom: 6px;
-					min-height: 28px;
-					transition:
-						border-color 0.2s,
-						box-shadow 0.2s;
-				}
+			return html`
 
-				cosmoz-input[type='date']:focus-within {
-					border-color: var(--cz-accent-color, #007aff);
-					box-shadow: 0 0 0 1px rgba(0, 122, 255, 0.15);
-					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
-				}
-			</style>
 
 			${when(
 				this.disabled,
