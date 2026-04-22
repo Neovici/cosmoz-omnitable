@@ -3,7 +3,6 @@ import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 
 import '@neovici/cosmoz-autocomplete';
-import '@neovici/cosmoz-input';
 import { memooize } from '@neovici/cosmoz-utils/memoize';
 import { get } from '@polymer/polymer/lib/utils/path';
 import { html } from 'lit-html';
@@ -107,15 +106,6 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 	}
 
 	renderHeader(column, { filter, query }, setState, source) {
-		if (column.disabledFiltering) {
-			const filterText =
-				filter != null ? computeTooltip('', filter, source) : '';
-			return html`<cosmoz-input
-				disabled
-				label=${column.title}
-				.value=${filterText}
-			></cosmoz-input>`;
-		}
 		return html`<cosmoz-autocomplete-ui
 			?disabled=${column.disabledFiltering}
 			.label=${column.title}
