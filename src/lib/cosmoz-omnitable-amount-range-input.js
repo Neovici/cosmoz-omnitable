@@ -2,6 +2,7 @@ import '@neovici/cosmoz-input';
 import { PolymerElement } from '@polymer/polymer';
 import { t } from 'i18next';
 import { html } from 'lit-html';
+import { when } from 'lit-html/directives/when.js';
 import { renderDropdown } from './cosmoz-omnitable-dropdown';
 import { rangeInputMixin } from './cosmoz-omnitable-range-input-mixin';
 import { polymerHauntedRender } from './polymer-haunted-render-mixin';
@@ -67,11 +68,14 @@ class AmountRangeInput extends rangeInputMixin(
 					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
 				}
 			</style>
-			<cosmoz-clear-button
-				@click=${() => this.resetFilter()}
-				?visible=${this.hasFilter()}
-			></cosmoz-clear-button>
-
+			${when(
+				!this.disabled,
+				() =>
+					html`<cosmoz-clear-button
+						@click=${() => this.resetFilter()}
+						?visible=${this.hasFilter()}
+					></cosmoz-clear-button>`,
+			)}
 			${renderDropdown({
 				title: this.title,
 				tooltip: this._tooltip,

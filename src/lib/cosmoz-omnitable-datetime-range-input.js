@@ -1,6 +1,7 @@
 import { PolymerElement } from '@polymer/polymer';
 import { t } from 'i18next';
 import { html } from 'lit-html';
+import { when } from 'lit-html/directives/when.js';
 import { dateInputMixin } from './cosmoz-omnitable-date-input-mixin';
 import { renderDropdown } from './cosmoz-omnitable-dropdown';
 import { polymerHauntedRender } from './polymer-haunted-render-mixin';
@@ -35,11 +36,14 @@ class DatetimeRangeInput extends dateInputMixin(
 				}
 			</style>
 
-			<cosmoz-clear-button
-				@click=${() => this.resetFilter()}
-				?visible=${this.hasFilter()}
-			></cosmoz-clear-button>
-
+			${when(
+				!this.disabled,
+				() =>
+					html`<cosmoz-clear-button
+						@click=${() => this.resetFilter()}
+						?visible=${this.hasFilter()}
+					></cosmoz-clear-button>`,
+			)}
 			${renderDropdown({
 				title: this.title,
 				tooltip: this._tooltip,

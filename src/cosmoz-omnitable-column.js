@@ -3,6 +3,7 @@ import './ui-helpers/cosmoz-clear-button';
 
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from 'lit-html';
+import { when } from 'lit-html/directives/when.js';
 import {
 	applySingleFilter,
 	columnMixin,
@@ -83,14 +84,17 @@ class OmnitableColumn extends columnMixin(PolymerElement) {
 			@keydown=${onKeyDown(setState)}
 			@blur=${onBlur(setState)}
 		>
-			<cosmoz-clear-button
-				suffix
-				slot="suffix"
-				?visible=${hasFilter(filter)}
-				?disabled=${column.disabledFiltering}
-				light
-				@click=${resetFilter(setState)}
-			></cosmoz-clear-button>
+			${when(
+				!column.disabledFiltering,
+				() =>
+					html`<cosmoz-clear-button
+						suffix
+						slot="suffix"
+						?visible=${hasFilter(filter)}
+						light
+						@click=${resetFilter(setState)}
+					></cosmoz-clear-button>`,
+			)}
 		</cosmoz-input>`;
 	}
 
