@@ -4,6 +4,7 @@ import { t } from 'i18next';
 import { html } from 'lit-html';
 import { when } from 'lit-html/directives/when.js';
 import { renderDropdown } from './cosmoz-omnitable-dropdown';
+import './cosmoz-omnitable-dropdown-input';
 import { rangeInputMixin } from './cosmoz-omnitable-range-input-mixin';
 import { polymerHauntedRender } from './polymer-haunted-render-mixin';
 
@@ -76,49 +77,59 @@ class AmountRangeInput extends rangeInputMixin(
 						?visible=${this.hasFilter()}
 					></cosmoz-clear-button>`,
 			)}
-			${renderDropdown({
-				title: this.title,
-				tooltip: this._tooltip,
-				filterText: this._filterText,
-				disabled: this.disabled,
-				externalValues: this.externalValues,
-				onOpenedChanged,
-				content: html`
-					<h3 style="margin: 0;">${this.title}</h3>
-					<cosmoz-input
-						class=${this._fromClasses}
-						type="number"
-						title=${t('Minimum amount')}
-						label=${t('Min amount')}
-						.value=${this._filterInput?.min}
-						@value-changed=${(event) => {
-							this.set('_filterInput.min', event.detail.value);
-						}}
-						@blur=${(event) => this._onBlur(event)}
-						@keydown=${(event) => this._onKeyDown(event)}
-						min=${this._toInputStringAmount(this._limit.fromMin)}
-						max=${this._toInputStringAmount(this._limit.fromMax)}
-					>
-						<div slot="suffix" suffix>${this.filter?.min?.currency}</div>
-					</cosmoz-input>
-					<cosmoz-input
-						class=${this._toClasses}
-						type="number"
-						title=${t('Maximum amount')}
-						label=${t('Max amount')}
-						.value=${this._filterInput?.max}
-						@value-changed=${(event) => {
-							this.set('_filterInput.max', event.detail.value);
-						}}
-						@blur=${(event) => this._onBlur(event)}
-						@keydown=${(event) => this._onKeyDown(event)}
-						min=${this._toInputStringAmount(this._limit.toMin)}
-						max=${this._toInputStringAmount(this._limit.toMax)}
-					>
-						<div slot="suffix" suffix>${this.filter?.max?.currency}</div>
-					</cosmoz-input>
+			${when(
+				this.disabled,
+				() => html`
+					<cosmoz-omnitable-dropdown-input
+						disabled
+						.label=${this.title}
+						.value=${this._filterText ?? ''}
+					></cosmoz-omnitable-dropdown-input>
 				`,
-			})}
+				() =>
+					renderDropdown({
+						title: this.title,
+						tooltip: this._tooltip,
+						filterText: this._filterText,
+						externalValues: this.externalValues,
+						onOpenedChanged,
+						content: html`
+							<h3 style="margin: 0;">${this.title}</h3>
+							<cosmoz-input
+								class=${this._fromClasses}
+								type="number"
+								title=${t('Minimum amount')}
+								label=${t('Min amount')}
+								.value=${this._filterInput?.min}
+								@value-changed=${(event) => {
+									this.set('_filterInput.min', event.detail.value);
+								}}
+								@blur=${(event) => this._onBlur(event)}
+								@keydown=${(event) => this._onKeyDown(event)}
+								min=${this._toInputStringAmount(this._limit.fromMin)}
+								max=${this._toInputStringAmount(this._limit.fromMax)}
+							>
+								<div slot="suffix" suffix>${this.filter?.min?.currency}</div>
+							</cosmoz-input>
+							<cosmoz-input
+								class=${this._toClasses}
+								type="number"
+								title=${t('Maximum amount')}
+								label=${t('Max amount')}
+								.value=${this._filterInput?.max}
+								@value-changed=${(event) => {
+									this.set('_filterInput.max', event.detail.value);
+								}}
+								@blur=${(event) => this._onBlur(event)}
+								@keydown=${(event) => this._onKeyDown(event)}
+								min=${this._toInputStringAmount(this._limit.toMin)}
+								max=${this._toInputStringAmount(this._limit.toMax)}
+							>
+								<div slot="suffix" suffix>${this.filter?.max?.currency}</div>
+							</cosmoz-input>
+						`,
+					}),
+			)}
 		`;
 	}
 

@@ -5,6 +5,7 @@ import { html } from 'lit-html';
 import { when } from 'lit-html/directives/when.js';
 import { dateInputMixin } from './cosmoz-omnitable-date-input-mixin';
 import { renderDropdown } from './cosmoz-omnitable-dropdown';
+import './cosmoz-omnitable-dropdown-input';
 import { polymerHauntedRender } from './polymer-haunted-render-mixin';
 
 class DateRangeInput extends dateInputMixin(
@@ -45,35 +46,45 @@ class DateRangeInput extends dateInputMixin(
 						?visible=${this.hasFilter()}
 					></cosmoz-clear-button>`,
 			)}
-			${renderDropdown({
-				title: this.title,
-				tooltip: this._tooltip,
-				filterText: this._filterText,
-				disabled: this.disabled,
-				externalValues: this.externalValues,
-				onOpenedChanged,
-				content: html`
-					<h3 style="margin: 0;">${this.title}</h3>
-					<cosmoz-input
-						type="date"
-						label=${t('From date')}
-						min=${this._toInputString(this._limit.fromMin)}
-						max=${this._toInputString(this._limit.fromMax)}
-						.value=${this._filterInput?.min}
-						@value-changed=${(event) =>
-							this.set('_filterInput.min', event.detail.value)}
-					></cosmoz-input>
-					<cosmoz-input
-						type="date"
-						label=${t('Until date')}
-						min=${this._toInputString(this._limit.toMin)}
-						max=${this._toInputString(this._limit.toMax)}
-						.value=${this._filterInput?.max}
-						@value-changed=${(event) =>
-							this.set('_filterInput.max', event.detail.value)}
-					></cosmoz-input>
+			${when(
+				this.disabled,
+				() => html`
+					<cosmoz-omnitable-dropdown-input
+						disabled
+						.label=${this.title}
+						.value=${this._filterText ?? ''}
+					></cosmoz-omnitable-dropdown-input>
 				`,
-			})}
+				() =>
+					renderDropdown({
+						title: this.title,
+						tooltip: this._tooltip,
+						filterText: this._filterText,
+						externalValues: this.externalValues,
+						onOpenedChanged,
+						content: html`
+							<h3 style="margin: 0;">${this.title}</h3>
+							<cosmoz-input
+								type="date"
+								label=${t('From date')}
+								min=${this._toInputString(this._limit.fromMin)}
+								max=${this._toInputString(this._limit.fromMax)}
+								.value=${this._filterInput?.min}
+								@value-changed=${(event) =>
+									this.set('_filterInput.min', event.detail.value)}
+							></cosmoz-input>
+							<cosmoz-input
+								type="date"
+								label=${t('Until date')}
+								min=${this._toInputString(this._limit.toMin)}
+								max=${this._toInputString(this._limit.toMax)}
+								.value=${this._filterInput?.max}
+								@value-changed=${(event) =>
+									this.set('_filterInput.max', event.detail.value)}
+							></cosmoz-input>
+						`,
+					}),
+			)}
 		`;
 	}
 

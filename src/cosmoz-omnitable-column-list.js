@@ -5,6 +5,7 @@ import { html } from 'lit-html';
 import { when } from 'lit-html/directives/when.js';
 
 import '@neovici/cosmoz-autocomplete';
+import '@neovici/cosmoz-input';
 import {
 	getString,
 	getTexts,
@@ -15,6 +16,23 @@ import {
 } from './cosmoz-omnitable-column-list-mixin';
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 import { columnSymbol } from './lib/use-dom-columns';
+
+const getDisplayText = (filter, source, textProperty) => {
+	if (!filter || (Array.isArray(filter) && filter.length === 0)) return '';
+	const items = Array.isArray(filter) ? filter : [filter];
+	return items
+		.map((item) => {
+			if (typeof item === 'object' && item !== null) {
+				return String(item[textProperty] ?? '');
+			}
+			const found = source?.find((s) => s.value === item);
+			return found
+				? String(found.text ?? found[textProperty] ?? '')
+				: String(item ?? '');
+		})
+		.filter(Boolean)
+		.join(', ');
+};
 
 /**
  * @polymer
@@ -59,6 +77,14 @@ class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
 	}
 
 	renderHeader(column, { filter, query }, setState, source) {
+		if (column.disabledFiltering) {
+			const displayText = getDisplayText(filter, source, column.textProperty);
+			return html`<cosmoz-input
+				disabled
+				label=${column.title}
+				.value=${displayText}
+			></cosmoz-input>`;
+		}
 		return html`<cosmoz-autocomplete-ui
 			class="external-values-${column.externalValues}"
 			?disabled=${column.disabledFiltering}
