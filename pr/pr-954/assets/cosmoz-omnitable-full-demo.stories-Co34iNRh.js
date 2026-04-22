@@ -1,4 +1,4 @@
-import{n as e}from"./chunk-BneVvdWh.js";import{J as t,Q as n,Y as r,Z as i}from"./iframe-DBE1DF6v.js";import{$ as a,A as o,At as s,B as c,Bt as l,C as u,Ct as d,D as f,Dt as p,E as m,Et as h,F as g,Ft as _,G as v,Gt as ee,H as te,Ht as y,I as ne,It as b,J as re,K as ie,L as ae,Lt as oe,M as se,Mt as ce,N as le,Nt as x,O as ue,Ot as de,P as fe,Pt as S,Q as pe,R as C,Rt as me,S as w,St as he,T as ge,Tt as _e,U as T,Ut as E,V as ve,Vt as ye,W as be,Wt as xe,X as D,Y as Se,Z as Ce,_ as we,_t as Te,a as Ee,at as O,b as De,bt as Oe,c as ke,ct as Ae,d as je,dt as k,et as Me,f as Ne,ft as A,g as Pe,gt as Fe,h as Ie,ht as Le,i as Re,it as ze,j as Be,jt as j,k as Ve,kt as He,l as Ue,lt as We,m as Ge,mt as Ke,n as qe,nt as Je,o as Ye,ot as M,p as Xe,pt as Ze,q as Qe,r as $e,rt as et,s as tt,st as nt,t as rt,tt as it,u as at,ut as ot,v as st,vt as ct,w as lt,wt as ut,x as dt,xt as ft,y as N,yt as pt,z as P,zt as mt}from"./dist-DX5NtIOB.js";var ht,gt=e((()=>{h(),ht=()=>i`<style>
+import{n as e}from"./chunk-BneVvdWh.js";import{J as t,Q as n,Y as r,Z as i}from"./iframe-BNB9ArPA.js";import{$ as a,A as o,At as s,B as c,Bt as l,C as u,Ct as d,D as f,Dt as p,E as m,Et as h,F as g,Ft as _,G as v,Gt as ee,H as te,Ht as y,I as ne,It as b,J as re,K as ie,L as ae,Lt as oe,M as se,Mt as ce,N as le,Nt as x,O as ue,Ot as de,P as fe,Pt as S,Q as pe,R as C,Rt as me,S as w,St as he,T as ge,Tt as _e,U as T,Ut as E,V as ve,Vt as ye,W as be,Wt as xe,X as D,Y as Se,Z as Ce,_ as we,_t as Te,a as Ee,at as O,b as De,bt as Oe,c as ke,ct as Ae,d as je,dt as k,et as Me,f as Ne,ft as A,g as Pe,gt as Fe,h as Ie,ht as Le,i as Re,it as ze,j as Be,jt as j,k as Ve,kt as He,l as Ue,lt as We,m as Ge,mt as Ke,n as qe,nt as Je,o as Ye,ot as M,p as Xe,pt as Ze,q as Qe,r as $e,rt as et,s as tt,st as nt,t as rt,tt as it,u as at,ut as ot,v as st,vt as ct,w as lt,wt as ut,x as dt,xt as ft,y as N,yt as pt,z as P,zt as mt}from"./dist-BdzlFnU0.js";var ht,gt=e((()=>{h(),ht=()=>i`<style>
 	@keyframes rotating {
 		100% {
 			transform: rotate(360deg);
@@ -168,6 +168,10 @@ import{n as e}from"./chunk-BneVvdWh.js";import{J as t,Q as n,Y as r,Z as i}from"
 			.dropdown:focus-within .input {
 				--focused: focused;
 			}
+			.dropdown.disabled::part(button) {
+				pointer-events: none;
+				cursor: default;
+			}
 
 			.dropdown::part(button) {
 				border: none;
@@ -222,7 +226,7 @@ import{n as e}from"./chunk-BneVvdWh.js";import{J as t,Q as n,Y as r,Z as i}from"
 
 		<cosmoz-dropdown
 			@focus=${a}
-			class=${`${ne({filtered:!!n,...c!=null&&{[`external-values-${c}`]:!0}})} dropdown`}
+			class=${ne({filtered:!!n,disabled:r,...c!=null&&{[`external-values-${c}`]:!0},dropdown:!0})}
 			title=${t||``}
 			?disabled=${r}
 		>
@@ -1062,9 +1066,15 @@ import{n as e}from"./chunk-BneVvdWh.js";import{J as t,Q as n,Y as r,Z as i}from"
 	}
 
 	.header-cell cosmoz-input[disabled]::part(line),
-	.header-cell cosmoz-autocomplete-ui[disabled]::part(line),
-	.header-cell cosmoz-autocomplete-excluding[disabled]::part(line) {
+	.header-cell cosmoz-autocomplete-ui[disabled]::part(input-line),
+	.header-cell cosmoz-autocomplete-excluding[disabled]::part(input-line) {
 		border-bottom-style: solid;
+	}
+
+	cosmoz-omnitable-dropdown-input[disabled],
+	.header-cell cosmoz-omnitable-dropdown-input[disabled] {
+		pointer-events: none;
+		cursor: default;
 	}
 
 	cosmoz-omnitable-header-row {
