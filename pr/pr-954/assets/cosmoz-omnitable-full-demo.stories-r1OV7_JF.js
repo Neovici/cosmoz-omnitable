@@ -1,4 +1,4 @@
-import{n as e}from"./chunk-BneVvdWh.js";import{J as t,Q as n,Y as r,Z as i}from"./iframe-BNB9ArPA.js";import{$ as a,A as o,At as s,B as c,Bt as l,C as u,Ct as d,D as f,Dt as p,E as m,Et as h,F as g,Ft as _,G as v,Gt as ee,H as te,Ht as y,I as ne,It as b,J as re,K as ie,L as ae,Lt as oe,M as se,Mt as ce,N as le,Nt as x,O as ue,Ot as de,P as fe,Pt as S,Q as pe,R as C,Rt as me,S as w,St as he,T as ge,Tt as _e,U as T,Ut as E,V as ve,Vt as ye,W as be,Wt as xe,X as D,Y as Se,Z as Ce,_ as we,_t as Te,a as Ee,at as O,b as De,bt as Oe,c as ke,ct as Ae,d as je,dt as k,et as Me,f as Ne,ft as A,g as Pe,gt as Fe,h as Ie,ht as Le,i as Re,it as ze,j as Be,jt as j,k as Ve,kt as He,l as Ue,lt as We,m as Ge,mt as Ke,n as qe,nt as Je,o as Ye,ot as M,p as Xe,pt as Ze,q as Qe,r as $e,rt as et,s as tt,st as nt,t as rt,tt as it,u as at,ut as ot,v as st,vt as ct,w as lt,wt as ut,x as dt,xt as ft,y as N,yt as pt,z as P,zt as mt}from"./dist-BdzlFnU0.js";var ht,gt=e((()=>{h(),ht=()=>i`<style>
+import{n as e}from"./chunk-BneVvdWh.js";import{J as t,Q as n,Y as r,Z as i}from"./iframe-BocRTirX.js";import{$ as a,A as o,At as s,B as c,Bt as l,C as u,Ct as d,D as f,Dt as p,E as m,Et as h,F as g,Ft as _,G as v,Gt as ee,H as te,Ht as y,I as ne,It as b,J as re,K as ie,L as ae,Lt as oe,M as se,Mt as ce,N as le,Nt as x,O as ue,Ot as de,P as fe,Pt as S,Q as pe,R as C,Rt as me,S as w,St as he,T as ge,Tt as _e,U as T,Ut as E,V as ve,Vt as ye,W as be,Wt as xe,X as D,Y as Se,Z as Ce,_ as we,_t as Te,a as Ee,at as O,b as De,bt as Oe,c as ke,ct as Ae,d as je,dt as k,et as Me,f as Ne,ft as A,g as Pe,gt as Fe,h as Ie,ht as Le,i as Re,it as ze,j as Be,jt as j,k as Ve,kt as He,l as Ue,lt as We,m as Ge,mt as Ke,n as qe,nt as Je,o as Ye,ot as M,p as Xe,pt as Ze,q as Qe,r as $e,rt as et,s as tt,st as nt,t as rt,tt as it,u as at,ut as ot,v as st,vt as ct,w as lt,wt as ut,x as dt,xt as ft,y as N,yt as pt,z as P,zt as mt}from"./dist-CAcZGC5G.js";var ht,gt=e((()=>{h(),ht=()=>i`<style>
 	@keyframes rotating {
 		100% {
 			transform: rotate(360deg);
@@ -168,8 +168,10 @@ import{n as e}from"./chunk-BneVvdWh.js";import{J as t,Q as n,Y as r,Z as i}from"
 			.dropdown:focus-within .input {
 				--focused: focused;
 			}
-			.dropdown.disabled::part(button) {
+			.dropdown.disabled {
 				pointer-events: none;
+			}
+			.dropdown.disabled::part(button) {
 				cursor: default;
 			}
 
@@ -222,6 +224,22 @@ import{n as e}from"./chunk-BneVvdWh.js";import{J as t,Q as n,Y as r,Z as i}from"
 					0 4px 24px 0 rgba(0, 0, 0, 0.18),
 					0 1.5px 6px 0 rgba(0, 0, 0, 0.1);
 			}
+
+			.dropdown-content[disabled] cosmoz-omnitable-dropdown-input,
+			.dropdown-content[disabled] cosmoz-input,
+			.dropdown-content[disabled] cosmoz-autocomplete-ui,
+			.dropdown-content[disabled] cosmoz-autocomplete-excluding {
+				pointer-events: none;
+				cursor: default;
+			}
+
+			.dropdown-content[disabled] cosmoz-omnitable-dropdown-input::part(line),
+			.dropdown-content[disabled] cosmoz-input::part(line),
+			.dropdown-content[disabled] cosmoz-autocomplete-ui::part(input-line),
+			.dropdown-content[disabled]
+				cosmoz-autocomplete-excluding::part(input-line) {
+				border-bottom-style: solid;
+			}
 		</style>
 
 		<cosmoz-dropdown
@@ -240,7 +258,7 @@ import{n as e}from"./chunk-BneVvdWh.js";import{J as t,Q as n,Y as r,Z as i}from"
 				?always-float-label=${n?.length>0}
 				?disabled=${r}
 			></cosmoz-omnitable-dropdown-input>
-			<div class="dropdown-content">${o}</div>
+			<div class="dropdown-content" ?disabled=${r}>${o}</div>
 		</cosmoz-dropdown>
 	`})),It,Lt,Rt=e((()=>{Le(),We(),g(),se(),It=e=>e?typeof e.close==`function`?e:It(e.parentElement):null,Lt=e=>class extends e{static get properties(){return{disabled:{type:Boolean,value:!1},filter:{type:Object,notify:!0},values:{type:Array,value(){return[]}},headerFocused:{type:Boolean,notify:!0},min:{type:Number,value:null},max:{type:Number,value:null},limits:{type:Function},autoupdate:{type:String,value:!0},locale:{type:String,value:null},_filterInput:{type:Object,value(){return{min:null,max:null}}},_range:{type:Object,computed:`_computeRange(values.*)`},_limit:{type:Object,computed:`_computeLimit(_range, _filterInput.*, min, max)`,value(){return{}}},_tooltip:{type:String,computed:`_computeTooltip(title, _filterText)`},_fromClasses:{type:String,computed:`_computeInputClasses(_filterInput.min)`},_toClasses:{type:String,computed:`_computeInputClasses(_filterInput.max)`}}}static get observers(){return[`_filterInputChanged(_filterInput.*, autoupdate)`,`_filterChanged(filter.*)`,`_updateLimits(limits, headerFocused)`]}disconnectedCallback(){this._limitInputDebouncer&&this._limitInputDebouncer.cancel(),super.disconnectedCallback()}_computeInputClasses(e){return e!=null&&e!==``?`has-value`:``}toNumber(e,t,n){if(e==null||e===``)return;let r=typeof e==`number`?e:Number(e);if(Number.isNaN(r))return;if(n==null||t==null)return r;let i=this.toNumber(t);return i==null?r:n(r,i)}toValue(){return this.toNumber.apply(this,arguments)}getComparableValue(e,t){if(e==null)return;let n=e;return t!=null&&(n=this.get(t,e)),this.toValue(n)}renderValue(){}getInputString(e,t=this.valuePath){let n=this.toValue(this.get(t,e));return this._toInputString(n)}_computeRange(e){let t=e.base,n=Array.isArray(t)&&t.length&&t.map(e=>this.toValue(e)).filter(e=>e!=null);return!n||n.length<1?{min:null,max:null}:n.reduce((e,t)=>({min:this.toValue(t,e.min,Math.min),max:this.toValue(t,e.max,Math.max)}),{})}_computeLimit(e,t,n,r){if(!e)return;let i=t.base,a=this.toValue(n),o=this.toValue(r),s=a??this.toValue(e.min),c=o??this.toValue(e.max);return{fromMin:s,fromMax:this.toValue(c,this._fromInputString(i.max,`max`),Math.min),toMin:this.toValue(s,this._fromInputString(i.min,`min`),Math.max),toMax:c}}_computeFilterText(e){if(e.base==null)return;let t=e.base,n=this.toValue(t.min),r=this.toValue(t.max),i=[];return n!=null&&i.push(this.renderValue(n)),i.push(` - `),r!=null&&i.push(this.renderValue(r)),i.length>1?i.join(``):void 0}_computeTooltip(e,t){return t==null?e:`${e}: ${t}`}_fromInputString(e){return this.toValue(e)}_toInputString(e){return this.toValue(e)??null}_getDefaultFilter(){return{min:null,max:null}}_filterInputChanged(e,t){this.__inputChangePath=e.path.split(`.`)[1]||null,t&&(this._limitInputDebouncer=le.debounce(this._limitInputDebouncer,ot.after(600),()=>{this._limitInput(),this._updateFilter()}),fe(this._limitInputDebouncer))}_clearFrom(){this.set(`_filterInput.min`,null),this._updateFilter()}_clearTo(){this.set(`_filterInput.max`,null),this._updateFilter()}_onBlur(){this._limitInput(),this._updateFilter()}_onKeyDown(e){let t=e.currentTarget,n=Array.from(t.parentElement.querySelectorAll(`cosmoz-input`)),r=n[n.findIndex(e=>e===t)+1],i=!r,a=n[0]===t;switch(e.keyCode){case 13:if(e.preventDefault(),!i)r.focus();else{let e=this._limitInput();this._updateFilter(),e||this._closeParent(t)}break;case 9:(i&&!e.shiftKey||a&&e.shiftKey)&&this._closeParent(t)}}_closeParent(e){let t=It(e);t&&t.close()}_onDropdownOpenedChanged({currentTarget:e,type:t,detail:n}){(t===`focus`||n?.value===!0)&&setTimeout(()=>{e.querySelector(`cosmoz-input:focus`)||e.querySelector(`cosmoz-input`)?.focus()},100)}_limitInput(){let e=this._filterInput,t=this.__inputChangePath,n=t?this._fromInputString(this.get(t,e),t):null;if(this.__inputChangePath=null,n==null)return!1;let r=this._limit,i=t===`min`?`from`:`to`,a=this.get(i+`Min`,r),o=this.get(i+`Max`,r),s=this.toValue(n,a,Math.max),c=this.toValue(s,o,Math.min);return this.getComparableValue(n)===this.getComparableValue(c)?!1:(this.set([`_filterInput`,t],this._toInputString(c,t)),this._limitInputDebouncer&&this._limitInputDebouncer.cancel(),!0)}_updateFilter(){let e=this._filterInput,t=this.filter,n=this._fromInputString(e.min,`min`),r=this._fromInputString(e.max,`max`);this.getComparableValue(n)===this.getComparableValue(t,`min`)&&this.getComparableValue(r)===this.getComparableValue(t,`max`)||this.set(`filter`,{min:n,max:r})}_filterChanged(e){if(this._filterInput==null)return;let t=this._filterInput,n=e.base,r=this._fromInputString(t.min,`min`),i=this._fromInputString(t.max,`max`);this.getComparableValue(r)===this.getComparableValue(n,`min`)&&this.getComparableValue(i)===this.getComparableValue(n,`max`)||(this.set(`_filterInput`,{min:this._toInputString(n.min),max:this._toInputString(n.max)}),this._limitInputDebouncer&&this._limitInputDebouncer.cancel())}hasFilter(){let e=this.filter;return e==null?!1:this.toValue(e.min)!=null||this.toValue(e.max)!=null}resetFilter(){this.filter=this._getDefaultFilter()}_updateLimits(e,t){e&&Promise.resolve(Fe(e,{active:t})).then(e=>{let{min:t,max:n}=e??{};Object.assign(this,{...t==null?{}:{min:t},...n==null?{}:{max:n}})})}}})),B,zt=e((()=>{M(),n(),B=e=>class extends e{static get template(){return nt`<div id="output" style="position:relative;"></div>`}connectedCallback(){super.connectedCallback(),r(this.render(),this.$.output)}_propertiesChanged(e,t,n){super._propertiesChanged(e,t,n),requestAnimationFrame(()=>r(this.render(),this.$.output))}}})),Bt,Vt=e((()=>{c(),M(),C(),n(),y(),Ft(),Rt(),zt(),Bt=class extends Lt(B(O)){static get properties(){return{currency:{type:String},autodetect:{type:Boolean,value:!1},rates:{type:Object},autoupdate:{type:String,value:!1},_filterText:{type:String,computed:`_computeFilterText(filter.*, _formatters)`},headerFocused:{type:Boolean,value:!1}}}static get observers(){return[`_valuesChanged(autodetect, currency, values)`]}render(){return i`
 			<style>
