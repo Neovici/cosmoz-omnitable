@@ -15,6 +15,7 @@ export const renderDropdown = ({
 }) => {
 	const classes = {
 		filtered: Boolean(filterText),
+		disabled,
 		...(externalValues != null && {
 			[`external-values-${externalValues}`]: true,
 		}),
@@ -27,6 +28,10 @@ export const renderDropdown = ({
 			}
 			.dropdown:focus-within .input {
 				--focused: focused;
+			}
+			.dropdown.disabled::part(button) {
+				pointer-events: none;
+				cursor: default;
 			}
 
 			.dropdown::part(button) {
@@ -82,7 +87,7 @@ export const renderDropdown = ({
 
 		<cosmoz-dropdown
 			@focus=${onOpenedChanged}
-			class=${`${classMap(classes)} dropdown`}
+			class=${classMap({ ...classes, dropdown: true })}
 			title=${tooltip || ''}
 			?disabled=${disabled}
 		>

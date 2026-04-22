@@ -196,9 +196,15 @@ export default css`
 	}
 
 	.header-cell cosmoz-input[disabled]::part(line),
-	.header-cell cosmoz-autocomplete-ui[disabled]::part(line),
-	.header-cell cosmoz-autocomplete-excluding[disabled]::part(line) {
+	.header-cell cosmoz-autocomplete-ui[disabled]::part(input-line),
+	.header-cell cosmoz-autocomplete-excluding[disabled]::part(input-line) {
 		border-bottom-style: solid;
+	}
+
+	cosmoz-omnitable-dropdown-input[disabled],
+	.header-cell cosmoz-omnitable-dropdown-input[disabled] {
+		pointer-events: none;
+		cursor: default;
 	}
 
 	cosmoz-omnitable-header-row {
