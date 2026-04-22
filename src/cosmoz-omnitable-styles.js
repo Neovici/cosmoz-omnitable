@@ -195,6 +195,12 @@ export default css`
 		--cosmoz-input-disabled-opacity: 1;
 	}
 
+	.header-cell cosmoz-input[disabled]::part(line),
+	.header-cell cosmoz-autocomplete-ui[disabled]::part(line),
+	.header-cell cosmoz-autocomplete-excluding[disabled]::part(line) {
+		border-bottom-style: solid;
+	}
+
 	cosmoz-omnitable-header-row {
 		white-space: nowrap;
 	}

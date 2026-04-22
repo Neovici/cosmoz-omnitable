@@ -58,6 +58,10 @@ const style = css`
 		pointer-events: none;
 		cursor: default;
 	}
+
+	:host([disabled])::part(line) {
+		border-bottom-style: solid;
+	}
 `;
 
 const DropdownInput = (host) => {
