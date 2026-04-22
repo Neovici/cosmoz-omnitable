@@ -21,7 +21,6 @@ const meta: Meta = {
 		hashParam: '',
 		settingsId: '',
 		selectedItems: [],
-		disabled: false,
 		disabledFiltering: false,
 	},
 	argTypes: {
@@ -73,13 +72,6 @@ const meta: Meta = {
 		settingsId: {
 			control: 'text',
 			description: 'ID for storing table settings',
-		},
-		disabled: {
-			control: 'boolean',
-			description: 'Hide one column',
-			table: {
-				defaultValue: { summary: 'false' },
-			},
 		},
 		disabledFiltering: {
 			control: 'boolean',
