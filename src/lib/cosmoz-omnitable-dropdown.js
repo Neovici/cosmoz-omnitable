@@ -29,8 +29,10 @@ export const renderDropdown = ({
 			.dropdown:focus-within .input {
 				--focused: focused;
 			}
-			.dropdown.disabled::part(button) {
+			.dropdown.disabled {
 				pointer-events: none;
+			}
+			.dropdown.disabled::part(button) {
 				cursor: default;
 			}
 
@@ -83,6 +85,22 @@ export const renderDropdown = ({
 					0 4px 24px 0 rgba(0, 0, 0, 0.18),
 					0 1.5px 6px 0 rgba(0, 0, 0, 0.1);
 			}
+
+			.dropdown-content[disabled] cosmoz-omnitable-dropdown-input,
+			.dropdown-content[disabled] cosmoz-input,
+			.dropdown-content[disabled] cosmoz-autocomplete-ui,
+			.dropdown-content[disabled] cosmoz-autocomplete-excluding {
+				pointer-events: none;
+				cursor: default;
+			}
+
+			.dropdown-content[disabled] cosmoz-omnitable-dropdown-input::part(line),
+			.dropdown-content[disabled] cosmoz-input::part(line),
+			.dropdown-content[disabled] cosmoz-autocomplete-ui::part(input-line),
+			.dropdown-content[disabled]
+				cosmoz-autocomplete-excluding::part(input-line) {
+				border-bottom-style: solid;
+			}
 		</style>
 
 		<cosmoz-dropdown
@@ -101,7 +119,7 @@ export const renderDropdown = ({
 				?always-float-label=${filterText?.length > 0}
 				?disabled=${disabled}
 			></cosmoz-omnitable-dropdown-input>
-			<div class="dropdown-content">${content}</div>
+			<div class="dropdown-content" ?disabled=${disabled}>${content}</div>
 		</cosmoz-dropdown>
 	`;
 };
