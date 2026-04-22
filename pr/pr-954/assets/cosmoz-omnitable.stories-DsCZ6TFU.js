@@ -1,4 +1,4 @@
-import{n as e}from"./chunk-BneVvdWh.js";import{J as t,Q as n,Y as r,Z as i}from"./iframe-BgW9Zewp.js";import{$ as a,A as o,At as s,B as c,C as l,Ct as u,D as d,Dt as f,E as p,Et as m,F as h,Ft as g,G as _,Gt as ee,H as te,Ht as v,I as ne,It as y,J as re,K as ie,L as ae,Lt as oe,M as se,Mt as ce,N as le,Nt as b,O as ue,Ot as de,P as fe,Pt as x,Q as pe,R as S,Rt as me,S as C,St as he,T as ge,Tt as _e,U as w,Ut as T,V as ve,Vt as ye,W as be,Wt as xe,X as Se,Y as Ce,Z as we,_ as Te,_t as Ee,a as De,at as E,b as Oe,bt as ke,c as Ae,ct as je,d as Me,dt as D,et as Ne,f as Pe,ft as O,g as Fe,gt as Ie,h as Le,ht as Re,i as ze,it as Be,j as Ve,jt as k,k as He,kt as Ue,l as We,lt as Ge,m as Ke,mt as qe,n as Je,nt as Ye,o as Xe,ot as A,p as Ze,pt as Qe,q as $e,r as et,rt as tt,s as nt,st as rt,t as it,tt as at,u as ot,ut as st,v as ct,vt as lt,w as ut,wt as dt,x as ft,xt as pt,y as mt,yt as ht,z as j,zt as gt}from"./dist-Z1uNlCdZ.js";var _t,vt,yt=e((()=>{$e(),m(),_t=Se`
+import{n as e}from"./chunk-BneVvdWh.js";import{J as t,Q as n,Y as r,Z as i}from"./iframe-LLYexDxI.js";import{$ as a,A as o,At as s,B as c,C as l,Ct as u,D as d,Dt as f,E as p,Et as m,F as h,Ft as g,G as _,Gt as ee,H as te,Ht as v,I as ne,It as y,J as re,K as ie,L as ae,Lt as oe,M as se,Mt as ce,N as le,Nt as b,O as ue,Ot as de,P as fe,Pt as x,Q as pe,R as S,Rt as me,S as C,St as he,T as ge,Tt as _e,U as w,Ut as T,V as ve,Vt as ye,W as be,Wt as xe,X as Se,Y as Ce,Z as we,_ as Te,_t as Ee,a as De,at as E,b as Oe,bt as ke,c as Ae,ct as je,d as Me,dt as D,et as Ne,f as Pe,ft as O,g as Fe,gt as Ie,h as Le,ht as Re,i as ze,it as Be,j as Ve,jt as k,k as He,kt as Ue,l as We,lt as Ge,m as Ke,mt as qe,n as Je,nt as Ye,o as Xe,ot as A,p as Ze,pt as Qe,q as $e,r as et,rt as tt,s as nt,st as rt,t as it,tt as at,u as ot,ut as st,v as ct,vt as lt,w as ut,wt as dt,x as ft,xt as pt,y as mt,yt as ht,z as j,zt as gt}from"./dist-CEoAHhd7.js";var _t,vt,yt=e((()=>{$e(),m(),_t=Se`
 	:host {
 		display: flex;
 	}
@@ -239,17 +239,18 @@ import{n as e}from"./chunk-BneVvdWh.js";import{J as t,Q as n,Y as r,Z as i}from"
 					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
 				}
 			</style>
-			${T(!this.disabled,()=>i`<cosmoz-clear-button
-						@click=${()=>this.resetFilter()}
-						?visible=${this.hasFilter()}
-					></cosmoz-clear-button>`)}
 			${T(this.disabled,()=>i`
 					<cosmoz-omnitable-dropdown-input
 						disabled
 						.label=${this.title}
 						.value=${this._filterText??``}
 					></cosmoz-omnitable-dropdown-input>
-				`,()=>F({title:this.title,tooltip:this._tooltip,filterText:this._filterText,externalValues:this.externalValues,onOpenedChanged:e,content:i`
+				`,()=>i`
+					<cosmoz-clear-button
+						@click=${()=>this.resetFilter()}
+						?visible=${this.hasFilter()}
+					></cosmoz-clear-button>
+					${F({title:this.title,tooltip:this._tooltip,filterText:this._filterText,externalValues:this.externalValues,onOpenedChanged:e,content:i`
 							<h3 style="margin: 0;">${this.title}</h3>
 							<cosmoz-input
 								class=${this._fromClasses}
@@ -279,7 +280,8 @@ import{n as e}from"./chunk-BneVvdWh.js";import{J as t,Q as n,Y as r,Z as i}from"
 							>
 								<div slot="suffix" suffix>${this.filter?.max?.currency}</div>
 							</cosmoz-input>
-						`}))}
+						`})}
+				`)}
 		`}_valuesChanged(e,t,n){if(!Array.isArray(n)||n.length<1||!e&&t)return;let r=n.reduce((e,t)=>{if(t.currency){let n=t.currency;e[n]=(e[n]||0)+1}return e},{}),i=Object.keys(r)[0];Object.keys(r).reduce((e,t)=>{let n=Math.max(e,r[t]);return n===r[t]&&(i=t),n},0),this.set(`currency`,i)}toAmount(e,t,n){if(e==null||e===``)return;if(typeof e!=`object`||e.currency==null||e.currency===``)return null;let r=this.toNumber(e.amount);if(r==null||Number.isNaN(r))return null;let i={currency:e.currency,amount:r};if(n==null||t==null)return i;let a=this.toAmount(t);if(a==null)return i;let o=this.rates||{},s=i.amount*(o[i.currency]||1),c=a.amount*(o[a.currency]||1);return this.toNumber(s,c,n)===s?i:a}toValue(){return this.toAmount.apply(this,arguments)}getComparableValue(e,t){let n=super.getComparableValue(e,t);if(n==null)return;let r=this.toNumber(n.amount),i=this.rates;return i==null?r:r*(i[n.currency]||1)}getString(e,t=this.valuePath){let n=this.toValue(this.get(t,e));return n===void 0?``:n===null?`Invalid value`:this.renderValue(n)}getCurrency(e,t){let n=this.get(t,e);return n&&n.currency}getFormatter(e,t){let n=e+(t||``)||``,r=this._formatters=this._formatters||{};return r[n]||(r[n]=new Intl.NumberFormat(t||void 0,{style:`currency`,currency:e})),r[n]}renderValue(e){let t=this.toAmount(e);return t==null?``:this.getFormatter(t.currency,this.locale).format(e.amount)}_amountValueChanged(e){let t=e.target.value,n=e.model.item,r=this.get(this.valuePath,n),i={amount:Number(t),currency:r.currency};this.set(this.valuePath,i,n),this._fireItemChangeEvent(n,this.valuePath,r,this.renderValue.bind(this))}_toInputString(e){let t=this.toValue(e);return t==null?null:this.toNumber(t.amount)}_toInputStringAmount(e){let t=this.rates;if(t==null)return this._toInputString(e);let n=this.toValue(e);return n==null?null:(this.toNumber(n.amount)*(t[n.currency]||1)/(t[this.currency]||1)).toFixed(2)}_fromInputString(e,t){let n=this.toNumber(e);if(n!=null)return this.toValue({amount:n,currency:t&&this.get([`filter`,t,`currency`])||this.currency})}},customElements.define(`cosmoz-omnitable-amount-range-input`,Ht)})),I,Wt,Gt,Kt,L,qt,Jt,Yt,Xt=e((()=>{O(),He(),I=(e,t,n)=>{if(e==null||e===``)return;let r=typeof e==`number`?e:Number(e);if(Number.isNaN(r))return;if(n==null||t==null)return r;let i=I(t);return i==null?r:n(r,i)},Wt=e=>{let t=I(e);return t==null?null:t.toString()},Gt=({valuePath:e},t)=>Wt(I(e?D(t,e):t)),Kt=e=>Wt(e)??``,L=({valuePath:e,maximumFractionDigits:t},n)=>{if(n==null)return;let r=I(e?D(n,e):n);if(r!=null)return t===null?r:I(r.toFixed(t))},qt=Ve((e,t,n)=>{let r={localeMatcher:`best fit`};return t!==null&&(r.minimumFractionDigits=t),n!==null&&(r.maximumFractionDigits=n),new Intl.NumberFormat(e||void 0,r)}),Jt=({valuePath:e,locale:t,minimumFractionDigits:n,maximumFractionDigits:r},i)=>{let a=e?D(i,e):i;if(a==null)return``;let o=I(a);if(o!=null)return qt(t,n,r).format(o)},Yt=(e,t)=>n=>{let r=L(e,n);if(r==null)return!1;let i=L({...e,valuePath:`min`},t),a=L({...e,valuePath:`max`},t);return!(r<(i??-1/0)||r>(a??1/0))}})),R,z,Zt,Qt,$t,en,tn,nn,rn,an,on,sn=e((()=>{O(),Xt(),R=(e={},t,n,r)=>{if(t==null||t===``)return;if(typeof t!=`object`||t.currency==null||t.currency===``)return null;let i=I(t.amount);if(i==null||Number.isNaN(i))return null;let a={currency:t.currency,amount:i};if(r==null||n==null)return a;let o=R(e,n);if(o==null)return a;let s=a.amount*(e[a.currency]||1);return I(s,o.amount*(e[o.currency]||1),r)===s?a:o},z=({valuePath:e,rates:t},n)=>{if(n==null)return;let r=n;e!=null&&(r=D(n,e));let i=R(t,r);if(i==null)return;let a=I(i.amount);return t==null||a==null?a:a*(t?.[i.currency]||1)},Zt=(e,t)=>n=>{let r=z(e,n);if(r===void 0)return!1;let i=z({...e,valuePath:`min`},t),a=z({...e,valuePath:`max`},t);return i===void 0||a===void 0?!0:!(r<i||r>a)},Qt={},$t=(e,t)=>{let n=e+(t||``)||``;return Qt[n]||(Qt[n]=new Intl.NumberFormat(t||void 0,{style:`currency`,currency:e})),Qt[n]},en=(e,t,n)=>{let r=R(e,t);return r==null?``:$t(r.currency,n).format(r.amount)},tn=({valuePath:e,rates:t,locale:n},r)=>{let i=R(t,e?D(r,e):void 0);return i===void 0?``:i===null?`Invalid value`:en(t,i,n)},nn=e=>e?e.amount+e.currency:``,rn=e=>{if(e==null||e===``)return;let t=e.match(/^(-?[\d]+)([\D]+?)$/iu);if(!(!Array.isArray(t)||t.length<0))return{amount:Number(t[1]),currency:t[2]}},an=({valuePath:e},t)=>e?D(t,e)?.currency:null,on=({valuePath:e},t)=>e?D(t,e)?.amount:void 0})),B,cn,ln,un,dn,fn,pn,V=e((()=>{He(),m(),B=Symbol(`column`),cn=e=>{let t=!0,n=e.map(e=>e.name);return e.forEach(e=>{e.name??(t=!1,console.error(`The name attribute needs to be set on all columns! Missing on column`,e))}),e.forEach(e=>{n.indexOf(e.name)!==n.lastIndexOf(e.name)&&(t=!1,console.error(`The name attribute needs to be unique among all columns! Not unique on column`,e))}),t},ln=(e,t)=>{let n=e.valuePath??e.name;return{name:e.name,title:e.title,valuePath:n,groupOn:e.groupOn??n,sortOn:e.sortOn??n,noSort:e.noSort,disabledFiltering:t||e.disabledFiltering,minWidth:e.minWidth,width:e.width,flex:e.flex,priority:e.priority,getString:e.getString,getComparableValue:e.getComparableValue,serializeFilter:e.serializeFilter,deserializeFilter:e.deserializeFilter,toXlsxValue:e.toXlsxValue,renderHeader:e.renderHeader,renderCell:e.renderCell,renderEditCell:e.renderEditCell,renderGroup:e.renderGroup,cellTitleFn:e.cellTitleFn,headerTitleFn:e.headerTitleFn,getFilterFn:e.getFilterFn,headerCellClass:e.headerCellClass,cellClass:e.cellClass,editable:e.editable,values:e.values,source:o(e.computeSource),noLocalFilter:e.noLocalFilter,mini:e.mini,renderMini:e.renderMini,loading:e.loading,externalValues:e.externalValues,computeSource:e.computeSource,trueLabel:e.trueLabel,falseLabel:e.falseLabel,valueProperty:e.valueProperty,textProperty:e.textProperty,emptyLabel:e.emptyLabel,emptyValue:e.emptyValue,min:e.min,max:e.max,locale:e.locale,autoupdate:e.autoupdate,maximumFractionDigits:e.maximumFractionDigits,minimumFractionDigits:e.minimumFractionDigits,currency:e.currency,rates:e.rates,autodetect:e.autodetect,ownerTree:e.ownerTree,keyProperty:e.keyProperty,...e.getConfig?.(e),[B]:e}},un=e=>e.isOmnitableColumn&&!e.hidden,dn=e=>{let t=e.filter(un);return cn(t)?t:[]},fn=(e,t,n)=>(Array.isArray(t)?e.filter(e=>t.includes(e.name)):e.filter(e=>!e.disabled)).map(e=>ln(e,n)),pn=(e,{enabledColumns:t,disabledFiltering:n})=>{let[r,i]=k([]);return ce(()=>{let r,a=[],o=e.shadowRoot.querySelector(`#columnsSlot`),s=e=>()=>{let r=o.assignedNodes({flatten:!0});if(e)a=r;else{let e=r.filter(e=>!a.includes(e)),t=a.filter(e=>!r.includes(e)),n=[...e,...t].some(e=>e.isOmnitableColumn);if(a=r,!n)return}i(fn(dn(r),t,n))},c=e=>{cancelAnimationFrame(r),r=requestAnimationFrame(s(e?.type===`cosmoz-column-prop-changed`))};return c(),o.addEventListener(`slotchange`,c),e.addEventListener(`cosmoz-column-prop-changed`,c),()=>{o.removeEventListener(`slotchange`,c),e.removeEventListener(`cosmoz-column-prop-changed`,c),cancelAnimationFrame(r)}},[t,n]),r}})),mn,hn,gn,H=e((()=>{O(),V(),mn=(e,t)=>Array.isArray(e)?e.map(e=>D(e,t)).filter((e,t,n)=>e!=null&&n.indexOf(e)===t):void 0,hn=({externalValues:e,values:t,valuePath:n},r)=>{if(e)return e;if(typeof t==`function`)return t;if(n!==void 0)return mn(r,n)},gn=(e,t,n,r)=>{let{valuePath:i}=t,a=i===void 0?void 0:D(n,i);if(r===a)return;i!==void 0&&Qe(n,i,r);let o={item:n,valuePath:i,value:r,oldValue:a,column:t[B]};e.dispatchEvent(new CustomEvent(`column-item-changed`,{bubbles:!0,composed:!0,detail:o}))}})),_n,vn=e((()=>{c(),yt(),A(),n(),O(),P(),Ut(),sn(),H(),_n=class extends N(E){static get properties(){return{min:{type:Number,value:null,notify:!0},max:{type:Number,value:null,notify:!0},limits:{type:Function},locale:{type:String,value:null,notify:!0},autoupdate:{type:Boolean,value:!1,notify:!0},currency:{type:String,notify:!0},autodetect:{type:Boolean,value:!1,notify:!0},rates:{type:Object,notify:!0},width:{type:String,value:`70px`},cellClass:{type:String,value:`amount-cell align-right`},headerCellClass:{type:String,value:`amount-header-cell`}}}getConfig(e){return{limits:e.limits}}getFilterFn(e,t){let n=z({...e,valuePath:`min`},t),r=z({...e,valuePath:`max`},t);if(!(n==null&&r==null))return Zt(e,t)}getString(e,t){return tn(e,t)}toXlsxValue(e,t){return tn(e,t)}getComparableValue(e,t){return z(e,t)}serializeFilter({rates:e},t){if(t==null)return;let n=R(e,t.min),r=R(e,t.max);if(!(n==null&&r==null))return nn(n)+`~`+nn(r)}deserializeFilter(e,t){if(t==null||t===``)return null;let n=t.match(/^([^~]+)?~([^~]+)?/iu);return Array.isArray(n)?{min:rn(n[1]),max:rn(n[2])}:null}renderCell(e,{item:t}){return i`<span>${e.getString(e,t)}</span>`}renderEditCell(e,{item:t},n){return i`<cosmoz-input
 			no-label-float
 			type="number"
@@ -408,17 +410,18 @@ import{n as e}from"./chunk-BneVvdWh.js";import{J as t,Q as n,Y as r,Z as i}from"
 				}
 			</style>
 
-			${T(!this.disabled,()=>i`<cosmoz-clear-button
-						@click=${()=>this.resetFilter()}
-						?visible=${this.hasFilter()}
-					></cosmoz-clear-button>`)}
 			${T(this.disabled,()=>i`
 					<cosmoz-omnitable-dropdown-input
 						disabled
 						.label=${this.title}
 						.value=${this._filterText??``}
 					></cosmoz-omnitable-dropdown-input>
-				`,()=>F({title:this.title,tooltip:this._tooltip,filterText:this._filterText,externalValues:this.externalValues,onOpenedChanged:e,content:i`
+				`,()=>i`
+					<cosmoz-clear-button
+						@click=${()=>this.resetFilter()}
+						?visible=${this.hasFilter()}
+					></cosmoz-clear-button>
+					${F({title:this.title,tooltip:this._tooltip,filterText:this._filterText,externalValues:this.externalValues,onOpenedChanged:e,content:i`
 							<h3 style="margin: 0;">${this.title}</h3>
 							<cosmoz-input
 								type="date"
@@ -436,7 +439,8 @@ import{n as e}from"./chunk-BneVvdWh.js";import{J as t,Q as n,Y as r,Z as i}from"
 								.value=${this._filterInput?.max}
 								@value-changed=${e=>this.set(`_filterInput.max`,e.detail.value)}
 							></cosmoz-input>
-						`}))}
+						`})}
+				`)}
 		`}_fromInputString(e,t){let n=this.toDate(e);if(n!=null)return t===`min`&&n.setHours(0,0,0,0),t===`max`&&n.setHours(23,59,59),n}_filterInputChanged(e,t){let n=e.path.split(`.`)[1]&&e.value;if(n&&n.match(/^0+/u)){this._limitInputDebouncer.cancel();return}super._filterInputChanged(e,t)}},customElements.define(`cosmoz-omnitable-date-range-input`,rr)})),ar,or,sr,U,W,cr,lr,ur,dr,fr,pr,mr,hr,gr,_r,vr=e((()=>{pe(),O(),Xt(),ar=e=>{let t=-new Date(e).getTimezoneOffset()/60;return(t<0?`-`:`+`)+[`0`,Math.abs(t)].join(``).substr(-2)+`:00`},or=e=>e.length===19?e+ar(e):e,sr=e=>{if(e==null||e===``)return;let t=e;return!(t instanceof Date)&&(typeof e==`string`&&(t=or(t)),t=we(t),!t)||Number.isNaN(t.getTime())?null:t},U=({valuePath:e},t)=>{if(t==null)return;let n=t;e!=null&&(n=D(t,e));let r=sr(n);if(r!=null)return I(r.getTime())},W=(e,t,n)=>{let r=sr(e);if(r==null)return null;if(n==null||t==null)return r;let i=W(t);if(i==null)return r;let a=U({},r),o=U({},i);return a==null||o==null||n(a,o)===a?r:i},cr=(e,t)=>{if(t==null)return;let n=W(e);if(n!=null)return t.format(n)},lr={},ur=e=>{let t=e||``;return lr[t]||(lr[t]=new Intl.DateTimeFormat(e||void 0)),lr[t]},dr=({valuePath:e,locale:t},n)=>{let r=D(n,e||``);return r===void 0?``:(r=W(r),r===null?`Invalid Date`:cr(r,ur(t)))},fr=e=>{let t=W(e);if(t==null)return null;let n=a(t);return n==null?null:n.slice(0,10)},pr=({valuePath:e},t)=>fr(D(t,e||``)),mr=(e,t)=>{let n=W(e);if(n!=null)return t===`min`&&n.setHours(0,0,0,0),t===`max`&&n.setHours(23,59,59),n},hr=e=>fr(e)??``,gr=({valuePath:e},t)=>{if(!e)return``;let n=W(D(t,e));if(!n)return``;let r=W(a(n));return r?(r.setHours(0,0,0,0),r):``},_r=(e,t)=>n=>{let r=U(e,n);if(r==null)return!1;let i=U({...e,valuePath:`min`},t),a=U({...e,valuePath:`max`},t);return!(r<(i??-1/0)||r>(a??1/0))}})),yr,br=e((()=>{c(),A(),n(),P(),ir(),H(),vr(),yt(),yr=class extends N(E){static get properties(){return{min:{type:Number,value:null,notify:!0},max:{type:Number,value:null,notify:!0},limits:{type:Function},locale:{type:String,value:null,notify:!0},headerCellClass:{type:String,value:`date-header-cell`},width:{type:String,value:`100px`},minWidth:{type:String,value:`82px`},flex:{type:String,value:`0`}}}getConfig(e){return{limits:e.limits}}getFilterFn(e,t){let n=U({...e,valuePath:`min`},t),r=U({...e,valuePath:`max`},t);if(!(n==null&&r==null))return _r(e,t)}getString(e,t){return dr(e,t)}toXlsxValue(e,t){return gr(e,t)}getComparableValue(e,t){return U(e,t)}serializeFilter(e,t){if(t==null)return;let n=W(t.min),r=W(t.max);if(!(n==null&&r==null))return hr(n)+`~`+hr(r)}deserializeFilter(e,t){if(t==null||t===``)return null;let n=t.match(/^([^~]+)?~([^~]+)?/iu);return Array.isArray(n)?{min:W(n[1]),max:W(n[2])}:null}renderCell(e,{item:t}){return i`<div class="omnitable-cell-date">
 			${dr(e,t)}
 		</div>`}renderEditCell(e,{item:t},n){return i`<cosmoz-input
@@ -477,17 +481,18 @@ import{n as e}from"./chunk-BneVvdWh.js";import{J as t,Q as n,Y as r,Z as i}from"
 				}
 			</style>
 
-			${T(!this.disabled,()=>i`<cosmoz-clear-button
-						@click=${()=>this.resetFilter()}
-						?visible=${this.hasFilter()}
-					></cosmoz-clear-button>`)}
 			${T(this.disabled,()=>i`
 					<cosmoz-omnitable-dropdown-input
 						disabled
 						.label=${this.title}
 						.value=${this._filterText??``}
 					></cosmoz-omnitable-dropdown-input>
-				`,()=>F({title:this.title,tooltip:this._tooltip,filterText:this._filterText,externalValues:this.externalValues,onOpenedChanged:e,content:i`
+				`,()=>i`
+					<cosmoz-clear-button
+						@click=${()=>this.resetFilter()}
+						?visible=${this.hasFilter()}
+					></cosmoz-clear-button>
+					${F({title:this.title,tooltip:this._tooltip,filterText:this._filterText,externalValues:this.externalValues,onOpenedChanged:e,content:i`
 							<h3 style="margin: 0;">${this.title}</h3>
 							<cosmoz-datetime-input
 								date-label=${j(`From date`)}
@@ -507,7 +512,8 @@ import{n as e}from"./chunk-BneVvdWh.js";import{J as t,Q as n,Y as r,Z as i}from"
 								.value=${this._filterInput?.max}
 								@value-changed=${e=>this.set(`_filterInput.max`,e.detail.value)}
 							></cosmoz-datetime-input>
-						`}))}
+						`})}
+				`)}
 		`}_toInputString(e){let t=this.toValue(e);if(t!=null)return this._toLocalISOString(t).slice(0,19)}_computeFormatter(e){return new Intl.DateTimeFormat(e||void 0,{year:`numeric`,month:`numeric`,day:`numeric`,hour:`numeric`,minute:`numeric`})}},customElements.define(`cosmoz-omnitable-datetime-range-input`,xr)})),Cr,wr,Tr,Er,Dr,Or,kr=e((()=>{O(),vr(),Cr={},wr=e=>{let t=e||``;return Cr[t]||(Cr[t]=new Intl.DateTimeFormat(e||void 0,{year:`numeric`,month:`numeric`,day:`numeric`,hour:`numeric`,minute:`numeric`})),Cr[t]},Tr=({valuePath:e,locale:t},n)=>{let r=W(D(n,e||``));return r===void 0?``:r===null?`Invalid Date`:cr(r,wr(t))},Er=({valuePath:e},t)=>e?D(t,e):``,Dr=e=>{let t=W(e);return t==null?``:t.toISOString().slice(0,19).replace(/:/gu,`.`)},Or=e=>{if(!(e==null||e===``)&&typeof e==`string`)return W(e.replace(/\./gu,`:`)+`Z`)}})),Ar,jr=e((()=>{Fe(),yt(),A(),n(),P(),Sr(),H(),vr(),kr(),Ar=class extends N(E){static get is(){return`cosmoz-omnitable-column-datetime`}static get properties(){return{min:{type:Number,value:null,notify:!0},max:{type:Number,value:null,notify:!0},limits:{type:Function},locale:{type:String,value:null,notify:!0},headerCellClass:{type:String,value:`datetime-header-cell`},width:{type:String,value:`210px`},minWidth:{type:String,value:`128px`},flex:{type:String,value:`0`},filterStep:{type:Number,value:1}}}getConfig(e){return{limits:e.limits}}getFilterFn(e,t){let n=U({...e,valuePath:`min`},t),r=U({...e,valuePath:`max`},t);if(!(n==null&&r==null))return _r(e,t)}getString(e,t){return Tr(e,t)}toXlsxValue(e,t){return Er(e,t)}getComparableValue(e,t){return U(e,t)}serializeFilter(e,t){if(t==null)return;let n=W(t.min),r=W(t.max);if(!(n==null&&r==null))return Dr(n)+`~`+Dr(r)}deserializeFilter(e,t){if(t==null||t===``)return null;let n=t.match(/^([^~]+)?~([^~]+)?/iu);return Array.isArray(n)?{min:Or(n[1]),max:Or(n[2])}:null}renderCell(e,{item:t}){return Tr(e,t)}renderEditCell(e,{item:t},n){return i`<cosmoz-input
 			no-label-float
 			type="text"
@@ -656,17 +662,18 @@ import{n as e}from"./chunk-BneVvdWh.js";import{J as t,Q as n,Y as r,Z as i}from"
 				}
 			</style>
 
-			${T(!this.disabled,()=>i`<cosmoz-clear-button
-						@click=${()=>this.resetFilter()}
-						?visible=${this.hasFilter()}
-					></cosmoz-clear-button>`)}
 			${T(this.disabled,()=>i`
 					<cosmoz-omnitable-dropdown-input
 						disabled
 						.label=${this.title}
 						.value=${this._filterText??``}
 					></cosmoz-omnitable-dropdown-input>
-				`,()=>F({title:this.title,tooltip:this._tooltip,filterText:this._filterText,horizontalAlign:`right`,externalValues:this.externalValues,onOpenedChanged:e,content:i`
+				`,()=>i`
+					<cosmoz-clear-button
+						@click=${()=>this.resetFilter()}
+						?visible=${this.hasFilter()}
+					></cosmoz-clear-button>
+					${F({title:this.title,tooltip:this._tooltip,filterText:this._filterText,horizontalAlign:`right`,externalValues:this.externalValues,onOpenedChanged:e,content:i`
 							<h3>${this.title}</h3>
 							<cosmoz-input
 								class=${this._fromClasses}
@@ -690,7 +697,8 @@ import{n as e}from"./chunk-BneVvdWh.js";import{J as t,Q as n,Y as r,Z as i}from"
 								min=${this._toInputString(this._limit.toMin)}
 								max=${this._toInputString(this._limit.toMax)}
 							></cosmoz-input>
-						`}))}
+						`})}
+				`)}
 		`}_computeFormatter(e,t,n){let r={localeMatcher:`best fit`};return t!==null&&(r.minimumFractionDigits=t),n!==null&&(r.maximumFractionDigits=n),new Intl.NumberFormat(e||void 0,r)}getComparableValue(e,t){if(e==null)return;let n=e;if(t!=null&&(n=this.get(t,e)),n=this.toValue(n),n==null)return;let r=this.maximumFractionDigits;return r===null?n:this.toValue(n.toFixed(r))}renderValue(e,t=this.formatter){let n=this.toNumber(e);if(n!=null)return t.format(n)}},customElements.define(`cosmoz-omnitable-number-range-input`,zr)})),Vr,Hr=e((()=>{c(),yt(),A(),n(),P(),O(),Br(),H(),Xt(),Vr=class extends N(E){static get properties(){return{min:{type:Number,value:null,notify:!0},max:{type:Number,value:null,notify:!0},limits:{type:Function},locale:{type:String,value:null,notify:!0},autoupdate:{type:Boolean,value:!1,notify:!0},cellClass:{type:String,value:`number-cell align-right`},width:{type:String,value:`30px`},minWidth:{type:String,value:`30px`},headerCellClass:{type:String,value:`number-header-cell`},maximumFractionDigits:{type:Number,value:null},minimumFractionDigits:{type:Number,value:null}}}getConfig(e){return{limits:e.limits}}getFilterFn(e,t){let n=L({...e,valuePath:`min`},t),r=L({...e,valuePath:`max`},t);if(!(n==null&&r==null))return Yt(e,t)}getString(e,t){return Jt(e,t)}toXlsxValue({valuePath:e},t){return D(t,e)}getComparableValue(e,t){return L(e,t)}serializeFilter(e,t){if(t==null)return;let n=I(t.min),r=I(t.max);if(!(n==null&&r==null))return Kt(n)+`~`+Kt(r)}deserializeFilter(e,t){if(t==null||t===``)return null;let n=t.match(/^([^~]+)?~([^~]+)?/iu);return Array.isArray(n)?{min:I(n[1]),max:I(n[2])}:null}renderCell(e,{item:t}){return i`<div class="omnitable-cell-number">
 			${Jt(e,t)}
 		</div>`}renderEditCell(e,{item:t},n){return i`<cosmoz-input
@@ -713,17 +721,18 @@ import{n as e}from"./chunk-BneVvdWh.js";import{J as t,Q as n,Y as r,Z as i}from"
 			@filter-changed=${({detail:{value:e}})=>d(t=>({...t,filter:e}))}
 			@header-focused-changed=${({detail:{value:e}})=>d(t=>({...t,headerFocused:e}))}
 		></cosmoz-omnitable-number-range-input>`}computeSource(e,t){return hn(e,t)}},customElements.define(`cosmoz-omnitable-column-number`,Vr)})),Ur,Wr=e((()=>{c(),A(),S(),n(),v(),nr(),It(),Ft(),Vt(),Ur=class extends tr(Bt(E)){render(){let e=e=>{this.headerFocused=e.type===`focus`};return i`
-			${T(!this.disabled,()=>i`<cosmoz-clear-button
-						@click=${()=>this.resetFilter()}
-						?visible=${this.hasFilter()}
-					></cosmoz-clear-button>`)}
 			${T(this.disabled,()=>i`
 					<cosmoz-omnitable-dropdown-input
 						disabled
 						.label=${this.title}
 						.value=${this._filterText??``}
 					></cosmoz-omnitable-dropdown-input>
-				`,()=>F({title:this.title,tooltip:this._tooltip,filterText:this._filterText,externalValues:this.externalValues,onOpenedChanged:e,content:i`
+				`,()=>i`
+					<cosmoz-clear-button
+						@click=${()=>this.resetFilter()}
+						?visible=${this.hasFilter()}
+					></cosmoz-clear-button>
+					${F({title:this.title,tooltip:this._tooltip,filterText:this._filterText,externalValues:this.externalValues,onOpenedChanged:e,content:i`
 							<h3 style="margin: 0;">${this.title}</h3>
 							<cosmoz-input
 								type="time"
@@ -739,7 +748,8 @@ import{n as e}from"./chunk-BneVvdWh.js";import{J as t,Q as n,Y as r,Z as i}from"
 								.value=${this._filterInput.max}
 								@value-changed=${e=>this.set(`_filterInput.max`,e.detail.value)}
 							></cosmoz-input>
-						`}))}
+						`})}
+				`)}
 		`}get _fixedDate(){return`1970-01-01`}toDate(e,t,n){let r=typeof e==`string`&&e.length>3&&e.length<=9?this.getAbsoluteISOString(this._fixedDate+`T`+e):e;return super.toDate(r,t,n)}_toInputString(e){let t=this.toValue(e);return t==null?null:this._toLocalISOString(t).slice(11,19)}getComparableValue(e,t){if(e==null)return;let n=this._toInputString(t==null?e:this.get(t,e));if(n!=null&&(n=this.toValue(this.getAbsoluteISOString(this._fixedDate+`T`+n)),n!=null))return this.toNumber(n.getTime())}_timeValueChanged(e){let t=e.target.value,n=e.model.item,r=this.toDate(n.date),i=this.toDate(r==null?t:r.toISOString().slice(0,10)+`T`+t);i??(this.set(this.valuePath,i,n),this._fireItemChangeEvent(n,this.valuePath,r,(e=>e).bind(this)))}_computeFormatter(e){return new Intl.DateTimeFormat(e||void 0,{hour:`numeric`,minute:`numeric`,second:`numeric`})}},customElements.define(`cosmoz-omnitable-time-range-input`,Ur)})),Gr,G,Kr,qr,Jr,Yr,Xr,K,Zr,Qr,$r,ei=e((()=>{pe(),O(),vr(),Xt(),Gr=`1970-01-01`,G=(e,t,n)=>W(typeof e==`string`&&e.length>3&&e.length<=9?or(Gr+`T`+e):e,t,n),Kr={},qr=e=>{let t=e||``;return Kr[t]||(Kr[t]=new Intl.DateTimeFormat(e||void 0,{hour:`numeric`,minute:`numeric`,second:`numeric`})),Kr[t]},Jr=({valuePath:e,locale:t},n)=>{let r=G(D(n,e||``));return r===void 0?``:r===null?`Invalid Date`:cr(r,qr(t))},Yr=(e,t)=>e.valuePath?Jr(e,t):``,Xr=e=>{let t=G(e);if(t==null)return null;let n=a(t);return n&&n.slice(11,19)},K=({valuePath:e},t)=>{if(t==null)return;let n=Xr(e==null?t:D(t,e));if(n==null)return;let r=G(or(Gr+`T`+n));return r==null?r:I(r.getTime())},Zr=(e,t)=>n=>{let r=K(e,n);if(r==null)return!1;let i=K({...e,valuePath:`min`},t),a=K({...e,valuePath:`max`},t);return i==null||a==null?!1:!(r<i||r>a)},Qr=e=>{let t=G(e);return t==null?``:t.toISOString().slice(11,19).replace(/:/gu,`.`)},$r=e=>{if(!(e==null||e===``))return G(typeof e==`string`?e.replace(/\./gu,`:`)+`Z`:e)}})),ti,ni=e((()=>{c(),yt(),A(),n(),P(),Wr(),H(),ei(),ti=class extends N(E){static get properties(){return{min:{type:Number,value:null,notify:!0},max:{type:Number,value:null,notify:!0},locale:{type:String,value:null,notify:!0},headerCellClass:{type:String,value:`time-header-cell`},minWidth:{type:String,value:`63px`},width:{type:String,value:`210px`},flex:{type:String,value:`0`},filterStep:{type:String,value:`1`}}}getFilterFn(e,t){let n=K({...e,valuePath:`min`},t),r=K({...e,valuePath:`max`},t);if(!(n==null&&r==null))return Zr(e,t)}getString(e,t){return Jr(e,t)}toXlsxValue(e,t){return Yr(e,t)}getComparableValue(e,t){return K(e,t)}serializeFilter(e,t){if(t==null)return;let n=G(t.min),r=G(t.max);if(!(n==null&&r==null))return Qr(n)+`~`+Qr(r)}deserializeFilter(e,t){if(t==null||t===``)return null;let n=t.match(/^([^~]+)?~([^~]+)?/iu);return Array.isArray(n)?{min:$r(n[1]),max:$r(n[2])}:null}renderCell(e,{item:t}){return Jr(e,t)}renderEditCell(e,{item:t},n){return i`<cosmoz-input
 			no-label-float
 			type="text"
