@@ -111,6 +111,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 	renderHeader(column, { filter, query }, setState, source) {
 		return html`<cosmoz-autocomplete-excluding
 			class="external-values-${column.externalValues}"
+			?disabled=${column.disabledFiltering}
 			?keep-opened=${column.keepOpened}
 			?keep-query=${column.keepQuery}
 			?show-single=${column.showSingle}

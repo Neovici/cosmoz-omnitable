@@ -1,6 +1,6 @@
+import '@neovici/cosmoz-dropdown';
 import { html } from 'lit-html';
 import { classMap } from 'lit-html/directives/class-map.js';
-import '@neovici/cosmoz-dropdown';
 import './cosmoz-omnitable-dropdown-input';
 
 export const renderDropdown = ({
@@ -81,7 +81,7 @@ export const renderDropdown = ({
 
 		<cosmoz-dropdown
 			@focus=${onOpenedChanged}
-			class=${`${classMap(classes)} dropdown`}
+			class=${classMap({ ...classes, dropdown: true })}
 			title=${tooltip || ''}
 		>
 			<cosmoz-omnitable-dropdown-input

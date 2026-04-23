@@ -107,6 +107,7 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 
 	renderHeader(column, { filter, query }, setState, source) {
 		return html`<cosmoz-autocomplete-ui
+			?disabled=${column.disabledFiltering}
 			.label=${column.title}
 			.title=${computeItemTooltip(
 				column.title,

@@ -21,7 +21,7 @@ const meta: Meta = {
 		hashParam: '',
 		settingsId: '',
 		selectedItems: [],
-		disabled: false,
+		disabledFiltering: false,
 	},
 	argTypes: {
 		loading: {
@@ -73,9 +73,9 @@ const meta: Meta = {
 			control: 'text',
 			description: 'ID for storing table settings',
 		},
-		disabled: {
+		disabledFiltering: {
 			control: 'boolean',
-			description: 'Hide one column',
+			description: 'Disable filter inputs in all column headers',
 			table: {
 				defaultValue: { summary: 'false' },
 			},
@@ -100,6 +100,7 @@ const meta: Meta = {
 				.descending=${args.descending}
 				.group-on-descending=${args.groupOnDescending}
 				settings-id=${args.settingsId}
+				?disabled-filtering=${args.disabledFiltering}
 			>
 				<cosmoz-omnitable-column
 					priority="-1"

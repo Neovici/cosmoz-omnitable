@@ -6,6 +6,7 @@ import { html } from 'lit-html';
 
 import { columnMixin } from './cosmoz-omnitable-column-mixin';
 
+import { get } from '@polymer/polymer/lib/utils/path';
 import './lib/cosmoz-omnitable-number-range-input';
 import { defaultComputeSource } from './lib/utils-data';
 import {
@@ -16,7 +17,6 @@ import {
 	toHashString,
 	toNumber,
 } from './lib/utils-number';
-import { get } from '@polymer/polymer/lib/utils/path';
 
 /**
  * @polymer
@@ -122,6 +122,7 @@ class OmnitableColumnNumber extends columnMixin(PolymerElement) {
 			maximumFractionDigits,
 			minimumFractionDigits,
 			autoupdate,
+			disabledFiltering,
 		},
 		{ filter },
 		setState,
@@ -129,6 +130,7 @@ class OmnitableColumnNumber extends columnMixin(PolymerElement) {
 	) {
 		return html`<cosmoz-omnitable-number-range-input
 			.title=${title}
+			?disabled=${disabledFiltering}
 			.filter=${filter}
 			.values=${source}
 			.min=${min}

@@ -1,13 +1,14 @@
 import '@neovici/cosmoz-input';
 import './ui-helpers/cosmoz-clear-button';
 
+import { PolymerElement } from '@polymer/polymer/polymer-element';
+import { html } from 'lit-html';
+import { when } from 'lit-html/directives/when.js';
 import {
 	applySingleFilter,
 	columnMixin,
 	getString,
 } from './cosmoz-omnitable-column-mixin';
-import { PolymerElement } from '@polymer/polymer/polymer-element';
-import { html } from 'lit-html';
 
 const onChange = (setState) => (event) =>
 		setState((state) => {
@@ -75,6 +76,7 @@ class OmnitableColumn extends columnMixin(PolymerElement) {
 	renderHeader(column, { filter, inputValue, headerFocused }, setState) {
 		return html`<cosmoz-input
 			label=${column.title}
+			?disabled=${column.disabledFiltering}
 			.value=${inputValue ?? filter}
 			@value-changed=${onChange(setState)}
 			focused=${headerFocused}
@@ -82,13 +84,17 @@ class OmnitableColumn extends columnMixin(PolymerElement) {
 			@keydown=${onKeyDown(setState)}
 			@blur=${onBlur(setState)}
 		>
-			<cosmoz-clear-button
-				suffix
-				slot="suffix"
-				?visible=${hasFilter(filter)}
-				light
-				@click=${resetFilter(setState)}
-			></cosmoz-clear-button>
+			${when(
+				!column.disabledFiltering,
+				() =>
+					html`<cosmoz-clear-button
+						suffix
+						slot="suffix"
+						?visible=${hasFilter(filter)}
+						light
+						@click=${resetFilter(setState)}
+					></cosmoz-clear-button>`,
+			)}
 		</cosmoz-input>`;
 	}
 

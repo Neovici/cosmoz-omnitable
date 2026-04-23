@@ -59,6 +59,7 @@ customElements.define(
 			'no-local',
 			'no-local-sort',
 			'no-local-filter',
+			'disabled-filtering',
 			'loading',
 			'mini-breakpoint',
 		],

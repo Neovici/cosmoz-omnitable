@@ -187,6 +187,26 @@ export default css`
 		--cosmoz-input-focused-color: var(--cosmoz-omnitable-header-line-focused-color);
 	}
 
+	.header-cell cosmoz-input[disabled],
+	.header-cell cosmoz-autocomplete-ui[disabled],
+	.header-cell cosmoz-autocomplete-excluding[disabled] {
+		pointer-events: none;
+		cursor: default;
+		--cosmoz-input-disabled-opacity: 1;
+	}
+
+	.header-cell cosmoz-input[disabled]::part(line),
+	.header-cell cosmoz-autocomplete-ui[disabled]::part(input-line),
+	.header-cell cosmoz-autocomplete-excluding[disabled]::part(input-line) {
+		border-bottom-style: solid;
+	}
+
+	cosmoz-omnitable-dropdown-input[disabled],
+	.header-cell cosmoz-omnitable-dropdown-input[disabled] {
+		pointer-events: none;
+		cursor: default;
+	}
+
 	cosmoz-omnitable-header-row {
 		white-space: nowrap;
 	}

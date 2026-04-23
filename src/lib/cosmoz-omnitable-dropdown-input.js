@@ -1,8 +1,14 @@
+import { styles as inputStyles, render } from '@neovici/cosmoz-input';
 import { component, css } from '@pionjs/pion';
 import { html } from 'lit-html';
-import { render, styles as inputStyles } from '@neovici/cosmoz-input';
 
-const observedAttributes = ['label', 'value', 'slot', 'always-float-label'];
+const observedAttributes = [
+	'label',
+	'value',
+	'slot',
+	'always-float-label',
+	'disabled',
+];
 
 const style = css`
 	${inputStyles}
@@ -46,6 +52,16 @@ const style = css`
 
 	:host(:not([always-float-label])) label {
 		transform: none !important;
+	}
+
+	:host([disabled]) {
+		pointer-events: none;
+		cursor: default;
+		--cosmoz-input-disabled-opacity: 1;
+	}
+
+	:host([disabled]) .line {
+		border-bottom-style: solid;
 	}
 `;
 
