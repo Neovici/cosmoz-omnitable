@@ -1,3 +1,10 @@
+# [18.3.0](https://github.com/Neovici/cosmoz-omnitable/compare/v18.2.0...v18.3.0) (2026-04-23)
+
+
+### Features
+
+* disabled-filtering attribute for columns and omnitable ([#954](https://github.com/Neovici/cosmoz-omnitable/issues/954)) ([3272e0b](https://github.com/Neovici/cosmoz-omnitable/commit/3272e0be3e97f31b091ae42b62a07709d4e873ac))
+
 # [18.2.0](https://github.com/Neovici/cosmoz-omnitable/compare/v18.1.0...v18.2.0) (2026-04-01)
 
 
