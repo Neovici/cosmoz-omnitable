@@ -70,7 +70,7 @@ class AmountRangeInput extends rangeInputMixin(
 						externalValues: this.externalValues,
 						onOpenedChanged,
 						content: html`
-							<h3 style="margin: 0;">${this.title}</h3>
+							<h3>${this.title}</h3>
 							<cosmoz-input
 								class=${this._fromClasses}
 								type="number"

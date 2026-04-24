@@ -52,11 +52,8 @@ export const checkbox = css`
 	}
 
 	.checkbox:hover {
-		box-shadow:
-			0 0 0 2px
-				var(--cosmoz-omnitable-checkbox-shadow-color-hover, rgba(0, 0, 0, 1))
-				inset,
-			0 0 2px 6px #2021240f;
+		box-shadow: 0 0 0 2px
+			rgb(from var(--cz-color-text-primary) r g b / calc(alpha * 0.75)) inset;
 	}
 
 	.checkbox:checked:hover {
@@ -86,7 +83,7 @@ export default css`
 		color: var(--cz-color-text-secondary);
 	}
 	:host a {
-		color: var(--primary-link-color, inherit);
+		color: var(--cz-color-brand-300);
 		text-decoration: var(--cosmoz-omnitable-link-decoration, underline);
 	}
 	:host a:hover {
@@ -112,7 +109,7 @@ export default css`
 		position: relative;
 		display: flex;
 		align-items: flex-end;
-		background-color: var(--cz-color-bg-quaternary);
+		background-color: var(--cz-color-bg-secondary);
 	}
 
 	[hidden] {
@@ -137,7 +134,6 @@ export default css`
 		padding: 0 3px;
 		white-space: nowrap;
 		text-overflow: ellipsis;
-		vertical-align: bottom;
 	}
 	cosmoz-omnitable-header-row > div[hidden] {
 		display: none !important;
@@ -146,9 +142,9 @@ export default css`
 	cosmoz-omnitable-resize-nub {
 		display: inline-block;
 		position: absolute;
-		bottom: 2px;
+		bottom: 0;
 		width: 7px;
-		height: 30px;
+		height: 100%;
 		margin-left: -3px;
 		background: transparent;
 		cursor: ew-resize;
@@ -191,7 +187,7 @@ export default css`
 		flex-direction: column;
 		position: relative;
 		flex: auto;
-		background-color: var(--cz-color-bg-secondary);
+		background-color: var(--cz-color-bg-primary);
 	}
 	.tableContent:has(.tableContent-empty.spinner) {
 		opacity: 0.3;
@@ -200,24 +196,21 @@ export default css`
 	/* Empty data set styling */
 	.tableContent-empty {
 		position: absolute;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
+		inset: 0;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		color: #ccc;
+		color: var(--cz-color-text-disabled);
 	}
 	.tableContent-empty.overlay {
-		color: #333;
+		color: var(--cz-color-text-disabled);
 		z-index: 1;
 	}
 	.tableContent-empty > div {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		padding-bottom: 24px;
+		padding-bottom: calc(var(--cz-spacing) * 6);
 	}
 	.tableContent-empty.overlay > div {
 		padding-bottom: 0;
@@ -228,17 +221,21 @@ export default css`
 	.tableContent-empty div.tableContent-empty-message {
 		@apply --layout-vertical;
 		@apply --layout-center-justified;
-		padding-bottom: 24px;
+
+		padding-bottom: calc(var(--cz-spacing) * 6);
 	}
 	.tableContent-empty.overlay div.tableContent-empty-message {
 		padding-bottom: 0;
 	}
 	.tableContent-empty p {
-		font-size: 15px;
+		font-size: var(--cz-text-base);
+		line-height: var(--cz-text-base-line-height);
 		color: #ddd;
 		margin: 0;
 	}
 	.tableContent-empty h3 {
+		font-size: var(--cz-text-xl);
+		line-height: var(--cz-text-xl-line-height);
 		white-space: nowrap;
 		margin: 0px 0px 8px 0px;
 	}
@@ -389,15 +386,11 @@ export default css`
 	.groupRow:hover .checkbox:not(:checked):not(:hover),
 	.itemRow:hover .checkbox:not(:checked):not(:hover) {
 		box-shadow: 0 0 0 2px
-			var(
-				--cosmoz-omnitable-checkbox-shadow-color-not-hover,
-				rgba(0, 0, 0, 0.54)
-			)
-			inset;
+			rgb(from var(--cz-color-text-primary) r g b / calc(alpha * 0.75)) inset;
 	}
 	.groupRow:hover .expand:not(:hover),
 	.itemRow:hover .expand:not(:hover) {
-		color: rgba(0, 0, 0, 0.54);
+		color: rgb(from var(--cz-color-text-primary) r g b / calc(alpha * 0.75));
 	}
 
 	${checkbox}
@@ -434,12 +427,11 @@ export default css`
 		color: rgb(from var(--cz-color-text-primary) r g b / calc(alpha * 0.75));
 	}
 	.groupRow .expand {
-		margin: 8px;
+		margin: calc(var(--cz-spacing) * 2);
 	}
 
 	.sg {
 		display: inline-flex;
-		width: 10px;
 		cursor: pointer;
 		align-items: center;
 		overflow: hidden;
@@ -457,7 +449,7 @@ export default css`
 		display: block;
 	}
 	.sg[data-on] {
-		color: var(--cosmoz-omnitable-checkbox-checked-color, var(--primary-color));
+		color: var(--cz-color-text-primary);
 	}
 	.sg:not([data-on='desc']) {
 		transform: scaleY(-1);
@@ -535,12 +527,12 @@ export default css`
 	}
 
 	cz-spinner {
-		width: 48px;
-		height: 48px;
+		width: calc(var(--cz-spacing) * 12);
+		height: calc(var(--cz-spacing) * 12);
 		position: absolute;
 		top: 40%;
 		right: 50%;
-		border-color: rgba(0, 0, 0, 0.2);
-		border-top-color: #000;
+		border-color: var(--cz-color-gray-700);
+		border-top-color: var(--cz-color-black);
 	}
 `;

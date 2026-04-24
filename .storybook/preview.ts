@@ -1,7 +1,11 @@
+import { autocompleteKeybindings } from '@neovici/cosmoz-autocomplete';
 import '@neovici/cosmoz-tokens';
+import { useKeybindings } from '@neovici/cosmoz-utils/keybindings';
+import { component, html } from '@pionjs/pion';
 import type { Preview } from '@storybook/web-components-vite';
-import i18next from 'i18next';  
-import { html } from 'lit-html';
+import i18next from 'i18next';
+import './preview.css';
+
 i18next.init({
 	lng: 'en',
 	resources: {
@@ -12,6 +16,25 @@ i18next.init({
 		},
 	},
 });
+
+/**
+ * Component that provides keybindings context for all stories.
+ * Uses children prop instead of slot since shadow DOM is disabled
+ * to allow context events to bubble up to the provider.
+ */
+customElements.define(
+	'storybook-keybindings',
+	component(
+		(props) => {
+			const register = useKeybindings(autocompleteKeybindings);
+			return html`<cosmoz-keybinding-provider .value=${register}>
+				${props.content}
+			</cosmoz-keybinding-provider>`;
+		},
+		{ useShadowDOM: false },
+	),
+);
+
 const preview: Preview = {
 	parameters: {
 		actions: { argTypesRegex: '^on[A-Z].*' },
@@ -32,56 +55,10 @@ const preview: Preview = {
 			} else {
 				document.documentElement.classList.remove('dark-mode');
 			}
-
 			return html`
-				<style>
-					@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-					@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
-
-					.story-root {
-						font-family: var(--cz-font-body);
-						color: var(--cz-color-text-primary);
-						background: var(--cz-color-bg-primary);
-						padding: calc(var(--cz-spacing) * 4);
-						min-height: 100%;
-						transition:
-							background-color 0.2s,
-							color 0.2s;
-					}
-
-					.story-row {
-						display: flex;
-						gap: calc(var(--cz-spacing) * 4);
-						align-items: center;
-						flex-wrap: wrap;
-					}
-
-					.story-stack {
-						display: flex;
-						flex-direction: column;
-						gap: calc(var(--cz-spacing) * 6);
-					}
-
-					.story-grid {
-						display: grid;
-						gap: calc(var(--cz-spacing) * 4);
-						grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-					}
-
-					.story-section-title {
-						font-size: var(--cz-text-lg);
-						font-weight: var(--cz-font-weight-semibold);
-						color: var(--cz-color-text-secondary);
-						margin-bottom: calc(var(--cz-spacing) * 4);
-					}
-
-					.story-label {
-						font-size: var(--cz-text-sm);
-						color: var(--cz-color-text-tertiary);
-						min-width: 100px;
-					}
-				</style>
-				<div class="story-root">${story()}</div>
+				<storybook-keybindings
+					.content=${html`<div class="story-root">${story()}</div>`}
+				></storybook-keybindings>
 			`;
 		},
 	],

@@ -51,7 +51,6 @@ class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
 			onItemChange(event.target.value.split(/,\s*/gu));
 
 		return html`<cosmoz-input
-			no-label-float
 			type="text"
 			.value=${getString(column, item)}
 			@change=${onChange}

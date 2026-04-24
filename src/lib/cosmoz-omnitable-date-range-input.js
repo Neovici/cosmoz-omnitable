@@ -16,9 +16,7 @@ class DateRangeInput extends dateInputMixin(
 			this.headerFocused = event.type === 'focus';
 		};
 
-			return html`
-
-
+		return html`
 			${when(
 				this.disabled,
 				() => html`
@@ -40,7 +38,7 @@ class DateRangeInput extends dateInputMixin(
 						externalValues: this.externalValues,
 						onOpenedChanged,
 						content: html`
-							<h3 style="margin: 0;">${this.title}</h3>
+							<h3>${this.title}</h3>
 							<cosmoz-input
 								type="date"
 								label=${t('From date')}
