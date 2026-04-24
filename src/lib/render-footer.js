@@ -3,7 +3,6 @@ import { t } from 'i18next';
 import { html } from 'lit-html';
 import { saveAsCsvAction } from './save-as-csv-action';
 import { saveAsXlsxAction } from './save-as-xlsx-action';
-
 export const renderFooter = ({
 	columns,
 	selectedItems,

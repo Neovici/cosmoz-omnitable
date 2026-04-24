@@ -1,15 +1,20 @@
+import '@neovici/cosmoz-button';
 import '@neovici/cosmoz-collapse';
 import { defaultMiddleware, size } from '@neovici/cosmoz-dropdown/use-floating';
+import {
+	chevronDownIcon,
+	dotsVerticalIcon,
+	equalIcon,
+	xCloseIcon,
+} from '@neovici/cosmoz-icons/untitled';
 import { sheet } from '@neovici/cosmoz-utils';
 import { isEmpty } from '@neovici/cosmoz-utils/template';
 import { component, html } from '@pionjs/pion';
 import { t } from 'i18next';
 import { when } from 'lit-html/directives/when.js';
-import { arrow, close, pull } from '../icons';
 import { group, sort } from './cosmoz-omnitable-sort-group';
 import style, { dropdown as dropdownStyle } from './style.css';
 import useSettingsUi from './use-settings-ui';
-
 const middleware = [
 	size({
 		apply({ availableHeight, elements }) {
@@ -47,7 +52,7 @@ const renderItem =
 			@dragleave=${onDragLeave}
 			@drop=${onDrop}
 		>
-			<button class="pull">${pull}</button>
+			<button class="pull">${equalIcon({ width: '16', height: '16' })}</button>
 			<label class="title" ?has-filter=${!isEmpty(filters[column.name]?.filter)}
 				>${column.title}</label
 			>
@@ -73,17 +78,18 @@ const SettingsUI = (host) => {
 		...thru
 	} = useSettingsUi(host);
 	return html` <div class="headline">
-			${t('Sort and filter')}
-			<button
-				class="close"
+			<span> ${t('Sort and filter')} </span>
+			<cosmoz-button
+				variant="secondary"
+				aria-label="${t('Close settings')}"
 				@click=${(e) => {
 					const tg = e.currentTarget;
 					tg?.focus();
 					tg?.blur();
 				}}
 			>
-				${close}
-			</button>
+				${xCloseIcon({ width: '16', height: '16' })}
+			</cosmoz-button>
 		</div>
 
 		<div class="contents">
@@ -93,7 +99,7 @@ const SettingsUI = (host) => {
 				@click=${() => setOpened((c) => ({ ...c, columns: !c.columns }))}
 				part="columns columns-heading"
 			>
-				${t('Columns')} ${arrow}
+				${t('Columns')} ${chevronDownIcon({ width: '20', height: '20' })}
 			</div>
 			<cosmoz-collapse
 				?opened="${opened.columns}"
@@ -107,7 +113,7 @@ const SettingsUI = (host) => {
 				?data-opened=${opened.sort}
 				@click=${() => setOpened((c) => ({ ...c, sort: !c.sort }))}
 			>
-				${t('Sort on')} ${arrow}
+				${t('Sort on')} ${chevronDownIcon({ width: '20', height: '20' })}
 			</div>
 			<cosmoz-collapse ?opened=${opened.sort}> ${sort()} </cosmoz-collapse>
 
@@ -117,7 +123,7 @@ const SettingsUI = (host) => {
 				@click=${() => setOpened((c) => ({ ...c, group: !c.group }))}
 				part="groups groups-heading"
 			>
-				${t('Group on')} ${arrow}
+				${t('Group on')} ${chevronDownIcon({ width: '20', height: '20' })}
 			</div>
 			<cosmoz-collapse ?opened=${opened.group} part="groups groups-heading"
 				>${group()}</cosmoz-collapse
@@ -128,16 +134,20 @@ const SettingsUI = (host) => {
 			settingsId,
 			() =>
 				html`<div class="buttons">
-					<button
-						class="button reset"
+					<cosmoz-button
+						variant="tertiary"
 						@click=${onReset}
 						?disabled=${!hasChanges}
 					>
 						${t('Reset')}
-					</button>
-					<button class="button" @click=${onSave} ?disabled=${!hasChanges}>
+					</cosmoz-button>
+					<cosmoz-button
+						variant="primary"
+						@click=${onSave}
+						?disabled=${!hasChanges}
+					>
 						${t('Save')}
-					</button>
+					</cosmoz-button>
 				</div>`,
 		)}`;
 };
@@ -157,11 +167,11 @@ const Settings = ({ config, newLayout }) => html`
 				newLayout,
 				() => html`<div class="headerDots">...</div>`,
 				() =>
-					html` <svg viewBox="0 0 24 24" width="24" fill="currentColor">
-						<circle cx="10" cy="18" r="2"></circle>
-						<circle cx="10" cy="12" r="2"></circle>
-						<circle cx="10" cy="6" r="2"></circle>
-					</svg>`,
+					html` ${dotsVerticalIcon({
+						width: '20',
+						height: '20',
+						styles: 'color: var(--cz-color-text-primary)',
+					})}`,
 			)}
 			${when(config?.badge, () => html`<div class="badge"></div>`)}
 		</div>

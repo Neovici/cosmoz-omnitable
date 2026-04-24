@@ -4,10 +4,10 @@ import { tagged as css } from '@neovici/cosmoz-utils';
 export const checkbox = css`
 	.checkbox {
 		box-sizing: border-box;
-		width: 18px;
-		height: 18px;
+		width: calc(var(--cz-spacing) * 4.5);
+		height: calc(var(--cz-spacing) * 4.5);
 		background: transparent;
-		border-radius: 4px;
+		border-radius: var(--cz-radius-xs);
 		appearance: none;
 		-webkit-appearance: none;
 		outline: none;
@@ -15,19 +15,16 @@ export const checkbox = css`
 		user-select: none;
 		cursor: pointer;
 		display: inline-block;
-		box-shadow: 0 0 0 2px
-			var(--cosmoz-omnitable-checkbox-shadow-color, rgba(0, 0, 0, 0.16)) inset;
+		box-shadow: var(--cz-shadow-xs-skeumorphic);
 		-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-		vertical-align: middle;
 		transition: background-color 140ms;
-		margin: 1px 12px;
+		margin: 1px calc(var(--cz-spacing) * 3);
 		flex: none;
 	}
 
 	.checkbox:checked {
-		background-color: var(
-			--cosmoz-omnitable-checkbox-checked-color,
-			var(--primary-color)
+		background: rgb(
+			from var(--cz-color-bg-brand-solid) r g b / calc(alpha * 0.55)
 		);
 		box-shadow: none;
 	}
@@ -36,13 +33,12 @@ export const checkbox = css`
 		content: '';
 		position: absolute;
 		box-sizing: content-box;
-		width: 5px;
+		width: 4px;
 		height: 10px;
-		border: 2.4px solid
-			var(--cosmoz-omnitable-checkbox-checked-tick-color, #fff);
+		border: 2px solid var(--cz-color-text-on-brand);
 		border-top: none;
 		border-left: none;
-		transform-origin: 5px 10px;
+		transform-origin: 4px 10px;
 		transform: translate(3px) rotate(45deg);
 	}
 
@@ -56,11 +52,8 @@ export const checkbox = css`
 	}
 
 	.checkbox:hover {
-		box-shadow:
-			0 0 0 2px
-				var(--cosmoz-omnitable-checkbox-shadow-color-hover, rgba(0, 0, 0, 1))
-				inset,
-			0 0 2px 6px #2021240f;
+		box-shadow: 0 0 0 2px
+			rgb(from var(--cz-color-text-primary) r g b / calc(alpha * 0.75)) inset;
 	}
 
 	.checkbox:checked:hover {
@@ -87,10 +80,10 @@ export default css`
 		flex-direction: column;
 		position: relative;
 		overflow: hidden;
-		color: var(--cosmoz-omnitable-text-color, rgb(89, 102, 121));
+		color: var(--cz-color-text-secondary);
 	}
 	:host a {
-		color: var(--primary-link-color, inherit);
+		color: var(--cz-color-brand-300);
 		text-decoration: var(--cosmoz-omnitable-link-decoration, underline);
 	}
 	:host a:hover {
@@ -103,7 +96,6 @@ export default css`
 
 	/* The wrapping div that contains the header, the table content and the footer */
 	.mainContainer {
-		background-color: var(--cosmoz-omnitable-bg-color, rgb(255, 255, 255));
 		display: flex;
 		flex-direction: column;
 		flex: auto;
@@ -117,11 +109,7 @@ export default css`
 		position: relative;
 		display: flex;
 		align-items: flex-end;
-		background-color: var(--cosmoz-omnitable-header-bg-color, inherit);
-		border-top-left-radius: var(--cosmoz-omnitable-header-border-radius-top-left, 8px);
-		border-top-right-radius: var(--cosmoz-omnitable-header-border-radius-top-right, 8px);
-		border-bottom-left-radius: var(--cosmoz-omnitable-header-border-radius-bottom-left, 2px);
-		border-bottom-right-radius: var(--cosmoz-omnitable-header-border-radius-bottom-right, 2px);
+		background-color: var(--cz-color-bg-secondary);
 	}
 
 	[hidden] {
@@ -132,79 +120,8 @@ export default css`
 		width: 100%;
 	}
 
-	cosmoz-omnitable-header-row .external-values-false {
-		--paper-input-container-color: var(
-			--cosmoz-omnitable-local-filter-header-color
-		);
-	}
-
-	cosmoz-omnitable-header-row .external-values-true {
-		--paper-input-container-color: var(
-			--cosmoz-omnitable-remote-filter-header-color
-		);
-	}
-
 	.header > cosmoz-omnitable-header-row {
 		flex: auto;
-	}
-
-	.header-cell {
-		--paper-input-container: {
-			padding-top: 0;
-			padding-bottom: 1px;
-			--paper-font-caption_-_line-height: 18px;
-		}
-		--paper-input-container-underline: {
-			border-color: var(--cosmoz-omnitable-header-line-color);
-			display: var(--cosmoz-omnitable-paper-input-underline-display, block);
-		}
-		--paper-input-container-underline-focus {
-			border-color: var(--cosmoz-omnitable-header-line-focused-color);
-			display: var(--cosmoz-omnitable-paper-input-underline-display, block);
-		}
-
-		text-transform: var(--cosmoz-omnitable-header-text-transform, none);
-		--paper-font-subhead_-_font-weight: var(
-			--cosmoz-omnitable-header-font-weight,
-			normal
-		);
-
-		--cosmoz-input-font-family: var(
-			--cosmoz-omnitable-header-font-family,
-			'Roboto',
-			'Noto',
-			sans-serif
-		);
-		--cosmoz-input-font-size: var(
-			--cosmoz-omnitable-header-font-size,
-			16px
-		);
-		--cosmoz-input-padding: var(--cosmoz-omnitable-header-input-padding, 0);
-		--cosmoz-input-label-text-transform: var(--cosmoz-omnitable-header-text-transform, none);
-		--cosmoz-input-label-font-weight: var(--cosmoz-omnitable-header-font-weight, normal);
-		--cosmoz-input-line-color: var(--cosmoz-omnitable-header-line-color);
-		--cosmoz-input-line-display: var(--cosmoz-omnitable-header-line-display, block);
-		--cosmoz-input-focused-color: var(--cosmoz-omnitable-header-line-focused-color);
-	}
-
-	.header-cell cosmoz-input[disabled],
-	.header-cell cosmoz-autocomplete-ui[disabled],
-	.header-cell cosmoz-autocomplete-excluding[disabled] {
-		pointer-events: none;
-		cursor: default;
-		--cosmoz-input-disabled-opacity: 1;
-	}
-
-	.header-cell cosmoz-input[disabled]::part(line),
-	.header-cell cosmoz-autocomplete-ui[disabled]::part(input-line),
-	.header-cell cosmoz-autocomplete-excluding[disabled]::part(input-line) {
-		border-bottom-style: solid;
-	}
-
-	cosmoz-omnitable-dropdown-input[disabled],
-	.header-cell cosmoz-omnitable-dropdown-input[disabled] {
-		pointer-events: none;
-		cursor: default;
 	}
 
 	cosmoz-omnitable-header-row {
@@ -217,7 +134,6 @@ export default css`
 		padding: 0 3px;
 		white-space: nowrap;
 		text-overflow: ellipsis;
-		vertical-align: bottom;
 	}
 	cosmoz-omnitable-header-row > div[hidden] {
 		display: none !important;
@@ -226,9 +142,9 @@ export default css`
 	cosmoz-omnitable-resize-nub {
 		display: inline-block;
 		position: absolute;
-		bottom: 2px;
+		bottom: 0;
 		width: 7px;
-		height: 30px;
+		height: 100%;
 		margin-left: -3px;
 		background: transparent;
 		cursor: ew-resize;
@@ -271,6 +187,7 @@ export default css`
 		flex-direction: column;
 		position: relative;
 		flex: auto;
+		background-color: var(--cz-color-bg-primary);
 	}
 	.tableContent:has(.tableContent-empty.spinner) {
 		opacity: 0.3;
@@ -279,24 +196,21 @@ export default css`
 	/* Empty data set styling */
 	.tableContent-empty {
 		position: absolute;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
+		inset: 0;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		color: #ccc;
+		color: var(--cz-color-text-disabled);
 	}
 	.tableContent-empty.overlay {
-		color: #333;
+		color: var(--cz-color-text-disabled);
 		z-index: 1;
 	}
 	.tableContent-empty > div {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		padding-bottom: 24px;
+		padding-bottom: calc(var(--cz-spacing) * 6);
 	}
 	.tableContent-empty.overlay > div {
 		padding-bottom: 0;
@@ -307,17 +221,21 @@ export default css`
 	.tableContent-empty div.tableContent-empty-message {
 		@apply --layout-vertical;
 		@apply --layout-center-justified;
-		padding-bottom: 24px;
+
+		padding-bottom: calc(var(--cz-spacing) * 6);
 	}
 	.tableContent-empty.overlay div.tableContent-empty-message {
 		padding-bottom: 0;
 	}
 	.tableContent-empty p {
-		font-size: 15px;
+		font-size: var(--cz-text-base);
+		line-height: var(--cz-text-base-line-height);
 		color: #ddd;
 		margin: 0;
 	}
 	.tableContent-empty h3 {
+		font-size: var(--cz-text-xl);
+		line-height: var(--cz-text-xl-line-height);
 		white-space: nowrap;
 		margin: 0px 0px 8px 0px;
 	}
@@ -335,41 +253,37 @@ export default css`
 	}
 
 	.itemRow {
-		border-bottom-color: var(--cosmoz-omnitable-border-color, #e1e2e5);
-		border-bottom-width: 1px;
-		border-bottom-style: var(
-			--cosmoz-omnitable-item-row-border-bottom-style,
-			solid
-		);
-		/* set a min-height for rows so that rows with empty values are visible */
+		border-bottom: 1px var(--cz-color-border-secondary) solid;
 	}
 	.itemRow-wrapper {
 		display: flex;
 		align-items: center;
-		min-height: var(--item-row-min-height, 39px);
-		padding-right: 8px;
+		min-height: calc(var(--cz-spacing) * 10);
+		padding-right: calc(var(--cz-spacing) * 2);
 	}
 
 	.itemRow[selected] {
-		background-color: var(
-			--cosmoz-omnitable-selection-color,
-			rgb(195, 212, 248)
-		);
+		background-color: var(--cz-color-bg-brand-secondary);
 		@apply --cosmoz-omnitable-selected-row;
 	}
 
-	.tableContent .itemRow-cell paper-dropdown-menu {
-		margin-top: -20px;
+	.itemRow-cell {
+		font-size: var(--cz-text-sm);
+		line-height: var(--cz-text-sm-line-height);
+	}
 
+	.tableContent .itemRow-cell paper-dropdown-menu {
+		margin-top: calc(var(--cz-spacing) * 2);
 	}
 
 	cosmoz-omnitable-item-expand[expanded] {
 		display: flex;
 		flex-direction: column;
+		font-size: var(--cz-text-sm);
+		line-height: var(--cz-text-sm-line-height);
 		padding: 5px 4%;
-		line-height: 1.3em;
-		border-bottom: solid 1px var(--cosmoz-omnitable-border-color, #e1e2e5);
-		background-color: #fafafa;
+		border-bottom: 1px var(--cz-color-border-secondary) solid;
+		background-color: var(--cz-color-bg-disabled);
 	}
 
 	cosmoz-omnitable-item-expand:not([expanded]) {
@@ -379,10 +293,12 @@ export default css`
 	.groupRow {
 		display: flex;
 		align-items: center;
-		background-color: #f5f6f9;
-		font-weight: 700;
-		color: #101010;
-		border-bottom: 1px solid var(--cosmoz-omnitable-border-color, #e1e2e5);
+		background-color: var(--cz-color-bg-tertiary);
+		font-size: var(--cz-text-sm);
+		line-height: var(--cz-text-sm-line-height);
+		font-weight: var(--cz-font-weight-bold);
+		color: var(--cz-color-text-primary);
+		border-bottom: 1px solid var(--cz-color-border-secondary);
 	}
 
 	.groupRow-label {
@@ -390,10 +306,11 @@ export default css`
 		flex: auto;
 		align-items: center;
 		flex-wrap: wrap;
-		padding-left: 8px;
+		padding-left: calc(var(--cz-spacing) * 2);
 		margin: 0;
-		font-size: 1.15em;
-		font-weight: 400;
+		font-size: var(--cz-text-sm);
+		line-height: var(--cz-text-sm-line-height);
+		font-weight: var(--cz-font-weight-regular);
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -404,14 +321,17 @@ export default css`
 	}
 
 	.groupRow-badge {
-		background: #8be5c6;
-		color: #fff;
-		line-height: 30px;
-		width: 30px;
-		text-align: center;
-		border-radius: 50%;
-		font-size: 13px;
-		font-weight: 500;
+		background: var(--cz-color-bg-success-solid);
+		color: var(--cz-color-bg-secondary);
+		height: calc(var(--cz-spacing) * 7);
+		width: calc(var(--cz-spacing) * 7);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: var(--cz-radius-full);
+		font-size: var(--cz-text-sm);
+		line-height: var(--cz-text-sm-line-height);
+		font-weight: var(--cz-font-weight-regular);
 	}
 
 	.rtl {
@@ -427,22 +347,26 @@ export default css`
 	}
 
 	cosmoz-bottom-bar {
-		background-color: var(--cosmoz-omnitable-bottom-bar-color, #5f5a92);
+		background: rgb(
+			from var(--cz-color-bg-brand-solid) r g b / calc(alpha * 0.45)
+		);
 		overflow: hidden;
+		color: var(--cz-color-text-on-brand);
 	}
 	cosmoz-bottom-bar::part(bar) {
-		padding: 0 24px;
+		padding: 0 calc(var(--cz-spacing) * 6);
 	}
 
 	cosmoz-bottom-bar::slotted(*) {
-		background-color: #4c4875;
-		color: #fff;
-		border-color: #fff;
+		background: rgb(
+			from var(--cz-color-bg-brand-solid) r g b / calc(alpha * 0.75)
+		);
+		color: var(--cz-color-text-on-brand);
 	}
 
 	cosmoz-bottom-bar::slotted([disabled]) {
-		color: #b7b6c8;
-		border-color: #b7b6c8;
+		color: var(--cz-color-text-disabled);
+		border-color: var(--cz-color-border-disabled);
 		cursor: not-allowed;
 	}
 
@@ -450,43 +374,43 @@ export default css`
 		overflow: initial;
 	}
 
-	.omnitable-cell-number, .omnitable-cell-date {
+	.omnitable-cell-number,
+	.omnitable-cell-date {
 		font-variant-numeric: tabular-nums;
 	}
 
 	.itemRow:hover {
-		box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0,
-			0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
+		box-shadow: var(--cz-shadow-xl);
 		background-color: var(--cosmoz-omnitable-row-hover-color);
 	}
 	.groupRow:hover .checkbox:not(:checked):not(:hover),
 	.itemRow:hover .checkbox:not(:checked):not(:hover) {
-		box-shadow: 0 0 0 2px var(--cosmoz-omnitable-checkbox-shadow-color-not-hover, rgba(0, 0, 0, 0.54))
-		inset;
+		box-shadow: 0 0 0 2px
+			rgb(from var(--cz-color-text-primary) r g b / calc(alpha * 0.75)) inset;
 	}
 	.groupRow:hover .expand:not(:hover),
 	.itemRow:hover .expand:not(:hover) {
-		color: rgba(0, 0, 0, 0.54);
+		color: rgb(from var(--cz-color-text-primary) r g b / calc(alpha * 0.75));
 	}
 
 	${checkbox}
 
 	.all {
-		margin-bottom: 6px;
+		align-self: center;
 	}
 
 	.expand {
-		width: 24px;
-		height: 24px;
+		width: calc(var(--cz-spacing) * 6);
+		height: calc(var(--cz-spacing) * 6);
 		padding: 0;
 		flex: none;
 		border: none;
 		border-radius: 50%;
 		cursor: pointer;
 		background: none;
-		transition: 0.15s background ease-in;
+		transition: 0.25s background ease-in;
 		outline: none;
-		color: rgba(0, 0, 0, 0.16);
+		color: var(--cz-color-text-primary);
 	}
 	.expand svg {
 		fill: currentColor;
@@ -495,21 +419,21 @@ export default css`
 		transform: scaleY(-1);
 	}
 	.expand:active {
-		background: rgba(33, 33, 33, 0.25);
+		background: rgb(
+			from var(--cz-color-text-primary) r g b / calc(alpha * 0.75)
+		);
 	}
 	.expand:hover {
-		color: #000;
+		color: rgb(from var(--cz-color-text-primary) r g b / calc(alpha * 0.75));
 	}
 	.groupRow .expand {
-		margin: 8px;
+		margin: calc(var(--cz-spacing) * 2);
 	}
 
 	.sg {
 		display: inline-flex;
-		width: 10px;
 		cursor: pointer;
 		align-items: center;
-		margin-top: 18px;
 		overflow: hidden;
 		flex: none;
 		background: none;
@@ -525,7 +449,7 @@ export default css`
 		display: block;
 	}
 	.sg[data-on] {
-		color: var(--cosmoz-omnitable-checkbox-checked-color, var(--primary-color));
+		color: var(--cz-color-text-primary);
 	}
 	.sg:not([data-on='desc']) {
 		transform: scaleY(-1);
@@ -586,29 +510,29 @@ export default css`
 	}
 
 	:host([mini]) .tableContent-scroller::-webkit-scrollbar-thumb {
-	background: transparent;
+		background: transparent;
 	}
 
 	:host([mini]) .tableContent-scroller:hover::-webkit-scrollbar-thumb {
-	background: var(--cosmoz-omnitable-mini-scrollbar-thumb-bg, #aaa);
+		background: var(--cosmoz-omnitable-mini-scrollbar-thumb-bg, #aaa);
 	}
 
 	:host([mini]) .tableContent-scroller::-webkit-scrollbar-button:decrement,
 	:host([mini]) .tableContent-scroller::-webkit-scrollbar-button:increment {
-	width: 0px;
+		width: 0px;
 	}
 
 	:host([mini]) cosmoz-omnitable-settings::part(columns) {
-		display:none;
+		display: none;
 	}
 
 	cz-spinner {
-		width: 48px;
-		height: 48px;
+		width: calc(var(--cz-spacing) * 12);
+		height: calc(var(--cz-spacing) * 12);
 		position: absolute;
 		top: 40%;
 		right: 50%;
-		border-color: rgba(0, 0, 0, 0.2);
-		border-top-color: #000;
+		border-color: var(--cz-color-gray-700);
+		border-top-color: var(--cz-color-black);
 	}
 `;
