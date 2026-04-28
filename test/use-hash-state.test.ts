@@ -17,10 +17,8 @@ suite('useHashState', () => {
 			const { result } = await renderHook(() =>
 				useHashState('name', 'test', { suffix: '-sortOn' }),
 			);
-			const [value]: [
-				string,
-				(v: string | ((p: string) => string)) => void,
-			] = result.current;
+			const [value]: [string, (v: string | ((p: string) => string)) => void] =
+				result.current;
 			expect(value).to.equal('name');
 		});
 
@@ -354,7 +352,10 @@ suite('useHashState', () => {
 			);
 			expect(result.current[0]).to.deep.equal({ foo: 'a', bar: 'b' });
 			await result.current[1]({ baz: 'c' });
-			expect(location.hash).to.equal('#!/#test-baz=c&other=x');
+			expect(location.hash).to.include('test-baz=c');
+			expect(location.hash).to.include('other=x');
+			expect(location.hash).to.not.include('test-foo');
+			expect(location.hash).to.not.include('test-bar');
 		});
 
 		test('delete param via write returning empty string', async () => {

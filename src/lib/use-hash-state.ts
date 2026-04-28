@@ -58,18 +58,27 @@ const makeLinker =
 			: searchParams.delete(hashParam),
 	),
 	multiLink = makeLinker((hashParam, value, codec, searchParams) => {
+		const originalEntries = Object.entries(value as Record<string, unknown>);
+		const entries = originalEntries
+			.map(codec)
+			.filter(([, val]) => val !== undefined);
+
+		// If write returns undefined for ALL entries, do nothing (e.g., columns not ready)
+		// If value was empty object {}, entries will be empty but we should still delete
+		if (entries.length === 0 && originalEntries.length > 0) {
+			return;
+		}
+
 		const prefix = hashParam;
 		Array.from(searchParams.keys())
 			.filter((key) => key.startsWith(prefix))
 			.forEach((key) => searchParams.delete(key));
 
-		Object.entries(value as Record<string, unknown>)
-			.map(codec)
-			.forEach(([key, val]) =>
-				!isEmpty(val)
-					? searchParams.set(hashParam + key, val as string)
-					: searchParams.delete(hashParam + key),
-			);
+		entries.forEach(([key, val]) =>
+			!isEmpty(val)
+				? searchParams.set(hashParam + key, val as string)
+				: searchParams.delete(hashParam + key),
+		);
 	});
 
 export function useHashState<T>(
@@ -145,14 +154,21 @@ export function useHashState<T>(
 	// Sync state with initial when:
 	// - initial changes (e.g., savedSettings loaded async)
 	// - AND hash was NOT explicitly provided in URL on mount
+	// - AND initial has meaningful content (not empty object)
 	useEffect(() => {
 		if (param == null) return;
 		if (hashWasExplicit) return;
 
+		const isEmptyObj =
+			initial != null &&
+			typeof initial === 'object' &&
+			Object.keys(initial).length === 0;
+		if (isEmptyObj) return;
+
 		if (initial != null) {
 			setState(initial);
 		}
-	}, [initial, param, hashWasExplicit, setState]);
+	}, [...Object.values(initial ?? {}), param, hashWasExplicit, setState]);
 
 	return [state, setState];
 }
