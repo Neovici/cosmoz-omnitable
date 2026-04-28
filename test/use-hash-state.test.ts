@@ -145,7 +145,7 @@ suite('useHashState', () => {
 			expect(result.current[0]).to.equal('initial');
 		});
 
-		test('regression: param exists but codec returns null - hashWasExplicit is true', async () => {
+		test('codec returning null does not trigger initial sync', async () => {
 			location.hash = '#!/#test-suffix=value';
 			const read = (): null => null;
 			const { result, rerender } = await renderHook(
@@ -284,7 +284,7 @@ suite('useHashState', () => {
 			expect(result.current[0]).to.deep.equal({ foo: 'synced' });
 		});
 
-		test('regression: empty multiParse result treated as non-explicit', async () => {
+		test('syncs with initial changes when empty hash in multi mode', async () => {
 			location.hash = '#!/';
 			const { result, rerender } = await renderHook(
 				(initial: Record<string, string>) =>
@@ -356,7 +356,7 @@ suite('useHashState', () => {
 			expect(location.hash).to.equal('#!/');
 		});
 
-		test('regression: multiLink deletes all params with prefix', async () => {
+		test('setState replaces all params for prefix in multi mode', async () => {
 			location.hash = '#!/#test-foo=a&test-bar=b&other=x';
 			const { result } = await renderHook(() =>
 				useHashState<Record<string, string>>({}, 'test', {
@@ -449,7 +449,7 @@ suite('useHashState', () => {
 			expect(result.current[0]).to.equal(null);
 		});
 
-		test('regression: undefined initial value preserved when no hash params', async () => {
+		test('undefined initial value preserved in multi mode', async () => {
 			location.hash = '#!/';
 			const { result } = await renderHook(() =>
 				useHashState<Record<string, string> | undefined>(undefined, 'test', {
