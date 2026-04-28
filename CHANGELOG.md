@@ -1,3 +1,10 @@
+# [18.4.0](https://github.com/Neovici/cosmoz-omnitable/compare/v18.3.0...v18.4.0) (2026-04-28)
+
+
+### Features
+
+* convert use-hash-state to TypeScript ([#972](https://github.com/Neovici/cosmoz-omnitable/issues/972)) ([7ec8c19](https://github.com/Neovici/cosmoz-omnitable/commit/7ec8c19bba39baff42b7003adeeb24b5763b8513))
+
 # [18.3.0](https://github.com/Neovici/cosmoz-omnitable/compare/v18.2.0...v18.3.0) (2026-04-23)
 
 
