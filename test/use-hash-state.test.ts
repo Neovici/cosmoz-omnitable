@@ -282,19 +282,7 @@ suite('useHashState', () => {
 			await rerender({ foo: 'synced' });
 			await nextFrame();
 			expect(result.current[0]).to.deep.equal({ foo: 'synced' });
-		});
-
-		test('syncs with initial changes when empty hash in multi mode', async () => {
-			location.hash = '#!/';
-			const { result, rerender } = await renderHook(
-				(initial: Record<string, string>) =>
-					useHashState(initial, 'test', { suffix: '-', multi: true }),
-				{ initialProps: {} },
-			);
-			expect(result.current[0]).to.deep.equal({});
-			await rerender({ bar: 'newValue' });
-			await nextFrame();
-			expect(location.hash).to.include('test-bar=newValue');
+			expect(location.hash).to.include('test-foo=synced');
 		});
 
 		test('with read codec - parses values', async () => {
