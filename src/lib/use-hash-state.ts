@@ -1,0 +1,157 @@
+import { navigate } from '@neovici/cosmoz-router';
+import { identity, invoke } from '@neovici/cosmoz-utils/function';
+import {
+	hashUrl,
+	multiParse,
+	singleParse,
+} from '@neovici/cosmoz-utils/location';
+import { useCallback, useEffect, useMemo, useState } from '@pionjs/pion';
+
+type SingleCodec<T> = (value: string) => T;
+type MultiCodec<T> = (entry: [string, string]) => [string, T];
+
+type SingleHashStateOpts<T> = {
+	suffix?: string;
+	read?: SingleCodec<T>;
+	write?: (value: T) => string;
+	multi?: false;
+};
+
+type MultiHashStateOpts<T extends Record<string, unknown>> = {
+	suffix?: string;
+	read?: MultiCodec<T[keyof T]>;
+	write?: (entry: [string, T[keyof T]]) => [string, string | undefined];
+	multi: true;
+};
+
+const makeLinker =
+		(
+			parameterize: (
+				hashParam: string,
+				value: unknown,
+				codec: (v: unknown) => string,
+				searchParams: URLSearchParams,
+			) => void,
+		) =>
+		(
+			hashParam: string,
+			value: unknown,
+			codec: (v: unknown) => string = identity as (v: unknown) => string,
+		) => {
+			const url = hashUrl(),
+				searchParams = new URLSearchParams(url.hash.replace('#', ''));
+
+			parameterize(hashParam, value, codec, searchParams);
+
+			return (
+				'#!' +
+				Object.assign(url, { hash: searchParams }).href.replace(
+					location.origin,
+					'',
+				)
+			);
+		},
+	isEmpty = (v: unknown): v is null | undefined | '' => v == null || v === '',
+	singleLink = makeLinker((hashParam, value, codec, searchParams) =>
+		!isEmpty(codec(value))
+			? searchParams.set(hashParam, codec(value))
+			: searchParams.delete(hashParam),
+	),
+	multiLink = makeLinker((hashParam, value, codec, searchParams) =>
+		Object.entries(value as Record<string, unknown>)
+			.map(codec)
+			.forEach(([key, val]) =>
+				!isEmpty(val)
+					? searchParams.set(hashParam + key, val as string)
+					: searchParams.delete(hashParam + key),
+			),
+	);
+
+export function useHashState<T>(
+	initial: T,
+	param: string | null | undefined,
+	opts?: SingleHashStateOpts<T>,
+): [T, (value: T | ((prev: T) => T)) => void];
+
+export function useHashState<T extends Record<string, unknown>>(
+	initial: T,
+	param: string | null | undefined,
+	opts: MultiHashStateOpts<T>,
+): [T, (value: T | ((prev: T) => T)) => void];
+
+export function useHashState<T>(
+	initial: T,
+	param: string | null | undefined,
+	{
+		suffix = '',
+		read,
+		write,
+		multi,
+	}: SingleHashStateOpts<T> | MultiHashStateOpts<Record<string, unknown>> = {},
+): [T, (value: T | ((prev: T) => T)) => void] {
+	const link = multi ? multiLink : singleLink,
+		hashWasExplicit = useMemo(() => {
+			if (param == null) return false;
+			if (multi) {
+				return (
+					multiParse(param + suffix, read as MultiCodec<unknown> | undefined) !=
+					null
+				);
+			}
+			return (
+				singleParse(param + suffix, read as SingleCodec<T> | undefined) != null
+			);
+		}, []),
+		[state, _setState] = useState(() => {
+			if (param == null) return initial;
+			if (multi) {
+				const result = multiParse(
+					param + suffix,
+					read as MultiCodec<unknown> | undefined,
+				);
+				return (result ?? initial) as T;
+			}
+			const result = singleParse(
+				param + suffix,
+				read as SingleCodec<T> | undefined,
+			);
+			return (result ?? initial) as T;
+		}),
+		setState = useCallback(
+			(state: T | ((prev: T) => T)) =>
+				_setState((oldState) => {
+					const newState = invoke(state, oldState);
+
+					if (param != null) {
+						navigate(
+							link(
+								param + suffix,
+								newState,
+								(write ?? identity) as (v: unknown) => string,
+							),
+							null,
+							{
+								notify: false,
+							},
+						);
+					}
+
+					return newState;
+				}),
+			[param, suffix, link, write],
+		);
+
+	// Sync state with initial when:
+	// - initial changes (e.g., savedSettings loaded async)
+	// - AND hash was NOT explicitly provided in URL on mount
+	useEffect(() => {
+		if (param == null) return;
+		if (hashWasExplicit) return;
+
+		if (initial != null) {
+			setState(initial);
+		}
+	}, [initial, param, hashWasExplicit, setState]);
+
+	return [state, setState];
+}
