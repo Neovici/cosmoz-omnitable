@@ -17,7 +17,7 @@ suite('useHashState', () => {
 			const { result } = await renderHook(() =>
 				useHashState('name', 'test', { suffix: '-sortOn' }),
 			);
-			const [value, setValue]: [
+			const [value]: [
 				string,
 				(v: string | ((p: string) => string)) => void,
 			] = result.current;
@@ -165,7 +165,7 @@ suite('useHashState', () => {
 				useHashState<string[]>([], 'test', { suffix: '-suffix' }),
 			);
 			expect(result.current[0]).to.deep.equal(['a', 'b']);
-			expect(Array.isArray(result.current[0])).to.be.true;
+			expect(Array.isArray(result.current[0])).to.equal(true);
 		});
 
 		test('empty string value', async () => {
