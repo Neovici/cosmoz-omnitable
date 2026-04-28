@@ -57,15 +57,20 @@ const makeLinker =
 			? searchParams.set(hashParam, codec(value))
 			: searchParams.delete(hashParam),
 	),
-	multiLink = makeLinker((hashParam, value, codec, searchParams) =>
+	multiLink = makeLinker((hashParam, value, codec, searchParams) => {
+		const prefix = hashParam;
+		Array.from(searchParams.keys())
+			.filter((key) => key.startsWith(prefix))
+			.forEach((key) => searchParams.delete(key));
+
 		Object.entries(value as Record<string, unknown>)
 			.map(codec)
 			.forEach(([key, val]) =>
 				!isEmpty(val)
 					? searchParams.set(hashParam + key, val as string)
 					: searchParams.delete(hashParam + key),
-			),
-	);
+			);
+	});
 
 export function useHashState<T>(
 	initial: T,
@@ -93,14 +98,10 @@ export function useHashState<T>(
 		hashWasExplicit = useMemo(() => {
 			if (param == null) return false;
 			if (multi) {
-				return (
-					multiParse(param + suffix, read as MultiCodec<unknown> | undefined) !=
-					null
-				);
+				const result = multiParse(param + suffix);
+				return Object.keys(result).length > 0;
 			}
-			return (
-				singleParse(param + suffix, read as SingleCodec<T> | undefined) != null
-			);
+			return singleParse(param + suffix) !== undefined;
 		}, []),
 		[state, _setState] = useState(() => {
 			if (param == null) return initial;
@@ -109,7 +110,7 @@ export function useHashState<T>(
 					param + suffix,
 					read as MultiCodec<unknown> | undefined,
 				);
-				return (result ?? initial) as T;
+				return Object.keys(result).length > 0 ? (result as T) : initial;
 			}
 			const result = singleParse(
 				param + suffix,

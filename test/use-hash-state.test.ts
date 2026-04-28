@@ -145,6 +145,20 @@ suite('useHashState', () => {
 			expect(result.current[0]).to.equal('initial');
 		});
 
+		test('regression: param exists but codec returns null - hashWasExplicit is true', async () => {
+			location.hash = '#!/#test-suffix=value';
+			const read = (): null => null;
+			const { result, rerender } = await renderHook(
+				(initial: string) =>
+					useHashState(initial, 'test', { suffix: '-suffix', read }),
+				{ initialProps: 'initial' },
+			);
+			expect(result.current[0]).to.equal('initial');
+			await rerender('newInitial');
+			await nextFrame();
+			expect(result.current[0]).to.equal('initial');
+		});
+
 		test('multiple values for same param returns array', async () => {
 			location.hash = '#!/#test-suffix=a&test-suffix=b';
 			const { result } = await renderHook(() =>
@@ -257,7 +271,7 @@ suite('useHashState', () => {
 			expect(result.current[0]).to.deep.equal({ foo: 'explicit' });
 		});
 
-		test('BUG: syncs with initial when hash was not explicit', async () => {
+		test('syncs with initial when hash was not explicit', async () => {
 			location.hash = '#!/';
 			const { result, rerender } = await renderHook(
 				(initial: Record<string, string>) =>
@@ -267,7 +281,20 @@ suite('useHashState', () => {
 			expect(result.current[0]).to.deep.equal({});
 			await rerender({ foo: 'synced' });
 			await nextFrame();
+			expect(result.current[0]).to.deep.equal({ foo: 'synced' });
+		});
+
+		test('regression: empty multiParse result treated as non-explicit', async () => {
+			location.hash = '#!/';
+			const { result, rerender } = await renderHook(
+				(initial: Record<string, string>) =>
+					useHashState(initial, 'test', { suffix: '-', multi: true }),
+				{ initialProps: {} },
+			);
 			expect(result.current[0]).to.deep.equal({});
+			await rerender({ bar: 'newValue' });
+			await nextFrame();
+			expect(location.hash).to.include('test-bar=newValue');
 		});
 
 		test('with read codec - parses values', async () => {
@@ -316,7 +343,7 @@ suite('useHashState', () => {
 			expect(location.hash).to.equal('#!/');
 		});
 
-		test('delete param via setState removing key - BUG: does not delete', async () => {
+		test('delete param via setState removing key', async () => {
 			location.hash = '#!/#test-foo=a';
 			const { result } = await renderHook(() =>
 				useHashState<Record<string, string>>({}, 'test', {
@@ -326,7 +353,20 @@ suite('useHashState', () => {
 			);
 			expect(result.current[0]).to.deep.equal({ foo: 'a' });
 			await result.current[1]({});
-			expect(location.hash).to.equal('#!/#test-foo=a');
+			expect(location.hash).to.equal('#!/');
+		});
+
+		test('regression: multiLink deletes all params with prefix', async () => {
+			location.hash = '#!/#test-foo=a&test-bar=b&other=x';
+			const { result } = await renderHook(() =>
+				useHashState<Record<string, string>>({}, 'test', {
+					suffix: '-',
+					multi: true,
+				}),
+			);
+			expect(result.current[0]).to.deep.equal({ foo: 'a', bar: 'b' });
+			await result.current[1]({ baz: 'c' });
+			expect(location.hash).to.equal('#!/#test-baz=c&other=x');
 		});
 
 		test('delete param via write returning empty string', async () => {
@@ -398,7 +438,7 @@ suite('useHashState', () => {
 			expect(location.hash).to.equal('#!/existing=hash');
 		});
 
-		test('null initial value - gets empty object from multiParse', async () => {
+		test('null initial value - preserved when no hash params', async () => {
 			location.hash = '#!/';
 			const { result } = await renderHook(() =>
 				useHashState<Record<string, string> | null>(null, 'test', {
@@ -406,10 +446,21 @@ suite('useHashState', () => {
 					multi: true,
 				}),
 			);
-			expect(result.current[0]).to.deep.equal({});
+			expect(result.current[0]).to.equal(null);
 		});
 
-		test('concurrent setState calls - BUG: accumulates hash params', async () => {
+		test('regression: undefined initial value preserved when no hash params', async () => {
+			location.hash = '#!/';
+			const { result } = await renderHook(() =>
+				useHashState<Record<string, string> | undefined>(undefined, 'test', {
+					suffix: '-',
+					multi: true,
+				}),
+			);
+			expect(result.current[0]).to.equal(undefined);
+		});
+
+		test('concurrent setState calls - last write wins', async () => {
 			location.hash = '#!/';
 			const { result } = await renderHook(() =>
 				useHashState<Record<string, string>>({}, 'test', {
@@ -421,12 +472,10 @@ suite('useHashState', () => {
 			result.current[1]({ bar: 'second' });
 			result.current[1]({ baz: 'third' });
 			await nextFrame();
-			expect(location.hash).to.include('test-foo=first');
-			expect(location.hash).to.include('test-bar=second');
-			expect(location.hash).to.include('test-baz=third');
+			expect(location.hash).to.equal('#!/#test-baz=third');
 		});
 
-		test('mixing add and delete in single setState - BUG: old params stay', async () => {
+		test('mixing add and delete in single setState', async () => {
 			location.hash = '#!/#test-foo=a&test-bar=b';
 			const { result } = await renderHook(() =>
 				useHashState<Record<string, string>>({}, 'test', {
@@ -438,7 +487,7 @@ suite('useHashState', () => {
 			await result.current[1]({ foo: '', baz: 'c' });
 			expect(location.hash).to.include('test-baz=c');
 			expect(location.hash).to.not.include('test-foo');
-			expect(location.hash).to.include('test-bar=b');
+			expect(location.hash).to.not.include('test-bar');
 		});
 	});
 });
