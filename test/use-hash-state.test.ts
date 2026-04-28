@@ -344,7 +344,7 @@ suite('useHashState', () => {
 			expect(location.hash).to.equal('#!/');
 		});
 
-		test('setState replaces all params for prefix in multi mode', async () => {
+		test('setState replaces all params for prefix', async () => {
 			location.hash = '#!/#test-foo=a&test-bar=b&other=x';
 			const { result } = await renderHook(() =>
 				useHashState<Record<string, string>>({}, 'test', {
@@ -437,7 +437,7 @@ suite('useHashState', () => {
 			expect(result.current[0]).to.equal(null);
 		});
 
-		test('undefined initial value preserved in multi mode', async () => {
+		test('undefined initial value preserved', async () => {
 			location.hash = '#!/';
 			const { result } = await renderHook(() =>
 				useHashState<Record<string, string> | undefined>(undefined, 'test', {
