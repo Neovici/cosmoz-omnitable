@@ -1,5 +1,6 @@
 import { navigate } from '@neovici/cosmoz-router';
 import { identity, invoke } from '@neovici/cosmoz-utils/function';
+import { useMeta } from '@neovici/cosmoz-utils/hooks/use-meta';
 import {
 	hashUrl,
 	multiParse,
@@ -104,6 +105,12 @@ export function useHashState<T>(
 	}: SingleHashStateOpts<T> | MultiHashStateOpts<Record<string, unknown>> = {},
 ): [T, (value: T | ((prev: T) => T)) => void] {
 	const link = multi ? multiLink : singleLink,
+		meta = useMeta({
+			param,
+			suffix,
+			link,
+			write: (write ?? identity) as (v: unknown) => string,
+		}),
 		hashWasExplicit = useMemo(() => {
 			if (param == null) return false;
 			if (multi) {
@@ -132,13 +139,9 @@ export function useHashState<T>(
 				_setState((oldState) => {
 					const newState = invoke(state, oldState);
 
-					if (param != null) {
+					if (meta.param != null) {
 						navigate(
-							link(
-								param + suffix,
-								newState,
-								(write ?? identity) as (v: unknown) => string,
-							),
+							meta.link(meta.param + meta.suffix, newState, meta.write),
 							null,
 							{
 								notify: false,
@@ -148,7 +151,7 @@ export function useHashState<T>(
 
 					return newState;
 				}),
-			[param, suffix, link, write],
+			[],
 		);
 
 	// Sync state with initial when:
@@ -156,8 +159,7 @@ export function useHashState<T>(
 	// - AND hash was NOT explicitly provided in URL on mount
 	// - AND initial has meaningful content (not empty object)
 	useEffect(() => {
-		if (param == null) return;
-		if (hashWasExplicit) return;
+		if (meta.param == null || hashWasExplicit) return;
 
 		const isEmptyObj =
 			initial != null &&
@@ -168,7 +170,7 @@ export function useHashState<T>(
 		if (initial != null) {
 			setState(initial);
 		}
-	}, [...Object.values(initial ?? {}), param, hashWasExplicit, setState]);
+	}, [...Object.values(initial ?? {}), hashWasExplicit]);
 
 	return [state, setState];
 }
