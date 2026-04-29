@@ -64,8 +64,8 @@ const makeLinker =
 			.map(codec)
 			.filter(([, val]) => val !== undefined);
 
-		// If write returns undefined for ALL entries, do nothing (e.g., columns not ready)
-		// If value was empty object {}, entries will be empty but we should still delete
+		// Preserve hash when values are not encodable (all are undefined)
+		// Update hash when intent is to clear (empty object)
 		if (entries.length === 0 && originalEntries.length > 0) {
 			return;
 		}
