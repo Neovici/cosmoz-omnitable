@@ -170,7 +170,12 @@ export function useHashState<T>(
 		if (initial != null) {
 			setState(initial);
 		}
-	}, [...Object.values(initial ?? {}), hashWasExplicit]);
+	}, [
+		hashWasExplicit,
+		...(typeof initial === 'object' && initial != null
+			? Object.values(initial)
+			: [initial]),
+	]);
 
 	return [state, setState];
 }
