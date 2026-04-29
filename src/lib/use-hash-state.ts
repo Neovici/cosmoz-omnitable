@@ -157,15 +157,8 @@ export function useHashState<T>(
 	// Sync state with initial when:
 	// - initial changes (e.g., savedSettings loaded async)
 	// - AND hash was NOT explicitly provided in URL on mount
-	// - AND initial has meaningful content (not empty object)
 	useEffect(() => {
 		if (meta.param == null || hashWasExplicit) return;
-
-		const isEmptyObj =
-			initial != null &&
-			typeof initial === 'object' &&
-			Object.keys(initial).length === 0;
-		if (isEmptyObj) return;
 
 		if (initial != null) {
 			setState(initial);
