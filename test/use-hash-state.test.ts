@@ -2,6 +2,8 @@ import { renderHook } from '@neovici/testing';
 import { expect, nextFrame } from '@open-wc/testing';
 import { useHashState } from '../src/lib/use-hash-state.js';
 
+const EMPTY_RECORD: Record<string, string> = {};
+
 suite('useHashState', () => {
 	setup(() => {
 		location.hash = '#!/';
@@ -207,7 +209,7 @@ suite('useHashState', () => {
 		test('uses initial value when no hash params exist', async () => {
 			location.hash = '#!/';
 			const { result } = await renderHook(() =>
-				useHashState<Record<string, string>>({}, 'test', {
+				useHashState<Record<string, string>>(EMPTY_RECORD, 'test', {
 					suffix: '-',
 					multi: true,
 				}),
@@ -218,7 +220,7 @@ suite('useHashState', () => {
 		test('uses hash params when they exist', async () => {
 			location.hash = '#!/#test-foo=a&test-bar=b';
 			const { result } = await renderHook(() =>
-				useHashState<Record<string, string>>({}, 'test', {
+				useHashState<Record<string, string>>(EMPTY_RECORD, 'test', {
 					suffix: '-',
 					multi: true,
 				}),
@@ -229,7 +231,7 @@ suite('useHashState', () => {
 		test('setState updates multiple hash params', async () => {
 			location.hash = '#!/';
 			const { result } = await renderHook(() =>
-				useHashState<Record<string, string>>({}, 'test', {
+				useHashState<Record<string, string>>(EMPTY_RECORD, 'test', {
 					suffix: '-',
 					multi: true,
 				}),
@@ -242,7 +244,7 @@ suite('useHashState', () => {
 		test('setState with function receives previous state', async () => {
 			location.hash = '#!/#test-foo=a';
 			const { result } = await renderHook(() =>
-				useHashState<Record<string, string>>({}, 'test', {
+				useHashState<Record<string, string>>(EMPTY_RECORD, 'test', {
 					suffix: '-',
 					multi: true,
 				}),
@@ -290,7 +292,7 @@ suite('useHashState', () => {
 				parseInt(value, 10),
 			];
 			const { result } = await renderHook(() =>
-				useHashState<Record<string, number>>({}, 'test', {
+				useHashState<Record<string, number>>(EMPTY_RECORD, 'test', {
 					suffix: '-',
 					multi: true,
 					read,
@@ -306,7 +308,7 @@ suite('useHashState', () => {
 				value.toUpperCase(),
 			];
 			const { result } = await renderHook(() =>
-				useHashState<Record<string, string>>({}, 'test', {
+				useHashState<Record<string, string>>(EMPTY_RECORD, 'test', {
 					suffix: '-',
 					multi: true,
 					write,
@@ -319,7 +321,7 @@ suite('useHashState', () => {
 		test('delete param via empty string value', async () => {
 			location.hash = '#!/#test-foo=a';
 			const { result } = await renderHook(() =>
-				useHashState<Record<string, string>>({}, 'test', {
+				useHashState<Record<string, string>>(EMPTY_RECORD, 'test', {
 					suffix: '-',
 					multi: true,
 				}),
@@ -332,7 +334,7 @@ suite('useHashState', () => {
 		test('delete param via setState removing key', async () => {
 			location.hash = '#!/#test-foo=a';
 			const { result } = await renderHook(() =>
-				useHashState<Record<string, string>>({}, 'test', {
+				useHashState<Record<string, string>>(EMPTY_RECORD, 'test', {
 					suffix: '-',
 					multi: true,
 				}),
@@ -345,7 +347,7 @@ suite('useHashState', () => {
 		test('setState replaces all params for prefix', async () => {
 			location.hash = '#!/#test-foo=a&test-bar=b&other=x';
 			const { result } = await renderHook(() =>
-				useHashState<Record<string, string>>({}, 'test', {
+				useHashState<Record<string, string>>(EMPTY_RECORD, 'test', {
 					suffix: '-',
 					multi: true,
 				}),
@@ -365,7 +367,7 @@ suite('useHashState', () => {
 				string | undefined,
 			] => [key, value === 'delete-me' ? '' : value];
 			const { result } = await renderHook(() =>
-				useHashState<Record<string, string>>({}, 'test', {
+				useHashState<Record<string, string>>(EMPTY_RECORD, 'test', {
 					suffix: '-',
 					multi: true,
 					write,
@@ -382,7 +384,7 @@ suite('useHashState', () => {
 				string | undefined,
 			] => [key, value === 'delete-me' ? null! : value];
 			const { result } = await renderHook(() =>
-				useHashState<Record<string, string>>({}, 'test', {
+				useHashState<Record<string, string>>(EMPTY_RECORD, 'test', {
 					suffix: '-',
 					multi: true,
 					write,
@@ -395,7 +397,7 @@ suite('useHashState', () => {
 		test('special characters are URL decoded', async () => {
 			location.hash = '#!/#test-foo=hello%20world';
 			const { result } = await renderHook(() =>
-				useHashState<Record<string, string>>({}, 'test', {
+				useHashState<Record<string, string>>(EMPTY_RECORD, 'test', {
 					suffix: '-',
 					multi: true,
 				}),
@@ -406,7 +408,7 @@ suite('useHashState', () => {
 		test('empty object initial', async () => {
 			location.hash = '#!/';
 			const { result } = await renderHook(() =>
-				useHashState<Record<string, string>>({}, 'test', {
+				useHashState<Record<string, string>>(EMPTY_RECORD, 'test', {
 					suffix: '-',
 					multi: true,
 				}),
@@ -417,7 +419,7 @@ suite('useHashState', () => {
 		test('param: null - does not interact with hash', async () => {
 			location.hash = '#!/existing=hash';
 			const { result } = await renderHook(() =>
-				useHashState<Record<string, string>>({}, null, {
+				useHashState<Record<string, string>>(EMPTY_RECORD, null, {
 					suffix: '-',
 					multi: true,
 				}),
@@ -452,7 +454,7 @@ suite('useHashState', () => {
 		test('concurrent setState calls - last write wins', async () => {
 			location.hash = '#!/';
 			const { result } = await renderHook(() =>
-				useHashState<Record<string, string>>({}, 'test', {
+				useHashState<Record<string, string>>(EMPTY_RECORD, 'test', {
 					suffix: '-',
 					multi: true,
 				}),
@@ -467,7 +469,7 @@ suite('useHashState', () => {
 		test('mixing add and delete in single setState', async () => {
 			location.hash = '#!/#test-foo=a&test-bar=b';
 			const { result } = await renderHook(() =>
-				useHashState<Record<string, string>>({}, 'test', {
+				useHashState<Record<string, string>>(EMPTY_RECORD, 'test', {
 					suffix: '-',
 					multi: true,
 				}),
