@@ -1,4 +1,4 @@
-import { assert, html, nextFrame } from '@open-wc/testing';
+import { assert, aTimeout, html, nextFrame } from '@open-wc/testing';
 
 import {
 	ignoreResizeObserverLoopErrors,
@@ -207,7 +207,7 @@ suite('hash params vs saved settings', () => {
 		await instantiateWithSettings();
 
 		// Wait for async settings load
-		await new Promise((resolve) => setTimeout(resolve, 50));
+		await aTimeout(50);
 		await nextFrame();
 
 		assert.equal(omnitable.sortOn, 'name');
@@ -273,7 +273,7 @@ suite('hash params vs saved settings', () => {
 		await instantiateWithSettings();
 
 		// Wait for async settings load
-		await new Promise((resolve) => setTimeout(resolve, 50));
+		await aTimeout(50);
 
 		assert.equal(omnitable.sortOn, 'id');
 		assert.equal(omnitable.descending, false);
@@ -289,7 +289,7 @@ suite('hash params vs saved settings', () => {
 		await instantiateWithSettings();
 
 		// Wait for async settings load
-		await new Promise((resolve) => setTimeout(resolve, 50));
+		await aTimeout(50);
 
 		assert.equal(omnitable.sortOn, 'id');
 		assert.equal(omnitable.groupOn, 'group');
