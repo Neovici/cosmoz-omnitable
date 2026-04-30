@@ -82,6 +82,16 @@ const makeLinker =
 		);
 	});
 
+/**
+ * Synchronizes a state value with a URL hash parameter.
+ *
+ * @param initial - The initial state value. **Must be a stable reference** when
+ *   it is an object or array (e.g. a module-level constant, `useMemo`, or
+ *   `useState` value). Passing an inline literal (e.g. `{}`) will cause the
+ *   initial-sync effect to re-fire on every render.
+ * @param param - The URL hash parameter name, or `null`/`undefined` to disable.
+ * @param opts - Optional codec and mode options.
+ */
 export function useHashState<T>(
 	initial: T,
 	param: string | null | undefined,
@@ -157,18 +167,16 @@ export function useHashState<T>(
 	// Sync state with initial when:
 	// - initial changes (e.g., savedSettings loaded async)
 	// - AND hash was NOT explicitly provided in URL on mount
+	// NOTE: `initial` must be a stable reference when it is an object.
+	// Pass a module-level constant, useMemo, or useState value — never an inline literal.
+	// An unstable reference will cause this effect to re-fire on every render.
 	useEffect(() => {
 		if (meta.param == null || hashWasExplicit) return;
 
 		if (initial != null) {
 			setState(initial);
 		}
-	}, [
-		hashWasExplicit,
-		...(typeof initial === 'object' && initial != null
-			? Object.values(initial)
-			: [initial]),
-	]);
+	}, [initial]);
 
 	return [state, setState];
 }

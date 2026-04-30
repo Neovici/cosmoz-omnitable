@@ -1,11 +1,12 @@
-import { useCallback, useEffect, useMemo } from '@pionjs/pion';
 import { invoke } from '@neovici/cosmoz-utils/function';
+import { useCallback, useEffect, useMemo } from '@pionjs/pion';
 import { genericSorter } from './generic-sorter';
 import { columnSymbol } from './use-dom-columns';
 import { useHashState } from './use-hash-state';
 import { indexSymbol } from './utils';
 
-const sortBy = (valueFn, descending) => (a, b) =>
+const EMPTY_FILTERS = {},
+	sortBy = (valueFn, descending) => (a, b) =>
 		genericSorter(valueFn(a), valueFn(b)) * (descending ? -1 : 1),
 	kebab = (input) =>
 		input.replace(/([a-z0-9])([A-Z])/gu, '$1-$2').toLowerCase(),
@@ -65,7 +66,7 @@ export const useProcessedItems = ({
 			},
 			[columns],
 		),
-		[filters, setFilters] = useHashState({}, hashParam, {
+		[filters, setFilters] = useHashState(EMPTY_FILTERS, hashParam, {
 			multi: true,
 			suffix: '-filter--',
 			write,
