@@ -1,4 +1,4 @@
-import{n as e}from"./chunk-BneVvdWh.js";import{ct as t,dn as n,fn as r,lt as i}from"./iframe-CIONVpUj.js";import{a,n as o,r as s}from"./dist-DKq4r0a-.js";import{t as c}from"./cosmoz-omnitable-F0yU3fS1.js";var l,u=e((()=>{t(),l=()=>n`<style>
+import{n as e}from"./chunk-BneVvdWh.js";import{ct as t,dn as n,fn as r,lt as i}from"./iframe-DseT2M4C.js";import{a,n as o,r as s}from"./dist-DCl-ezqH.js";import{t as c}from"./cosmoz-omnitable-B2Rx2I_V.js";var l,u=e((()=>{t(),l=()=>n`<style>
 	@keyframes rotating {
 		100% {
 			transform: rotate(360deg);

@@ -1,4 +1,4 @@
-import{n as e}from"./chunk-BneVvdWh.js";import{$ as t,A as n,B as r,C as i,Ct as a,D as o,E as s,G as c,H as l,J as u,K as d,L as f,M as p,N as m,O as h,P as g,Q as _,R as ee,S as te,St as v,U as ne,V as y,W as b,_ as re,_t as x,at as ie,bt as S,c as ae,cn as oe,ct as C,d as se,dn as w,et as ce,f as le,fn as T,g as ue,gt as de,h as fe,ht as pe,it as me,j as he,k as ge,l as E,ln as _e,lt as D,m as ve,n as ye,nt as be,o as xe,ot as Se,p as Ce,q as we,r as Te,rt as Ee,s as De,st as Oe,t as ke,tt as Ae,u as je,ut as Me,v as Ne,vt as Pe,w as O,xt as Fe,y as Ie,yt as k,z as Le}from"./iframe-CIONVpUj.js";import{A as Re,B as A,C as ze,D as Be,E as Ve,F as He,G as Ue,H as We,I as Ge,L as Ke,M as qe,N as j,O as Je,P as M,R as Ye,S as Xe,T as Ze,U as Qe,V as $e,W as et,_ as tt,b as nt,c as rt,d as it,f as at,g as ot,h as st,i as ct,j as lt,k as ut,l as dt,m as ft,n as pt,o as mt,p as ht,r as gt,s as _t,t as vt,u as yt,v as bt,w as xt,x as St,y as Ct,z as N}from"./dist-DKq4r0a-.js";var wt,Tt,Et=e((()=>{f(),_(),C(),wt=Ae`
+import{n as e}from"./chunk-BneVvdWh.js";import{$ as t,A as n,B as r,C as i,Ct as a,D as o,E as s,G as c,H as l,J as u,K as d,L as f,M as p,N as m,O as h,P as g,Q as _,R as ee,S as te,St as v,U as ne,V as y,W as b,_ as re,_t as x,at as ie,bt as S,c as ae,cn as oe,ct as C,d as se,dn as w,et as ce,f as le,fn as T,g as ue,gt as de,h as fe,ht as pe,it as me,j as he,k as ge,l as E,ln as _e,lt as D,m as ve,n as ye,nt as be,o as xe,ot as Se,p as Ce,q as we,r as Te,rt as Ee,s as De,st as Oe,t as ke,tt as Ae,u as je,ut as Me,v as Ne,vt as Pe,w as O,xt as Fe,y as Ie,yt as k,z as Le}from"./iframe-DseT2M4C.js";import{A as Re,B as A,C as ze,D as Be,E as Ve,F as He,G as Ue,H as We,I as Ge,L as Ke,M as qe,N as j,O as Je,P as M,R as Ye,S as Xe,T as Ze,U as Qe,V as $e,W as et,_ as tt,b as nt,c as rt,d as it,f as at,g as ot,h as st,i as ct,j as lt,k as ut,l as dt,m as ft,n as pt,o as mt,p as ht,r as gt,s as _t,t as vt,u as yt,v as bt,w as xt,x as St,y as Ct,z as N}from"./dist-DCl-ezqH.js";var wt,Tt,Et=e((()=>{f(),_(),C(),wt=Ae`
 	:host {
 		display: flex;
 		cursor: pointer;
@@ -429,14 +429,14 @@ import{n as e}from"./chunk-BneVvdWh.js";import{$ as t,A as n,B as r,C as i,Ct as
 			@opened-changed=${e=>Fn(r)(e.detail.value)}
 			.onText=${In(r)}
 			>${d(e.loading,()=>w`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`)}</cosmoz-autocomplete-ui
-		> `}},customElements.define(`cosmoz-omnitable-column-list-horizontal`,Br)})),Hr,Ur=e((()=>{Ct(),_(),M(),Ge(),window.Cosmoz=window.Cosmoz||{},Hr=class extends nt(t(Oe,j)){static get template(){return He`
+		> `}},customElements.define(`cosmoz-omnitable-column-list-horizontal`,Br)})),Hr,Ur=e((()=>{Ct(),_(),Ge(),M(),window.Cosmoz=window.Cosmoz||{},Hr=class extends nt(t(Oe,j)){static get template(){return He`
 			<style>
 				:host {
 					display: block;
 				}
 
 				:host a {
-					color: var(--primary-link-color, inherit);
+					color: var(--cz-color-bg-brand-solid);
 				}
 
 				[hidden] {
@@ -883,6 +883,10 @@ import{n as e}from"./chunk-BneVvdWh.js";import{$ as t,A as n,B as r,C as i,Ct as
 		justify-content: center;
 		color: var(--cz-color-text-disabled);
 	}
+
+	.tableContent-empty:has(cosmoz-omnitable-skeleton) {
+		justify-content: stretch;
+	}
 	.tableContent-empty.overlay {
 		color: var(--cz-color-text-disabled);
 		z-index: 1;
@@ -1275,22 +1279,26 @@ import{n as e}from"./chunk-BneVvdWh.js";import{$ as t,A as n,B as r,C as i,Ct as
 	:host {
 		max-width: 100%;
 		overflow-x: hidden;
-		padding: 0 12px;
+		padding-left: calc(var(--cz-spacing) * 3);
 	}
 	.skeleton {
 		width: 100%;
 	}
 	.skeleton > div {
-		height: 17.5px;
+		height: calc(var(--cz-spacing) * 4.5);
 		display: flex;
-		padding: 11px 12px 11px 0;
+		padding-block: 11px;
+		width: 100%;
+	}
+	.skeleton > div:not(:last-child) {
+		border-bottom: 1px solid var(--cz-color-bg-secondary);
 	}
 	.skeleton > div div:not(.handle) {
 		background-image: linear-gradient(
-			90deg, 
-			var(--cosmoz-omnitable-skeleton-bg-from, #e0e0e0), 
-			var(--cosmoz-omnitable-skeleton-bg-middle, #f5f5f5), 
-			var(--cosmoz-omnitable-skeleton-bg-to, #e0e0e0)
+			90deg,
+			var(--cz-color-bg-quaternary),
+			var(--cz-color-bg-secondary),
+			var(--cz-color-bg-quaternary)
 		);
 		background-size: 1000%;
 		background-position: right;

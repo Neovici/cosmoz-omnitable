@@ -1,4 +1,4 @@
-import{n as e}from"./chunk-BneVvdWh.js";import{$ as t,A as n,B as r,C as i,Ct as a,D as o,E as s,G as c,H as l,J as u,K as d,L as f,M as p,N as m,O as h,P as g,Q as _,R as ee,S as te,St as v,U as ne,V as y,W as b,_ as re,_t as x,at as S,bt as C,c as ie,cn as ae,ct as w,d as oe,dn as T,et as se,f as ce,fn as E,g as le,gt as ue,h as de,ht as fe,it as pe,j as me,k as he,l as D,ln as ge,lt as O,m as _e,n as k,nt as ve,o as ye,ot as be,p as xe,q as Se,r as Ce,rt as we,s as Te,st as Ee,t as De,tt as Oe,u as ke,ut as Ae,v as je,vt as Me,w as A,xt as Ne,y as Pe,yt as j,z as Fe}from"./iframe-CIONVpUj.js";import{A as Ie,B as M,C as Le,D as Re,E as ze,F as Be,G as Ve,H as He,I as Ue,L as We,M as Ge,N,O as Ke,P,R as qe,S as Je,T as Ye,U as Xe,V as Ze,W as Qe,_ as $e,b as et,c as tt,d as nt,f as rt,g as it,h as at,i as ot,j as st,k as ct,l as lt,m as ut,n as dt,o as ft,p as pt,r as mt,s as ht,t as gt,u as _t,v as vt,w as yt,x as bt,y as xt,z as F}from"./dist-DKq4r0a-.js";var St,Ct,I=e((()=>{f(),_(),w(),St=Oe`
+import{n as e}from"./chunk-BneVvdWh.js";import{$ as t,A as n,B as r,C as i,Ct as a,D as o,E as s,G as c,H as l,J as u,K as d,L as f,M as p,N as m,O as h,P as g,Q as _,R as ee,S as te,St as v,U as ne,V as y,W as b,_ as re,_t as x,at as S,bt as C,c as ie,cn as ae,ct as w,d as oe,dn as T,et as se,f as ce,fn as E,g as le,gt as ue,h as de,ht as fe,it as pe,j as me,k as he,l as D,ln as ge,lt as O,m as _e,n as k,nt as ve,o as ye,ot as be,p as xe,q as Se,r as Ce,rt as we,s as Te,st as Ee,t as De,tt as Oe,u as ke,ut as Ae,v as je,vt as Me,w as A,xt as Ne,y as Pe,yt as j,z as Fe}from"./iframe-DseT2M4C.js";import{A as Ie,B as M,C as Le,D as Re,E as ze,F as Be,G as Ve,H as He,I as Ue,L as We,M as Ge,N,O as Ke,P,R as qe,S as Je,T as Ye,U as Xe,V as Ze,W as Qe,_ as $e,b as et,c as tt,d as nt,f as rt,g as it,h as at,i as ot,j as st,k as ct,l as lt,m as ut,n as dt,o as ft,p as pt,r as mt,s as ht,t as gt,u as _t,v as vt,w as yt,x as bt,y as xt,z as F}from"./dist-DCl-ezqH.js";var St,Ct,I=e((()=>{f(),_(),w(),St=Oe`
 	:host {
 		display: flex;
 		cursor: pointer;
@@ -429,14 +429,14 @@ import{n as e}from"./chunk-BneVvdWh.js";import{$ as t,A as n,B as r,C as i,Ct as
 			@opened-changed=${e=>On(r)(e.detail.value)}
 			.onText=${kn(r)}
 			>${d(e.loading,()=>T`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`)}</cosmoz-autocomplete-ui
-		> `}},customElements.define(`cosmoz-omnitable-column-list-horizontal`,Nr)})),Fr,Ir=e((()=>{xt(),_(),P(),Ue(),window.Cosmoz=window.Cosmoz||{},Fr=class extends et(t(Ee,N)){static get template(){return Be`
+		> `}},customElements.define(`cosmoz-omnitable-column-list-horizontal`,Nr)})),Fr,Ir=e((()=>{xt(),_(),Ue(),P(),window.Cosmoz=window.Cosmoz||{},Fr=class extends et(t(Ee,N)){static get template(){return Be`
 			<style>
 				:host {
 					display: block;
 				}
 
 				:host a {
-					color: var(--primary-link-color, inherit);
+					color: var(--cz-color-bg-brand-solid);
 				}
 
 				[hidden] {
@@ -883,6 +883,10 @@ import{n as e}from"./chunk-BneVvdWh.js";import{$ as t,A as n,B as r,C as i,Ct as
 		justify-content: center;
 		color: var(--cz-color-text-disabled);
 	}
+
+	.tableContent-empty:has(cosmoz-omnitable-skeleton) {
+		justify-content: stretch;
+	}
 	.tableContent-empty.overlay {
 		color: var(--cz-color-text-disabled);
 		z-index: 1;
@@ -1275,22 +1279,26 @@ import{n as e}from"./chunk-BneVvdWh.js";import{$ as t,A as n,B as r,C as i,Ct as
 	:host {
 		max-width: 100%;
 		overflow-x: hidden;
-		padding: 0 12px;
+		padding-left: calc(var(--cz-spacing) * 3);
 	}
 	.skeleton {
 		width: 100%;
 	}
 	.skeleton > div {
-		height: 17.5px;
+		height: calc(var(--cz-spacing) * 4.5);
 		display: flex;
-		padding: 11px 12px 11px 0;
+		padding-block: 11px;
+		width: 100%;
+	}
+	.skeleton > div:not(:last-child) {
+		border-bottom: 1px solid var(--cz-color-bg-secondary);
 	}
 	.skeleton > div div:not(.handle) {
 		background-image: linear-gradient(
-			90deg, 
-			var(--cosmoz-omnitable-skeleton-bg-from, #e0e0e0), 
-			var(--cosmoz-omnitable-skeleton-bg-middle, #f5f5f5), 
-			var(--cosmoz-omnitable-skeleton-bg-to, #e0e0e0)
+			90deg,
+			var(--cz-color-bg-quaternary),
+			var(--cz-color-bg-secondary),
+			var(--cz-color-bg-quaternary)
 		);
 		background-size: 1000%;
 		background-position: right;
