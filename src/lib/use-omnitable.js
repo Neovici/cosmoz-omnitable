@@ -21,14 +21,14 @@ export const useOmnitable = (host) => {
 			rowPartFn,
 		} = host,
 		settingS = useSettings({ settingsId, host }),
-		{ settings, setSettings, columns, resetRef } = settingS,
-		sortAndGroupOptions = useSortAndGroupOptions(
-			columns,
-			hashParam,
+		{ settings, setSettings, columns, resetRef, savedSettings } = settingS,
+		ready = savedSettings !== undefined,
+		sortAndGroupOptions = useSortAndGroupOptions(columns, hashParam, {
 			settings,
 			setSettings,
 			resetRef,
-		),
+			ready,
+		}),
 		// TODO: drop filterFunctions
 		{ processedItems, visibleData, filters, setFilterState, filterFunctions } =
 			useProcessedItems({

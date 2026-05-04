@@ -17,10 +17,8 @@ suite('useHashState', () => {
 			const { result } = await renderHook(() =>
 				useHashState('name', 'test', { suffix: '-sortOn' }),
 			);
-			const [value, setValue]: [
-				string,
-				(v: string | ((p: string) => string)) => void,
-			] = result.current;
+			const [value]: [string, (v: string | ((p: string) => string)) => void] =
+				result.current;
 			expect(value).to.equal('name');
 		});
 
@@ -32,17 +30,17 @@ suite('useHashState', () => {
 			expect(result.current[0]).to.equal('id');
 		});
 
-		test('updates state when initial changes and hash was not explicit', async () => {
+		test('updates state when ready transitions and hash was not explicit', async () => {
 			location.hash = '#!/';
 			const { result, rerender } = await renderHook(
-				(initial: string) =>
-					useHashState(initial, 'test', { suffix: '-sortOn' }),
-				{ initialProps: 'name' },
+				({ initial, ready }: { initial: string; ready: boolean }) =>
+					useHashState(initial, 'test', { suffix: '-sortOn', ready }),
+				{ initialProps: { initial: 'name', ready: false } },
 			);
 
 			expect(result.current[0]).to.equal('name');
 
-			await rerender('id');
+			await rerender({ initial: 'id', ready: true });
 			await nextFrame();
 
 			expect(result.current[0]).to.equal('id');
@@ -52,18 +50,35 @@ suite('useHashState', () => {
 		test('does not override state when hash was explicit', async () => {
 			location.hash = '#!/#test-sortOn=date';
 			const { result, rerender } = await renderHook(
-				(initial: string) =>
-					useHashState(initial, 'test', { suffix: '-sortOn' }),
-				{ initialProps: 'name' },
+				({ initial, ready }: { initial: string; ready: boolean }) =>
+					useHashState(initial, 'test', { suffix: '-sortOn', ready }),
+				{ initialProps: { initial: 'name', ready: false } },
 			);
 
 			expect(result.current[0]).to.equal('date');
 
-			await rerender('id');
+			await rerender({ initial: 'id', ready: true });
 			await nextFrame();
 
 			expect(result.current[0]).to.equal('date');
 			expect(location.hash).to.include('test-sortOn=date');
+		});
+
+		test('syncs on mount when ready is true (default)', async () => {
+			location.hash = '#!/';
+			const { result } = await renderHook(() =>
+				useHashState('initial', 'test', { suffix: '-suffix' }),
+			);
+			expect(result.current[0]).to.equal('initial');
+			expect(location.hash).to.include('test-suffix=initial');
+		});
+
+		test('does not sync when ready is false', async () => {
+			location.hash = '#!/';
+			const { result } = await renderHook(() =>
+				useHashState('initial', 'test', { suffix: '-suffix', ready: false }),
+			);
+			expect(result.current[0]).to.equal('initial');
 		});
 
 		test('setState updates hash', async () => {
@@ -151,7 +166,7 @@ suite('useHashState', () => {
 				useHashState<string[]>([], 'test', { suffix: '-suffix' }),
 			);
 			expect(result.current[0]).to.deep.equal(['a', 'b']);
-			expect(Array.isArray(result.current[0])).to.be.true;
+			expect(Array.isArray(result.current[0])).to.equal(true);
 		});
 
 		test('empty string value', async () => {
@@ -244,30 +259,74 @@ suite('useHashState', () => {
 			expect(location.hash).to.include('test-bar=b');
 		});
 
-		test('does not override when hash was explicit', async () => {
+		test('syncs initial when ready transitions', async () => {
+			location.hash = '#!/';
+			const { result, rerender } = await renderHook(
+				({
+					initial,
+					ready,
+				}: {
+					initial: Record<string, string>;
+					ready: boolean;
+				}) =>
+					useHashState(initial, 'test', { suffix: '-', multi: true, ready }),
+				{ initialProps: { initial: {}, ready: false } },
+			);
+			expect(result.current[0]).to.deep.equal({});
+			await rerender({ initial: { foo: 'synced' }, ready: true });
+			await nextFrame();
+			expect(result.current[0]).to.deep.equal({ foo: 'synced' });
+			expect(location.hash).to.include('test-foo=synced');
+		});
+
+		test('does not sync when ready transitions but hash was explicit', async () => {
 			location.hash = '#!/#test-foo=explicit';
 			const { result, rerender } = await renderHook(
-				(initial: Record<string, string>) =>
-					useHashState(initial, 'test', { suffix: '-', multi: true }),
-				{ initialProps: {} },
+				({
+					initial,
+					ready,
+				}: {
+					initial: Record<string, string>;
+					ready: boolean;
+				}) =>
+					useHashState(initial, 'test', { suffix: '-', multi: true, ready }),
+				{ initialProps: { initial: {}, ready: false } },
 			);
 			expect(result.current[0]).to.deep.equal({ foo: 'explicit' });
-			await rerender({ new: 'ignored' });
+			await rerender({ initial: { new: 'ignored' }, ready: true });
 			await nextFrame();
 			expect(result.current[0]).to.deep.equal({ foo: 'explicit' });
 		});
 
-		test('BUG: syncs with initial when hash was not explicit', async () => {
+		test('does not sync when ready stays false', async () => {
 			location.hash = '#!/';
 			const { result, rerender } = await renderHook(
-				(initial: Record<string, string>) =>
-					useHashState(initial, 'test', { suffix: '-', multi: true }),
-				{ initialProps: {} },
+				({
+					initial,
+					ready,
+				}: {
+					initial: Record<string, string>;
+					ready: boolean;
+				}) =>
+					useHashState(initial, 'test', { suffix: '-', multi: true, ready }),
+				{ initialProps: { initial: {}, ready: false } },
 			);
 			expect(result.current[0]).to.deep.equal({});
-			await rerender({ foo: 'synced' });
+			await rerender({ initial: { foo: 'bar' }, ready: false });
 			await nextFrame();
 			expect(result.current[0]).to.deep.equal({});
+		});
+
+		test('syncs on mount when ready is true (default)', async () => {
+			location.hash = '#!/';
+			const { result } = await renderHook(() =>
+				useHashState<Record<string, string>>({ foo: 'bar' }, 'test', {
+					suffix: '-',
+					multi: true,
+				}),
+			);
+			expect(result.current[0]).to.deep.equal({ foo: 'bar' });
+			expect(location.hash).to.include('test-foo=bar');
 		});
 
 		test('with read codec - parses values', async () => {
@@ -316,7 +375,7 @@ suite('useHashState', () => {
 			expect(location.hash).to.equal('#!/');
 		});
 
-		test('delete param via setState removing key - BUG: does not delete', async () => {
+		test('delete param via setState removing key', async () => {
 			location.hash = '#!/#test-foo=a';
 			const { result } = await renderHook(() =>
 				useHashState<Record<string, string>>({}, 'test', {
@@ -326,7 +385,23 @@ suite('useHashState', () => {
 			);
 			expect(result.current[0]).to.deep.equal({ foo: 'a' });
 			await result.current[1]({});
-			expect(location.hash).to.equal('#!/#test-foo=a');
+			expect(location.hash).to.equal('#!/');
+		});
+
+		test('setState replaces all params for prefix', async () => {
+			location.hash = '#!/#test-foo=a&test-bar=b&other=x';
+			const { result } = await renderHook(() =>
+				useHashState<Record<string, string>>({}, 'test', {
+					suffix: '-',
+					multi: true,
+				}),
+			);
+			expect(result.current[0]).to.deep.equal({ foo: 'a', bar: 'b' });
+			await result.current[1]({ baz: 'c' });
+			expect(location.hash).to.include('test-baz=c');
+			expect(location.hash).to.include('other=x');
+			expect(location.hash).to.not.include('test-foo');
+			expect(location.hash).to.not.include('test-bar');
 		});
 
 		test('delete param via write returning empty string', async () => {
@@ -398,7 +473,7 @@ suite('useHashState', () => {
 			expect(location.hash).to.equal('#!/existing=hash');
 		});
 
-		test('null initial value - gets empty object from multiParse', async () => {
+		test('null initial value - preserved when no hash params', async () => {
 			location.hash = '#!/';
 			const { result } = await renderHook(() =>
 				useHashState<Record<string, string> | null>(null, 'test', {
@@ -406,10 +481,21 @@ suite('useHashState', () => {
 					multi: true,
 				}),
 			);
-			expect(result.current[0]).to.deep.equal({});
+			expect(result.current[0]).to.equal(null);
 		});
 
-		test('concurrent setState calls - BUG: accumulates hash params', async () => {
+		test('undefined initial value preserved', async () => {
+			location.hash = '#!/';
+			const { result } = await renderHook(() =>
+				useHashState<Record<string, string> | undefined>(undefined, 'test', {
+					suffix: '-',
+					multi: true,
+				}),
+			);
+			expect(result.current[0]).to.equal(undefined);
+		});
+
+		test('concurrent setState calls - last write wins', async () => {
 			location.hash = '#!/';
 			const { result } = await renderHook(() =>
 				useHashState<Record<string, string>>({}, 'test', {
@@ -421,12 +507,10 @@ suite('useHashState', () => {
 			result.current[1]({ bar: 'second' });
 			result.current[1]({ baz: 'third' });
 			await nextFrame();
-			expect(location.hash).to.include('test-foo=first');
-			expect(location.hash).to.include('test-bar=second');
-			expect(location.hash).to.include('test-baz=third');
+			expect(location.hash).to.equal('#!/#test-baz=third');
 		});
 
-		test('mixing add and delete in single setState - BUG: old params stay', async () => {
+		test('mixing add and delete in single setState', async () => {
 			location.hash = '#!/#test-foo=a&test-bar=b';
 			const { result } = await renderHook(() =>
 				useHashState<Record<string, string>>({}, 'test', {
@@ -438,7 +522,7 @@ suite('useHashState', () => {
 			await result.current[1]({ foo: '', baz: 'c' });
 			expect(location.hash).to.include('test-baz=c');
 			expect(location.hash).to.not.include('test-foo');
-			expect(location.hash).to.include('test-bar=b');
+			expect(location.hash).to.not.include('test-bar');
 		});
 	});
 });

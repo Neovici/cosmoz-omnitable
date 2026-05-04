@@ -43,6 +43,7 @@ export default ({ settingsId, host }) => {
 
 	return {
 		...rest,
+		savedSettings,
 		opened,
 		setOpened,
 		settings: normalizedSettings,

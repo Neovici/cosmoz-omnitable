@@ -1,5 +1,6 @@
 import { navigate } from '@neovici/cosmoz-router';
 import { identity, invoke } from '@neovici/cosmoz-utils/function';
+import { useMeta } from '@neovici/cosmoz-utils/hooks/use-meta';
 import {
 	hashUrl,
 	multiParse,
@@ -15,6 +16,7 @@ type SingleHashStateOpts<T> = {
 	read?: SingleCodec<T>;
 	write?: (value: T) => string;
 	multi?: false;
+	ready?: boolean;
 };
 
 type MultiHashStateOpts<T extends Record<string, unknown>> = {
@@ -22,6 +24,7 @@ type MultiHashStateOpts<T extends Record<string, unknown>> = {
 	read?: MultiCodec<T[keyof T]>;
 	write?: (entry: [string, T[keyof T]]) => [string, string | undefined];
 	multi: true;
+	ready?: boolean;
 };
 
 const makeLinker =
@@ -57,16 +60,45 @@ const makeLinker =
 			? searchParams.set(hashParam, codec(value))
 			: searchParams.delete(hashParam),
 	),
-	multiLink = makeLinker((hashParam, value, codec, searchParams) =>
-		Object.entries(value as Record<string, unknown>)
+	multiLink = makeLinker((hashParam, value, codec, searchParams) => {
+		const originalEntries = Object.entries(value as Record<string, unknown>);
+		const entries = originalEntries
 			.map(codec)
-			.forEach(([key, val]) =>
-				!isEmpty(val)
-					? searchParams.set(hashParam + key, val as string)
-					: searchParams.delete(hashParam + key),
-			),
-	);
+			.filter(([, val]) => val !== undefined);
 
+		// Preserve hash when values are not encodable (all are undefined)
+		// Update hash when intent is to clear (empty object)
+		if (entries.length === 0 && originalEntries.length > 0) {
+			return;
+		}
+
+		const prefix = hashParam;
+		Array.from(searchParams.keys())
+			.filter((key) => key.startsWith(prefix))
+			.forEach((key) => searchParams.delete(key));
+
+		entries.forEach(([key, val]) =>
+			!isEmpty(val)
+				? searchParams.set(hashParam + key, val as string)
+				: searchParams.delete(hashParam + key),
+		);
+	});
+
+/**
+ * Synchronizes a state value with a URL hash parameter.
+ *
+ * On mount, if the hash contains an explicit value for the parameter, that
+ * value is used. Otherwise, `initial` is used.
+ *
+ * When `ready` is `false`, the hook skips syncing `initial` into state.
+ * When `ready` transitions to `true`, the hook syncs `initial` into state
+ * (unless the hash was explicitly set on mount). This is useful for deferring
+ * the initial sync until async data (e.g. saved settings) has loaded.
+ *
+ * @param initial - The initial state value used when the hash is not set.
+ * @param param - The URL hash parameter name, or `null`/`undefined` to disable.
+ * @param opts - Optional codec, mode, and readiness options.
+ */
 export function useHashState<T>(
 	initial: T,
 	param: string | null | undefined,
@@ -86,21 +118,24 @@ export function useHashState<T>(
 		suffix = '',
 		read,
 		write,
+		ready = true,
 		multi,
 	}: SingleHashStateOpts<T> | MultiHashStateOpts<Record<string, unknown>> = {},
 ): [T, (value: T | ((prev: T) => T)) => void] {
 	const link = multi ? multiLink : singleLink,
+		meta = useMeta({
+			param,
+			suffix,
+			link,
+			write: (write ?? identity) as (v: unknown) => string,
+		}),
 		hashWasExplicit = useMemo(() => {
 			if (param == null) return false;
 			if (multi) {
-				return (
-					multiParse(param + suffix, read as MultiCodec<unknown> | undefined) !=
-					null
-				);
+				const result = multiParse(param + suffix);
+				return Object.keys(result).length > 0;
 			}
-			return (
-				singleParse(param + suffix, read as SingleCodec<T> | undefined) != null
-			);
+			return singleParse(param + suffix) !== undefined;
 		}, []),
 		[state, _setState] = useState(() => {
 			if (param == null) return initial;
@@ -109,7 +144,7 @@ export function useHashState<T>(
 					param + suffix,
 					read as MultiCodec<unknown> | undefined,
 				);
-				return (result ?? initial) as T;
+				return Object.keys(result).length > 0 ? (result as T) : initial;
 			}
 			const result = singleParse(
 				param + suffix,
@@ -122,13 +157,9 @@ export function useHashState<T>(
 				_setState((oldState) => {
 					const newState = invoke(state, oldState);
 
-					if (param != null) {
+					if (meta.param != null) {
 						navigate(
-							link(
-								param + suffix,
-								newState,
-								(write ?? identity) as (v: unknown) => string,
-							),
+							meta.link(meta.param + meta.suffix, newState, meta.write),
 							null,
 							{
 								notify: false,
@@ -138,20 +169,19 @@ export function useHashState<T>(
 
 					return newState;
 				}),
-			[param, suffix, link, write],
+			[],
 		);
 
 	// Sync state with initial when:
-	// - initial changes (e.g., savedSettings loaded async)
+	// - ready transitions to true (e.g., saved settings loaded async)
 	// - AND hash was NOT explicitly provided in URL on mount
 	useEffect(() => {
-		if (param == null) return;
-		if (hashWasExplicit) return;
+		if (meta.param == null || !ready || hashWasExplicit) return;
 
 		if (initial != null) {
 			setState(initial);
 		}
-	}, [initial, param, hashWasExplicit, setState]);
+	}, [ready]);
 
 	return [state, setState];
 }
