@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from '@pionjs/pion';
-import { normalizeStore } from './normalize';
 import { useDriver } from './drivers';
+import { normalizeStore } from './normalize';
 
 export default (settingsId, settings, setSettings, onReset) => {
-	const [savedSettings, setSavedSettings] = useState(),
+	const [savedSettings, setSavedSettings] = useState(
+			settingsId ? undefined : null,
+		),
 		{ read, write } = useDriver();
 
 	useEffect(async () => {
@@ -32,7 +34,7 @@ export default (settingsId, settings, setSettings, onReset) => {
 				setSettings();
 				if (e.shiftKey) {
 					await write(settingsId);
-					setSavedSettings();
+					setSavedSettings(null);
 				}
 				onReset?.();
 			},

@@ -5,8 +5,7 @@ import { columnSymbol } from './use-dom-columns';
 import { useHashState } from './use-hash-state';
 import { indexSymbol } from './utils';
 
-const EMPTY_FILTERS = {},
-	sortBy = (valueFn, descending) => (a, b) =>
+const sortBy = (valueFn, descending) => (a, b) =>
 		genericSorter(valueFn(a), valueFn(b)) * (descending ? -1 : 1),
 	kebab = (input) =>
 		input.replace(/([a-z0-9])([A-Z])/gu, '$1-$2').toLowerCase(),
@@ -66,7 +65,7 @@ export const useProcessedItems = ({
 			},
 			[columns],
 		),
-		[filters, setFilters] = useHashState(EMPTY_FILTERS, hashParam, {
+		[filters, setFilters] = useHashState({}, hashParam, {
 			multi: true,
 			suffix: '-filter--',
 			write,

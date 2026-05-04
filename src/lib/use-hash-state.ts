@@ -16,6 +16,7 @@ type SingleHashStateOpts<T> = {
 	read?: SingleCodec<T>;
 	write?: (value: T) => string;
 	multi?: false;
+	ready?: boolean;
 };
 
 type MultiHashStateOpts<T extends Record<string, unknown>> = {
@@ -23,6 +24,7 @@ type MultiHashStateOpts<T extends Record<string, unknown>> = {
 	read?: MultiCodec<T[keyof T]>;
 	write?: (entry: [string, T[keyof T]]) => [string, string | undefined];
 	multi: true;
+	ready?: boolean;
 };
 
 const makeLinker =
@@ -85,12 +87,17 @@ const makeLinker =
 /**
  * Synchronizes a state value with a URL hash parameter.
  *
- * @param initial - The initial state value. **Must be a stable reference** when
- *   it is an object or array (e.g. a module-level constant, `useMemo`, or
- *   `useState` value). Passing an inline literal (e.g. `{}`) will cause the
- *   initial-sync effect to re-fire on every render.
+ * On mount, if the hash contains an explicit value for the parameter, that
+ * value is used. Otherwise, `initial` is used.
+ *
+ * When `ready` is `false`, the hook skips syncing `initial` into state.
+ * When `ready` transitions to `true`, the hook syncs `initial` into state
+ * (unless the hash was explicitly set on mount). This is useful for deferring
+ * the initial sync until async data (e.g. saved settings) has loaded.
+ *
+ * @param initial - The initial state value used when the hash is not set.
  * @param param - The URL hash parameter name, or `null`/`undefined` to disable.
- * @param opts - Optional codec and mode options.
+ * @param opts - Optional codec, mode, and readiness options.
  */
 export function useHashState<T>(
 	initial: T,
@@ -111,6 +118,7 @@ export function useHashState<T>(
 		suffix = '',
 		read,
 		write,
+		ready = true,
 		multi,
 	}: SingleHashStateOpts<T> | MultiHashStateOpts<Record<string, unknown>> = {},
 ): [T, (value: T | ((prev: T) => T)) => void] {
@@ -165,18 +173,15 @@ export function useHashState<T>(
 		);
 
 	// Sync state with initial when:
-	// - initial changes (e.g., savedSettings loaded async)
+	// - ready transitions to true (e.g., saved settings loaded async)
 	// - AND hash was NOT explicitly provided in URL on mount
-	// NOTE: `initial` must be a stable reference when it is an object.
-	// Pass a module-level constant, useMemo, or useState value — never an inline literal.
-	// An unstable reference will cause this effect to re-fire on every render.
 	useEffect(() => {
-		if (meta.param == null || hashWasExplicit) return;
+		if (meta.param == null || !ready || hashWasExplicit) return;
 
 		if (initial != null) {
 			setState(initial);
 		}
-	}, [initial]);
+	}, [ready]);
 
 	return [state, setState];
 }

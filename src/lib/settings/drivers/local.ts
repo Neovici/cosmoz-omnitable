@@ -1,20 +1,21 @@
 export default ({ prefix = 'omnitable-' } = {}) => {
 	const read = async (settingsId: string) => {
 		if (!settingsId) {
-			return;
+			return null;
 		}
 
 		try {
 			const item = localStorage.getItem(prefix + settingsId);
 
 			if (item == null) {
-				return;
+				return null;
 			}
 
 			return JSON.parse(item);
 		} catch (e) {
 			// eslint-disable-next-line no-console
 			console.error(e);
+			return null;
 		}
 	};
 
