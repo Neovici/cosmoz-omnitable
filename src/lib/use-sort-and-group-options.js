@@ -1,10 +1,10 @@
 import {
-	useMemo,
-	createContext,
 	component,
-	useContext,
+	createContext,
 	useCallback,
+	useContext,
 	useEffect,
+	useMemo,
 } from '@pionjs/pion';
 import { useHashState } from './use-hash-state';
 
@@ -22,25 +22,25 @@ const parseBool = (bool) => [true, 'true', 1, 'yes', 'on'].includes(bool),
 export const useSortAndGroupOptions = (
 		columns,
 		hashParam,
-		settings,
-		setSettings,
-		resetRef,
+		{ settings, setSettings, resetRef, ready = true },
 	) => {
 		const [sortOn, setSortOn] = useHashState(settings.sortOn, hashParam, {
 				suffix: '-sortOn',
+				ready,
 			}),
 			[descending, setDescending] = useHashState(
 				boolParam(settings.descending),
 				hashParam,
-				{ suffix: '-descending', read: boolParam },
+				{ suffix: '-descending', read: boolParam, ready },
 			),
 			[groupOn, setGroupOn] = useHashState(settings.groupOn, hashParam, {
 				suffix: '-groupOn',
+				ready,
 			}),
 			[groupOnDescending, setGroupOnDescending] = useHashState(
 				boolParam(settings.groupOnDescending),
 				hashParam,
-				{ suffix: '-groupOnDescending', read: boolParam },
+				{ suffix: '-groupOnDescending', read: boolParam, ready },
 			),
 			sortOnColumn = useMemo(
 				() => columns.find((column) => column.name === sortOn),

@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo } from '@pionjs/pion';
 import { invoke } from '@neovici/cosmoz-utils/function';
+import { useCallback, useEffect, useMemo } from '@pionjs/pion';
 import { genericSorter } from './generic-sorter';
 import { columnSymbol } from './use-dom-columns';
 import { useHashState } from './use-hash-state';

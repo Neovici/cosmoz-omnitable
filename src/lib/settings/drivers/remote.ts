@@ -9,10 +9,11 @@ export default (params: RemoteParams) => {
 	const read = async (settingsId: string) => {
 		const key = prefix + settingsId;
 		try {
-			return await get$(key);
+			return (await get$(key)) ?? null;
 		} catch (e) {
 			// eslint-disable-next-line no-console
 			console.error(e);
+			return null;
 		}
 	};
 	const write = async (settingsId: string, settings = {}) => {
