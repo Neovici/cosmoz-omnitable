@@ -1,25 +1,29 @@
-import { html, css, component } from '@pionjs/pion';
+import { component, css, html } from '@pionjs/pion';
 
 const styles = css`
 	:host {
 		max-width: 100%;
 		overflow-x: hidden;
-		padding: 0 12px;
+		padding-left: calc(var(--cz-spacing) * 3);
 	}
 	.skeleton {
 		width: 100%;
 	}
 	.skeleton > div {
-		height: 17.5px;
+		height: calc(var(--cz-spacing) * 4.5);
 		display: flex;
-		padding: 11px 12px 11px 0;
+		padding-block: 11px;
+		width: 100%;
+	}
+	.skeleton > div:not(:last-child) {
+		border-bottom: 1px solid var(--cz-color-bg-secondary);
 	}
 	.skeleton > div div:not(.handle) {
 		background-image: linear-gradient(
-			90deg, 
-			var(--cosmoz-omnitable-skeleton-bg-from, #e0e0e0), 
-			var(--cosmoz-omnitable-skeleton-bg-middle, #f5f5f5), 
-			var(--cosmoz-omnitable-skeleton-bg-to, #e0e0e0)
+			90deg,
+			var(--cz-color-bg-quaternary),
+			var(--cz-color-bg-secondary),
+			var(--cz-color-bg-quaternary)
 		);
 		background-size: 1000%;
 		background-position: right;

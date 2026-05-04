@@ -202,6 +202,10 @@ export default css`
 		justify-content: center;
 		color: var(--cz-color-text-disabled);
 	}
+
+	.tableContent-empty:has(cosmoz-omnitable-skeleton) {
+		justify-content: stretch;
+	}
 	.tableContent-empty.overlay {
 		color: var(--cz-color-text-disabled);
 		z-index: 1;
