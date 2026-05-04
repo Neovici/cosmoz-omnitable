@@ -1,0 +1,4762 @@
+[
+  {
+    "id": 0,
+    "name": "Group 0 item 0",
+    "value": 6076,
+    "boolean": false,
+    "object": {
+      "value": 5366,
+      "label": "Random string 2"
+    },
+    "sub": {
+      "subProp": "Lorem ipsum dolor sit amet"
+    },
+    "randomString": "Random string 2",
+    "randomString2": "Random string 2 8",
+    "randomString3": "Random string 3 5",
+    "randomString4": "Random string 4 1",
+    "date": "2016-11-08T19:47:32.114Z",
+    "dateJSON": "2015-09-27",
+    "amount": {
+      "amount": 67,
+      "currency": "SEK"
+    },
+    "group": "Group 0",
+    "list": [],
+    "objectList": []
+  },
+  {
+    "id": 1,
+    "name": "Group 1 item 0",
+    "value": 3173,
+    "boolean": true,
+    "object": {
+      "value": 1563,
+      "label": "Random string 2"
+    },
+    "sub": {
+      "subProp": "Nunc tristique"
+    },
+    "randomString": "Random string 8",
+    "randomString2": "Random string 2 8",
+    "randomString3": "Random string 3 2",
+    "randomString4": "Random string 4 3",
+    "date": "2016-05-02T07:09:10.443Z",
+    "dateJSON": "2015-09-19",
+    "amount": {
+      "amount": 96,
+      "currency": "USD"
+    },
+    "group": "Group 1",
+    "list": ["Item 0"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Group 1 item 1",
+    "value": 2015,
+    "boolean": true,
+    "object": {
+      "value": 1802,
+      "label": "Random string 2"
+    },
+    "sub": {
+      "subProp": "Curabitur vestibulum"
+    },
+    "randomString": "Random string 3",
+    "randomString2": "Random string 2 6",
+    "randomString3": "Random string 3 3",
+    "randomString4": "Random string 4 9",
+    "date": "2014-11-20T13:49:21.148Z",
+    "dateJSON": "2015-11-19",
+    "amount": {
+      "amount": 13,
+      "currency": "EUR"
+    },
+    "group": "Group 1",
+    "list": ["Item 0", "Item 1"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Group 1 item 2",
+    "value": 1018,
+    "boolean": true,
+    "object": {
+      "value": 1481,
+      "label": "Random string 4"
+    },
+    "sub": {
+      "subProp": "Cras laoreet"
+    },
+    "randomString": "Random string 8",
+    "randomString2": "Random string 2 8",
+    "randomString3": "Random string 3 8",
+    "randomString4": "Random string 4 8",
+    "date": "2017-05-28T07:37:22.320Z",
+    "dateJSON": "2015-02-03",
+    "amount": {
+      "amount": 76,
+      "currency": "AUD"
+    },
+    "group": "Group 1",
+    "list": ["Item 0", "Item 1", "Item 2"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Group 2 item 0",
+    "value": 5767,
+    "boolean": false,
+    "object": {
+      "value": 6299,
+      "label": "Random string 8"
+    },
+    "sub": {
+      "subProp": "Himenaeos"
+    },
+    "randomString": "Random string 5",
+    "randomString2": "Random string 2 6",
+    "randomString3": "Random string 3 2",
+    "randomString4": "Random string 4 9",
+    "date": "2016-05-04T15:55:07.325Z",
+    "dateJSON": "2015-05-05",
+    "amount": {
+      "amount": 64,
+      "currency": "SEK"
+    },
+    "group": "Group 2",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Group 2 item 1",
+    "value": 1329,
+    "boolean": false,
+    "object": {
+      "value": 972,
+      "label": "Random string 1"
+    },
+    "sub": {
+      "subProp": "maximus diam purus at mauris"
+    },
+    "randomString": "Random string 4",
+    "randomString2": "Random string 2 7",
+    "randomString3": "Random string 3 10",
+    "randomString4": "Random string 4 5",
+    "date": "2014-08-08T03:12:54.841Z",
+    "dateJSON": "2015-11-26",
+    "amount": {
+      "amount": 66,
+      "currency": "USD"
+    },
+    "group": "Group 2",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3", "Item 4"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Group 2 item 2",
+    "value": 856,
+    "boolean": false,
+    "object": {
+      "value": 8690,
+      "label": "Random string 2"
+    },
+    "sub": {
+      "subProp": "Lorem ipsum dolor sit amet"
+    },
+    "randomString": "Random string 2",
+    "randomString2": "Random string 2 9",
+    "randomString3": "Random string 3 9",
+    "randomString4": "Random string 4 2",
+    "date": "2015-05-24T16:36:36.333Z",
+    "dateJSON": "2015-12-17",
+    "amount": {
+      "amount": 95,
+      "currency": "EUR"
+    },
+    "group": "Group 2",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3", "Item 4", "Item 5"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Group 2 item 3",
+    "value": 9635,
+    "boolean": false,
+    "object": {
+      "value": 9480,
+      "label": "Random string 2"
+    },
+    "sub": {
+      "subProp": "Nunc tristique"
+    },
+    "randomString": "Random string 1",
+    "randomString2": "Random string 2 7",
+    "randomString3": "Random string 3 2",
+    "randomString4": "Random string 4 10",
+    "date": "2015-01-14T21:25:49.660Z",
+    "dateJSON": "2015-06-10",
+    "amount": {
+      "amount": 13,
+      "currency": "AUD"
+    },
+    "group": "Group 2",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Group 2 item 4",
+    "value": 4952,
+    "boolean": true,
+    "object": {
+      "value": 6252,
+      "label": "Random string 3"
+    },
+    "sub": {
+      "subProp": "Curabitur vestibulum"
+    },
+    "randomString": "Random string 5",
+    "randomString2": "Random string 2 7",
+    "randomString3": "Random string 3 5",
+    "randomString4": "Random string 4 6",
+    "date": "2017-08-06T02:27:15.073Z",
+    "dateJSON": "2015-08-19",
+    "amount": {
+      "amount": 85,
+      "currency": "SEK"
+    },
+    "group": "Group 2",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6",
+      "Item 7"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      },
+      {
+        "name": "Item 7",
+        "value": "item-value-7"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Group 3 item 0",
+    "value": 1001,
+    "boolean": true,
+    "object": {
+      "value": 2261,
+      "label": "Random string 6"
+    },
+    "sub": {
+      "subProp": "Cras laoreet"
+    },
+    "randomString": "Random string 6",
+    "randomString2": "Random string 2 4",
+    "randomString3": "Random string 3 3",
+    "randomString4": "Random string 4 4",
+    "date": "2014-06-28T20:58:58.038Z",
+    "dateJSON": "2015-11-08",
+    "amount": {
+      "amount": 35,
+      "currency": "USD"
+    },
+    "group": "Group 3",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6",
+      "Item 7",
+      "Item 8"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      },
+      {
+        "name": "Item 7",
+        "value": "item-value-7"
+      },
+      {
+        "name": "Item 8",
+        "value": "item-value-8"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Group 3 item 1",
+    "value": 5908,
+    "boolean": true,
+    "object": {
+      "value": 4588,
+      "label": "Random string 9"
+    },
+    "sub": {
+      "subProp": "Himenaeos"
+    },
+    "randomString": "Random string 3",
+    "randomString2": "Random string 2 8",
+    "randomString3": "Random string 3 7",
+    "randomString4": "Random string 4 5",
+    "date": "2014-12-13T00:14:08.286Z",
+    "dateJSON": "2015-12-25",
+    "amount": {
+      "amount": 20,
+      "currency": "EUR"
+    },
+    "group": "Group 3",
+    "list": [],
+    "objectList": []
+  },
+  {
+    "id": 11,
+    "name": "Group 3 item 2",
+    "value": 4016,
+    "boolean": true,
+    "object": {
+      "value": 7338,
+      "label": "Random string 8"
+    },
+    "sub": {
+      "subProp": "maximus diam purus at mauris"
+    },
+    "randomString": "Random string 1",
+    "randomString2": "Random string 2 8",
+    "randomString3": "Random string 3 5",
+    "randomString4": "Random string 4 5",
+    "date": "2015-04-12T17:00:33.501Z",
+    "dateJSON": "2015-03-19",
+    "amount": {
+      "amount": 73,
+      "currency": "AUD"
+    },
+    "group": "Group 3",
+    "list": ["Item 0"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Group 3 item 3",
+    "value": 3070,
+    "boolean": false,
+    "object": {
+      "value": 2858,
+      "label": "Random string 6"
+    },
+    "sub": {
+      "subProp": "Lorem ipsum dolor sit amet"
+    },
+    "randomString": "Random string 1",
+    "randomString2": "Random string 2 1",
+    "randomString3": "Random string 3 3",
+    "randomString4": "Random string 4 6",
+    "date": "2014-09-01T06:15:02.738Z",
+    "dateJSON": "2015-12-13",
+    "amount": {
+      "amount": 64,
+      "currency": "SEK"
+    },
+    "group": "Group 3",
+    "list": ["Item 0", "Item 1"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "name": "Group 3 item 4",
+    "value": 4481,
+    "boolean": false,
+    "object": {
+      "value": 1428,
+      "label": "Random string 5"
+    },
+    "sub": {
+      "subProp": "Nunc tristique"
+    },
+    "randomString": "Random string 2",
+    "randomString2": "Random string 2 3",
+    "randomString3": "Random string 3 5",
+    "randomString4": "Random string 4 8",
+    "date": "2016-05-02T07:09:10.443Z",
+    "dateJSON": "2015-11-03",
+    "amount": {
+      "amount": 48,
+      "currency": "USD"
+    },
+    "group": "Group 3",
+    "list": ["Item 0", "Item 1", "Item 2"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "name": "Group 3 item 5",
+    "value": 6732,
+    "boolean": true,
+    "object": {
+      "value": 8382,
+      "label": "Random string 8"
+    },
+    "sub": {
+      "subProp": "Curabitur vestibulum"
+    },
+    "randomString": "Random string 9",
+    "randomString2": "Random string 2 2",
+    "randomString3": "Random string 3 2",
+    "randomString4": "Random string 4 3",
+    "date": "2015-04-02T11:26:10.299Z",
+    "dateJSON": "2015-02-28",
+    "amount": {
+      "amount": 62,
+      "currency": "EUR"
+    },
+    "group": "Group 3",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "name": "Group 3 item 6",
+    "value": 8676,
+    "boolean": true,
+    "object": {
+      "value": 7471,
+      "label": "Random string 4"
+    },
+    "sub": {
+      "subProp": "Cras laoreet"
+    },
+    "randomString": "Random string 5",
+    "randomString2": "Random string 2 4",
+    "randomString3": "Random string 3 8",
+    "randomString4": "Random string 4 4",
+    "date": "2015-02-08T04:51:10.247Z",
+    "dateJSON": "2015-07-25",
+    "amount": {
+      "amount": 78,
+      "currency": "AUD"
+    },
+    "group": "Group 3",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3", "Item 4"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "name": "Group 4 item 0",
+    "value": 8193,
+    "boolean": true,
+    "object": {
+      "value": 9473,
+      "label": "Random string 2"
+    },
+    "sub": {
+      "subProp": "Himenaeos"
+    },
+    "randomString": "Random string 7",
+    "randomString2": "Random string 2 10",
+    "randomString3": "Random string 3 10",
+    "randomString4": "Random string 4 4",
+    "date": "2017-06-15T11:56:53.567Z",
+    "dateJSON": "2015-09-12",
+    "amount": {
+      "amount": 67,
+      "currency": "SEK"
+    },
+    "group": "Group 4",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3", "Item 4", "Item 5"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "name": "Group 4 item 1",
+    "value": 4064,
+    "boolean": true,
+    "object": {
+      "value": 7464,
+      "label": "Random string 10"
+    },
+    "sub": {
+      "subProp": "maximus diam purus at mauris"
+    },
+    "randomString": "Random string 8",
+    "randomString2": "Random string 2 10",
+    "randomString3": "Random string 3 2",
+    "randomString4": "Random string 4 2",
+    "date": "2016-10-18T18:08:22.204Z",
+    "dateJSON": "2015-04-22",
+    "amount": {
+      "amount": 10,
+      "currency": "USD"
+    },
+    "group": "Group 4",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "name": "Group 4 item 2",
+    "value": 1666,
+    "boolean": true,
+    "object": {
+      "value": 6436,
+      "label": "Random string 6"
+    },
+    "sub": {
+      "subProp": "Lorem ipsum dolor sit amet"
+    },
+    "randomString": "Random string 6",
+    "randomString2": "Random string 2 8",
+    "randomString3": "Random string 3 8",
+    "randomString4": "Random string 4 8",
+    "date": "2014-09-05T09:16:49.187Z",
+    "dateJSON": "2015-04-14",
+    "amount": {
+      "amount": 17,
+      "currency": "EUR"
+    },
+    "group": "Group 4",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6",
+      "Item 7"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      },
+      {
+        "name": "Item 7",
+        "value": "item-value-7"
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "name": "Group 4 item 3",
+    "value": 1001,
+    "boolean": false,
+    "object": {
+      "value": 9250,
+      "label": "Random string 5"
+    },
+    "sub": {
+      "subProp": "Nunc tristique"
+    },
+    "randomString": "Random string 9",
+    "randomString2": "Random string 2 10",
+    "randomString3": "Random string 3 9",
+    "randomString4": "Random string 4 5",
+    "date": "2014-11-07T09:06:22.353Z",
+    "dateJSON": "2015-07-13",
+    "amount": {
+      "amount": 42,
+      "currency": "AUD"
+    },
+    "group": "Group 4",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6",
+      "Item 7",
+      "Item 8"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      },
+      {
+        "name": "Item 7",
+        "value": "item-value-7"
+      },
+      {
+        "name": "Item 8",
+        "value": "item-value-8"
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "name": "Group 4 item 4",
+    "value": 1773,
+    "boolean": true,
+    "object": {
+      "value": 3552,
+      "label": "Random string 5"
+    },
+    "sub": {
+      "subProp": "Curabitur vestibulum"
+    },
+    "randomString": "Random string 5",
+    "randomString2": "Random string 2 3",
+    "randomString3": "Random string 3 8",
+    "randomString4": "Random string 4 1",
+    "date": "2017-01-24T15:36:08.955Z",
+    "dateJSON": "2015-10-01",
+    "amount": {
+      "amount": 31,
+      "currency": "SEK"
+    },
+    "group": "Group 4",
+    "list": [],
+    "objectList": []
+  },
+  {
+    "id": 21,
+    "name": "Group 4 item 5",
+    "value": 9955,
+    "boolean": false,
+    "object": {
+      "value": 4877,
+      "label": "Random string 7"
+    },
+    "sub": {
+      "subProp": "Cras laoreet"
+    },
+    "randomString": "Random string 5",
+    "randomString2": "Random string 2 8",
+    "randomString3": "Random string 3 4",
+    "randomString4": "Random string 4 1",
+    "date": "2017-12-10T14:30:48.129Z",
+    "dateJSON": "2015-11-09",
+    "amount": {
+      "amount": 14,
+      "currency": "USD"
+    },
+    "group": "Group 4",
+    "list": ["Item 0"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "name": "Group 4 item 6",
+    "value": 1257,
+    "boolean": false,
+    "object": {
+      "value": 1920,
+      "label": "Random string 5"
+    },
+    "sub": {
+      "subProp": "Himenaeos"
+    },
+    "randomString": "Random string 8",
+    "randomString2": "Random string 2 3",
+    "randomString3": "Random string 3 7",
+    "randomString4": "Random string 4 7",
+    "date": "2016-11-16T18:49:13.048Z",
+    "dateJSON": "2015-04-27",
+    "amount": {
+      "amount": 90,
+      "currency": "EUR"
+    },
+    "group": "Group 4",
+    "list": ["Item 0", "Item 1"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "name": "Group 4 item 7",
+    "value": 757,
+    "boolean": false,
+    "object": {
+      "value": 2675,
+      "label": "Random string 6"
+    },
+    "sub": {
+      "subProp": "maximus diam purus at mauris"
+    },
+    "randomString": "Random string 4",
+    "randomString2": "Random string 2 4",
+    "randomString3": "Random string 3 1",
+    "randomString4": "Random string 4 2",
+    "date": "2016-09-11T00:54:11.115Z",
+    "dateJSON": "2015-05-15",
+    "amount": {
+      "amount": 69,
+      "currency": "AUD"
+    },
+    "group": "Group 4",
+    "list": ["Item 0", "Item 1", "Item 2"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "name": "Group 4 item 8",
+    "value": 4545,
+    "boolean": true,
+    "object": {
+      "value": 2437,
+      "label": "Random string 8"
+    },
+    "sub": {
+      "subProp": "Lorem ipsum dolor sit amet"
+    },
+    "randomString": "Random string 2",
+    "randomString2": "Random string 2 10",
+    "randomString3": "Random string 3 6",
+    "randomString4": "Random string 4 5",
+    "date": "2017-07-01T04:22:34.856Z",
+    "dateJSON": "2015-10-08",
+    "amount": {
+      "amount": 63,
+      "currency": "SEK"
+    },
+    "group": "Group 4",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "name": "Group 5 item 0",
+    "value": 999,
+    "boolean": true,
+    "object": {
+      "value": 9493,
+      "label": "Random string 4"
+    },
+    "sub": {
+      "subProp": "Nunc tristique"
+    },
+    "randomString": "Random string 8",
+    "randomString2": "Random string 2 3",
+    "randomString3": "Random string 3 6",
+    "randomString4": "Random string 4 1",
+    "date": "2015-02-05T20:38:54.088Z",
+    "dateJSON": "2015-08-11",
+    "amount": {
+      "amount": 53,
+      "currency": "USD"
+    },
+    "group": "Group 5",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3", "Item 4"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "name": "Group 5 item 1",
+    "value": 6071,
+    "boolean": true,
+    "object": {
+      "value": 4859,
+      "label": "Random string 8"
+    },
+    "sub": {
+      "subProp": "Curabitur vestibulum"
+    },
+    "randomString": "Random string 6",
+    "randomString2": "Random string 2 10",
+    "randomString3": "Random string 3 9",
+    "randomString4": "Random string 4 8",
+    "date": "2015-03-13T08:28:43.811Z",
+    "dateJSON": "2015-06-01",
+    "amount": {
+      "amount": 68,
+      "currency": "EUR"
+    },
+    "group": "Group 5",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3", "Item 4", "Item 5"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "name": "Group 5 item 2",
+    "value": 2253,
+    "boolean": false,
+    "object": {
+      "value": 9412,
+      "label": "Random string 7"
+    },
+    "sub": {
+      "subProp": "Cras laoreet"
+    },
+    "randomString": "Random string 4",
+    "randomString2": "Random string 2 8",
+    "randomString3": "Random string 3 4",
+    "randomString4": "Random string 4 8",
+    "date": "2017-08-25T20:29:59.238Z",
+    "dateJSON": "2015-05-02",
+    "amount": {
+      "amount": 94,
+      "currency": "AUD"
+    },
+    "group": "Group 5",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "name": "Group 5 item 3",
+    "value": 2880,
+    "boolean": false,
+    "object": {
+      "value": 4536,
+      "label": "Random string 7"
+    },
+    "sub": {
+      "subProp": "Himenaeos"
+    },
+    "randomString": "Random string 7",
+    "randomString2": "Random string 2 10",
+    "randomString3": "Random string 3 9",
+    "randomString4": "Random string 4 3",
+    "date": "2017-11-12T11:39:56.093Z",
+    "dateJSON": "2015-01-07",
+    "amount": {
+      "amount": 76,
+      "currency": "SEK"
+    },
+    "group": "Group 5",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6",
+      "Item 7"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      },
+      {
+        "name": "Item 7",
+        "value": "item-value-7"
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "name": "Group 5 item 4",
+    "value": 7603,
+    "boolean": false,
+    "object": {
+      "value": 6601,
+      "label": "Random string 7"
+    },
+    "sub": {
+      "subProp": "maximus diam purus at mauris"
+    },
+    "randomString": "Random string 3",
+    "randomString2": "Random string 2 9",
+    "randomString3": "Random string 3 6",
+    "randomString4": "Random string 4 6",
+    "date": "2015-12-16T19:59:53.371Z",
+    "dateJSON": "2015-08-08",
+    "amount": {
+      "amount": 31,
+      "currency": "USD"
+    },
+    "group": "Group 5",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6",
+      "Item 7",
+      "Item 8"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      },
+      {
+        "name": "Item 7",
+        "value": "item-value-7"
+      },
+      {
+        "name": "Item 8",
+        "value": "item-value-8"
+      }
+    ]
+  },
+  {
+    "id": 30,
+    "name": "Group 5 item 5",
+    "value": 108,
+    "boolean": false,
+    "object": {
+      "value": 9243,
+      "label": "Random string 3"
+    },
+    "sub": {
+      "subProp": "Lorem ipsum dolor sit amet"
+    },
+    "randomString": "Random string 10",
+    "randomString2": "Random string 2 10",
+    "randomString3": "Random string 3 7",
+    "randomString4": "Random string 4 8",
+    "date": "2017-06-08T01:04:38.946Z",
+    "dateJSON": "2015-05-02",
+    "amount": {
+      "amount": 81,
+      "currency": "EUR"
+    },
+    "group": "Group 5",
+    "list": [],
+    "objectList": []
+  },
+  {
+    "id": 31,
+    "name": "Group 5 item 6",
+    "value": 3608,
+    "boolean": false,
+    "object": {
+      "value": 3954,
+      "label": "Random string 10"
+    },
+    "sub": {
+      "subProp": "Nunc tristique"
+    },
+    "randomString": "Random string 7",
+    "randomString2": "Random string 2 7",
+    "randomString3": "Random string 3 8",
+    "randomString4": "Random string 4 7",
+    "date": "2017-09-22T06:47:31.503Z",
+    "dateJSON": "2015-08-15",
+    "amount": {
+      "amount": 87,
+      "currency": "AUD"
+    },
+    "group": "Group 5",
+    "list": ["Item 0"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      }
+    ]
+  },
+  {
+    "id": 32,
+    "name": "Group 5 item 7",
+    "value": 7100,
+    "boolean": true,
+    "object": {
+      "value": 1843,
+      "label": "Random string 1"
+    },
+    "sub": {
+      "subProp": "Curabitur vestibulum"
+    },
+    "randomString": "Random string 9",
+    "randomString2": "Random string 2 9",
+    "randomString3": "Random string 3 10",
+    "randomString4": "Random string 4 6",
+    "date": "2015-08-01T04:48:58.006Z",
+    "dateJSON": "2015-09-11",
+    "amount": {
+      "amount": 70,
+      "currency": "SEK"
+    },
+    "group": "Group 5",
+    "list": ["Item 0", "Item 1"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      }
+    ]
+  },
+  {
+    "id": 33,
+    "name": "Group 5 item 8",
+    "value": 741,
+    "boolean": false,
+    "object": {
+      "value": 5425,
+      "label": "Random string 7"
+    },
+    "sub": {
+      "subProp": "Cras laoreet"
+    },
+    "randomString": "Random string 10",
+    "randomString2": "Random string 2 8",
+    "randomString3": "Random string 3 9",
+    "randomString4": "Random string 4 9",
+    "date": "2015-02-07T04:29:14.578Z",
+    "dateJSON": "2015-06-27",
+    "amount": {
+      "amount": 71,
+      "currency": "USD"
+    },
+    "group": "Group 5",
+    "list": ["Item 0", "Item 1", "Item 2"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      }
+    ]
+  },
+  {
+    "id": 34,
+    "name": "Group 5 item 9",
+    "value": 5705,
+    "boolean": true,
+    "object": {
+      "value": 2014,
+      "label": "Random string 3"
+    },
+    "sub": {
+      "subProp": "Himenaeos"
+    },
+    "randomString": "Random string 3",
+    "randomString2": "Random string 2 8",
+    "randomString3": "Random string 3 1",
+    "randomString4": "Random string 4 10",
+    "date": "2017-12-09T00:16:51.954Z",
+    "dateJSON": "2015-04-07",
+    "amount": {
+      "amount": 32,
+      "currency": "EUR"
+    },
+    "group": "Group 5",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      }
+    ]
+  },
+  {
+    "id": 35,
+    "name": "Group 5 item 10",
+    "value": 5499,
+    "boolean": true,
+    "object": {
+      "value": 994,
+      "label": "Random string 8"
+    },
+    "sub": {
+      "subProp": "maximus diam purus at mauris"
+    },
+    "randomString": "Random string 9",
+    "randomString2": "Random string 2 10",
+    "randomString3": "Random string 3 3",
+    "randomString4": "Random string 4 1",
+    "date": "2016-05-02T07:09:10.443Z",
+    "dateJSON": "2015-01-10",
+    "amount": {
+      "amount": 88,
+      "currency": "AUD"
+    },
+    "group": "Group 5",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3", "Item 4"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      }
+    ]
+  },
+  {
+    "id": 36,
+    "name": "Group 6 item 0",
+    "value": 3555,
+    "boolean": true,
+    "object": {
+      "value": 6732,
+      "label": "Random string 6"
+    },
+    "sub": {
+      "subProp": "Lorem ipsum dolor sit amet"
+    },
+    "randomString": "Random string 2",
+    "randomString2": "Random string 2 2",
+    "randomString3": "Random string 3 7",
+    "randomString4": "Random string 4 3",
+    "date": "2016-05-02T07:09:10.444Z",
+    "dateJSON": "2015-02-06",
+    "amount": {
+      "amount": 67,
+      "currency": "SEK"
+    },
+    "group": "Group 6",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3", "Item 4", "Item 5"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      }
+    ]
+  },
+  {
+    "id": 37,
+    "name": "Group 6 item 1",
+    "value": 5401,
+    "boolean": true,
+    "object": {
+      "value": 9048,
+      "label": "Random string 3"
+    },
+    "sub": {
+      "subProp": "Nunc tristique"
+    },
+    "randomString": "Random string 2",
+    "randomString2": "Random string 2 3",
+    "randomString3": "Random string 3 5",
+    "randomString4": "Random string 4 4",
+    "date": "2017-04-19T16:24:01.865Z",
+    "dateJSON": "2015-12-28",
+    "amount": {
+      "amount": 37,
+      "currency": "USD"
+    },
+    "group": "Group 6",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      }
+    ]
+  },
+  {
+    "id": 38,
+    "name": "Group 6 item 2",
+    "value": 6112,
+    "boolean": false,
+    "object": {
+      "value": 8989,
+      "label": "Random string 10"
+    },
+    "sub": {
+      "subProp": "Curabitur vestibulum"
+    },
+    "randomString": "Random string 3",
+    "randomString2": "Random string 2 6",
+    "randomString3": "Random string 3 9",
+    "randomString4": "Random string 4 6",
+    "date": "2015-04-02T11:26:10.299Z",
+    "dateJSON": "2015-09-19",
+    "amount": {
+      "amount": 30,
+      "currency": "EUR"
+    },
+    "group": "Group 6",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6",
+      "Item 7"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      },
+      {
+        "name": "Item 7",
+        "value": "item-value-7"
+      }
+    ]
+  },
+  {
+    "id": 39,
+    "name": "Group 6 item 3",
+    "value": 8190,
+    "boolean": false,
+    "object": {
+      "value": 6392,
+      "label": "Random string 10"
+    },
+    "sub": {
+      "subProp": "Cras laoreet"
+    },
+    "randomString": "Random string 3",
+    "randomString2": "Random string 2 5",
+    "randomString3": "Random string 3 2",
+    "randomString4": "Random string 4 4",
+    "date": "2016-05-01T18:33:18.343Z",
+    "dateJSON": "2015-05-02",
+    "amount": {
+      "amount": 53,
+      "currency": "AUD"
+    },
+    "group": "Group 6",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6",
+      "Item 7",
+      "Item 8"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      },
+      {
+        "name": "Item 7",
+        "value": "item-value-7"
+      },
+      {
+        "name": "Item 8",
+        "value": "item-value-8"
+      }
+    ]
+  },
+  {
+    "id": 40,
+    "name": "Group 6 item 4",
+    "value": 1148,
+    "boolean": true,
+    "object": {
+      "value": 5226,
+      "label": "Random string 4"
+    },
+    "sub": {
+      "subProp": "Himenaeos"
+    },
+    "randomString": "Random string 9",
+    "randomString2": "Random string 2 3",
+    "randomString3": "Random string 3 2",
+    "randomString4": "Random string 4 5",
+    "date": "2014-08-28T14:14:26.820Z",
+    "dateJSON": "2015-11-09",
+    "amount": {
+      "amount": 73,
+      "currency": "SEK"
+    },
+    "group": "Group 6",
+    "list": [],
+    "objectList": []
+  },
+  {
+    "id": 41,
+    "name": "Group 6 item 5",
+    "value": 6839,
+    "boolean": false,
+    "object": {
+      "value": 8887,
+      "label": "Random string 2"
+    },
+    "sub": {
+      "subProp": "maximus diam purus at mauris"
+    },
+    "randomString": "Random string 8",
+    "randomString2": "Random string 2 3",
+    "randomString3": "Random string 3 7",
+    "randomString4": "Random string 4 10",
+    "date": "2016-05-02T07:09:10.443Z",
+    "dateJSON": "2015-12-10",
+    "amount": {
+      "amount": 23,
+      "currency": "USD"
+    },
+    "group": "Group 6",
+    "list": ["Item 0"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      }
+    ]
+  },
+  {
+    "id": 42,
+    "name": "Group 6 item 6",
+    "value": 1487,
+    "boolean": false,
+    "object": {
+      "value": 2930,
+      "label": "Random string 6"
+    },
+    "sub": {
+      "subProp": "Lorem ipsum dolor sit amet"
+    },
+    "randomString": "Random string 9",
+    "randomString2": "Random string 2 7",
+    "randomString3": "Random string 3 4",
+    "randomString4": "Random string 4 2",
+    "date": "2015-10-04T04:16:53.607Z",
+    "dateJSON": "2015-05-28",
+    "amount": {
+      "amount": 39,
+      "currency": "EUR"
+    },
+    "group": "Group 6",
+    "list": ["Item 0", "Item 1"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      }
+    ]
+  },
+  {
+    "id": 43,
+    "name": "Group 6 item 7",
+    "value": 9172,
+    "boolean": false,
+    "object": {
+      "value": 2517,
+      "label": "Random string 2"
+    },
+    "sub": {
+      "subProp": "Nunc tristique"
+    },
+    "randomString": "Random string 7",
+    "randomString2": "Random string 2 6",
+    "randomString3": "Random string 3 5",
+    "randomString4": "Random string 4 3",
+    "date": "2018-01-17T17:25:51.640Z",
+    "dateJSON": "2015-02-21",
+    "amount": {
+      "amount": 64,
+      "currency": "AUD"
+    },
+    "group": "Group 6",
+    "list": ["Item 0", "Item 1", "Item 2"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      }
+    ]
+  },
+  {
+    "id": 44,
+    "name": "Group 6 item 8",
+    "value": 7139,
+    "boolean": true,
+    "object": {
+      "value": 2207,
+      "label": "Random string 6"
+    },
+    "sub": {
+      "subProp": "Curabitur vestibulum"
+    },
+    "randomString": "Random string 5",
+    "randomString2": "Random string 2 9",
+    "randomString3": "Random string 3 1",
+    "randomString4": "Random string 4 2",
+    "date": "2014-04-06T17:54:26.887Z",
+    "dateJSON": "2015-02-02",
+    "amount": {
+      "amount": 21,
+      "currency": "SEK"
+    },
+    "group": "Group 6",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      }
+    ]
+  },
+  {
+    "id": 45,
+    "name": "Group 6 item 9",
+    "value": 8313,
+    "boolean": true,
+    "object": {
+      "value": 2546,
+      "label": "Random string 10"
+    },
+    "sub": {
+      "subProp": "Cras laoreet"
+    },
+    "randomString": "Random string 10",
+    "randomString2": "Random string 2 6",
+    "randomString3": "Random string 3 2",
+    "randomString4": "Random string 4 4",
+    "date": "2016-12-18T06:16:41.234Z",
+    "dateJSON": "2015-08-15",
+    "amount": {
+      "amount": 18,
+      "currency": "USD"
+    },
+    "group": "Group 6",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3", "Item 4"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      }
+    ]
+  },
+  {
+    "id": 46,
+    "name": "Group 6 item 10",
+    "value": 2149,
+    "boolean": true,
+    "object": {
+      "value": 1622,
+      "label": "Random string 2"
+    },
+    "sub": {
+      "subProp": "Himenaeos"
+    },
+    "randomString": "Random string 9",
+    "randomString2": "Random string 2 1",
+    "randomString3": "Random string 3 4",
+    "randomString4": "Random string 4 10",
+    "date": "2016-08-09T06:17:33.200Z",
+    "dateJSON": "2015-07-09",
+    "amount": {
+      "amount": 60,
+      "currency": "EUR"
+    },
+    "group": "Group 6",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3", "Item 4", "Item 5"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      }
+    ]
+  },
+  {
+    "id": 47,
+    "name": "Group 6 item 11",
+    "value": 5667,
+    "boolean": true,
+    "object": {
+      "value": 9439,
+      "label": "Random string 4"
+    },
+    "sub": {
+      "subProp": "maximus diam purus at mauris"
+    },
+    "randomString": "Random string 7",
+    "randomString2": "Random string 2 4",
+    "randomString3": "Random string 3 5",
+    "randomString4": "Random string 4 7",
+    "date": "2016-05-02T07:09:10.444Z",
+    "dateJSON": "2015-07-23",
+    "amount": {
+      "amount": 54,
+      "currency": "AUD"
+    },
+    "group": "Group 6",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      }
+    ]
+  },
+  {
+    "id": 48,
+    "name": "Group 6 item 12",
+    "value": 2305,
+    "boolean": true,
+    "object": {
+      "value": 529,
+      "label": "Random string 1"
+    },
+    "sub": {
+      "subProp": "Lorem ipsum dolor sit amet"
+    },
+    "randomString": "Random string 9",
+    "randomString2": "Random string 2 5",
+    "randomString3": "Random string 3 1",
+    "randomString4": "Random string 4 4",
+    "date": "2017-08-02T19:59:25.547Z",
+    "dateJSON": "2015-10-05",
+    "amount": {
+      "amount": 39,
+      "currency": "SEK"
+    },
+    "group": "Group 6",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6",
+      "Item 7"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      },
+      {
+        "name": "Item 7",
+        "value": "item-value-7"
+      }
+    ]
+  },
+  {
+    "id": 49,
+    "name": "Group 7 item 0",
+    "value": 3796,
+    "boolean": false,
+    "object": {
+      "value": 8853,
+      "label": "Random string 5"
+    },
+    "sub": {
+      "subProp": "Nunc tristique"
+    },
+    "randomString": "Random string 7",
+    "randomString2": "Random string 2 1",
+    "randomString3": "Random string 3 7",
+    "randomString4": "Random string 4 8",
+    "date": "2015-11-12T11:19:11.749Z",
+    "dateJSON": "2015-01-05",
+    "amount": {
+      "amount": 73,
+      "currency": "USD"
+    },
+    "group": "Group 7",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6",
+      "Item 7",
+      "Item 8"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      },
+      {
+        "name": "Item 7",
+        "value": "item-value-7"
+      },
+      {
+        "name": "Item 8",
+        "value": "item-value-8"
+      }
+    ]
+  },
+  {
+    "id": 50,
+    "name": "Group 7 item 1",
+    "value": 4619,
+    "boolean": true,
+    "object": {
+      "value": 7034,
+      "label": "Random string 10"
+    },
+    "sub": {
+      "subProp": "Curabitur vestibulum"
+    },
+    "randomString": "Random string 4",
+    "randomString2": "Random string 2 7",
+    "randomString3": "Random string 3 9",
+    "randomString4": "Random string 4 3",
+    "date": "2016-05-02T07:09:10.443Z",
+    "dateJSON": "2015-02-14",
+    "amount": {
+      "amount": 27,
+      "currency": "EUR"
+    },
+    "group": "Group 7",
+    "list": [],
+    "objectList": []
+  },
+  {
+    "id": 51,
+    "name": "Group 7 item 2",
+    "value": 7068,
+    "boolean": false,
+    "object": {
+      "value": 8995,
+      "label": "Random string 5"
+    },
+    "sub": {
+      "subProp": "Cras laoreet"
+    },
+    "randomString": "Random string 10",
+    "randomString2": "Random string 2 2",
+    "randomString3": "Random string 3 9",
+    "randomString4": "Random string 4 2",
+    "date": "2015-04-02T11:26:10.299Z",
+    "dateJSON": "2015-06-16",
+    "amount": {
+      "amount": 80,
+      "currency": "AUD"
+    },
+    "group": "Group 7",
+    "list": ["Item 0"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      }
+    ]
+  },
+  {
+    "id": 52,
+    "name": "Group 7 item 3",
+    "value": 8431,
+    "boolean": true,
+    "object": {
+      "value": 3120,
+      "label": "Random string 1"
+    },
+    "sub": {
+      "subProp": "Himenaeos"
+    },
+    "randomString": "Random string 3",
+    "randomString2": "Random string 2 6",
+    "randomString3": "Random string 3 3",
+    "randomString4": "Random string 4 9",
+    "date": "2017-01-18T01:32:40.166Z",
+    "dateJSON": "2015-03-05",
+    "amount": {
+      "amount": 11,
+      "currency": "SEK"
+    },
+    "group": "Group 7",
+    "list": ["Item 0", "Item 1"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      }
+    ]
+  },
+  {
+    "id": 53,
+    "name": "Group 7 item 4",
+    "value": 2833,
+    "boolean": true,
+    "object": {
+      "value": 4627,
+      "label": "Random string 10"
+    },
+    "sub": {
+      "subProp": "maximus diam purus at mauris"
+    },
+    "randomString": "Random string 9",
+    "randomString2": "Random string 2 9",
+    "randomString3": "Random string 3 7",
+    "randomString4": "Random string 4 2",
+    "date": "2015-08-23T16:04:43.168Z",
+    "dateJSON": "2015-11-11",
+    "amount": {
+      "amount": 24,
+      "currency": "USD"
+    },
+    "group": "Group 7",
+    "list": ["Item 0", "Item 1", "Item 2"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      }
+    ]
+  },
+  {
+    "id": 54,
+    "name": "Group 7 item 5",
+    "value": 9957,
+    "boolean": true,
+    "object": {
+      "value": 9091,
+      "label": "Random string 3"
+    },
+    "sub": {
+      "subProp": "Lorem ipsum dolor sit amet"
+    },
+    "randomString": "Random string 7",
+    "randomString2": "Random string 2 1",
+    "randomString3": "Random string 3 8",
+    "randomString4": "Random string 4 7",
+    "date": "2017-07-14T15:26:26.763Z",
+    "dateJSON": "2015-06-09",
+    "amount": {
+      "amount": 60,
+      "currency": "EUR"
+    },
+    "group": "Group 7",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      }
+    ]
+  },
+  {
+    "id": 55,
+    "name": "Group 7 item 6",
+    "value": 5473,
+    "boolean": true,
+    "object": {
+      "value": 8832,
+      "label": "Random string 1"
+    },
+    "sub": {
+      "subProp": "Nunc tristique"
+    },
+    "randomString": "Random string 4",
+    "randomString2": "Random string 2 5",
+    "randomString3": "Random string 3 7",
+    "randomString4": "Random string 4 4",
+    "date": "2017-07-24T13:26:10.692Z",
+    "dateJSON": "2015-01-27",
+    "amount": {
+      "amount": 53,
+      "currency": "AUD"
+    },
+    "group": "Group 7",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3", "Item 4"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      }
+    ]
+  },
+  {
+    "id": 56,
+    "name": "Group 7 item 7",
+    "value": 9645,
+    "boolean": false,
+    "object": {
+      "value": 5711,
+      "label": "Random string 6"
+    },
+    "sub": {
+      "subProp": "Curabitur vestibulum"
+    },
+    "randomString": "Random string 4",
+    "randomString2": "Random string 2 1",
+    "randomString3": "Random string 3 9",
+    "randomString4": "Random string 4 10",
+    "date": "2015-11-27T06:17:06.166Z",
+    "dateJSON": "2015-12-03",
+    "amount": {
+      "amount": 89,
+      "currency": "SEK"
+    },
+    "group": "Group 7",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3", "Item 4", "Item 5"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      }
+    ]
+  },
+  {
+    "id": 57,
+    "name": "Group 7 item 8",
+    "value": 4215,
+    "boolean": true,
+    "object": {
+      "value": 9074,
+      "label": "Random string 4"
+    },
+    "sub": {
+      "subProp": "Cras laoreet"
+    },
+    "randomString": "Random string 2",
+    "randomString2": "Random string 2 5",
+    "randomString3": "Random string 3 9",
+    "randomString4": "Random string 4 9",
+    "date": "2017-07-19T19:16:34.156Z",
+    "dateJSON": "2015-07-10",
+    "amount": {
+      "amount": 36,
+      "currency": "USD"
+    },
+    "group": "Group 7",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      }
+    ]
+  },
+  {
+    "id": 58,
+    "name": "Group 7 item 9",
+    "value": 9797,
+    "boolean": false,
+    "object": {
+      "value": 1275,
+      "label": "Random string 8"
+    },
+    "sub": {
+      "subProp": "Himenaeos"
+    },
+    "randomString": "Random string 3",
+    "randomString2": "Random string 2 1",
+    "randomString3": "Random string 3 7",
+    "randomString4": "Random string 4 3",
+    "date": "2015-03-15T22:17:15.345Z",
+    "dateJSON": "2015-12-19",
+    "amount": {
+      "amount": 23,
+      "currency": "EUR"
+    },
+    "group": "Group 7",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6",
+      "Item 7"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      },
+      {
+        "name": "Item 7",
+        "value": "item-value-7"
+      }
+    ]
+  },
+  {
+    "id": 59,
+    "name": "Group 7 item 10",
+    "value": 3202,
+    "boolean": true,
+    "object": {
+      "value": 4550,
+      "label": "Random string 5"
+    },
+    "sub": {
+      "subProp": "maximus diam purus at mauris"
+    },
+    "randomString": "Random string 5",
+    "randomString2": "Random string 2 9",
+    "randomString3": "Random string 3 6",
+    "randomString4": "Random string 4 10",
+    "date": "2016-11-24T00:02:20.786Z",
+    "dateJSON": "2015-10-24",
+    "amount": {
+      "amount": 14,
+      "currency": "AUD"
+    },
+    "group": "Group 7",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6",
+      "Item 7",
+      "Item 8"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      },
+      {
+        "name": "Item 7",
+        "value": "item-value-7"
+      },
+      {
+        "name": "Item 8",
+        "value": "item-value-8"
+      }
+    ]
+  },
+  {
+    "id": 60,
+    "name": "Group 7 item 11",
+    "value": 150,
+    "boolean": true,
+    "object": {
+      "value": 5575,
+      "label": "Random string 10"
+    },
+    "sub": {
+      "subProp": "Lorem ipsum dolor sit amet"
+    },
+    "randomString": "Random string 7",
+    "randomString2": "Random string 2 6",
+    "randomString3": "Random string 3 5",
+    "randomString4": "Random string 4 8",
+    "date": "2017-02-15T17:24:42.770Z",
+    "dateJSON": "2015-03-06",
+    "amount": {
+      "amount": 28,
+      "currency": "SEK"
+    },
+    "group": "Group 7",
+    "list": [],
+    "objectList": []
+  },
+  {
+    "id": 61,
+    "name": "Group 7 item 12",
+    "value": 1932,
+    "boolean": true,
+    "object": {
+      "value": 2405,
+      "label": "Random string 10"
+    },
+    "sub": {
+      "subProp": "Nunc tristique"
+    },
+    "randomString": "Random string 7",
+    "randomString2": "Random string 2 6",
+    "randomString3": "Random string 3 5",
+    "randomString4": "Random string 4 7",
+    "date": "2016-05-02T07:09:10.442Z",
+    "dateJSON": "2015-01-03",
+    "amount": {
+      "amount": 19,
+      "currency": "USD"
+    },
+    "group": "Group 7",
+    "list": ["Item 0"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      }
+    ]
+  },
+  {
+    "id": 62,
+    "name": "Group 7 item 13",
+    "value": 5016,
+    "boolean": false,
+    "object": {
+      "value": 5471,
+      "label": "Random string 1"
+    },
+    "sub": {
+      "subProp": "Curabitur vestibulum"
+    },
+    "randomString": "Random string 8",
+    "randomString2": "Random string 2 3",
+    "randomString3": "Random string 3 8",
+    "randomString4": "Random string 4 1",
+    "date": "2016-06-04T21:57:36.731Z",
+    "dateJSON": "2015-05-04",
+    "amount": {
+      "amount": 38,
+      "currency": "EUR"
+    },
+    "group": "Group 7",
+    "list": ["Item 0", "Item 1"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      }
+    ]
+  },
+  {
+    "id": 63,
+    "name": "Group 7 item 14",
+    "value": 9259,
+    "boolean": true,
+    "object": {
+      "value": 7845,
+      "label": "Random string 10"
+    },
+    "sub": {
+      "subProp": "Cras laoreet"
+    },
+    "randomString": "Random string 7",
+    "randomString2": "Random string 2 5",
+    "randomString3": "Random string 3 2",
+    "randomString4": "Random string 4 4",
+    "date": "2017-09-02T10:41:51.353Z",
+    "dateJSON": "2015-11-24",
+    "amount": {
+      "amount": 40,
+      "currency": "AUD"
+    },
+    "group": "Group 7",
+    "list": ["Item 0", "Item 1", "Item 2"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      }
+    ]
+  },
+  {
+    "id": 64,
+    "name": "Group 8 item 0",
+    "value": 2204,
+    "boolean": false,
+    "object": {
+      "value": 1474,
+      "label": "Random string 6"
+    },
+    "sub": {
+      "subProp": "Himenaeos"
+    },
+    "randomString": "Random string 5",
+    "randomString2": "Random string 2 7",
+    "randomString3": "Random string 3 6",
+    "randomString4": "Random string 4 6",
+    "date": "2017-08-06T11:42:41.177Z",
+    "dateJSON": "2015-11-14",
+    "amount": {
+      "amount": 20,
+      "currency": "SEK"
+    },
+    "group": "Group 8",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      }
+    ]
+  },
+  {
+    "id": 65,
+    "name": "Group 8 item 1",
+    "value": 8451,
+    "boolean": false,
+    "object": {
+      "value": 225,
+      "label": "Random string 8"
+    },
+    "sub": {
+      "subProp": "maximus diam purus at mauris"
+    },
+    "randomString": "Random string 3",
+    "randomString2": "Random string 2 9",
+    "randomString3": "Random string 3 9",
+    "randomString4": "Random string 4 8",
+    "date": "2017-01-14T23:45:49.124Z",
+    "dateJSON": "2015-07-13",
+    "amount": {
+      "amount": 62,
+      "currency": "USD"
+    },
+    "group": "Group 8",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3", "Item 4"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      }
+    ]
+  },
+  {
+    "id": 66,
+    "name": "Group 8 item 2",
+    "value": 4491,
+    "boolean": false,
+    "object": {
+      "value": 2231,
+      "label": "Random string 5"
+    },
+    "sub": {
+      "subProp": "Lorem ipsum dolor sit amet"
+    },
+    "randomString": "Random string 10",
+    "randomString2": "Random string 2 9",
+    "randomString3": "Random string 3 1",
+    "randomString4": "Random string 4 4",
+    "date": "2016-05-02T07:09:10.444Z",
+    "dateJSON": "2015-08-11",
+    "amount": {
+      "amount": 93,
+      "currency": "EUR"
+    },
+    "group": "Group 8",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3", "Item 4", "Item 5"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      }
+    ]
+  },
+  {
+    "id": 67,
+    "name": "Group 8 item 3",
+    "value": 843,
+    "boolean": false,
+    "object": {
+      "value": 4596,
+      "label": "Random string 5"
+    },
+    "sub": {
+      "subProp": "Nunc tristique"
+    },
+    "randomString": "Random string 4",
+    "randomString2": "Random string 2 10",
+    "randomString3": "Random string 3 9",
+    "randomString4": "Random string 4 8",
+    "date": "2015-12-01T00:37:15.034Z",
+    "dateJSON": "2015-05-14",
+    "amount": {
+      "amount": 30,
+      "currency": "AUD"
+    },
+    "group": "Group 8",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      }
+    ]
+  },
+  {
+    "id": 68,
+    "name": "Group 8 item 4",
+    "value": 9663,
+    "boolean": true,
+    "object": {
+      "value": 7998,
+      "label": "Random string 6"
+    },
+    "sub": {
+      "subProp": "Curabitur vestibulum"
+    },
+    "randomString": "Random string 7",
+    "randomString2": "Random string 2 1",
+    "randomString3": "Random string 3 1",
+    "randomString4": "Random string 4 5",
+    "date": "2015-04-02T11:26:10.299Z",
+    "dateJSON": "2015-11-09",
+    "amount": {
+      "amount": 48,
+      "currency": "SEK"
+    },
+    "group": "Group 8",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6",
+      "Item 7"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      },
+      {
+        "name": "Item 7",
+        "value": "item-value-7"
+      }
+    ]
+  },
+  {
+    "id": 69,
+    "name": "Group 8 item 5",
+    "value": 105,
+    "boolean": true,
+    "object": {
+      "value": 1080,
+      "label": "Random string 4"
+    },
+    "sub": {
+      "subProp": "Cras laoreet"
+    },
+    "randomString": "Random string 1",
+    "randomString2": "Random string 2 5",
+    "randomString3": "Random string 3 5",
+    "randomString4": "Random string 4 4",
+    "date": "2015-05-17T10:24:48.570Z",
+    "dateJSON": "2015-05-18",
+    "amount": {
+      "amount": 79,
+      "currency": "USD"
+    },
+    "group": "Group 8",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6",
+      "Item 7",
+      "Item 8"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      },
+      {
+        "name": "Item 7",
+        "value": "item-value-7"
+      },
+      {
+        "name": "Item 8",
+        "value": "item-value-8"
+      }
+    ]
+  },
+  {
+    "id": 70,
+    "name": "Group 8 item 6",
+    "value": 7206,
+    "boolean": true,
+    "object": {
+      "value": 4304,
+      "label": "Random string 1"
+    },
+    "sub": {
+      "subProp": "Himenaeos"
+    },
+    "randomString": "Random string 1",
+    "randomString2": "Random string 2 1",
+    "randomString3": "Random string 3 3",
+    "randomString4": "Random string 4 9",
+    "date": "2016-06-12T13:19:01.384Z",
+    "dateJSON": "2015-09-24",
+    "amount": {
+      "amount": 50,
+      "currency": "EUR"
+    },
+    "group": "Group 8",
+    "list": [],
+    "objectList": []
+  },
+  {
+    "id": 71,
+    "name": "Group 8 item 7",
+    "value": 2639,
+    "boolean": true,
+    "object": {
+      "value": 9493,
+      "label": "Random string 1"
+    },
+    "sub": {
+      "subProp": "maximus diam purus at mauris"
+    },
+    "randomString": "Random string 3",
+    "randomString2": "Random string 2 10",
+    "randomString3": "Random string 3 4",
+    "randomString4": "Random string 4 4",
+    "date": "2017-04-11T09:08:00.880Z",
+    "dateJSON": "2015-04-18",
+    "amount": {
+      "amount": 25,
+      "currency": "AUD"
+    },
+    "group": "Group 8",
+    "list": ["Item 0"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      }
+    ]
+  },
+  {
+    "id": 72,
+    "name": "Group 8 item 8",
+    "value": 2910,
+    "boolean": true,
+    "object": {
+      "value": 3987,
+      "label": "Random string 4"
+    },
+    "sub": {
+      "subProp": "Lorem ipsum dolor sit amet"
+    },
+    "randomString": "Random string 6",
+    "randomString2": "Random string 2 2",
+    "randomString3": "Random string 3 3",
+    "randomString4": "Random string 4 8",
+    "date": "2016-02-18T19:08:25.764Z",
+    "dateJSON": "2015-04-28",
+    "amount": {
+      "amount": 51,
+      "currency": "SEK"
+    },
+    "group": "Group 8",
+    "list": ["Item 0", "Item 1"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      }
+    ]
+  },
+  {
+    "id": 73,
+    "name": "Group 8 item 9",
+    "value": 1168,
+    "boolean": false,
+    "object": {
+      "value": 5820,
+      "label": "Random string 9"
+    },
+    "sub": {
+      "subProp": "Nunc tristique"
+    },
+    "randomString": "Random string 1",
+    "randomString2": "Random string 2 2",
+    "randomString3": "Random string 3 9",
+    "randomString4": "Random string 4 2",
+    "date": "2014-10-10T23:05:37.518Z",
+    "dateJSON": "2015-02-22",
+    "amount": {
+      "amount": 49,
+      "currency": "USD"
+    },
+    "group": "Group 8",
+    "list": ["Item 0", "Item 1", "Item 2"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      }
+    ]
+  },
+  {
+    "id": 74,
+    "name": "Group 8 item 10",
+    "value": 994,
+    "boolean": false,
+    "object": {
+      "value": 5321,
+      "label": "Random string 10"
+    },
+    "sub": {
+      "subProp": "Curabitur vestibulum"
+    },
+    "randomString": "Random string 6",
+    "randomString2": "Random string 2 1",
+    "randomString3": "Random string 3 7",
+    "randomString4": "Random string 4 7",
+    "date": "2017-04-26T03:23:25.325Z",
+    "dateJSON": "2015-05-28",
+    "amount": {
+      "amount": 17,
+      "currency": "EUR"
+    },
+    "group": "Group 8",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      }
+    ]
+  },
+  {
+    "id": 75,
+    "name": "Group 8 item 11",
+    "value": 6282,
+    "boolean": false,
+    "object": {
+      "value": 3569,
+      "label": "Random string 10"
+    },
+    "sub": {
+      "subProp": "Cras laoreet"
+    },
+    "randomString": "Random string 8",
+    "randomString2": "Random string 2 9",
+    "randomString3": "Random string 3 9",
+    "randomString4": "Random string 4 2",
+    "date": "2017-05-27T07:33:39.281Z",
+    "dateJSON": "2015-02-01",
+    "amount": {
+      "amount": 36,
+      "currency": "AUD"
+    },
+    "group": "Group 8",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3", "Item 4"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      }
+    ]
+  },
+  {
+    "id": 76,
+    "name": "Group 8 item 12",
+    "value": 3817,
+    "boolean": true,
+    "object": {
+      "value": 8727,
+      "label": "Random string 4"
+    },
+    "sub": {
+      "subProp": "Himenaeos"
+    },
+    "randomString": "Random string 4",
+    "randomString2": "Random string 2 9",
+    "randomString3": "Random string 3 1",
+    "randomString4": "Random string 4 4",
+    "date": "2015-09-08T15:52:03.043Z",
+    "dateJSON": "2015-12-02",
+    "amount": {
+      "amount": 16,
+      "currency": "SEK"
+    },
+    "group": "Group 8",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3", "Item 4", "Item 5"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      }
+    ]
+  },
+  {
+    "id": 77,
+    "name": "Group 8 item 13",
+    "value": 223,
+    "boolean": true,
+    "object": {
+      "value": 9967,
+      "label": "Random string 1"
+    },
+    "sub": {
+      "subProp": "maximus diam purus at mauris"
+    },
+    "randomString": "Random string 6",
+    "randomString2": "Random string 2 8",
+    "randomString3": "Random string 3 5",
+    "randomString4": "Random string 4 5",
+    "date": "2016-05-02T07:09:10.444Z",
+    "dateJSON": "2015-05-16",
+    "amount": {
+      "amount": 46,
+      "currency": "USD"
+    },
+    "group": "Group 8",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      }
+    ]
+  },
+  {
+    "id": 78,
+    "name": "Group 8 item 14",
+    "value": 4512,
+    "boolean": false,
+    "object": {
+      "value": 8280,
+      "label": "Random string 6"
+    },
+    "sub": {
+      "subProp": "Lorem ipsum dolor sit amet"
+    },
+    "randomString": "Random string 2",
+    "randomString2": "Random string 2 6",
+    "randomString3": "Random string 3 4",
+    "randomString4": "Random string 4 9",
+    "date": "2014-11-22T10:25:12.502Z",
+    "dateJSON": "2015-07-25",
+    "amount": {
+      "amount": 94,
+      "currency": "EUR"
+    },
+    "group": "Group 8",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6",
+      "Item 7"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      },
+      {
+        "name": "Item 7",
+        "value": "item-value-7"
+      }
+    ]
+  },
+  {
+    "id": 79,
+    "name": "Group 8 item 15",
+    "value": 5800,
+    "boolean": true,
+    "object": {
+      "value": 256,
+      "label": "Random string 1"
+    },
+    "sub": {
+      "subProp": "Nunc tristique"
+    },
+    "randomString": "Random string 3",
+    "randomString2": "Random string 2 4",
+    "randomString3": "Random string 3 3",
+    "randomString4": "Random string 4 3",
+    "date": "2016-05-26T05:21:13.734Z",
+    "dateJSON": "2015-09-16",
+    "amount": {
+      "amount": 82,
+      "currency": "AUD"
+    },
+    "group": "Group 8",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6",
+      "Item 7",
+      "Item 8"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      },
+      {
+        "name": "Item 7",
+        "value": "item-value-7"
+      },
+      {
+        "name": "Item 8",
+        "value": "item-value-8"
+      }
+    ]
+  },
+  {
+    "id": 80,
+    "name": "Group 8 item 16",
+    "value": 7113,
+    "boolean": false,
+    "object": {
+      "value": 8850,
+      "label": "Random string 8"
+    },
+    "sub": {
+      "subProp": "Curabitur vestibulum"
+    },
+    "randomString": "Random string 8",
+    "randomString2": "Random string 2 3",
+    "randomString3": "Random string 3 9",
+    "randomString4": "Random string 4 10",
+    "date": "2014-04-09T06:24:32.956Z",
+    "dateJSON": "2015-10-13",
+    "amount": {
+      "amount": 47,
+      "currency": "SEK"
+    },
+    "group": "Group 8",
+    "list": [],
+    "objectList": []
+  },
+  {
+    "id": 81,
+    "name": "Group 9 item 0",
+    "value": 6206,
+    "boolean": false,
+    "object": {
+      "value": 1816,
+      "label": "Random string 2"
+    },
+    "sub": {
+      "subProp": "Cras laoreet"
+    },
+    "randomString": "Random string 9",
+    "randomString2": "Random string 2 8",
+    "randomString3": "Random string 3 10",
+    "randomString4": "Random string 4 3",
+    "date": "2017-12-31T22:22:19.006Z",
+    "dateJSON": "2015-10-28",
+    "amount": {
+      "amount": 80,
+      "currency": "USD"
+    },
+    "group": "Group 9",
+    "list": ["Item 0"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      }
+    ]
+  },
+  {
+    "id": 82,
+    "name": "Group 9 item 1",
+    "value": 49,
+    "boolean": false,
+    "object": {
+      "value": 8494,
+      "label": "Random string 6"
+    },
+    "sub": {
+      "subProp": "Himenaeos"
+    },
+    "randomString": "Random string 4",
+    "randomString2": "Random string 2 4",
+    "randomString3": "Random string 3 4",
+    "randomString4": "Random string 4 5",
+    "date": "2016-10-03T18:09:06.172Z",
+    "dateJSON": "2015-12-25",
+    "amount": {
+      "amount": 54,
+      "currency": "EUR"
+    },
+    "group": "Group 9",
+    "list": ["Item 0", "Item 1"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      }
+    ]
+  },
+  {
+    "id": 83,
+    "name": "Group 9 item 2",
+    "value": 3051,
+    "boolean": true,
+    "object": {
+      "value": 1615,
+      "label": "Random string 6"
+    },
+    "sub": {
+      "subProp": "maximus diam purus at mauris"
+    },
+    "randomString": "Random string 7",
+    "randomString2": "Random string 2 1",
+    "randomString3": "Random string 3 5",
+    "randomString4": "Random string 4 9",
+    "date": "2015-04-02T11:26:10.299Z",
+    "dateJSON": "2015-01-09",
+    "amount": {
+      "amount": 44,
+      "currency": "AUD"
+    },
+    "group": "Group 9",
+    "list": ["Item 0", "Item 1", "Item 2"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      }
+    ]
+  },
+  {
+    "id": 84,
+    "name": "Group 9 item 3",
+    "value": 320,
+    "boolean": true,
+    "object": {
+      "value": 1175,
+      "label": "Random string 2"
+    },
+    "sub": {
+      "subProp": "Lorem ipsum dolor sit amet"
+    },
+    "randomString": "Random string 2",
+    "randomString2": "Random string 2 2",
+    "randomString3": "Random string 3 3",
+    "randomString4": "Random string 4 9",
+    "date": "2015-04-02T11:26:10.299Z",
+    "dateJSON": "2015-11-25",
+    "amount": {
+      "amount": 26,
+      "currency": "SEK"
+    },
+    "group": "Group 9",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      }
+    ]
+  },
+  {
+    "id": 85,
+    "name": "Group 9 item 4",
+    "value": 4775,
+    "boolean": true,
+    "object": {
+      "value": 1027,
+      "label": "Random string 1"
+    },
+    "sub": {
+      "subProp": "Nunc tristique"
+    },
+    "randomString": "Random string 7",
+    "randomString2": "Random string 2 7",
+    "randomString3": "Random string 3 5",
+    "randomString4": "Random string 4 3",
+    "date": "2016-06-11T20:45:07.682Z",
+    "dateJSON": "2015-06-06",
+    "amount": {
+      "amount": 89,
+      "currency": "USD"
+    },
+    "group": "Group 9",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3", "Item 4"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      }
+    ]
+  },
+  {
+    "id": 86,
+    "name": "Group 9 item 5",
+    "value": 4184,
+    "boolean": false,
+    "object": {
+      "value": 1154,
+      "label": "Random string 2"
+    },
+    "sub": {
+      "subProp": "Curabitur vestibulum"
+    },
+    "randomString": "Random string 6",
+    "randomString2": "Random string 2 8",
+    "randomString3": "Random string 3 10",
+    "randomString4": "Random string 4 5",
+    "date": "2016-03-27T01:46:02.555Z",
+    "dateJSON": "2015-06-27",
+    "amount": {
+      "amount": 16,
+      "currency": "EUR"
+    },
+    "group": "Group 9",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3", "Item 4", "Item 5"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      }
+    ]
+  },
+  {
+    "id": 87,
+    "name": "Group 9 item 6",
+    "value": 1918,
+    "boolean": true,
+    "object": {
+      "value": 6119,
+      "label": "Random string 1"
+    },
+    "sub": {
+      "subProp": "Cras laoreet"
+    },
+    "randomString": "Random string 5",
+    "randomString2": "Random string 2 1",
+    "randomString3": "Random string 3 7",
+    "randomString4": "Random string 4 8",
+    "date": "2015-11-04T12:05:27.682Z",
+    "dateJSON": "2015-02-21",
+    "amount": {
+      "amount": 48,
+      "currency": "AUD"
+    },
+    "group": "Group 9",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      }
+    ]
+  },
+  {
+    "id": 88,
+    "name": "Group 9 item 7",
+    "value": 7640,
+    "boolean": false,
+    "object": {
+      "value": 6597,
+      "label": "Random string 4"
+    },
+    "sub": {
+      "subProp": "Himenaeos"
+    },
+    "randomString": "Random string 6",
+    "randomString2": "Random string 2 2",
+    "randomString3": "Random string 3 5",
+    "randomString4": "Random string 4 8",
+    "date": "2016-05-02T07:09:10.443Z",
+    "dateJSON": "2015-06-26",
+    "amount": {
+      "amount": 20,
+      "currency": "SEK"
+    },
+    "group": "Group 9",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6",
+      "Item 7"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      },
+      {
+        "name": "Item 7",
+        "value": "item-value-7"
+      }
+    ]
+  },
+  {
+    "id": 89,
+    "name": "Group 9 item 8",
+    "value": 1651,
+    "boolean": true,
+    "object": {
+      "value": 7044,
+      "label": "Random string 1"
+    },
+    "sub": {
+      "subProp": "maximus diam purus at mauris"
+    },
+    "randomString": "Random string 3",
+    "randomString2": "Random string 2 10",
+    "randomString3": "Random string 3 5",
+    "randomString4": "Random string 4 7",
+    "date": "2016-10-16T13:14:43.925Z",
+    "dateJSON": "2015-05-22",
+    "amount": {
+      "amount": 21,
+      "currency": "USD"
+    },
+    "group": "Group 9",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6",
+      "Item 7",
+      "Item 8"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      },
+      {
+        "name": "Item 7",
+        "value": "item-value-7"
+      },
+      {
+        "name": "Item 8",
+        "value": "item-value-8"
+      }
+    ]
+  },
+  {
+    "id": 90,
+    "name": "Group 9 item 9",
+    "value": 2745,
+    "boolean": false,
+    "object": {
+      "value": 7215,
+      "label": "Random string 6"
+    },
+    "sub": {
+      "subProp": "Lorem ipsum dolor sit amet"
+    },
+    "randomString": "Random string 2",
+    "randomString2": "Random string 2 1",
+    "randomString3": "Random string 3 2",
+    "randomString4": "Random string 4 10",
+    "date": "2017-03-14T14:27:37.577Z",
+    "dateJSON": "2015-11-07",
+    "amount": {
+      "amount": 32,
+      "currency": "EUR"
+    },
+    "group": "Group 9",
+    "list": [],
+    "objectList": []
+  },
+  {
+    "id": 91,
+    "name": "Group 9 item 10",
+    "value": 4733,
+    "boolean": false,
+    "object": {
+      "value": 6590,
+      "label": "Random string 4"
+    },
+    "sub": {
+      "subProp": "Nunc tristique"
+    },
+    "randomString": "Random string 1",
+    "randomString2": "Random string 2 7",
+    "randomString3": "Random string 3 5",
+    "randomString4": "Random string 4 7",
+    "date": "2014-11-12T14:48:33.804Z",
+    "dateJSON": "2015-09-11",
+    "amount": {
+      "amount": 57,
+      "currency": "AUD"
+    },
+    "group": "Group 9",
+    "list": ["Item 0"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      }
+    ]
+  },
+  {
+    "id": 92,
+    "name": "Group 9 item 11",
+    "value": 5589,
+    "boolean": false,
+    "object": {
+      "value": 7888,
+      "label": "Random string 6"
+    },
+    "sub": {
+      "subProp": "Curabitur vestibulum"
+    },
+    "randomString": "Random string 9",
+    "randomString2": "Random string 2 5",
+    "randomString3": "Random string 3 4",
+    "randomString4": "Random string 4 4",
+    "date": "2014-12-22T04:02:59.976Z",
+    "dateJSON": "2015-01-05",
+    "amount": {
+      "amount": 80,
+      "currency": "SEK"
+    },
+    "group": "Group 9",
+    "list": ["Item 0", "Item 1"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      }
+    ]
+  },
+  {
+    "id": 93,
+    "name": "Group 9 item 12",
+    "value": 7422,
+    "boolean": false,
+    "object": {
+      "value": 6151,
+      "label": "Random string 2"
+    },
+    "sub": {
+      "subProp": "Cras laoreet"
+    },
+    "randomString": "Random string 6",
+    "randomString2": "Random string 2 2",
+    "randomString3": "Random string 3 5",
+    "randomString4": "Random string 4 8",
+    "date": "2014-10-04T01:41:57.317Z",
+    "dateJSON": "2015-07-23",
+    "amount": {
+      "amount": 97,
+      "currency": "USD"
+    },
+    "group": "Group 9",
+    "list": ["Item 0", "Item 1", "Item 2"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      }
+    ]
+  },
+  {
+    "id": 94,
+    "name": "Group 9 item 13",
+    "value": 779,
+    "boolean": true,
+    "object": {
+      "value": 1658,
+      "label": "Random string 2"
+    },
+    "sub": {
+      "subProp": "Himenaeos"
+    },
+    "randomString": "Random string 6",
+    "randomString2": "Random string 2 10",
+    "randomString3": "Random string 3 6",
+    "randomString4": "Random string 4 3",
+    "date": "2014-03-10T19:42:02.160Z",
+    "dateJSON": "2015-07-03",
+    "amount": {
+      "amount": 72,
+      "currency": "EUR"
+    },
+    "group": "Group 9",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      }
+    ]
+  },
+  {
+    "id": 95,
+    "name": "Group 9 item 14",
+    "value": 5636,
+    "boolean": true,
+    "object": {
+      "value": 3953,
+      "label": "Random string 1"
+    },
+    "sub": {
+      "subProp": "maximus diam purus at mauris"
+    },
+    "randomString": "Random string 9",
+    "randomString2": "Random string 2 8",
+    "randomString3": "Random string 3 2",
+    "randomString4": "Random string 4 3",
+    "date": "2015-04-02T11:26:10.299Z",
+    "dateJSON": "2015-09-18",
+    "amount": {
+      "amount": 48,
+      "currency": "AUD"
+    },
+    "group": "Group 9",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3", "Item 4"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      }
+    ]
+  },
+  {
+    "id": 96,
+    "name": "Group 9 item 15",
+    "value": 6698,
+    "boolean": true,
+    "object": {
+      "value": 2765,
+      "label": "Random string 8"
+    },
+    "sub": {
+      "subProp": "Lorem ipsum dolor sit amet"
+    },
+    "randomString": "Random string 10",
+    "randomString2": "Random string 2 9",
+    "randomString3": "Random string 3 9",
+    "randomString4": "Random string 4 6",
+    "date": "2017-02-11T08:15:37.995Z",
+    "dateJSON": "2015-07-16",
+    "amount": {
+      "amount": 59,
+      "currency": "SEK"
+    },
+    "group": "Group 9",
+    "list": ["Item 0", "Item 1", "Item 2", "Item 3", "Item 4", "Item 5"],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      }
+    ]
+  },
+  {
+    "id": 97,
+    "name": "Group 9 item 16",
+    "value": 4101,
+    "boolean": true,
+    "object": {
+      "value": 9403,
+      "label": "Random string 2"
+    },
+    "sub": {
+      "subProp": "Nunc tristique"
+    },
+    "randomString": "Random string 9",
+    "randomString2": "Random string 2 4",
+    "randomString3": "Random string 3 9",
+    "randomString4": "Random string 4 8",
+    "date": "2015-12-24T20:40:58.234Z",
+    "dateJSON": "2015-02-28",
+    "amount": {
+      "amount": 35,
+      "currency": "USD"
+    },
+    "group": "Group 9",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      }
+    ]
+  },
+  {
+    "id": 98,
+    "name": "Group 9 item 17",
+    "value": 9728,
+    "boolean": true,
+    "object": {
+      "value": 6009,
+      "label": "Random string 4"
+    },
+    "sub": {
+      "subProp": "Curabitur vestibulum"
+    },
+    "randomString": "Random string 9",
+    "randomString2": "Random string 2 3",
+    "randomString3": "Random string 3 9",
+    "randomString4": "Random string 4 10",
+    "date": "2015-10-14T09:16:10.290Z",
+    "dateJSON": "2015-11-08",
+    "amount": {
+      "amount": 60,
+      "currency": "EUR"
+    },
+    "group": "Group 9",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6",
+      "Item 7"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      },
+      {
+        "name": "Item 7",
+        "value": "item-value-7"
+      }
+    ]
+  },
+  {
+    "id": 99,
+    "name": "Group 9 item 18",
+    "value": 5642,
+    "boolean": true,
+    "object": {
+      "value": 6576,
+      "label": "Random string 10"
+    },
+    "sub": {
+      "subProp": "Cras laoreet"
+    },
+    "randomString": "Random string 6",
+    "randomString2": "Random string 2 5",
+    "randomString3": "Random string 3 2",
+    "randomString4": "Random string 4 1",
+    "date": "2016-05-02T07:09:10.443Z",
+    "dateJSON": "2015-11-02",
+    "amount": {
+      "amount": 34,
+      "currency": "AUD"
+    },
+    "group": "Group 9",
+    "list": [
+      "Item 0",
+      "Item 1",
+      "Item 2",
+      "Item 3",
+      "Item 4",
+      "Item 5",
+      "Item 6",
+      "Item 7",
+      "Item 8"
+    ],
+    "objectList": [
+      {
+        "name": "Item 0",
+        "value": "item-value-0"
+      },
+      {
+        "name": "Item 1",
+        "value": "item-value-1"
+      },
+      {
+        "name": "Item 2",
+        "value": "item-value-2"
+      },
+      {
+        "name": "Item 3",
+        "value": "item-value-3"
+      },
+      {
+        "name": "Item 4",
+        "value": "item-value-4"
+      },
+      {
+        "name": "Item 5",
+        "value": "item-value-5"
+      },
+      {
+        "name": "Item 6",
+        "value": "item-value-6"
+      },
+      {
+        "name": "Item 7",
+        "value": "item-value-7"
+      },
+      {
+        "name": "Item 8",
+        "value": "item-value-8"
+      }
+    ]
+  }
+]

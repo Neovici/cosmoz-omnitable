@@ -101,7 +101,6 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 	renderEditCell(column, { item }, onItemChange) {
 		const onChange = (event) => onItemChange(event.target.value);
 		return html`<cosmoz-input
-			no-label-float
 			type="text"
 			@change=${onChange}
 			.value=${getString(column, item)}
@@ -110,6 +109,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 
 	renderHeader(column, { filter, query }, setState, source) {
 		return html`<cosmoz-autocomplete-excluding
+			variant="inline"
 			class="external-values-${column.externalValues}"
 			?disabled=${column.disabledFiltering}
 			?keep-opened=${column.keepOpened}

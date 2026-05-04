@@ -1,15 +1,17 @@
 import '@neovici/cosmoz-utils/elements/cz-spinner';
 import '@neovici/cosmoz-viewinfo';
+
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import '@polymer/paper-listbox';
 import '@polymer/paper-toggle-button/paper-toggle-button';
 
 import '../../src/cosmoz-omnitable';
-import './cosmoz-translations';
 import '../cosmoz-omnitable-icon';
+import './cosmoz-translations';
 
 import { translatable } from '@neovici/cosmoz-i18next';
+
 import { html } from '@polymer/polymer/lib/utils/html-tag';
 import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { generateTableDemoData } from '../table-demo-helper';
