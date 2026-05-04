@@ -1,3 +1,10 @@
+# [18.5.0](https://github.com/Neovici/cosmoz-omnitable/compare/v18.4.0...v18.5.0) (2026-05-04)
+
+
+### Features
+
+* use-hash-state refactor ([#973](https://github.com/Neovici/cosmoz-omnitable/issues/973)) ([8270a5e](https://github.com/Neovici/cosmoz-omnitable/commit/8270a5edfbbc1529adc088c4a026362d2a2bf79d))
+
 # [18.4.0](https://github.com/Neovici/cosmoz-omnitable/compare/v18.3.0...v18.4.0) (2026-04-28)
 
 
