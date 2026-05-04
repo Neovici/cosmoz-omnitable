@@ -1,20 +1,9 @@
+import { chevronDownIcon } from '@neovici/cosmoz-icons/untitled';
+import { isEmpty } from '@neovici/cosmoz-utils/template';
 import { html, useCallback, useEffect, useMemo, useRef } from '@pionjs/pion';
 import { when } from 'lit-html/directives/when.js';
-import { isEmpty } from '@neovici/cosmoz-utils/template';
 import { indexSymbol } from './utils';
 import { onItemChange as _onItemChange } from './utils-data';
-
-const arrow = html`
-	<svg
-		viewBox="0 0 24 24"
-		preserveAspectRatio="xMidYMid meet"
-		focusable="false"
-	>
-		<g>
-			<path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"></path>
-		</g>
-	</svg>
-`;
 
 const _getGroupRowClasses = (folded) =>
 	folded ? 'groupRow groupRow-folded' : 'groupRow';
@@ -96,7 +85,7 @@ const renderItem =
 					?aria-expanded="${expanded}"
 					@click="${toggleCollapse}"
 				>
-					${arrow}
+					${chevronDownIcon({ width: '16', height: '16' })}
 				</button>
 			</div>
 			${renderMinis({ item, index })(miniColumns)}
@@ -140,7 +129,7 @@ const renderGroup =
 			</h3>
 			<div class="groupRow-badge">${item.items.length}</div>
 			<button class="expand" ?aria-expanded="${folded}" @click=${toggleFold}>
-				${arrow}
+				${chevronDownIcon({ width: '16', height: '16' })}
 			</button>
 		</div>`;
 

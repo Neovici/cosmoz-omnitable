@@ -1,4 +1,5 @@
 import '@neovici/cosmoz-dropdown';
+
 import { html } from 'lit-html';
 import { classMap } from 'lit-html/directives/class-map.js';
 import './cosmoz-omnitable-dropdown-input';
@@ -23,9 +24,6 @@ export const renderDropdown = ({
 		<style>
 			.dropdown {
 				outline: none;
-			}
-			.dropdown:focus-within .input {
-				--focused: focused;
 			}
 
 			.dropdown::part(button) {

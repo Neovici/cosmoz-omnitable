@@ -1,8 +1,11 @@
+import '@neovici/cosmoz-dropdown';
+import { download01Icon } from '@neovici/cosmoz-icons/untitled';
 import { isEmpty } from '@neovici/cosmoz-utils/template';
 import { t } from 'i18next';
 import { html } from 'lit-html';
 import { saveAsCsvAction } from './save-as-csv-action';
 import { saveAsXlsxAction } from './save-as-xlsx-action';
+
 export const renderFooter = ({
 	columns,
 	selectedItems,
@@ -23,36 +26,20 @@ export const renderFooter = ({
 		<slot name="actions" id="actions"></slot>
 		<slot name="bottom-bar-toolbar" slot="bottom-bar-toolbar"></slot>
 		<slot name="bottom-bar-menu" slot="bottom-bar-menu"></slot>
+
 		<cosmoz-dropdown-menu part="extra" slot="extra" .placement=${topPlacement}>
-			<svg
-				slot="button"
-				width="14"
-				height="18"
-				viewBox="0 0 14 18"
-				fill="none"
-				stroke="currentColor"
-				xmlns="http://www.w3.org/2000/svg"
-			>
-				<path
-					d="M1 8.5L7.00024 14.5L13 8.5"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-				/>
-				<path d="M13 17L1 17" stroke-width="2" stroke-linecap="round" />
-				<path d="M7 1V13" stroke-width="2" stroke-linecap="round" />
-			</svg>
-			<button
+			${download01Icon({ slot: 'button' })}
+			<cosmoz-button
 				@click=${() => saveAsCsvAction(columns, selectedItems, csvFilename)}
 			>
 				${t('Save selected items as CSV')}
-			</button>
-			<button
+			</cosmoz-button>
+			<cosmoz-button
 				@click=${() =>
 					saveAsXlsxAction(columns, selectedItems, xlsxFilename, xlsxSheetname)}
 			>
 				${t('Save selected items as XLSX')}
-			</button>
+			</cosmoz-button>
 			<slot name="download-menu"></slot>
 		</cosmoz-dropdown-menu>
 	</cosmoz-bottom-bar>`;

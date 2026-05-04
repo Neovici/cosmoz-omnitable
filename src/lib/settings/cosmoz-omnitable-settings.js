@@ -80,7 +80,7 @@ const SettingsUI = (host) => {
 	return html` <div class="headline">
 			<span> ${t('Sort and filter')} </span>
 			<cosmoz-button
-				variant="secondary"
+				variant="tertiary"
 				aria-label="${t('Close settings')}"
 				@click=${(e) => {
 					const tg = e.currentTarget;

@@ -26,12 +26,12 @@ const style = css`
 		border-bottom-style: solid;
 	}
 
+	.wrap {
+		height: 40px;
+	}
+
 	#input {
-		text-align: left;
-		font-size: var(--cz-text-sm);
-		line-height: var(--cz-text-sm-line-height);
-		flex: 4 0.00001 calc(var(--cz-spacing) * 12.5);
-		min-width: calc(var(--cz-spacing) * 5);
+		margin-top: -4px;
 	}
 `;
 

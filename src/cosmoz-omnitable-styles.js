@@ -263,8 +263,7 @@ export default css`
 	}
 
 	.itemRow[selected] {
-		background-color: var(--cz-color-bg-brand-secondary);
-		@apply --cosmoz-omnitable-selected-row;
+		background-color: var(--cz-color-bg-primary-hover);
 	}
 
 	.itemRow-cell {
@@ -380,8 +379,8 @@ export default css`
 	}
 
 	.itemRow:hover {
-		box-shadow: var(--cz-shadow-xl);
-		background-color: var(--cosmoz-omnitable-row-hover-color);
+		box-shadow: var(--cz-shadow-sm);
+		background-color: var(--cz-color-bg-primary-hover);
 	}
 	.groupRow:hover .checkbox:not(:checked):not(:hover),
 	.itemRow:hover .checkbox:not(:checked):not(:hover) {
@@ -404,6 +403,9 @@ export default css`
 		height: calc(var(--cz-spacing) * 6);
 		padding: 0;
 		flex: none;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		border: none;
 		border-radius: 50%;
 		cursor: pointer;
@@ -411,23 +413,23 @@ export default css`
 		transition: 0.25s background ease-in;
 		outline: none;
 		color: var(--cz-color-text-primary);
+		background: transparent;
 	}
-	.expand svg {
-		fill: currentColor;
+
+	.groupRow .expand {
+		margin: var(--cz-spacing);
 	}
+
 	.expand:not([aria-expanded]) svg {
-		transform: scaleY(-1);
+		transform: scaleY(1);
 	}
 	.expand:active {
 		background: rgb(
-			from var(--cz-color-text-primary) r g b / calc(alpha * 0.75)
+			from var(--cz-color-text-primary) r g b / calc(alpha * 0.15)
 		);
 	}
 	.expand:hover {
 		color: rgb(from var(--cz-color-text-primary) r g b / calc(alpha * 0.75));
-	}
-	.groupRow .expand {
-		margin: calc(var(--cz-spacing) * 2);
 	}
 
 	.sg {
@@ -454,9 +456,7 @@ export default css`
 	.sg:not([data-on='desc']) {
 		transform: scaleY(-1);
 	}
-	:not(:hover) > .sg:not([data-on]) {
-		display: none;
-	}
+
 	.header-cell {
 		display: inline-flex;
 		position: relative;
