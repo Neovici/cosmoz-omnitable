@@ -1,8 +1,11 @@
 import { html } from '@pionjs/pion';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { triangle } from '../icons';
-import { Column } from '../types';
 
+import {
+	chevronDownIcon,
+	chevronSelectorVerticalIcon,
+} from '@neovici/cosmoz-icons/untitled';
+import { Column } from '../types';
 interface RenderProps {
 	column?: Pick<Column, 'name' | 'title'>;
 	on?: string;
@@ -49,6 +52,7 @@ export const render = ({
 		@click=${(e: Event) => {
 			const target = e.currentTarget as HTMLElement;
 			const on = target?.dataset.on;
+
 			if (!on) {
 				setOn(name);
 				setDescending(false);
@@ -61,7 +65,9 @@ export const render = ({
 			}
 		}}
 	>
-		<span>${title}</span> ${triangle}
+		<span>${title}</span> ${name === on
+			? chevronDownIcon({ width: '12', height: '12' })
+			: chevronSelectorVerticalIcon({ width: '12', height: '12' })}
 	</button>`;
 };
 

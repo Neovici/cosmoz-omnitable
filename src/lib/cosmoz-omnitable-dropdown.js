@@ -1,4 +1,5 @@
 import '@neovici/cosmoz-dropdown';
+
 import { html } from 'lit-html';
 import { classMap } from 'lit-html/directives/class-map.js';
 import './cosmoz-omnitable-dropdown-input';
@@ -24,9 +25,6 @@ export const renderDropdown = ({
 			.dropdown {
 				outline: none;
 			}
-			.dropdown:focus-within .input {
-				--focused: focused;
-			}
 
 			.dropdown::part(button) {
 				border: none;
@@ -37,7 +35,7 @@ export const renderDropdown = ({
 				position: relative;
 				width: 100%;
 				height: 100%;
-				min-height: 32px;
+				min-height: calc(var(--cz-spacing) * 8);
 				display: flex;
 				flex-direction: column;
 				justify-content: center;
@@ -46,36 +44,31 @@ export const renderDropdown = ({
 			.dropdown-content {
 				position: absolute !important;
 				height: auto !important;
-				top: -30px;
+				top: calc(var(--cz-spacing) * -7.5);
 				left: 0;
 				right: 0;
 				width: fit-content;
 			}
 
 			.dropdown-content h3 {
-				font-weight: 500;
-				font-size: 13px;
+				font-size: var(--cz-text-sm);
+				line-height: var(--cz-text-sm-line-height);
+				font-weight: var(--cz-font-weight-medium);
 				margin: 0;
-				color: var(--cosmoz-omnitable-text-color);
-				font-family: var(
-					--cosmoz-input-font-family,
-					var(--paper-font-subhead_-_font-family, 'Inter', sans-serif)
-				);
+				color: var(--cz-color-text-primary);
 			}
 
 			.dropdown-content {
-				padding: 10px 10px 10px 10px;
+				padding: calc(var(--cz-spacing) * 2.5);
 				min-width: 120px;
 				height: 100%;
 				position: relative;
 				text-align: left;
-				background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
-				border-radius: 6px;
+				background: var(--cz-color-bg-primary);
+				border-radius: var(--cz-radius-sm);
 				backdrop-filter: blur(16px) saturate(180%);
 				-webkit-backdrop-filter: blur(16px) saturate(180%);
-				box-shadow:
-					0 4px 24px 0 rgba(0, 0, 0, 0.18),
-					0 1.5px 6px 0 rgba(0, 0, 0, 0.1);
+				box-shadow: var(--cz-shadow-md);
 			}
 		</style>
 
@@ -85,6 +78,7 @@ export const renderDropdown = ({
 			title=${tooltip || ''}
 		>
 			<cosmoz-omnitable-dropdown-input
+				variant="inline"
 				class="input"
 				slot="button"
 				.label=${title}

@@ -1,8 +1,8 @@
 import { translatable } from '@neovici/cosmoz-i18next';
 import { mixin, Template } from '@neovici/cosmoz-utils';
 
-import { PolymerElement } from '@polymer/polymer/polymer-element';
 import { html } from '@polymer/polymer/lib/utils/html-tag';
+import { PolymerElement } from '@polymer/polymer/polymer-element';
 window.Cosmoz = window.Cosmoz || {};
 
 /**
@@ -21,7 +21,7 @@ class OmnitableColumnListData extends translatable(
 				}
 
 				:host a {
-					color: var(--primary-link-color, inherit);
+					color: var(--cz-color-bg-brand-solid);
 				}
 
 				[hidden] {

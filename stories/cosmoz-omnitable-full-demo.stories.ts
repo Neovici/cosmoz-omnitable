@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit-html';
 
+import '@neovici/cosmoz-button';
 import { deleteIcon } from '@neovici/cosmoz-icons';
 import '@neovici/cosmoz-utils/elements/cz-spinner';
 import '../src/cosmoz-omnitable.js';
@@ -228,12 +229,12 @@ const meta: Meta = {
 					priority="1"
 				></cosmoz-omnitable-column-number>
 
-				<paper-button slot="actions" on-run="removeItems">
+				<cosmoz-button slot="actions">
 					${deleteIcon({
 						styles: 'vertical-align: middle; fill: currentColor;',
 					})}
 					<span>Remove items</span>
-				</paper-button>
+				</cosmoz-button>
 			</cosmoz-omnitable>
 		`;
 	},

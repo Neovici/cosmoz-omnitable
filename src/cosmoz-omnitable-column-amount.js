@@ -105,7 +105,6 @@ class OmnitableColumnAmount extends columnMixin(PolymerElement) {
 			});
 
 		return html`<cosmoz-input
-			no-label-float
 			type="number"
 			@change=${onChange}
 			.value=${getInputString(column, item)}

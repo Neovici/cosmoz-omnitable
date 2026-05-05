@@ -9,28 +9,25 @@ export default css`
 		max-height: var(--ot-height, 60vh);
 		outline: none;
 		min-width: 270px;
-		background-color: var(--cosmoz-omnitable-settings-bg-color, #fff);
+		background-color: var(--cz-color-bg-tertiary);
+		box-shadow: var(--cz-shadow-2xl);
+		border-radius: 6px;
+		z-index: 1;
 	}
 
 	.headline {
-		font-weight: 500;
-		font-size: 13px;
-		color: var(
-			--cosmoz-omnitable-settings-color,
-			var(--cz-text-color, #101010)
-		);
-		text-transform: uppercase;
-		line-height: 0.95;
 		padding: 10px 14px;
 		display: flex;
 		align-items: center;
-	}
-	.close {
-		border: none;
-		background: none;
-		cursor: pointer;
-		padding: 2.5px 6px;
-		margin-left: auto;
+		justify-content: space-between;
+
+		& span {
+			font-weight: var(--cz-font-weight-medium);
+			font-size: var(--cz-text-xs);
+			line-height: var(--cz-text-xs-line-height);
+			color: var(--cz-color-text-primary);
+			text-transform: uppercase;
+		}
 	}
 
 	.contents {
@@ -39,10 +36,7 @@ export default css`
 		scrollbar-gutter: stable;
 		text-transform: uppercase;
 		font-size: 12px;
-		color: var(
-			--cosmoz-omnitable-settings-color,
-			var(--cz-text-color, #101010)
-		);
+		color: var(--cz-color-text-primary);
 	}
 	.contents::-webkit-scrollbar {
 		width: 2px;
@@ -57,13 +51,10 @@ export default css`
 
 	.heading {
 		box-shadow: inset 0px -1px 0px rgba(0, 0, 0, 0.15);
-		font-weight: 400;
-		font-size: 13px;
-		color: var(
-			--cosmoz-omnitable-settings-color,
-			var(--cz-text-color, #101010)
-		);
-		line-height: 0.95;
+		font-weight: var(--cz-font-weight-medium);
+		font-size: var(--cz-text-xs);
+		line-height: var(--cz-text-xs-line-height);
+		color: var(--cz-color-text-primary);
 		padding: 14px;
 		display: flex;
 		cursor: pointer;
@@ -90,10 +81,6 @@ export default css`
 	.item {
 		display: flex;
 		align-items: center;
-		background: var(
-			--cosmoz-omnitable-settings-item-bg-color,
-			var(--cz-surface-light, #fff)
-		);
 	}
 	.item.drag {
 		opacity: 0.6;
@@ -120,10 +107,10 @@ export default css`
 		flex: auto;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		color: var(
-			--cosmoz-omnitable-settings-title-color,
-			var(--cz-text-color, inherit)
-		);
+		font-weight: var(--cz-font-weight-regular);
+		font-size: var(--cz-text-xs);
+		line-height: var(--cz-text-xs-line-height);
+		color: var(--cz-color-text-secondary);
 	}
 	.title[has-filter] {
 		font-weight: bold;
@@ -138,31 +125,12 @@ export default css`
 		gap: 8px;
 		padding: 12px 14px;
 		box-shadow: inset 0px 1px 0px rgba(0, 0, 0, 0.15);
+
+		& cosmoz-button {
+			flex: 1;
+		}
 	}
-	.button {
-		border: none;
-		cursor: pointer;
-		background: var(--cosmoz-button-bg-color, #101010);
-		color: var(--cosmoz-button-color, #fff);
-		font-family: inherit;
-		font-size: 13px;
-		font-weight: 600;
-		line-height: 26px;
-		border-radius: 4px;
-		padding: 8px;
-		flex: 1;
-	}
-	.button:not(.reset):hover {
-		background: var(--cz-action-button-hover-bg, #3a3f44);
-	}
-	.button[disabled] {
-		opacity: 0.2;
-		pointer-events: none;
-	}
-	.reset {
-		background: transparent;
-		color: inherit;
-	}
+
 	/* sortgroups */
 	.sgs {
 		display: grid;
@@ -176,16 +144,16 @@ export default css`
 		color: inherit;
 		border: 1px solid rgba(0, 0, 0, 0.2);
 		border-radius: 6px;
-		font-size: 12px;
+		font-size: var(--cz-text-xs);
+		line-height: var(--cz-text-xs-line-height);
 		text-transform: uppercase;
-		line-height: 1;
 		text-align: left;
 		padding: 6px 12px;
 		background: transparent;
 		cursor: pointer;
 		display: flex;
-		align-items: left;
-		justify-content: auto;
+		align-items: center;
+		justify-content: space-between;
 	}
 	.sg span {
 		overflow: hidden;
@@ -202,9 +170,7 @@ export default css`
 		flex: none;
 		vertical-align: middle;
 	}
-	.sg:not([data-on]) svg {
-		display: none;
-	}
+
 	.sg:not([data-on='desc']) svg {
 		transform: scaleY(-1);
 	}
