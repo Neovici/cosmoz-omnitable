@@ -41,6 +41,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 			minWidth: { type: String, value: '55px' },
 			editMinWidth: { type: String, value: '55px' },
 			keepOpened: { type: Boolean, value: true },
+			lazyOpen: { type: Boolean },
 			keepQuery: { type: Boolean },
 			showSingle: { type: Boolean },
 			preserveOrder: { type: Boolean },
@@ -53,6 +54,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 		return {
 			...super.getConfig?.(column),
 			keepOpened: column.keepOpened,
+			lazyOpen: column.lazyOpen,
 			keepQuery: column.keepQuery,
 			showSingle: column.showSingle,
 			preserveOrder: column.preserveOrder,
@@ -82,6 +84,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 			class="external-values-${column.externalValues}"
 			?disabled=${column.disabledFiltering}
 			?keep-opened=${column.keepOpened}
+			?lazy-open=${column.lazyOpen}
 			?keep-query=${column.keepQuery}
 			?show-single=${column.showSingle}
 			?preserve-order=${column.preserveOrder}
