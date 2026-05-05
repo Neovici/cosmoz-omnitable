@@ -1,3 +1,10 @@
+# [18.4.0-beta.1](https://github.com/Neovici/cosmoz-omnitable/compare/v18.3.0...v18.4.0-beta.1) (2026-05-05)
+
+
+### Features
+
+* migrate to cosmoz-tokens and upgrade beta components ([#967](https://github.com/Neovici/cosmoz-omnitable/issues/967)) ([28c811e](https://github.com/Neovici/cosmoz-omnitable/commit/28c811e1e49d1cf9a6f76114a41b41e92fe2ab27))
+
 # [18.3.0](https://github.com/Neovici/cosmoz-omnitable/compare/v18.2.0...v18.3.0) (2026-04-23)
 
 
