@@ -112,7 +112,7 @@
     "@neovici/cosmoz-collapse": "^1.1.0",
     "@neovici/cosmoz-datetime-input": "^4.0.1",
     "@neovici/cosmoz-dropdown": "^7.0.0",
-    "@neovici/cosmoz-i18next": "^3.1.1",
+    "@neovici/cosmoz-i18next": "^4.0.0",
     "@neovici/cosmoz-icons": "^1.1.0",
     "@neovici/cosmoz-input": "^5.0.0",
     "@neovici/cosmoz-router": "^11.0.0",
@@ -122,7 +122,7 @@
     "@pionjs/pion": "^2.0.0",
     "@polymer/polymer": "^3.3.0",
     "file-saver-es": "^2.0.0",
-    "i18next": "^26.0.4",
+    "i18next": ">=25.0.0 <27.0.0",
     "lit-html": "^2.0.0 || ^3.0.0"
   },
   "devDependencies": {
