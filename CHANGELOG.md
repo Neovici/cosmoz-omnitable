@@ -1,3 +1,18 @@
+# [18.4.0-beta.1](https://github.com/Neovici/cosmoz-omnitable/compare/v18.3.0...v18.4.0-beta.1) (2026-05-08)
+
+
+### Bug Fixes
+
+* sync package-lock ([f6c06be](https://github.com/Neovici/cosmoz-omnitable/commit/f6c06bec4751dbda30f7a5fdffeea26a861508ad))
+
+
+### Features
+
+* convert use-hash-state to TypeScript ([#972](https://github.com/Neovici/cosmoz-omnitable/issues/972)) ([2cd4951](https://github.com/Neovici/cosmoz-omnitable/commit/2cd4951f71db8a8dc191c89b3f8dad060543d003))
+* migrate to cosmoz-tokens and upgrade beta components ([#967](https://github.com/Neovici/cosmoz-omnitable/issues/967)) ([75d7446](https://github.com/Neovici/cosmoz-omnitable/commit/75d744630ba1340a3e56287017a7f8a3a0ac7977))
+* migrate to cosmoz-tokens and upgrade beta components ([#967](https://github.com/Neovici/cosmoz-omnitable/issues/967)) ([28c811e](https://github.com/Neovici/cosmoz-omnitable/commit/28c811e1e49d1cf9a6f76114a41b41e92fe2ab27))
+* use-hash-state refactor ([#973](https://github.com/Neovici/cosmoz-omnitable/issues/973)) ([3fb4849](https://github.com/Neovici/cosmoz-omnitable/commit/3fb4849062396fbe7f7e44536e1b5feedb037173))
+
 # [18.5.0](https://github.com/Neovici/cosmoz-omnitable/compare/v18.4.0...v18.5.0) (2026-05-04)
 
 
