@@ -89,8 +89,7 @@
 				<cosmoz-viewinfo>
 					<h3>Cosmoz omnitable demo</h3>
 
-					<cosmoz-i18next interpolation-prefix="{" interpolation-suffix="}">
-					</cosmoz-i18next>
+					<cosmoz-translations locale="[[ locale ]]"></cosmoz-translations>
 
 					<div style="display: flex; align-items: center">
 						<button class="action" on-tap="changeData">
@@ -241,6 +240,7 @@
 		<script type="module">
 			import { PolymerElement } from '@polymer/polymer/polymer-element';
 			import { generateTableDemoData } from './table-demo-helper';
+			import './helpers/cosmoz-translations.js';
 
 			class XContainer extends PolymerElement {
 				static get is() {
