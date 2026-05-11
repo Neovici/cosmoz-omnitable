@@ -1,5 +1,4 @@
 import '@neovici/cosmoz-utils/elements/cz-spinner';
-import '@neovici/cosmoz-viewinfo';
 
 import { css, sheet } from '@neovici/cosmoz-utils';
 import '../../src/cosmoz-omnitable';
@@ -25,7 +24,7 @@ const style = css`
 		font-family: sans-serif;
 	}
 
-	cosmoz-viewinfo {
+	.viewinfo {
 		display: flex;
 		flex-direction: column;
 		position: absolute;
@@ -138,7 +137,7 @@ const XPage = () => {
 
 	return html`
 		<span style="display: none;">${activeLocale}</span>
-		<cosmoz-viewinfo>
+		<div class="viewinfo">
 			<h3>Cosmoz omnitable demo</h3>
 
 			<div class="toolbar">
@@ -337,7 +336,7 @@ const XPage = () => {
 					<span>Remove ${selectedItems.length} items</span>
 				</button>
 			</cosmoz-omnitable>
-		</cosmoz-viewinfo>
+		</div>
 	`;
 };
 
