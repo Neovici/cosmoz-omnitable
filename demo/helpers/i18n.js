@@ -118,4 +118,5 @@ export const ensureDemoI18nInitialized = async () => {
 export const setDemoLanguage = async (locale) => {
 	await ensureDemoI18nInitialized();
 	await i18next.changeLanguage(locale || 'en');
+	return i18next.language;
 };

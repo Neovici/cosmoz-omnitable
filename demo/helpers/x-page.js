@@ -5,7 +5,7 @@ import '../../src/cosmoz-omnitable';
 import '../cosmoz-omnitable-icon';
 
 import { component, html, useCallback, useEffect, useHost, useMemo, useState } from '@pionjs/pion';
-import { t } from 'i18next';
+import i18next, { t } from 'i18next';
 import { ensureDemoI18nInitialized, setDemoLanguage } from './i18n';
 import { generateTableDemoData } from '../table-demo-helper';
 
@@ -46,32 +46,31 @@ const XPage = () => {
 	const [data, setData] = useState([]);
 	const [selectedItems, setSelectedItems] = useState([]);
 	const [locale, setLocale] = useState('sv');
+	const [activeLocale, setActiveLocale] = useState('en');
 	const [ready, setReady] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [hidden, setHidden] = useState(false);
 	const hashParam = useMemo(() => host.getAttribute('hash-param') || undefined, [host]);
 
 	useEffect(() => {
-		let active = true;
-		ensureDemoI18nInitialized().then(async () => {
-			await setDemoLanguage('sv');
-			if (active) {
+		void ensureDemoI18nInitialized()
+			.then(() => setDemoLanguage('sv'))
+			.then((language) => {
+				setLocale(language || 'sv');
+				setActiveLocale(language || 'sv');
 				setReady(true);
-			}
-		});
+			});
 
-		return () => {
-			active = false;
-		};
+		return undefined;
 	}, []);
 
-	useEffect(() => {
-		if (!ready) {
-			return;
-		}
-
-		void setDemoLanguage(locale);
-	}, [locale, ready]);
+	const onLocaleChange = useCallback((event) => {
+		const nextLocale = event.target.value;
+		setLocale(nextLocale);
+		void setDemoLanguage(nextLocale).then((language) => {
+			setActiveLocale(language || i18next.language || nextLocale);
+		});
+	}, []);
 
 	useEffect(() => {
 		const nextData = generateTableDemoData(10, 11, 25);
@@ -121,6 +120,7 @@ const XPage = () => {
 	}
 
 	return html`
+		<span style="display: none;">${activeLocale}</span>
 		${style}
 		<cosmoz-viewinfo>
 			<h3>Cosmoz omnitable demo</h3>
@@ -140,7 +140,7 @@ const XPage = () => {
 					Locale
 					<select
 						.value=${locale}
-						@change=${(event) => setLocale(event.target.value)}
+						@change=${onLocaleChange}
 					>
 						<option value="en">en</option>
 						<option value="fr">fr</option>
