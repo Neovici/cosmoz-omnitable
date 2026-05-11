@@ -616,3 +616,87 @@ suite('enabled columns', () => {
 		);
 	});
 });
+
+suite('slot change behavior', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
+	let omnitable, visibleDataChangedCount;
+	const onVisibleDataChanged = () => {
+		visibleDataChangedCount += 1;
+	};
+
+	setup(async () => {
+		omnitable = await setupOmnitableFixture(
+			html`
+				<cosmoz-omnitable selection-enabled>
+					<cosmoz-omnitable-column
+						name="name"
+						title="Name"
+						value-path="name"
+					></cosmoz-omnitable-column>
+					<cosmoz-omnitable-column
+						name="id"
+						title="Id"
+						value-path="id"
+					></cosmoz-omnitable-column>
+				</cosmoz-omnitable>
+			`,
+			generateTableDemoData(10, 11, 10),
+		);
+
+		await rowVisible();
+
+		visibleDataChangedCount = 0;
+		omnitable.addEventListener('visible-data-changed', onVisibleDataChanged);
+
+		await nextFrame();
+		await nextFrame();
+		visibleDataChangedCount = 0;
+	});
+
+	teardown(() => {
+		if (omnitable) {
+			omnitable.removeEventListener(
+				'visible-data-changed',
+				onVisibleDataChanged,
+			);
+		}
+	});
+
+	test('ignores non-column slot additions', async () => {
+		const initialHeaderCount = omnitable.shadowRoot.querySelectorAll('.header-cell')
+			.length;
+
+		omnitable.appendChild(document.createElement('span'));
+
+		await nextFrame();
+		await nextFrame();
+		await nextFrame();
+
+		assert.equal(visibleDataChangedCount, 0);
+		assert.equal(
+			omnitable.shadowRoot.querySelectorAll('.header-cell').length,
+			initialHeaderCount,
+		);
+	});
+
+	test('reacts to actual column additions', async () => {
+		const initialHeaderCount = omnitable.shadowRoot.querySelectorAll('.header-cell')
+			.length;
+
+		const column = document.createElement('cosmoz-omnitable-column');
+		column.setAttribute('name', 'name2');
+		column.setAttribute('title', 'Name2');
+		column.setAttribute('value-path', 'name');
+		omnitable.appendChild(column);
+
+		await nextFrame();
+		await nextFrame();
+		await nextFrame();
+
+		assert.isAbove(visibleDataChangedCount, 0);
+		assert.equal(
+			omnitable.shadowRoot.querySelectorAll('.header-cell').length,
+			initialHeaderCount + 1,
+		);
+	});
+});
