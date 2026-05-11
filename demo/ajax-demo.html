@@ -14,14 +14,6 @@
 				margin: 0;
 				height: 100vh;
 			}
-			#container {
-				display: flex;
-				flex-direction: column;
-				height: 100%;
-			}
-			cosmoz-omnitable {
-				flex: auto;
-			}
 		</style>
 	</head>
 	<body>
@@ -29,7 +21,25 @@
 
 		<script type="module">
 			import { component, html, useEffect, useMemo, useState } from '@pionjs/pion';
+			import { css, sheet } from '@neovici/cosmoz-utils';
 			import { ensureDemoI18nInitialized, setDemoLanguage } from './helpers/i18n.js';
+
+			const styles = css`
+				:host {
+					display: block;
+					height: 100%;
+				}
+
+				#container {
+					display: flex;
+					flex-direction: column;
+					height: 100%;
+				}
+
+				cosmoz-omnitable {
+					flex: auto;
+				}
+			`;
 
 			const DemoApp = () => {
 				useEffect(() => {
@@ -157,7 +167,7 @@
 				`;
 			};
 
-			customElements.define('demo-app', component(DemoApp, { useShadowDOM: false }));
+			customElements.define('demo-app', component(DemoApp, { styleSheets: [sheet(styles)] }));
 		</script>
 	</body>
 </html>

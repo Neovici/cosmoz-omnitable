@@ -1,44 +1,55 @@
 import '@neovici/cosmoz-utils/elements/cz-spinner';
 import '@neovici/cosmoz-viewinfo';
 
+import { css, sheet } from '@neovici/cosmoz-utils';
 import '../../src/cosmoz-omnitable';
 import '../cosmoz-omnitable-icon';
 
-import { component, html, useCallback, useEffect, useHost, useMemo, useState } from '@pionjs/pion';
+import {
+	component,
+	html,
+	useCallback,
+	useEffect,
+	useHost,
+	useMemo,
+	useState,
+} from '@pionjs/pion';
 import i18next, { t } from 'i18next';
-import { ensureDemoI18nInitialized, setDemoLanguage } from './i18n';
 import { generateTableDemoData } from '../table-demo-helper';
+import { ensureDemoI18nInitialized, setDemoLanguage } from './i18n';
 
-const style = html`
-	<style>
-		:host {
-			display: block;
-			position: relative;
-			font-family: sans-serif;
-		}
-		cosmoz-viewinfo {
-			display: flex;
-			flex-direction: column;
-			position: absolute;
-			left: 0;
-			right: 0;
-			top: 0;
-			bottom: 0;
-		}
-		cosmoz-omnitable {
-			flex: auto;
-		}
-		.toolbar {
-			display: flex;
-			align-items: center;
-			gap: 8px;
-			flex-wrap: wrap;
-		}
-		.action {
-			padding: 5px;
-			margin: 5px 5px 10px 5px;
-		}
-	</style>
+const style = css`
+	:host {
+		display: block;
+		position: relative;
+		font-family: sans-serif;
+	}
+
+	cosmoz-viewinfo {
+		display: flex;
+		flex-direction: column;
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+	}
+
+	cosmoz-omnitable {
+		flex: auto;
+	}
+
+	.toolbar {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		flex-wrap: wrap;
+	}
+
+	.action {
+		padding: 5px;
+		margin: 5px 5px 10px 5px;
+	}
 `;
 
 const XPage = () => {
@@ -50,10 +61,13 @@ const XPage = () => {
 	const [ready, setReady] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [hidden, setHidden] = useState(false);
-	const hashParam = useMemo(() => host.getAttribute('hash-param') || undefined, [host]);
+	const hashParam = useMemo(
+		() => host.getAttribute('hash-param') || undefined,
+		[host],
+	);
 
 	useEffect(() => {
-		void ensureDemoI18nInitialized()
+		ensureDemoI18nInitialized()
 			.then(() => setDemoLanguage('en'))
 			.then((language) => {
 				setLocale(language || 'en');
@@ -67,7 +81,7 @@ const XPage = () => {
 	const onLocaleChange = useCallback((event) => {
 		const nextLocale = event.target.value;
 		setLocale(nextLocale);
-		void setDemoLanguage(nextLocale).then((language) => {
+		setDemoLanguage(nextLocale).then((language) => {
 			setActiveLocale(language || i18next.language || nextLocale);
 		});
 	}, []);
@@ -88,7 +102,7 @@ const XPage = () => {
 
 	const renderNameCell = useCallback(
 		(_column, { item }) =>
-			html`<a href="#\!/purchase/suppliers/view?id=${item.id}">${item.name}</a>`,
+			html`<a href="#!/purchase/suppliers/view?id=${item.id}">${item.name}</a>`,
 		[],
 	);
 
@@ -111,31 +125,41 @@ const XPage = () => {
 	);
 
 	const rowItems = useMemo(
-		() => new Array(selectedItems.length).fill(undefined).map((_, i) => `action ${i + 1}`),
+		() =>
+			new Array(selectedItems.length)
+				.fill(undefined)
+				.map((_, i) => `action ${i + 1}`),
 		[selectedItems.length],
 	);
 
 	if (!ready) {
-		return html`${style}<div class="action">Initializing translations...</div>`;
+		return html`<div class="action">Initializing translations...</div>`;
 	}
 
 	return html`
 		<span style="display: none;">${activeLocale}</span>
-		${style}
 		<cosmoz-viewinfo>
 			<h3>Cosmoz omnitable demo</h3>
 
 			<div class="toolbar">
-				<button class="action" @click=${() => setData(generateTableDemoData(10, 11, 10))}>
+				<button
+					class="action"
+					@click=${() => setData(generateTableDemoData(10, 11, 10))}
+				>
 					Generate a new data set
 				</button>
-				<button class="action" @click=${() => setData(generateTableDemoData(2, 2, 10))}>
+				<button
+					class="action"
+					@click=${() => setData(generateTableDemoData(2, 2, 10))}
+				>
 					Generate a new small data set
 				</button>
 				<button class="action" @click=${() => setData([])}>
 					Generate an empty data set
 				</button>
-				<div class="action">Selected items count: <span>${selectedItems.length}</span></div>
+				<div class="action">
+					Selected items count: <span>${selectedItems.length}</span>
+				</div>
 				<label class="action">
 					Locale
 					<select
@@ -174,8 +198,10 @@ const XPage = () => {
 				.selectedItems=${selectedItems}
 				.hashParam=${hashParam}
 				settings-id="test"
-				@selected-items-changed=${(event) => setSelectedItems(event.detail.value || [])}
-				@visible-data-changed=${(event) => console.log('visible data changed', event)}
+				@selected-items-changed=${(event) =>
+					setSelectedItems(event.detail.value || [])}
+				@visible-data-changed=${(event) =>
+					console.log('visible data changed', event)}
 			>
 				<cosmoz-omnitable-column
 					priority="-1"
@@ -255,7 +281,11 @@ const XPage = () => {
 					group-on="date"
 					.locale=${locale}
 				></cosmoz-omnitable-column-datetime>
-				<cosmoz-omnitable-column-list title="List" name="list" value-path="list"></cosmoz-omnitable-column-list>
+				<cosmoz-omnitable-column-list
+					title="List"
+					name="list"
+					value-path="list"
+				></cosmoz-omnitable-column-list>
 				<cosmoz-omnitable-column-list-horizontal
 					title="Object list"
 					name="objectList"
@@ -292,11 +322,16 @@ const XPage = () => {
 					priority="1"
 				></cosmoz-omnitable-column-number>
 
-				${rowItems.map((item) => html`<button slot="actions" type="button">${item}</button>`)}
+				${rowItems.map(
+					(item) => html`<button slot="actions" type="button">${item}</button>`,
+				)}
 				<button
 					slot="actions"
 					type="button"
-					@click=${() => host.renderRoot?.querySelector('#omnitable')?.removeItems(selectedItems)}
+					@click=${() =>
+						host.renderRoot
+							?.querySelector('#omnitable')
+							?.removeItems(selectedItems)}
 				>
 					<cosmoz-omnitable-icon icon="delete"></cosmoz-omnitable-icon>
 					<span>Remove ${selectedItems.length} items</span>
@@ -306,4 +341,7 @@ const XPage = () => {
 	`;
 };
 
-customElements.define('x-page', component(XPage, { useShadowDOM: false }));
+customElements.define(
+	'x-page',
+	component(XPage, { styleSheets: [sheet(style)] }),
+);
