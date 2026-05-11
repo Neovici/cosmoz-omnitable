@@ -164,12 +164,6 @@ const XPage = () => {
 					/>
 					Hide Sub-property column
 				</label>
-				<button
-					class="action"
-					@click=${() => host.renderRoot?.querySelector('#omnitable')?.appendChild(document.createElement('span'))}
-				>
-					Add something to the slot
-				</button>
 			</div>
 
 			<cosmoz-omnitable
