@@ -1,5 +1,5 @@
-import { sheet, css } from '@neovici/cosmoz-utils';
-import { component, html, useEffect, useHost, useMemo, useState } from '@pionjs/pion';
+import { css, sheet } from '@neovici/cosmoz-utils';
+import { component, html, useMemo, useState } from '@pionjs/pion';
 import { t } from 'i18next';
 
 const style = css`
@@ -29,15 +29,11 @@ const style = css`
 
 const ListData = ({ items }) => {
 	const [expanded, setExpanded] = useState(false);
-	const host = useHost();
 	const safeItems = Array.isArray(items) ? items : [];
-	const othersCount = useMemo(() => Math.max(0, safeItems.length - 1), [safeItems]);
-
-	useEffect(() => {
-		requestAnimationFrame(() =>
-			host.dispatchEvent(new CustomEvent('expand', { bubbles: true })),
-		);
-	}, [host, safeItems.length]);
+	const othersCount = useMemo(
+		() => Math.max(0, safeItems.length - 1),
+		[safeItems],
+	);
 
 	if (safeItems.length === 0) {
 		return null;
