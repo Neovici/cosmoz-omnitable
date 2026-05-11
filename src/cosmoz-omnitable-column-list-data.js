@@ -45,7 +45,7 @@ const ListData = ({ items }) => {
 
 	const showToggle = safeItems.length > 2;
 	const firstItem = safeItems[0];
-	const otherItems = showToggle && !expanded ? safeItems.slice(1, 2) : safeItems.slice(1);
+	const otherItems = showToggle && !expanded ? [] : safeItems.slice(1);
 	const toggleExpand = (event) => {
 		event.stopPropagation();
 		event.preventDefault();
