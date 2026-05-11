@@ -13,7 +13,7 @@ import {
 	useMemo,
 	useState,
 } from '@pionjs/pion';
-import i18next, { t } from 'i18next';
+import { t } from 'i18next';
 import { generateTableDemoData } from '../table-demo-helper';
 import { ensureDemoI18nInitialized, setDemoLanguage } from './i18n';
 
@@ -51,39 +51,43 @@ const style = css`
 	}
 `;
 
+const useForceRender = () => {
+	const [, setTick] = useState(0);
+
+	return useCallback(() => {
+		setTick((value) => value + 1);
+	}, []);
+};
+
 const XPage = () => {
 	const host = useHost();
 	const [data, setData] = useState([]);
 	const [selectedItems, setSelectedItems] = useState([]);
 	const [locale, setLocale] = useState('en');
-	const [activeLocale, setActiveLocale] = useState('en');
 	const [ready, setReady] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [hidden, setHidden] = useState(false);
-	const hashParam = useMemo(
-		() => host.getAttribute('hash-param') || undefined,
-		[host],
-	);
+	const forceRender = useForceRender();
+	const hashParam = host.hashParam || undefined;
 
 	useEffect(() => {
-		ensureDemoI18nInitialized()
-			.then(() => setDemoLanguage('en'))
-			.then((language) => {
-				setLocale(language || 'en');
-				setActiveLocale(language || 'en');
-				setReady(true);
-			});
+		ensureDemoI18nInitialized().then(() => {
+			setReady(true);
+		});
 
 		return undefined;
 	}, []);
 
-	const onLocaleChange = useCallback((event) => {
-		const nextLocale = event.target.value;
-		setLocale(nextLocale);
-		setDemoLanguage(nextLocale).then((language) => {
-			setActiveLocale(language || i18next.language || nextLocale);
-		});
-	}, []);
+	const onLocaleChange = useCallback(
+		(event) => {
+			const nextLocale = event.target.value;
+			setLocale(nextLocale);
+			setDemoLanguage(nextLocale).then(() => {
+				forceRender();
+			});
+		},
+		[forceRender],
+	);
 
 	useEffect(() => {
 		const nextData = generateTableDemoData(10, 11, 25);
@@ -136,7 +140,6 @@ const XPage = () => {
 	}
 
 	return html`
-		<span style="display: none;">${activeLocale}</span>
 		<div class="viewinfo">
 			<h3>Cosmoz omnitable demo</h3>
 
@@ -342,5 +345,8 @@ const XPage = () => {
 
 customElements.define(
 	'x-page',
-	component(XPage, { styleSheets: [sheet(style)] }),
+	component(XPage, {
+		observedAttributes: ['hash-param'],
+		styleSheets: [sheet(style)],
+	}),
 );
