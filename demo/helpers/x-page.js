@@ -2,11 +2,11 @@ import '@neovici/cosmoz-utils/elements/cz-spinner';
 import '@neovici/cosmoz-viewinfo';
 
 import '../../src/cosmoz-omnitable';
-import './cosmoz-translations';
 import '../cosmoz-omnitable-icon';
 
 import { component, html, useCallback, useEffect, useHost, useMemo, useState } from '@pionjs/pion';
 import { t } from 'i18next';
+import { ensureDemoI18nInitialized, setDemoLanguage } from './i18n';
 import { generateTableDemoData } from '../table-demo-helper';
 
 const style = html`
@@ -46,9 +46,32 @@ const XPage = () => {
 	const [data, setData] = useState([]);
 	const [selectedItems, setSelectedItems] = useState([]);
 	const [locale, setLocale] = useState('sv');
+	const [ready, setReady] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [hidden, setHidden] = useState(false);
 	const hashParam = useMemo(() => host.getAttribute('hash-param') || undefined, [host]);
+
+	useEffect(() => {
+		let active = true;
+		ensureDemoI18nInitialized().then(async () => {
+			await setDemoLanguage('sv');
+			if (active) {
+				setReady(true);
+			}
+		});
+
+		return () => {
+			active = false;
+		};
+	}, []);
+
+	useEffect(() => {
+		if (!ready) {
+			return;
+		}
+
+		void setDemoLanguage(locale);
+	}, [locale, ready]);
 
 	useEffect(() => {
 		const nextData = generateTableDemoData(10, 11, 25);
@@ -93,11 +116,14 @@ const XPage = () => {
 		[selectedItems.length],
 	);
 
+	if (!ready) {
+		return html`${style}<div class="action">Initializing translations...</div>`;
+	}
+
 	return html`
 		${style}
 		<cosmoz-viewinfo>
 			<h3>Cosmoz omnitable demo</h3>
-			<cosmoz-translations .locale=${locale}></cosmoz-translations>
 
 			<div class="toolbar">
 				<button class="action" @click=${() => setData(generateTableDemoData(10, 11, 10))}>

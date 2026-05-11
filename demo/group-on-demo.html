@@ -27,7 +27,6 @@
 			src="/node_modules/@polymer/paper-button/paper-button.js"
 		></script>
 		<script type="module" src="../src/cosmoz-omnitable.js"></script>
-		<script type="module" src="./helpers/cosmoz-translations.js"></script>
 
 		<script type="module" src="./table-demo-helper.js"></script>
 
@@ -66,7 +65,7 @@
 				</style>
 				<div id="container">
 					<h3>Cosmoz omnitable grouping demo</h3>
-					<cosmoz-translations locale="[[ locale ]]"></cosmoz-translations>
+
 					<div>
 						<p>
 							Table sould be grouped by column <code>Group</code> on load.
@@ -192,6 +191,10 @@
 
 		<script type="module">
 			import { PolymerElement } from '@polymer/polymer/polymer-element';
+			import {
+				ensureDemoI18nInitialized,
+				setDemoLanguage,
+			} from './helpers/i18n.js';
 			import { generateTableDemoData } from './table-demo-helper';
 
 			class XPage extends PolymerElement {
@@ -209,6 +212,7 @@
 						locale: {
 							type: String,
 							value: null,
+							observer: '_localeChanged',
 						},
 						group: {
 							type: String,
@@ -219,6 +223,8 @@
 
 				connectedCallback() {
 					super.connectedCallback();
+					void ensureDemoI18nInitialized();
+					void setDemoLanguage('en');
 					this.data = generateTableDemoData(20, 25, 25);
 				}
 
@@ -228,6 +234,7 @@
 
 				_localeChanged(locale, oldLocale) {
 					console.log('_localeChanged', locale, oldLocale);
+					void setDemoLanguage(locale || 'en');
 				}
 
 				_computeLabel(text, count) {

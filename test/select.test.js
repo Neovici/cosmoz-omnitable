@@ -1,7 +1,7 @@
  
 import { assert, html, nextFrame } from '@open-wc/testing';
 
-import '../demo/helpers/cosmoz-translations';
+import { ensureDemoI18nInitialized, setDemoLanguage } from '../demo/helpers/i18n';
 import {
 	ignoreResizeObserverLoopErrors,
 	rowVisible,
@@ -11,6 +11,11 @@ import { generateTableDemoData } from '../demo/table-demo-helper';
 
 import '../src/cosmoz-omnitable.js';
 import '../src/cosmoz-omnitable-columns.js';
+
+setup(async () => {
+	await ensureDemoI18nInitialized();
+	await setDemoLanguage('en');
+});
 
 suite('basic', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);

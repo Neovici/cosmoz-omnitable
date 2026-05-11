@@ -4,7 +4,7 @@ import { assert, expect, html, nextFrame } from '@open-wc/testing';
 import { assert as sinonAssert, spy } from 'sinon';
 
 import { flush } from '@polymer/polymer/lib/utils/flush';
-import '../demo/helpers/cosmoz-translations';
+import { ensureDemoI18nInitialized, setDemoLanguage } from '../demo/helpers/i18n';
 import { generateTableDemoData } from '../demo/table-demo-helper';
 import {
 	ignoreResizeObserverLoopErrors,
@@ -18,6 +18,11 @@ import '../src/cosmoz-omnitable.js';
 import { columnSymbol } from '../src/lib/use-dom-columns';
 
 sinonAssert.expose(assert, { prefix: '' });
+
+setup(async () => {
+	await ensureDemoI18nInitialized();
+	await setDemoLanguage('en');
+});
 
 suite('basic', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);

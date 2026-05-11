@@ -28,7 +28,6 @@
 		></script>
 
 		<script type="module" src="../src/cosmoz-omnitable.js"></script>
-		<script type="module" src="./helpers/cosmoz-translations.js"></script>
 
 		<script type="module" src="./table-demo-helper.js"></script>
 
@@ -67,7 +66,7 @@
 				</style>
 				<div id="container">
 					<h3>Cosmoz omnitable sort demo</h3>
-					<cosmoz-translations locale="[[ locale ]]"></cosmoz-translations>
+
 
 					<p>Table should be sorted by name (descending) on load.</p>
 					<p>
@@ -177,6 +176,10 @@
 
 		<script type="module">
 			import { PolymerElement } from '@polymer/polymer/polymer-element';
+			import {
+				ensureDemoI18nInitialized,
+				setDemoLanguage,
+			} from './helpers/i18n.js';
 			import { generateTableDemoData } from './table-demo-helper';
 
 			class XPage extends PolymerElement {
@@ -194,12 +197,15 @@
 						locale: {
 							type: String,
 							value: null,
+							observer: '_localeChanged',
 						},
 					};
 				}
 
 				connectedCallback() {
 					super.connectedCallback();
+					void ensureDemoI18nInitialized();
+					void setDemoLanguage('en');
 					this.data = generateTableDemoData(20, 25, 25);
 				}
 
@@ -209,6 +215,7 @@
 
 				_localeChanged(locale, oldLocale) {
 					console.log('_localeChanged', locale, oldLocale);
+					void setDemoLanguage(locale || 'en');
 				}
 
 				_computeLabel(text, count) {

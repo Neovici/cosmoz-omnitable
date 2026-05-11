@@ -1,6 +1,6 @@
 import i18next from 'i18next';
 
-const resources = {
+export const resources = {
 	en: { translation: {} },
 	sv: {
 		translation: {
@@ -99,7 +99,7 @@ const resources = {
 	},
 };
 
-const ensureInitialized = async () => {
+export const ensureDemoI18nInitialized = async () => {
 	if (i18next.isInitialized) {
 		return;
 	}
@@ -115,38 +115,7 @@ const ensureInitialized = async () => {
 	});
 };
 
-class CosmozTranslations extends HTMLElement {
-	static get observedAttributes() {
-		return ['locale'];
-	}
-
-	connectedCallback() {
-		void this.#setLocale(this.locale);
-	}
-
-	attributeChangedCallback(name, _oldValue, newValue) {
-		if (name === 'locale') {
-			void this.#setLocale(newValue);
-		}
-	}
-
-	get locale() {
-		return this.getAttribute('locale');
-	}
-
-	set locale(value) {
-		if (value == null) {
-			this.removeAttribute('locale');
-			return;
-		}
-
-		this.setAttribute('locale', value);
-	}
-
-	async #setLocale(locale) {
-		await ensureInitialized();
-		await i18next.changeLanguage(locale || 'en');
-	}
-}
-
-customElements.define('cosmoz-translations', CosmozTranslations);
+export const setDemoLanguage = async (locale) => {
+	await ensureDemoI18nInitialized();
+	await i18next.changeLanguage(locale || 'en');
+};

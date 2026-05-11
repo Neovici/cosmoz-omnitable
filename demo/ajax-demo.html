@@ -29,8 +29,14 @@
 
 		<script type="module">
 			import { component, html, useEffect, useMemo, useState } from '@pionjs/pion';
+			import { ensureDemoI18nInitialized, setDemoLanguage } from './helpers/i18n.js';
 
 			const DemoApp = () => {
+				useEffect(() => {
+					void ensureDemoI18nInitialized();
+					void setDemoLanguage('en');
+				}, []);
+
 				const [data, setData] = useState([]);
 				const [eyeColorValues, setEyeColorValues] = useState([]);
 				const [eyeColorFilter, setEyeColorFilter] = useState([]);
