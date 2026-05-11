@@ -7,8 +7,7 @@
 		<title>cosmoz-omnitable hash-param demo</title>
 
 		<style>
-			body,
-			demo-router {
+			body {
 				margin: 0;
 				height: 100vh;
 			}
@@ -37,7 +36,12 @@
 				DemoRouter = () => {
 					return html`<cosmoz-router .routes=${routes} />`;
 				};
-			customElements.define('demo-router', component(DemoRouter));
+			customElements.define(
+				'demo-router',
+				component(DemoRouter, {
+					styleSheets: ['cosmoz-router { height: 100% }'],
+				}),
+			);
 		</script>
 	</body>
 </html>
