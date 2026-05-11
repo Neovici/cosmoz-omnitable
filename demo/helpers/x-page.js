@@ -68,7 +68,7 @@ const XPage = () => {
 	const [loading, setLoading] = useState(false);
 	const [hidden, setHidden] = useState(false);
 	const forceRender = useForceRender();
-	const hashParam = host.hashParam || undefined;
+	const hashParam = host.hashParam;
 
 	useEffect(() => {
 		ensureDemoI18nInitialized().then(() => {
