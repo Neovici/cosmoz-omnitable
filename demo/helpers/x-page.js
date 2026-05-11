@@ -74,8 +74,6 @@ const XPage = () => {
 		ensureDemoI18nInitialized().then(() => {
 			setReady(true);
 		});
-
-		return undefined;
 	}, []);
 
 	const onLocaleChange = useCallback(
