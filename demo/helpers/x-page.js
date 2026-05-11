@@ -45,7 +45,7 @@ const XPage = () => {
 	const host = useHost();
 	const [data, setData] = useState([]);
 	const [selectedItems, setSelectedItems] = useState([]);
-	const [locale, setLocale] = useState('sv');
+	const [locale, setLocale] = useState('en');
 	const [activeLocale, setActiveLocale] = useState('en');
 	const [ready, setReady] = useState(false);
 	const [loading, setLoading] = useState(false);
@@ -54,10 +54,10 @@ const XPage = () => {
 
 	useEffect(() => {
 		void ensureDemoI18nInitialized()
-			.then(() => setDemoLanguage('sv'))
+			.then(() => setDemoLanguage('en'))
 			.then((language) => {
-				setLocale(language || 'sv');
-				setActiveLocale(language || 'sv');
+				setLocale(language || 'en');
+				setActiveLocale(language || 'en');
 				setReady(true);
 			});
 
@@ -139,6 +139,7 @@ const XPage = () => {
 				<label class="action">
 					Locale
 					<select
+						?disabled=${!ready}
 						.value=${locale}
 						@change=${onLocaleChange}
 					>
