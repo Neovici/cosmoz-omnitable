@@ -1,3 +1,10 @@
+# [18.6.0](https://github.com/Neovici/cosmoz-omnitable/compare/v18.5.0...v18.6.0) (2026-05-12)
+
+
+### Features
+
+* migrate list-data from Polymer to pion + direct i18next ([#980](https://github.com/Neovici/cosmoz-omnitable/issues/980)) ([1ff7307](https://github.com/Neovici/cosmoz-omnitable/commit/1ff730775e16c23a0c1c7dc603757041fc01a290))
+
 # [18.5.0](https://github.com/Neovici/cosmoz-omnitable/compare/v18.4.0...v18.5.0) (2026-05-04)
 
 
