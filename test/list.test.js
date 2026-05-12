@@ -1,4 +1,4 @@
-import { assert, html } from '@open-wc/testing';
+import { assert, html, nextFrame } from '@open-wc/testing';
 
 import {
 	ignoreResizeObserverLoopErrors,
@@ -44,6 +44,58 @@ suite('basic', () => {
 
 	test('it does not set a filter by default', () => {
 		assert.isUndefined(omnitable.filters.list);
+	});
+});
+
+suite('list data collapse behavior', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
+	let omnitable;
+
+	setup(async () => {
+		omnitable = await setupOmnitableFixture(
+			html`
+				<cosmoz-omnitable id="omnitable" selection-enabled>
+					<cosmoz-omnitable-column-list name="list" value-path="list">
+					</cosmoz-omnitable-column-list>
+				</cosmoz-omnitable>
+			`,
+			[{ list: ['item 1', 'item 2', 'item 3'] }],
+		);
+
+		await rowVisible();
+	});
+
+	test('collapsed view hides secondary items when list has more than two items', async () => {
+		const listData = omnitable.shadowRoot.querySelector(
+			'.itemRow-cell cosmoz-omnitable-column-list-data',
+		);
+		assert.exists(listData);
+
+		const getVisibleSecondaryItems = () =>
+			Array.from(listData.shadowRoot.querySelectorAll('span.item')).map((item) =>
+				item.textContent.trim(),
+			);
+
+		const seeMore = listData.shadowRoot.querySelector('.see-more');
+		const seeLess = listData.shadowRoot.querySelector('.see-less');
+
+		assert.deepEqual(getVisibleSecondaryItems(), []);
+		assert.isFalse(seeMore.hasAttribute('hidden'));
+		assert.isTrue(seeLess.hasAttribute('hidden'));
+
+		seeMore.querySelector('a').click();
+		await nextFrame();
+
+		assert.deepEqual(getVisibleSecondaryItems(), ['item 2', 'item 3']);
+		assert.isTrue(seeMore.hasAttribute('hidden'));
+		assert.isFalse(seeLess.hasAttribute('hidden'));
+
+		seeLess.querySelector('a').click();
+		await nextFrame();
+
+		assert.deepEqual(getVisibleSecondaryItems(), []);
+		assert.isFalse(seeMore.hasAttribute('hidden'));
+		assert.isTrue(seeLess.hasAttribute('hidden'));
 	});
 });
 

@@ -129,14 +129,13 @@
 
 		<script type="module">
 			import { PolymerElement } from '@polymer/polymer/polymer-element';
-			import { translatable } from '@neovici/cosmoz-i18next';
 			import { generateTableDemoData } from './table-demo-helper';
 			import { html } from 'lit-html';
 
 			const _customFunction = (item) => 'bla ' + item.id + ' bla',
 				onTap = (event) => console.log('onTap', event);
 
-			class XPage extends translatable(PolymerElement) {
+			class XPage extends PolymerElement {
 				static get is() {
 					return 'x-page';
 				}

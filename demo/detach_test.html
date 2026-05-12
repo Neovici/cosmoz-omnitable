@@ -64,7 +64,7 @@
 						position: relative;
 					}
 
-					cosmoz-viewinfo {
+					.viewinfo {
 						display: flex;
 						flex-direction: column;
 						flex: 1;
@@ -86,11 +86,10 @@
 					}
 				</style>
 
-				<cosmoz-viewinfo>
+				<div class="viewinfo">
 					<h3>Cosmoz omnitable demo</h3>
 
-					<cosmoz-i18next interpolation-prefix="{" interpolation-suffix="}">
-					</cosmoz-i18next>
+
 
 					<div style="display: flex; align-items: center">
 						<button class="action" on-tap="changeData">
@@ -232,7 +231,7 @@
 							>
 						</cosmoz-omnitable>
 					</x-container>
-				</cosmoz-viewinfo>
+				</div>
 			</template>
 		</dom-module>
 
@@ -241,6 +240,10 @@
 		<script type="module">
 			import { PolymerElement } from '@polymer/polymer/polymer-element';
 			import { generateTableDemoData } from './table-demo-helper';
+			import {
+				ensureDemoI18nInitialized,
+				setDemoLanguage,
+			} from './helpers/i18n.js';
 
 			class XContainer extends PolymerElement {
 				static get is() {
@@ -282,6 +285,8 @@
 
 				connectedCallback() {
 					super.connectedCallback();
+					void ensureDemoI18nInitialized();
+					void setDemoLanguage('en');
 					const data = generateTableDemoData(10, 11, 25);
 					// Used to test filtering and sorting when a row has an undefined or null amount or number
 					data[0].amount = undefined;
@@ -295,6 +300,14 @@
 
 				changeData() {
 					this.data = generateTableDemoData(10, 11, 10);
+				}
+
+				static get observers() {
+					return ['_localeChanged(locale)'];
+				}
+
+				_localeChanged(locale) {
+					void setDemoLanguage(locale || 'en');
 				}
 
 				emptyData() {
