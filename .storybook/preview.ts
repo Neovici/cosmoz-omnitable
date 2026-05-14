@@ -3,19 +3,13 @@ import '@neovici/cosmoz-tokens';
 import { useKeybindings } from '@neovici/cosmoz-utils/keybindings';
 import { component, html } from '@pionjs/pion';
 import type { Preview } from '@storybook/web-components-vite';
-import i18next from 'i18next';
+import {
+	ensureDemoI18nInitialized,
+	setDemoLanguage,
+} from '../demo/helpers/i18n.js';
 import './preview.css';
 
-i18next.init({
-	lng: 'en',
-	resources: {
-		en: {
-			translation: {
-				'No results found': 'No results found',
-			},
-		},
-	},
-});
+let i18nInitPromise: Promise<void> | undefined;
 
 /**
  * Component that provides keybindings context for all stories.
@@ -35,7 +29,19 @@ customElements.define(
 	),
 );
 
+const initializeStorybookI18n = async () => {
+	if (i18nInitPromise != null) {
+		return i18nInitPromise;
+	}
+
+	i18nInitPromise = ensureDemoI18nInitialized().then(() =>
+		setDemoLanguage('en'),
+	);
+	return i18nInitPromise;
+};
+
 const preview: Preview = {
+	loaders: [async () => initializeStorybookI18n()],
 	parameters: {
 		actions: { argTypesRegex: '^on[A-Z].*' },
 		controls: {

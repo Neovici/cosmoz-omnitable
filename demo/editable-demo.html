@@ -174,12 +174,11 @@
 
 		<script type="module">
 			import { PolymerElement } from '@polymer/polymer/polymer-element';
-			import { translatable } from '@neovici/cosmoz-i18next';
 			import { generateTableDemoData } from './table-demo-helper';
 			import { html } from 'lit-html';
 			import { getInputString } from '../src/lib/utils-number';
 
-			class XPage extends translatable(PolymerElement) {
+			class XPage extends PolymerElement {
 				static get is() {
 					return 'x-page';
 				}

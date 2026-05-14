@@ -6,26 +6,6 @@
 
 		<title>Cosmoz Omnitable demo</title>
 
-		<script
-			type="module"
-			src="/node_modules/@polymer/polymer/polymer-legacy.js"
-		></script>
-		<script
-			type="module"
-			src="/node_modules/@polymer/iron-ajax/iron-ajax.js"
-		></script>
-		<script
-			type="module"
-			src="/node_modules/@polymer/iron-icons/editor-icons.js"
-		></script>
-		<script
-			type="module"
-			src="/node_modules/@polymer/iron-icons/iron-icons.js"
-		></script>
-		<script
-			type="module"
-			src="/node_modules/@polymer/paper-button/paper-button.js"
-		></script>
 		<script type="module" src="../src/cosmoz-omnitable.js"></script>
 
 		<style>
@@ -34,122 +14,160 @@
 				margin: 0;
 				height: 100vh;
 			}
-			#container {
-				display: flex;
-				flex-direction: column;
-				height: 100%;
-			}
-			cosmoz-omnitable {
-				flex: auto;
-			}
 		</style>
 	</head>
 	<body>
-		<cosmoz-i18next interpolation-prefix="{" interpolation-suffix="}">
-		</cosmoz-i18next>
-
-		<dom-bind id="t"
-			><template>
-				<div id="container">
-					<h3>Cosmoz omnitable demo</h3>
-					<iron-ajax
-						auto
-						url="data.json"
-						params="[[ getSearchParams(eyeColorFilter.splices) ]]"
-						last-response="{{ data }}"
-					></iron-ajax>
-					<iron-ajax
-						auto
-						url="eyeColors.json"
-						loading="{{ eyeColorSearching }}"
-						params="[[ getEyeColorSearch(eyeColorQuery) ]]"
-						last-response="{{ eyeColorValues }}"
-					></iron-ajax>
-
-					<cosmoz-omnitable data="[[ data ]]">
-						<cosmoz-omnitable-column-autocomplete
-							title="Company"
-							name="company"
-							value-path="company"
-						>
-						</cosmoz-omnitable-column-autocomplete>
-						<cosmoz-omnitable-column-boolean
-							title="Is active"
-							name="isactive"
-							value-path="isActive"
-							true-label="Yes"
-							false-label="No"
-						>
-						</cosmoz-omnitable-column-boolean>
-						<cosmoz-omnitable-column-autocomplete
-							external-values
-							loading="[[ eyeColorSearching ]]"
-							filter="{{ eyeColorFilter }}"
-							query="{{ eyeColorQuery }}"
-							values="[[ eyeColorValues ]]"
-							title="Eye color"
-							value-path="eyeColor"
-							name="eyecolor"
-						>
-						</cosmoz-omnitable-column-autocomplete>
-						<cosmoz-omnitable-column-number
-							title="Age"
-							name="age"
-							value-path="age"
-						>
-						</cosmoz-omnitable-column-number>
-						<cosmoz-omnitable-column-number
-							title="Longitude"
-							name="longitude"
-							value-path="longitude"
-						>
-						</cosmoz-omnitable-column-number>
-						<cosmoz-omnitable-column-number
-							title="Latitude"
-							name="latitude"
-							value-path="latitude"
-						>
-						</cosmoz-omnitable-column-number>
-						<cosmoz-omnitable-column-date
-							title="Registered"
-							name="registered"
-							value-path="registered"
-						>
-						</cosmoz-omnitable-column-date>
-						<cosmoz-omnitable-column-list
-							title="Tags"
-							name="tags"
-							value-path="tags"
-						>
-						</cosmoz-omnitable-column-list>
-						<cosmoz-omnitable-column-autocomplete
-							title="Favorite fruit"
-							name="favoritefruit"
-							value-path="favoriteFruit"
-						>
-						</cosmoz-omnitable-column-autocomplete>
-					</cosmoz-omnitable>
-				</div> </template
-		></dom-bind>
+		<demo-app></demo-app>
 
 		<script type="module">
-			// TODO broken! fix or drop
-			const t = document.getElementById('t');
+			import { component, html, useEffect, useMemo, useState } from '@pionjs/pion';
+			import { css, sheet } from '@neovici/cosmoz-utils';
+			import { ensureDemoI18nInitialized, setDemoLanguage } from './helpers/i18n.js';
 
-			t.getEyeColorSearch = function (query) {
-				return {
-					q: query,
-				};
-			};
-
-			t.getSearchParams = function (filterSplice) {
-				if (!filterSplice) {
-					return;
+			const styles = css`
+				:host {
+					display: block;
+					height: 100%;
 				}
-				return {
-					eyeColor: filterSplice.indexSplices[0].object,
-				};
+
+				#container {
+					display: flex;
+					flex-direction: column;
+					height: 100%;
+				}
+
+				cosmoz-omnitable {
+					flex: auto;
+				}
+			`;
+
+			const DemoApp = () => {
+				useEffect(() => {
+					void ensureDemoI18nInitialized();
+					void setDemoLanguage('en');
+				}, []);
+
+				const [data, setData] = useState([]);
+				const [eyeColorValues, setEyeColorValues] = useState([]);
+				const [eyeColorFilter, setEyeColorFilter] = useState([]);
+				const [eyeColorQuery, setEyeColorQuery] = useState('');
+				const [eyeColorSearching, setEyeColorSearching] = useState(false);
+
+				const dataUrl = useMemo(() => {
+					const url = new URL('./data.json', window.location.href);
+					if (eyeColorFilter.length > 0) {
+						eyeColorFilter.forEach((value) => url.searchParams.append('eyeColor', value));
+					}
+					return url.toString();
+				}, [eyeColorFilter]);
+
+				useEffect(() => {
+					let active = true;
+					fetch(dataUrl)
+						.then((response) => response.json())
+						.then((json) => {
+							if (active) {
+								setData(json);
+							}
+						})
+						.catch((error) => console.error('Failed to fetch data.json', error));
+
+					return () => {
+						active = false;
+					};
+				}, [dataUrl]);
+
+				useEffect(() => {
+					let active = true;
+					const url = new URL('./eyeColors.json', window.location.href);
+					if (eyeColorQuery) {
+						url.searchParams.set('q', eyeColorQuery);
+					}
+
+					setEyeColorSearching(true);
+					fetch(url.toString())
+						.then((response) => response.json())
+						.then((json) => {
+							if (active) {
+								setEyeColorValues(json);
+							}
+						})
+						.catch((error) => console.error('Failed to fetch eyeColors.json', error))
+						.finally(() => {
+							if (active) {
+								setEyeColorSearching(false);
+							}
+						});
+
+					return () => {
+						active = false;
+					};
+				}, [eyeColorQuery]);
+
+				return html`
+					<div id="container">
+						<h3>Cosmoz omnitable demo</h3>
+						<cosmoz-omnitable .data=${data}>
+							<cosmoz-omnitable-column-autocomplete
+								title="Company"
+								name="company"
+								value-path="company"
+							></cosmoz-omnitable-column-autocomplete>
+							<cosmoz-omnitable-column-boolean
+								title="Is active"
+								name="isactive"
+								value-path="isActive"
+								true-label="Yes"
+								false-label="No"
+							></cosmoz-omnitable-column-boolean>
+							<cosmoz-omnitable-column-autocomplete
+								external-values
+								.loading=${eyeColorSearching}
+								.filter=${eyeColorFilter}
+								.query=${eyeColorQuery}
+								.values=${eyeColorValues}
+								@filter-changed=${(event) => setEyeColorFilter(event.detail.value || [])}
+								@query-changed=${(event) => setEyeColorQuery(event.detail.value || '')}
+								title="Eye color"
+								value-path="eyeColor"
+								name="eyecolor"
+							></cosmoz-omnitable-column-autocomplete>
+							<cosmoz-omnitable-column-number
+								title="Age"
+								name="age"
+								value-path="age"
+							></cosmoz-omnitable-column-number>
+							<cosmoz-omnitable-column-number
+								title="Longitude"
+								name="longitude"
+								value-path="longitude"
+							></cosmoz-omnitable-column-number>
+							<cosmoz-omnitable-column-number
+								title="Latitude"
+								name="latitude"
+								value-path="latitude"
+							></cosmoz-omnitable-column-number>
+							<cosmoz-omnitable-column-date
+								title="Registered"
+								name="registered"
+								value-path="registered"
+							></cosmoz-omnitable-column-date>
+							<cosmoz-omnitable-column-list
+								title="Tags"
+								name="tags"
+								value-path="tags"
+							></cosmoz-omnitable-column-list>
+							<cosmoz-omnitable-column-autocomplete
+								title="Favorite fruit"
+								name="favoritefruit"
+								value-path="favoriteFruit"
+							></cosmoz-omnitable-column-autocomplete>
+						</cosmoz-omnitable>
+					</div>
+				`;
 			};
+
+			customElements.define('demo-app', component(DemoApp, { styleSheets: [sheet(styles)] }));
 		</script>
 	</body>
 </html>

@@ -4,7 +4,10 @@ import { assert, expect, html, nextFrame } from '@open-wc/testing';
 import { assert as sinonAssert, spy } from 'sinon';
 
 import { flush } from '@polymer/polymer/lib/utils/flush';
-import '../demo/helpers/cosmoz-translations';
+import {
+	ensureDemoI18nInitialized,
+	setDemoLanguage,
+} from '../demo/helpers/i18n';
 import { generateTableDemoData } from '../demo/table-demo-helper';
 import {
 	ignoreResizeObserverLoopErrors,
@@ -18,6 +21,11 @@ import '../src/cosmoz-omnitable.js';
 import { columnSymbol } from '../src/lib/use-dom-columns';
 
 sinonAssert.expose(assert, { prefix: '' });
+
+setup(async () => {
+	await ensureDemoI18nInitialized();
+	await setDemoLanguage('en');
+});
 
 suite('basic', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);
@@ -608,6 +616,90 @@ suite('enabled columns', () => {
 				(cell) => cell.title,
 			),
 			['Name1', 'Name2', 'Name3'],
+		);
+	});
+});
+
+suite('slot change behavior', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
+	let omnitable, visibleDataChangedCount;
+	const onVisibleDataChanged = () => {
+		visibleDataChangedCount += 1;
+	};
+
+	setup(async () => {
+		omnitable = await setupOmnitableFixture(
+			html`
+				<cosmoz-omnitable selection-enabled>
+					<cosmoz-omnitable-column
+						name="name"
+						title="Name"
+						value-path="name"
+					></cosmoz-omnitable-column>
+					<cosmoz-omnitable-column
+						name="id"
+						title="Id"
+						value-path="id"
+					></cosmoz-omnitable-column>
+				</cosmoz-omnitable>
+			`,
+			generateTableDemoData(10, 11, 10),
+		);
+
+		await rowVisible();
+
+		visibleDataChangedCount = 0;
+		omnitable.addEventListener('visible-data-changed', onVisibleDataChanged);
+
+		await nextFrame();
+		await nextFrame();
+		visibleDataChangedCount = 0;
+	});
+
+	teardown(() => {
+		if (omnitable) {
+			omnitable.removeEventListener(
+				'visible-data-changed',
+				onVisibleDataChanged,
+			);
+		}
+	});
+
+	test('ignores non-column slot additions', async () => {
+		const initialHeaderCount =
+			omnitable.shadowRoot.querySelectorAll('.header-cell').length;
+
+		omnitable.appendChild(document.createElement('span'));
+
+		await nextFrame();
+		await nextFrame();
+		await nextFrame();
+
+		assert.equal(visibleDataChangedCount, 0);
+		assert.equal(
+			omnitable.shadowRoot.querySelectorAll('.header-cell').length,
+			initialHeaderCount,
+		);
+	});
+
+	test('reacts to actual column additions', async () => {
+		const initialHeaderCount =
+			omnitable.shadowRoot.querySelectorAll('.header-cell').length;
+
+		const column = document.createElement('cosmoz-omnitable-column');
+		column.setAttribute('name', 'name2');
+		column.setAttribute('title', 'Name2');
+		column.setAttribute('value-path', 'name');
+		omnitable.appendChild(column);
+
+		await nextFrame();
+		await nextFrame();
+		await nextFrame();
+
+		assert.isAbove(visibleDataChangedCount, 0);
+		assert.equal(
+			omnitable.shadowRoot.querySelectorAll('.header-cell').length,
+			initialHeaderCount + 1,
 		);
 	});
 });
