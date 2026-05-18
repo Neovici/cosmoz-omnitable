@@ -146,7 +146,7 @@
     "husky": "^9.0.0",
     "lint-staged": "^16.2.7",
     "semantic-release": "^25.0.2",
-    "sinon": "^21.0.0",
+    "sinon": "^22.0.0",
     "storybook": "^10.0.4",
     "typescript": "^6.0.2"
   }
