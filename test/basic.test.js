@@ -4,7 +4,10 @@ import { assert, expect, html, nextFrame } from '@open-wc/testing';
 import { assert as sinonAssert, spy } from 'sinon';
 
 import { flush } from '@polymer/polymer/lib/utils/flush';
-import { ensureDemoI18nInitialized, setDemoLanguage } from '../demo/helpers/i18n';
+import {
+	ensureDemoI18nInitialized,
+	setDemoLanguage,
+} from '../demo/helpers/i18n';
 import { generateTableDemoData } from '../demo/table-demo-helper';
 import {
 	ignoreResizeObserverLoopErrors,
@@ -13,7 +16,7 @@ import {
 } from './helpers/utils';
 
 import '@polymer/paper-toggle-button';
-import '../src/cosmoz-omnitable-columns.js';
+import '../src/cosmoz-omnitable-columns.ts';
 import '../src/cosmoz-omnitable.js';
 import { columnSymbol } from '../src/lib/use-dom-columns';
 
@@ -663,8 +666,8 @@ suite('slot change behavior', () => {
 	});
 
 	test('ignores non-column slot additions', async () => {
-		const initialHeaderCount = omnitable.shadowRoot.querySelectorAll('.header-cell')
-			.length;
+		const initialHeaderCount =
+			omnitable.shadowRoot.querySelectorAll('.header-cell').length;
 
 		omnitable.appendChild(document.createElement('span'));
 
@@ -680,8 +683,8 @@ suite('slot change behavior', () => {
 	});
 
 	test('reacts to actual column additions', async () => {
-		const initialHeaderCount = omnitable.shadowRoot.querySelectorAll('.header-cell')
-			.length;
+		const initialHeaderCount =
+			omnitable.shadowRoot.querySelectorAll('.header-cell').length;
 
 		const column = document.createElement('cosmoz-omnitable-column');
 		column.setAttribute('name', 'name2');

@@ -1,18 +1,21 @@
- 
 import { assert, html, nextFrame } from '@open-wc/testing';
 
 import { assert as sinonAssert } from 'sinon';
 
+import { flush } from '@polymer/polymer/lib/utils/flush';
 import {
 	ignoreResizeObserverLoopErrors,
 	setupOmnitableFixture,
 } from './helpers/utils';
-import { flush } from '@polymer/polymer/lib/utils/flush';
 
+import '../src/cosmoz-omnitable-columns.ts';
 import '../src/cosmoz-omnitable.js';
-import '../src/cosmoz-omnitable-columns.js';
-import { getComparableValue, getString, toNumber } from '../src/lib/utils-number';
 import { columnSymbol } from '../src/lib/use-dom-columns';
+import {
+	getComparableValue,
+	getString,
+	toNumber,
+} from '../src/lib/utils-number';
 
 const data = [
 		{
@@ -262,6 +265,7 @@ suite('number - pure functions', () => {
 
 suite('external values', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);
+
 	test('changing _filterInput min on column with external values updates filter min correctly', async () => {
 		const omnitable = await setupOmnitableFixture(
 				html`

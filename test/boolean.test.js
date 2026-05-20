@@ -6,21 +6,22 @@ import {
 	setupOmnitableFixture,
 } from './helpers/utils';
 
-import '../src/cosmoz-omnitable.js';
-import '../src/cosmoz-omnitable-columns.js';
 import {
 	computeItemValue,
-	getString,
-	toXlsxValue,
-	onChange,
 	deserializeFilter,
+	getString,
+	onChange,
+	toXlsxValue,
 } from '../src/cosmoz-omnitable-column-boolean';
-import { onItemChange } from '../src/lib/utils-data';
 import { serializeFilter } from '../src/cosmoz-omnitable-column-mixin';
+import '../src/cosmoz-omnitable-columns.ts';
+import '../src/cosmoz-omnitable.js';
 import { columnSymbol } from '../src/lib/use-dom-columns';
+import { onItemChange } from '../src/lib/utils-data';
 
 suite('boolean', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);
+
 	test('initializes boolean column', async () => {
 		const data = [
 				{ boolean: true },

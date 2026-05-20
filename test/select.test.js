@@ -1,16 +1,18 @@
- 
 import { assert, html, nextFrame } from '@open-wc/testing';
 
-import { ensureDemoI18nInitialized, setDemoLanguage } from '../demo/helpers/i18n';
+import {
+	ensureDemoI18nInitialized,
+	setDemoLanguage,
+} from '../demo/helpers/i18n';
+import { generateTableDemoData } from '../demo/table-demo-helper';
 import {
 	ignoreResizeObserverLoopErrors,
 	rowVisible,
 	setupOmnitableFixture,
 } from './helpers/utils';
-import { generateTableDemoData } from '../demo/table-demo-helper';
 
+import '../src/cosmoz-omnitable-columns.ts';
 import '../src/cosmoz-omnitable.js';
-import '../src/cosmoz-omnitable-columns.js';
 
 setup(async () => {
 	await ensureDemoI18nInitialized();
@@ -20,6 +22,7 @@ setup(async () => {
 suite('basic', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable;
+
 	setup(async () => {
 		omnitable = await setupOmnitableFixture(
 			html`
