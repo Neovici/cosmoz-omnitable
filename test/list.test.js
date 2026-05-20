@@ -6,13 +6,13 @@ import {
 	setupOmnitableFixture,
 } from './helpers/utils';
 
-import '../src/cosmoz-omnitable.js';
-import '../src/cosmoz-omnitable-columns.js';
-import { applySingleFilter } from '../src/cosmoz-omnitable-column-mixin';
 import {
 	applyMultiFilter,
 	getString,
 } from '../src/cosmoz-omnitable-column-list-mixin';
+import { applySingleFilter } from '../src/cosmoz-omnitable-column-mixin';
+import '../src/cosmoz-omnitable-columns.ts';
+import '../src/cosmoz-omnitable.js';
 import { columnSymbol } from '../src/lib/use-dom-columns';
 
 suite('basic', () => {
@@ -72,8 +72,8 @@ suite('list data collapse behavior', () => {
 		assert.exists(listData);
 
 		const getVisibleSecondaryItems = () =>
-			Array.from(listData.shadowRoot.querySelectorAll('span.item')).map((item) =>
-				item.textContent.trim(),
+			Array.from(listData.shadowRoot.querySelectorAll('span.item')).map(
+				(item) => item.textContent.trim(),
 			);
 
 		const seeMore = listData.shadowRoot.querySelector('.see-more');
@@ -159,6 +159,7 @@ suite('pure functions', () => {
 			}),
 		);
 	});
+
 	test('_applySingleFilter returns false if filterString is not equal to value', () => {
 		assert.isFalse(
 			applySingleFilter(

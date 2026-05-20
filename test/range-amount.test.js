@@ -3,22 +3,22 @@ import { assert, html, nextFrame } from '@open-wc/testing';
 
 import { assert as sinonAssert } from 'sinon';
 
+import { flush } from '@polymer/polymer/lib/utils/flush';
 import {
 	ignoreResizeObserverLoopErrors,
 	setupOmnitableFixture,
 } from './helpers/utils';
-import { flush } from '@polymer/polymer/lib/utils/flush';
 
+import '../src/cosmoz-omnitable-columns.ts';
 import '../src/cosmoz-omnitable.js';
-import '../src/cosmoz-omnitable-columns.js';
+import { columnSymbol } from '../src/lib/use-dom-columns';
 import {
 	getComparableValue,
-	toAmount,
-	renderValue,
-	getString,
 	getCurrency,
+	getString,
+	renderValue,
+	toAmount,
 } from '../src/lib/utils-amount';
-import { columnSymbol } from '../src/lib/use-dom-columns';
 
 const data = [
 		{
