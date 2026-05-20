@@ -1,4 +1,4 @@
-import{n as e}from"./chunk-BneVvdWh.js";import{$ as t,X as n,Z as r,et as i,n as a,t as o}from"./iframe-D4u7mtiX.js";import{$ as s,A as c,At as l,B as u,C as d,Ct as f,D as p,Dt as m,E as h,Et as g,F as _,Ft as v,G as y,H as b,I as x,It as S,J as C,K as ee,L as w,Lt as T,M as te,Mt as ne,N as re,Nt as ie,O as ae,Ot as E,P as oe,Pt as se,Q as ce,R as le,Rt as ue,S as de,St as fe,T as pe,Tt as D,U as O,V as me,W as he,X as ge,Y as _e,Z as ve,_ as ye,_t as be,a as xe,at as k,b as A,bt as j,c as Se,ct as Ce,d as we,dt as Te,et as M,f as Ee,ft as De,g as Oe,gt as ke,h as Ae,ht as je,i as Me,it as Ne,j as Pe,jt as Fe,k as Ie,kt as Le,l as Re,lt as ze,m as Be,mt as Ve,n as He,nt as Ue,o as We,ot as N,p as Ge,pt as Ke,q as qe,r as Je,rt as Ye,s as Xe,st as Ze,t as Qe,tt as $e,u as et,ut as tt,v as nt,vt as rt,w as it,wt as at,x as ot,xt as P,y as st,yt as ct,z as F,zt as lt}from"./dist-BPBbXea_.js";var ut,dt=e((()=>{j(),ut=()=>t`<style>
+import{n as e}from"./chunk-BneVvdWh.js";import{$ as t,X as n,Z as r,et as i,n as a,t as o}from"./iframe-BizBfCFa.js";import{$ as s,A as c,At as l,B as u,C as d,Ct as f,D as p,Dt as m,E as h,Et as g,F as _,Ft as v,G as y,H as b,I as x,It as S,J as C,K as ee,L as w,Lt as T,M as te,Mt as ne,N as re,Nt as ie,O as ae,Ot as E,P as oe,Pt as se,Q as ce,R as le,Rt as ue,S as de,St as fe,T as pe,Tt as D,U as O,V as me,W as he,X as ge,Y as _e,Z as ve,_ as ye,_t as be,a as xe,at as k,b as A,bt as j,c as Se,ct as Ce,d as we,dt as Te,et as M,f as Ee,ft as De,g as Oe,gt as ke,h as Ae,ht as je,i as Me,it as Ne,j as Pe,jt as Fe,k as Ie,kt as Le,l as Re,lt as ze,m as Be,mt as Ve,n as He,nt as Ue,o as We,ot as N,p as Ge,pt as Ke,q as qe,r as Je,rt as Ye,s as Xe,st as Ze,t as Qe,tt as $e,u as et,ut as tt,v as nt,vt as rt,w as it,wt as at,x as ot,xt as P,y as st,yt as ct,z as F,zt as lt}from"./dist-Cii0Gpzq.js";var ut,dt=e((()=>{j(),ut=()=>t`<style>
 	@keyframes rotating {
 		100% {
 			transform: rotate(360deg);
@@ -717,7 +717,7 @@ import{n as e}from"./chunk-BneVvdWh.js";import{$ as t,X as n,Z as r,et as i,n as
 			.limits=${i}
 			.locale=${a}
 			.maximumFractionDigits=${o}
-			.minimumFractionDigsits=${s}
+			.minimumFractionDigits=${s}
 			.autoupdate=${c}
 			@filter-changed=${({detail:{value:e}})=>d(t=>({...t,filter:e}))}
 			@header-focused-changed=${({detail:{value:e}})=>d(t=>({...t,headerFocused:e}))}
