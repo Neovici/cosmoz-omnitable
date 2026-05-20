@@ -1,3 +1,10 @@
+## [18.6.1](https://github.com/Neovici/cosmoz-omnitable/compare/v18.6.0...v18.6.1) (2026-05-20)
+
+
+### Bug Fixes
+
+* correct typo minimumFractionDigsits -> minimumFractionDigits ([d098a07](https://github.com/Neovici/cosmoz-omnitable/commit/d098a073d264f557973a458ff1836e8b173a9896))
+
 # [18.6.0](https://github.com/Neovici/cosmoz-omnitable/compare/v18.5.0...v18.6.0) (2026-05-12)
 
 
