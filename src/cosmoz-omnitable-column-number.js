@@ -138,7 +138,7 @@ class OmnitableColumnNumber extends columnMixin(PolymerElement) {
 			.limits=${limits}
 			.locale=${locale}
 			.maximumFractionDigits=${maximumFractionDigits}
-			.minimumFractionDigsits=${minimumFractionDigits}
+			.minimumFractionDigits=${minimumFractionDigits}
 			.autoupdate=${autoupdate}
 			@filter-changed=${({ detail: { value } }) =>
 				setState((state) => ({ ...state, filter: value }))}
