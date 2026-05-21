@@ -74,7 +74,7 @@ const useCosmozGroupedList = (host: UseCosmozGroupedListHost) => {
 			deselectAll,
 			toggleSelect,
 			toggleSelectTo,
-		} = useSelectedItems({ initial: [], compareItemsFn, data, flatData });
+		} = useSelectedItems({ compareItemsFn, data, flatData });
 	const renderRow = useCallback(
 		(item: Item | GroupItem<Item>, index: number) =>
 			Array.isArray((item as GroupItem<Item>).items)

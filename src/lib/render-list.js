@@ -1,6 +1,7 @@
 import '../cosmoz-omnitable-skeleton.js';
 
 import { announcementIcon, errorIcon } from '@neovici/cosmoz-icons';
+import { lift } from '@pionjs/pion';
 import { t } from 'i18next';
 import { html } from 'lit-html';
 import { when } from 'lit-html/directives/when.js';
@@ -89,8 +90,7 @@ export const renderList = (header, list) => {
 				id="groupedList"
 				.data=${processedItems}
 				.selectedItems=${selectedItems}
-				@selected-items-changed=${(event) =>
-					setSelectedItems(event.detail.value)}
+				@selected-items-changed=${lift(setSelectedItems)}
 				.displayEmptyGroups=${
 					displayEmptyGroups /* TODO: check if still works */
 				}

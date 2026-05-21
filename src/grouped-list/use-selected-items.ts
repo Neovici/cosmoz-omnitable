@@ -3,7 +3,6 @@ import type { Item } from '../lib/types';
 import { GroupItem, isGroup } from './utils';
 
 export interface UseSelectedItemsParams {
-	initial: Item[];
 	compareItemsFn: <T>(a: T, b: T) => boolean;
 	data: (Item | GroupItem<Item>)[];
 	flatData: (Item | GroupItem<Item>)[] | undefined;
@@ -24,21 +23,14 @@ export interface UseSelectedItemsResult {
 }
 
 export const useSelectedItems = ({
-	initial,
 	compareItemsFn,
 	data,
 	flatData,
 }: UseSelectedItemsParams): UseSelectedItemsResult => {
-	const [selectedItemsRaw, setSelectedItemsRaw] = useProperty<Item[]>(
-			'selectedItems',
-			initial,
-		),
-		selectedItems = selectedItemsRaw ?? initial,
-		setSelectedItems = (update: Item[] | ((prev: Item[]) => Item[])) =>
-			setSelectedItemsRaw((prev: Item[] | undefined) => {
-				const selection = prev ?? initial;
-				return typeof update === 'function' ? update(selection) : update;
-			});
+	const [selectedItems, setSelectedItems] = useProperty<Item[]>(
+		'selectedItems',
+		() => [],
+	);
 	const [lastSelection, setLastSelection] = useState<Item | GroupItem<Item>>();
 	/**
 	 * Check if item is selected.
