@@ -1,6 +1,5 @@
 import { useImperativeApi } from '@neovici/cosmoz-utils/hooks/use-imperative-api';
-import { useEffect, useMemo } from '@pionjs/pion';
-import { useNotifyProperty } from '@neovici/cosmoz-utils/hooks/use-notify-property';
+import { useEffect, useMemo, useProperty } from '@pionjs/pion';
 
 const mkNapi = (host) => {
 	const /**
@@ -70,6 +69,14 @@ export const usePublicInterface = ({ host, visibleData, filters, ...api }) => {
 	const { setFilterState } = api,
 		napi = useMemo(() => mkNapi(host), []);
 
+	const [selectedItems, setSelectedItems] = useProperty('selectedItems', []);
+	const [, setVisibleData] = useProperty('visibleData', []);
+	const [, setSortedFiltered] = useProperty('sortedFilteredGroupedItems', []);
+	const [, setSortOn] = useProperty('sortOn');
+	const [, setDescending] = useProperty('descending');
+	const [, setIsMini] = useProperty('isMini');
+	const [, setFilters] = useProperty('filters');
+
 	useImperativeApi(api, Object.values(api));
 	useImperativeApi(napi, Object.values(napi));
 
@@ -83,15 +90,11 @@ export const usePublicInterface = ({ host, visibleData, filters, ...api }) => {
 		return () => host.removeEventListener('legacy-filter-changed', handler);
 	}, []);
 
-	useNotifyProperty('visibleData', visibleData);
-	useNotifyProperty(
-		'sortedFilteredGroupedItems',
-		api.sortedFilteredGroupedItems,
-	);
-	useNotifyProperty('selectedItems', api.selectedItems);
-	useNotifyProperty('sortOn', api.sortOn);
-	useNotifyProperty('descending', api.descending);
-	useNotifyProperty('isMini', api.isMini);
+	setVisibleData(visibleData);
+	setSortedFiltered(api.sortedFilteredGroupedItems);
+	setSortOn(api.sortOn);
+	setDescending(api.descending);
+	setIsMini(api.isMini);
 
 	const filterValues = useMemo(
 		() =>
@@ -103,5 +106,7 @@ export const usePublicInterface = ({ host, visibleData, filters, ...api }) => {
 		[filters],
 	);
 
-	useNotifyProperty('filters', filterValues, Object.values(filterValues));
+	setFilters(filterValues);
+
+	return { selectedItems, setSelectedItems };
 };

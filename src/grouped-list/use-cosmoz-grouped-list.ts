@@ -1,20 +1,19 @@
+import { virtualize } from '@lit-labs/virtualizer/virtualize.js';
 import { useImperativeApi } from '@neovici/cosmoz-utils/hooks/use-imperative-api';
-import { useNotifyProperty } from '@neovici/cosmoz-utils/hooks/use-notify-property';
 import { useCallback, useLayoutEffect, useMemo } from '@pionjs/pion';
 import { html } from 'lit-html';
+import type { DirectiveResult } from 'lit/directive.js';
+import type { Item } from '../lib/types';
 import './cosmoz-grouped-list-row';
 import { useCollapsibleItems } from './use-collapsible-items';
 import { useSelectedItems } from './use-selected-items';
 import {
 	byReference,
+	GroupItem,
 	isExpanded,
 	isFolded,
 	prepareData,
-	GroupItem,
 } from './utils';
-import { virtualize } from '@lit-labs/virtualizer/virtualize.js';
-import type { DirectiveResult } from 'lit/directive.js';
-import type { Item } from '../lib/types';
 
 export interface RenderItemParams {
 	selected: boolean;
@@ -105,8 +104,6 @@ const useCosmozGroupedList = (host: UseCosmozGroupedListHost) => {
 	useLayoutEffect(() => {
 		Object.assign(host.style, styles.host);
 	}, []);
-
-	useNotifyProperty('selectedItems', selectedItems);
 
 	const api = {
 		toggleFold,

@@ -1,9 +1,9 @@
 import '../cosmoz-omnitable-skeleton.js';
 
+import { announcementIcon, errorIcon } from '@neovici/cosmoz-icons';
 import { t } from 'i18next';
 import { html } from 'lit-html';
 import { when } from 'lit-html/directives/when.js';
-import { announcementIcon, errorIcon } from '@neovici/cosmoz-icons';
 
 export const renderList = (header, list) => {
 	const { settingsConfig } = header,
@@ -14,6 +14,7 @@ export const renderList = (header, list) => {
 			loading,
 			displayEmptyGroups,
 			compareItemsFn,
+			selectedItems,
 			setSelectedItems,
 			renderItem,
 			renderGroup,
@@ -87,6 +88,7 @@ export const renderList = (header, list) => {
 			<cosmoz-grouped-list
 				id="groupedList"
 				.data=${processedItems}
+				.selectedItems=${selectedItems}
 				@selected-items-changed=${(event) =>
 					setSelectedItems(event.detail.value)}
 				.displayEmptyGroups=${
