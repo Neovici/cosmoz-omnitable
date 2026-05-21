@@ -79,6 +79,7 @@ export const useOmnitable = (host) => {
 			error,
 			dataIsValid,
 			processedItems,
+			selectedItems,
 			setSelectedItems,
 			columns,
 			collapsedColumns,
