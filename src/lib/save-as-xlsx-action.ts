@@ -1,8 +1,8 @@
-import { saveAs } from 'file-saver-es';
 import { NullXlsx } from '@neovici/nullxlsx';
+import { saveAs } from 'file-saver-es';
 import { Column, Item } from './types';
 
-interface XlsxColumn extends Column {
+interface XlsxColumn extends Omit<Column, 'toXlsxValue'> {
 	title: string;
 	toXlsxValue: (column: XlsxColumn, item: Item) => string;
 }

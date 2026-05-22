@@ -6,9 +6,12 @@ export const EXPAND_BUTTON_WIDTH = 24;
 export const LAYOUT_OFFSET =
 	SCROLLBAR_WIDTH + CHECKBOX_WIDTH + EXPAND_BUTTON_WIDTH;
 
-export const useTrackSize = (host, setCanvasWidth) =>
+export const useTrackSize = (
+	host: HTMLElement,
+	setCanvasWidth: (width: number) => void,
+) =>
 	useEffect(() => {
-		const onResize = ([entry]) => {
+		const onResize = ([entry]: ResizeObserverEntry[]) => {
 				if (entry.contentRect?.width === 0) {
 					return;
 				}
