@@ -1,3 +1,10 @@
+# [18.7.0](https://github.com/Neovici/cosmoz-omnitable/compare/v18.6.1...v18.7.0) (2026-05-22)
+
+
+### Features
+
+* migrate useNotifyProperty to useProperty ([#996](https://github.com/Neovici/cosmoz-omnitable/issues/996)) ([c0cf78c](https://github.com/Neovici/cosmoz-omnitable/commit/c0cf78cb44612d25029841297464c24334021d27))
+
 ## [18.6.1](https://github.com/Neovici/cosmoz-omnitable/compare/v18.6.0...v18.6.1) (2026-05-20)
 
 
