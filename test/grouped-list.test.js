@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
-import { spy as sinonSpy } from 'sinon';
-import { assert, html, fixture, nextFrame } from '@open-wc/testing';
 import { setupIgnoreWindowResizeObserverLoopErrors } from '@lit-labs/virtualizer/support/resize-observer-errors.js';
+import { assert, fixture, html, nextFrame } from '@open-wc/testing';
+import { spy as sinonSpy } from 'sinon';
 
 import '../src/grouped-list/index';
 
@@ -49,7 +49,8 @@ suite('empty', () => {
 
 		await nextFrame();
 
-		assert.isTrue(spy.calledOnce);
+		assert.isTrue(spy.called);
+		assert.strictEqual(spy.firstCall.args[0].detail.value.length, 0);
 	});
 
 	test('it maintains selection accross data updates', async () => {

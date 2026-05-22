@@ -1,3 +1,4 @@
+import { lift } from '@pionjs/pion';
 import '../cosmoz-omnitable-skeleton.js';
 
 import { announcementIcon, errorIcon } from '@neovici/cosmoz-icons';
@@ -89,8 +90,7 @@ export const renderList = (header, list) => {
 				id="groupedList"
 				.data=${processedItems}
 				.selectedItems=${selectedItems}
-				@selected-items-changed=${(event) =>
-					setSelectedItems(event.detail.value)}
+				@selected-items-changed=${lift(setSelectedItems)}
 				.displayEmptyGroups=${
 					displayEmptyGroups /* TODO: check if still works */
 				}
