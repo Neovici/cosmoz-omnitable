@@ -7,7 +7,6 @@ import './cosmoz-omnitable-header-row';
 import './cosmoz-omnitable-item-expand';
 import './cosmoz-omnitable-item-row';
 
-import { notifyProperty } from '@neovici/cosmoz-utils/hooks/use-notify-property';
 import { component } from '@pionjs/pion';
 import { html as polymerHtml } from '@polymer/polymer/lib/utils/html-tag';
 import { html } from 'lit-html';
@@ -47,7 +46,7 @@ const Omnitable = (host) => {
 
 customElements.define(
 	'cosmoz-omnitable',
-	class extends component(Omnitable, {
+	component(Omnitable, {
 		observedAttributes: [
 			'hash-param',
 			'sort-on',
@@ -63,14 +62,7 @@ customElements.define(
 			'loading',
 			'mini-breakpoint',
 		],
-	}) {
-		connectedCallback() {
-			super.connectedCallback();
-			notifyProperty(this, 'selectedItems', []);
-			notifyProperty(this, 'visibleData', []);
-			notifyProperty(this, 'sortedFilteredGroupedItems', []);
-		}
-	},
+	}),
 );
 
 const tmplt = `

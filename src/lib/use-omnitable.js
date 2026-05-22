@@ -1,4 +1,3 @@
-import { useState } from '@pionjs/pion';
 import { useSettings } from './settings';
 import { useFastLayout } from './use-fast-layout';
 import { useFooter } from './use-footer';
@@ -48,19 +47,16 @@ export const useOmnitable = (host) => {
 			sortAndGroupOptions,
 		}),
 		dataIsValid = data && Array.isArray(data) && data.length > 0,
-		[selectedItems, setSelectedItems] = useState([]);
-
-	usePublicInterface({
-		host,
-		visibleData,
-		sortedFilteredGroupedItems: processedItems,
-		columns,
-		filters,
-		setFilterState,
-		selectedItems,
-		isMini,
-		...sortAndGroupOptions,
-	});
+		{ selectedItems, setSelectedItems } = usePublicInterface({
+			host,
+			visibleData,
+			sortedFilteredGroupedItems: processedItems,
+			columns,
+			filters,
+			setFilterState,
+			isMini,
+			...sortAndGroupOptions,
+		});
 
 	return {
 		header: useHeader({
@@ -83,6 +79,7 @@ export const useOmnitable = (host) => {
 			error,
 			dataIsValid,
 			processedItems,
+			selectedItems,
 			setSelectedItems,
 			columns,
 			collapsedColumns,

@@ -1,9 +1,8 @@
-import { useCallback, useEffect, useState } from '@pionjs/pion';
-import { isGroup, GroupItem } from './utils';
+import { useCallback, useEffect, useProperty, useState } from '@pionjs/pion';
 import type { Item } from '../lib/types';
+import { GroupItem, isGroup } from './utils';
 
 export interface UseSelectedItemsParams {
-	initial: Item[];
 	compareItemsFn: <T>(a: T, b: T) => boolean;
 	data: (Item | GroupItem<Item>)[];
 	flatData: (Item | GroupItem<Item>)[] | undefined;
@@ -24,12 +23,14 @@ export interface UseSelectedItemsResult {
 }
 
 export const useSelectedItems = ({
-	initial,
 	compareItemsFn,
 	data,
 	flatData,
 }: UseSelectedItemsParams): UseSelectedItemsResult => {
-	const [selectedItems, setSelectedItems] = useState<Item[]>(initial);
+	const [selectedItems, setSelectedItems] = useProperty<Item[]>(
+		'selectedItems',
+		() => [],
+	);
 	const [lastSelection, setLastSelection] = useState<Item | GroupItem<Item>>();
 	/**
 	 * Check if item is selected.
