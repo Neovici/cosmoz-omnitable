@@ -12,15 +12,13 @@ export const useTrackSize = (
 ) =>
 	useEffect(() => {
 		const onResize = ([entry]: ResizeObserverEntry[]) => {
-				if (entry.contentRect?.width === 0) {
-					return;
-				}
+			if (entry.contentRect?.width === 0) {
+				return;
+			}
 
-				requestAnimationFrame(() =>
-					setCanvasWidth(entry.contentRect?.width - LAYOUT_OFFSET),
-				);
-			},
-			observer = new ResizeObserver(onResize);
+			setCanvasWidth(entry.contentRect.width - LAYOUT_OFFSET);
+		};
+		observer = new ResizeObserver(onResize);
 
 		observer.observe(host);
 		return () => observer.unobserve(host);
