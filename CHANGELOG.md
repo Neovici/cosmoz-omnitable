@@ -1,3 +1,10 @@
+## [18.7.1](https://github.com/Neovici/cosmoz-omnitable/compare/v18.7.0...v18.7.1) (2026-05-27)
+
+
+### Bug Fixes
+
+* **use-track-size:** convert to TypeScript and drop requestAnimationFrame ([e5eb2c7](https://github.com/Neovici/cosmoz-omnitable/commit/e5eb2c773123e23433482ff80f2557bec476b00a))
+
 # [18.7.0](https://github.com/Neovici/cosmoz-omnitable/compare/v18.6.1...v18.7.0) (2026-05-22)
 
 
