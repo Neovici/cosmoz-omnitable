@@ -474,6 +474,110 @@ suite('pure functions', () => {
 	});
 });
 
+suite('primitive value-path with text/value properties', () => {
+	test('getString returns primitive string when textProperty is set', () => {
+		assert.equal(
+			getString(
+				{ valuePath: 'priority', textProperty: 'key' },
+				{ priority: 'Normal' },
+			),
+			'Normal',
+		);
+	});
+
+	test('getString returns primitive number when textProperty is set', () => {
+		assert.equal(
+			getString({ valuePath: 'amount', textProperty: 'key' }, { amount: 42 }),
+			'42',
+		);
+	});
+
+	test('toXlsxValue returns primitive string when textProperty is set', () => {
+		assert.equal(
+			toXlsxValue(
+				{ valuePath: 'priority', textProperty: 'key' },
+				{ priority: 'Normal' },
+			),
+			'Normal',
+		);
+	});
+
+	test('toXlsxValue returns primitive number when textProperty is set', () => {
+		assert.equal(
+			toXlsxValue({ valuePath: 'amount', textProperty: 'key' }, { amount: 42 }),
+			'42',
+		);
+	});
+
+	test('getComparableValue returns primitive string when valueProperty is set', () => {
+		assert.equal(
+			getComparableValue(
+				{ valuePath: 'priority', valueProperty: 'value' },
+				{ priority: 'Normal' },
+			),
+			'Normal',
+		);
+	});
+
+	test('getComparableValue returns primitive number when valueProperty is set', () => {
+		assert.equal(
+			getComparableValue(
+				{ valuePath: 'amount', valueProperty: 'value' },
+				{ amount: 42 },
+			),
+			42,
+		);
+	});
+
+	test('getComparableValue returns primitive string when textProperty is set', () => {
+		assert.equal(
+			getComparableValue(
+				{ valuePath: 'priority', textProperty: 'key' },
+				{ priority: 'Normal' },
+			),
+			'Normal',
+		);
+	});
+
+	test('getString still works with object values when textProperty is set', () => {
+		assert.equal(
+			getString(
+				{ valuePath: 'group', textProperty: 'name' },
+				{ group: { name: 'Grupp 0', value: 'group0' } },
+			),
+			'Grupp 0',
+		);
+	});
+
+	test('getComparableValue still works with object values when valueProperty is set', () => {
+		assert.equal(
+			getComparableValue(
+				{ valuePath: 'group', valueProperty: 'value' },
+				{ group: { name: 'Grupp 0', value: 'group0' } },
+			),
+			'group0',
+		);
+	});
+
+	test('applyMultiFilter matches primitive values when valueProperty is set', () => {
+		const column = { valuePath: 'priority', valueProperty: 'value' };
+		assert.isTrue(
+			applyMultiFilter(column, [{ key: 'Normal', value: 'Normal' }])({
+				priority: 'Normal',
+			}),
+		);
+	});
+
+	test('applyMultiFilter does not mis-match primitive values when valueProperty is set', () => {
+		const column = { valuePath: 'priority', valueProperty: 'value' };
+		assert.isFalse(
+			applyMultiFilter(column, [{ key: 'High', value: 'High' }])({
+				priority: 'Normal',
+			}),
+		);
+	});
+});
+
 const basicFixture = html`
 	<cosmoz-omnitable style="height:300px" .resizeSpeedFactor=${1}>
 		<cosmoz-omnitable-column-autocomplete

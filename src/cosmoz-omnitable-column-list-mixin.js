@@ -66,7 +66,11 @@ const unique = (values, valueProperty) => {
 		return [];
 	},
 	getTexts = (item, valuePath, textProperty) =>
-		array(valuePath && get(item, valuePath)).map(prop(textProperty)),
+		array(valuePath && get(item, valuePath)).map((v) =>
+			textProperty && typeof v === 'object' && v !== null
+				? get(v, textProperty)
+				: v,
+		),
 	getString = ({ valuePath, textProperty }, item) => {
 		return getTexts(item, valuePath, textProperty)
 			.filter((i) => i != null)
@@ -77,12 +81,15 @@ const unique = (values, valueProperty) => {
 		({ valueProperty, valuePath, emptyValue, emptyProperty }, filters) =>
 		(item) => {
 			const val = prop(valueProperty),
-				values = array(get(item, valuePath));
+				values = array(get(item, valuePath)),
+				cellVal = valueProperty
+					? (v) => (typeof v === 'object' && v !== null ? val(v) : v)
+					: val;
 			return filters.some(
 				(filter) =>
 					(values.length === 0 &&
 						prop(emptyProperty || valueProperty)(filter) === emptyValue) ||
-					values.some((value) => val(value) === val(filter)),
+					values.some((value) => cellVal(value) === val(filter)),
 			);
 		},
 	onChange = (setState) => (value) =>
@@ -147,7 +154,11 @@ const unique = (values, valueProperty) => {
 					return value;
 				}
 				const subValues = array(value).reduce((acc, subItem) => {
-					acc.push(get(subItem, valueProperty));
+					acc.push(
+						valueProperty && typeof subItem === 'object' && subItem !== null
+							? get(subItem, valueProperty)
+							: subItem,
+					);
 					return acc;
 				}, []);
 				return subValues.sort().join(' ');

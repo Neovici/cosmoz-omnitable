@@ -202,3 +202,38 @@ suite('pure functions', () => {
 		);
 	});
 });
+
+suite('primitive value-path with text/value properties', () => {
+	test('getString returns primitive string when textProperty is set', () => {
+		const column = { valuePath: 'priority', textProperty: 'key' };
+		assert.equal(getString(column, { priority: 'Normal' }), 'Normal');
+	});
+
+	test('getString returns primitive number when textProperty is set', () => {
+		const column = { valuePath: 'amount', textProperty: 'key' };
+		assert.equal(getString(column, { amount: 42 }), '42');
+	});
+
+	test('getString returns primitive values from array when textProperty is set', () => {
+		const column = { valuePath: 'tags', textProperty: 'key' };
+		assert.equal(getString(column, { tags: ['a', 'b', 'c'] }), 'a, b, c');
+	});
+
+	test('applyMultiFilter matches primitive value when valueProperty is set', () => {
+		const column = { valuePath: 'priority', valueProperty: 'value' };
+		assert.isTrue(
+			applyMultiFilter(column, [{ key: 'Normal', value: 'Normal' }])({
+				priority: 'Normal',
+			}),
+		);
+	});
+
+	test('applyMultiFilter does not match different primitive value when valueProperty is set', () => {
+		const column = { valuePath: 'priority', valueProperty: 'value' };
+		assert.isFalse(
+			applyMultiFilter(column, [{ key: 'High', value: 'High' }])({
+				priority: 'Normal',
+			}),
+		);
+	});
+});

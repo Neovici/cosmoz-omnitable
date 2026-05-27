@@ -22,7 +22,13 @@ export const getComparableValue = (
 	{ valuePath, textProperty, valueProperty },
 	item,
 ) => {
-	const property = textProperty ? strProp(textProperty) : prop(valueProperty),
+	const rawProperty = textProperty
+			? strProp(textProperty)
+			: prop(valueProperty),
+		property = (v) =>
+			(textProperty || valueProperty) && typeof v === 'object' && v !== null
+				? rawProperty(v)
+				: v,
 		values = array(valuePath && get(item, valuePath)).map(property);
 	return values.length > 1 ? values.filter(Boolean).join(',') : values[0];
 };
