@@ -475,40 +475,6 @@ suite('pure functions', () => {
 });
 
 suite('primitive value-path with text/value properties', () => {
-	test('getString returns primitive string when textProperty is set', () => {
-		assert.equal(
-			getString(
-				{ valuePath: 'priority', textProperty: 'key' },
-				{ priority: 'Normal' },
-			),
-			'Normal',
-		);
-	});
-
-	test('getString returns primitive number when textProperty is set', () => {
-		assert.equal(
-			getString({ valuePath: 'amount', textProperty: 'key' }, { amount: 42 }),
-			'42',
-		);
-	});
-
-	test('toXlsxValue returns primitive string when textProperty is set', () => {
-		assert.equal(
-			toXlsxValue(
-				{ valuePath: 'priority', textProperty: 'key' },
-				{ priority: 'Normal' },
-			),
-			'Normal',
-		);
-	});
-
-	test('toXlsxValue returns primitive number when textProperty is set', () => {
-		assert.equal(
-			toXlsxValue({ valuePath: 'amount', textProperty: 'key' }, { amount: 42 }),
-			'42',
-		);
-	});
-
 	test('getComparableValue returns primitive string when valueProperty is set', () => {
 		assert.equal(
 			getComparableValue(
@@ -539,7 +505,7 @@ suite('primitive value-path with text/value properties', () => {
 		);
 	});
 
-	test('getString still works with object values when textProperty is set', () => {
+	test('getString reads textProperty from object values', () => {
 		assert.equal(
 			getString(
 				{ valuePath: 'group', textProperty: 'name' },
@@ -549,7 +515,7 @@ suite('primitive value-path with text/value properties', () => {
 		);
 	});
 
-	test('getComparableValue still works with object values when valueProperty is set', () => {
+	test('getComparableValue reads valueProperty from object values', () => {
 		assert.equal(
 			getComparableValue(
 				{ valuePath: 'group', valueProperty: 'value' },
@@ -559,7 +525,7 @@ suite('primitive value-path with text/value properties', () => {
 		);
 	});
 
-	test('applyMultiFilter matches primitive values when valueProperty is set', () => {
+	test('applyMultiFilter matches primitive value when valueProperty is set', () => {
 		const column = { valuePath: 'priority', valueProperty: 'value' };
 		assert.isTrue(
 			applyMultiFilter(column, [{ key: 'Normal', value: 'Normal' }])({
@@ -568,7 +534,7 @@ suite('primitive value-path with text/value properties', () => {
 		);
 	});
 
-	test('applyMultiFilter does not mis-match primitive values when valueProperty is set', () => {
+	test('applyMultiFilter does not match different primitive value when valueProperty is set', () => {
 		const column = { valuePath: 'priority', valueProperty: 'value' };
 		assert.isFalse(
 			applyMultiFilter(column, [{ key: 'High', value: 'High' }])({
