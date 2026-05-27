@@ -1,5 +1,32 @@
 import { html } from 'lit-html';
 import { when } from 'lit-html/directives/when.js';
+import type { Column, Item } from './types';
+
+interface SortAndGroup {
+	sortOn?: string;
+	setSortOn?: (name?: string) => void;
+	descending?: boolean;
+	setDescending?: (value: boolean) => void;
+	groupOn?: string;
+	setGroupOn?: (name?: string) => void;
+	groupOnDescending?: boolean;
+	setGroupOnDescending?: (value: boolean) => void;
+	columns?: Column[];
+}
+
+interface RenderHeaderParams {
+	allSelected: boolean;
+	onAllCheckboxChange: (event: Event) => void;
+	sortAndGroup: SortAndGroup;
+	dataIsValid: boolean;
+	data?: Item[];
+	columns: Column[];
+	filters: Record<string, unknown>;
+	groupOnColumn?: Column;
+	setFilterState: (name: string, state: unknown) => void;
+	settingsConfig: unknown;
+	hideSelectAll?: boolean;
+}
 
 export const renderHeader = ({
 	allSelected,
@@ -13,7 +40,7 @@ export const renderHeader = ({
 	setFilterState,
 	settingsConfig,
 	hideSelectAll,
-}) =>
+}: RenderHeaderParams) =>
 	html`<sort-and-group-provider .value=${sortAndGroup}>
 		<div class="header" id="header" part="header">
 			${when(

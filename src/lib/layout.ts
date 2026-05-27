@@ -10,6 +10,8 @@ export interface ColumnConfig {
 	disabled?: boolean;
 }
 
+export type ColumnConfigInput = Omit<ColumnConfig, 'index'>;
+
 type Columns = ColumnConfig[];
 
 const finite = (num: number) => (Number.isFinite(num) ? num : 0);

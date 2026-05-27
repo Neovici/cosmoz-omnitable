@@ -16,7 +16,7 @@ export default (params: RemoteParams) => {
 			return null;
 		}
 	};
-	const write = async (settingsId: string, settings = {}) => {
+	const write = async (settingsId: string, settings: unknown = {}) => {
 		const key = prefix + settingsId;
 		try {
 			await post$(key, settings);
