@@ -1,3 +1,10 @@
+# [18.8.0](https://github.com/Neovici/cosmoz-omnitable/compare/v18.7.1...v18.8.0) (2026-05-27)
+
+
+### Features
+
+* handle primitive value-path values gracefully in listColumnMixin ([#1003](https://github.com/Neovici/cosmoz-omnitable/issues/1003)) ([b27d050](https://github.com/Neovici/cosmoz-omnitable/commit/b27d050d4c7fb9e9e77dc7b383a06d3b1f3377ab))
+
 ## [18.7.1](https://github.com/Neovici/cosmoz-omnitable/compare/v18.7.0...v18.7.1) (2026-05-27)
 
 
