@@ -474,6 +474,76 @@ suite('pure functions', () => {
 	});
 });
 
+suite('primitive value-path with text/value properties', () => {
+	test('getComparableValue returns primitive string when valueProperty is set', () => {
+		assert.equal(
+			getComparableValue(
+				{ valuePath: 'priority', valueProperty: 'value' },
+				{ priority: 'Normal' },
+			),
+			'Normal',
+		);
+	});
+
+	test('getComparableValue returns primitive number when valueProperty is set', () => {
+		assert.equal(
+			getComparableValue(
+				{ valuePath: 'amount', valueProperty: 'value' },
+				{ amount: 42 },
+			),
+			42,
+		);
+	});
+
+	test('getComparableValue returns primitive string when textProperty is set', () => {
+		assert.equal(
+			getComparableValue(
+				{ valuePath: 'priority', textProperty: 'key' },
+				{ priority: 'Normal' },
+			),
+			'Normal',
+		);
+	});
+
+	test('getString reads textProperty from object values', () => {
+		assert.equal(
+			getString(
+				{ valuePath: 'group', textProperty: 'name' },
+				{ group: { name: 'Grupp 0', value: 'group0' } },
+			),
+			'Grupp 0',
+		);
+	});
+
+	test('getComparableValue reads valueProperty from object values', () => {
+		assert.equal(
+			getComparableValue(
+				{ valuePath: 'group', valueProperty: 'value' },
+				{ group: { name: 'Grupp 0', value: 'group0' } },
+			),
+			'group0',
+		);
+	});
+
+	test('applyMultiFilter matches primitive value when valueProperty is set', () => {
+		const column = { valuePath: 'priority', valueProperty: 'value' };
+		assert.isTrue(
+			applyMultiFilter(column, [{ key: 'Normal', value: 'Normal' }])({
+				priority: 'Normal',
+			}),
+		);
+	});
+
+	test('applyMultiFilter does not match different primitive value when valueProperty is set', () => {
+		const column = { valuePath: 'priority', valueProperty: 'value' };
+		assert.isFalse(
+			applyMultiFilter(column, [{ key: 'High', value: 'High' }])({
+				priority: 'Normal',
+			}),
+		);
+	});
+});
+
 const basicFixture = html`
 	<cosmoz-omnitable style="height:300px" .resizeSpeedFactor=${1}>
 		<cosmoz-omnitable-column-autocomplete
