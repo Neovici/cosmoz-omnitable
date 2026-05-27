@@ -16,9 +16,7 @@ export const useTrackSize = (
 					return;
 				}
 
-				requestAnimationFrame(() =>
-					setCanvasWidth(entry.contentRect?.width - LAYOUT_OFFSET),
-				);
+				setCanvasWidth(entry.contentRect.width - LAYOUT_OFFSET);
 			},
 			observer = new ResizeObserver(onResize);
 
