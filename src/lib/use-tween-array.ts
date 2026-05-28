@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useMemo } from '@pionjs/pion';
-import { useMeta } from '@neovici/cosmoz-utils/hooks/use-meta';
 import { noop } from '@neovici/cosmoz-utils/function';
+import { useMeta } from '@neovici/cosmoz-utils/hooks/use-meta';
+import { useCallback, useEffect, useMemo } from '@pionjs/pion';
 
 interface AnimationLoop {
 	start: () => void;
@@ -8,8 +8,8 @@ interface AnimationLoop {
 }
 
 interface TweenState {
-	target: number[];
-	tween?: number[];
+	target: (number | undefined)[];
+	tween?: (number | undefined)[];
 }
 
 const useAnimationLoop = (
@@ -50,9 +50,9 @@ const useAnimationLoop = (
 export const isCloseEnough = (a = 0, b = 0) => Math.abs(a - b) < 0.1;
 
 export const useTweenArray = (
-	target: number[],
+	target: (number | undefined)[],
 	speedFactor = 1.9,
-	callback: (tween: number[]) => void = noop,
+	callback: (tween: (number | undefined)[]) => void = noop,
 ): void => {
 	const state = useMeta<TweenState>({ target });
 

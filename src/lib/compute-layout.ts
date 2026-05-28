@@ -1,10 +1,13 @@
-import { layout, ColumnConfig } from './layout';
+import { ColumnConfig, ColumnConfigInput, layout } from './layout';
 import { findLastIndex } from './utils';
 
-type ItemName = ColumnConfig['name'];
-type Width = ColumnConfig['width'];
+type ItemName = ColumnConfigInput['name'];
+type Width = ColumnConfigInput['width'];
 
-const _toCss = (layout: number[], config: ColumnConfig[]) => {
+const _toCss = (
+	layout: (number | undefined)[],
+	config: ColumnConfigInput[],
+) => {
 	const lastVisibleIndex = findLastIndex(
 		layout,
 		(width) => width != null && width > 0,
@@ -81,5 +84,7 @@ export const computeLayout = (
 	}, new Array(numColumns).fill(undefined));
 };
 
-export const toCss = (layout: number[], config: ColumnConfig[]) =>
-	layout.length === 0 ? '.cell {display: none;}' : _toCss(layout, config);
+export const toCss = (
+	layout: (number | undefined)[],
+	config: ColumnConfigInput[],
+) => (layout.length === 0 ? '.cell {display: none;}' : _toCss(layout, config));

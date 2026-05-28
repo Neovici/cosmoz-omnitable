@@ -1,5 +1,6 @@
-import { component, html } from '@pionjs/pion';
 import { css, sheet } from '@neovici/cosmoz-utils';
+import { component, html } from '@pionjs/pion';
+import type { Column } from './lib/types';
 
 const style = css`
 	:host {
@@ -24,7 +25,11 @@ const style = css`
 	}
 `;
 
-const ItemExpandLine = ({ column }) => html`
+type ItemExpandLineProps = {
+	column: Column;
+};
+
+const ItemExpandLine = ({ column }: ItemExpandLineProps) => html`
 	<div class="label" title="${column.title}" part="item-expand-label">
 		${column.title}
 	</div>

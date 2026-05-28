@@ -1,12 +1,39 @@
 import { lift } from '@pionjs/pion';
-import '../cosmoz-omnitable-skeleton.js';
+import '../cosmoz-omnitable-skeleton';
 
 import { announcementIcon, errorIcon } from '@neovici/cosmoz-icons';
 import { t } from 'i18next';
 import { html } from 'lit-html';
 import { when } from 'lit-html/directives/when.js';
+import type { NormalizedSettings } from './settings/normalize';
+import type { Column, Item } from './types';
 
-export const renderList = (header, list) => {
+interface HeaderParams {
+	settingsConfig: NormalizedSettings & {
+		badge?: boolean;
+		collapsed?: Column[];
+		filters?: Record<string, unknown>;
+	};
+	columns: Column[];
+	groupOnColumn?: Column;
+	setFilterState: (name: string, state: unknown) => void;
+}
+
+interface ListParams {
+	processedItems: (Item | unknown)[];
+	dataIsValid: boolean;
+	filterIsTooStrict: boolean;
+	loading: boolean;
+	displayEmptyGroups: boolean;
+	compareItemsFn?: (a: unknown, b: unknown) => boolean;
+	selectedItems: Item[];
+	setSelectedItems: (items: Item[] | ((prev: Item[]) => Item[])) => void;
+	renderItem: (item: Item, index: number, params: unknown) => unknown;
+	renderGroup: (item: unknown, index: number, params: unknown) => unknown;
+	error?: { message: string } | null;
+}
+
+export const renderList = (header: HeaderParams, list: ListParams) => {
 	const { settingsConfig } = header,
 		{
 			processedItems,
@@ -81,7 +108,7 @@ export const renderList = (header, list) => {
 					})}
 					<div class="tableContent-empty-message">
 						<h3>${t('Error loading data')}</h3>
-						<p>${error.message}</p>
+						<p>${error!.message}</p>
 					</div>
 				</div>`,
 		)}

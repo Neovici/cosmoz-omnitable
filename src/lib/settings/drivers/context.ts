@@ -1,8 +1,13 @@
 import { createContext, useContext, useMemo } from '@pionjs/pion';
 import local from './local';
 
+export interface Driver {
+	read: (settingsId: string) => Promise<unknown>;
+	write: (settingsId: string, settings?: unknown) => Promise<void>;
+}
+
 export const DriverContext = createContext(local),
-	useDriver = () => {
+	useDriver = (): Driver => {
 		const driver = useContext(DriverContext);
 		return useMemo(() => driver(), [driver]);
 	},

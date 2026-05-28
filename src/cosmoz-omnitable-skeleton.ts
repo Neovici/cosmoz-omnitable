@@ -1,4 +1,5 @@
-import { html, css, component } from '@pionjs/pion';
+import { component, css, html } from '@pionjs/pion';
+import type { Column } from './lib/types';
 
 const styles = css`
 	:host {
@@ -16,9 +17,9 @@ const styles = css`
 	}
 	.skeleton > div div:not(.handle) {
 		background-image: linear-gradient(
-			90deg, 
-			var(--cosmoz-omnitable-skeleton-bg-from, #e0e0e0), 
-			var(--cosmoz-omnitable-skeleton-bg-middle, #f5f5f5), 
+			90deg,
+			var(--cosmoz-omnitable-skeleton-bg-from, #e0e0e0),
+			var(--cosmoz-omnitable-skeleton-bg-middle, #f5f5f5),
 			var(--cosmoz-omnitable-skeleton-bg-to, #e0e0e0)
 		);
 		background-size: 1000%;
@@ -44,7 +45,14 @@ const styles = css`
 	}
 `;
 
-const Skeleton = ({ settingsConfig }) => {
+type SkeletonProps = {
+	settingsConfig: {
+		columns: Column[];
+		collapsed: Column[];
+	};
+};
+
+const Skeleton = ({ settingsConfig }: SkeletonProps) => {
 	const { columns, collapsed } = settingsConfig,
 		showingColumns = columns.filter(
 			(column) => !collapsed.some((hidden) => hidden.name === column.name),

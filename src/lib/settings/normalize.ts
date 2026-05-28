@@ -1,9 +1,9 @@
 import { props } from '@neovici/cosmoz-utils/object';
-import { ColumnConfig } from '../layout';
+import { ColumnConfigInput } from '../layout';
 import { Column } from '../types';
 
 export interface NormalizedSettings {
-	columns: Omit<ColumnConfig, 'index'>[];
+	columns: ColumnConfigInput[];
 }
 
 export const sgProps = [
