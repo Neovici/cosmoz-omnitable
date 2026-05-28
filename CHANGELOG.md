@@ -1,3 +1,10 @@
+## [18.8.1](https://github.com/Neovici/cosmoz-omnitable/compare/v18.8.0...v18.8.1) (2026-05-28)
+
+
+### Bug Fixes
+
+* convert to TypeScript (type-only, no runtime changes) ([#1006](https://github.com/Neovici/cosmoz-omnitable/issues/1006)) ([8453d7a](https://github.com/Neovici/cosmoz-omnitable/commit/8453d7aafff0468f4abf54e0b3f3b0040cf5444e))
+
 # [18.8.0](https://github.com/Neovici/cosmoz-omnitable/compare/v18.7.1...v18.8.0) (2026-05-27)
 
 
