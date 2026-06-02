@@ -35,14 +35,13 @@ export default css`
 		scrollbar-width: 2px;
 		scrollbar-gutter: stable;
 		text-transform: uppercase;
-		font-size: 12px;
 		color: var(--cz-color-text-primary);
 	}
 	.contents::-webkit-scrollbar {
-		width: 2px;
+		width: 3px;
 	}
 	.contents::-webkit-scrollbar-thumb {
-		background: rgba(0, 0, 0, 0.5);
+		background: var(--cz-color-bg-brand-solid);
 	}
 	.contents::-webkit-scrollbar-track-piece:start,
 	.contents::-webkit-scrollbar-track-piece:end {
@@ -50,7 +49,7 @@ export default css`
 	}
 
 	.heading {
-		box-shadow: inset 0px -1px 0px rgba(0, 0, 0, 0.15);
+		box-shadow: inset 0px -1px 0px var(--cz-color-border-primary);
 		font-weight: var(--cz-font-weight-medium);
 		font-size: var(--cz-text-xs);
 		line-height: var(--cz-text-xs-line-height);
@@ -69,8 +68,8 @@ export default css`
 	}
 	cosmoz-collapse[opened] + .heading {
 		box-shadow:
-			inset 0px -1px 0px rgba(0, 0, 0, 0.15),
-			inset 0px 1px 0px rgba(0, 0, 0, 0.15);
+			inset 0px -1px 0px var(--cz-color-border-primary),
+			inset 0px 1px 0px var(--cz-color-border-primary);
 	}
 
 	.list {
@@ -98,10 +97,7 @@ export default css`
 		background: transparent;
 		cursor: move;
 		margin-right: 12px;
-		color: var(
-			--cosmoz-omnitable-settings-pull-color,
-			var(--cz-color-muted, #c4c4c4)
-		);
+		color: var(--cz-color-bg-brand-solid);
 	}
 	.title {
 		flex: auto;
@@ -124,7 +120,7 @@ export default css`
 		display: flex;
 		gap: 8px;
 		padding: 12px 14px;
-		box-shadow: inset 0px 1px 0px rgba(0, 0, 0, 0.15);
+		box-shadow: inset 0px 1px 0px var(--cz-color-border-primary);
 
 		& cosmoz-button {
 			flex: 1;
@@ -142,8 +138,9 @@ export default css`
 	}
 	.sg {
 		color: inherit;
-		border: 1px solid rgba(0, 0, 0, 0.2);
-		border-radius: 6px;
+		box-shadow: inset 0 0 0 2px var(--cz-color-border-primary);
+		border: none;
+		border-radius: var(--cz-radius-sm);
 		font-size: var(--cz-text-xs);
 		line-height: var(--cz-text-xs-line-height);
 		text-transform: uppercase;
@@ -154,21 +151,23 @@ export default css`
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		transition:
+			background 0.3s ease,
+			box-shadow 0.3s ease;
 	}
 	.sg span {
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
 	.sg[data-on] {
-		background: var(
-			--cosmoz-omnitable-checkbox-checked-color,
-			var(--primary-color)
-		);
+		background: var(--cz-color-bg-brand-secondary);
+		box-shadow: none;
 	}
 	.sg svg {
 		margin-left: 4px;
 		flex: none;
 		vertical-align: middle;
+		transition: transform 0.3s ease;
 	}
 
 	.sg:not([data-on='desc']) svg {
@@ -199,6 +198,10 @@ export const dropdown = css`
 		color: inherit;
 		width: 40px;
 		height: 40px;
+		transition: color 0.3s ease;
+	}
+	cosmoz-dropdown::part(button):hover {
+		color: var(--cz-color-text-primary);
 	}
 	cosmoz-dropdown::part(anchor) {
 		display: inline-block;
@@ -206,22 +209,17 @@ export const dropdown = css`
 	.badge {
 		position: absolute;
 		top: 1px;
-		right: -4px;
-		background-color: var(
-			--cosmoz-omnitable-checkbox-checked-color,
-			var(--primary-color)
-		);
+		right: 1px;
+		background-color: var(--cz-color-bg-brand-solid);
 		width: 8px;
 		height: 8px;
 		border-radius: 100%;
 	}
 	.headerDots {
 		align-items: center;
-		color: var(--cosmoz-input-color);
+		color: var(--cz-color-text-primary);
 		display: flex;
 		font-size: 20px;
-		height: 42px;
-		justify-content: center;
 		margin-left: 12px;
 		min-width: 30px;
 		transform: rotate(90deg);
