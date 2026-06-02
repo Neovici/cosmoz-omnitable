@@ -1,3 +1,10 @@
+# [18.7.0-beta.2](https://github.com/Neovici/cosmoz-omnitable/compare/v18.7.0-beta.1...v18.7.0-beta.2) (2026-06-02)
+
+
+### Features
+
+* add smooth transitions and fix mini mode spacing ([#1012](https://github.com/Neovici/cosmoz-omnitable/issues/1012)) ([7140073](https://github.com/Neovici/cosmoz-omnitable/commit/71400731abeaa111f611e1311e8c7d51703a84d4))
+
 # [18.7.0-beta.1](https://github.com/Neovici/cosmoz-omnitable/compare/v18.6.0...v18.7.0-beta.1) (2026-05-14)
 
 
