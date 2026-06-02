@@ -15,7 +15,7 @@ export const checkbox = css`
 		user-select: none;
 		cursor: pointer;
 		display: inline-block;
-		box-shadow: var(--cz-shadow-xs-skeumorphic);
+		box-shadow: inset 0 0 0 2px var(--cz-color-border-primary);
 		-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 		transition: background-color 140ms;
 		margin: 1px calc(var(--cz-spacing) * 3);
@@ -24,7 +24,7 @@ export const checkbox = css`
 
 	.checkbox:checked {
 		background: rgb(
-			from var(--cz-color-bg-brand-solid) r g b / calc(alpha * 0.55)
+			from var(--cz-color-bg-brand-solid) r g b / calc(alpha * 0.85)
 		);
 		box-shadow: none;
 	}
@@ -57,7 +57,7 @@ export const checkbox = css`
 	}
 
 	.checkbox:checked:hover {
-		box-shadow: 0 0 2px 6px #2021240f;
+		box-shadow: 0 0 2px 4px var(--cz-color-bg-quaternary);
 	}
 
 	.checkbox:indeterminate::before {
@@ -67,10 +67,7 @@ export const checkbox = css`
 		height: 2px;
 		left: 4px;
 		top: 8px;
-		background-color: var(
-			--cosmoz-omnitable-checkbox-checked-color,
-			var(--primary-color)
-		);
+		background-color: var(--cz-color-text-brand);
 	}
 `;
 
@@ -287,6 +284,18 @@ export default css`
 		padding: 5px 4%;
 		border-bottom: 1px var(--cz-color-border-secondary) solid;
 		background-color: var(--cz-color-bg-disabled);
+		animation: expand-in 0.25s ease;
+	}
+
+	@keyframes expand-in {
+		from {
+			opacity: 0;
+			transform: translateY(-4px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
 	}
 
 	cosmoz-omnitable-item-expand:not([expanded]) {
@@ -418,6 +427,10 @@ export default css`
 		outline: none;
 		color: var(--cz-color-text-primary);
 		background: transparent;
+
+		&[hidden] {
+			display: none;
+		}
 	}
 
 	.groupRow .expand {
@@ -447,6 +460,7 @@ export default css`
 		outline: none;
 		color: inherit;
 		padding: 0;
+		transition: transform 0.3s ease;
 	}
 	.sg span {
 		display: none;
@@ -470,35 +484,42 @@ export default css`
 		flex: auto;
 	}
 
+	.itemRow-minis {
+		display: flex;
+		justify-content: space-between;
+		margin: 14px 12px 12px 12px;
+		color: var(--cz-color-text-primary);
+	}
+
+	:host([mini]) {
+		--checkbox-offset: calc(var(--cz-spacing) * 2);
+	}
+
 	:host([mini]) .itemRow .expand,
 	:host([mini]) cosmoz-omnitable-item-expand {
 		display: none;
 	}
 
-	.itemRow-minis {
-		display: flex;
+	:host([mini]) .header > cosmoz-omnitable-header-row {
+		flex: 0;
+	}
+
+	:host([mini]) .groupRow {
+		padding-left: var(--checkbox-offset);
+	}
+
+	:host([mini]) .header {
+		padding-left: var(--checkbox-offset);
 		justify-content: space-between;
-		margin: 14px 12px 12px 12px;
-		color: var(--cosmoz-omnitable-mini-color, #000);
 	}
 
 	:host([mini]) .itemRow {
 		border-radius: 12px;
-		border: 1px solid var(--cosmoz-omnitable-border-color, #e1e2e5);
-		margin: 4px 8px;
-		padding-top: 2px;
-	}
-
-	:host([mini]) .itemRow:not([selected]) {
-		background: var(--cosmoz-omnitable-mini-item-background, #fdfdfd);
-	}
-
-	:host([mini]) .itemRow:hover {
-		box-shadow: none;
-	}
-
-	:host([mini]) .header {
-		margin: 0 8px;
+		box-shadow: inset 0 0 0 2px var(--cz-color-border-tertiary);
+		margin-block: var(--checkbox-offset);
+		margin-inline: var(--checkbox-offset);
+		padding-block: 4px;
+		border: none;
 	}
 
 	:host([mini]) .tableContent {
@@ -518,7 +539,7 @@ export default css`
 	}
 
 	:host([mini]) .tableContent-scroller:hover::-webkit-scrollbar-thumb {
-		background: var(--cosmoz-omnitable-mini-scrollbar-thumb-bg, #aaa);
+		background: var(--cz-color-bg-tertiary);
 	}
 
 	:host([mini]) .tableContent-scroller::-webkit-scrollbar-button:decrement,
