@@ -27,7 +27,11 @@ const style = css`
 	}
 `;
 
-const ListData = ({ items }) => {
+interface ListDataProps {
+	items: unknown[];
+}
+
+const ListData = ({ items }: ListDataProps) => {
 	const [expanded, setExpanded] = useState(false);
 	const safeItems = Array.isArray(items) ? items : [];
 	const othersCount = useMemo(
@@ -42,10 +46,10 @@ const ListData = ({ items }) => {
 	const showToggle = safeItems.length > 2;
 	const firstItem = safeItems[0];
 	const otherItems = showToggle && !expanded ? [] : safeItems.slice(1);
-	const toggleExpand = (event) => {
+	const toggleExpand = (event: Event) => {
 		event.stopPropagation();
 		event.preventDefault();
-		setExpanded((value) => !value);
+		setExpanded((value: boolean) => !value);
 	};
 
 	return html`
@@ -59,7 +63,7 @@ const ListData = ({ items }) => {
 				>
 			</li>
 			${otherItems.map(
-				(item) => html`
+				(item: unknown) => html`
 					<li>
 						<span class="item">${item}</span>
 					</li>

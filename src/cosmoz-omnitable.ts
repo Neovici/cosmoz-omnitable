@@ -20,10 +20,21 @@ import { useOmnitable } from './lib/use-omnitable';
 
 import './grouped-list/index';
 
-const shimCSS = (s) => window.ShadyCSS?.ApplyShim?.transformCssText?.(s) || s;
+declare global {
+	interface Window {
+		ShadyCSS?: {
+			ApplyShim?: {
+				transformCssText?: (css: string) => string;
+			};
+		};
+	}
+}
 
-const Omnitable = (host) => {
-	const { header, list, footer } = useOmnitable(host);
+const shimCSS = (s: string): string =>
+	window.ShadyCSS?.ApplyShim?.transformCssText?.(s) || s;
+
+const Omnitable = (host: HTMLElement) => {
+	const { header, list, footer } = useOmnitable(host as any) as any;
 
 	return html`
 		<style>
@@ -31,11 +42,11 @@ const Omnitable = (host) => {
 		</style>
 
 		<div class="mainContainer">
-			${renderHeader(header)}
+			${renderHeader(header as any)}
 			<div class="tableContent" id="tableContent">
-				${renderList(header, list)}
+				${renderList(header as any, list as any)}
 			</div>
-			${renderFooter(footer)}
+			${renderFooter(footer as any)}
 		</div>
 
 		<div id="columns">
@@ -69,5 +80,7 @@ const tmplt = `
 	<slot name="actions" slot="actions"></slot>
 `;
 
-export const actionSlots = html(Object.assign([tmplt], { raw: [tmplt] })),
-	actionSlotsPolymer = polymerHtml(Object.assign([tmplt], { raw: [tmplt] }));
+const tagged = Object.assign([tmplt], { raw: [tmplt] });
+
+export const actionSlots = html(tagged),
+	actionSlotsPolymer = polymerHtml(tagged as any);
