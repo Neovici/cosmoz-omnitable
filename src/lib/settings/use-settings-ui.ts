@@ -28,7 +28,7 @@ interface SettingsUIHost extends HTMLElement {
 }
 
 const parseIndex = (str: string | null | undefined): number | undefined => {
-	const idx = parseInt(str ?? '', 10);
+	const idx = parseInt(str!, 10);
 	return isFinite(idx) ? idx : undefined;
 };
 
@@ -69,8 +69,11 @@ export default (host: SettingsUIHost) => {
 
 				meta.handle = null;
 				e.dataTransfer!.effectAllowed = 'move';
-				e.dataTransfer!.setData('omnitable/sort-index', String(index));
-				e.dataTransfer!.setData('text/plain', String(index));
+				e.dataTransfer!.setData(
+					'omnitable/sort-index',
+					index as unknown as string,
+				);
+				e.dataTransfer!.setData('text/plain', index as unknown as string);
 				setTimeout(() => (target as HTMLElement).classList.add('drag'), 0);
 				(target as HTMLElement).addEventListener(
 					'dragend',
@@ -138,9 +141,11 @@ export default (host: SettingsUIHost) => {
 							meta.collapsed?.some((c: Column) => c.name === column.name),
 					})) as SettingsColumn[],
 					idx = parseIndex(
-						(e.target as HTMLElement)
-							.closest('[data-index]')!
-							.getAttribute('data-index'),
+						(
+							(e.target as HTMLElement).closest(
+								'[data-index]',
+							) as HTMLElement | null
+						)?.dataset.index,
 					);
 
 				newSettings.splice(idx!, 1, {

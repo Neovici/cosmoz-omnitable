@@ -26,7 +26,7 @@ const ItemExpand = ({
 				.column=${column}
 				?hidden=${column === groupOnColumn}
 				exportparts="item-expand-label, item-expand-value"
-				>${column.renderCell?.(column, {
+				>${column.renderCell!(column, {
 					item,
 					selected,
 					expanded,

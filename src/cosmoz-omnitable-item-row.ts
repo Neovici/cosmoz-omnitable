@@ -8,8 +8,8 @@ const renderCell = (
 	onItemChange: (column: Column, item: object) => (value: unknown) => void,
 ) =>
 	column.editable
-		? column.renderEditCell?.(column, data, onItemChange(column, data.item))
-		: column.renderCell?.(column, data);
+		? column.renderEditCell!(column, data, onItemChange(column, data.item))
+		: column.renderCell!(column, data);
 
 interface ItemRowProps {
 	columns: Column[];
@@ -39,7 +39,7 @@ const ItemRow = ({
 				part="cell itemRow-cell cell-${column.name} itemRow-cell-${column.name}"
 				?hidden="${column === groupOnColumn}"
 				?editable="${column.editable}"
-				title="${column.cellTitleFn?.(column, item)}"
+				title="${column.cellTitleFn!(column, item)}"
 				name="${column.name}"
 			>
 				${renderCell(column, { item, index, selected, expanded }, onItemChange)}
