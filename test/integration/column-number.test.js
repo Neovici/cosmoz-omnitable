@@ -1,11 +1,11 @@
 import { expect, html, nextFrame, oneEvent } from '@open-wc/testing';
 
 import {
-	pressEnter,
 	pressAndReleaseKeyOn,
+	pressEnter,
 } from '@polymer/iron-test-helpers/mock-interactions.js';
 
-import '../../src/cosmoz-omnitable.js';
+import '../../src/cosmoz-omnitable';
 import '../../src/cosmoz-omnitable-column-number.js';
 import { setupOmnitableFixture } from '../helpers/utils';
 

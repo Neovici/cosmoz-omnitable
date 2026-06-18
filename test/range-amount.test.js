@@ -9,8 +9,8 @@ import {
 	setupOmnitableFixture,
 } from './helpers/utils';
 
+import '../src/cosmoz-omnitable';
 import '../src/cosmoz-omnitable-columns.ts';
-import '../src/cosmoz-omnitable.js';
 import { columnSymbol } from '../src/lib/use-dom-columns';
 import {
 	getComparableValue,

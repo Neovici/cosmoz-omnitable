@@ -6,6 +6,7 @@ import {
 	setupOmnitableFixture,
 } from './helpers/utils';
 
+import '../src/cosmoz-omnitable';
 import {
 	applyMultiFilter,
 	getString,
@@ -13,7 +14,6 @@ import {
 } from '../src/cosmoz-omnitable-column-list-mixin';
 import { applySingleFilter } from '../src/cosmoz-omnitable-column-mixin';
 import '../src/cosmoz-omnitable-columns.ts';
-import '../src/cosmoz-omnitable.js';
 import { columnSymbol } from '../src/lib/use-dom-columns';
 
 suite('basic', () => {

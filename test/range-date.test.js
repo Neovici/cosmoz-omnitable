@@ -9,8 +9,8 @@ import {
 } from './helpers/utils';
 
 import { toLocalISOString } from '@neovici/cosmoz-utils/date';
+import '../src/cosmoz-omnitable';
 import '../src/cosmoz-omnitable-columns.ts';
-import '../src/cosmoz-omnitable.js';
 import { columnSymbol } from '../src/lib/use-dom-columns';
 import { getComparableValue, getString, toDate } from '../src/lib/utils-date';
 

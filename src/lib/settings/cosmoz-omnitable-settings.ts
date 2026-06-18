@@ -12,7 +12,13 @@ import useSettingsUi from './use-settings-ui';
 
 const middleware = [
 	size({
-		apply({ availableHeight, elements }) {
+		apply({
+			availableHeight,
+			elements,
+		}: {
+			availableHeight: number;
+			elements: { floating: HTMLElement };
+		}) {
 			Object.assign(elements.floating.style, {
 				maxHeight: `${Math.max(0, availableHeight)}px`,
 			});
@@ -32,9 +38,19 @@ const renderItem =
 		onToggle,
 		collapsed,
 		filters,
+	}: {
+		onDragStart: (e: DragEvent) => void;
+		onDragEnter: (e: DragEvent) => void;
+		onDragOver: (e: DragEvent) => void;
+		onDragLeave: (e: DragEvent) => void;
+		onDrop: (e: DragEvent) => void;
+		onDown: (e: MouseEvent) => void;
+		onToggle: (e: Event) => void;
+		collapsed: unknown[];
+		filters: Record<string, any>;
 	}) =>
-	(column, i) => {
-		const indeterminate = !!collapsed?.find((c) => c.name === column.name),
+	(column: { name: string; title?: string; disabled?: boolean }, i: number) => {
+		const indeterminate = !!collapsed?.find((c: any) => c.name === column.name),
 			checked = !column.disabled && !indeterminate;
 		return html` <div
 			class="item"
@@ -61,7 +77,8 @@ const renderItem =
 		</div>`;
 	};
 
-const SettingsUI = (host) => {
+const SettingsUI = (host: HTMLElement) => {
+	const thru = useSettingsUi(host as any) as any;
 	const {
 		settings,
 		settingsId,
@@ -70,14 +87,13 @@ const SettingsUI = (host) => {
 		hasChanges,
 		opened,
 		setOpened,
-		...thru
-	} = useSettingsUi(host);
+	} = thru;
 	return html` <div class="headline">
 			${t('Sort and filter')}
 			<button
 				class="close"
-				@click=${(e) => {
-					const tg = e.currentTarget;
+				@click=${(e: MouseEvent) => {
+					const tg = e.currentTarget as HTMLElement;
 					tg?.focus();
 					tg?.blur();
 				}}
@@ -90,7 +106,11 @@ const SettingsUI = (host) => {
 			<div
 				class="heading"
 				?data-opened=${opened.columns}
-				@click=${() => setOpened((c) => ({ ...c, columns: !c.columns }))}
+				@click=${() =>
+					setOpened((c: Record<string, boolean>) => ({
+						...c,
+						columns: !c.columns,
+					}))}
 				part="columns columns-heading"
 			>
 				${t('Columns')} ${arrow}
@@ -105,7 +125,8 @@ const SettingsUI = (host) => {
 			<div
 				class="heading"
 				?data-opened=${opened.sort}
-				@click=${() => setOpened((c) => ({ ...c, sort: !c.sort }))}
+				@click=${() =>
+					setOpened((c: Record<string, boolean>) => ({ ...c, sort: !c.sort }))}
 			>
 				${t('Sort on')} ${arrow}
 			</div>
@@ -114,7 +135,11 @@ const SettingsUI = (host) => {
 			<div
 				class="heading"
 				?data-opened=${opened.group}
-				@click=${() => setOpened((c) => ({ ...c, group: !c.group }))}
+				@click=${() =>
+					setOpened((c: Record<string, boolean>) => ({
+						...c,
+						group: !c.group,
+					}))}
 				part="groups groups-heading"
 			>
 				${t('Group on')} ${arrow}
@@ -147,7 +172,13 @@ customElements.define(
 	component(SettingsUI, { styleSheets: [sheet(style)] }),
 );
 
-const Settings = ({ config, newLayout }) => html`
+const Settings = ({
+	config,
+	newLayout,
+}: {
+	config?: any;
+	newLayout?: boolean;
+}) => html`
 	<cosmoz-dropdown
 		.placement="${newLayout ? 'bottom-start' : 'bottom-end'}"
 		.middleware="${middleware}"
