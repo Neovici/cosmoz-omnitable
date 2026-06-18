@@ -1,11 +1,11 @@
 import { expect, html, nextFrame } from '@open-wc/testing';
 
-import { setupOmnitableFixture } from '../helpers/utils';
 import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
+import { setupOmnitableFixture } from '../helpers/utils';
 
-import '../../src/cosmoz-omnitable.js';
-import '../helpers/fixtures/basic-column.js';
+import '../../src/cosmoz-omnitable';
 import { columnSymbol } from '../../src/lib/use-dom-columns';
+import '../helpers/fixtures/basic-column.js';
 
 suite('Basic omnitable functionality', () => {
 	let omnitable;

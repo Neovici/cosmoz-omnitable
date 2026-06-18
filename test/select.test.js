@@ -11,8 +11,8 @@ import {
 	setupOmnitableFixture,
 } from './helpers/utils';
 
+import '../src/cosmoz-omnitable';
 import '../src/cosmoz-omnitable-columns.ts';
-import '../src/cosmoz-omnitable.js';
 
 setup(async () => {
 	await ensureDemoI18nInitialized();

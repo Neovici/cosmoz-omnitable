@@ -6,6 +6,7 @@ import {
 	setupOmnitableFixture,
 } from './helpers/utils';
 
+import '../src/cosmoz-omnitable';
 import {
 	computeItemValue,
 	deserializeFilter,
@@ -15,7 +16,6 @@ import {
 } from '../src/cosmoz-omnitable-column-boolean';
 import { serializeFilter } from '../src/cosmoz-omnitable-column-mixin';
 import '../src/cosmoz-omnitable-columns.ts';
-import '../src/cosmoz-omnitable.js';
 import { columnSymbol } from '../src/lib/use-dom-columns';
 import { onItemChange } from '../src/lib/utils-data';
 
