@@ -38,7 +38,7 @@ export const useOmnitable = (host) => {
 				noLocalSort,
 				noLocalFilter,
 			}),
-		{ isMini, collapsedColumns, miniColumns } = useFastLayout({
+		{ isMini, collapsedColumns, miniColumns, requestTween } = useFastLayout({
 			host,
 			columns,
 			settings,
@@ -73,6 +73,7 @@ export const useOmnitable = (host) => {
 			settingS,
 			setFilterState,
 			hideSelectAll: host.hideSelectAll === true,
+			requestTween,
 		}),
 		list: useList({
 			host,

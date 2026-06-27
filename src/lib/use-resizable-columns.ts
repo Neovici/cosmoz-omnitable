@@ -10,6 +10,7 @@ export type UseResizableColumnsParams = {
 	setSettings: (
 		update: (settings: NormalizedSettings) => NormalizedSettings,
 	) => void;
+	requestTween: () => void;
 };
 
 export const useResizableColumns = ({
@@ -17,13 +18,15 @@ export const useResizableColumns = ({
 	canvasWidth,
 	layout,
 	setSettings,
+	requestTween,
 }: UseResizableColumnsParams) => {
 	const onColumnResizeRef =
 		useRef<(ev: CustomEvent<{ newWidth: number; column: Column }>) => void>();
 
 	onColumnResizeRef.current = (
 		ev: CustomEvent<{ newWidth: number; column: Column }>,
-	) =>
+	) => {
+		requestTween();
 		setSettings((settings) => {
 			const config = settings.columns,
 				{
@@ -70,6 +73,7 @@ export const useResizableColumns = ({
 
 			return { ...settings, columns: newConfig };
 		});
+	};
 
 	useEffect(() => {
 		const handler = (ev: Event) =>

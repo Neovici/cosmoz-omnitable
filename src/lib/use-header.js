@@ -10,6 +10,7 @@ export const useHeader = ({
 	filterFunctions,
 	settingS,
 	filters,
+	requestTween,
 	...rest
 }) => {
 	const allSelected =
@@ -40,8 +41,9 @@ export const useHeader = ({
 				collapsed: collapsedColumns,
 				badge: hasHiddenFilter,
 				filters,
+				requestTween,
 			}),
-			[settingS, collapsedColumns, hasHiddenFilter, filters],
+			[settingS, collapsedColumns, hasHiddenFilter, filters, requestTween],
 		);
 
 	useEffect(() => {

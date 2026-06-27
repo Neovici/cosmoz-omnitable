@@ -1,11 +1,17 @@
-import { useEffect, useMemo } from '@pionjs/pion';
+import { useMeta } from '@neovici/cosmoz-utils/hooks/use-meta';
+import {
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from '@pionjs/pion';
 import { toCss } from './compute-layout';
-import { useResizableColumns } from './use-resizable-columns';
 import { useCanvasWidth } from './use-canvas-width';
-import { useTweenArray } from './use-tween-array';
 import { useLayout } from './use-layout';
 import { useMini } from './use-mini';
-import { useMeta } from '@neovici/cosmoz-utils/hooks/use-meta';
+import { useResizableColumns } from './use-resizable-columns';
+import { useTweenArray } from './use-tween-array';
 
 const useAdoptedStyleSheet = (host) => {
 	const styleSheet = useMemo(() => new CSSStyleSheet(), []);
@@ -56,18 +62,43 @@ export const useFastLayout = ({
 			[columns, settings, layout],
 		);
 
+	// Tween only runs briefly for direct column interactions (show/hide,
+	// reorder, drag-resize, group-on change). Otherwise speed is 1 (snap).
+	const [tweenSpeed, setTweenSpeed] = useState(1),
+		requestTween = useCallback(
+			() => setTweenSpeed(resizeSpeedFactor ?? 1.9),
+			[resizeSpeedFactor],
+		),
+		onConverge = useCallback(() => setTweenSpeed(1), []);
+
+	// Arm tween when the group-on column changes (skip initial mount)
+	const firstGroup = useRef(true);
+	useEffect(() => {
+		if (firstGroup.current) {
+			firstGroup.current = false;
+			return;
+		}
+		requestTween();
+	}, [groupOnColumn, requestTween]);
+
 	const meta = useMeta({ columns: settings.columns });
-	useTweenArray(layout, resizeSpeedFactor, (tweenedlayout) => {
-		const layoutCss = toCss(tweenedlayout, meta.columns);
-		styleSheet.replace(layoutCss);
-	});
+	useTweenArray(
+		layout,
+		tweenSpeed,
+		(tweenedlayout) => {
+			const layoutCss = toCss(tweenedlayout, meta.columns);
+			styleSheet.replace(layoutCss);
+		},
+		onConverge,
+	);
 
 	useResizableColumns({
 		host,
 		canvasWidth,
 		layout,
 		setSettings: (update) => setSettings(update(settings)),
+		requestTween,
 	});
 
-	return { isMini, collapsedColumns, miniColumns };
+	return { isMini, collapsedColumns, miniColumns, requestTween };
 };
