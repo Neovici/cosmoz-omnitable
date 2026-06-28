@@ -34,7 +34,7 @@ const verifyColumnSetup = (columns) => {
 	return ok;
 };
 
-const normalizeColumn = (column, disabledFiltering) => {
+const normalizeColumn = (column, disabledFiltering, noLocal) => {
 	const valuePath = column.valuePath ?? column.name;
 
 	return {
@@ -75,6 +75,7 @@ const normalizeColumn = (column, disabledFiltering) => {
 		source: memooize(column.computeSource),
 
 		noLocalFilter: column.noLocalFilter,
+		noLocal,
 
 		mini: column.mini,
 		renderMini: column.renderMini,
@@ -128,15 +129,23 @@ const collectDomColumns = (assignedElements) => {
 	return domColumns;
 };
 
-const normalizeColumns = (domColumns, enabledColumns, disabledFiltering) => {
+const normalizeColumns = (
+	domColumns,
+	enabledColumns,
+	disabledFiltering,
+	noLocal,
+) => {
 	const columns = Array.isArray(enabledColumns)
 		? domColumns.filter((column) => enabledColumns.includes(column.name))
 		: domColumns.filter((column) => !column.disabled);
 
-	return columns.map((col) => normalizeColumn(col, disabledFiltering));
+	return columns.map((col) => normalizeColumn(col, disabledFiltering, noLocal));
 };
 
-export const useDOMColumns = (host, { enabledColumns, disabledFiltering }) => {
+export const useDOMColumns = (
+	host,
+	{ enabledColumns, disabledFiltering, noLocal },
+) => {
 	const [columns, setColumns] = useState([]);
 
 	useLayoutEffect(() => {
@@ -165,6 +174,7 @@ export const useDOMColumns = (host, { enabledColumns, disabledFiltering }) => {
 					collectDomColumns(current),
 					enabledColumns,
 					disabledFiltering,
+					noLocal,
 				),
 			);
 		};
@@ -186,7 +196,7 @@ export const useDOMColumns = (host, { enabledColumns, disabledFiltering }) => {
 			host.removeEventListener('cosmoz-column-prop-changed', scheduleUpdate);
 			cancelAnimationFrame(sched);
 		};
-	}, [enabledColumns, disabledFiltering]);
+	}, [enabledColumns, disabledFiltering, noLocal]);
 
 	return columns;
 };
