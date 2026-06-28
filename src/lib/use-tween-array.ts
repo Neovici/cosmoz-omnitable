@@ -83,6 +83,12 @@ export const useTweenArray = (
 		);
 
 		callback(state.tween);
+
+		// Detect convergence in the same frame to avoid an extra redundant pass
+		if (state.tween.every((t, idx) => t === state.target[idx])) {
+			state.onConverge?.();
+			return true;
+		}
 	}, []);
 
 	useAnimationLoop(animate, [target]);

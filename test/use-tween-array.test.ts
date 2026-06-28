@@ -23,8 +23,8 @@ suite('useTweenArray', () => {
 		await tick();
 
 		expect(cb.calledWith([100])).to.equal(true);
-		// no intermediate easing frames between 0 and 100
-		expect(cb.callCount).to.be.lessThanOrEqual(2);
+		// snap reaches target in a single frame — no extra convergence pass
+		expect(cb.callCount).to.equal(1);
 	});
 
 	test('eases toward target when speedFactor > 1', async () => {
@@ -88,6 +88,6 @@ suite('useTweenArray', () => {
 		await rerender({ target: [80], speed: 1 });
 		await tick();
 		expect(cb.calledWith([80])).to.equal(true);
-		expect(cb.callCount).to.be.lessThanOrEqual(2);
+		expect(cb.callCount).to.equal(1);
 	});
 });
