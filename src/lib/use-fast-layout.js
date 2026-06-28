@@ -1,11 +1,5 @@
 import { useMeta } from '@neovici/cosmoz-utils/hooks/use-meta';
-import {
-	useCallback,
-	useEffect,
-	useMemo,
-	useRef,
-	useState,
-} from '@pionjs/pion';
+import { useCallback, useEffect, useMemo, useState } from '@pionjs/pion';
 import { toCss } from './compute-layout';
 import { useCanvasWidth } from './use-canvas-width';
 import { useLayout } from './use-layout';
@@ -63,23 +57,13 @@ export const useFastLayout = ({
 		);
 
 	// Tween only runs briefly for direct column interactions (show/hide,
-	// reorder, drag-resize, group-on change). Otherwise speed is 1 (snap).
+	// reorder, drag-resize). Otherwise speed is 1 (snap).
 	const [tweenSpeed, setTweenSpeed] = useState(1),
 		requestTween = useCallback(
 			() => setTweenSpeed(resizeSpeedFactor ?? 1.9),
 			[resizeSpeedFactor],
 		),
 		onConverge = useCallback(() => setTweenSpeed(1), []);
-
-	// Arm tween when the group-on column changes (skip initial mount)
-	const firstGroup = useRef(true);
-	useEffect(() => {
-		if (firstGroup.current) {
-			firstGroup.current = false;
-			return;
-		}
-		requestTween();
-	}, [groupOnColumn, requestTween]);
 
 	const meta = useMeta({ columns: settings.columns });
 	useTweenArray(

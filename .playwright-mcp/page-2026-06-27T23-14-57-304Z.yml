@@ -1,0 +1,165 @@
+- generic [ref=e1]:
+  - generic [ref=e150]:
+    - log
+    - log [ref=e151]:
+      - generic [ref=e152]: Component test is rendering.
+      - generic [ref=e153]: Component test completed successfully.
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - banner "Storybook" [ref=e6]:
+        - heading "Storybook" [level=1] [ref=e7]
+        - img
+        - generic [ref=e10]:
+          - generic [ref=e11]:
+            - generic [ref=e13]:
+              - link "Skip to content" [ref=e14] [cursor=pointer]:
+                - /url: "#storybook-preview-wrapper"
+              - link "Storybook" [ref=e16] [cursor=pointer]:
+                - /url: ./
+                - img "Storybook" [ref=e17]
+              - switch "Settings" [ref=e22] [cursor=pointer]:
+                - img [ref=e23]
+            - generic [ref=e26]: Search for components
+            - search [ref=e27]:
+              - combobox "Search for components" [ref=e28]:
+                - generic:
+                  - img
+                - searchbox "Search for components" [ref=e29]
+                - code: ⌃ K
+                - button "Tag filters" [ref=e69] [cursor=pointer]:
+                  - img [ref=e70]
+            - navigation "Stories" [ref=e31]:
+              - heading "Stories" [level=2] [ref=e32]
+              - generic [ref=e72]:
+                - generic [ref=e73]:
+                  - button "Collapse" [expanded] [ref=e74] [cursor=pointer]:
+                    - img [ref=e76]
+                    - text: Components
+                  - button "Collapse all" [ref=e154] [cursor=pointer]:
+                    - img [ref=e155]
+                - button "ComsmozOmnitableFullDemo" [expanded] [ref=e82] [cursor=pointer]:
+                  - generic [ref=e83]:
+                    - img [ref=e85]
+                    - img [ref=e87]
+                  - text: ComsmozOmnitableFullDemo
+                - link "Documentation" [ref=e90] [cursor=pointer]:
+                  - /url: /?path=/docs/components-comsmozomnitablefulldemo--documentation
+                  - img [ref=e92]
+                  - text: Documentation
+                - link "Table With Large Data" [ref=e96] [cursor=pointer]:
+                  - /url: /?path=/story/components-comsmozomnitablefulldemo--table-with-large-data
+                  - img [ref=e98]
+                  - text: Table With Large Data
+                - link "Table With Small Data" [ref=e101] [cursor=pointer]:
+                  - /url: /?path=/story/components-comsmozomnitablefulldemo--table-with-small-data
+                  - img [ref=e103]
+                  - text: Table With Small Data
+                - link "Table With No Data" [ref=e106] [cursor=pointer]:
+                  - /url: /?path=/story/components-comsmozomnitablefulldemo--table-with-no-data
+                  - img [ref=e108]
+                  - text: Table With No Data
+                - generic [ref=e110]:
+                  - button "CosmozOmnitable" [expanded] [active] [ref=e111] [cursor=pointer]:
+                    - generic [ref=e112]:
+                      - img [ref=e114]
+                      - img [ref=e116]
+                    - text: CosmozOmnitable
+                  - button "Open context menu" [ref=e157] [cursor=pointer]:
+                    - img [ref=e158]
+                - generic [ref=e160]:
+                  - link "Default" [ref=e161] [cursor=pointer]:
+                    - /url: /?path=/story/components-cosmozomnitable--default
+                    - img [ref=e163]
+                    - text: Default
+                  - link "Skip to content" [ref=e165] [cursor=pointer]:
+                    - /url: "#storybook-preview-wrapper"
+                - link "Sorting" [ref=e167] [cursor=pointer]:
+                  - /url: /?path=/story/components-cosmozomnitable--sorting
+                  - img [ref=e169]
+                  - text: Sorting
+                - link "Grouping" [ref=e172] [cursor=pointer]:
+                  - /url: /?path=/story/components-cosmozomnitable--grouping
+                  - img [ref=e174]
+                  - text: Grouping
+                - link "Loading" [ref=e177] [cursor=pointer]:
+                  - /url: /?path=/story/components-cosmozomnitable--loading
+                  - img [ref=e179]
+                  - text: Loading
+                - link "Hide Select All" [ref=e182] [cursor=pointer]:
+                  - /url: /?path=/story/components-cosmozomnitable--hide-select-all
+                  - img [ref=e184]
+                  - text: Hide Select All
+                - link "Disabled Filtering" [ref=e187] [cursor=pointer]:
+                  - /url: /?path=/story/components-cosmozomnitable--disabled-filtering
+                  - img [ref=e189]
+                  - text: Disabled Filtering
+          - link "Storybook 10.4 Learn what's new in Storybook Dismiss notification" [ref=e120] [cursor=pointer]:
+            - /url: /?path=/settings/whats-new
+            - img [ref=e122]
+            - generic [ref=e124]:
+              - generic "Storybook 10.4" [ref=e125]
+              - generic [ref=e126]: Learn what's new in Storybook
+            - button "Dismiss notification" [ref=e127]:
+              - img [ref=e128]
+      - separator "Sidebar resize handle" [ref=e52]
+    - generic [ref=e54]:
+      - region "Toolbar" [ref=e55]:
+        - heading "Toolbar" [level=2] [ref=e56]
+        - toolbar [ref=e57]:
+          - generic [ref=e130]:
+            - button "Reload story" [ref=e191] [cursor=pointer]:
+              - img [ref=e192]
+            - switch "Grid visibility" [ref=e131] [cursor=pointer]:
+              - img [ref=e132]
+            - button "Preview background" [ref=e134] [cursor=pointer]:
+              - img [ref=e135]
+            - switch "Measure tool" [ref=e194] [cursor=pointer]:
+              - img [ref=e195]
+            - switch "Outline tool" [ref=e138] [cursor=pointer]:
+              - img [ref=e139]
+            - button "Viewport size" [ref=e198] [cursor=pointer]:
+              - img [ref=e199]
+          - generic [ref=e141]:
+            - button "Open in isolation mode" [ref=e203] [cursor=pointer]:
+              - img [ref=e204]
+            - switch "Change zoom level" [ref=e209] [cursor=pointer]: 100%
+            - button "Enter full screen" [ref=e142] [cursor=pointer]:
+              - img [ref=e143]
+            - button "Open in editor" [ref=e145] [cursor=pointer]:
+              - img [ref=e146]
+      - main "Main preview area" [ref=e58]:
+        - heading "Main preview area" [level=2] [ref=e59]
+        - generic [ref=e63]:
+          - link "Skip to sidebar" [ref=e149] [cursor=pointer]:
+            - /url: "#components-cosmozomnitable--default"
+          - iframe [ref=e67]:
+            
+    - generic [ref=e210]:
+      - separator "Addon panel resize handle" [ref=e211]
+      - region "Addon panel" [ref=e213]:
+        - heading "Addon panel" [level=2] [ref=e214]
+        - generic [ref=e215]:
+          - generic [ref=e216]:
+            - generic [ref=e217]:
+              - button "Move addon panel to right" [ref=e218] [cursor=pointer]:
+                - img [ref=e219]
+              - button "Hide addon panel" [ref=e222] [cursor=pointer]:
+                - img [ref=e223]
+            - tablist "Available addons" [ref=e228]:
+              - tab "Controls" [selected] [ref=e229] [cursor=pointer]:
+                - generic [ref=e231]: Controls
+              - tab "Actions" [ref=e232] [cursor=pointer]:
+                - generic [ref=e234]: Actions
+              - tab "Interactions" [ref=e235] [cursor=pointer]:
+                - generic [ref=e237]: Interactions
+          - tabpanel "Controls" [ref=e238]:
+            - generic [ref=e245]:
+              - generic [ref=e246]:
+                - generic [ref=e247]: Interactive story playground
+                - generic [ref=e248]: Controls give you an easy to use interface to test your components. Set your story args and you'll see controls appearing here automatically.
+              - link "Read docs" [ref=e251] [cursor=pointer]:
+                - /url: https://storybook.js.org/docs/essentials/controls?ref=ui
+                - generic [ref=e252]:
+                  - img [ref=e253]
+                  - text: Read docs
+                  - img [ref=e256]
