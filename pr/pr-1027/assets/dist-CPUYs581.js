@@ -1,5 +1,5 @@
 const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./flow-BNFwcXeG.js","./chunk-BneVvdWh.js"])))=>i.map(i=>d[i]);
-import{n as e}from"./chunk-BneVvdWh.js";import{n as t,t as n}from"./preload-helper-CV6hqhE5.js";import{$ as r,G as i,H as a,J as o,K as s,Q as c,U as l,V as u,W as d,X as f,Y as p,Z as m,et as h,n as g,q as _,t as v,tt as y}from"./iframe-CHTUmAZq.js";var b,x=e((()=>{h(),b=e=>e??f}));function S(e,t,n){return e?t(e):n?.(e)}var C=e((()=>{})),w=e((()=>{h(),x()})),T=e((()=>{h(),x()})),E=e((()=>{h(),x()})),ee=e((()=>{h(),x()})),te=e((()=>{h(),x()})),ne,re=e((()=>{h(),x(),C(),ne=({slot:e,title:t,className:n,width:i=`24`,height:a=`24`,styles:o}={})=>r`
+import{n as e}from"./chunk-BneVvdWh.js";import{n as t,t as n}from"./preload-helper-CV6hqhE5.js";import{$ as r,G as i,H as a,J as o,K as s,Q as c,U as l,V as u,W as d,X as f,Y as p,Z as m,et as h,n as g,q as _,t as v,tt as y}from"./iframe-_PXkTWY2.js";var b,x=e((()=>{h(),b=e=>e??f}));function S(e,t,n){return e?t(e):n?.(e)}var C=e((()=>{})),w=e((()=>{h(),x()})),T=e((()=>{h(),x()})),E=e((()=>{h(),x()})),ee=e((()=>{h(),x()})),te=e((()=>{h(),x()})),ne,re=e((()=>{h(),x(),C(),ne=({slot:e,title:t,className:n,width:i=`24`,height:a=`24`,styles:o}={})=>r`
   <svg
     slot=${b(e)}
     class=${`announcement-icon ${n??``}`}
