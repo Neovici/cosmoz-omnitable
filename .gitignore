@@ -15,3 +15,8 @@ tsconfig.tsbuildinfo
 # Playwright MCP logs
 .playwright-mcp/
 .npmrc
+
+# Codecov uploader artifacts
+codecov
+codecov.SHA256SUM
+codecov.SHA256SUM.sig
