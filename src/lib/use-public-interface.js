@@ -90,12 +90,6 @@ export const usePublicInterface = ({ host, visibleData, filters, ...api }) => {
 		return () => host.removeEventListener('legacy-filter-changed', handler);
 	}, []);
 
-	setVisibleData(visibleData);
-	setSortedFiltered(api.sortedFilteredGroupedItems);
-	setSortOn(api.sortOn);
-	setDescending(api.descending);
-	setIsMini(api.isMini);
-
 	const filterValues = useMemo(
 		() =>
 			Object.fromEntries(
@@ -106,7 +100,17 @@ export const usePublicInterface = ({ host, visibleData, filters, ...api }) => {
 		[filters],
 	);
 
-	setFilters(filterValues);
+	useEffect(() => setSortOn(api.sortOn), [api.sortOn]);
+	useEffect(() => setDescending(api.descending), [api.descending]);
+	useEffect(() => setIsMini(api.isMini), [api.isMini]);
+
+	useEffect(() => setVisibleData(visibleData), [visibleData]);
+	useEffect(
+		() => setSortedFiltered(api.sortedFilteredGroupedItems),
+		[api.sortedFilteredGroupedItems],
+	);
+
+	useEffect(() => setFilters(filterValues), Object.values(filterValues));
 
 	return { selectedItems, setSelectedItems };
 };
