@@ -77,17 +77,19 @@ suite('useTweenArray', () => {
 			{ initialProps: { target: [0], speed: 1 } },
 		);
 
-		// First change at speed 1 -> snap
+		// Change to speed 1.9 with a new target -> should ease (not snap)
 		cb.resetHistory();
-		await rerender({ target: [40], speed: 1 });
-		await tick();
-		expect(cb.calledWith([40])).to.equal(true);
+		await rerender({ target: [100], speed: 1.9 });
+		await tick(5);
+		const easingCalls = cb.getCalls().map((c) => c.args[0][0]);
+		expect(easingCalls.length).to.be.greaterThan(1);
+		expect(easingCalls[0]).to.be.lessThan(100);
 
-		// Subsequent change also snaps (speed still 1)
+		// Change back to speed 1 with a new target -> should snap (1 call)
 		cb.resetHistory();
-		await rerender({ target: [80], speed: 1 });
+		await rerender({ target: [50], speed: 1 });
 		await tick();
-		expect(cb.calledWith([80])).to.equal(true);
+		expect(cb.calledWith([50])).to.equal(true);
 		expect(cb.callCount).to.equal(1);
 	});
 });
