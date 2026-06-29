@@ -2,7 +2,7 @@
 '@neovici/cosmoz-omnitable': patch
 ---
 
-Keep informational props on useNotifyProperty
+Visible items changed fires constantly for no reason
 
 Reverts the informational/derived outputs (visibleData,
 sortedFilteredGroupedItems, sortOn, descending, isMini, filters) from
