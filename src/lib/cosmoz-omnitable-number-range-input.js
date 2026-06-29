@@ -41,6 +41,7 @@ class NumberRangeInput extends rangeInputMixin(
 				this.disabled,
 				() => html`
 					<cosmoz-omnitable-dropdown-input
+						variant="inline"
 						disabled
 						.label=${this.title}
 						.value=${this._filterText ?? ''}
