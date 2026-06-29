@@ -17,5 +17,5 @@ permissions:
   
 jobs:
   build:
-    uses: Neovici/cfg/.github/workflows/forge.yml@master
+    uses: Neovici/cfg/.github/workflows/foundry.yml@master
     secrets: inherit
