@@ -11,3 +11,6 @@ tsconfig.tsbuildinfo
 
 .direnv
 .envrc
+
+# Playwright MCP logs
+.playwright-mcp/
