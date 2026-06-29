@@ -14,3 +14,4 @@ tsconfig.tsbuildinfo
 
 # Playwright MCP logs
 .playwright-mcp/
+.npmrc
