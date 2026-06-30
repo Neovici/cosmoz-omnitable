@@ -1,3 +1,10 @@
+# [18.7.0-beta.3](https://github.com/Neovici/cosmoz-omnitable/compare/v18.7.0-beta.2...v18.7.0-beta.3) (2026-06-30)
+
+
+### Features
+
+* add variant inline for disabled prop ([#1032](https://github.com/Neovici/cosmoz-omnitable/issues/1032)) ([4c1273c](https://github.com/Neovici/cosmoz-omnitable/commit/4c1273cd953b878148dc336b8bb4ba99a176a832))
+
 # [18.7.0-beta.2](https://github.com/Neovici/cosmoz-omnitable/compare/v18.7.0-beta.1...v18.7.0-beta.2) (2026-06-02)
 
 
