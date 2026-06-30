@@ -12,6 +12,11 @@ tsconfig.tsbuildinfo
 .direnv
 .envrc
 
+# Codecov uploader artifacts
+codecov
+codecov.SHA256SUM
+codecov.SHA256SUM.sig
+
 # Playwright MCP logs
 .playwright-mcp/
 .npmrc
