@@ -21,8 +21,12 @@ export default ({ settingsId, host }) => {
 			setSettings,
 			onReset,
 		),
-		{ enabledColumns, disabledFiltering } = host,
-		columns = useDOMColumns(host, { enabledColumns, disabledFiltering }),
+		{ enabledColumns, disabledFiltering, noLocal } = host,
+		columns = useDOMColumns(host, {
+			enabledColumns,
+			disabledFiltering,
+			noLocal,
+		}),
 		normalizedSettings = useMemo(
 			() =>
 				normalize({
