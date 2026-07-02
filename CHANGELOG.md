@@ -1,5 +1,11 @@
 ## [18.8.1](https://github.com/Neovici/cosmoz-omnitable/compare/v18.8.0...v18.8.1) (2026-05-28)
 
+## 18.10.0-beta.1
+
+### Patch Changes
+
+- c5a63d2: Adjust skeleton padding, header borders and mini row shadow
+
 ## 18.10.0-beta.0
 
 ### Minor Changes
