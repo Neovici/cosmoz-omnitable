@@ -1,5 +1,11 @@
 ## [18.8.1](https://github.com/Neovici/cosmoz-omnitable/compare/v18.8.0...v18.8.1) (2026-05-28)
 
+## 18.10.0-beta.0
+
+### Minor Changes
+
+- Add variant inline for disabled filter inputs and smooth transitions for mini mode
+
 ## 18.9.0
 
 ### Minor Changes

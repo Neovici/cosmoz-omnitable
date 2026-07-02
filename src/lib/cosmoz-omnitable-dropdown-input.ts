@@ -8,7 +8,6 @@ type DropdownInputHost = HTMLElement & {
 	slot?: string;
 	'always-float-label'?: boolean;
 	disabled?: boolean;
-	variant?: string;
 };
 
 const observedAttributes = [
@@ -33,7 +32,7 @@ const style = css`
 `;
 
 const DropdownInput = (host: DropdownInputHost) => {
-	const { label, value, slot, variant } = host;
+	const { label, value, slot } = host;
 
 	const control = html`<div
 		id="input"
@@ -45,7 +44,7 @@ const DropdownInput = (host: DropdownInputHost) => {
 		${value || ''}
 	</div>`;
 
-	return render(control, { label, variant });
+	return render(control, { label });
 };
 
 customElements.define(
