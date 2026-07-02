@@ -8,6 +8,7 @@ type DropdownInputHost = HTMLElement & {
 	slot?: string;
 	'always-float-label'?: boolean;
 	disabled?: boolean;
+	variant?: string;
 };
 
 const observedAttributes = [
