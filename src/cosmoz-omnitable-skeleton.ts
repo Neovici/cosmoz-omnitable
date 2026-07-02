@@ -5,7 +5,7 @@ const styles = css`
 	:host {
 		max-width: 100%;
 		overflow-x: hidden;
-		padding-left: calc(var(--cz-spacing) * 3);
+		padding-inline: calc(var(--cz-spacing) * 3) calc(var(--cz-spacing) * 12);
 	}
 	.skeleton {
 		width: 100%;
