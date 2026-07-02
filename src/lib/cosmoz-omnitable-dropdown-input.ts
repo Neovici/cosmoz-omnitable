@@ -2,7 +2,23 @@ import { styles as inputStyles, render } from '@neovici/cosmoz-input';
 import { component, css } from '@pionjs/pion';
 import { html } from 'lit-html';
 
-const observedAttributes = ['label', 'value', 'slot', 'disabled', 'variant'];
+type DropdownInputHost = HTMLElement & {
+	label?: string;
+	value?: string;
+	slot?: string;
+	'always-float-label'?: boolean;
+	disabled?: boolean;
+	variant?: string;
+};
+
+const observedAttributes = [
+	'label',
+	'value',
+	'slot',
+	'always-float-label',
+	'disabled',
+	'variant',
+] as const satisfies readonly string[];
 
 const style = css`
 	${inputStyles}
@@ -16,7 +32,7 @@ const style = css`
 	}
 `;
 
-const DropdownInput = (host) => {
+const DropdownInput = (host: DropdownInputHost) => {
 	const { label, value, slot, variant } = host;
 
 	const control = html`<div

@@ -146,11 +146,7 @@ const unique = (values, valueProperty) => {
 				if (valueProperty == null) {
 					return value;
 				}
-				const subValues = array(value).reduce((acc, subItem) => {
-					acc.push(get(subItem, valueProperty));
-					return acc;
-				}, []);
-				return subValues.sort().join(' ');
+				return array(value).map(prop(valueProperty)).sort().join(' ');
 			}
 
 			getFilterFn(column, filters) {

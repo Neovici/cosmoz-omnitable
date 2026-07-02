@@ -20,7 +20,7 @@ export default ({ prefix = 'omnitable-' } = {}) => {
 	};
 
 	return {
-		write: async (settingsId: string, settings: string) => {
+		write: async (settingsId: string, settings?: unknown) => {
 			const key = prefix + settingsId;
 
 			try {

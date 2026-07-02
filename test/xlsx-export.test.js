@@ -6,8 +6,8 @@ import {
 	setupOmnitableFixture,
 } from './helpers/utils';
 
+import '../src/cosmoz-omnitable-columns.ts';
 import '../src/cosmoz-omnitable.js';
-import '../src/cosmoz-omnitable-columns.js';
 import { prepareXlsxData } from '../src/lib/save-as-xlsx-action';
 import { toDate } from '../src/lib/utils-date';
 

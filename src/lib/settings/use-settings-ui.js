@@ -1,5 +1,5 @@
-import { useCallback } from '@pionjs/pion';
 import { useMeta } from '@neovici/cosmoz-utils/hooks/use-meta';
+import { useCallback } from '@pionjs/pion';
 
 const parseIndex = (str) => {
 	const idx = parseInt(str, 10);
@@ -8,10 +8,11 @@ const parseIndex = (str) => {
 
 export default (host) => {
 	const { config } = host,
-		{ settings, setSettings, collapsed } = config,
+		{ settings, setSettings, collapsed, requestTween } = config,
 		meta = useMeta({
 			collapsed,
 			settings: settings.columns,
+			requestTween,
 			setSettings: useCallback(
 				(columns) => setSettings((cfg) => ({ ...cfg, columns })),
 				[setSettings],
@@ -83,7 +84,7 @@ export default (host) => {
 			(e) => {
 				const from = parseIndex(e.dataTransfer.getData('omnitable/sort-index')),
 					to = parseIndex(e.currentTarget.dataset.index),
-					{ settings, setSettings } = meta;
+					{ settings, setSettings, requestTween } = meta;
 
 				e.currentTarget.classList.remove('dragover');
 				e.preventDefault();
@@ -94,6 +95,7 @@ export default (host) => {
 					0,
 					newSettings.splice(from, 1)[0],
 				);
+				requestTween?.();
 				setSettings(newSettings);
 			},
 			[meta],
@@ -101,7 +103,7 @@ export default (host) => {
 
 		onToggle: useCallback(
 			(e) => {
-				const { settings, setSettings } = meta,
+				const { settings, setSettings, requestTween } = meta,
 					newSettings = settings.map((column) => ({
 						...column,
 						disabled:
@@ -117,6 +119,7 @@ export default (host) => {
 						? settings.reduce((acc, s) => Math.max(acc, s.priority), 0) + 1
 						: settings[idx].priority,
 				});
+				requestTween?.();
 				setSettings(newSettings);
 			},
 			[meta],

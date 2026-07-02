@@ -1,4 +1,5 @@
 import { component, css, html } from '@pionjs/pion';
+import type { Column } from './lib/types';
 
 const styles = css`
 	:host {
@@ -48,7 +49,14 @@ const styles = css`
 	}
 `;
 
-const Skeleton = ({ settingsConfig }) => {
+type SkeletonProps = {
+	settingsConfig: {
+		columns: Column[];
+		collapsed: Column[];
+	};
+};
+
+const Skeleton = ({ settingsConfig }: SkeletonProps) => {
 	const { columns, collapsed } = settingsConfig,
 		showingColumns = columns.filter(
 			(column) => !collapsed.some((hidden) => hidden.name === column.name),

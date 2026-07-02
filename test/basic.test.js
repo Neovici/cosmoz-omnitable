@@ -16,7 +16,7 @@ import {
 } from './helpers/utils';
 
 import '@polymer/paper-toggle-button';
-import '../src/cosmoz-omnitable-columns.js';
+import '../src/cosmoz-omnitable-columns.ts';
 import '../src/cosmoz-omnitable.js';
 import { columnSymbol } from '../src/lib/use-dom-columns';
 

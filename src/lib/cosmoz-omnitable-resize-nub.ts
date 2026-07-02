@@ -1,13 +1,16 @@
-import { useEffect, component } from '@pionjs/pion';
+import { component, useEffect } from '@pionjs/pion';
 import { nothing } from 'lit-html';
+import type { Column } from './types';
 
-const ResizeNub = (host) => {
+type ResizeNubHost = HTMLElement & { column: Column };
+
+const ResizeNub = (host: ResizeNubHost) => {
 	const { column } = host;
 
 	useEffect(() => {
 		let initial = 0;
 		let initialWidth = 0;
-		const move = (ev) => {
+		const move = (ev: PointerEvent) => {
 				host.dispatchEvent(
 					new CustomEvent('column-resize', {
 						bubbles: true,
@@ -23,10 +26,11 @@ const ResizeNub = (host) => {
 				document.removeEventListener('pointermove', move);
 				document.removeEventListener('pointerup', stop);
 			},
-			start = (ev) => {
+			start = (ev: PointerEvent) => {
 				initial = ev.pageX;
-				initialWidth =
-					host.previousElementSibling.getBoundingClientRect().width;
+				initialWidth = (
+					host.previousElementSibling as HTMLElement
+				).getBoundingClientRect().width;
 				document.addEventListener('pointermove', move);
 				document.addEventListener('pointerup', stop);
 			};

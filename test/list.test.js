@@ -9,9 +9,10 @@ import {
 import {
 	applyMultiFilter,
 	getString,
+	listColumnMixin,
 } from '../src/cosmoz-omnitable-column-list-mixin';
 import { applySingleFilter } from '../src/cosmoz-omnitable-column-mixin';
-import '../src/cosmoz-omnitable-columns.js';
+import '../src/cosmoz-omnitable-columns.ts';
 import '../src/cosmoz-omnitable.js';
 import { columnSymbol } from '../src/lib/use-dom-columns';
 
@@ -199,6 +200,111 @@ suite('pure functions', () => {
 		assert.equal(
 			getString(column, { list: ['123', '345', '678'] }),
 			'123, 345, 678',
+		);
+	});
+});
+
+suite('primitive value-path with text/value properties', () => {
+	test('getString returns primitive string when textProperty is set', () => {
+		const column = { valuePath: 'priority', textProperty: 'key' };
+		assert.equal(getString(column, { priority: 'Normal' }), 'Normal');
+	});
+
+	test('getString returns primitive number when textProperty is set', () => {
+		const column = { valuePath: 'amount', textProperty: 'key' };
+		assert.equal(getString(column, { amount: 42 }), '42');
+	});
+
+	test('getString returns primitive values from array when textProperty is set', () => {
+		const column = { valuePath: 'tags', textProperty: 'key' };
+		assert.equal(getString(column, { tags: ['a', 'b', 'c'] }), 'a, b, c');
+	});
+
+	test('applyMultiFilter matches primitive value when valueProperty is set', () => {
+		const column = { valuePath: 'priority', valueProperty: 'value' };
+		assert.isTrue(
+			applyMultiFilter(column, [{ key: 'Normal', value: 'Normal' }])({
+				priority: 'Normal',
+			}),
+		);
+	});
+
+	test('applyMultiFilter does not match different primitive value when valueProperty is set', () => {
+		const column = { valuePath: 'priority', valueProperty: 'value' };
+		assert.isFalse(
+			applyMultiFilter(column, [{ key: 'High', value: 'High' }])({
+				priority: 'Normal',
+			}),
+		);
+	});
+});
+
+suite('mixin class getComparableValue', () => {
+	const ListColumnClass = listColumnMixin(class {});
+	const instance = new ListColumnClass();
+
+	test('returns primitive value when valueProperty is set and value-path is primitive string', () => {
+		assert.equal(
+			instance.getComparableValue(
+				{ valuePath: 'priority', valueProperty: 'value' },
+				{ priority: 'Normal' },
+			),
+			'Normal',
+		);
+	});
+
+	test('returns primitive value when valueProperty is set and value-path is primitive number', () => {
+		assert.equal(
+			instance.getComparableValue(
+				{ valuePath: 'amount', valueProperty: 'value' },
+				{ amount: 42 },
+			),
+			'42',
+		);
+	});
+
+	test('returns value directly when valueProperty is null', () => {
+		assert.equal(
+			instance.getComparableValue(
+				{ valuePath: 'priority', valueProperty: null },
+				{ priority: 'Normal' },
+			),
+			'Normal',
+		);
+	});
+
+	test('reads valueProperty from object values', () => {
+		assert.equal(
+			instance.getComparableValue(
+				{ valuePath: 'group', valueProperty: 'value' },
+				{ group: { name: 'Grupp 0', value: 'group0' } },
+			),
+			'group0',
+		);
+	});
+
+	test('joins array of primitive values when valueProperty is set', () => {
+		assert.equal(
+			instance.getComparableValue(
+				{ valuePath: 'tags', valueProperty: 'value' },
+				{ tags: ['a', 'b'] },
+			),
+			'a b',
+		);
+	});
+
+	test('reads valueProperty from each object in array', () => {
+		assert.equal(
+			instance.getComparableValue(
+				{ valuePath: 'groups', valueProperty: 'id' },
+				{
+					groups: [
+						{ id: 'g2', name: 'B' },
+						{ id: 'g1', name: 'A' },
+					],
+				},
+			),
+			'g1 g2',
 		);
 	});
 });

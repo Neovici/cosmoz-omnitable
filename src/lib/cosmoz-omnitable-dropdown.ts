@@ -4,6 +4,16 @@ import { html } from 'lit-html';
 import { classMap } from 'lit-html/directives/class-map.js';
 import './cosmoz-omnitable-dropdown-input';
 
+interface DropdownProps {
+	title: string;
+	tooltip?: string;
+	filterText?: string;
+	onOpenedChanged?: (ev: Event) => void;
+	content: unknown;
+	horizontalAlign?: string;
+	externalValues?: boolean | null;
+}
+
 export const renderDropdown = ({
 	title,
 	tooltip = '',
@@ -12,8 +22,8 @@ export const renderDropdown = ({
 	content,
 	horizontalAlign = 'left',
 	externalValues = null,
-}) => {
-	const classes = {
+}: DropdownProps) => {
+	const classes: Record<string, boolean> = {
 		filtered: Boolean(filterText),
 		...(externalValues != null && {
 			[`external-values-${externalValues}`]: true,

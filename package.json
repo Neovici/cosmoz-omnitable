@@ -1,6 +1,6 @@
 {
   "name": "@neovici/cosmoz-omnitable",
-  "version": "18.7.0-beta.3",
+  "version": "18.9.0",
   "description": "[![Build Status](https://travis-ci.org/Neovici/cosmoz-omnitable.svg?branch=master)](https://travis-ci.org/Neovici/cosmoz-omnitable)",
   "keywords": [
     "web-components"
@@ -72,18 +72,8 @@
     "storybook:build": "storybook build",
     "storybook:deploy": "storybook-to-ghpages",
     "storybook:preview": "npm run storybook:build && web-dev-server --root-dir ./storybook-static/ --open",
-    "prepare": "husky"
-  },
-  "release": {
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/changelog",
-      "@semantic-release/github",
-      "@semantic-release/npm",
-      "@semantic-release/git"
-    ],
-    "branch": "master"
+    "prepare": "husky",
+    "changeset": "changeset"
   },
   "publishConfig": {
     "access": "public"
@@ -107,20 +97,18 @@
   },
   "dependencies": {
     "@lit-labs/virtualizer": "^2.1.0",
-    "@neovici/cosmoz-autocomplete": "^13.6.0-beta.1",
+    "@neovici/cosmoz-autocomplete": "^12.0.0 || ^13.0.0",
     "@neovici/cosmoz-bottom-bar": "^9.0.5 || ^10.0.0 || ^11.0.0",
-    "@neovici/cosmoz-button": "^1.0.2",
     "@neovici/cosmoz-collapse": "^1.1.0",
-    "@neovici/cosmoz-datetime-input": "^5.0.0-beta.2",
-    "@neovici/cosmoz-dropdown": "^7.7.0",
+    "@neovici/cosmoz-datetime-input": "^4.0.1",
+    "@neovici/cosmoz-dropdown": "^7.0.0",
     "@neovici/cosmoz-icons": "^1.1.0",
-    "@neovici/cosmoz-input": "^6.0.0-beta.2",
+    "@neovici/cosmoz-input": "^5.0.0",
     "@neovici/cosmoz-router": "^11.0.0",
     "@neovici/cosmoz-spinner": "^1.0.1",
-    "@neovici/cosmoz-tokens": "^3.4.0",
-    "@neovici/cosmoz-utils": "^6.20.2",
+    "@neovici/cosmoz-utils": "^6.21.0",
     "@neovici/nullxlsx": "^3.0.0",
-    "@pionjs/pion": "^2.13.0",
+    "@pionjs/pion": "^2.16.0",
     "@polymer/polymer": "^3.3.0",
     "file-saver-es": "^2.0.0",
     "i18next": ">=23.0.0 <27.0.0",
@@ -138,18 +126,15 @@
     "@polymer/paper-item": "^3.0.0",
     "@polymer/paper-listbox": "^3.0.0",
     "@polymer/paper-toggle-button": "^3.0.0",
-    "@semantic-release/changelog": "^6.0.0",
-    "@semantic-release/git": "^10.0.0",
-    "@storybook/addon-a11y": "^10.3.5",
+    "@changesets/cli": "^2.28.1",
     "@storybook/addon-docs": "^10.0.4",
     "@storybook/web-components-vite": "^10.0.4",
     "@types/file-saver": "^2.0.0",
     "@types/file-saver-es": "^2.0.3",
     "@web/dev-server-esbuild": "^1.0.4",
     "husky": "^9.0.0",
-    "lint-staged": "^16.2.7",
-    "semantic-release": "^25.0.2",
-    "sinon": "^21.0.0",
+    "lint-staged": "^17.0.5",
+    "sinon": "^22.0.0",
     "storybook": "^10.0.4",
     "typescript": "^6.0.2"
   }

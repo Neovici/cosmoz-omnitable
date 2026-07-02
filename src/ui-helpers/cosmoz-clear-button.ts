@@ -1,6 +1,7 @@
 import { xCircleIcon } from '@neovici/cosmoz-icons/untitled';
 import { tagged as css } from '@neovici/cosmoz-utils';
 import { component, html } from '@pionjs/pion';
+
 const styles = css`
 	:host {
 		display: flex;

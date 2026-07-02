@@ -1,10 +1,10 @@
-import { useMemo, useEffect } from '@pionjs/pion';
+import { useEffect, useMemo } from '@pionjs/pion';
 import { Column } from './types';
 
 export interface UseMiniParams {
 	host: HTMLElement & { miniBreakpoint?: number };
 	canvasWidth: number;
-	columns: Array<Column & { mini?: number }>;
+	columns: Column[];
 }
 
 export const useMini = ({

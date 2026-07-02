@@ -1,15 +1,16 @@
 import { useEffect, useRef } from '@pionjs/pion';
-import { Column } from './types';
-import { ColumnConfig } from './layout';
+import { ColumnConfigInput } from './layout';
 import { NormalizedSettings } from './settings/normalize';
+import { Column } from './types';
 
 export type UseResizableColumnsParams = {
 	host: HTMLElement;
 	canvasWidth: number;
-	layout: number[];
+	layout: (number | undefined)[];
 	setSettings: (
 		update: (settings: NormalizedSettings) => NormalizedSettings,
 	) => void;
+	requestTween: () => void;
 };
 
 export const useResizableColumns = ({
@@ -17,20 +18,22 @@ export const useResizableColumns = ({
 	canvasWidth,
 	layout,
 	setSettings,
+	requestTween,
 }: UseResizableColumnsParams) => {
 	const onColumnResizeRef =
 		useRef<(ev: CustomEvent<{ newWidth: number; column: Column }>) => void>();
 
 	onColumnResizeRef.current = (
 		ev: CustomEvent<{ newWidth: number; column: Column }>,
-	) =>
+	) => {
+		requestTween();
 		setSettings((settings) => {
-			const config = settings.columns as Omit<ColumnConfig, 'index'>[],
+			const config = settings.columns,
 				{
 					detail: { newWidth, column },
 				} = ev,
 				columnIndex = config.findIndex(
-					(c: Omit<ColumnConfig, 'index'>) => c.name === column.name,
+					(c: ColumnConfigInput) => c.name === column.name,
 				),
 				newConfig = [],
 				maxPriority = config.reduce(
@@ -43,8 +46,7 @@ export const useResizableColumns = ({
 
 				// for visible columns to the left of the resized column
 				if (i < columnIndex && layout[i]) {
-					// save the current width
-					newConfig[i].width = layout[i];
+					newConfig[i].width = layout[i]!;
 					// make them fixed width
 					newConfig[i].flex = 0;
 					// keep them visible
@@ -53,7 +55,7 @@ export const useResizableColumns = ({
 
 				// update the width of the resized column
 				if (i === columnIndex) {
-					const maxNewSize = layout.reduce((acc, cur, i) => {
+					const maxNewSize = layout.reduce<number>((acc, cur, i) => {
 						if (i < columnIndex) {
 							return cur ? acc - cur : acc;
 						}
@@ -71,6 +73,7 @@ export const useResizableColumns = ({
 
 			return { ...settings, columns: newConfig };
 		});
+	};
 
 	useEffect(() => {
 		const handler = (ev: Event) =>

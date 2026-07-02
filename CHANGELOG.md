@@ -1,35 +1,62 @@
-# [18.7.0-beta.3](https://github.com/Neovici/cosmoz-omnitable/compare/v18.7.0-beta.2...v18.7.0-beta.3) (2026-06-30)
+## [18.8.1](https://github.com/Neovici/cosmoz-omnitable/compare/v18.8.0...v18.8.1) (2026-05-28)
 
+## 18.9.0
+
+### Minor Changes
+
+- c155683: Migrate from semantic-release to changesets
+
+### Patch Changes
+
+- c155683: Visible items changed fires constantly for no reason
+
+  Reverts the informational/derived outputs (visibleData,
+  sortedFilteredGroupedItems, sortOn, descending, isMini, filters) from
+  useProperty back to useNotifyProperty so they only fire a -changed event
+  without exposing a meaningless setter or accepting parent overrides.
+  Restores value-based deps for filters so filters-changed only fires when
+  filter values actually change.
+
+- c155683: Limit omnitable tweening to direct column interactions
+
+  Tweening now only runs briefly in response to direct user interactions
+  with columns (show/hide, reorder, drag-to-resize, group-on change) and
+  snaps otherwise. Fixes slow load caused by the initial column layout
+  animation (FE-861).
+
+### Bug Fixes
+
+- convert to TypeScript (type-only, no runtime changes) ([#1006](https://github.com/Neovici/cosmoz-omnitable/issues/1006)) ([8453d7a](https://github.com/Neovici/cosmoz-omnitable/commit/8453d7aafff0468f4abf54e0b3f3b0040cf5444e))
+
+# [18.8.0](https://github.com/Neovici/cosmoz-omnitable/compare/v18.7.1...v18.8.0) (2026-05-27)
 
 ### Features
 
-* add variant inline for disabled prop ([#1032](https://github.com/Neovici/cosmoz-omnitable/issues/1032)) ([4c1273c](https://github.com/Neovici/cosmoz-omnitable/commit/4c1273cd953b878148dc336b8bb4ba99a176a832))
+- handle primitive value-path values gracefully in listColumnMixin ([#1003](https://github.com/Neovici/cosmoz-omnitable/issues/1003)) ([b27d050](https://github.com/Neovici/cosmoz-omnitable/commit/b27d050d4c7fb9e9e77dc7b383a06d3b1f3377ab))
 
-# [18.7.0-beta.2](https://github.com/Neovici/cosmoz-omnitable/compare/v18.7.0-beta.1...v18.7.0-beta.2) (2026-06-02)
+## [18.7.1](https://github.com/Neovici/cosmoz-omnitable/compare/v18.7.0...v18.7.1) (2026-05-27)
 
+### Bug Fixes
 
-### Features
+- **use-track-size:** convert to TypeScript and drop requestAnimationFrame ([e5eb2c7](https://github.com/Neovici/cosmoz-omnitable/commit/e5eb2c773123e23433482ff80f2557bec476b00a))
 
-* add smooth transitions and fix mini mode spacing ([#1012](https://github.com/Neovici/cosmoz-omnitable/issues/1012)) ([7140073](https://github.com/Neovici/cosmoz-omnitable/commit/71400731abeaa111f611e1311e8c7d51703a84d4))
-
-# [18.7.0-beta.1](https://github.com/Neovici/cosmoz-omnitable/compare/v18.6.0...v18.7.0-beta.1) (2026-05-14)
-
+# [18.7.0](https://github.com/Neovici/cosmoz-omnitable/compare/v18.6.1...v18.7.0) (2026-05-22)
 
 ### Features
 
-* migrate to cosmoz-tokens and upgrade beta components ([#967](https://github.com/Neovici/cosmoz-omnitable/issues/967)) ([28c811e](https://github.com/Neovici/cosmoz-omnitable/commit/28c811e1e49d1cf9a6f76114a41b41e92fe2ab27))
+- migrate useNotifyProperty to useProperty ([#996](https://github.com/Neovici/cosmoz-omnitable/issues/996)) ([c0cf78c](https://github.com/Neovici/cosmoz-omnitable/commit/c0cf78cb44612d25029841297464c24334021d27))
+
+## [18.6.1](https://github.com/Neovici/cosmoz-omnitable/compare/v18.6.0...v18.6.1) (2026-05-20)
+
+### Bug Fixes
+
+- correct typo minimumFractionDigsits -> minimumFractionDigits ([d098a07](https://github.com/Neovici/cosmoz-omnitable/commit/d098a073d264f557973a458ff1836e8b173a9896))
 
 # [18.6.0](https://github.com/Neovici/cosmoz-omnitable/compare/v18.5.0...v18.6.0) (2026-05-12)
 
 ### Features
 
 - migrate list-data from Polymer to pion + direct i18next ([#980](https://github.com/Neovici/cosmoz-omnitable/issues/980)) ([1ff7307](https://github.com/Neovici/cosmoz-omnitable/commit/1ff730775e16c23a0c1c7dc603757041fc01a290))
-
-# [18.5.0](https://github.com/Neovici/cosmoz-omnitable/compare/v18.4.0...v18.5.0) (2026-05-04)
-
-### Features
-
-- migrate to cosmoz-tokens and upgrade beta components ([#967](https://github.com/Neovici/cosmoz-omnitable/issues/967)) ([28c811e](https://github.com/Neovici/cosmoz-omnitable/commit/28c811e1e49d1cf9a6f76114a41b41e92fe2ab27))
 
 # [18.5.0](https://github.com/Neovici/cosmoz-omnitable/compare/v18.4.0...v18.5.0) (2026-05-04)
 

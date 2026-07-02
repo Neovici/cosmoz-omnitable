@@ -1,12 +1,12 @@
 import { useMemo } from '@pionjs/pion';
 import { computeLayout } from './compute-layout';
-import { ColumnConfig } from './layout';
+import { ColumnConfig, ColumnConfigInput } from './layout';
 import { Column } from './types';
 
 interface UseLayoutParams {
 	canvasWidth: number | null | undefined;
 	groupOnColumn?: Column | null;
-	config: ColumnConfig[];
+	config: ColumnConfigInput[];
 	miniColumn?: Column | null;
 }
 
