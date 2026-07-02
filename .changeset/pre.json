@@ -4,5 +4,8 @@
   "initialVersions": {
     "@neovici/cosmoz-omnitable": "18.9.0"
   },
-  "changesets": ["beta-variant-inline"]
+  "changesets": [
+    "beta-variant-inline",
+    "chubby-points-roll"
+  ]
 }
