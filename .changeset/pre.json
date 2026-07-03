@@ -6,6 +6,7 @@
   },
   "changesets": [
     "beta-variant-inline",
-    "chubby-points-roll"
+    "chubby-points-roll",
+    "ripe-lights-help"
   ]
 }

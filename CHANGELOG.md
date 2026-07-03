@@ -1,5 +1,11 @@
 ## [18.8.1](https://github.com/Neovici/cosmoz-omnitable/compare/v18.8.0...v18.8.1) (2026-05-28)
 
+## 18.10.0-beta.2
+
+### Patch Changes
+
+- 5199bc7: Set white to table content background and mini mode
+
 ## 18.10.0-beta.1
 
 ### Patch Changes
