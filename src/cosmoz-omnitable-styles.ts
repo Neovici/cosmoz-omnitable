@@ -107,8 +107,7 @@ export default css`
 		display: flex;
 		align-items: flex-end;
 		background-color: var(--cz-color-bg-secondary);
-		border-top: 1px solid var(--cz-color-border-primary);
-		border-bottom: 1px solid var(--cz-color-border-primary);
+		border-block: 1px solid var(--cz-color-border-primary);
 	}
 
 	[hidden] {
@@ -186,7 +185,7 @@ export default css`
 		flex-direction: column;
 		position: relative;
 		flex: auto;
-		background-color: var(--cz-color-bg-secondary);
+		background-color: var(--cz-color-bg-primary);
 	}
 	.tableContent:has(.tableContent-empty.spinner) {
 		opacity: 0.3;
@@ -517,7 +516,7 @@ export default css`
 
 	:host([mini]) .itemRow {
 		border-radius: 12px;
-		box-shadow: inset 0 0 0 2px var(--cz-color-border-secondary);
+		box-shadow: inset 0 0 0 2px var(--cz-color-border-tertiary);
 		margin-block: var(--checkbox-offset);
 		margin-inline: var(--checkbox-offset);
 		padding-block: 4px;
