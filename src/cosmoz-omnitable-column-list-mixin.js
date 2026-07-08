@@ -162,7 +162,16 @@ const unique = (values, valueProperty) => {
 			}
 
 			deserializeFilter(column, filter) {
-				return JSON.parse(decodeURIComponent(filter));
+				if (filter == null) {
+					return null;
+				}
+
+				try {
+					return JSON.parse(decodeURIComponent(filter));
+				} catch (error) {
+					console.warn('Failed to deserialize filter value:', error.message, filter);
+					return null;
+				}
 			}
 
 			computeSource(column, data) {
