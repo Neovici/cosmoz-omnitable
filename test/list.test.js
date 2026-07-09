@@ -308,3 +308,57 @@ suite('mixin class getComparableValue', () => {
 		);
 	});
 });
+
+suite('deserializeFilter', () => {
+	let instance;
+
+	setup(() => {
+		const MyClass = listColumnMixin(class {});
+		instance = new MyClass();
+	});
+
+	test('deserializes valid encoded JSON filter', () => {
+		const filter = encodeURIComponent(
+			JSON.stringify([{ id: 'item1', label: 'Item 1' }]),
+		);
+		assert.deepEqual(instance.deserializeFilter({}, filter), [
+			{ id: 'item1', label: 'Item 1' },
+		]);
+	});
+
+	test('handles null filter', () => {
+		assert.isNull(instance.deserializeFilter({}, null));
+	});
+
+	test('handles undefined filter', () => {
+		assert.isNull(instance.deserializeFilter({}, undefined));
+	});
+
+	test('returns null on truncated URL with non-ASCII characters', () => {
+		// Real scenario from FE-935: "Aktiebolaget Allt i Plåt" URL-encoded
+		// Full: [{"id":"supplier","label":"Aktiebolaget Allt i Plåt"}]
+		// Truncated mid-escape-sequence: ...Pl%C3%A
+		const full = '[{"id":"supplier","label":"Aktiebolaget Allt i Pl%C3%A5t"}]';
+		const truncated = full.slice(0, -2); // cuts off "t", leaving "Pl%C3%A"
+		const result = instance.deserializeFilter({}, truncated);
+		assert.isNull(result);
+	});
+
+	test('returns null on malformed percent-escape sequence', () => {
+		const malformed = '[{"id":"supplier","label":"%E0%A4%A"}]';
+		const result = instance.deserializeFilter({}, malformed);
+		assert.isNull(result);
+	});
+
+	test('returns null on truncated JSON', () => {
+		const truncated = encodeURIComponent('[{ "id": "item1", "label": "Item ');
+		const result = instance.deserializeFilter({}, truncated);
+		assert.isNull(result);
+	});
+
+	test('returns null on invalid JSON', () => {
+		const invalid = encodeURIComponent('not valid json');
+		const result = instance.deserializeFilter({}, invalid);
+		assert.isNull(result);
+	});
+});

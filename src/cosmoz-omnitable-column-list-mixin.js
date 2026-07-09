@@ -162,7 +162,21 @@ const unique = (values, valueProperty) => {
 			}
 
 			deserializeFilter(column, filter) {
-				return JSON.parse(decodeURIComponent(filter));
+				if (filter == null) {
+					return null;
+				}
+
+				try {
+					return JSON.parse(decodeURIComponent(filter));
+				} catch (error) {
+					// eslint-disable-next-line no-console
+					console.error('Failed to deserialize filter value:', {
+						error: error?.name,
+						message: error?.message,
+						filterLength: typeof filter === 'string' ? filter.length : null,
+					});
+					return null;
+				}
 			}
 
 			computeSource(column, data) {
