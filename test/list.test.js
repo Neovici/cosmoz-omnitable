@@ -344,10 +344,14 @@ suite('deserializeFilter', () => {
 		assert.isNull(result);
 	});
 
+	test('returns null on malformed percent-escape sequence', () => {
+		const malformed = '[{"id":"supplier","label":"%E0%A4%A"}]';
+		const result = instance.deserializeFilter({}, malformed);
+		assert.isNull(result);
+	});
+
 	test('returns null on truncated JSON', () => {
-		const truncated = encodeURIComponent(
-			'[{ "id": "item1", "label": "Item ',
-		);
+		const truncated = encodeURIComponent('[{ "id": "item1", "label": "Item ');
 		const result = instance.deserializeFilter({}, truncated);
 		assert.isNull(result);
 	});

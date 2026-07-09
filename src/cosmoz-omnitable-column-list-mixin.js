@@ -169,7 +169,12 @@ const unique = (values, valueProperty) => {
 				try {
 					return JSON.parse(decodeURIComponent(filter));
 				} catch (error) {
-					console.warn('Failed to deserialize filter value:', error.message, filter);
+					// eslint-disable-next-line no-console
+					console.error('Failed to deserialize filter value:', {
+						error: error?.name,
+						message: error?.message,
+						filterLength: typeof filter === 'string' ? filter.length : null,
+					});
 					return null;
 				}
 			}

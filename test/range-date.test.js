@@ -114,6 +114,10 @@ suite('date', () => {
 		assert.equal(column.constructor.name, 'OmnitableColumnDate');
 	});
 
+	test('deserializeFilter returns null for non-string filters', () => {
+		assert.isNull(column.deserializeFilter({}, { min: '2015-03-18' }));
+	});
+
 	test('changing filter updates _filterInput', async () => {
 		const min = toDate('2015-03-18'),
 			max = toDate('2023-03-21');
