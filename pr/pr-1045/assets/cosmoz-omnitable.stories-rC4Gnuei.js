@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-CT_b8DTk.js";import{$ as t,Q as n,n as r,nt as i,t as a,tt as o}from"./iframe-CE0GB9nz.js";import{$ as s,A as c,B as l,Bt as u,C as d,Ct as f,D as p,Dt as m,E as h,Et as g,F as _,G as v,H as y,Ht as b,I as ee,It as x,Kt as S,L as te,M as ne,N as re,Nt as C,O as ie,Ot as ae,P as oe,Pt as se,Q as ce,R as w,Rt as le,S as T,T as ue,Tt as de,V as fe,W as pe,Wt as me,X as he,Xt as ge,Y as E,Yt as _e,Z as ve,_ as ye,_t as be,a as xe,an as Se,at as D,b as Ce,bt as we,c as Te,ct as Ee,d as De,dt as O,en as Oe,et as ke,f as Ae,ft as je,g as Me,gt as Ne,h as Pe,ht as Fe,in as Ie,it as k,j as Le,jt as Re,k as ze,l as Be,lt as Ve,mt as He,n as Ue,nn as A,nt as We,o as Ge,ot as Ke,p as qe,pt as Je,q as Ye,qt as Xe,r as Ze,rn as j,rt as Qe,s as $e,st as et,t as tt,u as nt,ut as M,v as rt,vt as it,w as at,wt as ot,x as st,xt as ct,y as lt,yt as ut,z as dt}from"./dist-BI6IxRlM.js";var ft,pt,mt=e((()=>{v(),g(),ft=E`
+import{i as e}from"./preload-helper-CT_b8DTk.js";import{$ as t,Q as n,n as r,nt as i,t as a,tt as o}from"./iframe-DWLdPzqA.js";import{$ as s,A as c,B as l,Bt as u,C as d,Ct as f,D as p,Dt as m,E as h,Et as g,F as _,G as v,H as y,Ht as b,I as ee,It as x,Kt as S,L as te,M as ne,N as re,Nt as C,O as ie,Ot as ae,P as oe,Pt as se,Q as ce,R as w,Rt as le,S as T,T as ue,Tt as de,V as fe,W as pe,Wt as me,X as he,Xt as ge,Y as E,Yt as _e,Z as ve,_ as ye,_t as be,a as xe,an as Se,at as D,b as Ce,bt as we,c as Te,ct as Ee,d as De,dt as O,en as Oe,et as ke,f as Ae,ft as je,g as Me,gt as Ne,h as Pe,ht as Fe,in as Ie,it as k,j as Le,jt as Re,k as ze,l as Be,lt as Ve,mt as He,n as Ue,nn as A,nt as We,o as Ge,ot as Ke,p as qe,pt as Je,q as Ye,qt as Xe,r as Ze,rn as j,rt as Qe,s as $e,st as et,t as tt,u as nt,ut as M,v as rt,vt as it,w as at,wt as ot,x as st,xt as ct,y as lt,yt as ut,z as dt}from"./dist-BBrCb39n.js";var ft,pt,mt=e((()=>{v(),g(),ft=E`
 	:host {
 		display: flex;
 	}
@@ -2243,7 +2243,7 @@ import{i as e}from"./preload-helper-CT_b8DTk.js";import{$ as t,Q as n,n as r,nt 
         </style>
         <cosmoz-omnitable
             .data=${ts}
-            ?inline
+            ?inline=${!0}
             hash-param=${e.hashParam||``}
             sort-on=${e.sortOn||``}
             group-on=${e.groupOn||``}
@@ -2839,7 +2839,7 @@ import{i as e}from"./preload-helper-CT_b8DTk.js";import{$ as t,Q as n,n as r,nt 
         </style>
         <cosmoz-omnitable
             .data=\${demoData}
-            ?inline
+            ?inline=\${true}
             hash-param=\${args.hashParam || ''}
             sort-on=\${args.sortOn || ''}
             group-on=\${args.groupOn || ''}
@@ -2914,7 +2914,7 @@ import{i as e}from"./preload-helper-CT_b8DTk.js";import{$ as t,Q as n,n as r,nt 
         </style>
         <cosmoz-omnitable
             .data=\${demoData}
-            ?inline
+            ?inline=\${true}
             hash-param=\${args.hashParam || ''}
             sort-on=\${args.sortOn || ''}
             group-on=\${args.groupOn || ''}

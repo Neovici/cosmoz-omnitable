@@ -1,5 +1,5 @@
 const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./flow-BRvEFw3v.js","./preload-helper-CT_b8DTk.js"])))=>i.map(i=>d[i]);
-import{i as e,n as t,t as n}from"./preload-helper-CT_b8DTk.js";import{$ as r,G as i,J as a,K as o,Q as s,U as c,W as l,X as u,Y as d,Z as f,et as p,n as m,nt as h,q as g,rt as _,t as v,tt as y}from"./iframe-CE0GB9nz.js";var b,x=e((()=>{h(),b=e=>e??s}));function S(e,t,n){return e?t(e):n?.(e)}var C=e((()=>{})),w=e((()=>{h(),x()})),T=e((()=>{h(),x()})),E=e((()=>{h(),x()})),ee=e((()=>{h(),x()})),te=e((()=>{h(),x()})),ne,re=e((()=>{h(),x(),C(),ne=({slot:e,title:t,className:n,width:r=`24`,height:i=`24`,styles:a}={})=>y`
+import{i as e,n as t,t as n}from"./preload-helper-CT_b8DTk.js";import{$ as r,G as i,J as a,K as o,Q as s,U as c,W as l,X as u,Y as d,Z as f,et as p,n as m,nt as h,q as g,rt as _,t as v,tt as y}from"./iframe-DWLdPzqA.js";var b,x=e((()=>{h(),b=e=>e??s}));function S(e,t,n){return e?t(e):n?.(e)}var C=e((()=>{})),w=e((()=>{h(),x()})),T=e((()=>{h(),x()})),E=e((()=>{h(),x()})),ee=e((()=>{h(),x()})),te=e((()=>{h(),x()})),ne,re=e((()=>{h(),x(),C(),ne=({slot:e,title:t,className:n,width:r=`24`,height:i=`24`,styles:a}={})=>y`
   <svg
     slot=${b(e)}
     class=${`announcement-icon ${n??``}`}
