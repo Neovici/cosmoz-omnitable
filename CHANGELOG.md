@@ -1,5 +1,11 @@
 ## [18.8.1](https://github.com/Neovici/cosmoz-omnitable/compare/v18.8.0...v18.8.1) (2026-05-28)
 
+## 18.10.0
+
+### Minor Changes
+
+- dbee093: Add `inline` attribute for auto-height mode — the omnitable expands to show all rows without internal scrolling, letting the page scroll instead.
+
 ## 18.9.0
 
 ### Minor Changes
