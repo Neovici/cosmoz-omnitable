@@ -127,7 +127,7 @@
     "@polymer/paper-item": "^3.0.0",
     "@polymer/paper-listbox": "^3.0.0",
     "@polymer/paper-toggle-button": "^3.0.0",
-    "@playwright/test": "1.60.0",
+    "@playwright/test": "1.61.1",
     "@storybook/addon-docs": "^10.0.4",
     "@storybook/web-components-vite": "^10.0.4",
     "@types/file-saver": "^2.0.0",
