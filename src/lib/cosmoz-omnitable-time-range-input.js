@@ -21,6 +21,7 @@ class TimeRangeInput extends dateInputMixin(
 				this.disabled,
 				() => html`
 					<cosmoz-omnitable-dropdown-input
+						variant="inline"
 						disabled
 						.label=${this.title}
 						.value=${this._filterText ?? ''}
@@ -38,7 +39,7 @@ class TimeRangeInput extends dateInputMixin(
 						externalValues: this.externalValues,
 						onOpenedChanged,
 						content: html`
-							<h3 style="margin: 0;">${this.title}</h3>
+							<h3>${this.title}</h3>
 							<cosmoz-input
 								type="time"
 								label=${t('From time')}

@@ -82,7 +82,7 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 		const { trueLabel, falseLabel } = column;
 
 		return html`<cosmoz-autocomplete
-			no-label-float
+			variant="inline"
 			.title=${computeItemTooltip(
 				column.title,
 				item,
@@ -108,6 +108,7 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 	renderHeader(column, { filter, query }, setState, source) {
 		return html`<cosmoz-autocomplete-ui
 			?disabled=${column.disabledFiltering}
+			variant="inline"
 			.label=${column.title}
 			.title=${computeItemTooltip(
 				column.title,

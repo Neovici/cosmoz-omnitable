@@ -84,8 +84,10 @@ export const resources = {
 			'Filter too strict': 'Filtre trop strict',
 			'No matches for selection': 'Aucun résultat pour la sélection',
 			'Error loading data': 'Erreur lors du chargement des données',
-			'Save selected items as CSV': 'Enregistrer les éléments sélectionnés en CSV',
-			'Save selected items as XLSX': 'Enregistrer les éléments sélectionnés en XLSX',
+			'Save selected items as CSV':
+				'Enregistrer les éléments sélectionnés en CSV',
+			'Save selected items as XLSX':
+				'Enregistrer les éléments sélectionnés en XLSX',
 			'{count} selected item': '{count} élément sélectionné',
 			'{count} selected item_one': '{count} élément sélectionné',
 			'{count} selected item_other': '{count} éléments sélectionnés',

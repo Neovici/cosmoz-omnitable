@@ -8,6 +8,7 @@ type DropdownInputHost = HTMLElement & {
 	slot?: string;
 	'always-float-label'?: boolean;
 	disabled?: boolean;
+	variant?: string;
 };
 
 const observedAttributes = [
@@ -16,60 +17,18 @@ const observedAttributes = [
 	'slot',
 	'always-float-label',
 	'disabled',
+	'variant',
 ] as const satisfies readonly string[];
 
 const style = css`
 	${inputStyles}
 
-	:host {
-		--text-align: left;
-	}
-
-	:host([text-align='right']) {
-		--text-align: right;
-	}
-
-	:host([text-align='center']) {
-		--text-align: center;
-	}
-
-	:host::part(control) {
-		width: 100%;
+	.wrap {
+		height: 40px;
 	}
 
 	#input {
-		color: var(--color);
-		user-select: none;
-		cursor: pointer;
-		min-height: var(--line-height);
-		text-align: var(--text-align);
-		white-space: nowrap;
-		overflow: clip;
-		/* TODO: Remove later on, for compat only */
-		font-size: 16px;
-		font-family: sans-serif, Verdana, Arial;
-	}
-
-	label {
-		display: block;
-		text-align: var(--text-align);
-		transform-origin: var(--text-align) top;
-		/* TODO: Remove later on, for compat only */
-		font-size: 13px;
-	}
-
-	:host(:not([always-float-label])) label {
-		transform: none !important;
-	}
-
-	:host([disabled]) {
-		pointer-events: none;
-		cursor: default;
-		--cosmoz-input-disabled-opacity: 1;
-	}
-
-	:host([disabled]) .line {
-		border-bottom-style: solid;
+		margin-top: -4px;
 	}
 `;
 

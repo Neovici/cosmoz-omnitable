@@ -1,0 +1,12 @@
+{
+  "mode": "pre",
+  "tag": "beta",
+  "initialVersions": {
+    "@neovici/cosmoz-omnitable": "18.9.0"
+  },
+  "changesets": [
+    "beta-variant-inline",
+    "chubby-points-roll",
+    "ripe-lights-help"
+  ]
+}
