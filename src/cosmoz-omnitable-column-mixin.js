@@ -139,7 +139,11 @@ export const getString = ({ valuePath }, item) => get(item, valuePath),
 				}
 
 				if (typeof filter === 'string') {
-					return window.decodeURIComponent(filter);
+					try {
+						return window.decodeURIComponent(filter);
+					} catch {
+						return null;
+					}
 				}
 				return filter;
 			}

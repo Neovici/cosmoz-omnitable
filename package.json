@@ -1,146 +1,146 @@
 {
-  "name": "@neovici/cosmoz-omnitable",
-  "version": "18.10.0-beta.2",
-  "description": "[![Build Status](https://travis-ci.org/Neovici/cosmoz-omnitable.svg?branch=master)](https://travis-ci.org/Neovici/cosmoz-omnitable)",
-  "keywords": [
-    "web-components"
-  ],
-  "homepage": "https://github.com/neovici/cosmoz-omnitable#readme",
-  "bugs": {
-    "url": "https://github.com/neovici/cosmoz-omnitable/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Neovici/cosmoz-omnitable.git"
-  },
-  "license": "Apache-2.0",
-  "author": "Neovici Development",
-  "main": "dist/cosmoz-omnitable.js",
-  "types": "dist/cosmoz-omnitable.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/cosmoz-omnitable.d.ts",
-      "default": "./dist/cosmoz-omnitable.js"
-    },
-    "./cosmoz-omnitable.js": {
-      "types": "./dist/cosmoz-omnitable.d.ts",
-      "default": "./dist/cosmoz-omnitable.js"
-    },
-    "./cosmoz-omnitable-*.js": {
-      "types": "./dist/cosmoz-omnitable-*.d.ts",
-      "default": "./dist/cosmoz-omnitable-*.js"
-    },
-    "./lib/*.js": {
-      "types": "./dist/lib/*.d.ts",
-      "default": "./dist/lib/*.js"
-    },
-    "./lib/settings/*.js": {
-      "types": "./dist/lib/settings/*.d.ts",
-      "default": "./dist/lib/settings/*.js"
-    },
-    "./lib/settings/drivers/*.js": {
-      "types": "./dist/lib/settings/drivers/*.d.ts",
-      "default": "./dist/lib/settings/drivers/*.js"
-    },
-    "./grouped-list/*.js": {
-      "types": "./dist/grouped-list/*.d.ts",
-      "default": "./dist/grouped-list/*.js"
-    },
-    "./ui-helpers/*.js": {
-      "types": "./dist/ui-helpers/*.d.ts",
-      "default": "./dist/ui-helpers/*.js"
-    }
-  },
-  "directories": {
-    "test": "test"
-  },
-  "files": [
-    "dist/**/*.js",
-    "dist/**/*.js.map",
-    "dist/**/*.d.ts",
-    "dist/**/*.d.ts.map"
-  ],
-  "scripts": {
-    "build": "tsc",
-    "build:watch": "tsc --watch",
-    "lint": "eslint --cache --ext .js,.ts src/",
-    "check:duplicates": "check-duplicate-components",
-    "start": "wds",
-    "test": "wtr --coverage",
-    "test:watch": "wtr --watch",
-    "storybook:start": "storybook dev -p 8000",
-    "storybook:build": "storybook build",
-    "storybook:deploy": "storybook-to-ghpages",
-    "storybook:preview": "npm run storybook:build && web-dev-server --root-dir ./storybook-static/ --open",
-    "prepare": "husky",
-    "changeset": "changeset"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ],
-    "rules": {
-      "body-max-line-length": [
-        1,
-        "always",
-        600
-      ],
-      "footer-max-line-length": [
-        1,
-        "always",
-        600
-      ]
-    }
-  },
-  "dependencies": {
-    "@lit-labs/virtualizer": "^2.1.0",
-    "@neovici/cosmoz-autocomplete": "^13.6.0-beta.1",
-    "@neovici/cosmoz-bottom-bar": "^9.0.5 || ^10.0.0 || ^11.0.0",
-    "@neovici/cosmoz-button": "^1.0.2",
-    "@neovici/cosmoz-collapse": "^1.1.0",
-    "@neovici/cosmoz-datetime-input": "^5.0.0-beta.2",
-    "@neovici/cosmoz-dropdown": "^7.7.0",
-    "@neovici/cosmoz-icons": "^1.1.0",
-    "@neovici/cosmoz-input": "^6.0.0-beta.2",
-    "@neovici/cosmoz-router": "^11.0.0",
-    "@neovici/cosmoz-spinner": "^1.0.1",
-    "@neovici/cosmoz-tokens": "^3.4.0",
-    "@neovici/cosmoz-utils": "^6.21.0",
-    "@neovici/nullxlsx": "^3.0.0",
-    "@pionjs/pion": "^2.16.0",
-    "@polymer/polymer": "^3.3.0",
-    "file-saver-es": "^2.0.0",
-    "i18next": ">=23.0.0 <27.0.0",
-    "lit-html": "^2.0.0 || ^3.0.0"
-  },
-  "devDependencies": {
-    "@commitlint/cli": "^21.0.0",
-    "@commitlint/config-conventional": "^21.0.0",
-    "@neovici/cfg": "^2.8.0",
-    "@neovici/testing": "^2.1.1",
-    "@open-wc/testing": "^4.0.0",
-    "@polymer/iron-test-helpers": "^3.0.0",
-    "@polymer/paper-button": "^3.0.0",
-    "@polymer/paper-dropdown-menu": "^3.2.0",
-    "@polymer/paper-item": "^3.0.0",
-    "@polymer/paper-listbox": "^3.0.0",
-    "@polymer/paper-toggle-button": "^3.0.0",
-    "@changesets/cli": "^2.28.1",
-    "@storybook/addon-docs": "^10.0.4",
-    "@storybook/web-components-vite": "^10.0.4",
-    "@types/file-saver": "^2.0.0",
-    "@types/file-saver-es": "^2.0.3",
-    "@web/dev-server-esbuild": "^1.0.4",
-    "husky": "^9.0.0",
-    "lint-staged": "^17.0.5",
-    "sinon": "^22.0.0",
-    "storybook": "^10.0.4",
-    "typescript": "^6.0.2"
-  },
-  "overrides": {
-    "@neovici/cosmoz-input": "^6.0.0-beta.2"
-  }
+	"name": "@neovici/cosmoz-omnitable",
+	"version": "18.10.0-beta.2",
+	"description": "[![Build Status](https://travis-ci.org/Neovici/cosmoz-omnitable.svg?branch=master)](https://travis-ci.org/Neovici/cosmoz-omnitable)",
+	"keywords": [
+		"web-components"
+	],
+	"homepage": "https://github.com/neovici/cosmoz-omnitable#readme",
+	"bugs": {
+		"url": "https://github.com/neovici/cosmoz-omnitable/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Neovici/cosmoz-omnitable.git"
+	},
+	"license": "Apache-2.0",
+	"author": "Neovici Development",
+	"main": "dist/cosmoz-omnitable.js",
+	"types": "dist/cosmoz-omnitable.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/cosmoz-omnitable.d.ts",
+			"default": "./dist/cosmoz-omnitable.js"
+		},
+		"./cosmoz-omnitable.js": {
+			"types": "./dist/cosmoz-omnitable.d.ts",
+			"default": "./dist/cosmoz-omnitable.js"
+		},
+		"./cosmoz-omnitable-*.js": {
+			"types": "./dist/cosmoz-omnitable-*.d.ts",
+			"default": "./dist/cosmoz-omnitable-*.js"
+		},
+		"./lib/*.js": {
+			"types": "./dist/lib/*.d.ts",
+			"default": "./dist/lib/*.js"
+		},
+		"./lib/settings/*.js": {
+			"types": "./dist/lib/settings/*.d.ts",
+			"default": "./dist/lib/settings/*.js"
+		},
+		"./lib/settings/drivers/*.js": {
+			"types": "./dist/lib/settings/drivers/*.d.ts",
+			"default": "./dist/lib/settings/drivers/*.js"
+		},
+		"./grouped-list/*.js": {
+			"types": "./dist/grouped-list/*.d.ts",
+			"default": "./dist/grouped-list/*.js"
+		},
+		"./ui-helpers/*.js": {
+			"types": "./dist/ui-helpers/*.d.ts",
+			"default": "./dist/ui-helpers/*.js"
+		}
+	},
+	"directories": {
+		"test": "test"
+	},
+	"files": [
+		"dist/**/*.js",
+		"dist/**/*.js.map",
+		"dist/**/*.d.ts",
+		"dist/**/*.d.ts.map"
+	],
+	"scripts": {
+		"build": "tsc",
+		"build:watch": "tsc --watch",
+		"lint": "eslint --cache --ext .js,.ts src/",
+		"check:duplicates": "check-duplicate-components",
+		"start": "wds",
+		"test": "wtr --coverage",
+		"test:watch": "wtr --watch",
+		"storybook:start": "storybook dev -p 8000",
+		"storybook:build": "storybook build",
+		"storybook:deploy": "storybook-to-ghpages",
+		"storybook:preview": "npm run storybook:build && web-dev-server --root-dir ./storybook-static/ --open",
+		"prepare": "husky",
+		"changeset": "changeset"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"commitlint": {
+		"extends": [
+			"@commitlint/config-conventional"
+		],
+		"rules": {
+			"body-max-line-length": [
+				1,
+				"always",
+				600
+			],
+			"footer-max-line-length": [
+				1,
+				"always",
+				600
+			]
+		}
+	},
+	"dependencies": {
+		"@lit-labs/virtualizer": "^2.1.0",
+		"@neovici/cosmoz-autocomplete": "^13.6.0-beta.1",
+		"@neovici/cosmoz-bottom-bar": "^9.0.5 || ^10.0.0 || ^11.0.0",
+		"@neovici/cosmoz-button": "^1.0.2",
+		"@neovici/cosmoz-collapse": "^1.1.0",
+		"@neovici/cosmoz-datetime-input": "^5.0.0-beta.2",
+		"@neovici/cosmoz-dropdown": "^7.7.0",
+		"@neovici/cosmoz-icons": "^1.1.0",
+		"@neovici/cosmoz-input": "^6.0.0-beta.2",
+		"@neovici/cosmoz-router": "^11.0.0",
+		"@neovici/cosmoz-spinner": "^1.0.1",
+		"@neovici/cosmoz-tokens": "^3.4.0",
+		"@neovici/cosmoz-utils": "^6.21.0",
+		"@neovici/nullxlsx": "^3.0.0",
+		"@pionjs/pion": "^2.16.0",
+		"@polymer/polymer": "^3.3.0",
+		"file-saver-es": "^2.0.0",
+		"i18next": ">=23.0.0 <27.0.0",
+		"lit-html": "^2.0.0 || ^3.0.0"
+	},
+	"devDependencies": {
+		"@commitlint/cli": "^21.0.0",
+		"@commitlint/config-conventional": "^21.0.0",
+		"@neovici/cfg": "^2.8.0",
+		"@neovici/testing": "^2.1.1",
+		"@open-wc/testing": "^4.0.0",
+		"@polymer/iron-test-helpers": "^3.0.0",
+		"@polymer/paper-button": "^3.0.0",
+		"@polymer/paper-dropdown-menu": "^3.2.0",
+		"@polymer/paper-item": "^3.0.0",
+		"@polymer/paper-listbox": "^3.0.0",
+		"@polymer/paper-toggle-button": "^3.0.0",
+		"@changesets/cli": "^2.28.1",
+		"@storybook/addon-docs": "^10.0.4",
+		"@storybook/web-components-vite": "^10.0.4",
+		"@types/file-saver": "^2.0.0",
+		"@types/file-saver-es": "^2.0.3",
+		"@web/dev-server-esbuild": "^1.0.4",
+		"husky": "^9.0.0",
+		"lint-staged": "^17.0.5",
+		"sinon": "^22.0.0",
+		"storybook": "^10.0.4",
+		"typescript": "^6.0.2"
+	},
+	"overrides": {
+		"@neovici/cosmoz-input": "^6.0.0-beta.2"
+	}
 }

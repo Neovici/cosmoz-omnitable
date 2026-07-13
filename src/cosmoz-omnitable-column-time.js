@@ -78,7 +78,7 @@ class OmnitableColumnTime extends columnMixin(PolymerElement) {
 	}
 
 	deserializeFilter(column, filter) {
-		if (filter == null || filter === '') {
+		if (typeof filter !== 'string' || filter === '') {
 			return null;
 		}
 		const matches = filter.match(/^([^~]+)?~([^~]+)?/iu);

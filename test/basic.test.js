@@ -141,6 +141,10 @@ suite('basic', () => {
 		assert.isNull(columnWithoutGroupOn.deserializeFilter({}, null));
 	});
 
+	test('deserializeFilter returns null for malformed percent-escape sequence', () => {
+		assert.isNull(columnWithoutGroupOn.deserializeFilter({}, '%E0%A4%A'));
+	});
+
 	// Column Behavior unit tests for more coverage
 	test('_hiddenChanged fires cosmoz-column-hidden-changed', () => {
 		const column = omnitable.columns[3][columnSymbol],

@@ -561,4 +561,16 @@ export default css`
 		border-color: var(--cz-color-gray-700);
 		border-top-color: var(--cz-color-black);
 	}
+
+	:host([inline]) {
+		overflow: visible;
+	}
+	:host([inline]) .tableContent {
+		overflow-y: visible;
+		flex: none;
+	}
+	:host([inline]) .tableContent-scroller {
+		overflow: visible;
+		flex-basis: auto;
+	}
 `;
