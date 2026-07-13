@@ -611,4 +611,16 @@ export default css`
 		border-color: rgba(0, 0, 0, 0.2);
 		border-top-color: #000;
 	}
+
+	:host([inline]) {
+		overflow: visible;
+	}
+	:host([inline]) .tableContent {
+		overflow-y: visible;
+		flex: none;
+	}
+	:host([inline]) .tableContent-scroller {
+		overflow: visible;
+		flex-basis: auto;
+	}
 `;

@@ -1,6 +1,6 @@
+import { isEmpty } from '@neovici/cosmoz-utils/template';
 import { html, useCallback, useEffect, useMemo, useRef } from '@pionjs/pion';
 import { when } from 'lit-html/directives/when.js';
-import { isEmpty } from '@neovici/cosmoz-utils/template';
 import { indexSymbol } from './utils';
 import { onItemChange as _onItemChange } from './utils-data';
 

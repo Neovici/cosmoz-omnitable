@@ -61,6 +61,7 @@ customElements.define(
 			'disabled-filtering',
 			'loading',
 			'mini-breakpoint',
+			'inline',
 		],
 	}),
 );
