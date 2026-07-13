@@ -1,3 +1,9 @@
+## 18.10.0-beta.3
+
+### Minor Changes
+
+- 6a4454a: Add `inline` attribute for auto-height mode — the omnitable expands to show all rows without internal scrolling, letting the page scroll instead.
+
 ## 18.10.0
 
 ### Minor Changes
