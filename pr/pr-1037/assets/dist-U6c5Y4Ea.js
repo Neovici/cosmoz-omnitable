@@ -1,5 +1,5 @@
 const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./flow-Bk5W63PM.js","./rolldown-runtime-DaJ6WEGw.js"])))=>i.map(i=>d[i]);
-import{n as e}from"./rolldown-runtime-DaJ6WEGw.js";import{n as t,t as n}from"./preload-helper-si3HNj2m.js";import{_ as r,b as i,c as a,d as o,f as s,g as c,h as l,l as u,m as d,n as f,o as p,p as m,s as h,t as g,u as _,v,y}from"./iframe-DoATZZ8n.js";var b,x=e((()=>{y(),b=e=>e??l}));function S(e,t,n){return e?t(e):n?.(e)}var C=e((()=>{})),w=e((()=>{y(),x()})),T=e((()=>{y(),x()})),E=e((()=>{y(),x()})),ee=e((()=>{y(),x()})),te=e((()=>{y(),x()})),ne,re=e((()=>{y(),x(),C(),ne=({slot:e,title:t,className:n,width:r=`24`,height:a=`24`,styles:o}={})=>v`
+import{n as e}from"./rolldown-runtime-DaJ6WEGw.js";import{n as t,t as n}from"./preload-helper-si3HNj2m.js";import{_ as r,b as i,c as a,d as o,f as s,g as c,h as l,l as u,m as d,n as f,o as p,p as m,s as h,t as g,u as _,v,y}from"./iframe-BK7mnLtV.js";var b,x=e((()=>{y(),b=e=>e??l}));function S(e,t,n){return e?t(e):n?.(e)}var C=e((()=>{})),w=e((()=>{y(),x()})),T=e((()=>{y(),x()})),E=e((()=>{y(),x()})),ee=e((()=>{y(),x()})),te=e((()=>{y(),x()})),ne,re=e((()=>{y(),x(),C(),ne=({slot:e,title:t,className:n,width:r=`24`,height:a=`24`,styles:o}={})=>v`
   <svg
     slot=${b(e)}
     class=${`announcement-icon ${n??``}`}
