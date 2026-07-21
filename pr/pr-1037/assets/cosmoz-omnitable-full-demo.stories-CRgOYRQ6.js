@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-CT_b8DTk.js";import{_t as t,bt as n,n as r,t as i,vt as a,xt as o}from"./iframe-DD4NFjVc.js";import{$ as s,A as c,B as l,Bt as u,C as d,Ct as f,D as p,Dt as m,E as h,Et as g,F as _,G as v,H as y,Ht as b,I as ee,It as x,Kt as S,L as te,M as ne,N as re,Nt as C,O as ie,Ot as ae,P as oe,Pt as se,Q as ce,Qt as le,R as w,Rt as ue,S as T,T as de,Tt as fe,V as pe,W as me,Wt as he,X as ge,Xt as _e,Y as E,Yt as ve,Z as ye,_ as be,_t as xe,a as Se,an as Ce,at as D,b as we,bt as Te,c as Ee,ct as De,d as Oe,dt as O,en as ke,et as Ae,f as je,ft as Me,g as Ne,gt as Pe,h as Fe,ht as Ie,in as Le,it as k,j as Re,jt as ze,k as Be,l as Ve,lt as He,mt as Ue,n as We,nn as A,nt as Ge,o as Ke,ot as qe,p as Je,pt as Ye,q as Xe,qt as Ze,r as Qe,rn as j,rt as $e,s as et,st as tt,t as nt,u as rt,ut as M,v as it,vt as at,w as ot,wt as st,x as ct,xt as lt,y as N,yt as ut,z as dt}from"./dist-BkkxNDIr.js";var ft,pt=e((()=>{g(),ft=()=>n`<style>
+import{i as e}from"./preload-helper-CT_b8DTk.js";import{_t as t,bt as n,n as r,t as i,vt as a,xt as o}from"./iframe-BwpeboJ2.js";import{$ as s,A as c,B as l,Bt as u,C as d,Ct as f,D as p,Dt as m,E as h,Et as g,F as _,G as v,H as y,Ht as b,I as ee,It as x,Kt as S,L as te,M as ne,N as re,Nt as C,O as ie,Ot as ae,P as oe,Pt as se,Q as ce,Qt as le,R as w,Rt as ue,S as T,T as de,Tt as fe,V as pe,W as me,Wt as he,X as ge,Xt as _e,Y as E,Yt as ve,Z as ye,_ as be,_t as xe,a as Se,an as Ce,at as D,b as we,bt as Te,c as Ee,ct as De,d as Oe,dt as O,en as ke,et as Ae,f as je,ft as Me,g as Ne,gt as Pe,h as Fe,ht as Ie,in as Le,it as k,j as Re,jt as ze,k as Be,l as Ve,lt as He,mt as Ue,n as We,nn as A,nt as Ge,o as Ke,ot as qe,p as Je,pt as Ye,q as Xe,qt as Ze,r as Qe,rn as j,rt as $e,s as et,st as tt,t as nt,u as rt,ut as M,v as it,vt as at,w as ot,wt as st,x as ct,xt as lt,y as N,yt as ut,z as dt}from"./dist-CFlBp9SX.js";var ft,pt=e((()=>{g(),ft=()=>n`<style>
 	@keyframes rotating {
 		100% {
 			transform: rotate(360deg);
@@ -905,9 +905,9 @@ import{i as e}from"./preload-helper-CT_b8DTk.js";import{_t as t,bt as n,n as r,t
 			</div>`),customElements.define(`cosmoz-omnitable-item-row`,m(ji,{useShadowDOM:!1}))})),Ni,Pi,Fi=e((()=>{v(),Ni=E`
 	.checkbox {
 		box-sizing: border-box;
-		width: 18px;
-		height: 18px;
-		background: transparent;
+		width: 16px;
+		height: 16px;
+		background: #ffffff;
 		border-radius: 4px;
 		appearance: none;
 		-webkit-appearance: none;
@@ -915,70 +915,88 @@ import{i as e}from"./preload-helper-CT_b8DTk.js";import{_t as t,bt as n,n as r,t
 		position: relative;
 		user-select: none;
 		cursor: pointer;
-		display: inline-block;
-		box-shadow: 0 0 0 2px
-			var(--cosmoz-omnitable-checkbox-shadow-color, rgba(0, 0, 0, 0.16)) inset;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border: 1px solid #d5d7da;
 		-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 		vertical-align: middle;
-		transition: background-color 140ms;
+		transition:
+			background-color 0.15s ease,
+			border-color 0.15s ease;
 		margin: 1px 12px;
 		flex: none;
 	}
 
-	.checkbox:checked {
-		background-color: var(
-			--cosmoz-omnitable-checkbox-checked-color,
-			var(--primary-color)
-		);
-		box-shadow: none;
+	.checkbox:checked,
+	.checkbox:indeterminate {
+		background-color: var(--cosmoz-omnitable-checkbox-checked-color, #496dac);
+		border-color: var(--cosmoz-omnitable-checkbox-checked-color, #496dac);
+	}
+
+	/* Checkmark icon using CSS */
+	.checkbox:checked::before,
+	.checkbox:indeterminate::before {
+		content: '';
+		position: absolute;
+		width: 10px;
+		height: 10px;
+		background: currentColor;
+		mask-size: contain;
+		-webkit-mask-size: contain;
+		color: #ffffff;
 	}
 
 	.checkbox:checked::before {
-		content: '';
-		position: absolute;
-		box-sizing: content-box;
-		width: 5px;
-		height: 10px;
-		border: 2.4px solid
-			var(--cosmoz-omnitable-checkbox-checked-tick-color, #fff);
-		border-top: none;
-		border-left: none;
-		transform-origin: 5px 10px;
-		transform: translate(3px) rotate(45deg);
+		mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M11.6666 3.5L5.24992 9.91667L2.33325 7'/%3E%3C/svg%3E")
+			no-repeat center;
+		-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M11.6666 3.5L5.24992 9.91667L2.33325 7'/%3E%3C/svg%3E")
+			no-repeat center;
 	}
 
 	.checkbox::after {
 		content: '';
 		display: block;
+		position: absolute;
 		bottom: -5px;
 		left: -5px;
 		right: -5px;
 		top: -5px;
 	}
 
-	.checkbox:hover {
-		box-shadow:
-			0 0 0 2px
-				var(--cosmoz-omnitable-checkbox-shadow-color-hover, rgba(0, 0, 0, 1))
-				inset,
-			0 0 2px 6px #2021240f;
+	.checkbox:hover:not(:checked) {
+		background-color: #fafafa;
+		border-color: #a4a7ae;
 	}
 
 	.checkbox:checked:hover {
-		box-shadow: 0 0 2px 6px #2021240f;
+		background-color: #405d90;
+		border-color: #405d90;
 	}
 
+	/* Indeterminate dash icon */
 	.checkbox:indeterminate::before {
-		content: '';
-		position: absolute;
-		width: 10px;
-		height: 2px;
-		left: 4px;
-		top: 8px;
-		background-color: var(
-			--cosmoz-omnitable-checkbox-checked-color,
-			var(--primary-color)
-		);
+		mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath fill='none' stroke='white' stroke-width='2' stroke-linecap='round' d='M2.91675 7H11.0834'/%3E%3C/svg%3E")
+			no-repeat center;
+		-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath fill='none' stroke='white' stroke-width='2' stroke-linecap='round' d='M2.91675 7H11.0834'/%3E%3C/svg%3E")
+			no-repeat center;
+	}
+
+	.checkbox:focus-visible {
+		box-shadow: 0 0 0 3px #dee6f6;
+	}
+
+	.checkbox:disabled {
+		background-color: #f5f5f5;
+		border-color: #e9eaeb;
+		cursor: not-allowed;
+		opacity: 0.5;
+	}
+
+	.checkbox:checked:disabled,
+	.checkbox:indeterminate:disabled {
+		background-color: #a9bde2;
+		border-color: #a9bde2;
 	}
 `,Pi=E`
 	:host {
@@ -1326,27 +1344,16 @@ import{i as e}from"./preload-helper-CT_b8DTk.js";import{_t as t,bt as n,n as r,t
 	}
 
 	cosmoz-bottom-bar {
-		background-color: var(--cosmoz-omnitable-bottom-bar-color, #5f5a92);
+		background-color: var(--cosmoz-omnitable-bottom-bar-color, #eeeff3);
 		overflow: hidden;
+		z-index: 10;
 	}
 	cosmoz-bottom-bar::part(bar) {
 		padding: 0 24px;
 	}
 
 	cosmoz-bottom-bar::part(info) {
-		color: #fff;
-	}
-
-	cosmoz-bottom-bar::slotted(*) {
-		background-color: #4c4875;
-		color: #fff;
-		border-color: #fff;
-	}
-
-	cosmoz-bottom-bar::slotted([disabled]) {
-		color: #b7b6c8;
-		border-color: #b7b6c8;
-		cursor: not-allowed;
+		color: #101828;
 	}
 
 	.boolean-cell[editable] {

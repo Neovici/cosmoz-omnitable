@@ -1,5 +1,5 @@
 const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./flow-BRvEFw3v.js","./preload-helper-CT_b8DTk.js"])))=>i.map(i=>d[i]);
-import{i as e,n as t,t as n}from"./preload-helper-CT_b8DTk.js";import{St as r,_t as i,bt as a,ct as o,dt as s,ft as c,gt as l,ht as u,lt as d,mt as f,n as p,pt as m,t as h,ut as g,vt as _,xt as v,yt as y}from"./iframe-DD4NFjVc.js";var b,x=e((()=>{v(),b=e=>e??i}));function S(e,t,n){return e?t(e):n?.(e)}var C=e((()=>{})),w=e((()=>{v(),x()})),T=e((()=>{v(),x()})),E=e((()=>{v(),x()})),ee=e((()=>{v(),x()})),te=e((()=>{v(),x()})),ne,re=e((()=>{v(),x(),C(),ne=({slot:e,title:t,className:n,width:i=`24`,height:o=`24`,styles:s}={})=>a`
+import{i as e,n as t,t as n}from"./preload-helper-CT_b8DTk.js";import{St as r,_t as i,bt as a,ct as o,dt as s,ft as c,gt as l,ht as u,lt as d,mt as f,n as p,pt as m,t as h,ut as g,vt as _,xt as v,yt as y}from"./iframe-BwpeboJ2.js";var b,x=e((()=>{v(),b=e=>e??i}));function S(e,t,n){return e?t(e):n?.(e)}var C=e((()=>{})),w=e((()=>{v(),x()})),T=e((()=>{v(),x()})),E=e((()=>{v(),x()})),ee=e((()=>{v(),x()})),te=e((()=>{v(),x()})),ne,re=e((()=>{v(),x(),C(),ne=({slot:e,title:t,className:n,width:i=`24`,height:o=`24`,styles:s}={})=>a`
   <svg
     slot=${b(e)}
     class=${`announcement-icon ${n??``}`}
