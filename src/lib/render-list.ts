@@ -7,6 +7,7 @@ import { html } from 'lit-html';
 import { when } from 'lit-html/directives/when.js';
 import type { NormalizedSettings } from './settings/normalize';
 import type { Column, Item } from './types';
+import { type TAll } from './utils';
 
 interface HeaderParams {
 	settingsConfig: NormalizedSettings & {
@@ -26,8 +27,10 @@ interface ListParams {
 	loading: boolean;
 	displayEmptyGroups: boolean;
 	compareItemsFn?: (a: unknown, b: unknown) => boolean;
-	selectedItems: Item[];
-	setSelectedItems: (items: Item[] | ((prev: Item[]) => Item[])) => void;
+	selectedItems: Item[] | TAll;
+	setSelectedItems: (
+		items: Item[] | TAll | ((prev: Item[] | TAll) => Item[] | TAll),
+	) => void;
 	renderItem: (item: Item, index: number, params: unknown) => unknown;
 	renderGroup: (item: unknown, index: number, params: unknown) => unknown;
 	error?: { message: string } | null;
