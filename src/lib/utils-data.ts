@@ -1,11 +1,12 @@
 import { get, set } from '@polymer/polymer/lib/utils/path';
+import { Column, GetPath, Item, Items } from './types';
 import { columnSymbol } from './use-dom-columns';
-import { GetPath, Items, Item, Column } from './types';
 
 interface DefaultComputeSource {
 	externalValues?: unknown[];
 	values?: unknown[];
 	valuePath?: GetPath;
+	noLocal?: boolean;
 }
 
 export const valuesFrom = (data: Items, valuePath: GetPath) => {
@@ -20,7 +21,7 @@ export const valuesFrom = (data: Items, valuePath: GetPath) => {
 };
 
 export const defaultComputeSource = (
-	{ externalValues, values, valuePath }: DefaultComputeSource,
+	{ externalValues, values, valuePath, noLocal }: DefaultComputeSource,
 	data: Items,
 ) => {
 	if (externalValues) {
@@ -29,6 +30,10 @@ export const defaultComputeSource = (
 
 	if (typeof values === 'function') {
 		return values;
+	}
+
+	if (noLocal) {
+		return undefined;
 	}
 
 	if (valuePath !== undefined) {

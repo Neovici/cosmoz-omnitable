@@ -297,3 +297,91 @@ suite('external values', () => {
 		assert.equal(omnitable.filters.age.min, -1);
 	});
 });
+
+suite('noLocal', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
+
+	test('noLocal omits local-data-derived range bounds', async () => {
+		const omnitable = await setupOmnitableFixture(
+				html`
+					<cosmoz-omnitable no-local>
+						<cosmoz-omnitable-column-number
+							title="Age"
+							name="age"
+							value-path="age"
+							maximum-fraction-digits="2"
+						>
+						</cosmoz-omnitable-column-number>
+					</cosmoz-omnitable>
+				`,
+				[{ age: 1 }, { age: 0 }, { age: 20 }],
+			),
+			columnHeaderInput = omnitable.shadowRoot.querySelector(
+				'cosmoz-omnitable-number-range-input',
+			);
+
+		await nextFrame();
+
+		assert.deepEqual(columnHeaderInput._range, { min: null, max: null });
+	});
+
+	test('noLocal does not clamp _filterInput to local data bounds', async () => {
+		const omnitable = await setupOmnitableFixture(
+				html`
+					<cosmoz-omnitable no-local>
+						<cosmoz-omnitable-column-number
+							title="Age"
+							name="age"
+							value-path="age"
+							maximum-fraction-digits="2"
+						>
+						</cosmoz-omnitable-column-number>
+					</cosmoz-omnitable>
+				`,
+				[{ age: 1 }, { age: 0 }, { age: 20 }],
+			),
+			column = omnitable.columns[0][columnSymbol],
+			columnHeaderInput = omnitable.shadowRoot.querySelector(
+				'cosmoz-omnitable-number-range-input',
+			);
+
+		column.autoupdate = true;
+		await nextFrame();
+
+		columnHeaderInput.set('_filterInput.min', -1);
+		flush();
+		await nextFrame();
+
+		assert.equal(omnitable.filters.age.min, -1);
+	});
+
+	test('without noLocal, _filterInput below local min is clamped', async () => {
+		const omnitable = await setupOmnitableFixture(
+				html`
+					<cosmoz-omnitable>
+						<cosmoz-omnitable-column-number
+							title="Age"
+							name="age"
+							value-path="age"
+							maximum-fraction-digits="2"
+						>
+						</cosmoz-omnitable-column-number>
+					</cosmoz-omnitable>
+				`,
+				[{ age: 1 }, { age: 0 }, { age: 20 }],
+			),
+			column = omnitable.columns[0][columnSymbol],
+			columnHeaderInput = omnitable.shadowRoot.querySelector(
+				'cosmoz-omnitable-number-range-input',
+			);
+
+		column.autoupdate = true;
+		await nextFrame();
+
+		columnHeaderInput.set('_filterInput.min', -1);
+		flush();
+		await nextFrame();
+
+		assert.equal(omnitable.filters.age.min, 0);
+	});
+});
