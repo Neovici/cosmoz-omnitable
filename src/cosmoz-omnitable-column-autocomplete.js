@@ -13,7 +13,7 @@ import {
 	onFocus,
 	onText,
 } from './cosmoz-omnitable-column-list-mixin';
-import { columnMixin, getString } from './cosmoz-omnitable-column-mixin.js';
+import { columnMixin, getString } from './cosmoz-omnitable-column-mixin';
 
 import { get } from '@polymer/polymer/lib/utils/path';
 import { columnSymbol } from './lib/use-dom-columns';
