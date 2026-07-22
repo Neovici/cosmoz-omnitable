@@ -2,6 +2,14 @@ const indexSymbol = Symbol('index');
 
 export { indexSymbol };
 
+/**
+ * Sentinel symbol representing the bulk selection feature.
+ * Set as `selectedItems` when user clicks the footer "Select all items" button.
+ * The total count is provided via the `allItemsCount` property.
+ */
+export const All = Symbol('All');
+export type TAll = typeof All;
+
 export const findLastIndex = (
 	array: (number | undefined)[],
 	predicate: (
