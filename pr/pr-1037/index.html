@@ -49,135 +49,7 @@
     <link href="./sb-addons/storybook-core-server-presets-0/common-manager-bundle.js" rel="modulepreload" />
     
     <link href="./sb-addons/docs-1/manager-bundle.js" rel="modulepreload" />
-    
-    <link href="./sb-addons/storybook-2/manager-bundle.js" rel="modulepreload" />
-      <!-- Load Inter and DM Sans fonts from Google Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-	href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Inter:wght@400;500;600;700&display=swap"
-	rel="stylesheet"
-/>
-
-<!-- Additional manager UI styling -->
-<style>
-	/* Root styling - make sidebar distinct */
-	body {
-		font-family:
-			'Inter',
-			-apple-system,
-			'Segoe UI',
-			Roboto,
-			Arial,
-			sans-serif !important;
-	}
-
-	/* Sidebar with slate background */
-	[role='main'] > div:first-child,
-	.sidebar-container,
-	.sidebar {
-		background-color: #f8fafc !important;
-		font-family:
-			'Inter',
-			-apple-system,
-			'Segoe UI',
-			Roboto,
-			Arial,
-			sans-serif !important;
-	}
-
-	/* Search input styling */
-	.sidebar-search input,
-	[data-testid='search-field'] {
-		border-radius: 8px !important;
-		border: 1px solid #cbd5e1 !important;
-		background-color: #ffffff !important;
-	}
-
-	/* Story items with hover effect */
-	.sidebar-item,
-	[data-nodetype='story'],
-	[data-nodetype='component'] {
-		transition:
-			background-color 0.15s ease,
-			color 0.15s ease !important;
-		border-radius: 6px !important;
-		margin: 2px 8px !important;
-	}
-
-	.sidebar-item:hover,
-	[data-nodetype='story']:hover,
-	[data-nodetype='component']:hover {
-		background-color: #e2e8f0 !important;
-	}
-
-	/* Selected story highlight */
-	.sidebar-item[data-selected='true'],
-	[data-selected='true'] {
-		background-color: #e0e7ff !important;
-		color: #496dac !important;
-		font-weight: 600 !important;
-	}
-
-	/* Section headers */
-	.sidebar-header,
-	[data-nodetype='group'] {
-		font-family:
-			'DM Sans',
-			-apple-system,
-			'Segoe UI',
-			Roboto,
-			Arial,
-			sans-serif !important;
-		font-weight: 600 !important;
-		color: #0f172a !important;
-		text-transform: uppercase !important;
-		font-size: 11px !important;
-		letter-spacing: 0.05em !important;
-	}
-
-	/* Brand title in sidebar */
-	.sidebar-header button,
-	[data-testid='brand'] {
-		font-family:
-			'DM Sans',
-			-apple-system,
-			'Segoe UI',
-			Roboto,
-			Arial,
-			sans-serif !important;
-		font-weight: 700 !important;
-		color: #496dac !important;
-	}
-
-	/* Toolbar buttons */
-	button[title],
-	[role='toolbar'] button {
-		border-radius: 6px !important;
-	}
-
-	/* Panel tabs */
-	[role='tablist'] button {
-		border-radius: 6px 6px 0 0 !important;
-	}
-
-	/* Inputs and controls */
-	input,
-	select,
-	textarea {
-		border-radius: 6px !important;
-		border: 1px solid #cbd5e1 !important;
-	}
-
-	input:focus,
-	select:focus,
-	textarea:focus {
-		border-color: #5f81bd !important;
-		box-shadow: 0 0 0 3px rgba(95, 129, 189, 0.1) !important;
-		outline: none !important;
-	}
-</style>
- 
+       
 
     <style>
       #storybook-root[hidden] {
@@ -268,8 +140,6 @@
         import './sb-addons/storybook-core-server-presets-0/common-manager-bundle.js';
       
         import './sb-addons/docs-1/manager-bundle.js';
-      
-        import './sb-addons/storybook-2/manager-bundle.js';
       
 
       import './sb-manager/runtime.js';
