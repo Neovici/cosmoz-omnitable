@@ -89,7 +89,7 @@ const useCosmozGroupedList = (host: UseCosmozGroupedListHost) => {
 						toggleFold: () => toggleFold(item as Item),
 					})
 				: renderItem(item as Item, index, {
-						selected: selectedItems.includes(item as Item),
+						selected: isItemSelected(item as Item),
 						expanded: isExpanded(item as Item, state),
 						toggleSelect: (selected?: boolean) =>
 							toggleSelect(
