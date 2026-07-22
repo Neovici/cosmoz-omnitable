@@ -78,6 +78,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "overrides": {
+    "vite": "7.3.6",
+    "comment": "latest vite misidentifies @polymer/polymer's static import and throw SyntaxError: Unexpected token '('"
+  },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
