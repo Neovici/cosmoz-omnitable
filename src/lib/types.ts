@@ -63,6 +63,14 @@ export interface AmountColumn extends Column {
 
 export type DateColumn = Column;
 
+export interface ListColumn extends Column {
+	textProperty?: string;
+	valueProperty?: string;
+	emptyLabel?: string;
+	emptyValue?: unknown;
+	emptyProperty?: string;
+}
+
 export interface Limit<T> {
 	min: T;
 	max: T;
