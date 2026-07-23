@@ -1,3 +1,13 @@
+## 18.11.0-beta.1
+
+### Minor Changes
+
+- 13534b9: Add variant inline for disabled filter inputs, smooth transitions, skeleton padding fixes, and inline mode for auto-height omnitable
+
+### Patch Changes
+
+- 2f8fca1: Bump cosmoz-autocomplete to ^13.7.0-beta.6 for cosmoz-input v6 compatibility
+
 ## 18.10.0
 
 ### Minor Changes
