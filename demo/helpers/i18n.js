@@ -36,6 +36,9 @@ export const resources = {
 			'Filter too strict': 'För strikt filter',
 			'No matches for selection': 'Inga träffar för urvalet',
 			'Error loading data': 'Fel vid laddning av data',
+			'All {count} items selected': 'Alla {count} objekt valda',
+			'All items selected': 'Alla objekt valda',
+			'Select all items': 'Välj alla objekt',
 			'Save selected items as CSV': 'Spara valda objekt som CSV',
 			'Save selected items as XLSX': 'Spara valda objekt som XLSX',
 			'{count} selected item': '{count} valt objekt',
@@ -84,8 +87,14 @@ export const resources = {
 			'Filter too strict': 'Filtre trop strict',
 			'No matches for selection': 'Aucun résultat pour la sélection',
 			'Error loading data': 'Erreur lors du chargement des données',
-			'Save selected items as CSV': 'Enregistrer les éléments sélectionnés en CSV',
-			'Save selected items as XLSX': 'Enregistrer les éléments sélectionnés en XLSX',
+			'All {count} items selected':
+				'Tous les {count} éléments sont sélectionnés',
+			'All items selected': 'Tous les éléments sont sélectionnés',
+			'Select all items': 'Sélectionner tous les éléments',
+			'Save selected items as CSV':
+				'Enregistrer les éléments sélectionnés en CSV',
+			'Save selected items as XLSX':
+				'Enregistrer les éléments sélectionnés en XLSX',
 			'{count} selected item': '{count} élément sélectionné',
 			'{count} selected item_one': '{count} élément sélectionné',
 			'{count} selected item_other': '{count} éléments sélectionnés',

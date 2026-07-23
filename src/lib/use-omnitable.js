@@ -58,23 +58,25 @@ export const useOmnitable = (host) => {
 			...sortAndGroupOptions,
 		});
 
+	const header = useHeader({
+		host,
+		selectedItems,
+		sortAndGroupOptions,
+		dataIsValid,
+		data,
+		columns,
+		filters,
+		collapsedColumns,
+		settings,
+		filterFunctions,
+		settingS,
+		setFilterState,
+		hideSelectAll: host.hideSelectAll === true,
+		requestTween,
+	});
+
 	return {
-		header: useHeader({
-			host,
-			selectedItems,
-			sortAndGroupOptions,
-			dataIsValid,
-			data,
-			columns,
-			filters,
-			collapsedColumns,
-			settings,
-			filterFunctions,
-			settingS,
-			setFilterState,
-			hideSelectAll: host.hideSelectAll === true,
-			requestTween,
-		}),
+		header,
 		list: useList({
 			host,
 			error,
@@ -91,7 +93,11 @@ export const useOmnitable = (host) => {
 		footer: useFooter({
 			host,
 			selectedItems,
+			allSelected: header.allSelected,
+			setSelectedItems,
 			columns,
+			enableSelectAll: host.enableSelectAll,
+			allItemsCount: host.allItemsCount,
 		}),
 	};
 };
