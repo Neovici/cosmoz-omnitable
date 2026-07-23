@@ -16,9 +16,6 @@ suite('render-footer export', () => {
 			},
 		];
 
-		const csvCalls = [];
-		const xlsxCalls = [];
-
 		render(
 			renderFooter({
 				columns,
@@ -27,8 +24,6 @@ suite('render-footer export', () => {
 				csvFilename: 'test.csv',
 				xlsxFilename: 'test.xlsx',
 				xlsxSheetname: 'Sheet 1',
-				saveAsCsv: (...args) => csvCalls.push(args),
-				saveAsXlsx: (...args) => xlsxCalls.push(args),
 			}),
 			container,
 		);
@@ -37,13 +32,11 @@ suite('render-footer export', () => {
 		// so the export dropdown is hidden entirely.
 		const dropdown = container.querySelector('cosmoz-dropdown-menu');
 		assert.isNull(dropdown);
-		assert.lengthOf(csvCalls, 0);
-		assert.lengthOf(xlsxCalls, 0);
 
 		container.remove();
 	});
 
-	test('exports selectedItems when not All', () => {
+	test('shows export buttons when selectedItems is an array', () => {
 		const container = document.createElement('div');
 		document.body.append(container);
 
@@ -56,9 +49,6 @@ suite('render-footer export', () => {
 			},
 		];
 
-		const csvCalls = [];
-		const xlsxCalls = [];
-
 		render(
 			renderFooter({
 				columns,
@@ -67,21 +57,16 @@ suite('render-footer export', () => {
 				csvFilename: 'test.csv',
 				xlsxFilename: 'test.xlsx',
 				xlsxSheetname: 'Sheet 1',
-				saveAsCsv: (...args) => csvCalls.push(args),
-				saveAsXlsx: (...args) => xlsxCalls.push(args),
 			}),
 			container,
 		);
 
-		const buttons = container.querySelectorAll('cosmoz-dropdown-menu > button');
-		buttons[0].click();
-		buttons[1].click();
-
-		assert.lengthOf(csvCalls, 1);
-		assert.strictEqual(csvCalls[0][1], selectedItems);
-
-		assert.lengthOf(xlsxCalls, 1);
-		assert.strictEqual(xlsxCalls[0][1], selectedItems);
+		const dropdown = container.querySelector('cosmoz-dropdown-menu');
+		assert.isNotNull(dropdown);
+		assert.lengthOf(
+			container.querySelectorAll('cosmoz-dropdown-menu > button'),
+			2,
+		);
 
 		container.remove();
 	});

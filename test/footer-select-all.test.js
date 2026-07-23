@@ -50,7 +50,7 @@ suite('footer select all', () => {
 		assert.isTrue(headerCheckbox.checked);
 		assert.include(omnitable.shadowRoot.textContent, 'Select all items');
 
-		omnitable.shadowRoot.querySelector('#bottomBar button').click();
+		omnitable.shadowRoot.querySelector('.selectAllItems').click();
 		await nextFrame();
 		await nextFrame();
 
