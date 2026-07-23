@@ -9,8 +9,6 @@ import { All, type TAll } from './utils';
 interface RenderFooterParams {
 	columns: Column[];
 	selectedItems: Item[] | TAll;
-	saveAsCsv?: typeof saveAsCsvAction;
-	saveAsXlsx?: typeof saveAsXlsxAction;
 	setSelectedItems: (
 		items: Item[] | TAll | ((prev: Item[] | TAll) => Item[] | TAll),
 	) => void;
@@ -26,8 +24,6 @@ interface RenderFooterParams {
 export const renderFooter = ({
 	columns,
 	selectedItems,
-	saveAsCsv = saveAsCsvAction,
-	saveAsXlsx = saveAsXlsxAction,
 	setSelectedItems,
 	csvFilename,
 	xlsxFilename,
@@ -38,9 +34,6 @@ export const renderFooter = ({
 	allItemsCount,
 }: RenderFooterParams) => {
 	const isAllSelected = selectedItems === All;
-	const selectedCount = isAllSelected
-		? (allItemsCount ?? 0)
-		: selectedItems.length;
 	const hasSelection = isAllSelected || selectedItems.length > 0;
 	const showSelectAllItems =
 		selectedItems !== All && enableSelectAll && allSelected;
@@ -74,13 +67,13 @@ export const renderFooter = ({
 			</svg>
 			<button
 				@click=${() =>
-					saveAsCsv(columns as CsvColumn[], selectedItems, csvFilename!)}
+					saveAsCsvAction(columns as CsvColumn[], selectedItems, csvFilename!)}
 			>
 				${t('Save selected items as CSV')}
 			</button>
 			<button
 				@click=${() =>
-					saveAsXlsx(
+					saveAsXlsxAction(
 						columns as XlsxColumn[],
 						selectedItems,
 						xlsxFilename!,
@@ -92,16 +85,17 @@ export const renderFooter = ({
 			<slot name="download-menu"></slot>
 		</cosmoz-dropdown-menu>`;
 	};
-	let allLabel;
-
-	if (isAllSelected) {
-		allLabel =
+	const allLabel = when(
+		isAllSelected,
+		() =>
 			allItemsCount !== undefined
 				? t('All {count} items selected', { count: allItemsCount })
-				: t('All items selected');
-	} else {
-		allLabel = t('{count} selected item', { count: selectedCount });
-	}
+				: t('All items selected'),
+		() =>
+			t('{count} selected item', {
+				count: selectedItems === All ? 0 : selectedItems.length,
+			}),
+	);
 
 	return html`<cosmoz-bottom-bar
 		id="bottomBar"
