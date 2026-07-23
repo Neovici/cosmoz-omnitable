@@ -96,7 +96,7 @@ export const useOmnitable = (host) => {
 			allSelected: header.allSelected,
 			setSelectedItems,
 			columns,
-			enableSelectAll: host.enableSelectAll === true,
+			enableSelectAll: host.enableSelectAll,
 			allItemsCount: host.allItemsCount,
 		}),
 	};

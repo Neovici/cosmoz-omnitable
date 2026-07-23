@@ -1,5 +1,5 @@
 import type { Item } from './types';
-import { type TAll } from './utils';
+import { type TSelection } from './utils';
 
 interface FooterHost extends HTMLElement {
 	csvFilename?: string;
@@ -11,10 +11,10 @@ interface FooterHost extends HTMLElement {
 
 interface UseFooterParams {
 	host: FooterHost;
-	selectedItems: Item[] | TAll;
+	selectedItems: TSelection<Item>;
 	allSelected: boolean;
 	setSelectedItems: (
-		items: Item[] | TAll | ((prev: Item[] | TAll) => Item[] | TAll),
+		items: TSelection<Item> | ((prev: TSelection<Item>) => TSelection<Item>),
 	) => void;
 	enableSelectAll: boolean;
 	allItemsCount?: number;

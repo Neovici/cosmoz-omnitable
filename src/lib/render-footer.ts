@@ -17,7 +17,7 @@ interface RenderFooterParams {
 	xlsxSheetname?: string;
 	topPlacement?: string;
 	enableSelectAll?: boolean;
-	allSelected?: boolean;
+	allSelected: boolean;
 	allItemsCount?: number;
 }
 
@@ -30,18 +30,14 @@ export const renderFooter = ({
 	xlsxSheetname,
 	topPlacement,
 	enableSelectAll,
-	allSelected = false,
+	allSelected,
 	allItemsCount,
 }: RenderFooterParams) => {
 	const isAllSelected = selectedItems === All;
 	const hasSelection = isAllSelected || selectedItems.length > 0;
 	const showSelectAllItems =
 		selectedItems !== All && enableSelectAll && allSelected;
-	const renderExportMenu = () => {
-		if (selectedItems === All) {
-			return;
-		}
-
+	const renderExportMenu = (items: Item[]) => {
 		return html`<cosmoz-dropdown-menu
 			part="extra"
 			slot="extra"
@@ -67,7 +63,7 @@ export const renderFooter = ({
 			</svg>
 			<button
 				@click=${() =>
-					saveAsCsvAction(columns as CsvColumn[], selectedItems, csvFilename!)}
+					saveAsCsvAction(columns as CsvColumn[], items, csvFilename!)}
 			>
 				${t('Save selected items as CSV')}
 			</button>
@@ -75,7 +71,7 @@ export const renderFooter = ({
 				@click=${() =>
 					saveAsXlsxAction(
 						columns as XlsxColumn[],
-						selectedItems,
+						items,
 						xlsxFilename!,
 						xlsxSheetname!,
 					)}
@@ -103,17 +99,28 @@ export const renderFooter = ({
 		part="bottomBar"
 		exportparts="bar: bottomBar-bar, info: bottomBar-info, buttons: bottomBar-buttons"
 	>
-		<span slot="info"> ${allLabel} </span>
-		${when(
-			showSelectAllItems,
-			() =>
-				html`<button @click=${() => setSelectedItems(All)}>
-					${t('Select all items')}
-				</button>`,
-		)}
+		<span slot="info">
+			${allLabel}
+			${when(
+				showSelectAllItems,
+				() =>
+					html`&nbsp;<span
+							part="select-all-items"
+							class="selectAllItems"
+							role="button"
+							tabindex="0"
+							style="cursor: pointer; color: white;"
+							@click=${() => setSelectedItems(All)}
+						>
+							${t('Select all items')}
+						</span>`,
+			)}
+		</span>
 		<slot name="actions" id="actions"></slot>
 		<slot name="bottom-bar-toolbar" slot="bottom-bar-toolbar"></slot>
 		<slot name="bottom-bar-menu" slot="bottom-bar-menu"></slot>
-		${when(selectedItems !== All, renderExportMenu)}
+		${when(selectedItems !== All, () =>
+			renderExportMenu(selectedItems as Item[]),
+		)}
 	</cosmoz-bottom-bar>`;
 };

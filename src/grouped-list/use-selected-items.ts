@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useProperty, useState } from '@pionjs/pion';
 import type { Item } from '../lib/types';
-import { All, type TAll } from '../lib/utils';
+import { All, type TSelection } from '../lib/utils';
 import { GroupItem, isGroup } from './utils';
 
 export interface UseSelectedItemsParams {
@@ -10,7 +10,7 @@ export interface UseSelectedItemsParams {
 }
 
 export interface UseSelectedItemsResult {
-	selectedItems: Item[] | TAll;
+	selectedItems: TSelection<Item>;
 	isItemSelected: (item: Item) => boolean;
 	isGroupSelected: (group: GroupItem<Item>) => boolean;
 	isSelected: (item: Item | GroupItem<Item>) => boolean;
@@ -28,7 +28,7 @@ export const useSelectedItems = ({
 	data,
 	flatData,
 }: UseSelectedItemsParams): UseSelectedItemsResult => {
-	const [selectedItems, setSelectedItems] = useProperty<Item[] | TAll>(
+	const [selectedItems, setSelectedItems] = useProperty<TSelection<Item>>(
 		'selectedItems',
 		() => [],
 	);
@@ -85,8 +85,7 @@ export const useSelectedItems = ({
 					return (flatData ?? [])
 						.filter((selectedItem) => !isGroup(selectedItem))
 						.filter(
-							(selectedItem) =>
-								!items.some((item) => compareItemsFn(selectedItem, item)),
+							(selectedItem) => !items.includes(selectedItem as Item),
 						) as Item[];
 				}
 				return selection.filter((i) => !items.includes(i));

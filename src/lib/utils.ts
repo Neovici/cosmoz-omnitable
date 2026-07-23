@@ -9,6 +9,7 @@ export { indexSymbol };
  */
 export const All = Symbol('All');
 export type TAll = typeof All;
+export type TSelection<T = unknown> = T[] | TAll;
 
 export const findLastIndex = (
 	array: (number | undefined)[],
