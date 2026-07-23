@@ -4,5 +4,8 @@
   "initialVersions": {
     "@neovici/cosmoz-omnitable": "18.10.0"
   },
-  "changesets": []
+  "changesets": [
+    "beta-features-minor",
+    "shaky-ants-fix"
+  ]
 }
