@@ -20,12 +20,14 @@ export interface Column {
 	priority?: number;
 	flex?: string;
 	width?: string;
-	sortOn?: boolean;
-	groupOn?: boolean;
+	sortOn?: GetPath;
+	groupOn?: GetPath;
 	noSort?: boolean;
 	editable?: boolean;
 	mini?: number | null;
 	hidden?: boolean;
+	disabled?: boolean;
+	disabledFiltering?: boolean;
 	cellClass?: string;
 	headerCellClass?: string;
 	preferredDropdownHorizontalAlign?: string;
@@ -46,9 +48,38 @@ export interface Column {
 		setState: (s: unknown) => void,
 	) => unknown;
 	cellTitleFn?: (column: Column, item: Item) => string;
+	headerTitleFn?: (column: Column) => string | undefined;
 	toXlsxValue?: (column: Column, item: Item) => unknown;
+	getString?: (column: Column, item: Item) => unknown;
 	getComparableValue?: (column: Column, item: Item) => unknown;
 	serializeFilter?: (column: Column, filter: unknown) => unknown;
+	deserializeFilter?: (column: Column, filter: unknown) => unknown;
+	getFilterFn?: (
+		column: Column,
+		filter: unknown,
+	) => ((item: Item) => boolean) | undefined;
+	computeSource?: (column: Column, data: unknown) => unknown;
+	values?: unknown[];
+	noLocalFilter?: boolean;
+	loading?: boolean;
+	externalValues?: unknown;
+	trueLabel?: string;
+	falseLabel?: string;
+	valueProperty?: string;
+	textProperty?: string;
+	emptyLabel?: string;
+	emptyValue?: unknown;
+	emptyProperty?: string;
+	min?: number;
+	max?: number;
+	autoupdate?: boolean;
+	maximumFractionDigits?: number | null;
+	minimumFractionDigits?: number | null;
+	currency?: string;
+	rates?: Rates;
+	autodetect?: boolean;
+	ownerTree?: unknown;
+	keyProperty?: string;
 	[key: symbol]: unknown;
 }
 

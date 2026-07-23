@@ -1,12 +1,9 @@
 import { saveAs } from 'file-saver-es';
-import { Column, Item } from './types';
+import type { Column, Item } from './types';
 
 export interface CsvColumn extends Column {
 	title: string;
-	getString: (
-		column: CsvColumn,
-		item: Item,
-	) => string | number | null | undefined;
+	getString: (column: Column, item: Item) => string | number | null | undefined;
 }
 
 const makeCsvField = (str: string): string => {
