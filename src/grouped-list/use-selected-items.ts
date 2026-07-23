@@ -82,9 +82,12 @@ export const useSelectedItems = ({
 			const items = groupItem.items ?? [item as Item];
 			setSelectedItems((selection) => {
 				if (selection === All) {
-					return (flatData ?? []).filter(
-						(selectedItem) => !items.includes(selectedItem as Item),
-					) as Item[];
+					return (flatData ?? [])
+						.filter((selectedItem) => !isGroup(selectedItem))
+						.filter(
+							(selectedItem) =>
+								!items.some((item) => compareItemsFn(selectedItem, item)),
+						) as Item[];
 				}
 				return selection.filter((i) => !items.includes(i));
 			});
