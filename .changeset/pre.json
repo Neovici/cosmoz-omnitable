@@ -2,13 +2,7 @@
   "mode": "pre",
   "tag": "beta",
   "initialVersions": {
-    "@neovici/cosmoz-omnitable": "18.11.0"
+    "@neovici/cosmoz-omnitable": "18.10.0"
   },
-  "changesets": [
-    "beta-variant-inline",
-    "chubby-points-roll",
-    "hungry-pets-thank",
-    "ripe-lights-help",
-    "shaky-ants-fix"
-  ]
+  "changesets": []
 }
