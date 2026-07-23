@@ -1,4 +1,4 @@
-import{e as c,w as Jt,D as Re,t as C,A as Me}from"./iframe-y5Hu2bMB.js";import{A as xe,n as I,c as A,t as q,g as k,P as T,s as Yt,a as wt,r as Zt,e as en,D as tn,b as nn,d as on,i as ze,h as zt,m as rn,u as N,f as St,j as Ct,k as ln,l as Y,p as B,o as Ne,q as kt,v as Se,w as an,x as Ce,y as O,z as E,B as ke,C as _t,E as tt,F as nt,G as S,H as sn,I as un,J as It,K as Be,L as Ft,M as cn,N as Ot,O as dn,Q as ot,R as mn,S as pn,T as gn,U as Dt,V as je,W as He,X as hn,Y as Vt,Z as Pe,_ as U,$ as fn,a0 as bn}from"./cosmoz-collapse-DCa1tRmJ.js";import"./preload-helper-PPVm8Dsz.js";const xn=({slot:n,title:e,className:t,width:o="24",height:r="24",styles:i}={})=>c`
+import{e as c,w as Jt,D as Re,t as C,A as Me}from"./iframe-Pb_G3MOR.js";import{A as xe,n as I,c as A,t as q,g as k,P as T,s as Yt,a as wt,r as Zt,e as en,D as tn,b as nn,d as on,i as ze,h as zt,m as rn,u as N,f as St,j as Ct,k as ln,l as Y,p as B,o as Ne,q as kt,v as Se,w as an,x as Ce,y as O,z as E,B as ke,C as _t,E as tt,F as nt,G as S,H as sn,I as un,J as It,K as Be,L as Ft,M as cn,N as Ot,O as dn,Q as ot,R as mn,S as pn,T as gn,U as Dt,V as je,W as He,X as hn,Y as Vt,Z as Pe,_ as U,$ as fn,a0 as bn}from"./cosmoz-collapse-BiNw8Gzc.js";import"./preload-helper-PPVm8Dsz.js";const xn=({slot:n,title:e,className:t,width:o="24",height:r="24",styles:i}={})=>c`
   <svg
     slot=${xe(n)}
     class=${`delete-icon ${t??""}`}
@@ -1580,10 +1580,19 @@ import{e as c,w as Jt,D as Re,t as C,A as Me}from"./iframe-y5Hu2bMB.js";import{A
 		part="bottomBar"
 		exportparts="bar: bottomBar-bar, info: bottomBar-info, buttons: bottomBar-buttons"
 	>
-		<span slot="info"> ${h} </span>
-		${I(g,()=>c`<button @click=${()=>t(R)}>
-					${C("Select all items")}
-				</button>`)}
+		<span slot="info">
+			${h}
+			${I(g,()=>c`&nbsp;<span
+							part="select-all-items"
+							class="selectAllItems"
+							role="button"
+							tabindex="0"
+							style="cursor: pointer; color: white;"
+							@click=${()=>t(R)}
+						>
+							${C("Select all items")}
+						</span>`)}
+		</span>
 		<slot name="actions" id="actions"></slot>
 		<slot name="bottom-bar-toolbar" slot="bottom-bar-toolbar"></slot>
 		<slot name="bottom-bar-menu" slot="bottom-bar-menu"></slot>

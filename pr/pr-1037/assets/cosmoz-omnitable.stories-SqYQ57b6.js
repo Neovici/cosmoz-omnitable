@@ -1,4 +1,4 @@
-import{e as c,D as He,t as S,A as Ge}from"./iframe-y5Hu2bMB.js";import{t as W,c as M,g as A,n as F,P as E,s as ln,a as Ft,r as sn,e as un,D as cn,b as dn,d as mn,i as ke,h as kt,m as pn,u as R,f as _t,j as It,k as gn,l as Z,p as N,o as We,q as Et,v as _e,w as bn,x as Ie,y as _,z as O,A as lt,B as Ee,C as Ot,E as st,F as ut,G as z,H as fn,I as hn,J as Mt,K as Ke,L as Lt,M as xn,N as Dt,O as yn,Q as ct,R as vn,S as $n,T as Cn,U as Tt,V as je,W as Je,X as wn,Y as Rt,Z as Ue,_ as U,$ as zn,a0 as Sn}from"./cosmoz-collapse-DCa1tRmJ.js";import"./preload-helper-PPVm8Dsz.js";const An=W`
+import{e as c,D as He,t as S,A as Ge}from"./iframe-Pb_G3MOR.js";import{t as W,c as M,g as A,n as F,P as E,s as ln,a as Ft,r as sn,e as un,D as cn,b as dn,d as mn,i as ke,h as kt,m as pn,u as R,f as _t,j as It,k as gn,l as Z,p as N,o as We,q as Et,v as _e,w as bn,x as Ie,y as _,z as O,A as lt,B as Ee,C as Ot,E as st,F as ut,G as z,H as fn,I as hn,J as Mt,K as Ke,L as Lt,M as xn,N as Dt,O as yn,Q as ct,R as vn,S as $n,T as Cn,U as Tt,V as je,W as Je,X as wn,Y as Rt,Z as Ue,_ as U,$ as zn,a0 as Sn}from"./cosmoz-collapse-BiNw8Gzc.js";import"./preload-helper-PPVm8Dsz.js";const An=W`
 	:host {
 		display: flex;
 	}
@@ -1545,10 +1545,19 @@ import{e as c,D as He,t as S,A as Ge}from"./iframe-y5Hu2bMB.js";import{t as W,c 
 		part="bottomBar"
 		exportparts="bar: bottomBar-bar, info: bottomBar-info, buttons: bottomBar-buttons"
 	>
-		<span slot="info"> ${f} </span>
-		${F(g,()=>c`<button @click=${()=>t(D)}>
-					${S("Select all items")}
-				</button>`)}
+		<span slot="info">
+			${f}
+			${F(g,()=>c`&nbsp;<span
+							part="select-all-items"
+							class="selectAllItems"
+							role="button"
+							tabindex="0"
+							style="cursor: pointer; color: white;"
+							@click=${()=>t(D)}
+						>
+							${S("Select all items")}
+						</span>`)}
+		</span>
 		<slot name="actions" id="actions"></slot>
 		<slot name="bottom-bar-toolbar" slot="bottom-bar-toolbar"></slot>
 		<slot name="bottom-bar-menu" slot="bottom-bar-menu"></slot>
