@@ -2,8 +2,23 @@ import { component } from '@pionjs/pion';
 import { html } from 'lit-html';
 import { map } from 'lit-html/directives/map.js';
 import './cosmoz-omnitable-item-expand-line';
+import type { Column, Item } from './lib/types';
 
-const ItemExpand = ({ columns, item, selected, expanded, groupOnColumn }) => {
+type ItemExpandProps = {
+	columns: Column[];
+	item: Item;
+	selected: boolean;
+	expanded: boolean;
+	groupOnColumn?: Column;
+};
+
+const ItemExpand = ({
+	columns,
+	item,
+	selected,
+	expanded,
+	groupOnColumn,
+}: ItemExpandProps) => {
 	return map(
 		columns,
 		(column) =>
@@ -11,7 +26,7 @@ const ItemExpand = ({ columns, item, selected, expanded, groupOnColumn }) => {
 				.column=${column}
 				?hidden=${column === groupOnColumn}
 				exportparts="item-expand-label, item-expand-value"
-				>${column.renderCell(column, {
+				>${column.renderCell!(column, {
 					item,
 					selected,
 					expanded,
