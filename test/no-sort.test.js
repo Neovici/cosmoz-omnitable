@@ -5,9 +5,9 @@ import {
 	setupOmnitableFixture,
 } from './helpers/utils';
 
-import '../src/cosmoz-omnitable.js';
-import '../src/cosmoz-omnitable-column.js';
 import '../src/cosmoz-omnitable-column-number.js';
+import '../src/cosmoz-omnitable-column.js';
+import '../src/cosmoz-omnitable.js';
 
 let omnitable;
 const data = [
@@ -15,6 +15,30 @@ const data = [
 	{ id: 2, name: 'Bob', age: 25 },
 	{ id: 3, name: 'Charlie', age: 35 },
 ];
+
+const createDataTransfer = () => {
+	const store = {};
+	return {
+		setData(type, value) {
+			store[type] = value;
+		},
+		getData(type) {
+			return store[type] ?? '';
+		},
+	};
+};
+
+const dispatchDragEvent = (target, type, dt) => {
+	const event = new Event(type, {
+		bubbles: true,
+		cancelable: true,
+		composed: true,
+	});
+	Object.defineProperty(event, 'dataTransfer', {
+		value: dt,
+	});
+	target.dispatchEvent(event);
+};
 
 suite('no-sort', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);
@@ -137,6 +161,62 @@ suite('no-sort', () => {
 			'Age',
 			'Sortable column should appear in sort settings',
 		);
+	});
+
+	test('reorders columns from settings drag and drop', async () => {
+		const settingsButton = omnitable.shadowRoot.querySelector(
+			'cosmoz-omnitable-settings',
+		);
+		const dropdown = settingsButton.shadowRoot.querySelector('cosmoz-dropdown');
+		const button = dropdown.shadowRoot.querySelector('[part="button"]');
+		button.click();
+		await nextFrame();
+
+		const settingsUI = settingsButton.shadowRoot.querySelector(
+			'cosmoz-omnitable-settings-ui',
+		);
+		const source = settingsUI.shadowRoot.querySelector('.item[data-index="2"]');
+		const target = settingsUI.shadowRoot.querySelector('.item[data-index="0"]');
+		const pullButton = source.querySelector('.pull');
+		const dt = createDataTransfer();
+
+		pullButton.dispatchEvent(
+			new MouseEvent('mousedown', { bubbles: true, composed: true }),
+		);
+		dispatchDragEvent(source, 'dragstart', dt);
+		dispatchDragEvent(target, 'drop', dt);
+		await nextFrame();
+
+		const order = Array.from(
+			settingsUI.shadowRoot.querySelectorAll('.item .title'),
+		).map((el) => el.textContent.trim());
+
+		assert.deepEqual(order, ['Age', 'ID', 'Name']);
+	});
+
+	test('toggles column state from settings checkbox', async () => {
+		const settingsButton = omnitable.shadowRoot.querySelector(
+			'cosmoz-omnitable-settings',
+		);
+		const dropdown = settingsButton.shadowRoot.querySelector('cosmoz-dropdown');
+		const button = dropdown.shadowRoot.querySelector('[part="button"]');
+		button.click();
+		await nextFrame();
+
+		const settingsUI = settingsButton.shadowRoot.querySelector(
+			'cosmoz-omnitable-settings-ui',
+		);
+		const checkbox = settingsUI.shadowRoot.querySelector(
+			'.item[data-index="1"] input.checkbox',
+		);
+
+		assert.isTrue(checkbox.checked, 'column starts enabled');
+		checkbox.click();
+		await nextFrame();
+		assert.isFalse(checkbox.checked, 'column can be disabled');
+		checkbox.click();
+		await nextFrame();
+		assert.isTrue(checkbox.checked, 'column can be re-enabled');
 	});
 
 	test('ignores sortOn from hash param if column has no-sort', async () => {
