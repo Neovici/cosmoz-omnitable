@@ -1,4 +1,4 @@
-import{e as c,w as Jt,D as Me,t as C,A as Re}from"./iframe-CWIrVpKj.js";import{A as xe,n as I,c as V,t as q,g as k,P as T,s as Yt,a as wt,r as Zt,e as en,D as tn,b as nn,d as on,i as ze,h as zt,m as rn,u as N,f as St,j as Ct,k as ln,l as Y,p as B,o as Ne,q as kt,v as Se,w as an,x as Ce,y as O,z as E,B as ke,C as _t,E as tt,F as nt,G as S,H as sn,I as un,J as It,K as Be,L as Ft,M as cn,N as Ot,O as dn,Q as ot,R as mn,S as pn,T as gn,U as Dt,V as je,W as He,X as hn,Y as At,Z as Pe,_ as U,$ as fn,a0 as bn}from"./cosmoz-collapse-DbRWLY5x.js";import"./preload-helper-PPVm8Dsz.js";const xn=({slot:n,title:e,className:t,width:o="24",height:r="24",styles:i}={})=>c`
+import{e as c,w as Jt,D as Me,t as C,A as Re}from"./iframe-CnGPvfzO.js";import{A as xe,n as I,c as V,t as q,g as k,P as T,s as Yt,a as wt,r as Zt,e as en,D as tn,b as nn,d as on,i as ze,h as zt,m as rn,u as N,f as St,j as Ct,k as ln,l as Y,p as B,o as Ne,q as kt,v as Se,w as an,x as Ce,y as O,z as E,B as ke,C as _t,E as tt,F as nt,G as S,H as sn,I as un,J as It,K as Be,L as Ft,M as cn,N as Ot,O as dn,Q as ot,R as mn,S as pn,T as gn,U as Dt,V as je,W as He,X as hn,Y as At,Z as Pe,_ as U,$ as fn,a0 as bn}from"./cosmoz-collapse-B9-JbQ1Y.js";import"./preload-helper-PPVm8Dsz.js";const xn=({slot:n,title:e,className:t,width:o="24",height:r="24",styles:i}={})=>c`
   <svg
     slot=${xe(n)}
     class=${`delete-icon ${t??""}`}
@@ -2003,7 +2003,7 @@ import{e as c,w as Jt,D as Me,t as C,A as Re}from"./iframe-CWIrVpKj.js";import{A
 			${C("Sort and filter")}
 			<button
 				class="close"
-				@click=${u=>{const m=u.currentTarget;m?.focus(),m?.blur()}}
+				@click=${u=>{const m=u.currentTarget instanceof HTMLElement?u.currentTarget:null;m?.focus(),m?.blur()}}
 			>
 				${Ho}
 			</button>
