@@ -6,13 +6,52 @@ import { component, html } from '@pionjs/pion';
 import { t } from 'i18next';
 import { when } from 'lit-html/directives/when.js';
 import { arrow, close, pull } from '../icons';
+import type { ColumnConfigInput } from '../layout';
 import { group, sort } from './cosmoz-omnitable-sort-group';
 import style, { dropdown as dropdownStyle } from './style.css';
-import useSettingsUi from './use-settings-ui';
+import useSettingsUi, { type SettingsUiConfig } from './use-settings-ui';
+
+interface SettingsUiConfigExtended extends SettingsUiConfig {
+	filters: Record<string, { filter?: unknown }>;
+	badge?: boolean;
+	settingsId?: string;
+	onSave: () => void;
+	onReset: () => void;
+	hasChanges: boolean;
+	opened: Record<string, boolean>;
+	setOpened: (
+		opened:
+			| Record<string, boolean>
+			| ((prev: Record<string, boolean>) => Record<string, boolean>),
+	) => void;
+}
+
+interface RenderItemParams {
+	onDragStart: (e: DragEvent) => void;
+	onDragEnter: (e: DragEvent) => void;
+	onDragOver: (e: DragEvent) => void;
+	onDragLeave: (e: DragEvent) => void;
+	onDrop: (e: DragEvent) => void;
+	onDown: (e: MouseEvent) => void;
+	onToggle: (e: Event) => void;
+	collapsed?: { name?: string }[];
+	filters: Record<string, { filter?: unknown }>;
+}
+
+interface SettingsProps {
+	config: SettingsUiConfigExtended;
+	newLayout?: boolean;
+}
 
 const middleware = [
 	size({
-		apply({ availableHeight, elements }) {
+		apply({
+			availableHeight,
+			elements,
+		}: {
+			availableHeight: number;
+			elements: { floating: HTMLElement };
+		}) {
 			Object.assign(elements.floating.style, {
 				maxHeight: `${Math.max(0, availableHeight)}px`,
 			});
@@ -32,8 +71,8 @@ const renderItem =
 		onToggle,
 		collapsed,
 		filters,
-	}) =>
-	(column, i) => {
+	}: RenderItemParams) =>
+	(column: ColumnConfigInput, i: number) => {
 		const indeterminate = !!collapsed?.find((c) => c.name === column.name),
 			checked = !column.disabled && !indeterminate;
 		return html` <div
@@ -61,7 +100,9 @@ const renderItem =
 		</div>`;
 	};
 
-const SettingsUI = (host) => {
+const SettingsUI = (
+	host: HTMLElement & { config: SettingsUiConfigExtended },
+) => {
 	const {
 		settings,
 		settingsId,
@@ -76,8 +117,9 @@ const SettingsUI = (host) => {
 			${t('Sort and filter')}
 			<button
 				class="close"
-				@click=${(e) => {
-					const tg = e.currentTarget;
+				@click=${(e: Event) => {
+					const tg =
+						e.currentTarget instanceof HTMLElement ? e.currentTarget : null;
 					tg?.focus();
 					tg?.blur();
 				}}
@@ -90,7 +132,11 @@ const SettingsUI = (host) => {
 			<div
 				class="heading"
 				?data-opened=${opened.columns}
-				@click=${() => setOpened((c) => ({ ...c, columns: !c.columns }))}
+				@click=${() =>
+					setOpened((c: Record<string, boolean>) => ({
+						...c,
+						columns: !c.columns,
+					}))}
 				part="columns columns-heading"
 			>
 				${t('Columns')} ${arrow}
@@ -105,7 +151,8 @@ const SettingsUI = (host) => {
 			<div
 				class="heading"
 				?data-opened=${opened.sort}
-				@click=${() => setOpened((c) => ({ ...c, sort: !c.sort }))}
+				@click=${() =>
+					setOpened((c: Record<string, boolean>) => ({ ...c, sort: !c.sort }))}
 			>
 				${t('Sort on')} ${arrow}
 			</div>
@@ -114,7 +161,11 @@ const SettingsUI = (host) => {
 			<div
 				class="heading"
 				?data-opened=${opened.group}
-				@click=${() => setOpened((c) => ({ ...c, group: !c.group }))}
+				@click=${() =>
+					setOpened((c: Record<string, boolean>) => ({
+						...c,
+						group: !c.group,
+					}))}
 				part="groups groups-heading"
 			>
 				${t('Group on')} ${arrow}
@@ -147,7 +198,7 @@ customElements.define(
 	component(SettingsUI, { styleSheets: [sheet(style)] }),
 );
 
-const Settings = ({ config, newLayout }) => html`
+const Settings = ({ config, newLayout }: SettingsProps) => html`
 	<cosmoz-dropdown
 		.placement="${newLayout ? 'bottom-start' : 'bottom-end'}"
 		.middleware="${middleware}"
