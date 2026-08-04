@@ -2,7 +2,7 @@ import { useMeta } from '@neovici/cosmoz-utils/hooks/use-meta';
 import { useCallback } from '@pionjs/pion';
 import type { ColumnConfigInput } from '../layout';
 
-interface SettingsUiConfig {
+export interface SettingsUiConfig {
 	settings: { columns: ColumnConfigInput[] };
 	setSettings: (
 		settings:
@@ -23,16 +23,22 @@ interface SettingsUiMeta {
 	handle?: HTMLElement | null;
 }
 
-interface UseSettingsUiHost {
-	config: SettingsUiConfig;
-}
-
 const parseIndex = (str?: string | null) => {
 	const idx = parseInt(str ?? '', 10);
 	return isFinite(idx) ? idx : undefined;
 };
 
-export default (host: UseSettingsUiHost) => {
+export default <C extends SettingsUiConfig>(host: {
+	config: C;
+}): C & {
+	onDown: (e: MouseEvent) => void;
+	onDragStart: (e: DragEvent) => void;
+	onDragEnter: (e: DragEvent) => void;
+	onDragOver: (e: DragEvent) => void;
+	onDragLeave: (e: DragEvent) => void;
+	onDrop: (e: DragEvent) => void;
+	onToggle: (e: Event) => void;
+} => {
 	const { config } = host,
 		{ settings, setSettings, collapsed, requestTween } = config,
 		meta = useMeta<SettingsUiMeta>({

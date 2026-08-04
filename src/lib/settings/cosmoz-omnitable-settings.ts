@@ -9,24 +9,10 @@ import { arrow, close, pull } from '../icons';
 import type { ColumnConfigInput } from '../layout';
 import { group, sort } from './cosmoz-omnitable-sort-group';
 import style, { dropdown as dropdownStyle } from './style.css';
-import useSettingsUi from './use-settings-ui';
-
-interface SettingsUiConfig {
-	settings: { columns: ColumnConfigInput[] };
-	setSettings: (
-		settings:
-			| { columns?: ColumnConfigInput[] }
-			| ((settings: { columns?: ColumnConfigInput[] }) => {
-					columns?: ColumnConfigInput[];
-			  }),
-	) => void;
-	collapsed?: { name?: string }[];
-	requestTween?: () => void;
-}
+import useSettingsUi, { type SettingsUiConfig } from './use-settings-ui';
 
 interface SettingsUiConfigExtended extends SettingsUiConfig {
 	filters: Record<string, { filter?: unknown }>;
-	collapsed?: { name?: string }[];
 	badge?: boolean;
 	settingsId?: string;
 	onSave: () => void;
@@ -38,7 +24,6 @@ interface SettingsUiConfigExtended extends SettingsUiConfig {
 			| Record<string, boolean>
 			| ((prev: Record<string, boolean>) => Record<string, boolean>),
 	) => void;
-	requestTween?: () => void;
 }
 
 interface RenderItemParams {
@@ -118,7 +103,6 @@ const renderItem =
 const SettingsUI = (
 	host: HTMLElement & { config: SettingsUiConfigExtended },
 ) => {
-	const settingsUi = { ...useSettingsUi(host), ...host.config };
 	const {
 		settings,
 		settingsId,
@@ -128,7 +112,7 @@ const SettingsUI = (
 		opened,
 		setOpened,
 		...thru
-	} = settingsUi;
+	} = useSettingsUi(host);
 	return html` <div class="headline">
 			${t('Sort and filter')}
 			<button
