@@ -104,6 +104,9 @@ const normalizeColumn = (
 		mini: column.mini,
 		renderMini: column.renderMini,
 
+		align: column.align,
+		headerAlign: column.headerAlign,
+
 		// @deprecated
 		loading: column.loading,
 		externalValues: column.externalValues,

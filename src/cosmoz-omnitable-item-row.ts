@@ -36,6 +36,7 @@ const ItemRow = ({
 		(column) => {
 			return html`<div
 				class="cell itemRow-cell ${column.cellClass ?? ''}"
+				align="${column.align ?? 'left'}"
 				part="cell itemRow-cell cell-${column.name} itemRow-cell-${column.name}"
 				?hidden="${column === groupOnColumn}"
 				?editable="${column.editable}"
