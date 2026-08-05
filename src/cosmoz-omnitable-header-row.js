@@ -1,8 +1,8 @@
-import { html, component, useContext } from '@pionjs/pion';
+import { component, html, useContext } from '@pionjs/pion';
 import { repeat } from 'lit-html/directives/repeat.js';
+import { when } from 'lit-html/directives/when.js';
 import './lib/cosmoz-omnitable-resize-nub';
 import { render } from './lib/settings/cosmoz-omnitable-sort-group';
-import { when } from 'lit-html/directives/when.js';
 import { SortAndGroupContext } from './lib/use-sort-and-group-options';
 
 const renderHeaderRow = ({
@@ -24,6 +24,7 @@ const renderHeaderRow = ({
 		(column) => [
 			html`<div
 				class="cell ${column.headerCellClass} header-cell"
+				align="${column.headerAlign ?? column.align ?? 'left'}"
 				part="cell header-cell cell-${column.name} header-cell-${column.name}"
 				?hidden="${column === groupOnColumn}"
 				title="${column.headerTitleFn(column)}"
@@ -33,24 +34,24 @@ const renderHeaderRow = ({
 					column,
 					filters[column.name] ?? {},
 					(state) => setFilterState(column.name, state),
-					column.source(column, data),
+					column.source(column, data)
 				)}
 				${when(!column.noSort, () =>
-					render({ on, setOn, descending, setDescending, column }),
+					render({ on, setOn, descending, setDescending, column })
 				)}
 			</div>`,
 			html`<cosmoz-omnitable-resize-nub
 				.column="${column}"
 				name="${column.name}"
 			></cosmoz-omnitable-resize-nub>`,
-		],
+		]
 	);
 
 const HeaderRow = ({ columns, settingsConfig, hideSelectAll, ...thru }) => {
 	const sortAndGroup = useContext(SortAndGroupContext);
 	return html`
 		${when(columns, (columns) =>
-			renderHeaderRow({ columns, sortAndGroup, ...thru }),
+			renderHeaderRow({ columns, sortAndGroup, ...thru })
 		)}
 		${when(
 			!hideSelectAll,
@@ -58,12 +59,12 @@ const HeaderRow = ({ columns, settingsConfig, hideSelectAll, ...thru }) => {
 				html` <cosmoz-omnitable-settings
 					.config=${settingsConfig}
 					part="settings"
-				></cosmoz-omnitable-settings>`,
+				></cosmoz-omnitable-settings>`
 		)}
 	`;
 };
 
 customElements.define(
 	'cosmoz-omnitable-header-row',
-	component(HeaderRow, { useShadowDOM: false }),
+	component(HeaderRow, { useShadowDOM: false })
 );

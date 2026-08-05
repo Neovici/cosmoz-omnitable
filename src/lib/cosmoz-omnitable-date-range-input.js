@@ -9,7 +9,7 @@ import './cosmoz-omnitable-dropdown-input';
 import { polymerHauntedRender } from './polymer-haunted-render-mixin';
 
 class DateRangeInput extends dateInputMixin(
-	polymerHauntedRender(PolymerElement),
+	polymerHauntedRender(PolymerElement)
 ) {
 	render() {
 		const onOpenedChanged = (event) => {
@@ -23,6 +23,7 @@ class DateRangeInput extends dateInputMixin(
 					<cosmoz-omnitable-dropdown-input
 						variant="inline"
 						disabled
+						text-align=${this.align}
 						.label=${this.title}
 						.value=${this._filterText ?? ''}
 					></cosmoz-omnitable-dropdown-input>
@@ -36,6 +37,7 @@ class DateRangeInput extends dateInputMixin(
 						title: this.title,
 						tooltip: this._tooltip,
 						filterText: this._filterText,
+						align: this.align,
 						externalValues: this.externalValues,
 						onOpenedChanged,
 						content: html`
@@ -60,7 +62,7 @@ class DateRangeInput extends dateInputMixin(
 							></cosmoz-input>
 						`,
 					})}
-				`,
+				`
 			)}
 		`;
 	}

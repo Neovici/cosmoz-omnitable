@@ -8,6 +8,18 @@
 
 - 2f8fca1: Bump cosmoz-autocomplete to ^13.7.0-beta.6 for cosmoz-input v6 compatibility
 
+## 18.10.2
+
+### Patch Changes
+
+- 165daf3: Rename the range-input's `horizontalAlign` property to `align` for consistency with the column API. Remove redundant `align-right` from number/amount `cellClass` defaults (alignment is now handled by the `align` property + `.cell[align]` CSS rules). Mark `.align-left`/`.align-right` CSS classes as `@deprecated` (kept for backward compat with consumers using `cellClass`).
+
+## 18.10.1
+
+### Patch Changes
+
+- 585403c: Add `align` and `headerAlign` column properties for controlling cell and header alignment. Number and amount columns default to right-aligned; date, time, and datetime to left-aligned. `headerAlign` overrides `align` for the header only. Fixes disabled-filtering range inputs losing header alignment. Removes dead `preferredDropdownHorizontalAlign` property.
+
 ## 18.10.0
 
 ### Minor Changes

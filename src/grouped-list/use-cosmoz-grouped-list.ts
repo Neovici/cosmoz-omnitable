@@ -35,7 +35,7 @@ export interface UseCosmozGroupedListHost extends HTMLElement {
 	renderGroup: (
 		item: GroupItem<Item>,
 		index: number,
-		params: RenderGroupParams,
+		params: RenderGroupParams
 	) => unknown;
 	displayEmptyGroups: boolean;
 	compareItemsFn?: <T>(a: T, b: T) => boolean;
@@ -60,7 +60,7 @@ const useCosmozGroupedList = (host: UseCosmozGroupedListHost) => {
 	// suggested fix: separate signal for item collapse and group fold
 	const flatData = useMemo(
 			() => prepareData(data, displayEmptyGroups, state),
-			[data, displayEmptyGroups, signal],
+			[data, displayEmptyGroups, signal]
 		),
 		{
 			selectedItems,
@@ -84,21 +84,21 @@ const useCosmozGroupedList = (host: UseCosmozGroupedListHost) => {
 						toggleSelect: (selected?: boolean) =>
 							toggleSelect(
 								item,
-								typeof selected === 'boolean' ? selected : undefined,
+								typeof selected === 'boolean' ? selected : undefined
 							),
 						toggleFold: () => toggleFold(item as Item),
-					})
+				  })
 				: renderItem(item as Item, index, {
-						selected: selectedItems.includes(item as Item),
+						selected: isItemSelected(item as Item),
 						expanded: isExpanded(item as Item, state),
 						toggleSelect: (selected?: boolean) =>
 							toggleSelect(
 								item,
-								typeof selected === 'boolean' ? selected : undefined,
+								typeof selected === 'boolean' ? selected : undefined
 							),
 						toggleCollapse: () => toggleCollapse(item as Item),
-					}),
-		[renderItem, renderGroup, selectedItems, toggleSelect, signal],
+				  }),
+		[renderItem, renderGroup, selectedItems, toggleSelect, signal]
 	);
 
 	useLayoutEffect(() => {

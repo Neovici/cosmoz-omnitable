@@ -1,12 +1,14 @@
 import { get } from '@polymer/polymer/lib/utils/path';
+import type { Column, GetPath, Item } from './lib/types';
 
-export const getString = ({ valuePath }, item) => get(item, valuePath),
+export const getString = ({ valuePath }: { valuePath?: GetPath }, item: Item) =>
+		get(item, valuePath!),
 	toXlsxValue = getString,
 	getComparableValue = getString,
 	applySingleFilter =
-		({ valuePath }, filter) =>
-		(item) => {
-			const value = get(item, valuePath);
+		({ valuePath }: { valuePath?: GetPath }, filter: string) =>
+		(item: Item): boolean => {
+			const value = get(item, valuePath!);
 			if (value == null) {
 				return false;
 			}
@@ -16,9 +18,10 @@ export const getString = ({ valuePath }, item) => get(item, valuePath),
 				.trim()
 				.includes(filter.toLowerCase().trim());
 		},
-	serializeFilter = (column, filter) =>
+	serializeFilter = (_column: Column, filter: unknown): unknown =>
 		filter === '' || filter == null ? null : filter,
-	columnMixin = (base) =>
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	columnMixin = (base: any) =>
 		class extends base {
 			static get properties() {
 				return {
@@ -66,7 +69,8 @@ export const getString = ({ valuePath }, item) => get(item, valuePath),
 					headerCellClass: { type: String, value: 'default-header-cell' },
 					priority: { type: Number, value: 0 },
 					hidden: { type: Boolean, notify: true },
-					preferredDropdownHorizontalAlign: { type: String, value: 'right' },
+					align: { type: String, value: 'left' },
+					headerAlign: { type: String, value: null },
 					renderHeader: { type: Function },
 					renderCell: { type: Function },
 					renderEditCell: { type: Function },
@@ -87,7 +91,7 @@ export const getString = ({ valuePath }, item) => get(item, valuePath),
 				return ['notifyFilterChange(filter)'];
 			}
 
-			notifyFilterChange(filter) {
+			notifyFilterChange(filter: unknown): void {
 				if (this.__ownChange) {
 					return;
 				}
@@ -98,11 +102,11 @@ export const getString = ({ valuePath }, item) => get(item, valuePath),
 							state: this.legacyFilterToState(filter),
 						},
 						bubbles: true,
-					}),
+					})
 				);
 			}
 
-			legacyFilterToState(filter) {
+			legacyFilterToState(filter: unknown): { filter: unknown } {
 				return { filter };
 			}
 
@@ -111,29 +115,29 @@ export const getString = ({ valuePath }, item) => get(item, valuePath),
 			 */
 
 			// eslint-disable-next-line no-empty-function
-			getFilterFn() {}
+			getFilterFn(): void {}
 
-			getString(column, item) {
+			getString(column: Column, item: Item): unknown {
 				return getString(column, item);
 			}
 
-			toXlsxValue(column, item) {
+			toXlsxValue(column: Column, item: Item): unknown {
 				return toXlsxValue(column, item);
 			}
 
-			cellTitleFn(column, item) {
+			cellTitleFn(column: Column, item: Item): unknown {
 				return this.getString(column, item);
 			}
 
-			headerTitleFn(column) {
+			headerTitleFn(column: Column): string | undefined {
 				return column.title;
 			}
 
-			serializeFilter(column, filter) {
-				return serializeFilter(column, filter);
+			serializeFilter(_column: Column, filter: unknown): unknown {
+				return serializeFilter(_column, filter);
 			}
 
-			deserializeFilter(column, filter) {
+			deserializeFilter(_column: Column, filter: unknown): unknown {
 				if (filter == null) {
 					return null;
 				}
@@ -148,18 +152,22 @@ export const getString = ({ valuePath }, item) => get(item, valuePath),
 				return filter;
 			}
 
-			getComparableValue(column, item) {
+			getComparableValue(column: Column, item: Item): unknown {
 				return getComparableValue(column, item);
 			}
 
-			computeSource(column, data) {
+			computeSource(_column: Column, data: unknown): unknown {
 				return data;
 			}
 
-			_propertiesChanged(currentProps, changedProps, oldProps) {
+			_propertiesChanged(
+				currentProps: Record<string, unknown>,
+				changedProps: Record<string, unknown>,
+				oldProps: Record<string, unknown>
+			): void {
 				super._propertiesChanged(currentProps, changedProps, oldProps);
 				this.dispatchEvent(
-					new CustomEvent('cosmoz-column-prop-changed', { bubbles: true }),
+					new CustomEvent('cosmoz-column-prop-changed', { bubbles: true })
 				);
 			}
 		};

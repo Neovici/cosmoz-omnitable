@@ -1,12 +1,9 @@
 import { saveAs } from 'file-saver-es';
-import { Column, Item } from './types';
+import type { Column, Item } from './types';
 
 export interface CsvColumn extends Column {
 	title: string;
-	getString: (
-		column: CsvColumn,
-		item: Item,
-	) => string | number | null | undefined;
+	getString: (column: Column, item: Item) => string | number | null | undefined;
 }
 
 const makeCsvField = (str: string): string => {
@@ -20,7 +17,7 @@ const makeCsvField = (str: string): string => {
 export const saveAsCsvAction = (
 	columns: CsvColumn[],
 	selectedItems: Item[],
-	csvFilename: string,
+	csvFilename: string
 ): void => {
 	const separator = ';',
 		lf = '\n',
@@ -45,6 +42,6 @@ export const saveAsCsvAction = (
 	saveAs(
 		new File(rows, csvFilename, {
 			type: 'text/csv;charset=utf-8',
-		}),
+		})
 	);
 };

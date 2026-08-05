@@ -13,14 +13,14 @@ import {
 	onFocus,
 	onText,
 } from './cosmoz-omnitable-column-list-mixin';
-import { columnMixin, getString } from './cosmoz-omnitable-column-mixin.js';
+import { columnMixin, getString } from './cosmoz-omnitable-column-mixin';
 
 import { get } from '@polymer/polymer/lib/utils/path';
 import { columnSymbol } from './lib/use-dom-columns';
 
 export const getComparableValue = (
 	{ valuePath, textProperty, valueProperty },
-	item,
+	item
 ) => {
 	const property = textProperty ? strProp(textProperty) : prop(valueProperty),
 		values = array(valuePath && get(item, valuePath)).map(property);
@@ -33,7 +33,7 @@ export const getComparableValue = (
  * @appliesMixin columnMixin
  */
 class OmnitableColumnAutocomplete extends listColumnMixin(
-	columnMixin(PolymerElement),
+	columnMixin(PolymerElement)
 ) {
 	static get properties() {
 		return {
@@ -99,7 +99,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 			.onText=${onText(setState)}
 			>${when(
 				column.loading,
-				() => html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`,
+				() => html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`
 			)}</cosmoz-autocomplete-ui
 		>`;
 	}
@@ -110,5 +110,5 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 }
 customElements.define(
 	'cosmoz-omnitable-column-autocomplete',
-	OmnitableColumnAutocomplete,
+	OmnitableColumnAutocomplete
 );

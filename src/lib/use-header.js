@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from '@pionjs/pion';
+import { All } from './utils';
 
 export const useHeader = ({
 	host,
@@ -14,7 +15,8 @@ export const useHeader = ({
 	...rest
 }) => {
 	const allSelected =
-			data && data.length > 0 && selectedItems.length === data.length,
+			selectedItems === All ||
+			(data && data.length > 0 && selectedItems.length === data.length),
 		onAllCheckboxChange = (event) => {
 			if (event.target.checked) {
 				host.shadowRoot.querySelector('#groupedList').selectAll();
@@ -31,9 +33,9 @@ export const useHeader = ({
 					...settings.columns.filter((s) => s.disabled),
 				].some(
 					(column) =>
-						column && Object.keys(filterFunctions).includes(column.name),
+						column && Object.keys(filterFunctions).includes(column.name)
 				),
-			[filterFunctions, settings, collapsedColumns],
+			[filterFunctions, settings, collapsedColumns]
 		),
 		settingsConfig = useMemo(
 			() => ({
@@ -43,7 +45,7 @@ export const useHeader = ({
 				filters,
 				requestTween,
 			}),
-			[settingS, collapsedColumns, hasHiddenFilter, filters, requestTween],
+			[settingS, collapsedColumns, hasHiddenFilter, filters, requestTween]
 		);
 
 	useEffect(() => {
@@ -52,9 +54,9 @@ export const useHeader = ({
 				requestAnimationFrame(() => {
 					host.style.setProperty(
 						'--ot-height',
-						entries[0]?.contentRect.height + 'px',
+						entries[0]?.contentRect.height + 'px'
 					);
-				}),
+				})
 			);
 		observer.observe(el);
 		return () => observer.unobserve(el);

@@ -23,6 +23,8 @@ const meta: Meta = {
 		settingsId: '',
 		selectedItems: [],
 		disabledFiltering: false,
+		enableSelectAll: false,
+		allItemsCount: 10000,
 	},
 	argTypes: {
 		loading: {
@@ -43,6 +45,10 @@ const meta: Meta = {
 		selectedItems: {
 			control: 'object',
 			description: 'Show selected items',
+		},
+		allItemsCount: {
+			control: 'number',
+			description: 'Total number of items',
 		},
 		data: {
 			control: 'object',
@@ -95,6 +101,7 @@ const meta: Meta = {
 				.loading=${args.loading}
 				.data=${args.data}
 				.selectedItems=${args.selectedItems}
+				.allItemsCount=${args.allItemsCount}
 				hash-param=${args.hashParam}
 				sort-on=${args.sortOn}
 				group-on=${args.groupOn}
@@ -102,6 +109,7 @@ const meta: Meta = {
 				.group-on-descending=${args.groupOnDescending}
 				settings-id=${args.settingsId}
 				?disabled-filtering=${args.disabledFiltering}
+				?enable-select-all=${args.enableSelectAll}
 			>
 				<cosmoz-omnitable-column
 					priority="-1"

@@ -7,6 +7,7 @@ import { html } from 'lit-html';
 import { when } from 'lit-html/directives/when.js';
 import type { NormalizedSettings } from './settings/normalize';
 import type { Column, Item } from './types';
+import { type TSelection } from './utils';
 
 interface HeaderParams {
 	settingsConfig: NormalizedSettings & {
@@ -26,8 +27,10 @@ interface ListParams {
 	loading: boolean;
 	displayEmptyGroups: boolean;
 	compareItemsFn?: (a: unknown, b: unknown) => boolean;
-	selectedItems: Item[];
-	setSelectedItems: (items: Item[] | ((prev: Item[]) => Item[])) => void;
+	selectedItems: TSelection<Item>;
+	setSelectedItems: (
+		items: TSelection<Item> | ((prev: TSelection<Item>) => TSelection<Item>)
+	) => void;
 	renderItem: (item: Item, index: number, params: unknown) => unknown;
 	renderGroup: (item: unknown, index: number, params: unknown) => unknown;
 	error?: { message: string } | null;
@@ -64,7 +67,7 @@ export const renderList = (header: HeaderParams, list: ListParams) => {
 							<p>${t('No data to display')}</p>
 						</div>
 					</slot>
-				</div>`,
+				</div>`
 		)}
 		${when(
 			filterIsTooStrict,
@@ -79,7 +82,7 @@ export const renderList = (header: HeaderParams, list: ListParams) => {
 						<h3>${t('Filter too strict')}</h3>
 						<p>${t('No matches for selection')}</p>
 					</div>
-				</div>`,
+				</div>`
 		)}
 		${when(
 			loading && !processedItems.length,
@@ -88,14 +91,14 @@ export const renderList = (header: HeaderParams, list: ListParams) => {
 					<cosmoz-omnitable-skeleton
 						.settingsConfig=${settingsConfig}
 					></cosmoz-omnitable-skeleton>
-				</div>`,
+				</div>`
 		)}
 		${when(
 			loading && processedItems.length,
 			() =>
 				html`<div class="tableContent-empty overlay spinner">
 					<cz-spinner></cz-spinner>
-				</div>`,
+				</div>`
 		)}
 		${when(
 			error,
@@ -110,7 +113,7 @@ export const renderList = (header: HeaderParams, list: ListParams) => {
 						<h3>${t('Error loading data')}</h3>
 						<p>${error!.message}</p>
 					</div>
-				</div>`,
+				</div>`
 		)}
 		<div class="tableContent-scroller" id="scroller" part="scroller">
 			<cosmoz-grouped-list

@@ -9,7 +9,7 @@ import { rangeInputMixin } from './cosmoz-omnitable-range-input-mixin';
 import { polymerHauntedRender } from './polymer-haunted-render-mixin';
 
 class AmountRangeInput extends rangeInputMixin(
-	polymerHauntedRender(PolymerElement),
+	polymerHauntedRender(PolymerElement)
 ) {
 	static get properties() {
 		return {
@@ -55,6 +55,7 @@ class AmountRangeInput extends rangeInputMixin(
 					<cosmoz-omnitable-dropdown-input
 						variant="inline"
 						disabled
+						text-align=${this.align}
 						.label=${this.title}
 						.value=${this._filterText ?? ''}
 					></cosmoz-omnitable-dropdown-input>
@@ -68,6 +69,7 @@ class AmountRangeInput extends rangeInputMixin(
 						title: this.title,
 						tooltip: this._tooltip,
 						filterText: this._filterText,
+						align: this.align,
 						externalValues: this.externalValues,
 						onOpenedChanged,
 						content: html`
@@ -106,7 +108,7 @@ class AmountRangeInput extends rangeInputMixin(
 							</cosmoz-input>
 						`,
 					})}
-				`,
+				`
 			)}
 		`;
 	}
@@ -273,7 +275,7 @@ class AmountRangeInput extends rangeInputMixin(
 			item,
 			this.valuePath,
 			originalValue,
-			this.renderValue.bind(this),
+			this.renderValue.bind(this)
 		);
 	}
 

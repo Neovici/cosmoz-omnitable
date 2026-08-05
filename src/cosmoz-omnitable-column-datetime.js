@@ -110,10 +110,20 @@ class OmnitableColumnDatetime extends columnMixin(PolymerElement) {
 	}
 
 	renderHeader(
-		{ title, min, max, limits, locale, filterStep, disabledFiltering },
+		{
+			title,
+			min,
+			max,
+			limits,
+			locale,
+			filterStep,
+			disabledFiltering,
+			headerAlign,
+			align,
+		},
 		{ filter },
 		setState,
-		source,
+		source
 	) {
 		return html`<cosmoz-omnitable-datetime-range-input
 			.title=${title}
@@ -125,6 +135,7 @@ class OmnitableColumnDatetime extends columnMixin(PolymerElement) {
 			.limits=${limits}
 			.locale=${locale}
 			.filterStep=${filterStep}
+			.align=${headerAlign ?? align}
 			@filter-changed=${({ detail: { value } }) =>
 				setState((state) => ({ ...state, filter: value }))}
 			@header-focused-changed=${({ detail: { value } }) =>

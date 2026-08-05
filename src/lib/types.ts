@@ -20,35 +20,67 @@ export interface Column {
 	priority?: number;
 	flex?: string;
 	width?: string;
-	sortOn?: boolean;
-	groupOn?: boolean;
+	sortOn?: GetPath;
+	groupOn?: GetPath;
 	noSort?: boolean;
 	editable?: boolean;
 	mini?: number | null;
 	hidden?: boolean;
+	disabled?: boolean;
+	disabledFiltering?: boolean;
 	cellClass?: string;
 	headerCellClass?: string;
-	preferredDropdownHorizontalAlign?: string;
+	align?: string;
+	headerAlign?: string | null;
 	renderCell?: (column: Column, data: ItemRenderData) => unknown;
 	renderEditCell?: (
 		column: Column,
 		data: ItemRenderData,
-		onItemChange: (value: unknown) => void,
+		onItemChange: (value: unknown) => void
 	) => unknown;
 	renderGroup?: <GroupType = Record<string, unknown>>(
 		column: Column,
-		data: GroupRenderData<GroupType>,
+		data: GroupRenderData<GroupType>
 	) => unknown;
 	renderMini?: (column: Column, data: ItemRenderData) => unknown;
 	renderHeader?: (
 		column: Column,
 		data: HeaderRenderData,
-		setState: (s: unknown) => void,
+		setState: (s: unknown) => void
 	) => unknown;
 	cellTitleFn?: (column: Column, item: Item) => string;
+	headerTitleFn?: (column: Column) => string | undefined;
 	toXlsxValue?: (column: Column, item: Item) => unknown;
+	getString?: (column: Column, item: Item) => unknown;
 	getComparableValue?: (column: Column, item: Item) => unknown;
 	serializeFilter?: (column: Column, filter: unknown) => unknown;
+	deserializeFilter?: (column: Column, filter: unknown) => unknown;
+	getFilterFn?: (
+		column: Column,
+		filter: unknown
+	) => ((item: Item) => boolean) | undefined;
+	computeSource?: (column: Column, data: unknown) => unknown;
+	values?: unknown[];
+	noLocalFilter?: boolean;
+	loading?: boolean;
+	externalValues?: unknown;
+	trueLabel?: string;
+	falseLabel?: string;
+	valueProperty?: string;
+	textProperty?: string;
+	emptyLabel?: string;
+	emptyValue?: unknown;
+	emptyProperty?: string;
+	min?: number;
+	max?: number;
+	autoupdate?: boolean;
+	maximumFractionDigits?: number | null;
+	minimumFractionDigits?: number | null;
+	currency?: string;
+	rates?: Rates;
+	autodetect?: boolean;
+	ownerTree?: unknown;
+	keyProperty?: string;
 	[key: symbol]: unknown;
 }
 
@@ -62,6 +94,14 @@ export interface AmountColumn extends Column {
 }
 
 export type DateColumn = Column;
+
+export interface ListColumn extends Column {
+	textProperty?: string;
+	valueProperty?: string;
+	emptyLabel?: string;
+	emptyValue?: unknown;
+	emptyProperty?: string;
+}
 
 export interface Limit<T> {
 	min: T;

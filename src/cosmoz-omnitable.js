@@ -62,8 +62,9 @@ customElements.define(
 			'loading',
 			'mini-breakpoint',
 			'inline',
+			'enable-select-all',
 		],
-	}),
+	})
 );
 
 const tmplt = `

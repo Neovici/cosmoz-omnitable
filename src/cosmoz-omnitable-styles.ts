@@ -30,7 +30,7 @@ export const checkbox = css`
 	}
 
 	.checkbox:checked::before {
-		content: '';
+		content: "";
 		position: absolute;
 		box-sizing: content-box;
 		width: 4px;
@@ -43,7 +43,7 @@ export const checkbox = css`
 	}
 
 	.checkbox::after {
-		content: '';
+		content: "";
 		display: block;
 		bottom: -5px;
 		left: -5px;
@@ -61,7 +61,7 @@ export const checkbox = css`
 	}
 
 	.checkbox:indeterminate::before {
-		content: '';
+		content: "";
 		position: absolute;
 		width: 10px;
 		height: 2px;
@@ -351,12 +351,26 @@ export default css`
 		direction: rtl;
 	}
 
+	/* @deprecated use the column align property + .cell[align] rules instead.
+	   Kept for backward compat with consumers using cellClass; remove in a future major version. */
 	.align-left {
 		text-align: left;
 	}
 
 	.align-right {
 		text-align: right;
+	}
+
+	.cell[align="right"] {
+		text-align: right;
+	}
+
+	.cell[align="left"] {
+		text-align: left;
+	}
+
+	.cell[align="center"] {
+		text-align: center;
 	}
 
 	cosmoz-bottom-bar {
@@ -472,7 +486,7 @@ export default css`
 	.sg[data-on] {
 		color: var(--cz-color-text-primary);
 	}
-	.sg:not([data-on='desc']) {
+	.sg:not([data-on="desc"]) {
 		transform: scaleY(-1);
 	}
 

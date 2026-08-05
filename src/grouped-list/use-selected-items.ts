@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useProperty, useState } from '@pionjs/pion';
 import type { Item } from '../lib/types';
+import { All, type TSelection } from '../lib/utils';
 import { GroupItem, isGroup } from './utils';
 
 export interface UseSelectedItemsParams {
@@ -9,7 +10,7 @@ export interface UseSelectedItemsParams {
 }
 
 export interface UseSelectedItemsResult {
-	selectedItems: Item[];
+	selectedItems: TSelection<Item>;
 	isItemSelected: (item: Item) => boolean;
 	isGroupSelected: (group: GroupItem<Item>) => boolean;
 	isSelected: (item: Item | GroupItem<Item>) => boolean;
@@ -27,24 +28,25 @@ export const useSelectedItems = ({
 	data,
 	flatData,
 }: UseSelectedItemsParams): UseSelectedItemsResult => {
-	const [selectedItems, setSelectedItems] = useProperty<Item[]>(
+	const [selectedItems, setSelectedItems] = useProperty<TSelection<Item>>(
 		'selectedItems',
-		() => [],
+		() => []
 	);
 	const [lastSelection, setLastSelection] = useState<Item | GroupItem<Item>>();
 	/**
 	 * Check if item is selected.
 	 */
 	const isItemSelected = useCallback(
-		(item: Item) => selectedItems.includes(item),
-		[selectedItems],
+		(item: Item) => selectedItems === All || selectedItems.includes(item),
+		[selectedItems]
 	);
 	/**
 	 * Check if group is selected.
 	 */
 	const isGroupSelected = useCallback(
-		(group: GroupItem<Item>) => group?.items?.every(isItemSelected) ?? false,
-		[isItemSelected],
+		(group: GroupItem<Item>) =>
+			selectedItems === All || (group?.items?.every(isItemSelected) ?? false),
+		[selectedItems, isItemSelected]
 	);
 	/**
 	 * Check if item.group is selected.
@@ -52,7 +54,7 @@ export const useSelectedItems = ({
 	const isSelected = useCallback(
 		(item: Item | GroupItem<Item>) =>
 			isItemSelected(item as Item) || isGroupSelected(item as GroupItem<Item>),
-		[isItemSelected, isGroupSelected],
+		[isItemSelected, isGroupSelected]
 	);
 	/**
 	 * Add an item/group to the list of selected items.
@@ -60,23 +62,38 @@ export const useSelectedItems = ({
 	const select = useCallback((item: Item | GroupItem<Item>) => {
 		const groupItem = item as GroupItem<Item>;
 		const items = groupItem.items ?? [item as Item];
-		setSelectedItems((selection) => [
-			...selection,
-			...items.filter((i: Item) => !selection.includes(i)),
-		]);
+		setSelectedItems((selection) => {
+			if (selection === All) {
+				return selection;
+			}
+			return [
+				...selection,
+				...items.filter((i: Item) => !selection.includes(i)),
+			];
+		});
 		setLastSelection(item);
 	}, []);
 	/**
 	 * Removes an item/group from the list of selected items.
 	 */
-	const deselect = useCallback((item: Item | GroupItem<Item>) => {
-		const groupItem = item as GroupItem<Item>;
-		const items = groupItem.items ?? [item as Item];
-		setSelectedItems((selection) =>
-			selection.filter((i) => !items.includes(i)),
-		);
-		setLastSelection(item);
-	}, []);
+	const deselect = useCallback(
+		(item: Item | GroupItem<Item>) => {
+			const groupItem = item as GroupItem<Item>;
+			const items = groupItem.items ?? [item as Item];
+			setSelectedItems((selection) => {
+				if (selection === All) {
+					return (flatData ?? [])
+						.filter((selectedItem) => !isGroup(selectedItem))
+						.filter(
+							(selectedItem) => !items.includes(selectedItem as Item)
+						) as Item[];
+				}
+				return selection.filter((i) => !items.includes(i));
+			});
+			setLastSelection(item);
+		},
+		[flatData]
+	);
 
 	const selectOnly = useCallback((item: Item | GroupItem<Item>) => {
 		const groupItem = item as GroupItem<Item>;
@@ -91,7 +108,7 @@ export const useSelectedItems = ({
 			data.flatMap((item) => {
 				const groupItem = item as GroupItem<Item>;
 				return groupItem.items || (item as Item);
-			}),
+			})
 		);
 		setLastSelection(undefined);
 	}, [data]);
@@ -108,7 +125,7 @@ export const useSelectedItems = ({
 	const toggleSelect = useCallback(
 		(item: Item | GroupItem<Item>, selected = !isSelected(item)) =>
 			selected ? select(item) : deselect(item),
-		[isSelected],
+		[isSelected]
 	);
 	const toggleSelectTo = useCallback(
 		(item: Item | GroupItem<Item>, selected?: boolean) => {
@@ -129,20 +146,20 @@ export const useSelectedItems = ({
 			});
 			setLastSelection(item);
 		},
-		[flatData, compareItemsFn, toggleSelect],
+		[flatData, compareItemsFn, toggleSelect]
 	);
 
 	// keep selected items across data updates
 	useEffect(
 		() =>
 			setSelectedItems((selectedItems) =>
-				selectedItems.length > 0 && flatData
+				selectedItems !== All && selectedItems.length > 0 && flatData
 					? (flatData.filter((i) =>
-							selectedItems.find((item) => compareItemsFn(i, item)),
-						) as Item[])
-					: selectedItems,
+							selectedItems.find((item) => compareItemsFn(i, item))
+					  ) as Item[])
+					: selectedItems
 			),
-		[flatData],
+		[flatData]
 	);
 
 	return {

@@ -5,8 +5,8 @@ import { normalizeStore, type NormalizedSettings } from './normalize';
 export default (
 	settingsId: string,
 	settings: NormalizedSettings | undefined,
-	setSettings: () => void,
-	onReset?: () => void,
+	setSettings: (settings?: NormalizedSettings | undefined) => void,
+	onReset?: () => void
 ) => {
 	const [savedSettings, setSavedSettings] = useState<
 			NormalizedSettings | null | undefined
@@ -43,7 +43,7 @@ export default (
 				}
 				onReset?.();
 			},
-			[onReset],
+			[onReset]
 		),
 		hasChanges: settings != null,
 	};
