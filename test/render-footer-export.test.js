@@ -64,7 +64,7 @@ suite('render-footer export', () => {
 		const dropdown = container.querySelector('cosmoz-dropdown-menu');
 		assert.isNotNull(dropdown);
 		assert.lengthOf(
-			container.querySelectorAll('cosmoz-dropdown-menu > button'),
+			container.querySelectorAll('cosmoz-dropdown-menu > cosmoz-button'),
 			2
 		);
 
