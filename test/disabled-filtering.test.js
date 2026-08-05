@@ -5,14 +5,15 @@ import {
 	setupOmnitableFixture,
 } from './helpers/utils';
 
+import '../src/cosmoz-omnitable-column-amount.js';
 import '../src/cosmoz-omnitable-column-number.js';
 import '../src/cosmoz-omnitable-column.js';
 import '../src/cosmoz-omnitable.js';
 
 const data = [
-	{ id: 1, name: 'Alice', age: 30 },
-	{ id: 2, name: 'Bob', age: 25 },
-	{ id: 3, name: 'Charlie', age: 35 },
+	{ id: 1, name: 'Alice', age: 30, salary: 50000 },
+	{ id: 2, name: 'Bob', age: 25, salary: 45000 },
+	{ id: 3, name: 'Charlie', age: 35, salary: 60000 },
 ];
 
 suite('disabled-filtering (per-column)', () => {
@@ -43,6 +44,19 @@ suite('disabled-filtering (per-column)', () => {
 						name="age"
 						value-path="age"
 						disabled-filtering
+					>
+					</cosmoz-omnitable-column-number>
+					<cosmoz-omnitable-column-amount
+						title="Salary"
+						name="salary"
+						value-path="salary"
+						disabled-filtering
+					>
+					</cosmoz-omnitable-column-amount>
+					<cosmoz-omnitable-column-number
+						title="Score"
+						name="score"
+						value-path="age"
 					>
 					</cosmoz-omnitable-column-number>
 				</cosmoz-omnitable>
@@ -115,14 +129,58 @@ suite('disabled-filtering (per-column)', () => {
 		);
 		assert.isNotNull(dropdownInput, 'Dropdown input should exist');
 		assert.equal(
-			rangeInput.horizontalAlign,
+			rangeInput.align,
 			'right',
-			'Range input should have horizontalAlign="right"',
+			'Range input should have align="right"',
 		);
 		assert.equal(
 			dropdownInput.getAttribute('text-align'),
 			'right',
 			'Disabled number range input should have text-align="right"',
+		);
+	});
+
+	test('amount column disabled range input has right text-align', async () => {
+		const salaryHeaderCell = omnitable.shadowRoot.querySelector(
+			'.header-cell[name="salary"]',
+		);
+		const rangeInput = salaryHeaderCell.querySelector(
+			'cosmoz-omnitable-amount-range-input',
+		);
+		await nextFrame();
+		await nextFrame();
+		const dropdownInput = rangeInput.shadowRoot.querySelector(
+			'cosmoz-omnitable-dropdown-input',
+		);
+		assert.isNotNull(dropdownInput, 'Dropdown input should exist');
+		assert.equal(
+			rangeInput.align,
+			'right',
+			'Range input should have align="right"',
+		);
+		assert.equal(
+			dropdownInput.getAttribute('text-align'),
+			'right',
+			'Disabled amount range input should have text-align="right"',
+		);
+	});
+
+	test('number column range input has align right when not disabled', async () => {
+		const scoreHeaderCell = omnitable.shadowRoot.querySelector(
+			'.header-cell[name="score"]',
+		);
+		const rangeInput = scoreHeaderCell.querySelector(
+			'cosmoz-omnitable-number-range-input',
+		);
+		assert.isNotNull(rangeInput, 'Range input should exist');
+		assert.isFalse(
+			rangeInput.hasAttribute('disabled'),
+			'Range input should not be disabled',
+		);
+		assert.equal(
+			rangeInput.align,
+			'right',
+			'Non-disabled number range input should have align="right"',
 		);
 	});
 

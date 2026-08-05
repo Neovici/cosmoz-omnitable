@@ -418,6 +418,8 @@ export default css`
 		direction: rtl;
 	}
 
+	/* @deprecated use the column align property + .cell[align] rules instead.
+	   Kept for backward compat with consumers using cellClass; remove in a future major version. */
 	.align-left {
 		text-align: left;
 	}

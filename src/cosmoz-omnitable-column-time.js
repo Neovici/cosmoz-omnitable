@@ -128,7 +128,7 @@ class OmnitableColumnTime extends columnMixin(PolymerElement) {
 			.max=${max}
 			.locale=${locale}
 			.filterStep=${filterStep}
-			.horizontalAlign=${headerAlign ?? align}
+			.align=${headerAlign ?? align}
 			@filter-changed=${({ detail: { value } }) =>
 				setState((state) => ({ ...state, filter: value }))}
 			@header-focused-changed=${({ detail: { value } }) =>

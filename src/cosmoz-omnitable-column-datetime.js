@@ -136,7 +136,7 @@ class OmnitableColumnDatetime extends columnMixin(PolymerElement) {
 			.limits=${limits}
 			.locale=${locale}
 			.filterStep=${filterStep}
-			.horizontalAlign=${headerAlign ?? align}
+			.align=${headerAlign ?? align}
 			@filter-changed=${({ detail: { value } }) =>
 				setState((state) => ({ ...state, filter: value }))}
 			@header-focused-changed=${({ detail: { value } }) =>
