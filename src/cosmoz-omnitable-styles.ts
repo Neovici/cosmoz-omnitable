@@ -418,7 +418,7 @@ export default css`
 		direction: rtl;
 	}
 
-	/* @deprecated use the column align property + .cell[align] rules instead.
+	/* @deprecated use the column align property + .cell[data-align] rules instead.
 	   Kept for backward compat with consumers using cellClass; remove in a future major version. */
 	.align-left {
 		text-align: left;
@@ -428,15 +428,15 @@ export default css`
 		text-align: right;
 	}
 
-	.cell[align='right'] {
+	.cell[data-align='right'] {
 		text-align: right;
 	}
 
-	.cell[align='left'] {
+	.cell[data-align='left'] {
 		text-align: left;
 	}
 
-	.cell[align='center'] {
+	.cell[data-align='center'] {
 		text-align: center;
 	}
 

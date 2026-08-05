@@ -24,7 +24,7 @@ const renderHeaderRow = ({
 		(column) => [
 			html`<div
 				class="cell ${column.headerCellClass} header-cell"
-				align="${column.headerAlign ?? column.align ?? 'left'}"
+				data-align="${column.headerAlign ?? column.align ?? 'left'}"
 				part="cell header-cell cell-${column.name} header-cell-${column.name}"
 				?hidden="${column === groupOnColumn}"
 				title="${column.headerTitleFn(column)}"
