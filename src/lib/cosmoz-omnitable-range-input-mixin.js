@@ -50,7 +50,7 @@ export const rangeInputMixin = (base) =>
 
 				locale: { type: String, value: null },
 
-				horizontalAlign: { type: String, value: 'left' },
+				align: { type: String, value: 'left' },
 
 				_filterInput: {
 					type: Object,

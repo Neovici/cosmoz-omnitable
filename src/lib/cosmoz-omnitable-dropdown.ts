@@ -9,7 +9,7 @@ interface DropdownProps {
 	filterText?: string;
 	onOpenedChanged?: (ev: Event) => void;
 	content: unknown;
-	horizontalAlign?: string;
+	align?: string;
 	externalValues?: boolean | null;
 }
 
@@ -19,7 +19,7 @@ export const renderDropdown = ({
 	filterText = '',
 	onOpenedChanged,
 	content,
-	horizontalAlign = 'left',
+	align = 'left',
 	externalValues = null,
 }: DropdownProps) => {
 	const classes: Record<string, boolean> = {
@@ -100,7 +100,7 @@ export const renderDropdown = ({
 				.label=${title}
 				.placeholder=${title}
 				.value=${filterText ?? ''}
-				text-align=${horizontalAlign}
+				text-align=${align}
 				?always-float-label=${filterText?.length > 0}
 			></cosmoz-omnitable-dropdown-input>
 			<div class="dropdown-content">${content}</div>
