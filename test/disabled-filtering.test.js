@@ -101,6 +101,31 @@ suite('disabled-filtering (per-column)', () => {
 		);
 	});
 
+	test('number column disabled range input has right text-align', async () => {
+		const ageHeaderCell = omnitable.shadowRoot.querySelector(
+			'.header-cell[name="age"]',
+		);
+		const rangeInput = ageHeaderCell.querySelector(
+			'cosmoz-omnitable-number-range-input',
+		);
+		await nextFrame();
+		await nextFrame();
+		const dropdownInput = rangeInput.shadowRoot.querySelector(
+			'cosmoz-omnitable-dropdown-input',
+		);
+		assert.isNotNull(dropdownInput, 'Dropdown input should exist');
+		assert.equal(
+			rangeInput.horizontalAlign,
+			'right',
+			'Range input should have horizontalAlign="right"',
+		);
+		assert.equal(
+			dropdownInput.getAttribute('text-align'),
+			'right',
+			'Disabled number range input should have text-align="right"',
+		);
+	});
+
 	test('sort buttons still render on disabled-filtering columns', () => {
 		const idHeaderCell = omnitable.shadowRoot.querySelector(
 			'.header-cell[name="id"]',

@@ -1,8 +1,8 @@
-import { html, component, useContext } from '@pionjs/pion';
+import { component, html, useContext } from '@pionjs/pion';
 import { repeat } from 'lit-html/directives/repeat.js';
+import { when } from 'lit-html/directives/when.js';
 import './lib/cosmoz-omnitable-resize-nub';
 import { render } from './lib/settings/cosmoz-omnitable-sort-group';
-import { when } from 'lit-html/directives/when.js';
 import { SortAndGroupContext } from './lib/use-sort-and-group-options';
 
 const renderHeaderRow = ({
@@ -24,6 +24,7 @@ const renderHeaderRow = ({
 		(column) => [
 			html`<div
 				class="cell ${column.headerCellClass} header-cell"
+				align="${column.headerAlign ?? column.align ?? 'left'}"
 				part="cell header-cell cell-${column.name} header-cell-${column.name}"
 				?hidden="${column === groupOnColumn}"
 				title="${column.headerTitleFn(column)}"

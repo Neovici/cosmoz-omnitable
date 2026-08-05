@@ -426,6 +426,18 @@ export default css`
 		text-align: right;
 	}
 
+	.cell[align='right'] {
+		text-align: right;
+	}
+
+	.cell[align='left'] {
+		text-align: left;
+	}
+
+	.cell[align='center'] {
+		text-align: center;
+	}
+
 	cosmoz-bottom-bar {
 		background-color: var(--cosmoz-omnitable-bottom-bar-color, #5f5a92);
 		overflow: hidden;

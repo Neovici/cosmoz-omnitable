@@ -37,6 +37,7 @@ class OmnitableColumnNumber extends columnMixin(PolymerElement) {
 			headerCellClass: { type: String, value: 'number-header-cell' },
 			maximumFractionDigits: { type: Number, value: null },
 			minimumFractionDigits: { type: Number, value: null }, // browser default 0 for numbers, currency-specific or 2 for currency
+			align: { type: String, value: 'right' },
 		};
 	}
 
@@ -123,6 +124,8 @@ class OmnitableColumnNumber extends columnMixin(PolymerElement) {
 			minimumFractionDigits,
 			autoupdate,
 			disabledFiltering,
+			headerAlign,
+			align,
 		},
 		{ filter },
 		setState,
@@ -140,6 +143,7 @@ class OmnitableColumnNumber extends columnMixin(PolymerElement) {
 			.maximumFractionDigits=${maximumFractionDigits}
 			.minimumFractionDigits=${minimumFractionDigits}
 			.autoupdate=${autoupdate}
+			.horizontalAlign=${headerAlign ?? align}
 			@filter-changed=${({ detail: { value } }) =>
 				setState((state) => ({ ...state, filter: value }))}
 			@header-focused-changed=${({ detail: { value } }) =>

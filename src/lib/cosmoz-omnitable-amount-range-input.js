@@ -74,6 +74,7 @@ class AmountRangeInput extends rangeInputMixin(
 				() => html`
 					<cosmoz-omnitable-dropdown-input
 						disabled
+						text-align=${this.horizontalAlign}
 						.label=${this.title}
 						.value=${this._filterText ?? ''}
 					></cosmoz-omnitable-dropdown-input>
@@ -87,6 +88,7 @@ class AmountRangeInput extends rangeInputMixin(
 						title: this.title,
 						tooltip: this._tooltip,
 						filterText: this._filterText,
+						horizontalAlign: this.horizontalAlign,
 						externalValues: this.externalValues,
 						onOpenedChanged,
 						content: html`

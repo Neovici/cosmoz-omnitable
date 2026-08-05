@@ -30,7 +30,8 @@ export interface Column {
 	disabledFiltering?: boolean;
 	cellClass?: string;
 	headerCellClass?: string;
-	preferredDropdownHorizontalAlign?: string;
+	align?: string;
+	headerAlign?: string | null;
 	renderCell?: (column: Column, data: ItemRenderData) => unknown;
 	renderEditCell?: (
 		column: Column,

@@ -38,6 +38,7 @@ class OmnitableColumnAmount extends columnMixin(PolymerElement) {
 			width: { type: String, value: '70px' },
 			cellClass: { type: String, value: 'amount-cell align-right' },
 			headerCellClass: { type: String, value: 'amount-header-cell' },
+			align: { type: String, value: 'right' },
 		};
 	}
 
@@ -126,6 +127,8 @@ class OmnitableColumnAmount extends columnMixin(PolymerElement) {
 			autoupdate,
 			autodetect,
 			disabledFiltering,
+			headerAlign,
+			align,
 		},
 		{ filter },
 		setState,
@@ -144,6 +147,7 @@ class OmnitableColumnAmount extends columnMixin(PolymerElement) {
 			.currency=${currency}
 			.autoupdate=${autoupdate}
 			.autodetect=${autodetect}
+			.horizontalAlign=${headerAlign ?? align}
 			@filter-changed=${({ detail: { value } }) =>
 				setState((state) => ({ ...state, filter: value }))}
 			@header-focused-changed=${({ detail: { value } }) =>

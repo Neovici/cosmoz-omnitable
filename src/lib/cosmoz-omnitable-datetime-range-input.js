@@ -42,6 +42,7 @@ class DatetimeRangeInput extends dateInputMixin(
 				() => html`
 					<cosmoz-omnitable-dropdown-input
 						disabled
+						text-align=${this.horizontalAlign}
 						.label=${this.title}
 						.value=${this._filterText ?? ''}
 					></cosmoz-omnitable-dropdown-input>
@@ -55,6 +56,7 @@ class DatetimeRangeInput extends dateInputMixin(
 						title: this.title,
 						tooltip: this._tooltip,
 						filterText: this._filterText,
+						horizontalAlign: this.horizontalAlign,
 						externalValues: this.externalValues,
 						onOpenedChanged,
 						content: html`
