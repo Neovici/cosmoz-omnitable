@@ -1,3 +1,9 @@
+## 18.11.0-beta.2
+
+### Patch Changes
+
+- 77db5f8: Add select all items feature, ts migration and add align/headerAlign column properties
+
 ## 18.11.0-beta.1
 
 ### Minor Changes

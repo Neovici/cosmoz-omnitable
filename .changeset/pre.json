@@ -6,6 +6,7 @@
   },
   "changesets": [
     "beta-features-minor",
+    "flat-eggs-yell",
     "shaky-ants-fix"
   ]
 }
