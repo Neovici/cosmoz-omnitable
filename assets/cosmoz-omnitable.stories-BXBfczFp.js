@@ -1,4 +1,4 @@
-import{e as c,D as He,t as S,A as Ge}from"./iframe-DitKyUQO.js";import{t as W,c as O,g as A,n as F,P as I,s as ln,a as Ft,r as sn,e as un,D as cn,b as dn,d as mn,i as ke,h as kt,m as pn,u as R,f as _t,j as Et,k as gn,l as Z,p as P,o as We,q as It,v as _e,w as bn,x as Ee,y as _,z as M,A as lt,B as Ie,C as Mt,E as st,F as ut,G as z,H as fn,I as hn,J as Ot,K as Ke,L as Lt,M as xn,N as Dt,O as yn,Q as ct,R as vn,S as $n,T as Cn,U as Tt,V as je,W as Je,X as wn,Y as Rt,Z as Ue,_ as U,$ as zn,a0 as Sn}from"./cosmoz-collapse-BA1FxBgV.js";import"./preload-helper-PPVm8Dsz.js";const An=W`
+import{e as c,D as He,t as S,A as Ge}from"./iframe-OU6e_ySO.js";import{t as W,c as O,g as A,n as F,P as I,s as ln,a as Ft,r as sn,e as un,D as cn,b as dn,d as mn,i as ke,h as kt,m as pn,u as R,f as _t,j as Et,k as gn,l as Z,p as P,o as We,q as It,v as _e,w as bn,x as Ee,y as _,z as M,A as lt,B as Ie,C as Mt,E as st,F as ut,G as z,H as fn,I as hn,J as Ot,K as Ke,L as Lt,M as xn,N as Dt,O as yn,Q as ct,R as vn,S as $n,T as Cn,U as Tt,V as je,W as Je,X as wn,Y as Rt,Z as Ue,_ as U,$ as zn,a0 as Sn}from"./cosmoz-collapse-CA24_DSA.js";import"./preload-helper-PPVm8Dsz.js";const An=W`
 	:host {
 		display: flex;
 	}
@@ -1571,7 +1571,7 @@ import{e as c,D as He,t as S,A as Ge}from"./iframe-DitKyUQO.js";import{t as W,c 
 		part="bottomBar"
 		exportparts="bar: bottomBar-bar, info: bottomBar-info, buttons: bottomBar-buttons"
 	>
-		<span slot="info">
+		<slot name="info" slot="info">
 			${b}
 			${F(g,()=>c`&nbsp;<span
 							part="select-all-items"
@@ -1583,7 +1583,7 @@ import{e as c,D as He,t as S,A as Ge}from"./iframe-DitKyUQO.js";import{t as W,c 
 						>
 							${S("Select all items")}
 						</span>`)}
-		</span>
+		</slot>
 		<slot name="actions" id="actions"></slot>
 		<slot name="bottom-bar-toolbar" slot="bottom-bar-toolbar"></slot>
 		<slot name="bottom-bar-menu" slot="bottom-bar-menu"></slot>
