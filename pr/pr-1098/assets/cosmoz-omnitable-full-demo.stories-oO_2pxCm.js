@@ -1,4 +1,4 @@
-import{e as c,w as Jt,D as Me,t as C,A as Re}from"./iframe-xa45mZZG.js";import{A as xe,n as I,c as V,t as q,g as k,P as T,s as Yt,a as wt,r as Zt,e as en,D as tn,b as nn,d as on,i as ze,h as zt,m as rn,u as N,f as St,j as Ct,k as ln,l as Y,p as B,o as Ne,q as kt,v as Se,w as an,x as Ce,y as O,z as E,B as ke,C as _t,E as tt,F as nt,G as S,H as sn,I as un,J as It,K as Be,L as Ft,M as cn,N as Ot,O as dn,Q as ot,R as mn,S as pn,T as gn,U as At,V as je,W as He,X as hn,Y as Dt,Z as Pe,_ as U,$ as fn,a0 as bn}from"./cosmoz-collapse-CkMXQEKb.js";import"./preload-helper-PPVm8Dsz.js";const xn=({slot:n,title:e,className:t,width:o="24",height:r="24",styles:i}={})=>c`
+import{e as c,w as Jt,D as Me,t as C,A as Re}from"./iframe-rGrVIfPv.js";import{A as xe,n as I,c as V,t as q,g as k,P as T,s as Yt,a as wt,r as Zt,e as en,D as tn,b as nn,d as on,i as ze,h as zt,m as rn,u as N,f as St,j as Ct,k as ln,l as Y,p as B,o as Ne,q as kt,v as Se,w as an,x as Ce,y as O,z as E,B as ke,C as _t,E as tt,F as nt,G as S,H as sn,I as un,J as It,K as Be,L as Ft,M as cn,N as Ot,O as dn,Q as ot,R as mn,S as pn,T as gn,U as At,V as je,W as He,X as hn,Y as Dt,Z as Pe,_ as U,$ as fn,a0 as bn}from"./cosmoz-collapse-CJNp_eyn.js";import"./preload-helper-PPVm8Dsz.js";const xn=({slot:n,title:e,className:t,width:o="24",height:r="24",styles:i}={})=>c`
   <svg
     slot=${xe(n)}
     class=${`delete-icon ${t??""}`}
@@ -2114,13 +2114,13 @@ ${r(l.name)}`:u}).join(`
 			<path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"></path>
 		</g>
 	</svg>
-`,Qr=n=>n?"groupRow groupRow-folded":"groupRow",Jr=({item:n,index:e,selected:t})=>o=>I((o?.length??0)>0,()=>c`
+`,Qr=n=>n?"groupRow groupRow-folded":"groupRow",Jr=({item:n,index:e})=>t=>I((t?.length??0)>0,()=>c`
 				<div class="itemRow-minis" part="item-minis">
-					${o.map(r=>c`<div
+					${t.map(o=>c`<div
 								class="itemRow-mini"
-								part="item-mini item-mini-${r.name}"
+								part="item-mini item-mini-${o.name}"
 							>
-								${(r.renderMini??r.renderCell)(r,{item:n,index:e,selected:t})}
+								${(o.renderMini??o.renderCell)(o,{item:n,index:e})}
 							</div>`)}
 				</div>
 			`),Yr=({columns:n,collapsedColumns:e,miniColumns:t,onItemClick:o,onCheckboxChange:r,dataIsValid:i,groupOnColumn:l,onItemChange:a,rowPartFn:s})=>(u,d,{selected:m,expanded:g,toggleCollapse:p})=>c`
@@ -2162,7 +2162,7 @@ ${r(l.name)}`:u}).join(`
 					${Kt}
 				</button>
 			</div>
-			${Jr({item:u,index:d,selected:m})(t)}
+			${Jr({item:u,index:d})(t)}
 		</div>
 		<cosmoz-omnitable-item-expand
 			.columns=${e}

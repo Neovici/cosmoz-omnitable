@@ -1,4 +1,4 @@
-import{e as c,D as He,t as S,A as Ge}from"./iframe-xa45mZZG.js";import{t as j,c as O,g as A,n as F,P as I,s as ln,a as Ft,r as sn,e as un,D as cn,b as dn,d as mn,i as ke,h as kt,m as pn,u as R,f as Et,j as _t,k as gn,l as Z,p as P,o as je,q as It,v as Ee,w as bn,x as _e,y as E,z as M,A as lt,B as Ie,C as Mt,E as st,F as ut,G as z,H as fn,I as hn,J as Ot,K as Ke,L as Lt,M as xn,N as Tt,O as yn,Q as ct,R as vn,S as $n,T as Cn,U as Dt,V as We,W as Je,X as wn,Y as Rt,Z as Ue,_ as U,$ as zn,a0 as Sn}from"./cosmoz-collapse-CkMXQEKb.js";import"./preload-helper-PPVm8Dsz.js";const An=j`
+import{e as c,D as He,t as S,A as Ge}from"./iframe-rGrVIfPv.js";import{t as j,c as O,g as A,n as F,P as I,s as ln,a as Ft,r as sn,e as un,D as cn,b as dn,d as mn,i as ke,h as kt,m as pn,u as R,f as Et,j as _t,k as gn,l as Z,p as P,o as je,q as It,v as Ee,w as bn,x as _e,y as E,z as M,A as lt,B as Ie,C as Mt,E as st,F as ut,G as z,H as fn,I as hn,J as Ot,K as Ke,L as Lt,M as xn,N as Tt,O as yn,Q as ct,R as vn,S as $n,T as Cn,U as Dt,V as We,W as Je,X as wn,Y as Rt,Z as Ue,_ as U,$ as zn,a0 as Sn}from"./cosmoz-collapse-CJNp_eyn.js";import"./preload-helper-PPVm8Dsz.js";const An=j`
 	:host {
 		display: flex;
 	}
@@ -2079,13 +2079,13 @@ ${a(r.name)}`:u}).join(`
 			<path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"></path>
 		</g>
 	</svg>
-`,to=n=>n?"groupRow groupRow-folded":"groupRow",no=({item:n,index:e,selected:t})=>i=>F((i?.length??0)>0,()=>c`
+`,to=n=>n?"groupRow groupRow-folded":"groupRow",no=({item:n,index:e})=>t=>F((t?.length??0)>0,()=>c`
 				<div class="itemRow-minis" part="item-minis">
-					${i.map(a=>c`<div
+					${t.map(i=>c`<div
 								class="itemRow-mini"
-								part="item-mini item-mini-${a.name}"
+								part="item-mini item-mini-${i.name}"
 							>
-								${(a.renderMini??a.renderCell)(a,{item:n,index:e,selected:t})}
+								${(i.renderMini??i.renderCell)(i,{item:n,index:e})}
 							</div>`)}
 				</div>
 			`),io=({columns:n,collapsedColumns:e,miniColumns:t,onItemClick:i,onCheckboxChange:a,dataIsValid:o,groupOnColumn:r,onItemChange:l,rowPartFn:s})=>(u,d,{selected:m,expanded:g,toggleCollapse:p})=>c`
@@ -2127,7 +2127,7 @@ ${a(r.name)}`:u}).join(`
 					${tn}
 				</button>
 			</div>
-			${no({item:u,index:d,selected:m})(t)}
+			${no({item:u,index:d})(t)}
 		</div>
 		<cosmoz-omnitable-item-expand
 			.columns=${e}
