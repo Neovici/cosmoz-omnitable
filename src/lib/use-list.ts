@@ -1,8 +1,69 @@
 import { isEmpty } from '@neovici/cosmoz-utils/template';
 import { html, useCallback, useEffect, useMemo, useRef } from '@pionjs/pion';
 import { when } from 'lit-html/directives/when.js';
+import type { GroupItem } from '../grouped-list/utils';
+import type { Column, Item } from './types';
 import { indexSymbol } from './utils';
 import { onItemChange as _onItemChange } from './utils-data';
+
+export interface IndexedItem extends Item {
+	[indexSymbol]: number;
+}
+
+export interface IndexedGroup extends GroupItem<IndexedItem> {
+	[indexSymbol]: number;
+}
+
+export interface RenderItemParams {
+	selected: boolean;
+	expanded: boolean;
+	toggleCollapse: () => void;
+}
+
+export interface RenderGroupParams {
+	selected: boolean;
+	folded: boolean;
+	toggleFold: () => void;
+}
+
+interface RenderItemDeps {
+	columns: Column[];
+	collapsedColumns: Column[];
+	miniColumns: Column[];
+	onItemClick: (event: Event) => void;
+	onCheckboxChange: (event: Event) => void;
+	dataIsValid: boolean;
+	groupOnColumn?: Column;
+	onItemChange: (column: Column, item: Item) => (value: unknown) => void;
+	rowPartFn?: (item: Item, index: number) => string | undefined;
+}
+
+interface RenderGroupDeps {
+	onCheckboxChange: (event: Event) => void;
+	dataIsValid: boolean;
+	groupOnColumn?: Column;
+}
+
+interface GroupedListEl extends HTMLElement {
+	toggleSelectTo(item: Item, selected: boolean): void;
+	selectOnly(item: Item): void;
+	toggleSelect(item: Item, selected: boolean): void;
+}
+
+interface CheckboxElement extends HTMLInputElement {
+	dataItem: Item;
+}
+
+interface RowElement extends HTMLElement {
+	dataItem: Item;
+	dataIndex: number;
+}
+
+const isCheckbox = (el: EventTarget | null): el is CheckboxElement =>
+	el instanceof HTMLInputElement;
+
+const isRow = (el: EventTarget | null): el is RowElement =>
+	el instanceof HTMLElement;
 
 const arrow = html`
 	<svg
@@ -16,23 +77,23 @@ const arrow = html`
 	</svg>
 `;
 
-const _getGroupRowClasses = (folded) =>
+const _getGroupRowClasses = (folded: boolean): string =>
 	folded ? 'groupRow groupRow-folded' : 'groupRow';
 
 const renderMinis =
-	({ item, index }) =>
-	(columns) =>
+	({ item, index }: { item: IndexedItem; index?: number }) =>
+	(columns: Column[] | undefined) =>
 		when(
-			columns?.length > 0,
+			(columns?.length ?? 0) > 0,
 			() => html`
 				<div class="itemRow-minis" part="item-minis">
-					${columns.map(
+					${columns!.map(
 						(column) =>
 							html`<div
 								class="itemRow-mini"
 								part="item-mini item-mini-${column.name}"
 							>
-								${(column.renderMini ?? column.renderCell)(column, {
+								${(column.renderMini ?? column.renderCell)!(column, {
 									item,
 									index,
 								})}
@@ -53,8 +114,12 @@ const renderItem =
 		groupOnColumn,
 		onItemChange,
 		rowPartFn,
-	}) =>
-	(item, index, { selected, expanded, toggleCollapse }) => html`
+	}: RenderItemDeps) =>
+	(
+		item: IndexedItem,
+		index: number,
+		{ selected, expanded, toggleCollapse }: RenderItemParams,
+	) => html`
 		<div
 			?selected=${selected}
 			part="${[
@@ -114,8 +179,12 @@ const renderItem =
 	`;
 
 const renderGroup =
-	({ onCheckboxChange, dataIsValid, groupOnColumn }) =>
-	(item, index, { selected, folded, toggleFold }) =>
+	({ onCheckboxChange, dataIsValid, groupOnColumn }: RenderGroupDeps) =>
+	(
+		item: IndexedGroup,
+		index: number,
+		{ selected, folded, toggleFold }: RenderGroupParams,
+	) =>
 		html` <div
 			class="${_getGroupRowClasses(folded)}"
 			part="groupRow groupRow-${item[indexSymbol]}"
@@ -138,11 +207,30 @@ const renderGroup =
 					.group=${item}
 				></cosmoz-omnitable-group-row>
 			</h3>
-			<div class="groupRow-badge">${item.items.length}</div>
+			<div class="groupRow-badge">${item.items!.length}</div>
 			<button class="expand" ?aria-expanded="${folded}" @click=${toggleFold}>
 				${arrow}
 			</button>
 		</div>`;
+
+interface UseListHost extends HTMLElement {
+	loading?: boolean;
+	displayEmptyGroups?: boolean;
+	compareItemsFn?: <T>(a: T, b: T) => boolean;
+}
+
+interface UseListParams {
+	host: UseListHost;
+	error?: { message: string } | null;
+	dataIsValid: boolean;
+	processedItems: (Item | GroupItem<Item>)[];
+	columns: Column[];
+	collapsedColumns: Column[];
+	miniColumns: Column[];
+	sortAndGroupOptions: { groupOnColumn?: Column; [key: string]: unknown };
+	rowPartFn?: (item: Item, index: number) => string | undefined;
+	[key: string]: unknown;
+}
 
 export const useList = ({
 	host,
@@ -155,23 +243,25 @@ export const useList = ({
 	sortAndGroupOptions,
 	rowPartFn,
 	...rest
-}) => {
+}: UseListParams) => {
 	const { loading = false, displayEmptyGroups = false, compareItemsFn } = host,
 		keyState = useRef({ shiftKey: false, ctrlKey: false }),
-		onCheckboxChange = useCallback((event) => {
-			const item = event.target.dataItem,
-				selected = event.target.checked;
-			if (keyState.current.shiftKey) {
-				host.shadowRoot
-					.querySelector('#groupedList')
-					.toggleSelectTo(item, selected);
-			} else if (keyState.current.ctrlKey) {
-				event.target.checked = true;
-				host.shadowRoot.querySelector('#groupedList').selectOnly(item);
+		onCheckboxChange = useCallback((event: Event) => {
+			if (!isCheckbox(event.target)) {
+				return;
+			}
+			const target = event.target,
+				item = target.dataItem,
+				selected = target.checked,
+				groupedList =
+					host.shadowRoot!.querySelector<GroupedListEl>('#groupedList')!;
+			if (keyState.current!.shiftKey) {
+				groupedList.toggleSelectTo(item, selected);
+			} else if (keyState.current!.ctrlKey) {
+				target.checked = true;
+				groupedList.selectOnly(item);
 			} else {
-				host.shadowRoot
-					.querySelector('#groupedList')
-					.toggleSelect(item, selected);
+				groupedList.toggleSelect(item, selected);
 			}
 
 			event.preventDefault();
@@ -179,7 +269,13 @@ export const useList = ({
 		}, []);
 
 	useEffect(() => {
-		const handler = ({ shiftKey, ctrlKey }) => {
+		const handler = ({
+			shiftKey,
+			ctrlKey,
+		}: {
+			shiftKey: boolean;
+			ctrlKey: boolean;
+		}) => {
 			keyState.current = { shiftKey, ctrlKey };
 		};
 		window.addEventListener('keydown', handler);
@@ -190,11 +286,18 @@ export const useList = ({
 		};
 	}, []);
 
-	const onItemClick = useCallback((e) => {
-		const composedPath = e.composedPath(),
-			path = composedPath.slice(0, composedPath.indexOf(e.currentTarget));
+	const onItemClick = useCallback((e: Event) => {
+		if (!isRow(e.currentTarget)) {
+			return;
+		}
+		const current = e.currentTarget,
+			path = e.composedPath().slice(0, e.composedPath().indexOf(current));
 
-		if (path.find((e) => e.matches?.('a, .checkbox, .expand'))) {
+		if (
+			path.some(
+				(el) => el instanceof Element && el.matches('a, .checkbox, .expand'),
+			)
+		) {
 			return;
 		}
 
@@ -203,8 +306,8 @@ export const useList = ({
 				bubbles: true,
 				composed: true,
 				detail: {
-					item: e.currentTarget.dataItem,
-					index: e.currentTarget.dataIndex,
+					item: current.dataItem,
+					index: current.dataIndex,
 				},
 			}),
 		);
@@ -212,7 +315,8 @@ export const useList = ({
 
 	const { groupOnColumn } = sortAndGroupOptions,
 		onItemChange = useCallback(
-			(column, item) => (value) => _onItemChange(host, column, item, value),
+			(column: Column, item: Item) => (value: unknown) =>
+				_onItemChange(host, column, item, value),
 			[],
 		);
 
