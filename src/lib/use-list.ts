@@ -291,7 +291,8 @@ export const useList = ({
 			return;
 		}
 		const current = e.currentTarget,
-			path = e.composedPath().slice(0, e.composedPath().indexOf(current));
+			composedPath = e.composedPath(),
+			path = composedPath.slice(0, composedPath.indexOf(current));
 
 		if (
 			path.some(
