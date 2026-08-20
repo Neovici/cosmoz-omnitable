@@ -6,23 +6,67 @@ import {
 	useEffect,
 	useMemo,
 } from '@pionjs/pion';
+import type { NormalizedSettings } from './settings/normalize';
+import type { ResetFn } from './settings/use-settings';
+import type { NormalizedColumn } from './use-dom-columns';
 import { useHashState } from './use-hash-state';
 
-const parseBool = (bool) => [true, 'true', 1, 'yes', 'on'].includes(bool),
-	boolParam = (p) => p === '' || (p == null ? undefined : parseBool(p)),
-	useSettingsState = (setter, name, setSettings) =>
+type SetSettings = (
+	settings?:
+		| NormalizedSettings
+		| ((prev: NormalizedSettings) => NormalizedSettings),
+) => void;
+
+const parseBool = (bool: string | number | boolean) =>
+		[true, 'true', 1, 'yes', 'on'].includes(bool),
+	boolParam = (p: string | boolean | undefined) =>
+		p === '' || (p == null ? undefined : parseBool(p)),
+	useSettingsState = <T>(
+		setter: (value: T | ((prev: T) => T)) => void,
+		name: string,
+		setSettings: SetSettings,
+	) =>
 		useCallback(
-			(value) => {
+			(value: T) => {
 				setter(value);
 				setSettings((s) => ({ ...s, [name]: value }));
 			},
 			[setter, name, setSettings],
 		);
 
+export interface SortAndGroupOptions {
+	groupOn?: string;
+	setGroupOn: (name?: string) => void;
+	groupOnDescending?: boolean;
+	setGroupOnDescending: (value?: boolean) => void;
+	sortOn?: string;
+	setSortOn: (name?: string) => void;
+	descending?: boolean;
+	setDescending: (value?: boolean) => void;
+	columns: NormalizedColumn[];
+	sortAndGroup: Record<string, unknown>;
+	groupOnColumn?: NormalizedColumn;
+	sortOnColumn?: NormalizedColumn;
+	[key: string]: unknown;
+}
+
+interface UseSortAndGroupOptionsParams {
+	settings: NormalizedSettings;
+	setSettings: SetSettings;
+	resetRef: { current?: ResetFn };
+	ready?: boolean;
+	[key: string]: unknown;
+}
+
 export const useSortAndGroupOptions = (
-		columns,
-		hashParam,
-		{ settings, setSettings, resetRef, ready = true },
+		columns: NormalizedColumn[],
+		hashParam: string | null | undefined,
+		{
+			settings,
+			setSettings,
+			resetRef,
+			ready = true,
+		}: UseSortAndGroupOptionsParams,
 	) => {
 		const [sortOn, setSortOn] = useHashState(settings.sortOn, hashParam, {
 				suffix: '-sortOn',
@@ -72,11 +116,17 @@ export const useSortAndGroupOptions = (
 				columns,
 			},
 			sortAndGroup = useMemo(() => sortAndGroup_, Object.values(sortAndGroup_)),
-			setSG = useCallback((c) => {
-				setSortOn(c.sortOn);
-				setGroupOn(c.groupOn);
-				setDescending(c.descending);
-				setGroupOnDescending(c.groupOnDescending);
+			setSG = useCallback((c: Partial<Record<string, unknown>>) => {
+				setSortOn(typeof c.sortOn === 'string' ? c.sortOn : undefined);
+				setGroupOn(typeof c.groupOn === 'string' ? c.groupOn : undefined);
+				setDescending(
+					typeof c.descending === 'boolean' ? c.descending : undefined,
+				);
+				setGroupOnDescending(
+					typeof c.groupOnDescending === 'boolean'
+						? c.groupOnDescending
+						: undefined,
+				);
 			}, []);
 
 		// eslint-disable-next-line no-void
@@ -84,7 +134,9 @@ export const useSortAndGroupOptions = (
 
 		return { ...sortAndGroup, sortAndGroup, groupOnColumn, sortOnColumn };
 	},
-	SortAndGroupContext = createContext();
+	SortAndGroupContext = createContext<SortAndGroupOptions | undefined>(
+		undefined,
+	);
 
 customElements.define('sort-and-group-provider', SortAndGroupContext.Provider);
 customElements.define(
