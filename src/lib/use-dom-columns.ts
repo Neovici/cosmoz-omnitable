@@ -8,6 +8,7 @@ export interface DomColumn
 	extends HTMLElement, Omit<Column, 'title' | 'hidden'> {
 	isOmnitableColumn: boolean;
 	hidden: boolean;
+	__ownChange?: boolean;
 	disabled?: boolean;
 	disabledFiltering?: boolean;
 	computeSource: (column: Column, data: unknown) => unknown;

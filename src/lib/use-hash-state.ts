@@ -22,7 +22,7 @@ type SingleHashStateOpts<T> = {
 type MultiHashStateOpts<T extends Record<string, unknown>> = {
 	suffix?: string;
 	read?: MultiCodec<T[keyof T]>;
-	write?: (entry: [string, T[keyof T]]) => [string, string | undefined];
+	write?: (entry: [string, T[keyof T]]) => [string, unknown];
 	multi: true;
 	ready?: boolean;
 };

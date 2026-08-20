@@ -4,6 +4,10 @@ import { Column } from '../types';
 
 export interface NormalizedSettings {
 	columns: ColumnConfigInput[];
+	sortOn?: string;
+	descending?: boolean;
+	groupOn?: string;
+	groupOnDescending?: boolean;
 }
 
 export const sgProps = [
