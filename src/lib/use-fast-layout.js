@@ -70,8 +70,11 @@ export const useFastLayout = ({
 		layout,
 		tweenSpeed,
 		(tweenedlayout) => {
-			const layoutCss = toCss(tweenedlayout, meta.columns);
-			styleSheet.replace(layoutCss);
+			const layoutCss = toCss(
+				tweenedlayout.map((w) => (w == null ? w : Math.round(w))),
+				meta.columns,
+			);
+			styleSheet.replaceSync(layoutCss);
 		},
 		onConverge,
 	);
