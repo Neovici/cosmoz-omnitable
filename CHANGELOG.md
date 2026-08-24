@@ -1,3 +1,9 @@
+## 18.10.4
+
+### Patch Changes
+
+- a126c24: Fix header/body misalignment while animating column resize: round tweened column widths and use `replaceSync` when applying the layout stylesheet.
+
 ## 18.10.3
 
 ### Patch Changes
