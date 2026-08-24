@@ -14,15 +14,16 @@ const _toCss = (
 	);
 
 	const generateCellCSS = (itemName: ItemName, width: Width) =>
-		`.cell[name="${itemName}"], cosmoz-omnitable-skeleton::part(cell-${itemName}){width: ${Math.floor(
-			width,
-		)}px;padding: 0 min(3px, ${width / 2}px)}`;
+		`.cell[name="${itemName}"], cosmoz-omnitable-skeleton::part(cell-${itemName}){width: ${width}px;padding: 0 min(3px, ${width / 2}px)}`;
 
 	const hideResizeNub = (itemName: ItemName) =>
 		`cosmoz-omnitable-resize-nub[name="${itemName}"]{display:none}`;
 
 	const hideColumn = (itemName: ItemName) =>
 		`cosmoz-omnitable-resize-nub[name="${itemName}"], .cell[name="${itemName}"]{display:none}`;
+
+	let cumulative = 0,
+		offset = 0;
 
 	return config
 		.map((item, index) => {
@@ -33,8 +34,12 @@ const _toCss = (
 				return hideColumn(item.name);
 			}
 
-			// All visible columns
-			const cellCSS = generateCellCSS(item.name, width);
+			cumulative += width;
+			const nextOffset = Math.round(cumulative),
+				cellWidth = nextOffset - offset;
+			offset = nextOffset;
+
+			const cellCSS = generateCellCSS(item.name, cellWidth);
 
 			// Last visible column, show cell but hide its resize nub
 			if (index === lastVisibleIndex) {
