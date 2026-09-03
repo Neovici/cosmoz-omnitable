@@ -23,6 +23,10 @@ const observedAttributes = [
 const style = css`
 	${inputStyles}
 
+	label {
+		text-align: left;
+	}
+
 	.wrap {
 		height: 40px;
 	}
@@ -34,6 +38,8 @@ const style = css`
 
 const DropdownInput = (host: DropdownInputHost) => {
 	const { label, value, slot } = host;
+
+	host.toggleAttribute('has-value', !!value);
 
 	const control = html`<div
 		id="input"
@@ -53,5 +59,5 @@ customElements.define(
 	component(DropdownInput, {
 		observedAttributes,
 		styleSheets: [style],
-	}),
+	})
 );
