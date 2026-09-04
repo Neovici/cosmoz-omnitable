@@ -140,9 +140,5 @@
     "sinon": "^22.0.0",
     "storybook": "^10.0.4",
     "typescript": "^6.0.2"
-  },
-  "overrides": {
-    "vite": "7.3.6",
-    "comment": "latest vite misidentifies @polymer/polymer's static import and throw SyntaxError: Unexpected token '('"
   }
 }
