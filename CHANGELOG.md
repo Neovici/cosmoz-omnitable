@@ -1,3 +1,9 @@
+## 18.11.0-beta.3
+
+### Patch Changes
+
+- 5a2bdf3: Toggle has-value attribute for inline label float
+
 ## 18.11.0-beta.2
 
 ### Patch Changes

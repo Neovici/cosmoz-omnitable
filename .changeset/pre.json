@@ -1,12 +1,4 @@
 {
   "mode": "pre",
-  "tag": "beta",
-  "initialVersions": {
-    "@neovici/cosmoz-omnitable": "18.10.0"
-  },
-  "changesets": [
-    "beta-features-minor",
-    "flat-eggs-yell",
-    "shaky-ants-fix"
-  ]
+  "tag": "beta"
 }
