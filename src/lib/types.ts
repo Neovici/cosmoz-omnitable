@@ -115,7 +115,7 @@ export type Items = Item[];
 
 export interface ItemRenderData {
 	item: Item;
-	selected: boolean;
+	selected?: boolean;
 	expanded?: boolean;
 	index?: number;
 }

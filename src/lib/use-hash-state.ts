@@ -22,7 +22,7 @@ type SingleHashStateOpts<T> = {
 type MultiHashStateOpts<T extends Record<string, unknown>> = {
 	suffix?: string;
 	read?: MultiCodec<T[keyof T]>;
-	write?: (entry: [string, T[keyof T]]) => [string, string | undefined];
+	write?: (entry: [string, T[keyof T]]) => [string, unknown];
 	multi: true;
 	ready?: boolean;
 };
@@ -33,13 +33,13 @@ const makeLinker =
 				hashParam: string,
 				value: unknown,
 				codec: (v: unknown) => string,
-				searchParams: URLSearchParams,
-			) => void,
+				searchParams: URLSearchParams
+			) => void
 		) =>
 		(
 			hashParam: string,
 			value: unknown,
-			codec: (v: unknown) => string = identity as (v: unknown) => string,
+			codec: (v: unknown) => string = identity as (v: unknown) => string
 		) => {
 			const url = hashUrl(),
 				searchParams = new URLSearchParams(url.hash.replace('#', ''));
@@ -50,7 +50,7 @@ const makeLinker =
 				'#!' +
 				Object.assign(url, { hash: searchParams }).href.replace(
 					location.origin,
-					'',
+					''
 				)
 			);
 		},
@@ -58,7 +58,7 @@ const makeLinker =
 	singleLink = makeLinker((hashParam, value, codec, searchParams) =>
 		!isEmpty(codec(value))
 			? searchParams.set(hashParam, codec(value))
-			: searchParams.delete(hashParam),
+			: searchParams.delete(hashParam)
 	),
 	multiLink = makeLinker((hashParam, value, codec, searchParams) => {
 		const originalEntries = Object.entries(value as Record<string, unknown>);
@@ -80,7 +80,7 @@ const makeLinker =
 		entries.forEach(([key, val]) =>
 			!isEmpty(val)
 				? searchParams.set(hashParam + key, val as string)
-				: searchParams.delete(hashParam + key),
+				: searchParams.delete(hashParam + key)
 		);
 	});
 
@@ -102,13 +102,13 @@ const makeLinker =
 export function useHashState<T>(
 	initial: T,
 	param: string | null | undefined,
-	opts?: SingleHashStateOpts<T>,
+	opts?: SingleHashStateOpts<T>
 ): [T, (value: T | ((prev: T) => T)) => void];
 
 export function useHashState<T extends Record<string, unknown>>(
 	initial: T,
 	param: string | null | undefined,
-	opts: MultiHashStateOpts<T>,
+	opts: MultiHashStateOpts<T>
 ): [T, (value: T | ((prev: T) => T)) => void];
 
 export function useHashState<T>(
@@ -120,7 +120,7 @@ export function useHashState<T>(
 		write,
 		ready = true,
 		multi,
-	}: SingleHashStateOpts<T> | MultiHashStateOpts<Record<string, unknown>> = {},
+	}: SingleHashStateOpts<T> | MultiHashStateOpts<Record<string, unknown>> = {}
 ): [T, (value: T | ((prev: T) => T)) => void] {
 	const link = multi ? multiLink : singleLink,
 		meta = useMeta({
@@ -142,13 +142,13 @@ export function useHashState<T>(
 			if (multi) {
 				const result = multiParse(
 					param + suffix,
-					read as MultiCodec<unknown> | undefined,
+					read as MultiCodec<unknown> | undefined
 				);
 				return Object.keys(result).length > 0 ? (result as T) : initial;
 			}
 			const result = singleParse(
 				param + suffix,
-				read as SingleCodec<T> | undefined,
+				read as SingleCodec<T> | undefined
 			);
 			return (result ?? initial) as T;
 		}),
@@ -163,13 +163,13 @@ export function useHashState<T>(
 							null,
 							{
 								notify: false,
-							},
+							}
 						);
 					}
 
 					return newState;
 				}),
-			[],
+			[]
 		);
 
 	// Sync state with initial when:

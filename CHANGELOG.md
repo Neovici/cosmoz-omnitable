@@ -14,6 +14,24 @@
 
 - 2f8fca1: Bump cosmoz-autocomplete to ^13.7.0-beta.6 for cosmoz-input v6 compatibility
 
+## 18.10.5
+
+### Patch Changes
+
+- ad0795a: Round column widths by their cumulative offset instead of each width independently when generating the resize layout. This keeps every cell edge on a whole pixel while avoiding the cumulative rounding error that made the rightmost column (and the header settings button) tremble during a column-resize animation on both Chromium and Firefox.
+
+## 18.10.4
+
+### Patch Changes
+
+- a126c24: Fix header/body misalignment while animating column resize: round tweened column widths and use `replaceSync` when applying the layout stylesheet.
+
+## 18.10.3
+
+### Patch Changes
+
+- 9c71094: Fix regression in render-footer where the `info` slot redistribution (`<slot name="info" slot="info">`) was accidentally replaced with a plain `<span slot="info">` in #1037, breaking consumer content slotted as `name="info"`.
+
 ## 18.10.2
 
 ### Patch Changes

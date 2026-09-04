@@ -18,7 +18,7 @@ interface UseSettingsProps {
 	host: UseSettingsHost & HTMLElement;
 }
 
-type ResetFn = (initial: Partial<Record<string, unknown>>) => void;
+export type ResetFn = (initial: Partial<Record<string, unknown>>) => void;
 
 export interface UseSettingsResult {
 	settingsId?: string;

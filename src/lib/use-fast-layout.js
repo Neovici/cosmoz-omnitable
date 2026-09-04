@@ -51,9 +51,9 @@ export const useFastLayout = ({
 						column.disabled
 							? acc
 							: [...acc, columns.find((c) => c.name === column.name)],
-					[],
+					[]
 				),
-			[columns, settings, layout],
+			[columns, settings, layout]
 		);
 
 	// Tween only runs briefly for direct column interactions (show/hide,
@@ -61,7 +61,7 @@ export const useFastLayout = ({
 	const [tweenSpeed, setTweenSpeed] = useState(1),
 		requestTween = useCallback(
 			() => setTweenSpeed(resizeSpeedFactor ?? 1.9),
-			[resizeSpeedFactor],
+			[resizeSpeedFactor]
 		),
 		onConverge = useCallback(() => setTweenSpeed(1), []);
 
@@ -71,9 +71,9 @@ export const useFastLayout = ({
 		tweenSpeed,
 		(tweenedlayout) => {
 			const layoutCss = toCss(tweenedlayout, meta.columns);
-			styleSheet.replace(layoutCss);
+			styleSheet.replaceSync(layoutCss);
 		},
-		onConverge,
+		onConverge
 	);
 
 	useResizableColumns({

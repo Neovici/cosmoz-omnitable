@@ -36,6 +36,30 @@ suite('render-footer export', () => {
 		container.remove();
 	});
 
+	test('redistributes consumer info-slot content via a slot (regression for #1037)', () => {
+		const container = document.createElement('div');
+		document.body.append(container);
+
+		render(
+			renderFooter({
+				columns: [],
+				selectedItems: [{ id: 1 }],
+				setSelectedItems: () => undefined,
+			}),
+			container
+		);
+
+		// PR #899 introduced `<slot name="info" slot="info">` to both catch
+		// consumer content slotted as name="info" and redistribute it into
+		// cosmoz-bottom-bar's info slot. PR #1037 accidentally replaced this
+		// with a plain <span slot="info">, breaking slot redistribution.
+		const infoSlot = container.querySelector('slot[name="info"]');
+		assert.isNotNull(infoSlot);
+		assert.equal(infoSlot.getAttribute('slot'), 'info');
+
+		container.remove();
+	});
+
 	test('shows export buttons when selectedItems is an array', () => {
 		const container = document.createElement('div');
 		document.body.append(container);

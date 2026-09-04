@@ -84,7 +84,7 @@ export const renderFooter = ({
 		part="bottomBar"
 		exportparts="bar: bottomBar-bar, info: bottomBar-info, buttons: bottomBar-buttons"
 	>
-		<span slot="info">
+		<slot name="info" slot="info">
 			${allLabel}
 			${when(
 				showSelectAllItems,
@@ -100,7 +100,7 @@ export const renderFooter = ({
 							${t('Select all items')}
 						</span>`
 			)}
-		</span>
+		</slot>
 		<slot name="actions" id="actions"></slot>
 		<slot name="bottom-bar-toolbar" slot="bottom-bar-toolbar"></slot>
 		<slot name="bottom-bar-menu" slot="bottom-bar-menu"></slot>

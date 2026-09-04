@@ -4,6 +4,10 @@ import { Column } from '../types';
 
 export interface NormalizedSettings {
 	columns: ColumnConfigInput[];
+	sortOn?: string;
+	descending?: boolean;
+	groupOn?: string;
+	groupOnDescending?: boolean;
 }
 
 export const sgProps = [
@@ -31,19 +35,19 @@ const byName = (name: string) => (item: unknown) =>
 export const normalizeColumns = (
 	columns: NormalizeProps['columns'] = [],
 	settings: NormalizedSettings['columns'] = [],
-	savedSettings: NormalizedSettings['columns'] = [],
+	savedSettings: NormalizedSettings['columns'] = []
 ): NormalizedSettings['columns'] => {
 	const _settings = settings.filter((setting) =>
-			columns.some(byName(setting.name)),
+			columns.some(byName(setting.name))
 		),
 		cols = columns.filter(
 			(column) =>
 				column.name != null &&
 				!settings.some(byName(column.name)) &&
-				!savedSettings.some(byName(column.name)),
+				!savedSettings.some(byName(column.name))
 		),
 		_savedSettings = savedSettings.filter(
-			(column) => !settings.some(byName(column.name)),
+			(column) => !settings.some(byName(column.name))
 		);
 
 	return [
@@ -77,12 +81,12 @@ export const normalizeColumns = (
 
 export const normalizeStore = (
 	settings: NormalizedSettings,
-	current: NormalizedSettings,
+	current: NormalizedSettings
 ) => ({
 	...current,
 	...props(Array.from(sgProps))(settings),
 	columns: settings.columns?.map(
-		props(['name', 'priority', 'width', 'flex', 'disabled']),
+		props(['name', 'priority', 'width', 'flex', 'disabled'])
 	),
 });
 
@@ -93,7 +97,7 @@ export default ({
 	initial,
 }: NormalizeProps): NormalizedSettings => {
 	const init = Object.fromEntries(
-		sgProps.flatMap((k) => (initial?.[k] != null ? [[k, initial[k]]] : [])),
+		sgProps.flatMap((k) => (initial?.[k] != null ? [[k, initial[k]]] : []))
 	);
 
 	return {
@@ -103,7 +107,7 @@ export default ({
 		columns: normalizeColumns(
 			columns,
 			settings?.columns,
-			savedSettings?.columns,
+			savedSettings?.columns
 		),
 	};
 };

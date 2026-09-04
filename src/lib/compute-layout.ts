@@ -6,23 +6,26 @@ type Width = ColumnConfigInput['width'];
 
 const _toCss = (
 	layout: (number | undefined)[],
-	config: ColumnConfigInput[],
+	config: ColumnConfigInput[]
 ) => {
 	const lastVisibleIndex = findLastIndex(
 		layout,
-		(width) => width != null && width > 0,
+		(width) => width != null && width > 0
 	);
 
 	const generateCellCSS = (itemName: ItemName, width: Width) =>
-		`.cell[name="${itemName}"], cosmoz-omnitable-skeleton::part(cell-${itemName}){width: ${Math.floor(
-			width,
-		)}px;padding: 0 min(3px, ${width / 2}px)}`;
+		`.cell[name="${itemName}"], cosmoz-omnitable-skeleton::part(cell-${itemName}){width: ${width}px;padding: 0 min(3px, ${
+			width / 2
+		}px)}`;
 
 	const hideResizeNub = (itemName: ItemName) =>
 		`cosmoz-omnitable-resize-nub[name="${itemName}"]{display:none}`;
 
 	const hideColumn = (itemName: ItemName) =>
 		`cosmoz-omnitable-resize-nub[name="${itemName}"], .cell[name="${itemName}"]{display:none}`;
+
+	let cumulative = 0,
+		offset = 0;
 
 	return config
 		.map((item, index) => {
@@ -33,8 +36,12 @@ const _toCss = (
 				return hideColumn(item.name);
 			}
 
-			// All visible columns
-			const cellCSS = generateCellCSS(item.name, width);
+			cumulative += width;
+			const nextOffset = Math.round(cumulative),
+				cellWidth = nextOffset - offset;
+			offset = nextOffset;
+
+			const cellCSS = generateCellCSS(item.name, cellWidth);
 
 			// Last visible column, show cell but hide its resize nub
 			if (index === lastVisibleIndex) {
@@ -50,7 +57,7 @@ const _toCss = (
 export const computeLayout = (
 	_columnConfigs: ColumnConfig[],
 	canvasWidth: number,
-	numColumns: number,
+	numColumns: number
 ): (number | undefined)[] => {
 	const columnConfigs = _columnConfigs.filter((c) => !c.hidden),
 		totalWidths = columnConfigs.reduce((sum, { width }) => sum + width, 0);
@@ -68,7 +75,7 @@ export const computeLayout = (
 			Math.max(max, column.index),
 			column.index > max ? index : maxIndex,
 		],
-		[-1, -1],
+		[-1, -1]
 	)[1];
 
 	// force the last visible column to flex
@@ -86,5 +93,5 @@ export const computeLayout = (
 
 export const toCss = (
 	layout: (number | undefined)[],
-	config: ColumnConfigInput[],
+	config: ColumnConfigInput[]
 ) => (layout.length === 0 ? '.cell {display: none;}' : _toCss(layout, config));
