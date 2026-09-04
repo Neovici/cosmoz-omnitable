@@ -1,7 +1,7 @@
-import{b as m}from"./iframe-CbFp217G.js";import{g as e}from"./table-demo-helper-uKBeFwiu.js";import"./cosmoz-omnitable-8lmHFhb4.js";import"./preload-helper-PPVm8Dsz.js";import"./cosmoz-collapse-6oPuK04r.js";const t=e(10,10,10),u={title:"Components/CosmozOmnitableItemRowMiniMode",component:"cosmoz-omnitable-item-row"},a=n=>m`
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{Xt as t,Zt as n}from"./dist-Bd_7_9uE.js";import{n as r,t as i}from"./table-demo-helper-C6ZNhr6E.js";import{t as a}from"./cosmoz-omnitable-H6nadz2w.js";var o,s,c,l,u;function d(){return(d=e((()=>{n(),r(),a(),o=i(10,10,10),s={title:`Components/CosmozOmnitableItemRowMiniMode`,component:`cosmoz-omnitable-item-row`},c=e=>t`
     <style>
         .container {
-            width: ${n.width||"400px"};
+            width: ${e.width||`400px`};
             height: 400px;
             display: flex;
             flex-direction: column;
@@ -12,7 +12,7 @@ import{b as m}from"./iframe-CbFp217G.js";import{g as e}from"./table-demo-helper-
         }
     </style>
     <div class="container">
-        <cosmoz-omnitable .data=${t} mini-breakpoint="9999">
+        <cosmoz-omnitable .data=${o} mini-breakpoint="9999">
             <cosmoz-omnitable-column
                 name="name"
                 title="Name"
@@ -44,7 +44,7 @@ import{b as m}from"./iframe-CbFp217G.js";import{g as e}from"./table-demo-helper-
             ></cosmoz-omnitable-column>
         </cosmoz-omnitable>
     </div>
-`,o=a.bind({});o.args={width:"400px"};o.parameters={...o.parameters,docs:{...o.parameters?.docs,source:{originalSource:`args => html\`
+`,l=c.bind({}),l.args={width:`400px`},l.parameters={...l.parameters,docs:{...l.parameters?.docs,source:{originalSource:`args => html\`
     <style>
         .container {
             width: \${args.width || '400px'};
@@ -90,4 +90,4 @@ import{b as m}from"./iframe-CbFp217G.js";import{g as e}from"./table-demo-helper-
             ></cosmoz-omnitable-column>
         </cosmoz-omnitable>
     </div>
-\``,...o.parameters?.docs?.source}}};const p=["MiniMode"];export{o as MiniMode,p as __namedExportsOrder,u as default};
+\``,...l.parameters?.docs?.source}}},u=[`MiniMode`]})))()}d();export{l as MiniMode,u as __namedExportsOrder,s as default};
