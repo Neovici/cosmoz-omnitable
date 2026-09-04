@@ -2,4 +2,4 @@
 "@neovici/cosmoz-omnitable": patch
 ---
 
-Bump cosmoz-autocomplete to ^13.7.0-beta.6 for cosmoz-input v6 compatibility
+Align cosmoz component dependency ranges to stable token-refactor lines (including autocomplete/input/dropdown/datetime-input) to avoid prerelease-only resolution.

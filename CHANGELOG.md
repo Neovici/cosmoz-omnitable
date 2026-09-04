@@ -1,25 +1,3 @@
-## 18.11.0-beta.3
-
-### Patch Changes
-
-- 5a2bdf3: Toggle has-value attribute for inline label float
-
-## 18.11.0-beta.2
-
-### Patch Changes
-
-- 77db5f8: Add select all items feature, ts migration and add align/headerAlign column properties
-
-## 18.11.0-beta.1
-
-### Minor Changes
-
-- 13534b9: Add variant inline for disabled filter inputs, smooth transitions, skeleton padding fixes, and inline mode for auto-height omnitable
-
-### Patch Changes
-
-- 2f8fca1: Bump cosmoz-autocomplete to ^13.7.0-beta.6 for cosmoz-input v6 compatibility
-
 ## 18.10.5
 
 ### Patch Changes

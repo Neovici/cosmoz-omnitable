@@ -1,5 +1,5 @@
 ---
-'@neovici/cosmoz-omnitable': minor
+"@neovici/cosmoz-omnitable": major
 ---
 
-Add variant inline for disabled filter inputs, smooth transitions, skeleton padding fixes, and inline mode for auto-height omnitable
+Ship the tokens-refactor UI baseline and inline behavior updates: inline variant for disabled filter inputs, smoother mini mode transitions, skeleton/header spacing refresh, and inline auto-height rendering that keeps all rows mounted without internal scroll.
