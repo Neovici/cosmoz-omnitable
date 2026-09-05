@@ -1,3 +1,15 @@
+## 19.0.0
+
+### Major Changes
+
+- 6ed025a: Ship the tokens-refactor UI baseline and inline behavior updates: inline variant for disabled filter inputs, smoother mini mode transitions, skeleton/header spacing refresh, and inline auto-height rendering that keeps all rows mounted without internal scroll.
+
+### Patch Changes
+
+- 6ed025a: Add select-all-items behavior in the footer, add align/headerAlign column properties for filter/header alignment, and fix resize animation pixel rounding that caused header/body misalignment and right-edge jitter.
+- 6ed025a: Toggle has-value attribute for inline label float
+- 6ed025a: Align cosmoz component dependency ranges to stable token-refactor lines (including autocomplete/input/dropdown/datetime-input) to avoid prerelease-only resolution.
+
 ## 18.10.5
 
 ### Patch Changes
