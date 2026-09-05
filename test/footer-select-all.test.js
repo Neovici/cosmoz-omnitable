@@ -35,14 +35,14 @@ suite('footer select all', () => {
 					></cosmoz-omnitable-column>
 				</cosmoz-omnitable>
 			`,
-			generateTableDemoData(10, 11, 25),
+			generateTableDemoData(10, 11, 25)
 		);
 		await nextFrame();
 	});
 
 	test('shows select-all button after selecting displayed rows and switches to All', async () => {
 		const headerCheckbox = omnitable.shadowRoot.querySelector(
-			'input[type="checkbox"]',
+			'input[type="checkbox"]'
 		);
 		headerCheckbox.click();
 		await nextFrame();
@@ -55,7 +55,7 @@ suite('footer select all', () => {
 		await nextFrame();
 
 		const footerInfo = omnitable.shadowRoot.querySelector(
-			'#bottomBar [slot="info"]',
+			'#bottomBar [slot="info"]'
 		);
 
 		assert.strictEqual(omnitable.selectedItems, All);

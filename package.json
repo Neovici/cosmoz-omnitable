@@ -1,6 +1,6 @@
 {
   "name": "@neovici/cosmoz-omnitable",
-  "version": "18.10.5",
+  "version": "18.11.0-beta.3",
   "description": "[![Build Status](https://travis-ci.org/Neovici/cosmoz-omnitable.svg?branch=master)](https://travis-ci.org/Neovici/cosmoz-omnitable)",
   "keywords": [
     "web-components"
@@ -78,10 +78,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "overrides": {
-    "vite": "7.3.6",
-    "comment": "latest vite misidentifies @polymer/polymer's static import and throw SyntaxError: Unexpected token '('"
-  },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
@@ -101,16 +97,18 @@
   },
   "dependencies": {
     "@lit-labs/virtualizer": "^2.1.0",
-    "@neovici/cosmoz-autocomplete": "^12.0.0 || ^13.0.0",
-    "@neovici/cosmoz-bottom-bar": "^9.0.5 || ^10.0.0 || ^11.0.0",
-    "@neovici/cosmoz-collapse": "^1.1.0",
-    "@neovici/cosmoz-datetime-input": "^4.0.1",
-    "@neovici/cosmoz-dropdown": "^7.0.0",
-    "@neovici/cosmoz-icons": "^1.1.0",
-    "@neovici/cosmoz-input": "^5.0.0",
-    "@neovici/cosmoz-router": "^11.0.0",
-    "@neovici/cosmoz-spinner": "^1.0.1",
-    "@neovici/cosmoz-utils": "^6.21.0",
+    "@neovici/cosmoz-autocomplete": "^14.0.1",
+    "@neovici/cosmoz-bottom-bar": "^12.0.0",
+    "@neovici/cosmoz-button": "^1.1.1",
+    "@neovici/cosmoz-collapse": "^1.6.0",
+    "@neovici/cosmoz-datetime-input": "^5.0.0",
+    "@neovici/cosmoz-dropdown": "^8.0.0",
+    "@neovici/cosmoz-icons": "^1.6.0",
+    "@neovici/cosmoz-input": "^6.0.0",
+    "@neovici/cosmoz-router": "^11.3.0",
+    "@neovici/cosmoz-spinner": "^1.0.3",
+    "@neovici/cosmoz-tokens": "^3.5.1",
+    "@neovici/cosmoz-utils": "^6.22.2",
     "@neovici/nullxlsx": "^3.0.0",
     "@pionjs/pion": "^2.16.0",
     "@polymer/polymer": "^3.3.0",
@@ -124,7 +122,7 @@
     "@commitlint/config-conventional": "^21.0.0",
     "@neovici/cfg": "^2.8.0",
     "@neovici/testing": "^2.1.1",
-    "@open-wc/testing": "^5.0.0",
+    "@open-wc/testing": "^4.0.0",
     "@polymer/iron-test-helpers": "^3.0.0",
     "@polymer/paper-button": "^3.0.0",
     "@polymer/paper-dropdown-menu": "^3.2.0",
@@ -136,7 +134,7 @@
     "@storybook/web-components-vite": "^10.0.4",
     "@types/file-saver": "^2.0.0",
     "@types/file-saver-es": "^2.0.3",
-    "@web/dev-server-esbuild": "^2.0.0",
+    "@web/dev-server-esbuild": "^1.0.4",
     "husky": "^9.0.0",
     "lint-staged": "^17.0.5",
     "sinon": "^22.0.0",

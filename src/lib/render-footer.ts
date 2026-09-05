@@ -1,3 +1,5 @@
+import '@neovici/cosmoz-dropdown';
+import { download01Icon } from '@neovici/cosmoz-icons/untitled';
 import { t } from 'i18next';
 import { html } from 'lit-html';
 import { when } from 'lit-html/directives/when.js';
@@ -10,7 +12,7 @@ interface RenderFooterParams {
 	columns: Column[];
 	selectedItems: Item[] | TAll;
 	setSelectedItems: (
-		items: Item[] | TAll | ((prev: Item[] | TAll) => Item[] | TAll),
+		items: Item[] | TAll | ((prev: Item[] | TAll) => Item[] | TAll)
 	) => void;
 	csvFilename?: string;
 	xlsxFilename?: string;
@@ -43,43 +45,26 @@ export const renderFooter = ({
 			slot="extra"
 			.placement=${topPlacement}
 		>
-			<svg
-				slot="button"
-				width="14"
-				height="18"
-				viewBox="0 0 14 18"
-				fill="none"
-				stroke="currentColor"
-				xmlns="http://www.w3.org/2000/svg"
-			>
-				<path
-					d="M1 8.5L7.00024 14.5L13 8.5"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-				/>
-				<path d="M13 17L1 17" stroke-width="2" stroke-linecap="round" />
-				<path d="M7 1V13" stroke-width="2" stroke-linecap="round" />
-			</svg>
-			<button
+			${download01Icon({ slot: 'button' })}
+			<cosmoz-button
 				@click=${() =>
 					saveAsCsvAction(columns as CsvColumn[], items, csvFilename!)}
 			>
 				${t('Save selected items as CSV')}
-			</button>
-			<button
+			</cosmoz-button>
+			<cosmoz-button
 				@click=${() =>
 					saveAsXlsxAction(
 						columns as XlsxColumn[],
 						items,
 						xlsxFilename!,
-						xlsxSheetname!,
+						xlsxSheetname!
 					)}
 			>
 				${t('Save selected items as XLSX')}
-			</button>
-			<slot name="download-menu"></slot>
-		</cosmoz-dropdown-menu>`;
+			</cosmoz-button>
+			<slot name="download-menu"></slot
+		></cosmoz-dropdown-menu>`;
 	};
 	const allLabel = when(
 		isAllSelected,
@@ -90,7 +75,7 @@ export const renderFooter = ({
 		() =>
 			t('{count} selected item', {
 				count: selectedItems === All ? 0 : selectedItems.length,
-			}),
+			})
 	);
 
 	return html`<cosmoz-bottom-bar
@@ -113,14 +98,14 @@ export const renderFooter = ({
 							@click=${() => setSelectedItems(All)}
 						>
 							${t('Select all items')}
-						</span>`,
+						</span>`
 			)}
 		</slot>
 		<slot name="actions" id="actions"></slot>
 		<slot name="bottom-bar-toolbar" slot="bottom-bar-toolbar"></slot>
 		<slot name="bottom-bar-menu" slot="bottom-bar-menu"></slot>
 		${when(selectedItems !== All, () =>
-			renderExportMenu(selectedItems as Item[]),
+			renderExportMenu(selectedItems as Item[])
 		)}
 	</cosmoz-bottom-bar>`;
 };

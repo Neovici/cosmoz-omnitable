@@ -97,7 +97,6 @@ class OmnitableColumnTime extends columnMixin(PolymerElement) {
 	renderEditCell(column, { item }, onItemChange) {
 		const onChange = (event) => onItemChange(event.target.value);
 		return html`<cosmoz-input
-			no-label-float
 			type="text"
 			@change=${onChange}
 			.value=${getString(column, item)}
@@ -117,7 +116,7 @@ class OmnitableColumnTime extends columnMixin(PolymerElement) {
 		},
 		{ filter },
 		setState,
-		source,
+		source
 	) {
 		return html`<cosmoz-omnitable-time-range-input
 			.title=${title}

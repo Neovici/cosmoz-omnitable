@@ -14,7 +14,7 @@ import { useHashState } from './use-hash-state';
 type SetSettings = (
 	settings?:
 		| NormalizedSettings
-		| ((prev: NormalizedSettings) => NormalizedSettings),
+		| ((prev: NormalizedSettings) => NormalizedSettings)
 ) => void;
 
 const parseBool = (bool: string | number | boolean) =>
@@ -24,14 +24,14 @@ const parseBool = (bool: string | number | boolean) =>
 	useSettingsState = <T>(
 		setter: (value: T | ((prev: T) => T)) => void,
 		name: string,
-		setSettings: SetSettings,
+		setSettings: SetSettings
 	) =>
 		useCallback(
 			(value: T) => {
 				setter(value);
 				setSettings((s) => ({ ...s, [name]: value }));
 			},
-			[setter, name, setSettings],
+			[setter, name, setSettings]
 		);
 
 export interface SortAndGroupOptions {
@@ -66,7 +66,7 @@ export const useSortAndGroupOptions = (
 			setSettings,
 			resetRef,
 			ready = true,
-		}: UseSortAndGroupOptionsParams,
+		}: UseSortAndGroupOptionsParams
 	) => {
 		const [sortOn, setSortOn] = useHashState(settings.sortOn, hashParam, {
 				suffix: '-sortOn',
@@ -75,7 +75,7 @@ export const useSortAndGroupOptions = (
 			[descending, setDescending] = useHashState(
 				boolParam(settings.descending),
 				hashParam,
-				{ suffix: '-descending', read: boolParam, ready },
+				{ suffix: '-descending', read: boolParam, ready }
 			),
 			[groupOn, setGroupOn] = useHashState(settings.groupOn, hashParam, {
 				suffix: '-groupOn',
@@ -84,15 +84,15 @@ export const useSortAndGroupOptions = (
 			[groupOnDescending, setGroupOnDescending] = useHashState(
 				boolParam(settings.groupOnDescending),
 				hashParam,
-				{ suffix: '-groupOnDescending', read: boolParam, ready },
+				{ suffix: '-groupOnDescending', read: boolParam, ready }
 			),
 			sortOnColumn = useMemo(
 				() => columns.find((column) => column.name === sortOn),
-				[columns, sortOn],
+				[columns, sortOn]
 			),
 			groupOnColumn = useMemo(
 				() => columns.find((column) => column.name === groupOn),
-				[columns, groupOn],
+				[columns, groupOn]
 			),
 			sortAndGroup_ = {
 				groupOn,
@@ -101,7 +101,7 @@ export const useSortAndGroupOptions = (
 				setGroupOnDescending: useSettingsState(
 					setGroupOnDescending,
 					'groupOnDescending',
-					setSettings,
+					setSettings
 				),
 
 				sortOn,
@@ -110,7 +110,7 @@ export const useSortAndGroupOptions = (
 				setDescending: useSettingsState(
 					setDescending,
 					'descending',
-					setSettings,
+					setSettings
 				),
 
 				columns,
@@ -120,12 +120,12 @@ export const useSortAndGroupOptions = (
 				setSortOn(typeof c.sortOn === 'string' ? c.sortOn : undefined);
 				setGroupOn(typeof c.groupOn === 'string' ? c.groupOn : undefined);
 				setDescending(
-					typeof c.descending === 'boolean' ? c.descending : undefined,
+					typeof c.descending === 'boolean' ? c.descending : undefined
 				);
 				setGroupOnDescending(
 					typeof c.groupOnDescending === 'boolean'
 						? c.groupOnDescending
-						: undefined,
+						: undefined
 				);
 			}, []);
 
@@ -135,7 +135,7 @@ export const useSortAndGroupOptions = (
 		return { ...sortAndGroup, sortAndGroup, groupOnColumn, sortOnColumn };
 	},
 	SortAndGroupContext = createContext<SortAndGroupOptions | undefined>(
-		undefined,
+		undefined
 	);
 
 customElements.define('sort-and-group-provider', SortAndGroupContext.Provider);
@@ -143,5 +143,5 @@ customElements.define(
 	'sort-and-group-consumer',
 	component(({ render }) => render(useContext(SortAndGroupContext)), {
 		useShadowDOM: false,
-	}),
+	})
 );

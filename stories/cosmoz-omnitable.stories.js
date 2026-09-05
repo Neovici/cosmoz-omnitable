@@ -44,7 +44,7 @@ const Template = (args) => {
 			cosmoz-omnitable-header-row {
 				border-bottom: 1px solid #e1e2e5;
 			}
-			[slot='actions'] button {
+			[slot="actions"] button {
 				background-color: #1d2939;
 				color: #ffffff;
 				border: 1px solid #1d2939;
@@ -56,7 +56,7 @@ const Template = (args) => {
 				font-family: inherit;
 				line-height: 1.5;
 			}
-			[slot='actions'] button:hover {
+			[slot="actions"] button:hover {
 				background-color: #101828;
 				border-color: #101828;
 			}

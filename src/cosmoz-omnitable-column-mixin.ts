@@ -102,7 +102,7 @@ export const getString = ({ valuePath }: { valuePath?: GetPath }, item: Item) =>
 							state: this.legacyFilterToState(filter),
 						},
 						bubbles: true,
-					}),
+					})
 				);
 			}
 
@@ -163,11 +163,11 @@ export const getString = ({ valuePath }: { valuePath?: GetPath }, item: Item) =>
 			_propertiesChanged(
 				currentProps: Record<string, unknown>,
 				changedProps: Record<string, unknown>,
-				oldProps: Record<string, unknown>,
+				oldProps: Record<string, unknown>
 			): void {
 				super._propertiesChanged(currentProps, changedProps, oldProps);
 				this.dispatchEvent(
-					new CustomEvent('cosmoz-column-prop-changed', { bubbles: true }),
+					new CustomEvent('cosmoz-column-prop-changed', { bubbles: true })
 				);
 			}
 		};

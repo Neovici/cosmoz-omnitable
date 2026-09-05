@@ -51,7 +51,6 @@ class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
 			onItemChange(event.target.value.split(/,\s*/gu));
 
 		return html`<cosmoz-input
-			no-label-float
 			type="text"
 			.value=${getString(column, item)}
 			@change=${onChange}
@@ -60,6 +59,7 @@ class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
 
 	renderHeader(column, { filter, query }, setState, source) {
 		return html`<cosmoz-autocomplete-ui
+			variant="inline"
 			class="external-values-${column.externalValues}"
 			?disabled=${column.disabledFiltering}
 			?keep-opened=${column.keepOpened}

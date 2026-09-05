@@ -34,6 +34,24 @@
 
 - dbee093: Add `inline` attribute for auto-height mode — the omnitable expands to show all rows without internal scrolling, letting the page scroll instead.
 
+## 18.10.0-beta.2
+
+### Patch Changes
+
+- 5199bc7: Set white to table content background and mini mode
+
+## 18.10.0-beta.1
+
+### Patch Changes
+
+- c5a63d2: Adjust skeleton padding, header borders and mini row shadow
+
+## 18.10.0-beta.0
+
+### Minor Changes
+
+- Add variant inline for disabled filter inputs and smooth transitions for mini mode
+
 ## 18.9.0
 
 ### Minor Changes

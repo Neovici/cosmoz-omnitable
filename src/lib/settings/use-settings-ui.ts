@@ -9,7 +9,7 @@ export interface SettingsUiConfig {
 			| { columns?: ColumnConfigInput[] }
 			| ((settings: { columns?: ColumnConfigInput[] }) => {
 					columns?: ColumnConfigInput[];
-			  }),
+			  })
 	) => void;
 	collapsed?: { name?: string }[];
 	requestTween?: () => void;
@@ -51,7 +51,7 @@ export default <C extends SettingsUiConfig>(host: {
 						...cfg,
 						columns,
 					})),
-				[setSettings],
+				[setSettings]
 			),
 		});
 
@@ -67,7 +67,7 @@ export default <C extends SettingsUiConfig>(host: {
 				meta.handle =
 					e.currentTarget instanceof HTMLElement ? e.currentTarget : null;
 			},
-			[meta],
+			[meta]
 		),
 
 		onDragStart: useCallback(
@@ -92,10 +92,10 @@ export default <C extends SettingsUiConfig>(host: {
 							: null
 						)?.classList.remove('drag');
 					},
-					{ once: true },
+					{ once: true }
 				);
 			},
-			[meta],
+			[meta]
 		),
 
 		onDragEnter: useCallback((e: DragEvent) => {
@@ -133,7 +133,7 @@ export default <C extends SettingsUiConfig>(host: {
 		onDrop: useCallback(
 			(e: DragEvent) => {
 				const from = parseIndex(
-						e.dataTransfer?.getData('omnitable/sort-index'),
+						e.dataTransfer?.getData('omnitable/sort-index')
 					)!,
 					currentTarget =
 						e.currentTarget instanceof HTMLElement ? e.currentTarget : null,
@@ -147,12 +147,12 @@ export default <C extends SettingsUiConfig>(host: {
 				newSettings.splice(
 					to + (from >= to ? 0 : -1),
 					0,
-					newSettings.splice(from, 1)[0]!,
+					newSettings.splice(from, 1)[0]!
 				);
 				requestTween?.();
 				setSettings(newSettings);
 			},
-			[meta],
+			[meta]
 		),
 
 		onToggle: useCallback(
@@ -168,7 +168,7 @@ export default <C extends SettingsUiConfig>(host: {
 					idx = parseIndex(
 						(e.target instanceof Element ? e.target : null)
 							?.closest('[data-index]')
-							?.getAttribute('data-index'),
+							?.getAttribute('data-index')
 					);
 
 				if (idx == null) {
@@ -185,7 +185,7 @@ export default <C extends SettingsUiConfig>(host: {
 				requestTween?.();
 				setSettings(newSettings);
 			},
-			[meta],
+			[meta]
 		),
 	};
 };

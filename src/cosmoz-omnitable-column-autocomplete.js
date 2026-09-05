@@ -20,7 +20,7 @@ import { columnSymbol } from './lib/use-dom-columns';
 
 export const getComparableValue = (
 	{ valuePath, textProperty, valueProperty },
-	item,
+	item
 ) => {
 	const property = textProperty ? strProp(textProperty) : prop(valueProperty),
 		values = array(valuePath && get(item, valuePath)).map(property);
@@ -33,7 +33,7 @@ export const getComparableValue = (
  * @appliesMixin columnMixin
  */
 class OmnitableColumnAutocomplete extends listColumnMixin(
-	columnMixin(PolymerElement),
+	columnMixin(PolymerElement)
 ) {
 	static get properties() {
 		return {
@@ -70,7 +70,6 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 	renderEditCell(column, { item }, onItemChange) {
 		const onChange = (event) => onItemChange(event.target.value);
 		return html`<cosmoz-input
-			no-label-float
 			type="text"
 			@change=${onChange}
 			.value=${getString(column, item)}
@@ -79,6 +78,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 
 	renderHeader(column, { filter, query }, setState, source) {
 		return html`<cosmoz-autocomplete-ui
+			variant="inline"
 			class="external-values-${column.externalValues}"
 			?disabled=${column.disabledFiltering}
 			?keep-opened=${column.keepOpened}
@@ -99,7 +99,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 			.onText=${onText(setState)}
 			>${when(
 				column.loading,
-				() => html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`,
+				() => html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`
 			)}</cosmoz-autocomplete-ui
 		>`;
 	}
@@ -110,5 +110,5 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 }
 customElements.define(
 	'cosmoz-omnitable-column-autocomplete',
-	OmnitableColumnAutocomplete,
+	OmnitableColumnAutocomplete
 );

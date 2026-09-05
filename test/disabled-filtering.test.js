@@ -61,7 +61,7 @@ suite('disabled-filtering (per-column)', () => {
 					</cosmoz-omnitable-column-number>
 				</cosmoz-omnitable>
 			`,
-			data,
+			data
 		);
 		await nextFrame();
 	});
@@ -82,7 +82,7 @@ suite('disabled-filtering (per-column)', () => {
 
 	test('text column header input is disabled', () => {
 		const idHeaderCell = omnitable.shadowRoot.querySelector(
-			'.header-cell[name="id"]',
+			'.header-cell[name="id"]'
 		);
 		const input = idHeaderCell.querySelector('cosmoz-input');
 		assert.isNotNull(input, 'Input should exist');
@@ -91,107 +91,107 @@ suite('disabled-filtering (per-column)', () => {
 
 	test('text column without disabled-filtering has enabled input', () => {
 		const nameHeaderCell = omnitable.shadowRoot.querySelector(
-			'.header-cell[name="name"]',
+			'.header-cell[name="name"]'
 		);
 		const input = nameHeaderCell.querySelector('cosmoz-input');
 		assert.isNotNull(input, 'Input should exist');
 		assert.isFalse(
 			input.hasAttribute('disabled'),
-			'Input should not be disabled',
+			'Input should not be disabled'
 		);
 	});
 
 	test('number column range input is disabled', () => {
 		const ageHeaderCell = omnitable.shadowRoot.querySelector(
-			'.header-cell[name="age"]',
+			'.header-cell[name="age"]'
 		);
 		const rangeInput = ageHeaderCell.querySelector(
-			'cosmoz-omnitable-number-range-input',
+			'cosmoz-omnitable-number-range-input'
 		);
 		assert.isNotNull(rangeInput, 'Range input should exist');
 		assert.isTrue(
 			rangeInput.hasAttribute('disabled'),
-			'Range input should be disabled',
+			'Range input should be disabled'
 		);
 	});
 
 	test('number column disabled range input has right text-align', async () => {
 		const ageHeaderCell = omnitable.shadowRoot.querySelector(
-			'.header-cell[name="age"]',
+			'.header-cell[name="age"]'
 		);
 		const rangeInput = ageHeaderCell.querySelector(
-			'cosmoz-omnitable-number-range-input',
+			'cosmoz-omnitable-number-range-input'
 		);
 		await nextFrame();
 		await nextFrame();
 		const dropdownInput = rangeInput.shadowRoot.querySelector(
-			'cosmoz-omnitable-dropdown-input',
+			'cosmoz-omnitable-dropdown-input'
 		);
 		assert.isNotNull(dropdownInput, 'Dropdown input should exist');
 		assert.equal(
 			rangeInput.align,
 			'right',
-			'Range input should have align="right"',
+			'Range input should have align="right"'
 		);
 		assert.equal(
 			dropdownInput.getAttribute('text-align'),
 			'right',
-			'Disabled number range input should have text-align="right"',
+			'Disabled number range input should have text-align="right"'
 		);
 	});
 
 	test('amount column disabled range input has right text-align', async () => {
 		const salaryHeaderCell = omnitable.shadowRoot.querySelector(
-			'.header-cell[name="salary"]',
+			'.header-cell[name="salary"]'
 		);
 		const rangeInput = salaryHeaderCell.querySelector(
-			'cosmoz-omnitable-amount-range-input',
+			'cosmoz-omnitable-amount-range-input'
 		);
 		await nextFrame();
 		await nextFrame();
 		const dropdownInput = rangeInput.shadowRoot.querySelector(
-			'cosmoz-omnitable-dropdown-input',
+			'cosmoz-omnitable-dropdown-input'
 		);
 		assert.isNotNull(dropdownInput, 'Dropdown input should exist');
 		assert.equal(
 			rangeInput.align,
 			'right',
-			'Range input should have align="right"',
+			'Range input should have align="right"'
 		);
 		assert.equal(
 			dropdownInput.getAttribute('text-align'),
 			'right',
-			'Disabled amount range input should have text-align="right"',
+			'Disabled amount range input should have text-align="right"'
 		);
 	});
 
 	test('number column range input has align right when not disabled', async () => {
 		const scoreHeaderCell = omnitable.shadowRoot.querySelector(
-			'.header-cell[name="score"]',
+			'.header-cell[name="score"]'
 		);
 		const rangeInput = scoreHeaderCell.querySelector(
-			'cosmoz-omnitable-number-range-input',
+			'cosmoz-omnitable-number-range-input'
 		);
 		assert.isNotNull(rangeInput, 'Range input should exist');
 		assert.isFalse(
 			rangeInput.hasAttribute('disabled'),
-			'Range input should not be disabled',
+			'Range input should not be disabled'
 		);
 		assert.equal(
 			rangeInput.align,
 			'right',
-			'Non-disabled number range input should have align="right"',
+			'Non-disabled number range input should have align="right"'
 		);
 	});
 
 	test('sort buttons still render on disabled-filtering columns', () => {
 		const idHeaderCell = omnitable.shadowRoot.querySelector(
-			'.header-cell[name="id"]',
+			'.header-cell[name="id"]'
 		);
 		const sortButton = idHeaderCell.querySelector('button.sg');
 		assert.isNotNull(
 			sortButton,
-			'Sort button should still exist for disabled-filtering column',
+			'Sort button should still exist for disabled-filtering column'
 		);
 	});
 });
@@ -223,7 +223,7 @@ suite('disabled-filtering (table-level)', () => {
 					</cosmoz-omnitable-column-number>
 				</cosmoz-omnitable>
 			`,
-			data,
+			data
 		);
 		await nextFrame();
 	});
@@ -236,7 +236,7 @@ suite('disabled-filtering (table-level)', () => {
 		omnitable.columns.forEach((col) => {
 			assert.isTrue(
 				col.disabledFiltering,
-				`Column "${col.name}" should have disabledFiltering=true`,
+				`Column "${col.name}" should have disabledFiltering=true`
 			);
 		});
 	});
@@ -251,11 +251,11 @@ suite('disabled-filtering (table-level)', () => {
 
 		assert.isTrue(
 			idInput?.hasAttribute('disabled'),
-			'ID input should be disabled',
+			'ID input should be disabled'
 		);
 		assert.isTrue(
 			nameInput?.hasAttribute('disabled'),
-			'Name input should be disabled',
+			'Name input should be disabled'
 		);
 	});
 
@@ -265,7 +265,7 @@ suite('disabled-filtering (table-level)', () => {
 			?.querySelector('cosmoz-omnitable-number-range-input');
 		assert.isTrue(
 			rangeInput?.hasAttribute('disabled'),
-			'Age range input should be disabled',
+			'Age range input should be disabled'
 		);
 	});
 
@@ -274,18 +274,18 @@ suite('disabled-filtering (table-level)', () => {
 		const nameColumn = omnitable.columns.find((col) => col.name === 'name');
 		assert.isTrue(
 			nameColumn.disabledFiltering,
-			'Column without per-column disabled-filtering should still be disabled due to table-level attribute',
+			'Column without per-column disabled-filtering should still be disabled due to table-level attribute'
 		);
 	});
 
 	test('sort buttons still render', () => {
 		const idHeaderCell = omnitable.shadowRoot.querySelector(
-			'.header-cell[name="id"]',
+			'.header-cell[name="id"]'
 		);
 		const sortButton = idHeaderCell.querySelector('button.sg');
 		assert.isNotNull(
 			sortButton,
-			'Sort button should still exist when filtering is disabled',
+			'Sort button should still exist when filtering is disabled'
 		);
 	});
 });

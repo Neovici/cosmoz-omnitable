@@ -64,7 +64,7 @@ customElements.define(
 			'inline',
 			'enable-select-all',
 		],
-	}),
+	})
 );
 
 const tmplt = `

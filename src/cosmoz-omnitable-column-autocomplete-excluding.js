@@ -21,7 +21,7 @@ import { columnSymbol } from './lib/use-dom-columns';
 
 export const getComparableValue = (
 		{ valuePath, textProperty, valueProperty },
-		item,
+		item
 	) => {
 		const property = textProperty ? strProp(textProperty) : prop(valueProperty),
 			values = array(valuePath && get(item, valuePath)).map(property);
@@ -29,21 +29,21 @@ export const getComparableValue = (
 	},
 	applyExcludingMultiFilter = (
 		{ valueProperty, valuePath, emptyValue, emptyProperty },
-		filters,
+		filters
 	) => {
 		const val = prop(valueProperty),
 			emptyVal = prop(emptyProperty || valueProperty),
 			excluded = new Set(
-				filters.filter((f) => f.excluded).map((f) => val(f.item)),
+				filters.filter((f) => f.excluded).map((f) => val(f.item))
 			),
 			included = new Set(
-				filters.filter((f) => !f.excluded).map((f) => val(f.item)),
+				filters.filter((f) => !f.excluded).map((f) => val(f.item))
 			),
 			emptyExcluded = filters.some(
-				(f) => f.excluded && emptyVal(f.item) === emptyValue,
+				(f) => f.excluded && emptyVal(f.item) === emptyValue
 			),
 			emptyIncluded = filters.some(
-				(f) => !f.excluded && emptyVal(f.item) === emptyValue,
+				(f) => !f.excluded && emptyVal(f.item) === emptyValue
 			);
 
 		return (item) => {
@@ -64,7 +64,7 @@ export const getComparableValue = (
  * @appliesMixin columnMixin
  */
 class OmnitableColumnAutocomplete extends listColumnMixin(
-	columnMixin(PolymerElement),
+	columnMixin(PolymerElement)
 ) {
 	static get properties() {
 		return {
@@ -101,7 +101,6 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 	renderEditCell(column, { item }, onItemChange) {
 		const onChange = (event) => onItemChange(event.target.value);
 		return html`<cosmoz-input
-			no-label-float
 			type="text"
 			@change=${onChange}
 			.value=${getString(column, item)}
@@ -110,6 +109,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 
 	renderHeader(column, { filter, query }, setState, source) {
 		return html`<cosmoz-autocomplete-excluding
+			variant="inline"
 			class="external-values-${column.externalValues}"
 			?disabled=${column.disabledFiltering}
 			?keep-opened=${column.keepOpened}
@@ -130,7 +130,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 			@text-changed=${lift(onText(setState))}
 			>${when(
 				column.loading,
-				() => html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`,
+				() => html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`
 			)}</cosmoz-autocomplete-excluding
 		>`;
 	}
@@ -149,5 +149,5 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 }
 customElements.define(
 	'cosmoz-omnitable-column-autocomplete-excluding',
-	OmnitableColumnAutocomplete,
+	OmnitableColumnAutocomplete
 );

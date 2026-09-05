@@ -17,7 +17,7 @@ const makeCsvField = (str: string): string => {
 export const saveAsCsvAction = (
 	columns: CsvColumn[],
 	selectedItems: Item[],
-	csvFilename: string,
+	csvFilename: string
 ): void => {
 	const separator = ';',
 		lf = '\n',
@@ -42,6 +42,6 @@ export const saveAsCsvAction = (
 	saveAs(
 		new File(rows, csvFilename, {
 			type: 'text/csv;charset=utf-8',
-		}),
+		})
 	);
 };

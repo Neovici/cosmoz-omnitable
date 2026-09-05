@@ -60,7 +60,7 @@ suite('column resize jitter', () => {
 					></cosmoz-omnitable-column>
 				</cosmoz-omnitable>
 			`,
-			generateTableDemoData(5, 10, 20),
+			generateTableDemoData(5, 10, 20)
 		);
 	});
 
@@ -75,7 +75,7 @@ suite('column resize jitter', () => {
 					bubbles: true,
 					composed: true,
 					detail: { newWidth: 90 + i * 3, column },
-				}),
+				})
 			);
 		}
 		await nextFrame();
@@ -99,7 +99,9 @@ suite('column resize jitter', () => {
 		const span = Math.max(...xs) - Math.min(...xs);
 		assert.ok(
 			span < 1,
-			`settings button should not jitter during resize, but moved ${span.toFixed(2)}px`,
+			`settings button should not jitter during resize, but moved ${span.toFixed(
+				2
+			)}px`
 		);
 	});
 
@@ -121,8 +123,8 @@ suite('column resize jitter', () => {
 		assert.ok(
 			maxBackward >= -0.5,
 			`rightmost column should move monotonically while resizing, but stepped back ${Math.abs(
-				maxBackward,
-			).toFixed(2)}px`,
+				maxBackward
+			).toFixed(2)}px`
 		);
 	});
 
@@ -143,20 +145,22 @@ suite('column resize jitter', () => {
 				gaps.push(
 					Math.abs(
 						headerCell.getBoundingClientRect().x -
-							bodyCell.getBoundingClientRect().x,
-					),
+							bodyCell.getBoundingClientRect().x
+					)
 				);
 			}
 		}
 
 		assert.ok(
 			gaps.length > 0,
-			'no body rows were available to compare header/body alignment',
+			'no body rows were available to compare header/body alignment'
 		);
 		const maxGap = Math.max(...gaps);
 		assert.ok(
 			maxGap < 1,
-			`header and body should stay aligned during resize, but drifted ${maxGap.toFixed(2)}px`,
+			`header and body should stay aligned during resize, but drifted ${maxGap.toFixed(
+				2
+			)}px`
 		);
 	});
 });

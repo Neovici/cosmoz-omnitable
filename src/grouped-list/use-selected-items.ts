@@ -30,7 +30,7 @@ export const useSelectedItems = ({
 }: UseSelectedItemsParams): UseSelectedItemsResult => {
 	const [selectedItems, setSelectedItems] = useProperty<TSelection<Item>>(
 		'selectedItems',
-		() => [],
+		() => []
 	);
 	const [lastSelection, setLastSelection] = useState<Item | GroupItem<Item>>();
 	/**
@@ -38,7 +38,7 @@ export const useSelectedItems = ({
 	 */
 	const isItemSelected = useCallback(
 		(item: Item) => selectedItems === All || selectedItems.includes(item),
-		[selectedItems],
+		[selectedItems]
 	);
 	/**
 	 * Check if group is selected.
@@ -46,7 +46,7 @@ export const useSelectedItems = ({
 	const isGroupSelected = useCallback(
 		(group: GroupItem<Item>) =>
 			selectedItems === All || (group?.items?.every(isItemSelected) ?? false),
-		[selectedItems, isItemSelected],
+		[selectedItems, isItemSelected]
 	);
 	/**
 	 * Check if item.group is selected.
@@ -54,7 +54,7 @@ export const useSelectedItems = ({
 	const isSelected = useCallback(
 		(item: Item | GroupItem<Item>) =>
 			isItemSelected(item as Item) || isGroupSelected(item as GroupItem<Item>),
-		[isItemSelected, isGroupSelected],
+		[isItemSelected, isGroupSelected]
 	);
 	/**
 	 * Add an item/group to the list of selected items.
@@ -85,14 +85,14 @@ export const useSelectedItems = ({
 					return (flatData ?? [])
 						.filter((selectedItem) => !isGroup(selectedItem))
 						.filter(
-							(selectedItem) => !items.includes(selectedItem as Item),
+							(selectedItem) => !items.includes(selectedItem as Item)
 						) as Item[];
 				}
 				return selection.filter((i) => !items.includes(i));
 			});
 			setLastSelection(item);
 		},
-		[flatData],
+		[flatData]
 	);
 
 	const selectOnly = useCallback((item: Item | GroupItem<Item>) => {
@@ -108,7 +108,7 @@ export const useSelectedItems = ({
 			data.flatMap((item) => {
 				const groupItem = item as GroupItem<Item>;
 				return groupItem.items || (item as Item);
-			}),
+			})
 		);
 		setLastSelection(undefined);
 	}, [data]);
@@ -125,7 +125,7 @@ export const useSelectedItems = ({
 	const toggleSelect = useCallback(
 		(item: Item | GroupItem<Item>, selected = !isSelected(item)) =>
 			selected ? select(item) : deselect(item),
-		[isSelected],
+		[isSelected]
 	);
 	const toggleSelectTo = useCallback(
 		(item: Item | GroupItem<Item>, selected?: boolean) => {
@@ -146,7 +146,7 @@ export const useSelectedItems = ({
 			});
 			setLastSelection(item);
 		},
-		[flatData, compareItemsFn, toggleSelect],
+		[flatData, compareItemsFn, toggleSelect]
 	);
 
 	// keep selected items across data updates
@@ -155,11 +155,11 @@ export const useSelectedItems = ({
 			setSelectedItems((selectedItems) =>
 				selectedItems !== All && selectedItems.length > 0 && flatData
 					? (flatData.filter((i) =>
-							selectedItems.find((item) => compareItemsFn(i, item)),
-						) as Item[])
-					: selectedItems,
+							selectedItems.find((item) => compareItemsFn(i, item))
+					  ) as Item[])
+					: selectedItems
 			),
-		[flatData],
+		[flatData]
 	);
 
 	return {

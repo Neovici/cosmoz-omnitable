@@ -15,7 +15,7 @@ const sortBy =
 		input.replace(/([a-z0-9])([A-Z])/gu, '$1-$2').toLowerCase(),
 	notifyChanges = (
 		column: NormalizedColumn | undefined,
-		changes: Record<string, unknown> | undefined,
+		changes: Record<string, unknown> | undefined
 	) => {
 		if (!column || !changes) {
 			return;
@@ -30,7 +30,7 @@ const sortBy =
 				new CustomEvent(`${kebab(key)}-changed`, {
 					bubbles: true,
 					detail: { value },
-				}),
+				})
 			);
 		});
 	},
@@ -86,7 +86,7 @@ export const useProcessedItems = ({
 					value.filter && column.serializeFilter!(column, value.filter),
 				];
 			},
-			[columns],
+			[columns]
 		),
 		read = useCallback(
 			([filter, value]: [string, string]): [string, FilterState] => {
@@ -99,7 +99,7 @@ export const useProcessedItems = ({
 				notifyChanges(column, state);
 				return [filter, state];
 			},
-			[columns],
+			[columns]
 		),
 		[filters, setFilters] = useHashState<Record<string, FilterState>>(
 			{},
@@ -109,7 +109,7 @@ export const useProcessedItems = ({
 				suffix: '-filter--',
 				write,
 				read,
-			},
+			}
 		),
 		// TODO: drop extra info from state
 		setFilterState = useCallback(
@@ -117,23 +117,23 @@ export const useProcessedItems = ({
 				name: string,
 				state:
 					| Record<string, unknown>
-					| ((prev?: FilterState) => Record<string, unknown>),
+					| ((prev?: FilterState) => Record<string, unknown>)
 			) =>
 				setFilters((filters) => {
 					const newState = invoke(state, filters[name]);
 
 					notifyChanges(
 						columns.find((c) => c.name === name),
-						newState,
+						newState
 					);
 
 					return { ...filters, [name]: { ...filters[name], ...newState } };
 				}),
-			[columns, setFilters],
+			[columns, setFilters]
 		),
 		filterValues = useMemo(
 			() => Object.values(filters).map((f) => f.filter),
-			[filters],
+			[filters]
 		),
 		filterFunctions = useMemo(() => {
 			return Object.fromEntries(
@@ -144,8 +144,8 @@ export const useProcessedItems = ({
 							col.getFilterFn!(col, filters[col.name]?.filter),
 					])
 					.filter(
-						(entry): entry is [string, (item: Item) => boolean] => !!entry[1],
-					),
+						(entry): entry is [string, (item: Item) => boolean] => !!entry[1]
+					)
 			);
 		}, [columns, ...filterValues]),
 		filteredItems = useMemo(() => {
@@ -158,7 +158,7 @@ export const useProcessedItems = ({
 			}
 
 			return data.filter((item) =>
-				Object.values(filterFunctions).every((filterFn) => filterFn(item)),
+				Object.values(filterFunctions).every((filterFn) => filterFn(item))
 			);
 		}, [data, filterFunctions, noLocalFilter]),
 		// todo: extract function
@@ -177,10 +177,10 @@ export const useProcessedItems = ({
 							(a) =>
 								sortOnColumn.getComparableValue!(
 									{ ...sortOnColumn, valuePath: sortOnColumn.sortOn },
-									a,
+									a
 								),
-							descending,
-						),
+							descending
+						)
 					);
 			}
 
@@ -189,7 +189,7 @@ export const useProcessedItems = ({
 					(acc, item) => {
 						const gval = groupOnColumn.getComparableValue!(
 							{ ...groupOnColumn, valuePath: groupOnColumn.groupOn },
-							item,
+							item
 						);
 
 						if (gval === undefined) {
@@ -206,7 +206,7 @@ export const useProcessedItems = ({
 						group.items.push(item);
 						return acc;
 					},
-					[],
+					[]
 				);
 
 				groupedResults.sort(
@@ -214,10 +214,10 @@ export const useProcessedItems = ({
 						(a) =>
 							groupOnColumn.getComparableValue!(
 								{ ...groupOnColumn, valuePath: groupOnColumn.groupOn },
-								a.items[0],
+								a.items[0]
 							),
-						groupOnDescending,
-					),
+						groupOnDescending
+					)
 				);
 
 				if (!sortOnColumn || noLocalSort) {
@@ -232,10 +232,10 @@ export const useProcessedItems = ({
 								(a) =>
 									sortOnColumn.getComparableValue!(
 										{ ...sortOnColumn, valuePath: sortOnColumn.sortOn },
-										a,
+										a
 									),
-								descending,
-							),
+								descending
+							)
 						);
 						return group;
 					});
@@ -275,7 +275,7 @@ export const useProcessedItems = ({
 	useEffect(() => {
 		setFilters((filters) => {
 			const hasUnparsedFilters = Object.values(filters).some(
-				(value) => value[unparsed] != null,
+				(value) => value[unparsed] != null
 			);
 
 			if (!hasUnparsedFilters) {
@@ -290,7 +290,7 @@ export const useProcessedItems = ({
 					}
 
 					return read([name, unparsedValue]);
-				}),
+				})
 			);
 		});
 	}, [read]);

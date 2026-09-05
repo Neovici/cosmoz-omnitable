@@ -37,7 +37,7 @@ export interface UseSettingsResult {
 export default ({ settingsId, host }: UseSettingsProps): UseSettingsResult => {
 	const initial = useMemo(
 			() => Object.fromEntries(sgProps.map((k) => [k, host[k]])),
-			[],
+			[]
 		),
 		resetRef = useRef<ResetFn>(),
 		onReset = useCallback(() => {
@@ -52,7 +52,7 @@ export default ({ settingsId, host }: UseSettingsProps): UseSettingsResult => {
 			settingsId!,
 			settings,
 			setSettings,
-			onReset,
+			onReset
 		),
 		{ enabledColumns, disabledFiltering } = host,
 		columns = useDOMColumns(host, {
@@ -67,14 +67,14 @@ export default ({ settingsId, host }: UseSettingsProps): UseSettingsResult => {
 					savedSettings: savedSettings ?? undefined,
 					initial,
 				}),
-			[columns, settings, savedSettings],
+			[columns, settings, savedSettings]
 		),
 		normalizedColumns = useMemo(
 			() =>
 				normalizedSettings.columns
 					.map((s) => columns.find((c) => c.name === s.name))
 					.filter((c): c is NormalizedColumn => c !== undefined),
-			[columns, ...normalizedSettings.columns.map((s) => s.name)],
+			[columns, ...normalizedSettings.columns.map((s) => s.name)]
 		);
 
 	return {

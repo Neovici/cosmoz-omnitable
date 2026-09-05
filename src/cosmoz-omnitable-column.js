@@ -66,7 +66,7 @@ class OmnitableColumn extends columnMixin(PolymerElement) {
 	renderEditCell(column, { item }, onItemChange) {
 		const onChange = (event) => onItemChange(event.target.value);
 		return html`<cosmoz-input
-			no-label-float
+			variant="inline"
 			type="text"
 			@change=${onChange}
 			.value=${getString(column, item)}
@@ -75,6 +75,7 @@ class OmnitableColumn extends columnMixin(PolymerElement) {
 
 	renderHeader(column, { filter, inputValue, headerFocused }, setState) {
 		return html`<cosmoz-input
+			variant="inline"
 			label=${column.title}
 			?disabled=${column.disabledFiltering}
 			.value=${inputValue ?? filter}

@@ -106,7 +106,6 @@ class OmnitableColumnNumber extends columnMixin(PolymerElement) {
 		const onChange = (event) => onItemChange(event.target.value);
 
 		return html`<cosmoz-input
-			no-label-float
 			type="number"
 			@change=${onChange}
 			.value=${getInputString(column, item)}
@@ -129,7 +128,7 @@ class OmnitableColumnNumber extends columnMixin(PolymerElement) {
 		},
 		{ filter },
 		setState,
-		source,
+		source
 	) {
 		return html`<cosmoz-omnitable-number-range-input
 			.title=${title}

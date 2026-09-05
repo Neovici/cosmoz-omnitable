@@ -7,7 +7,7 @@ import { valuesFrom } from './lib/utils-data';
 
 const unique = (
 		values: unknown[] | undefined,
-		valueProperty?: string,
+		valueProperty?: string
 	): unknown[] | undefined => {
 		if (!Array.isArray(values)) {
 			return;
@@ -41,7 +41,7 @@ const unique = (
 	toAutocompleteSource = (
 		values: unknown,
 		valueProperty?: string,
-		textProperty?: string,
+		textProperty?: string
 	): Record<string, unknown>[] => {
 		if (values == null) {
 			return [];
@@ -56,7 +56,7 @@ const unique = (
 					? String(get(item, textProp ?? '') ?? '')
 					: String(item ?? '');
 			return result.sort((a, b) =>
-				getText(a).localeCompare(getText(b)),
+				getText(a).localeCompare(getText(b))
 			) as Record<string, unknown>[];
 		}
 
@@ -69,7 +69,7 @@ const unique = (
 					[textProp]: label,
 				}))
 				.sort((a, b) =>
-					String(a[textProp] ?? '').localeCompare(String(b[textProp] ?? '')),
+					String(a[textProp] ?? '').localeCompare(String(b[textProp] ?? ''))
 				);
 		}
 
@@ -78,7 +78,7 @@ const unique = (
 	getTexts = (
 		item: Item,
 		valuePath: GetPath | undefined,
-		textProperty: string | undefined,
+		textProperty: string | undefined
 	): string[] =>
 		array(valuePath && get(item, valuePath)).map(prop(textProperty)),
 	getString = ({ valuePath, textProperty }: ListColumn, item: Item): string => {
@@ -90,7 +90,7 @@ const unique = (
 	applyMultiFilter =
 		(
 			{ valueProperty, valuePath, emptyValue, emptyProperty }: ListColumn,
-			filters: unknown[],
+			filters: unknown[]
 		) =>
 		(item: Item): boolean => {
 			const val = prop(valueProperty),
@@ -99,30 +99,30 @@ const unique = (
 				(filter: unknown) =>
 					(values.length === 0 &&
 						prop(emptyProperty || valueProperty)(filter) === emptyValue) ||
-					values.some((value: unknown) => val(value) === val(filter)),
+					values.some((value: unknown) => val(value) === val(filter))
 			);
 		},
 	onChange =
 		(
 			setState: (
-				fn: (state: Record<string, unknown>) => Record<string, unknown>,
-			) => void,
+				fn: (state: Record<string, unknown>) => Record<string, unknown>
+			) => void
 		) =>
 		(value: unknown) =>
 			setState((state) => ({ ...state, filter: value })),
 	onFocus =
 		(
 			setState: (
-				fn: (state: Record<string, unknown>) => Record<string, unknown>,
-			) => void,
+				fn: (state: Record<string, unknown>) => Record<string, unknown>
+			) => void
 		) =>
 		(focused: boolean) =>
 			setState((state) => ({ ...state, headerFocused: focused })),
 	onText =
 		(
 			setState: (
-				fn: (state: Record<string, unknown>) => Record<string, unknown>,
-			) => void,
+				fn: (state: Record<string, unknown>) => Record<string, unknown>
+			) => void
 		) =>
 		(text: string) =>
 			setState((state) => ({ ...state, query: text })),
@@ -140,7 +140,7 @@ const unique = (
 			textProperty?: string;
 			valueProperty?: string;
 		},
-		rawSource: unknown,
+		rawSource: unknown
 	): Record<string, unknown>[] => {
 		const source = toAutocompleteSource(rawSource, valueProperty, textProperty);
 		if (
@@ -193,7 +193,7 @@ const unique = (
 
 			getComparableValue(
 				{ valuePath, valueProperty }: ListColumn,
-				item: Item,
+				item: Item
 			): string {
 				const value = get(item, valuePath!);
 				if (valueProperty == null) {
@@ -204,7 +204,7 @@ const unique = (
 
 			getFilterFn(
 				column: ListColumn,
-				filters: unknown[] | undefined,
+				filters: unknown[] | undefined
 			): ((item: Item) => boolean) | undefined {
 				if (!filters || !Array.isArray(filters) || filters.length === 0) {
 					return;
@@ -242,7 +242,7 @@ const unique = (
 					externalValues?: boolean;
 					values?: unknown[] | (() => Promise<unknown>);
 				},
-				data: Items,
+				data: Items
 			): unknown {
 				return column.externalValues || typeof column.values === 'function'
 					? async (...args: unknown[]) =>
@@ -251,9 +251,9 @@ const unique = (
 								await Promise.resolve(
 									(invoke as (...a: unknown[]) => unknown)(
 										column.values,
-										...args,
-									),
-								),
+										...args
+									)
+								)
 							)
 					: _computeSource(column, data);
 			}

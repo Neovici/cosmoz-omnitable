@@ -14,7 +14,7 @@ interface UseFooterParams {
 	selectedItems: TSelection<Item>;
 	allSelected: boolean;
 	setSelectedItems: (
-		items: TSelection<Item> | ((prev: TSelection<Item>) => TSelection<Item>),
+		items: TSelection<Item> | ((prev: TSelection<Item>) => TSelection<Item>)
 	) => void;
 	enableSelectAll: boolean;
 	allItemsCount?: number;

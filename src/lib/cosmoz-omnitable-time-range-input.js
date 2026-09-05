@@ -9,7 +9,7 @@ import './cosmoz-omnitable-dropdown-input';
 import { polymerHauntedRender } from './polymer-haunted-render-mixin';
 
 class TimeRangeInput extends dateInputMixin(
-	polymerHauntedRender(PolymerElement),
+	polymerHauntedRender(PolymerElement)
 ) {
 	render() {
 		const onOpenedChanged = (event) => {
@@ -21,6 +21,7 @@ class TimeRangeInput extends dateInputMixin(
 				this.disabled,
 				() => html`
 					<cosmoz-omnitable-dropdown-input
+						variant="inline"
 						disabled
 						text-align=${this.align}
 						.label=${this.title}
@@ -40,7 +41,7 @@ class TimeRangeInput extends dateInputMixin(
 						externalValues: this.externalValues,
 						onOpenedChanged,
 						content: html`
-							<h3 style="margin: 0;">${this.title}</h3>
+							<h3>${this.title}</h3>
 							<cosmoz-input
 								type="time"
 								label=${t('From time')}
@@ -59,7 +60,7 @@ class TimeRangeInput extends dateInputMixin(
 							></cosmoz-input>
 						`,
 					})}
-				`,
+				`
 			)}
 		`;
 	}
@@ -106,13 +107,13 @@ class TimeRangeInput extends dateInputMixin(
 			return;
 		}
 		let value = this._toInputString(
-			valuePath == null ? item : this.get(valuePath, item),
+			valuePath == null ? item : this.get(valuePath, item)
 		);
 		if (value == null) {
 			return;
 		}
 		value = this.toValue(
-			this.getAbsoluteISOString(this._fixedDate + 'T' + value),
+			this.getAbsoluteISOString(this._fixedDate + 'T' + value)
 		);
 		if (value == null) {
 			return;
@@ -128,7 +129,7 @@ class TimeRangeInput extends dateInputMixin(
 			newTime = this.toDate(
 				oldTime != null
 					? oldTime.toISOString().slice(0, 10) + 'T' + timeString
-					: timeString,
+					: timeString
 			),
 			formatFn = (value) => value;
 		if (newTime != null) {
@@ -139,7 +140,7 @@ class TimeRangeInput extends dateInputMixin(
 			item,
 			this.valuePath,
 			oldTime,
-			formatFn.bind(this),
+			formatFn.bind(this)
 		);
 	}
 

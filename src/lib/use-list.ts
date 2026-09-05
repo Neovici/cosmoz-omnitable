@@ -1,3 +1,4 @@
+import { chevronDownIcon } from '@neovici/cosmoz-icons/untitled';
 import { isEmpty } from '@neovici/cosmoz-utils/template';
 import { html, useCallback, useEffect, useMemo, useRef } from '@pionjs/pion';
 import { when } from 'lit-html/directives/when.js';
@@ -65,18 +66,6 @@ const isCheckbox = (el: EventTarget | null): el is CheckboxElement =>
 const isRow = (el: EventTarget | null): el is RowElement =>
 	el instanceof HTMLElement;
 
-const arrow = html`
-	<svg
-		viewBox="0 0 24 24"
-		preserveAspectRatio="xMidYMid meet"
-		focusable="false"
-	>
-		<g>
-			<path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"></path>
-		</g>
-	</svg>
-`;
-
 const _getGroupRowClasses = (folded: boolean): string =>
 	folded ? 'groupRow groupRow-folded' : 'groupRow';
 
@@ -97,10 +86,10 @@ const renderMinis =
 									item,
 									index,
 								})}
-							</div>`,
+							</div>`
 					)}
 				</div>
-			`,
+			`
 		);
 
 const renderItem =
@@ -118,72 +107,73 @@ const renderItem =
 	(
 		item: IndexedItem,
 		index: number,
-		{ selected, expanded, toggleCollapse }: RenderItemParams,
-	) => html`
-		<div
-			?selected=${selected}
-			part="${[
-				'itemRow',
-				`itemRow-${item[indexSymbol]}`,
-				rowPartFn?.(item, index),
-			]
-				.filter(Boolean)
-				.join(' ')}"
-			.dataIndex=${item[indexSymbol]}
-			.dataItem=${item}
-			class="itemRow"
-			@click=${onItemClick}
-		>
-			<div class="itemRow-wrapper" part="itemRow-wrapper">
-				<input
-					class="checkbox"
-					type="checkbox"
-					part="checkbox"
-					.checked=${selected}
-					.dataItem=${item}
-					@input=${onCheckboxChange}
-					?disabled=${!dataIsValid}
-				/>
-				<cosmoz-omnitable-item-row
-					part="itemRow-inner"
-					.columns=${columns}
-					.index=${index}
-					.selected=${selected}
-					.expanded=${expanded}
-					.item=${item}
-					.groupOnColumn=${groupOnColumn}
-					.onItemChange=${onItemChange}
-				>
-				</cosmoz-omnitable-item-row>
-				<button
-					class="expand"
-					?hidden="${isEmpty(collapsedColumns.length)}"
-					?aria-expanded="${expanded}"
-					@click="${toggleCollapse}"
-				>
-					${arrow}
-				</button>
+		{ selected, expanded, toggleCollapse }: RenderItemParams
+	) =>
+		html`
+			<div
+				?selected=${selected}
+				part="${[
+					'itemRow',
+					`itemRow-${item[indexSymbol]}`,
+					rowPartFn?.(item, index),
+				]
+					.filter(Boolean)
+					.join(' ')}"
+				.dataIndex=${item[indexSymbol]}
+				.dataItem=${item}
+				class="itemRow"
+				@click=${onItemClick}
+			>
+				<div class="itemRow-wrapper" part="itemRow-wrapper">
+					<input
+						class="checkbox"
+						type="checkbox"
+						part="checkbox"
+						.checked=${selected}
+						.dataItem=${item}
+						@input=${onCheckboxChange}
+						?disabled=${!dataIsValid}
+					/>
+					<cosmoz-omnitable-item-row
+						part="itemRow-inner"
+						.columns=${columns}
+						.index=${index}
+						.selected=${selected}
+						.expanded=${expanded}
+						.item=${item}
+						.groupOnColumn=${groupOnColumn}
+						.onItemChange=${onItemChange}
+					>
+					</cosmoz-omnitable-item-row>
+					<button
+						class="expand"
+						?hidden="${isEmpty(collapsedColumns.length)}"
+						?aria-expanded="${expanded}"
+						@click="${toggleCollapse}"
+					>
+						${chevronDownIcon({ width: '16', height: '16' })}
+					</button>
+				</div>
+				${renderMinis({ item, index })(miniColumns)}
 			</div>
-			${renderMinis({ item, index })(miniColumns)}
-		</div>
-		<cosmoz-omnitable-item-expand
-			.columns=${collapsedColumns}
-			.item=${item}
-			.index=${index}
-			?selected=${selected}
-			?expanded=${expanded}
-			.groupOnColumn=${groupOnColumn}
-			part="item-expand"
-		>
-		</cosmoz-omnitable-item-expand>
-	`;
+			<cosmoz-omnitable-item-expand
+				.columns=${collapsedColumns}
+				.item=${item}
+				.index=${index}
+				?selected=${selected}
+				?expanded=${expanded}
+				.groupOnColumn=${groupOnColumn}
+				part="item-expand"
+			>
+			</cosmoz-omnitable-item-expand>
+		`;
 
 const renderGroup =
 	({ onCheckboxChange, dataIsValid, groupOnColumn }: RenderGroupDeps) =>
 	(
 		item: IndexedGroup,
 		index: number,
-		{ selected, folded, toggleFold }: RenderGroupParams,
+		{ selected, folded, toggleFold }: RenderGroupParams
 	) =>
 		html` <div
 			class="${_getGroupRowClasses(folded)}"
@@ -209,7 +199,7 @@ const renderGroup =
 			</h3>
 			<div class="groupRow-badge">${item.items!.length}</div>
 			<button class="expand" ?aria-expanded="${folded}" @click=${toggleFold}>
-				${arrow}
+				${chevronDownIcon({ width: '16', height: '16' })}
 			</button>
 		</div>`;
 
@@ -296,7 +286,7 @@ export const useList = ({
 
 		if (
 			path.some(
-				(el) => el instanceof Element && el.matches('a, .checkbox, .expand'),
+				(el) => el instanceof Element && el.matches('a, .checkbox, .expand')
 			)
 		) {
 			return;
@@ -310,7 +300,7 @@ export const useList = ({
 					item: current.dataItem,
 					index: current.dataIndex,
 				},
-			}),
+			})
 		);
 	}, []);
 
@@ -318,7 +308,7 @@ export const useList = ({
 		onItemChange = useCallback(
 			(column: Column, item: Item) => (value: unknown) =>
 				_onItemChange(host, column, item, value),
-			[],
+			[]
 		);
 
 	return {
@@ -353,7 +343,7 @@ export const useList = ({
 				groupOnColumn,
 				onItemChange,
 				rowPartFn,
-			],
+			]
 		),
 		renderGroup: useMemo(
 			() =>
@@ -362,7 +352,7 @@ export const useList = ({
 					dataIsValid,
 					groupOnColumn,
 				}),
-			[onCheckboxChange, dataIsValid, groupOnColumn],
+			[onCheckboxChange, dataIsValid, groupOnColumn]
 		),
 	};
 };

@@ -16,8 +16,8 @@ export const findLastIndex = (
 	predicate: (
 		prop: number | undefined,
 		index?: number,
-		array?: (number | undefined)[],
-	) => boolean,
+		array?: (number | undefined)[]
+	) => boolean
 ) => {
 	if (typeof array.findLastIndex === 'function') {
 		return array.findLastIndex(predicate);

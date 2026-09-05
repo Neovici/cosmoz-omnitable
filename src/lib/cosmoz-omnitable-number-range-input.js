@@ -9,7 +9,7 @@ import { rangeInputMixin } from './cosmoz-omnitable-range-input-mixin';
 import { polymerHauntedRender } from './polymer-haunted-render-mixin';
 
 class NumberRangeInput extends rangeInputMixin(
-	polymerHauntedRender(PolymerElement),
+	polymerHauntedRender(PolymerElement)
 ) {
 	static get properties() {
 		return {
@@ -37,31 +37,11 @@ class NumberRangeInput extends rangeInputMixin(
 		};
 
 		return html`
-			<style>
-				cosmoz-input[type='number'] {
-					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
-					border-radius: 6px;
-					border: 1px solid #d1d1d6;
-					box-shadow: 0 1px 2px 0 rgba(60, 60, 60, 0.04);
-					padding: 2px 8px;
-					margin-bottom: 6px;
-					min-height: 28px;
-					transition:
-						border-color 0.2s,
-						box-shadow 0.2s;
-				}
-
-				cosmoz-input[type='number']:focus-within {
-					border-color: var(--cz-accent-color, #007aff);
-					box-shadow: 0 0 0 1px rgba(0, 122, 255, 0.15);
-					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
-				}
-			</style>
-
 			${when(
 				this.disabled,
 				() => html`
 					<cosmoz-omnitable-dropdown-input
+						variant="inline"
 						disabled
 						text-align=${this.align}
 						.label=${this.title}
@@ -110,7 +90,7 @@ class NumberRangeInput extends rangeInputMixin(
 							></cosmoz-input>
 						`,
 					})}
-				`,
+				`
 			)}
 		`;
 	}

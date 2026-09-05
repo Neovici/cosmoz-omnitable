@@ -1,11 +1,17 @@
+import '@neovici/cosmoz-button';
 import '@neovici/cosmoz-collapse';
 import { defaultMiddleware, size } from '@neovici/cosmoz-dropdown/use-floating';
+import {
+	chevronDownIcon,
+	dotsVerticalIcon,
+	equalIcon,
+	xCloseIcon,
+} from '@neovici/cosmoz-icons/untitled';
 import { sheet } from '@neovici/cosmoz-utils';
 import { isEmpty } from '@neovici/cosmoz-utils/template';
 import { component, html } from '@pionjs/pion';
 import { t } from 'i18next';
 import { when } from 'lit-html/directives/when.js';
-import { arrow, close, pull } from '../icons';
 import type { ColumnConfigInput } from '../layout';
 import { group, sort } from './cosmoz-omnitable-sort-group';
 import style, { dropdown as dropdownStyle } from './style.css';
@@ -22,7 +28,7 @@ interface SettingsUiConfigExtended extends SettingsUiConfig {
 	setOpened: (
 		opened:
 			| Record<string, boolean>
-			| ((prev: Record<string, boolean>) => Record<string, boolean>),
+			| ((prev: Record<string, boolean>) => Record<string, boolean>)
 	) => void;
 }
 
@@ -86,7 +92,7 @@ const renderItem =
 			@dragleave=${onDragLeave}
 			@drop=${onDrop}
 		>
-			<button class="pull">${pull}</button>
+			<button class="pull">${equalIcon({ width: '16', height: '16' })}</button>
 			<label class="title" ?has-filter=${!isEmpty(filters[column.name]?.filter)}
 				>${column.title}</label
 			>
@@ -101,7 +107,7 @@ const renderItem =
 	};
 
 const SettingsUI = (
-	host: HTMLElement & { config: SettingsUiConfigExtended },
+	host: HTMLElement & { config: SettingsUiConfigExtended }
 ) => {
 	const {
 		settings,
@@ -114,9 +120,10 @@ const SettingsUI = (
 		...thru
 	} = useSettingsUi(host);
 	return html` <div class="headline">
-			${t('Sort and filter')}
-			<button
-				class="close"
+			<span> ${t('Sort and filter')} </span>
+			<cosmoz-button
+				variant="tertiary"
+				aria-label="${t('Close settings')}"
 				@click=${(e: Event) => {
 					const tg =
 						e.currentTarget instanceof HTMLElement ? e.currentTarget : null;
@@ -124,8 +131,8 @@ const SettingsUI = (
 					tg?.blur();
 				}}
 			>
-				${close}
-			</button>
+				${xCloseIcon({ width: '16', height: '16' })}
+			</cosmoz-button>
 		</div>
 
 		<div class="contents">
@@ -139,7 +146,7 @@ const SettingsUI = (
 					}))}
 				part="columns columns-heading"
 			>
-				${t('Columns')} ${arrow}
+				${t('Columns')} ${chevronDownIcon({ width: '20', height: '20' })}
 			</div>
 			<cosmoz-collapse
 				?opened="${opened.columns}"
@@ -154,7 +161,7 @@ const SettingsUI = (
 				@click=${() =>
 					setOpened((c: Record<string, boolean>) => ({ ...c, sort: !c.sort }))}
 			>
-				${t('Sort on')} ${arrow}
+				${t('Sort on')} ${chevronDownIcon({ width: '20', height: '20' })}
 			</div>
 			<cosmoz-collapse ?opened=${opened.sort}> ${sort()} </cosmoz-collapse>
 
@@ -168,7 +175,7 @@ const SettingsUI = (
 					}))}
 				part="groups groups-heading"
 			>
-				${t('Group on')} ${arrow}
+				${t('Group on')} ${chevronDownIcon({ width: '20', height: '20' })}
 			</div>
 			<cosmoz-collapse ?opened=${opened.group} part="groups groups-heading"
 				>${group()}</cosmoz-collapse
@@ -179,23 +186,27 @@ const SettingsUI = (
 			settingsId,
 			() =>
 				html`<div class="buttons">
-					<button
-						class="button reset"
+					<cosmoz-button
+						variant="tertiary"
 						@click=${onReset}
 						?disabled=${!hasChanges}
 					>
 						${t('Reset')}
-					</button>
-					<button class="button" @click=${onSave} ?disabled=${!hasChanges}>
+					</cosmoz-button>
+					<cosmoz-button
+						variant="primary"
+						@click=${onSave}
+						?disabled=${!hasChanges}
+					>
 						${t('Save')}
-					</button>
-				</div>`,
+					</cosmoz-button>
+				</div>`
 		)}`;
 };
 
 customElements.define(
 	'cosmoz-omnitable-settings-ui',
-	component(SettingsUI, { styleSheets: [sheet(style)] }),
+	component(SettingsUI, { styleSheets: [sheet(style)] })
 );
 
 const Settings = ({ config, newLayout }: SettingsProps) => html`
@@ -208,11 +219,11 @@ const Settings = ({ config, newLayout }: SettingsProps) => html`
 				newLayout,
 				() => html`<div class="headerDots">...</div>`,
 				() =>
-					html` <svg viewBox="0 0 24 24" width="24" fill="currentColor">
-						<circle cx="10" cy="18" r="2"></circle>
-						<circle cx="10" cy="12" r="2"></circle>
-						<circle cx="10" cy="6" r="2"></circle>
-					</svg>`,
+					html` ${dotsVerticalIcon({
+						width: '20',
+						height: '20',
+						styles: 'color: var(--cz-color-text-primary)',
+					})}`
 			)}
 			${when(config?.badge, () => html`<div class="badge"></div>`)}
 		</div>
@@ -225,5 +236,5 @@ const Settings = ({ config, newLayout }: SettingsProps) => html`
 
 customElements.define(
 	'cosmoz-omnitable-settings',
-	component(Settings, { styleSheets: [sheet(dropdownStyle)] }),
+	component(Settings, { styleSheets: [sheet(dropdownStyle)] })
 );

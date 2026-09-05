@@ -81,9 +81,9 @@ export const useHeader = ({
 					(column) =>
 						!!column &&
 						!!column.name &&
-						Object.keys(filterFunctions).includes(column.name),
+						Object.keys(filterFunctions).includes(column.name)
 				),
-			[filterFunctions, settings, collapsedColumns],
+			[filterFunctions, settings, collapsedColumns]
 		),
 		settingsConfig = useMemo(
 			() => ({
@@ -93,7 +93,7 @@ export const useHeader = ({
 				filters,
 				requestTween,
 			}),
-			[settingS, collapsedColumns, hasHiddenFilter, filters, requestTween],
+			[settingS, collapsedColumns, hasHiddenFilter, filters, requestTween]
 		);
 
 	useEffect(() => {
@@ -102,9 +102,9 @@ export const useHeader = ({
 				requestAnimationFrame(() => {
 					host.style.setProperty(
 						'--ot-height',
-						entries[0]?.contentRect.height + 'px',
+						entries[0]?.contentRect.height + 'px'
 					);
-				}),
+				})
 			);
 		observer.observe(el);
 		return () => observer.unobserve(el);

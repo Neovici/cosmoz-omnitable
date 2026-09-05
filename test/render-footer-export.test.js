@@ -25,7 +25,7 @@ suite('render-footer export', () => {
 				xlsxFilename: 'test.xlsx',
 				xlsxSheetname: 'Sheet 1',
 			}),
-			container,
+			container
 		);
 
 		// When All items are selected, the full dataset is not available to export,
@@ -46,7 +46,7 @@ suite('render-footer export', () => {
 				selectedItems: [{ id: 1 }],
 				setSelectedItems: () => undefined,
 			}),
-			container,
+			container
 		);
 
 		// PR #899 introduced `<slot name="info" slot="info">` to both catch
@@ -82,14 +82,14 @@ suite('render-footer export', () => {
 				xlsxFilename: 'test.xlsx',
 				xlsxSheetname: 'Sheet 1',
 			}),
-			container,
+			container
 		);
 
 		const dropdown = container.querySelector('cosmoz-dropdown-menu');
 		assert.isNotNull(dropdown);
 		assert.lengthOf(
-			container.querySelectorAll('cosmoz-dropdown-menu > button'),
-			2,
+			container.querySelectorAll('cosmoz-dropdown-menu > cosmoz-button'),
+			2
 		);
 
 		container.remove();

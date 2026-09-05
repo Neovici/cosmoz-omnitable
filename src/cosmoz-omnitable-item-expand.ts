@@ -31,7 +31,7 @@ const ItemExpand = ({
 					selected,
 					expanded,
 				})}</cosmoz-omnitable-item-expand-line
-			>`,
+			>`
 	);
 };
 
@@ -39,5 +39,5 @@ customElements.define(
 	'cosmoz-omnitable-item-expand',
 	component(ItemExpand, {
 		useShadowDOM: false,
-	}),
+	})
 );

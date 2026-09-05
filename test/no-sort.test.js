@@ -76,7 +76,7 @@ suite('no-sort', () => {
 					</cosmoz-omnitable-column-number>
 				</cosmoz-omnitable>
 			`,
-			data,
+			data
 		);
 		await nextFrame();
 	});
@@ -92,30 +92,30 @@ suite('no-sort', () => {
 
 	test('does not render sort button in header for no-sort column', () => {
 		const idHeaderCell = omnitable.shadowRoot.querySelector(
-			'.header-cell[name="id"]',
+			'.header-cell[name="id"]'
 		);
 		const sortButton = idHeaderCell.querySelector('button.sg');
 		assert.isNull(
 			sortButton,
-			'Sort button should not exist for no-sort column',
+			'Sort button should not exist for no-sort column'
 		);
 	});
 
 	test('renders sort button in header for sortable columns', () => {
 		const nameHeaderCell = omnitable.shadowRoot.querySelector(
-			'.header-cell[name="name"]',
+			'.header-cell[name="name"]'
 		);
 		const sortButton = nameHeaderCell.querySelector('button.sg');
 		assert.isNotNull(
 			sortButton,
-			'Sort button should exist for sortable column',
+			'Sort button should exist for sortable column'
 		);
 	});
 
 	test('does not show no-sort column in settings sort section', async () => {
 		// Open settings
 		const settingsButton = omnitable.shadowRoot.querySelector(
-			'cosmoz-omnitable-settings',
+			'cosmoz-omnitable-settings'
 		);
 		assert.isNotNull(settingsButton, 'Settings button should exist');
 
@@ -130,42 +130,42 @@ suite('no-sort', () => {
 
 		// Find the settings UI
 		const settingsUI = settingsButton.shadowRoot.querySelector(
-			'cosmoz-omnitable-settings-ui',
+			'cosmoz-omnitable-settings-ui'
 		);
 		assert.isNotNull(settingsUI, 'Settings UI should exist');
 
 		// Find the sort section
 		const sortConsumer = settingsUI.shadowRoot.querySelector(
-			'sort-and-group-consumer.sgs',
+			'sort-and-group-consumer.sgs'
 		);
 		assert.isNotNull(sortConsumer, 'Sort consumer should exist');
 
 		// Check that only sortable columns appear
 		const sortButtons = sortConsumer.querySelectorAll('button.sg');
 		const sortableColumnNames = Array.from(sortButtons).map((btn) =>
-			btn.textContent.trim(),
+			btn.textContent.trim()
 		);
 
 		assert.notInclude(
 			sortableColumnNames,
 			'ID',
-			'No-sort column should not appear in sort settings',
+			'No-sort column should not appear in sort settings'
 		);
 		assert.include(
 			sortableColumnNames,
 			'Name',
-			'Sortable column should appear in sort settings',
+			'Sortable column should appear in sort settings'
 		);
 		assert.include(
 			sortableColumnNames,
 			'Age',
-			'Sortable column should appear in sort settings',
+			'Sortable column should appear in sort settings'
 		);
 	});
 
 	test('reorders columns from settings drag and drop', async () => {
 		const settingsButton = omnitable.shadowRoot.querySelector(
-			'cosmoz-omnitable-settings',
+			'cosmoz-omnitable-settings'
 		);
 		const dropdown = settingsButton.shadowRoot.querySelector('cosmoz-dropdown');
 		const button = dropdown.shadowRoot.querySelector('[part="button"]');
@@ -173,7 +173,7 @@ suite('no-sort', () => {
 		await nextFrame();
 
 		const settingsUI = settingsButton.shadowRoot.querySelector(
-			'cosmoz-omnitable-settings-ui',
+			'cosmoz-omnitable-settings-ui'
 		);
 		const source = settingsUI.shadowRoot.querySelector('.item[data-index="2"]');
 		const target = settingsUI.shadowRoot.querySelector('.item[data-index="0"]');
@@ -181,14 +181,14 @@ suite('no-sort', () => {
 		const dt = createDataTransfer();
 
 		pullButton.dispatchEvent(
-			new MouseEvent('mousedown', { bubbles: true, composed: true }),
+			new MouseEvent('mousedown', { bubbles: true, composed: true })
 		);
 		dispatchDragEvent(source, 'dragstart', dt);
 		dispatchDragEvent(target, 'drop', dt);
 		await nextFrame();
 
 		const order = Array.from(
-			settingsUI.shadowRoot.querySelectorAll('.item .title'),
+			settingsUI.shadowRoot.querySelectorAll('.item .title')
 		).map((el) => el.textContent.trim());
 
 		assert.deepEqual(order, ['Age', 'ID', 'Name']);
@@ -196,7 +196,7 @@ suite('no-sort', () => {
 
 	test('toggles column state from settings checkbox', async () => {
 		const settingsButton = omnitable.shadowRoot.querySelector(
-			'cosmoz-omnitable-settings',
+			'cosmoz-omnitable-settings'
 		);
 		const dropdown = settingsButton.shadowRoot.querySelector('cosmoz-dropdown');
 		const button = dropdown.shadowRoot.querySelector('[part="button"]');
@@ -204,10 +204,10 @@ suite('no-sort', () => {
 		await nextFrame();
 
 		const settingsUI = settingsButton.shadowRoot.querySelector(
-			'cosmoz-omnitable-settings-ui',
+			'cosmoz-omnitable-settings-ui'
 		);
 		const checkbox = settingsUI.shadowRoot.querySelector(
-			'.item[data-index="1"] input.checkbox',
+			'.item[data-index="1"] input.checkbox'
 		);
 
 		assert.isTrue(checkbox.checked, 'column starts enabled');
@@ -225,7 +225,7 @@ suite('no-sort', () => {
 
 		assert.isUndefined(
 			omnitable.sortOn,
-			'sortOn should be cleared for no-sort column',
+			'sortOn should be cleared for no-sort column'
 		);
 	});
 });

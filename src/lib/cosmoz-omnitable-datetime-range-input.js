@@ -8,7 +8,7 @@ import './cosmoz-omnitable-dropdown-input';
 import { polymerHauntedRender } from './polymer-haunted-render-mixin';
 
 class DatetimeRangeInput extends dateInputMixin(
-	polymerHauntedRender(PolymerElement),
+	polymerHauntedRender(PolymerElement)
 ) {
 	render() {
 		const onOpenedChanged = (event) => {
@@ -16,31 +16,11 @@ class DatetimeRangeInput extends dateInputMixin(
 		};
 
 		return html`
-			<style>
-				cosmoz-datetime-input {
-					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
-					border-radius: 6px;
-					border: 1px solid #d1d1d6;
-					box-shadow: 0 1px 2px 0 rgba(60, 60, 60, 0.04);
-					padding: 2px 8px;
-					margin-bottom: 6px;
-					min-height: 28px;
-					transition:
-						border-color 0.2s,
-						box-shadow 0.2s;
-				}
-
-				cosmoz-datetime-input:focus-within {
-					border-color: var(--cz-accent-color, #007aff);
-					box-shadow: 0 0 0 1px rgba(0, 122, 255, 0.15);
-					background: var(--cosmoz-omnitable-amount-input-background, #ffffff);
-				}
-			</style>
-
 			${when(
 				this.disabled,
 				() => html`
 					<cosmoz-omnitable-dropdown-input
+						variant="inline"
 						disabled
 						text-align=${this.align}
 						.label=${this.title}
@@ -60,7 +40,7 @@ class DatetimeRangeInput extends dateInputMixin(
 						externalValues: this.externalValues,
 						onOpenedChanged,
 						content: html`
-							<h3 style="margin: 0;">${this.title}</h3>
+							<h3>${this.title}</h3>
 							<cosmoz-datetime-input
 								date-label=${t('From date')}
 								time-label=${t('From time')}
@@ -83,7 +63,7 @@ class DatetimeRangeInput extends dateInputMixin(
 							></cosmoz-datetime-input>
 						`,
 					})}
-				`,
+				`
 			)}
 		`;
 	}
@@ -111,5 +91,5 @@ class DatetimeRangeInput extends dateInputMixin(
 
 customElements.define(
 	'cosmoz-omnitable-datetime-range-input',
-	DatetimeRangeInput,
+	DatetimeRangeInput
 );

@@ -15,7 +15,7 @@ type ItemRowProps = {
 const renderCell = (
 	column: Column,
 	data: ItemRenderData,
-	onItemChange: (column: Column, item: Item) => (value: unknown) => void,
+	onItemChange: (column: Column, item: Item) => (value: unknown) => void
 ) =>
 	column.editable
 		? column.renderEditCell!(column, data, onItemChange(column, data.item))
@@ -45,10 +45,10 @@ const ItemRow = ({
 			>
 				${renderCell(column, { item, index, selected, expanded }, onItemChange)}
 			</div>`;
-		},
+		}
 	);
 
 customElements.define(
 	'cosmoz-omnitable-item-row',
-	component(ItemRow, { useShadowDOM: false }),
+	component(ItemRow, { useShadowDOM: false })
 );

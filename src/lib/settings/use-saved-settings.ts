@@ -6,7 +6,7 @@ export default (
 	settingsId: string,
 	settings: NormalizedSettings | undefined,
 	setSettings: (settings?: NormalizedSettings | undefined) => void,
-	onReset?: () => void,
+	onReset?: () => void
 ) => {
 	const [savedSettings, setSavedSettings] = useState<
 			NormalizedSettings | null | undefined
@@ -43,7 +43,7 @@ export default (
 				}
 				onReset?.();
 			},
-			[onReset],
+			[onReset]
 		),
 		hasChanges: settings != null,
 	};
