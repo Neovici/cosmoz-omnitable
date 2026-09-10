@@ -1,3 +1,9 @@
+## 19.0.1
+
+### Patch Changes
+
+- 2af19e3: Show sort icons only on hover
+
 ## 19.0.0
 
 ### Major Changes
