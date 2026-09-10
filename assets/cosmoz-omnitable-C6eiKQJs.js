@@ -1159,6 +1159,7 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$ as t,C as n,D as r,E
 		color: inherit;
 		padding: 0;
 		transition: transform 0.3s ease;
+		opacity: 0;
 	}
 	.sg span {
 		display: none;
@@ -1171,6 +1172,10 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$ as t,C as n,D as r,E
 	}
 	.sg:not([data-on="desc"]) {
 		transform: scaleY(-1);
+	}
+	.cell:hover .sg,
+	.sg[data-on] {
+		opacity: 1;
 	}
 
 	.header-cell {

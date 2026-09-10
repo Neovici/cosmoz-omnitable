@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{Xt as t,Zt as n}from"./dist-Bd_7_9uE.js";import{n as r,t as i}from"./table-demo-helper-C6ZNhr6E.js";import{t as a}from"./cosmoz-omnitable-H6nadz2w.js";var o,s,c,l,u;function d(){return(d=e((()=>{n(),r(),a(),o=i(10,10,10),s={title:`Components/CosmozOmnitableItemRowMiniMode`,component:`cosmoz-omnitable-item-row`},c=e=>t`
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{Xt as t,Zt as n}from"./dist-Bd_7_9uE.js";import{n as r,t as i}from"./table-demo-helper-C6ZNhr6E.js";import{t as a}from"./cosmoz-omnitable-C6eiKQJs.js";var o,s,c,l,u;function d(){return(d=e((()=>{n(),r(),a(),o=i(10,10,10),s={title:`Components/CosmozOmnitableItemRowMiniMode`,component:`cosmoz-omnitable-item-row`},c=e=>t`
     <style>
         .container {
             width: ${e.width||`400px`};
@@ -44,7 +44,7 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{Xt as t,Zt as n}from".
             ></cosmoz-omnitable-column>
         </cosmoz-omnitable>
     </div>
-`,l=c.bind({}),l.args={width:`400px`},l.parameters={...l.parameters,docs:{...l.parameters?.docs,source:{originalSource:`args => html\`
+`,l=c.bind({}),l.args={width:`400px`},u=[`MiniMode`],l.parameters={...l.parameters,docs:{...l.parameters?.docs,source:{originalSource:`args => html\`
     <style>
         .container {
             width: \${args.width || '400px'};
@@ -90,4 +90,4 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{Xt as t,Zt as n}from".
             ></cosmoz-omnitable-column>
         </cosmoz-omnitable>
     </div>
-\``,...l.parameters?.docs?.source}}},u=[`MiniMode`]})))()}d();export{l as MiniMode,u as __namedExportsOrder,s as default};
+\``,...l.parameters?.docs?.source}}}})))()}d();export{l as MiniMode,u as __namedExportsOrder,s as default};

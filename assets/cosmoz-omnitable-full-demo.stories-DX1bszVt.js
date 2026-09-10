@@ -1178,6 +1178,7 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$ as t,C as n,D as r,E
 		color: inherit;
 		padding: 0;
 		transition: transform 0.3s ease;
+		opacity: 0;
 	}
 	.sg span {
 		display: none;
@@ -1190,6 +1191,10 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$ as t,C as n,D as r,E
 	}
 	.sg:not([data-on="desc"]) {
 		transform: scaleY(-1);
+	}
+	.cell:hover .sg,
+	.sg[data-on] {
+		opacity: 1;
 	}
 
 	.header-cell {
@@ -2041,7 +2046,7 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$ as t,C as n,D as r,E
                     <span>Remove items</span>
                 </cosmoz-button>
             </cosmoz-omnitable>
-        `,play:async()=>{console.log(`Current hash:`,window.location.hash)}},rs={args:{data:gt(10,10,10)}},is={args:{data:gt(2,2,10)}},as={args:{data:[]}},rs.parameters={...rs.parameters,docs:{...rs.parameters?.docs,source:{originalSource:`{
+        `,play:async()=>{console.log(`Current hash:`,window.location.hash)}},rs={args:{data:gt(10,10,10)}},is={args:{data:gt(2,2,10)}},as={args:{data:[]}},os=[`TableWithLargeData`,`TableWithSmallData`,`TableWithNoData`],rs.parameters={...rs.parameters,docs:{...rs.parameters?.docs,source:{originalSource:`{
   args: {
     data: generateTableDemoData(10, 10, 10)
   }
@@ -2053,4 +2058,4 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$ as t,C as n,D as r,E
   args: {
     data: []
   }
-}`,...as.parameters?.docs?.source}}},os=[`TableWithLargeData`,`TableWithSmallData`,`TableWithNoData`]})))()}ss();export{rs as TableWithLargeData,as as TableWithNoData,is as TableWithSmallData,os as __namedExportsOrder,ns as default};
+}`,...as.parameters?.docs?.source}}}})))()}ss();export{rs as TableWithLargeData,as as TableWithNoData,is as TableWithSmallData,os as __namedExportsOrder,ns as default};
