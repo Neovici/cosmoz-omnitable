@@ -476,6 +476,7 @@ export default css`
 		color: inherit;
 		padding: 0;
 		transition: transform 0.3s ease;
+		opacity: 0;
 	}
 	.sg span {
 		display: none;
@@ -488,6 +489,10 @@ export default css`
 	}
 	.sg:not([data-on="desc"]) {
 		transform: scaleY(-1);
+	}
+	.cell:hover .sg,
+	.sg[data-on] {
+		opacity: 1;
 	}
 
 	.header-cell {
