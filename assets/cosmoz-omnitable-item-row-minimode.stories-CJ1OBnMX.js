@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{Xt as t,Zt as n}from"./dist-Bd_7_9uE.js";import{n as r,t as i}from"./table-demo-helper-C6ZNhr6E.js";import{t as a}from"./cosmoz-omnitable-C6eiKQJs.js";var o,s,c,l,u;function d(){return(d=e((()=>{n(),r(),a(),o=i(10,10,10),s={title:`Components/CosmozOmnitableItemRowMiniMode`,component:`cosmoz-omnitable-item-row`},c=e=>t`
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{Xt as t,Yt as n}from"./dist-CgCceko7.js";import{n as r,t as i}from"./table-demo-helper-C6ZNhr6E.js";import{t as a}from"./cosmoz-omnitable-CAMNV83h.js";var o,s,c,l,u;function d(){return(d=e((()=>{t(),r(),a(),o=i(10,10,10),s={title:`Components/CosmozOmnitableItemRowMiniMode`,component:`cosmoz-omnitable-item-row`},c=e=>n`
     <style>
         .container {
             width: ${e.width||`400px`};
