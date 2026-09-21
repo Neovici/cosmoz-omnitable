@@ -85,9 +85,10 @@ export const normalizeStore = (
 ) => ({
 	...current,
 	...props(Array.from(sgProps))(settings),
-	columns: settings.columns?.map(
-		props(['name', 'priority', 'width', 'flex', 'disabled'])
-	),
+	columns:
+		settings.columns?.map(
+			props(['name', 'priority', 'width', 'flex', 'disabled'])
+		) ?? current?.columns,
 });
 
 export default ({

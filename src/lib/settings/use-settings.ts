@@ -30,8 +30,9 @@ export interface UseSettingsResult {
 	setSettings: (settings?: NormalizedSettings) => void;
 	resetRef: { current?: ResetFn };
 	onSave: () => Promise<void>;
-	onReset: (e: KeyboardEvent) => Promise<void>;
+	onReset: () => Promise<void>;
 	hasChanges: boolean;
+	canReset: boolean;
 }
 
 export default ({ settingsId, host }: UseSettingsProps): UseSettingsResult => {
