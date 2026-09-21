@@ -24,6 +24,7 @@ interface SettingsUiConfigExtended extends SettingsUiConfig {
 	onSave: () => void;
 	onReset: () => void;
 	hasChanges: boolean;
+	canReset: boolean;
 	opened: Record<string, boolean>;
 	setOpened: (
 		opened:
@@ -115,6 +116,7 @@ const SettingsUI = (
 		onSave,
 		onReset,
 		hasChanges,
+		canReset,
 		opened,
 		setOpened,
 		...thru
@@ -189,7 +191,7 @@ const SettingsUI = (
 					<cosmoz-button
 						variant="tertiary"
 						@click=${onReset}
-						?disabled=${!hasChanges}
+						?disabled=${!canReset}
 					>
 						${t('Reset')}
 					</cosmoz-button>

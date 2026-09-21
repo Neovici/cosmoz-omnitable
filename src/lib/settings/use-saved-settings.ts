@@ -34,17 +34,16 @@ export default (
 			setSavedSettings(newSettings as NormalizedSettings);
 		}, [settings, savedSettings]),
 
-		onReset: useCallback(
-			async (e: KeyboardEvent) => {
-				setSettings();
-				if (e.shiftKey) {
-					await write(settingsId);
-					setSavedSettings(null);
-				}
-				onReset?.();
-			},
-			[onReset]
-		),
+		onReset: useCallback(async () => {
+			setSettings();
+			if (settingsId && savedSettings != null) {
+				await write(settingsId);
+				setSavedSettings(null);
+			}
+			onReset?.();
+		}, [settingsId, savedSettings, write, onReset]),
+
 		hasChanges: settings != null,
+		canReset: settings != null || savedSettings != null,
 	};
 };
