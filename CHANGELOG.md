@@ -1,3 +1,9 @@
+## 19.0.2
+
+### Patch Changes
+
+- ef25929: Let Reset clear a stored sort/filter layout, and keep stored columns when saving a sort or group change
+
 ## 19.0.1
 
 ### Patch Changes
