@@ -44,6 +44,11 @@ export const getString = ({ valuePath }: { valuePath?: GetPath }, item: Item) =>
 					 */
 					editable: { type: Boolean, notify: true },
 					/**
+					 * Marks the column that identifies the row (e.g. the supplier or
+					 * customer name); its cells are emphasised as the row title.
+					 */
+					primary: { type: Boolean, value: false },
+					/**
 					 * Indicate that the column is loading/performing work
 					 */
 					loading: { type: Boolean, value: false, notify: true },

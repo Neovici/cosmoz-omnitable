@@ -40,6 +40,7 @@ const ItemRow = ({
 				part="cell itemRow-cell cell-${column.name} itemRow-cell-${column.name}"
 				?hidden="${column === groupOnColumn}"
 				?editable="${column.editable}"
+				?primary="${column.primary}"
 				title="${column.cellTitleFn!(column, item)}"
 				name="${column.name}"
 			>
