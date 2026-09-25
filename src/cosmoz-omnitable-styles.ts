@@ -78,17 +78,18 @@ export default css`
 		position: relative;
 		overflow: hidden;
 		color: var(--cz-color-text-secondary);
+		/* Links in cells read as text; the row is the click target. */
+		--cz-link-color: currentColor;
+		--cz-link-color-hover: var(--cz-color-text-primary);
 	}
 	:host a {
-		color: var(--cz-color-brand-300);
-		text-decoration: var(--cosmoz-omnitable-link-decoration, underline);
+		color: inherit;
+		text-decoration: var(--cosmoz-omnitable-link-decoration, none);
 	}
 	:host a:hover {
-		text-decoration: var(
-			--cosmoz-omnitable-link-decoration-hover,
-			var(--cosmoz-omnitable-link-decoration, underline)
-		);
-		color: var(--primary-link-color-hover, var(--primary-link-color));
+		text-decoration: var(--cosmoz-omnitable-link-decoration-hover, underline);
+		text-underline-offset: 2px;
+		color: var(--cz-color-text-primary);
 	}
 
 	/* The wrapping div that contains the header, the table content and the footer */
@@ -106,8 +107,7 @@ export default css`
 		position: relative;
 		display: flex;
 		align-items: flex-end;
-		background-color: var(--cz-color-bg-secondary);
-		border-block: 1px solid var(--cz-color-border-primary);
+		border-block: 1px solid var(--cz-color-border-secondary);
 	}
 
 	[hidden] {
@@ -407,8 +407,19 @@ export default css`
 	}
 
 	.itemRow:hover {
-		box-shadow: var(--cz-shadow-sm);
 		background-color: var(--cz-color-bg-primary-hover);
+	}
+
+	/* Row checkboxes appear on hover, focus or once any row is selected. */
+	@media (hover: hover) {
+		.itemRow .checkbox:not(:checked, :focus-visible) {
+			opacity: 0;
+			transition: opacity 120ms;
+		}
+		.itemRow:hover .checkbox,
+		.tableContent:has(.itemRow[selected]) .itemRow .checkbox {
+			opacity: 1;
+		}
 	}
 	.groupRow:hover .checkbox:not(:checked):not(:hover),
 	.itemRow:hover .checkbox:not(:checked):not(:hover) {
