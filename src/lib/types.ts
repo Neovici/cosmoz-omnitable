@@ -24,6 +24,7 @@ export interface Column {
 	groupOn?: GetPath;
 	noSort?: boolean;
 	editable?: boolean;
+	primary?: boolean;
 	mini?: number | null;
 	hidden?: boolean;
 	disabled?: boolean;
