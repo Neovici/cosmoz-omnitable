@@ -97,6 +97,7 @@ const normalizeColumn = (
 		cellClass: column.cellClass,
 
 		editable: column.editable,
+		primary: column.primary,
 
 		values: column.values,
 		source: memooize(column.computeSource),

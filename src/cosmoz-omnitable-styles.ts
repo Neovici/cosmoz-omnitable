@@ -273,6 +273,11 @@ export default css`
 		line-height: var(--cz-text-sm-line-height);
 	}
 
+	.itemRow-cell[primary] {
+		color: var(--cz-color-text-primary);
+		font-weight: var(--cz-font-weight-medium);
+	}
+
 	.tableContent .itemRow-cell paper-dropdown-menu {
 		margin-top: calc(var(--cz-spacing) * 2);
 	}
