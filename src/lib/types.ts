@@ -52,6 +52,13 @@ export interface Column {
 	headerTitleFn?: (column: Column) => string | undefined;
 	toXlsxValue?: (column: Column, item: Item) => unknown;
 	getString?: (column: Column, item: Item) => unknown;
+	/** Text used for sizing custom cells; configured width remains a fallback. */
+	getContentText?: (
+		column: Column,
+		item: Item
+	) => string | number | boolean | null | undefined;
+	/** Opt custom-rendered columns into automatic empty-column hiding. */
+	isEmpty?: (column: Column, item: Item) => boolean;
 	getComparableValue?: (column: Column, item: Item) => unknown;
 	serializeFilter?: (column: Column, filter: unknown) => unknown;
 	deserializeFilter?: (column: Column, filter: unknown) => unknown;

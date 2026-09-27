@@ -42,6 +42,7 @@ interface RenderItemParams {
 	onDown: (e: MouseEvent) => void;
 	onToggle: (e: Event) => void;
 	collapsed?: { name?: string }[];
+	autoHidden?: { name?: string }[];
 	filters: Record<string, { filter?: unknown }>;
 }
 
@@ -77,11 +78,13 @@ const renderItem =
 		onDown,
 		onToggle,
 		collapsed,
+		autoHidden,
 		filters,
 	}: RenderItemParams) =>
 	(column: ColumnConfigInput, i: number) => {
-		const indeterminate = !!collapsed?.find((c) => c.name === column.name),
-			checked = !column.disabled && !indeterminate;
+		const empty = !!autoHidden?.some((c) => c.name === column.name),
+			indeterminate = !!collapsed?.find((c) => c.name === column.name),
+			checked = !column.disabled && !indeterminate && !empty;
 		return html` <div
 			class="item"
 			data-index=${i}
@@ -95,7 +98,7 @@ const renderItem =
 		>
 			<button class="pull">${equalIcon({ width: '16', height: '16' })}</button>
 			<label class="title" ?has-filter=${!isEmpty(filters[column.name]?.filter)}
-				>${column.title}</label
+				>${column.title}${empty ? ` (${t('Empty')})` : ''}</label
 			>
 			<input
 				class="checkbox"

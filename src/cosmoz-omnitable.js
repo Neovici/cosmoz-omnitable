@@ -63,6 +63,9 @@ customElements.define(
 			'mini-breakpoint',
 			'inline',
 			'enable-select-all',
+			'auto-size',
+			'hide-empty-columns',
+			'data-complete',
 		],
 	})
 );

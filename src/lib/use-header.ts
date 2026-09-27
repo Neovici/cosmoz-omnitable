@@ -25,6 +25,7 @@ interface UseHeaderParams {
 	columns: NormalizedColumn[];
 	sortAndGroupOptions: SortAndGroupOptions;
 	collapsedColumns: NormalizedColumn[];
+	autoHiddenColumns?: NormalizedColumn[];
 	settings: NormalizedSettings;
 	filterFunctions: Record<string, (item: Item) => boolean>;
 	settingS: UseSettingsResult;
@@ -43,6 +44,7 @@ export const useHeader = ({
 	columns,
 	sortAndGroupOptions,
 	collapsedColumns,
+	autoHiddenColumns,
 	settings,
 	filterFunctions,
 	settingS,
@@ -89,11 +91,19 @@ export const useHeader = ({
 			() => ({
 				...settingS,
 				collapsed: collapsedColumns,
+				autoHidden: autoHiddenColumns,
 				badge: hasHiddenFilter,
 				filters,
 				requestTween,
 			}),
-			[settingS, collapsedColumns, hasHiddenFilter, filters, requestTween]
+			[
+				settingS,
+				collapsedColumns,
+				autoHiddenColumns,
+				hasHiddenFilter,
+				filters,
+				requestTween,
+			]
 		);
 
 	useEffect(() => {

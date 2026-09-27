@@ -2,24 +2,21 @@ import { useMeta } from '@neovici/cosmoz-utils/hooks/use-meta';
 import { useCallback, useEffect, useMemo, useState } from '@pionjs/pion';
 import { toCss } from './compute-layout';
 import { useCanvasWidth } from './use-canvas-width';
+import { useContentLayout } from './use-content-layout';
 import { useLayout } from './use-layout';
 import { useMini } from './use-mini';
 import { useResizableColumns } from './use-resizable-columns';
 import { useTweenArray } from './use-tween-array';
-
 const useAdoptedStyleSheet = (host) => {
 	const styleSheet = useMemo(() => new CSSStyleSheet(), []);
-
 	useEffect(() => {
 		host.shadowRoot.adoptedStyleSheets = [
 			...host.shadowRoot.adoptedStyleSheets,
 			styleSheet,
 		];
 	}, []);
-
 	return styleSheet;
 };
-
 export const useFastLayout = ({
 	host,
 	columns,
@@ -27,7 +24,14 @@ export const useFastLayout = ({
 	setSettings,
 	resizeSpeedFactor,
 	sortAndGroupOptions,
+	filters,
 }) => {
+	const { config, autoSize, autoHiddenColumns } = useContentLayout({
+		host,
+		columns,
+		settings,
+		filters,
+	});
 	const canvasWidth = useCanvasWidth(host),
 		{ isMini, miniColumn, miniColumns } = useMini({
 			host,
@@ -39,7 +43,8 @@ export const useFastLayout = ({
 			canvasWidth,
 			groupOnColumn,
 			miniColumn,
-			config: settings.columns,
+			config,
+			autoSize,
 		}),
 		styleSheet = useAdoptedStyleSheet(host),
 		collapsedColumns = useMemo(
@@ -48,14 +53,14 @@ export const useFastLayout = ({
 					(acc, column, index) =>
 						layout[index] != null ||
 						column.name === groupOnColumn?.name ||
-						column.disabled
+						column.disabled ||
+						config[index]?.hidden
 							? acc
 							: [...acc, columns.find((c) => c.name === column.name)],
 					[]
 				),
-			[columns, settings, layout]
+			[columns, settings, layout, config]
 		);
-
 	// Tween only runs briefly for direct column interactions (show/hide,
 	// reorder, drag-resize). Otherwise speed is 1 (snap).
 	const [tweenSpeed, setTweenSpeed] = useState(1),
@@ -64,7 +69,6 @@ export const useFastLayout = ({
 			[resizeSpeedFactor]
 		),
 		onConverge = useCallback(() => setTweenSpeed(1), []);
-
 	const meta = useMeta({ columns: settings.columns });
 	useTweenArray(
 		layout,
@@ -75,7 +79,6 @@ export const useFastLayout = ({
 		},
 		onConverge
 	);
-
 	useResizableColumns({
 		host,
 		canvasWidth,
@@ -83,6 +86,11 @@ export const useFastLayout = ({
 		setSettings: (update) => setSettings(update(settings)),
 		requestTween,
 	});
-
-	return { isMini, collapsedColumns, miniColumns, requestTween };
+	return {
+		isMini,
+		collapsedColumns,
+		miniColumns,
+		requestTween,
+		autoHiddenColumns,
+	};
 };

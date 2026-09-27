@@ -8,6 +8,7 @@ interface UseLayoutParams {
 	groupOnColumn?: Column | null;
 	config: ColumnConfigInput[];
 	miniColumn?: Column | null;
+	autoSize?: boolean;
 }
 
 export const useLayout = ({
@@ -15,6 +16,7 @@ export const useLayout = ({
 	groupOnColumn,
 	config,
 	miniColumn,
+	autoSize,
 }: UseLayoutParams): (number | undefined)[] =>
 	useMemo(() => {
 		if (!Array.isArray(config) || canvasWidth == null || canvasWidth === 0) {
@@ -29,18 +31,22 @@ export const useLayout = ({
 				priority: c.priority,
 				name: c.name,
 				index,
-				hidden: c.name === groupOnColumn?.name || c.disabled,
+				hidden: c.name === groupOnColumn?.name || c.disabled || c.hidden,
 			}))
 			.map((c) =>
-				miniColumn ? { ...c, hidden: miniColumn.name !== c.name } : c,
+				miniColumn ? { ...c, hidden: miniColumn.name !== c.name } : c
 			)
 			.sort(
 				(
 					{ index: aIndex, priority: aPriority },
-					{ index: bIndex, priority: bPriority },
-				) =>
-					aPriority === bPriority ? bIndex - aIndex : aPriority - bPriority,
+					{ index: bIndex, priority: bPriority }
+				) => (aPriority === bPriority ? bIndex - aIndex : aPriority - bPriority)
 			);
 
-		return computeLayout(columnConfigs, canvasWidth, columnConfigs.length);
-	}, [canvasWidth, groupOnColumn, config]);
+		return computeLayout(
+			columnConfigs,
+			canvasWidth,
+			columnConfigs.length,
+			autoSize
+		);
+	}, [canvasWidth, groupOnColumn, config, miniColumn, autoSize]);

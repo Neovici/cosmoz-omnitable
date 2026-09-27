@@ -6,7 +6,6 @@ import { useList } from './use-list';
 import { useProcessedItems } from './use-processed-items';
 import { usePublicInterface } from './use-public-interface';
 import { useSortAndGroupOptions } from './use-sort-and-group-options';
-
 export const useOmnitable = (host) => {
 	const {
 			hashParam,
@@ -38,14 +37,16 @@ export const useOmnitable = (host) => {
 				noLocalSort,
 				noLocalFilter,
 			}),
-		{ isMini, collapsedColumns, miniColumns, requestTween } = useFastLayout({
-			host,
-			columns,
-			settings,
-			setSettings,
-			resizeSpeedFactor,
-			sortAndGroupOptions,
-		}),
+		{ isMini, collapsedColumns, miniColumns, requestTween, autoHiddenColumns } =
+			useFastLayout({
+				host,
+				columns,
+				settings,
+				setSettings,
+				resizeSpeedFactor,
+				sortAndGroupOptions,
+				filters,
+			}),
 		dataIsValid = data && Array.isArray(data) && data.length > 0,
 		{ selectedItems, setSelectedItems } = usePublicInterface({
 			host,
@@ -57,7 +58,6 @@ export const useOmnitable = (host) => {
 			isMini,
 			...sortAndGroupOptions,
 		});
-
 	const header = useHeader({
 		host,
 		selectedItems,
@@ -73,8 +73,8 @@ export const useOmnitable = (host) => {
 		setFilterState,
 		hideSelectAll: host.hideSelectAll === true,
 		requestTween,
+		autoHiddenColumns,
 	});
-
 	return {
 		header,
 		list: useList({

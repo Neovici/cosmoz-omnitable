@@ -80,6 +80,8 @@ const normalizeColumn = (
 		priority: column.priority,
 
 		getString: column.getString,
+		getContentText: column.getContentText,
+		isEmpty: column.isEmpty,
 		getComparableValue: column.getComparableValue,
 		serializeFilter: column.serializeFilter,
 		deserializeFilter: column.deserializeFilter,

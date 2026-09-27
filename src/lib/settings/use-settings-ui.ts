@@ -12,11 +12,13 @@ export interface SettingsUiConfig {
 			  })
 	) => void;
 	collapsed?: { name?: string }[];
+	autoHidden?: { name?: string }[];
 	requestTween?: () => void;
 }
 
 interface SettingsUiMeta {
 	collapsed?: { name?: string }[];
+	autoHidden?: { name?: string }[];
 	settings: ColumnConfigInput[];
 	requestTween?: () => void;
 	setSettings: (columns: ColumnConfigInput[]) => void;
@@ -40,9 +42,10 @@ export default <C extends SettingsUiConfig>(host: {
 	onToggle: (e: Event) => void;
 } => {
 	const { config } = host,
-		{ settings, setSettings, collapsed, requestTween } = config,
+		{ settings, setSettings, collapsed, autoHidden, requestTween } = config,
 		meta = useMeta<SettingsUiMeta>({
 			collapsed,
+			autoHidden,
 			settings: settings.columns,
 			requestTween,
 			setSettings: useCallback(
@@ -178,6 +181,11 @@ export default <C extends SettingsUiConfig>(host: {
 				newSettings.splice(idx, 1, {
 					...settings[idx]!,
 					disabled: !target?.checked,
+					showWhenEmpty:
+						target?.checked &&
+						meta.autoHidden?.some((c) => c.name === settings[idx].name)
+							? true
+							: settings[idx].showWhenEmpty,
 					priority: target?.checked
 						? settings.reduce((acc, s) => Math.max(acc, s.priority ?? 0), 0) + 1
 						: settings[idx]?.priority,

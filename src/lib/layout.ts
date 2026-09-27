@@ -8,6 +8,7 @@ export interface ColumnConfig {
 	title?: string;
 	hidden?: boolean;
 	disabled?: boolean;
+	showWhenEmpty?: boolean;
 }
 
 export type ColumnConfigInput = Omit<ColumnConfig, 'index'>;
@@ -21,7 +22,7 @@ export const // eslint-disable-next-line max-statements
 
 		let [widthSum, lots] = columns.reduce(
 				([widthSum, lots], { width, flex }) => [widthSum + width, lots + flex],
-				[0, 0],
+				[0, 0]
 			),
 			freeRealEstate = container - widthSum,
 			lotSize = finite(freeRealEstate / lots),
