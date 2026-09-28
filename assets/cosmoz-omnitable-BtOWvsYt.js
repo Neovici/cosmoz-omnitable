@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$ as t,Bt as n,C as r,D as i,Dt as a,Et as o,F as s,Ft as c,H as l,I as u,K as d,Kt as f,L as p,Lt as m,M as h,N as g,Nt as _,O as v,S as y,V as b,W as ee,Xt as x,Y as S,Yt as C,Z as te,_ as ne,_t as re,a as ie,at as ae,b as oe,d as se,f as ce,ft as le,g as ue,gt as w,h as de,ht as T,i as fe,it as E,j as D,jt as pe,k as O,kt as k,m as A,mt as j,ot as me,p as he,q as ge,qt as _e,t as ve,tt as ye,ut as be,v as xe,w as Se,wt as Ce,x as we,y as Te,z as Ee,zt as M}from"./dist-CgCceko7.js";import{$ as De,A as Oe,C as ke,D as Ae,E as je,F as N,H as Me,I as Ne,L as Pe,M as Fe,N as Ie,O as P,P as F,Q as Le,R as Re,S as ze,T as Be,U as Ve,V as He,X as Ue,Y as We,Z as Ge,_ as Ke,a as qe,b as Je,c as Ye,d as Xe,et as Ze,f as Qe,g as $e,h as et,j as tt,k as I,l as nt,n as rt,o as it,p as at,q as ot,r as st,t as ct,u as lt,v as ut,w as dt,x as ft,y as pt,z as mt}from"./dist-bbs6yPsi.js";var ht,gt;function L(){return(L=e((()=>{l(),be(),T(),ht=j`
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$ as t,Bt as n,C as r,D as i,Dt as a,Et as o,F as s,Ft as c,H as l,I as u,K as d,Kt as f,L as p,Lt as m,M as h,N as g,Nt as _,O as v,S as y,V as b,W as ee,Xt as x,Y as S,Yt as C,Z as te,_ as ne,_t as re,a as ie,at as ae,b as oe,d as se,f as ce,ft as le,g as ue,gt as w,h as de,ht as T,i as fe,it as E,j as D,jt as pe,k as O,kt as k,m as A,mt as j,ot as me,p as he,q as ge,qt as _e,t as ve,tt as ye,ut as be,v as xe,w as Se,wt as Ce,x as we,y as Te,z as Ee,zt as M}from"./dist-JKBP6sbx.js";import{$ as De,A as Oe,C as ke,D as Ae,E as je,F as N,H as Me,I as Ne,L as Pe,M as Fe,N as Ie,O as P,P as F,Q as Le,R as Re,S as ze,T as Be,U as Ve,V as He,X as Ue,Y as We,Z as Ge,_ as Ke,a as qe,b as Je,c as Ye,d as Xe,et as Ze,f as Qe,g as $e,h as et,j as tt,k as I,l as nt,n as rt,o as it,p as at,q as ot,r as st,t as ct,u as lt,v as ut,w as dt,x as ft,y as pt,z as mt}from"./dist-C38Pkf4X.js";var ht,gt;function L(){return(L=e((()=>{l(),be(),T(),ht=j`
 	:host {
 		display: flex;
 		cursor: pointer;
@@ -761,17 +761,18 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$ as t,Bt as n,C as r,
 		position: relative;
 		overflow: hidden;
 		color: var(--cz-color-text-secondary);
+		/* Links in cells read as text; the row is the click target. */
+		--cz-link-color: currentColor;
+		--cz-link-color-hover: var(--cz-color-text-primary);
 	}
 	:host a {
-		color: var(--cz-color-brand-300);
-		text-decoration: var(--cosmoz-omnitable-link-decoration, underline);
+		color: inherit;
+		text-decoration: var(--cosmoz-omnitable-link-decoration, none);
 	}
 	:host a:hover {
-		text-decoration: var(
-			--cosmoz-omnitable-link-decoration-hover,
-			var(--cosmoz-omnitable-link-decoration, underline)
-		);
-		color: var(--primary-link-color-hover, var(--primary-link-color));
+		text-decoration: var(--cosmoz-omnitable-link-decoration-hover, underline);
+		text-underline-offset: 2px;
+		color: var(--cz-color-text-primary);
 	}
 
 	/* The wrapping div that contains the header, the table content and the footer */
@@ -789,8 +790,7 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$ as t,Bt as n,C as r,
 		position: relative;
 		display: flex;
 		align-items: flex-end;
-		background-color: var(--cz-color-bg-secondary);
-		border-block: 1px solid var(--cz-color-border-primary);
+		border-block: 1px solid var(--cz-color-border-secondary);
 	}
 
 	[hidden] {
@@ -1090,8 +1090,19 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$ as t,Bt as n,C as r,
 	}
 
 	.itemRow:hover {
-		box-shadow: var(--cz-shadow-sm);
 		background-color: var(--cz-color-bg-primary-hover);
+	}
+
+	/* Row checkboxes appear on hover, focus or once any row is selected. */
+	@media (hover: hover) {
+		.itemRow .checkbox:not(:checked, :focus-visible) {
+			opacity: 0;
+			transition: opacity 120ms;
+		}
+		.itemRow:hover .checkbox,
+		.tableContent:has(.itemRow[selected]) .itemRow .checkbox {
+			opacity: 1;
+		}
 	}
 	.groupRow:hover .checkbox:not(:checked):not(:hover),
 	.itemRow:hover .checkbox:not(:checked):not(:hover) {
