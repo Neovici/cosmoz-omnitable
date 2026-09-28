@@ -71,5 +71,7 @@ const tmplt = `
 	<slot name="actions" slot="actions"></slot>
 `;
 
+export { renderMini } from './lib/render-mini';
+
 export const actionSlots = html(Object.assign([tmplt], { raw: [tmplt] })),
 	actionSlotsPolymer = polymerHtml(Object.assign([tmplt], { raw: [tmplt] }));

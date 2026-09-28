@@ -1,9 +1,14 @@
+/* eslint-disable max-lines */
 import { chevronDownIcon } from '@neovici/cosmoz-icons/untitled';
 import { isEmpty } from '@neovici/cosmoz-utils/template';
 import { html, useCallback, useEffect, useMemo, useRef } from '@pionjs/pion';
-import { when } from 'lit-html/directives/when.js';
+import type {
+	RenderGroupParams as GroupedListGroupParams,
+	RenderItemParams as GroupedListRowParams,
+} from '../grouped-list/use-cosmoz-grouped-list';
 import type { GroupItem } from '../grouped-list/utils';
-import type { Column, Item } from './types';
+import { renderMinis } from './render-mini';
+import type { Column, HostRenderGroup, HostRenderItem, Item } from './types';
 import { indexSymbol } from './utils';
 import { onItemChange as _onItemChange } from './utils-data';
 
@@ -68,29 +73,6 @@ const isRow = (el: EventTarget | null): el is RowElement =>
 
 const _getGroupRowClasses = (folded: boolean): string =>
 	folded ? 'groupRow groupRow-folded' : 'groupRow';
-
-const renderMinis =
-	({ item, index }: { item: IndexedItem; index?: number }) =>
-	(columns: Column[] | undefined) =>
-		when(
-			(columns?.length ?? 0) > 0,
-			() => html`
-				<div class="itemRow-minis" part="item-minis">
-					${columns!.map(
-						(column) =>
-							html`<div
-								class="itemRow-mini"
-								part="item-mini item-mini-${column.name}"
-							>
-								${(column.renderMini ?? column.renderCell)!(column, {
-									item,
-									index,
-								})}
-							</div>`
-					)}
-				</div>
-			`
-		);
 
 const renderItem =
 	({
@@ -203,10 +185,55 @@ const renderGroup =
 			</button>
 		</div>`;
 
+interface BindItemParams {
+	render: HostRenderItem;
+	columns: Column[];
+	collapsedColumns: Column[];
+	onItemClick: (event: Event) => void;
+	onCheckboxChange: (event: Event) => void;
+	dataIsValid: boolean;
+}
+
+interface BindGroupParams {
+	render: HostRenderGroup;
+	columns: Column[];
+	onCheckboxChange: (event: Event) => void;
+	dataIsValid: boolean;
+}
+
+// wraps a host-provided row renderer, injecting the params omnitable owns
+// (columns, collapsed columns, selection/click wiring)
+const bindItemParams =
+	({
+		render,
+		columns,
+		collapsedColumns,
+		onItemClick,
+		onCheckboxChange,
+		dataIsValid,
+	}: BindItemParams) =>
+	(item: IndexedItem, index: number, params: GroupedListRowParams) =>
+		render(item, index, {
+			...params,
+			columns,
+			collapsedColumns,
+			onItemClick,
+			onCheckboxChange,
+			dataIsValid,
+		});
+
+// wraps a host-provided group renderer, injecting the params omnitable owns
+const bindGroupParams =
+	({ render, columns, onCheckboxChange, dataIsValid }: BindGroupParams) =>
+	(group: IndexedGroup, index: number, params: GroupedListGroupParams) =>
+		render(group, index, { ...params, columns, onCheckboxChange, dataIsValid });
+
 interface UseListHost extends HTMLElement {
 	loading?: boolean;
 	displayEmptyGroups?: boolean;
 	compareItemsFn?: <T>(a: T, b: T) => boolean;
+	renderItem?: HostRenderItem;
+	renderGroup?: HostRenderGroup;
 }
 
 interface UseListParams {
@@ -311,17 +338,8 @@ export const useList = ({
 			[]
 		);
 
-	return {
-		...rest,
-		processedItems,
-		dataIsValid,
-		filterIsTooStrict: dataIsValid && processedItems.length < 1,
-		loading,
-		compareItemsFn,
-		displayEmptyGroups,
-		error,
-
-		renderItem: useMemo(
+	// default renderers — keep last among the hooks, in this order
+	const baseItem = useMemo(
 			() =>
 				renderItem({
 					columns,
@@ -345,7 +363,7 @@ export const useList = ({
 				rowPartFn,
 			]
 		),
-		renderGroup: useMemo(
+		baseGroup = useMemo(
 			() =>
 				renderGroup({
 					onCheckboxChange,
@@ -353,6 +371,51 @@ export const useList = ({
 					groupOnColumn,
 				}),
 			[onCheckboxChange, dataIsValid, groupOnColumn]
+		);
+
+	return {
+		...rest,
+		processedItems,
+		dataIsValid,
+		filterIsTooStrict: dataIsValid && processedItems.length < 1,
+		loading,
+		compareItemsFn,
+		displayEmptyGroups,
+		error,
+
+		renderItem: useMemo(
+			() =>
+				host.renderItem == null
+					? baseItem
+					: bindItemParams({
+							render: host.renderItem,
+							columns,
+							collapsedColumns,
+							onItemClick,
+							onCheckboxChange,
+							dataIsValid,
+					  }),
+			[
+				baseItem,
+				host.renderItem,
+				columns,
+				collapsedColumns,
+				onItemClick,
+				onCheckboxChange,
+				dataIsValid,
+			]
+		),
+		renderGroup: useMemo(
+			() =>
+				host.renderGroup == null
+					? baseGroup
+					: bindGroupParams({
+							render: host.renderGroup,
+							columns,
+							onCheckboxChange,
+							dataIsValid,
+					  }),
+			[baseGroup, host.renderGroup, columns, onCheckboxChange, dataIsValid]
 		),
 	};
 };

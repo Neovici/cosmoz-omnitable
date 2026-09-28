@@ -1,3 +1,9 @@
+import type {
+	RenderGroupParams as GroupedListGroupParams,
+	RenderItemParams as GroupedListRowParams,
+} from '../grouped-list/use-cosmoz-grouped-list';
+import type { IndexedGroup, IndexedItem } from './use-list';
+
 export type LimitFunction = (a: number, b: number) => number | undefined;
 
 export type Currency = string;
@@ -132,3 +138,65 @@ export interface HeaderRenderData {
 	inputValue?: unknown;
 	headerFocused?: boolean;
 }
+
+/**
+ * Params a host-provided `renderItem` receives for item rows.
+ *
+ * Extends the grouped-list contract (`selected`, `expanded`, `toggleSelect`,
+ * `toggleCollapse`) with data only omnitable owns.
+ */
+export interface ItemRenderParams extends GroupedListRowParams {
+	/** Full enabled, normalized columns. */
+	columns: Column[];
+	/** Columns the layout engine collapsed (the default row surfaces them in the expand block). */
+	collapsedColumns: Column[];
+	/** Dispatches `omnitable-item-click`; ignores clicks on `a`, `.checkbox` and `.expand`. */
+	onItemClick: (event: Event) => void;
+	/**
+	 * Default checkbox wiring. Mark your checkbox with `.dataItem=${item}` and
+	 * `@input=${onCheckboxChange}` — carries shift-range and ctrl select-only
+	 * semantics, and keeps the input from mutating state.
+	 */
+	onCheckboxChange: (event: Event) => void;
+	dataIsValid: boolean;
+}
+
+/**
+ * Params a host-provided `renderGroup` receives for group rows.
+ *
+ * Extends the grouped-list contract (`selected`, `folded`, `toggleSelect`,
+ * `toggleFold`). The fold affordance is the custom renderer's responsibility.
+ */
+export interface GroupRenderParams extends GroupedListGroupParams {
+	/** Full enabled, normalized columns. */
+	columns: Column[];
+	/**
+	 * Default checkbox wiring. Mark your checkbox with `.dataItem=${group}`
+	 * (the group!) — selection is group-aware, so checking it selects all
+	 * contained items, with shift-range and ctrl select-only semantics.
+	 */
+	onCheckboxChange: (event: Event) => void;
+	dataIsValid: boolean;
+}
+
+/**
+ * Host-provided full row renderer, set as the `renderItem` property on
+ * `<cosmoz-omnitable>`. Its output replaces the entire default row.
+ *
+ * `index` is the position in the flat (groups interleaved) list — use
+ * `item[indexSymbol]` for stable part naming, like the default row does.
+ * Use a stable reference (module-level function or `guard([], ...)`);
+ * inline arrows re-assert on every render.
+ */
+export type HostRenderItem = (
+	item: IndexedItem,
+	index: number,
+	params: ItemRenderParams
+) => unknown;
+
+/** Host-provided full group-row renderer, set as the `renderGroup` property. */
+export type HostRenderGroup = (
+	group: IndexedGroup,
+	index: number,
+	params: GroupRenderParams
+) => unknown;
