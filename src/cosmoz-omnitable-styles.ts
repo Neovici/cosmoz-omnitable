@@ -541,21 +541,66 @@ export default css`
 	}
 
 	:host([mini]) .header {
+		background-image: var(
+			--cz-material-sheen,
+			linear-gradient(
+				180deg,
+				var(--cz-color-bg-primary),
+				var(--cz-color-bg-secondary)
+			)
+		);
+		border-block-start: 0;
 		padding-left: var(--checkbox-offset);
 		justify-content: space-between;
 	}
 
 	:host([mini]) .itemRow {
-		border-radius: 12px;
-		box-shadow: inset 0 0 0 2px var(--cz-color-border-tertiary);
-		margin-block: var(--checkbox-offset);
-		margin-inline: var(--checkbox-offset);
-		padding-block: 4px;
-		border: none;
+		border-radius: var(--cz-radius-lg);
+		box-shadow: var(--cz-shadow-xs);
+		margin-block: var(--cz-spacing);
+		margin-inline: calc(var(--cz-spacing) * 3);
+		padding-block: calc(var(--cz-spacing) * 1.5);
+		border: 1px solid var(--cz-material-edge, var(--cz-color-border-secondary));
+		background-color: var(
+			--cz-material-surface,
+			light-dark(var(--cz-color-bg-primary), var(--cz-color-bg-secondary))
+		);
+		background-image: var(--cz-material-sheen, none);
+	}
+
+	:host([mini]) .itemRow:hover {
+		background-color: var(--cz-color-bg-primary-hover);
+		border-color: var(--cz-color-border-primary);
+	}
+
+	:host([mini]) .itemRow[selected] {
+		background-color: var(--cz-color-bg-primary-hover);
+		border-color: var(--cz-color-border-brand);
+		box-shadow: inset 3px 0 0 var(--cz-color-border-brand), var(--cz-shadow-xs);
+	}
+
+	:host([mini]) .itemRow:focus-within {
+		outline: 2px solid var(--cz-color-focus-ring);
+		outline-offset: 2px;
 	}
 
 	:host([mini]) .tableContent {
 		overflow: hidden;
+		background: var(
+			--cz-canvas-color,
+			light-dark(var(--cz-color-bg-secondary), var(--cz-color-bg-primary))
+		);
+	}
+
+	@media (forced-colors: active) {
+		:host([mini]) .itemRow {
+			border-color: CanvasText;
+		}
+		:host([mini]) .itemRow[selected],
+		:host([mini]) .itemRow:focus-within {
+			outline: 2px solid Highlight;
+			outline-offset: 2px;
+		}
 	}
 
 	:host([mini]) .tableContent-scroller::-webkit-scrollbar {
