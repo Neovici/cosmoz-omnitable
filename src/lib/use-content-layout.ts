@@ -10,10 +10,27 @@ import {
 import type { NormalizedSettings } from './settings/normalize';
 import { columnSymbol, type NormalizedColumn } from './use-dom-columns';
 
+// Only built-in cell renderers have a known relationship to valuePath.
+const textColumnTags = new Set([
+	'cosmoz-omnitable-column',
+	'cosmoz-omnitable-column-amount',
+	'cosmoz-omnitable-column-autocomplete',
+	'cosmoz-omnitable-column-autocomplete-excluding',
+	'cosmoz-omnitable-column-boolean',
+	'cosmoz-omnitable-column-date',
+	'cosmoz-omnitable-column-datetime',
+	'cosmoz-omnitable-column-list',
+	'cosmoz-omnitable-column-list-horizontal',
+	'cosmoz-omnitable-column-number',
+	'cosmoz-omnitable-column-time',
+]);
+
 const customRenderer = (column: NormalizedColumn) => {
 	const element = column[columnSymbol];
 	return (
-		element && column.renderCell !== Object.getPrototypeOf(element).renderCell
+		element &&
+		(!textColumnTags.has(element.localName) ||
+			column.renderCell !== Object.getPrototypeOf(element).renderCell)
 	);
 };
 
@@ -128,7 +145,9 @@ export const useContentLayout = ({
 									data.every((item) =>
 										column.isEmpty
 											? column.isEmpty(column, item)
-											: isEmptyValue(get(item, column.valuePath))
+											: isEmptyValue(get(item, column.valuePath)) &&
+											  isEmptyValue(column.getString?.(column, item)) &&
+											  isEmptyValue(column.getContentText?.(column, item))
 									)
 							)
 							.map((column) => column.name)
