@@ -590,6 +590,9 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,t as n}from"./p
 		font-size: var(--cz-text-base);
 		line-height: var(--cz-text-base-line-height);
 		font-family: var(--cz-font-body);
+	}
+
+	:host(:not([compact])) {
 		margin-bottom: calc(var(--cz-spacing) * 6);
 	}
 
