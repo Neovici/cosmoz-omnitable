@@ -107,6 +107,7 @@ export default css`
 		position: relative;
 		display: flex;
 		align-items: flex-end;
+		background-image: var(--cz-material-sheen, none);
 		border-block: 1px solid var(--cz-color-border-secondary);
 	}
 
@@ -185,7 +186,7 @@ export default css`
 		flex-direction: column;
 		position: relative;
 		flex: auto;
-		background-color: var(--cz-color-bg-primary);
+		background: var(--cz-material-background, var(--cz-color-bg-primary));
 	}
 	.tableContent:has(.tableContent-empty.spinner) {
 		opacity: 0.3;
