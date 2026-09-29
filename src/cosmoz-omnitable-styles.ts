@@ -603,25 +603,44 @@ export default css`
 		}
 	}
 
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar {
-		width: 4px;
+	.tableContent,
+	.tableContent-scroller {
+		--scrollbar-thumb: var(--cz-color-text-quaternary);
+		--scrollbar-track: transparent;
+		scrollbar-width: thin;
+		scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 	}
 
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar-track {
-		background: transparent;
+	@supports not (scrollbar-color: auto) {
+		.tableContent::-webkit-scrollbar,
+		.tableContent-scroller::-webkit-scrollbar {
+			width: 8px;
+			height: 8px;
+		}
+		.tableContent::-webkit-scrollbar-track,
+		.tableContent-scroller::-webkit-scrollbar-track,
+		.tableContent::-webkit-scrollbar-corner,
+		.tableContent-scroller::-webkit-scrollbar-corner {
+			background: var(--scrollbar-track);
+		}
+		.tableContent::-webkit-scrollbar-thumb,
+		.tableContent-scroller::-webkit-scrollbar-thumb {
+			background: var(--scrollbar-thumb);
+			background-clip: padding-box;
+			border: 2px solid transparent;
+			border-radius: 8px;
+			min-height: 24px;
+		}
 	}
 
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar-thumb {
-		background: transparent;
-	}
-
-	:host([mini]) .tableContent-scroller:hover::-webkit-scrollbar-thumb {
-		background: var(--cz-color-bg-tertiary);
-	}
-
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar-button:decrement,
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar-button:increment {
-		width: 0px;
+	@media (forced-colors: active), (prefers-contrast: more) {
+		.tableContent,
+		.tableContent-scroller {
+			--scrollbar-thumb: CanvasText;
+			--scrollbar-track: Canvas;
+			scrollbar-width: auto;
+			scrollbar-color: auto;
+		}
 	}
 
 	:host([mini]) cosmoz-omnitable-settings::part(columns) {
