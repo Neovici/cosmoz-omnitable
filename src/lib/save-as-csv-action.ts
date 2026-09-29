@@ -3,7 +3,15 @@ import type { Column, Item } from './types';
 
 export interface CsvColumn extends Column {
 	title: string;
-	getString: (column: Column, item: Item) => string | number | null | undefined;
+	getString: (
+		column: Column,
+		item: Item
+	) =>
+		| string
+		| number
+		| null
+		| undefined
+		| Promise<string | number | null | undefined>;
 }
 
 const makeCsvField = (str: string): string => {
@@ -14,28 +22,31 @@ const makeCsvField = (str: string): string => {
 	return str;
 };
 
-export const saveAsCsvAction = (
+export const saveAsCsvAction = async (
 	columns: CsvColumn[],
 	selectedItems: Item[],
 	csvFilename: string
-): void => {
+): Promise<void> => {
 	const separator = ';',
 		lf = '\n',
 		header = columns.map((col) => makeCsvField(col.title)).join(separator) + lf,
-		rows = selectedItems.map((item) => {
-			return (
-				columns
-					.map((column) => {
-						const cell = column.getString(column, item);
-						if (cell === undefined || cell === null) {
-							return '';
-						}
+		rows = await Promise.all(
+			selectedItems.map(
+				async (item) =>
+					(
+						await Promise.all(
+							columns.map(async (column) => {
+								const cell = await column.getString(column, item);
+								if (cell === undefined || cell === null) {
+									return '';
+								}
 
-						return makeCsvField(String(cell));
-					})
-					.join(separator) + lf
-			);
-		});
+								return makeCsvField(String(cell));
+							})
+						)
+					).join(separator) + lf
+			)
+		);
 
 	rows.unshift(header);
 

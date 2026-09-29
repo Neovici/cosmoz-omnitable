@@ -96,7 +96,7 @@ suite('xlsx-export-omnitable', () => {
 					</cosmoz-omnitable-column-date>
 				</cosmoz-omnitable>
 			`,
-			data.slice(0),
+			data.slice(0)
 		);
 	});
 
@@ -106,7 +106,10 @@ suite('xlsx-export-omnitable', () => {
 		omnitable.selectItem(data[1]);
 		await nextFrame();
 		// prepare selected items, verify data
-		const xlsx = prepareXlsxData(omnitable.columns, omnitable.selectedItems),
+		const xlsx = await prepareXlsxData(
+				omnitable.columns,
+				omnitable.selectedItems
+			),
 			headers = xlsx[0];
 		assert.equal(headers[0], omnitable.columns[0].title);
 		assert.equal(headers.length, omnitable.columns.length);
@@ -237,11 +240,11 @@ suite('toXlsx range tests', () => {
 					</cosmoz-omnitable-column-datetime>
 				</cosmoz-omnitable>
 			`,
-			data,
+			data
 		);
 		data.forEach((item) => omnitable.selectItem(item));
 		await nextFrame();
-		xlsx = prepareXlsxData(omnitable.columns, omnitable.selectedItems);
+		xlsx = await prepareXlsxData(omnitable.columns, omnitable.selectedItems);
 	});
 
 	test('prepares number values', () => {
@@ -303,8 +306,20 @@ suite('toXlsx range tests', () => {
 				assert.equal(value, time);
 				assert.equal(
 					toDate(value).getTime(),
-					toDate(data[index].datetime).getTime(),
+					toDate(data[index].datetime).getTime()
 				);
 			});
+	});
+
+	test('awaits promise-valued cells', async () => {
+		const column = {
+			title: 'Async',
+			toXlsxValue: (_column, item) =>
+				new Promise((resolve) => setTimeout(() => resolve(item.number), 0)),
+		};
+
+		const xlsx = await prepareXlsxData([column], data);
+
+		assert.deepEqual(xlsx, [['Async'], ...data.map((item) => [item.number])]);
 	});
 });

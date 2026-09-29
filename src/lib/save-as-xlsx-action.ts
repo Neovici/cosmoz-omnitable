@@ -4,32 +4,36 @@ import { Column, Item } from './types';
 
 export interface XlsxColumn extends Omit<Column, 'toXlsxValue'> {
 	title: string;
-	toXlsxValue: (column: XlsxColumn, item: Item) => string;
+	toXlsxValue: (column: XlsxColumn, item: Item) => string | Promise<string>;
 }
 
-export const prepareXlsxData = (
+export const prepareXlsxData = async (
 	columns: XlsxColumn[],
-	selectedItems: Item[],
-) => {
+	selectedItems: Item[]
+): Promise<(string | number | null | undefined)[][]> => {
 	const headers = columns.map((col) => col.title);
-	const data = selectedItems.map((item) =>
-		columns.map((column) => {
-			const value = column.toXlsxValue(column, item);
-			return value == null ? '' : value;
-		}),
+	const data = await Promise.all(
+		selectedItems.map(async (item) =>
+			Promise.all(
+				columns.map(async (column) => {
+					const value = await column.toXlsxValue(column, item);
+					return value == null ? '' : value;
+				})
+			)
+		)
 	);
 
 	data.unshift(headers);
 	return data;
 };
 
-export const saveAsXlsxAction = (
+export const saveAsXlsxAction = async (
 	columns: XlsxColumn[],
 	selectedItems: Item[],
 	xlsxFilename: string,
-	xlsxSheetname: string,
+	xlsxSheetname: string
 ) => {
-	const data = prepareXlsxData(columns, selectedItems);
+	const data = await prepareXlsxData(columns, selectedItems);
 	const xlsx = new NullXlsx(xlsxFilename)
 		.addSheetFromData(data, xlsxSheetname)
 		.generate();
@@ -37,6 +41,6 @@ export const saveAsXlsxAction = (
 	saveAs(
 		new File([xlsx], xlsxFilename, {
 			type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-		}),
+		})
 	);
 };
