@@ -107,6 +107,7 @@ export default css`
 		position: relative;
 		display: flex;
 		align-items: flex-end;
+		background-image: var(--cz-material-sheen, none);
 		border-block: 1px solid var(--cz-color-border-secondary);
 	}
 
@@ -185,7 +186,7 @@ export default css`
 		flex-direction: column;
 		position: relative;
 		flex: auto;
-		background-color: var(--cz-color-bg-primary);
+		background: var(--cz-material-background, var(--cz-color-bg-primary));
 	}
 	.tableContent:has(.tableContent-empty.spinner) {
 		opacity: 0.3;
@@ -540,42 +541,106 @@ export default css`
 	}
 
 	:host([mini]) .header {
+		background-image: var(
+			--cz-material-sheen,
+			linear-gradient(
+				180deg,
+				var(--cz-color-bg-primary),
+				var(--cz-color-bg-secondary)
+			)
+		);
+		border-block-start: 0;
 		padding-left: var(--checkbox-offset);
 		justify-content: space-between;
 	}
 
 	:host([mini]) .itemRow {
-		border-radius: 12px;
-		box-shadow: inset 0 0 0 2px var(--cz-color-border-tertiary);
-		margin-block: var(--checkbox-offset);
-		margin-inline: var(--checkbox-offset);
-		padding-block: 4px;
-		border: none;
+		border-radius: var(--cz-radius-lg);
+		box-shadow: var(--cz-shadow-xs);
+		margin-block: var(--cz-spacing);
+		margin-inline: calc(var(--cz-spacing) * 1.5);
+		padding-block: var(--cz-spacing);
+		border: 1px solid var(--cz-material-edge, var(--cz-color-border-secondary));
+		background-color: var(
+			--cz-material-surface,
+			light-dark(var(--cz-color-bg-primary), var(--cz-color-bg-secondary))
+		);
+		background-image: var(--cz-material-sheen, none);
+	}
+
+	:host([mini]) .itemRow:hover {
+		background-color: var(--cz-color-bg-primary-hover);
+		border-color: var(--cz-color-border-primary);
+	}
+
+	:host([mini]) .itemRow[selected] {
+		background-color: var(--cz-color-bg-primary-hover);
+		border-color: var(--cz-color-border-brand);
+		box-shadow: inset 3px 0 0 var(--cz-color-border-brand), var(--cz-shadow-xs);
+	}
+
+	:host([mini]) .itemRow:focus-within {
+		outline: 2px solid var(--cz-color-focus-ring);
+		outline-offset: 2px;
 	}
 
 	:host([mini]) .tableContent {
 		overflow: hidden;
+		background: var(
+			--cz-canvas-color,
+			light-dark(var(--cz-color-bg-secondary), var(--cz-color-bg-primary))
+		);
 	}
 
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar {
-		width: 4px;
+	@media (forced-colors: active) {
+		:host([mini]) .itemRow {
+			border-color: CanvasText;
+		}
+		:host([mini]) .itemRow[selected],
+		:host([mini]) .itemRow:focus-within {
+			outline: 2px solid Highlight;
+			outline-offset: 2px;
+		}
 	}
 
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar-track {
-		background: transparent;
+	.tableContent,
+	.tableContent-scroller {
+		--scrollbar-thumb: var(--cz-color-text-quaternary);
+		--scrollbar-track: transparent;
+		scrollbar-width: thin;
+		scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 	}
 
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar-thumb {
-		background: transparent;
+	@supports not (scrollbar-color: auto) {
+		.tableContent::-webkit-scrollbar,
+		.tableContent-scroller::-webkit-scrollbar {
+			width: 8px;
+			height: 8px;
+		}
+		.tableContent::-webkit-scrollbar-track,
+		.tableContent-scroller::-webkit-scrollbar-track,
+		.tableContent::-webkit-scrollbar-corner,
+		.tableContent-scroller::-webkit-scrollbar-corner {
+			background: var(--scrollbar-track);
+		}
+		.tableContent::-webkit-scrollbar-thumb,
+		.tableContent-scroller::-webkit-scrollbar-thumb {
+			background: var(--scrollbar-thumb);
+			background-clip: padding-box;
+			border: 2px solid transparent;
+			border-radius: 8px;
+			min-height: 24px;
+		}
 	}
 
-	:host([mini]) .tableContent-scroller:hover::-webkit-scrollbar-thumb {
-		background: var(--cz-color-bg-tertiary);
-	}
-
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar-button:decrement,
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar-button:increment {
-		width: 0px;
+	@media (forced-colors: active), (prefers-contrast: more) {
+		.tableContent,
+		.tableContent-scroller {
+			--scrollbar-thumb: CanvasText;
+			--scrollbar-track: Canvas;
+			scrollbar-width: auto;
+			scrollbar-color: auto;
+		}
 	}
 
 	:host([mini]) cosmoz-omnitable-settings::part(columns) {
