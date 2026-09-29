@@ -35,13 +35,12 @@ suite('content layout consumer compatibility', () => {
 
 	teardown(() => {
 		window.onerror = previousError;
-		configureColumnLayout({ autoSize: false, hideEmptyColumns: false });
+		configureColumnLayout({ hideEmptyColumns: false });
 	});
 
 	test('keeps subclass-rendered actions visible and preserves their preferred width', async () => {
 		const el = await fixture(html`
 			<cosmoz-omnitable
-				auto-size
 				hide-empty-columns
 				data-complete
 				style="display:block;width:420px;height:350px"
@@ -106,11 +105,10 @@ suite('content layout consumer compatibility', () => {
 		assert.isAbove(width(el, 'derived'), 0);
 	});
 
-	test('explicit false overrides global defaults without changing saved widths', async () => {
-		configureColumnLayout({ autoSize: true, hideEmptyColumns: true });
+	test('explicit false overrides the shared default without changing saved widths', async () => {
+		configureColumnLayout({ hideEmptyColumns: true });
 		const el = await fixture(html`
 			<cosmoz-omnitable
-				.autoSize=${false}
 				.hideEmptyColumns=${false}
 				data-complete
 				style="display:block;width:700px;height:350px"

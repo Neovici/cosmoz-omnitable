@@ -57,45 +57,14 @@ const _toCss = (
 export const computeLayout = (
 	_columnConfigs: ColumnConfig[],
 	canvasWidth: number,
-	numColumns: number,
-	autoSize = false
+	numColumns: number
 ): (number | undefined)[] => {
-	const columnConfigs = _columnConfigs
-			.filter((c) => !c.hidden)
-			.map((c) => ({ ...c })),
-		totalWidths = columnConfigs.reduce(
-			(sum, c) => sum + (autoSize && c.flex !== 0 ? c.minWidth : c.width),
-			0
-		);
+	const columnConfigs = _columnConfigs.filter((c) => !c.hidden),
+		totalWidths = columnConfigs.reduce((sum, { width }) => sum + width, 0);
 
 	if (columnConfigs.length > 1 && totalWidths > canvasWidth) {
 		// drop a column
-		return computeLayout(
-			columnConfigs.slice(1),
-			canvasWidth,
-			numColumns,
-			autoSize
-		);
-	}
-	if (autoSize) {
-		const total = columnConfigs.reduce((sum, c) => sum + c.width, 0);
-		const capacity = columnConfigs.reduce(
-			(sum, c) => sum + (c.flex ? c.width - c.minWidth : 0),
-			0
-		);
-		if (total > canvasWidth && capacity > 0) {
-			const ratio = Math.min(1, (total - canvasWidth) / capacity);
-			columnConfigs.forEach((c) => {
-				if (c.flex) c.width -= (c.width - c.minWidth) * ratio;
-			});
-		}
-		if (columnConfigs.length === 1) {
-			columnConfigs[0].width = Math.min(columnConfigs[0].width, canvasWidth);
-			columnConfigs[0].minWidth = Math.min(
-				columnConfigs[0].minWidth,
-				canvasWidth
-			);
-		}
+		return computeLayout(columnConfigs.slice(1), canvasWidth, numColumns);
 	}
 
 	// calculate the index of the last visible column, the one that needs to flex,

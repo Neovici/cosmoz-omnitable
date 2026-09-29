@@ -8,7 +8,6 @@ interface UseLayoutParams {
 	groupOnColumn?: Column | null;
 	config: ColumnConfigInput[];
 	miniColumn?: Column | null;
-	autoSize?: boolean;
 }
 
 export const useLayout = ({
@@ -16,7 +15,6 @@ export const useLayout = ({
 	groupOnColumn,
 	config,
 	miniColumn,
-	autoSize,
 }: UseLayoutParams): (number | undefined)[] =>
 	useMemo(() => {
 		if (!Array.isArray(config) || canvasWidth == null || canvasWidth === 0) {
@@ -43,10 +41,5 @@ export const useLayout = ({
 				) => (aPriority === bPriority ? bIndex - aIndex : aPriority - bPriority)
 			);
 
-		return computeLayout(
-			columnConfigs,
-			canvasWidth,
-			columnConfigs.length,
-			autoSize
-		);
-	}, [canvasWidth, groupOnColumn, config, miniColumn, autoSize]);
+		return computeLayout(columnConfigs, canvasWidth, columnConfigs.length);
+	}, [canvasWidth, groupOnColumn, config, miniColumn]);

@@ -26,7 +26,7 @@ export const useFastLayout = ({
 	sortAndGroupOptions,
 	filters,
 }) => {
-	const { config, autoSize, autoHiddenColumns } = useContentLayout({
+	const { config, autoHiddenColumns } = useContentLayout({
 		host,
 		columns,
 		settings,
@@ -44,7 +44,6 @@ export const useFastLayout = ({
 			groupOnColumn,
 			miniColumn,
 			config,
-			autoSize,
 		}),
 		styleSheet = useAdoptedStyleSheet(host),
 		collapsedColumns = useMemo(

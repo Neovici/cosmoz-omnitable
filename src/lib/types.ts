@@ -52,7 +52,7 @@ export interface Column {
 	headerTitleFn?: (column: Column) => string | undefined;
 	toXlsxValue?: (column: Column, item: Item) => unknown;
 	getString?: (column: Column, item: Item) => unknown;
-	/** Text used for sizing custom cells; configured width remains a fallback. */
+	/** Text displayed by custom cells, used to avoid hiding populated columns. */
 	getContentText?: (
 		column: Column,
 		item: Item
