@@ -558,8 +558,8 @@ export default css`
 		border-radius: var(--cz-radius-lg);
 		box-shadow: var(--cz-shadow-xs);
 		margin-block: var(--cz-spacing);
-		margin-inline: calc(var(--cz-spacing) * 3);
-		padding-block: calc(var(--cz-spacing) * 1.5);
+		margin-inline: calc(var(--cz-spacing) * 1.5);
+		padding-block: var(--cz-spacing);
 		border: 1px solid var(--cz-material-edge, var(--cz-color-border-secondary));
 		background-color: var(
 			--cz-material-surface,
