@@ -20,8 +20,10 @@ const _getGroupRowClasses = (folded: boolean): string =>
 	folded ? 'groupRow groupRow-folded' : 'groupRow';
 
 /**
- * The default group-row renderer. Curried factory over omnitable-owned
- * deps; the returned function is a grouped-list-compatible group renderer.
+ * Creates the default group-row renderer.
+ *
+ * Called by `use-list` with the omnitable-owned wiring; the returned
+ * function renders one group row for the grouped list.
  */
 export const renderGroup =
 	({ onCheckboxChange, dataIsValid, groupOnColumn }: RenderGroupDeps) =>
@@ -57,10 +59,3 @@ export const renderGroup =
 				${chevronDownIcon({ width: '16', height: '16' })}
 			</button>
 		</div>`;
-
-/**
- * Default group renderer in the public contract shape — what
- * `<cosmoz-omnitable>` itself renders when no `renderGroup` override is
- * set. Exported so consumers can wrap or extend the default group row.
- */
-export const defaultRenderGroup = renderGroup;

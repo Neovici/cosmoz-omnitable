@@ -25,8 +25,11 @@ export interface RenderItemDeps {
 }
 
 /**
- * The default item-row renderer. Curried factory over omnitable-owned
- * deps; the returned function is a grouped-list-compatible row renderer.
+ * Creates the default item-row renderer.
+ *
+ * Called by `use-list` with the omnitable-owned wiring (columns,
+ * collapsed columns, checkbox/click handlers); the returned function
+ * renders one item row for the grouped list.
  */
 export const renderItem =
 	({
@@ -101,10 +104,3 @@ export const renderItem =
 			</cosmoz-omnitable-item-expand>
 		`;
 	};
-
-/**
- * Default row renderer in the public contract shape — what
- * `<cosmoz-omnitable>` itself renders when no `renderItem` override is
- * set. Exported so consumers can wrap or extend the default row.
- */
-export const defaultRenderItem = renderItem;
