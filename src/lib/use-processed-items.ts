@@ -1,17 +1,13 @@
 import { invoke } from '@neovici/cosmoz-utils/function';
-import { useCallback, useEffect, useMemo } from '@pionjs/pion';
+import { useCallback, useEffect, useMemo, useState } from '@pionjs/pion';
 import type { GroupItem } from '../grouped-list/utils';
-import { genericSorter } from './generic-sorter';
+import { processItemsAsync } from './process-items-async';
 import type { Item } from './types';
 import { columnSymbol, type NormalizedColumn } from './use-dom-columns';
 import { useHashState } from './use-hash-state';
 import { indexSymbol } from './utils';
 
-const sortBy =
-		<T>(valueFn: (item: T) => unknown, descending: boolean | undefined) =>
-		(a: T, b: T) =>
-			genericSorter(valueFn(a), valueFn(b)) * (descending ? -1 : 1),
-	kebab = (input: string) =>
+const kebab = (input: string) =>
 		input.replace(/([a-z0-9])([A-Z])/gu, '$1-$2').toLowerCase(),
 	notifyChanges = (
 		column: NormalizedColumn | undefined,
@@ -41,12 +37,6 @@ const sortBy =
 interface FilterState {
 	filter?: unknown;
 	[unparsed]?: string;
-}
-
-interface GroupedResult {
-	id: unknown;
-	name: unknown;
-	items: Item[];
 }
 
 interface UseProcessedItemsParams {
@@ -163,112 +153,67 @@ export const useProcessedItems = ({
 		}, [data, filterFunctions, noLocalFilter]),
 		// todo: extract function
 
-		processedItems = useMemo<(Item | GroupItem<Item>)[]>(() => {
-			if (
-				!noLocalSort &&
-				!groupOnColumn &&
-				sortOnColumn != null &&
-				sortOnColumn.sortOn != null
-			) {
-				return filteredItems
-					.slice()
-					.sort(
-						sortBy(
-							(a) =>
-								sortOnColumn.getComparableValue!(
-									{ ...sortOnColumn, valuePath: sortOnColumn.sortOn },
-									a
-								),
-							descending
-						)
-					);
+		[asyncProcessed, setAsyncProcessed] = useState<
+			(Item | GroupItem<Item>)[] | undefined
+		>(),
+		processedItems = useMemo<(Item | GroupItem<Item>)[]>(
+			() => asyncProcessed ?? filteredItems,
+			[asyncProcessed, filteredItems]
+		);
+
+	// resolve promise-valued comparables (async data sources such as
+	// cosmoz-tree) and re-sort/group once they become available
+	useEffect(() => {
+		let stale = false;
+		(async () => {
+			try {
+				const result = await processItemsAsync({
+					filteredItems,
+					groupOnColumn,
+					groupOnDescending,
+					sortOnColumn,
+					descending,
+					noLocalSort,
+				});
+				if (!stale) {
+					setAsyncProcessed(result);
+				}
+			} catch (error) {
+				// eslint-disable-next-line no-console
+				console.error(error);
+			}
+		})();
+		return () => {
+			stale = true;
+		};
+	}, [
+		filteredItems,
+		groupOnColumn,
+		groupOnDescending,
+		sortOnColumn,
+		descending,
+		noLocalSort,
+	]);
+
+	const visibleData = useMemo(() => {
+		let index = 0,
+			groupIndex = 0;
+		const result: Item[] = [];
+		processedItems.forEach((item) => {
+			if ('items' in item && Array.isArray(item.items)) {
+				assignIndex(item, groupIndex++);
+				item.items.forEach((groupItem) => {
+					assignIndex(groupItem, index++);
+					result.push(groupItem);
+				});
+				return;
 			}
 
-			if (groupOnColumn != null && groupOnColumn.groupOn != null) {
-				const groupedResults = filteredItems.reduce<GroupedResult[]>(
-					(acc, item) => {
-						const gval = groupOnColumn.getComparableValue!(
-							{ ...groupOnColumn, valuePath: groupOnColumn.groupOn },
-							item
-						);
-
-						if (gval === undefined) {
-							return acc;
-						}
-
-						let group = acc.find((g) => g.id === gval);
-
-						if (!group) {
-							group = { id: gval, name: gval, items: [item] };
-							return [...acc, group];
-						}
-
-						group.items.push(item);
-						return acc;
-					},
-					[]
-				);
-
-				groupedResults.sort(
-					sortBy(
-						(a) =>
-							groupOnColumn.getComparableValue!(
-								{ ...groupOnColumn, valuePath: groupOnColumn.groupOn },
-								a.items[0]
-							),
-						groupOnDescending
-					)
-				);
-
-				if (!sortOnColumn || noLocalSort) {
-					return groupedResults;
-				}
-
-				return groupedResults
-					.filter((group) => Array.isArray(group.items))
-					.map((group) => {
-						group.items.sort(
-							sortBy(
-								(a) =>
-									sortOnColumn.getComparableValue!(
-										{ ...sortOnColumn, valuePath: sortOnColumn.sortOn },
-										a
-									),
-								descending
-							)
-						);
-						return group;
-					});
-			}
-
-			return filteredItems;
-		}, [
-			filteredItems,
-			groupOnColumn,
-			groupOnDescending,
-			sortOnColumn,
-			descending,
-			noLocalSort,
-		]),
-		visibleData = useMemo(() => {
-			let index = 0,
-				groupIndex = 0;
-			const result: Item[] = [];
-			processedItems.forEach((item) => {
-				if ('items' in item && Array.isArray(item.items)) {
-					assignIndex(item, groupIndex++);
-					item.items.forEach((groupItem) => {
-						assignIndex(groupItem, index++);
-						result.push(groupItem);
-					});
-					return;
-				}
-
-				assignIndex(item, index++);
-				return result.push(item);
-			}, []);
-			return result;
-		}, [processedItems]);
+			assignIndex(item, index++);
+			return result.push(item);
+		}, []);
+		return result;
+	}, [processedItems]);
 
 	// parse un-parsed filter values
 	// filters can be left un-parsed if a column was not defined when the URL is read
