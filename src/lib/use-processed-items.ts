@@ -1,22 +1,13 @@
 import { invoke } from '@neovici/cosmoz-utils/function';
 import { useCallback, useEffect, useMemo, useState } from '@pionjs/pion';
 import type { GroupItem } from '../grouped-list/utils';
-import { genericSorter } from './generic-sorter';
-import {
-	isThenable,
-	processItemsAsync,
-	type GroupedResult,
-} from './process-items-async';
+import { processItemsAsync } from './process-items-async';
 import type { Item } from './types';
 import { columnSymbol, type NormalizedColumn } from './use-dom-columns';
 import { useHashState } from './use-hash-state';
 import { indexSymbol } from './utils';
 
-const sortBy =
-		<T>(valueFn: (item: T) => unknown, descending: boolean | undefined) =>
-		(a: T, b: T) =>
-			genericSorter(valueFn(a), valueFn(b)) * (descending ? -1 : 1),
-	kebab = (input: string) =>
+const kebab = (input: string) =>
 		input.replace(/([a-z0-9])([A-Z])/gu, '$1-$2').toLowerCase(),
 	notifyChanges = (
 		column: NormalizedColumn | undefined,
@@ -165,131 +156,14 @@ export const useProcessedItems = ({
 		[asyncProcessed, setAsyncProcessed] = useState<
 			(Item | GroupItem<Item>)[] | undefined
 		>(),
-		comparablesPending = useMemo(() => {
-			const sortComparables =
-					!noLocalSort && !groupOnColumn && sortOnColumn?.sortOn != null
-						? filteredItems.map((item) =>
-								sortOnColumn.getComparableValue!(
-									{ ...sortOnColumn, valuePath: sortOnColumn.sortOn },
-									item
-								)
-						  )
-						: [],
-				groupComparables =
-					groupOnColumn?.groupOn != null
-						? filteredItems.map((item) =>
-								groupOnColumn.getComparableValue!(
-									{ ...groupOnColumn, valuePath: groupOnColumn.groupOn },
-									item
-								)
-						  )
-						: [];
-			return [...sortComparables, ...groupComparables].some(isThenable);
-		}, [filteredItems, groupOnColumn, sortOnColumn, noLocalSort]),
-		processedItems = useMemo<(Item | GroupItem<Item>)[]>(() => {
-			if (comparablesPending) {
-				// async comparable values (e.g. an async tree): show unsorted
-				// items until the resolved sort/group is available
-				return asyncProcessed ?? filteredItems;
-			}
-			if (
-				!noLocalSort &&
-				!groupOnColumn &&
-				sortOnColumn != null &&
-				sortOnColumn.sortOn != null
-			) {
-				return filteredItems
-					.slice()
-					.sort(
-						sortBy(
-							(a) =>
-								sortOnColumn.getComparableValue!(
-									{ ...sortOnColumn, valuePath: sortOnColumn.sortOn },
-									a
-								),
-							descending
-						)
-					);
-			}
-
-			if (groupOnColumn != null && groupOnColumn.groupOn != null) {
-				const groupedResults = filteredItems.reduce<GroupedResult[]>(
-					(acc, item) => {
-						const gval = groupOnColumn.getComparableValue!(
-							{ ...groupOnColumn, valuePath: groupOnColumn.groupOn },
-							item
-						);
-
-						if (gval === undefined) {
-							return acc;
-						}
-
-						let group = acc.find((g) => g.id === gval);
-
-						if (!group) {
-							group = { id: gval, name: gval, items: [item] };
-							return [...acc, group];
-						}
-
-						group.items.push(item);
-						return acc;
-					},
-					[]
-				);
-
-				groupedResults.sort(
-					sortBy(
-						(a) =>
-							groupOnColumn.getComparableValue!(
-								{ ...groupOnColumn, valuePath: groupOnColumn.groupOn },
-								a.items[0]
-							),
-						groupOnDescending
-					)
-				);
-
-				if (!sortOnColumn || noLocalSort) {
-					return groupedResults;
-				}
-
-				return groupedResults
-					.filter((group) => Array.isArray(group.items))
-					.map((group) => {
-						group.items.sort(
-							sortBy(
-								(a) =>
-									sortOnColumn.getComparableValue!(
-										{ ...sortOnColumn, valuePath: sortOnColumn.sortOn },
-										a
-									),
-								descending
-							)
-						);
-						return group;
-					});
-			}
-
-			return filteredItems;
-		}, [
-			comparablesPending,
-			asyncProcessed,
-			filteredItems,
-			groupOnColumn,
-			groupOnDescending,
-			sortOnColumn,
-			descending,
-			noLocalSort,
-		]);
+		processedItems = useMemo<(Item | GroupItem<Item>)[]>(
+			() => asyncProcessed ?? filteredItems,
+			[asyncProcessed, filteredItems]
+		);
 
 	// resolve promise-valued comparables (async data sources such as
 	// cosmoz-tree) and re-sort/group once they become available
 	useEffect(() => {
-		if (!comparablesPending) {
-			if (asyncProcessed != null) {
-				setAsyncProcessed(undefined);
-			}
-			return;
-		}
 		let stale = false;
 		(async () => {
 			try {
@@ -313,7 +187,6 @@ export const useProcessedItems = ({
 			stale = true;
 		};
 	}, [
-		comparablesPending,
 		filteredItems,
 		groupOnColumn,
 		groupOnDescending,

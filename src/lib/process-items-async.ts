@@ -70,7 +70,7 @@ export const processItemsAsync = async ({
 	}
 
 	if (groupOnColumn?.groupOn == null) {
-		return [];
+		return filteredItems;
 	}
 
 	const resolved = await resolveComparable(filteredItems, (item) =>
