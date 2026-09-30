@@ -3,14 +3,17 @@ import { genericSorter } from './generic-sorter';
 import type { Item } from './types';
 import type { NormalizedColumn } from './use-dom-columns';
 
-export interface GroupedResult {
+export type GroupedResult = {
 	id: unknown;
 	name: unknown;
 	items: Item[];
-}
+};
 
 export const isThenable = (value: unknown): value is Promise<unknown> =>
-	value != null && typeof (value as { then?: unknown }).then === 'function';
+	value != null &&
+	(typeof value === 'object' || typeof value === 'function') &&
+	'then' in value &&
+	typeof value.then === 'function';
 
 // resolves comparable values that may be promises (async data sources
 // such as cosmoz-tree); rejected values are treated as missing
@@ -26,7 +29,8 @@ export const resolveComparable = <T>(
 			} catch {
 				value = undefined;
 			}
-			return [item, value] as [T, unknown];
+			const entry: [T, unknown] = [item, value];
+			return entry;
 		})
 	);
 
@@ -108,5 +112,5 @@ export const processItemsAsync = async ({
 			})
 		);
 	}
-	return groups as (Item | GroupItem<Item>)[];
+	return groups;
 };

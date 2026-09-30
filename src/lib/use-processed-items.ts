@@ -1,23 +1,23 @@
-import { invoke } from "@neovici/cosmoz-utils/function";
-import { useCallback, useEffect, useMemo, useState } from "@pionjs/pion";
-import type { GroupItem } from "../grouped-list/utils";
-import { genericSorter } from "./generic-sorter";
+import { invoke } from '@neovici/cosmoz-utils/function';
+import { useCallback, useEffect, useMemo, useState } from '@pionjs/pion';
+import type { GroupItem } from '../grouped-list/utils';
+import { genericSorter } from './generic-sorter';
 import {
 	isThenable,
 	processItemsAsync,
 	type GroupedResult,
-} from "./process-items-async";
-import type { Item } from "./types";
-import { columnSymbol, type NormalizedColumn } from "./use-dom-columns";
-import { useHashState } from "./use-hash-state";
-import { indexSymbol } from "./utils";
+} from './process-items-async';
+import type { Item } from './types';
+import { columnSymbol, type NormalizedColumn } from './use-dom-columns';
+import { useHashState } from './use-hash-state';
+import { indexSymbol } from './utils';
 
 const sortBy =
 		<T>(valueFn: (item: T) => unknown, descending: boolean | undefined) =>
 		(a: T, b: T) =>
 			genericSorter(valueFn(a), valueFn(b)) * (descending ? -1 : 1),
 	kebab = (input: string) =>
-		input.replace(/([a-z0-9])([A-Z])/gu, "$1-$2").toLowerCase(),
+		input.replace(/([a-z0-9])([A-Z])/gu, '$1-$2').toLowerCase(),
 	notifyChanges = (
 		column: NormalizedColumn | undefined,
 		changes: Record<string, unknown> | undefined
@@ -41,7 +41,7 @@ const sortBy =
 	},
 	assignIndex = (item: Item, index: number) =>
 		Object.assign(item, { [indexSymbol]: index }),
-	unparsed = Symbol("unparsed");
+	unparsed = Symbol('unparsed');
 
 interface FilterState {
 	filter?: unknown;
@@ -105,7 +105,7 @@ export const useProcessedItems = ({
 			hashParam,
 			{
 				multi: true,
-				suffix: "-filter--",
+				suffix: '-filter--',
 				write,
 				read,
 			}
@@ -291,18 +291,24 @@ export const useProcessedItems = ({
 			return;
 		}
 		let stale = false;
-		processItemsAsync({
-			filteredItems,
-			groupOnColumn,
-			groupOnDescending,
-			sortOnColumn,
-			descending,
-			noLocalSort,
-		}).then((result) => {
-			if (!stale) {
-				setAsyncProcessed(result);
+		(async () => {
+			try {
+				const result = await processItemsAsync({
+					filteredItems,
+					groupOnColumn,
+					groupOnDescending,
+					sortOnColumn,
+					descending,
+					noLocalSort,
+				});
+				if (!stale) {
+					setAsyncProcessed(result);
+				}
+			} catch (error) {
+				// eslint-disable-next-line no-console
+				console.error(error);
 			}
-		});
+		})();
 		return () => {
 			stale = true;
 		};
@@ -321,7 +327,7 @@ export const useProcessedItems = ({
 			groupIndex = 0;
 		const result: Item[] = [];
 		processedItems.forEach((item) => {
-			if ("items" in item && Array.isArray(item.items)) {
+			if ('items' in item && Array.isArray(item.items)) {
 				assignIndex(item, groupIndex++);
 				item.items.forEach((groupItem) => {
 					assignIndex(groupItem, index++);

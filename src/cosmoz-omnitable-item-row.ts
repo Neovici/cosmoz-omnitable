@@ -1,10 +1,8 @@
 import { component, html } from '@pionjs/pion';
 import { repeat } from 'lit-html/directives/repeat.js';
 import { until } from 'lit-html/directives/until.js';
+import { isThenable } from './lib/process-items-async';
 import type { Column, Item, ItemRenderData } from './lib/types';
-
-const isThenable = (value: unknown): value is Promise<string | undefined> =>
-	value != null && typeof (value as { then?: unknown }).then === 'function';
 
 type ItemRowProps = {
 	columns: Column[];

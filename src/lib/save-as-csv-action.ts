@@ -36,7 +36,12 @@ export const saveAsCsvAction = async (
 					(
 						await Promise.all(
 							columns.map(async (column) => {
-								const cell = await column.getString(column, item);
+								let cell: string | number | null | undefined;
+								try {
+									cell = await column.getString(column, item);
+								} catch {
+									cell = undefined;
+								}
 								if (cell === undefined || cell === null) {
 									return '';
 								}

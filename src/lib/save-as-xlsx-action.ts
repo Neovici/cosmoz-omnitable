@@ -16,7 +16,12 @@ export const prepareXlsxData = async (
 		selectedItems.map(async (item) =>
 			Promise.all(
 				columns.map(async (column) => {
-					const value = await column.toXlsxValue(column, item);
+					let value: string;
+					try {
+						value = await column.toXlsxValue(column, item);
+					} catch {
+						value = '';
+					}
 					return value == null ? '' : value;
 				})
 			)

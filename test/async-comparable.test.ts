@@ -1,18 +1,18 @@
-import { assert } from "@open-wc/testing";
-import { processItemsAsync } from "../src/lib/process-items-async";
+import { assert } from '@open-wc/testing';
+import { processItemsAsync } from '../src/lib/process-items-async';
 
-suite("processItemsAsync", () => {
+suite('processItemsAsync', () => {
 	const asyncComparable = (values) =>
 		({
-			groupOn: "comparable",
-			sortOn: "comparable",
+			groupOn: 'comparable',
+			sortOn: 'comparable',
 			getComparableValue: (_column, item) => Promise.resolve(values.get(item)),
 		} as object);
 
-	test("sorts items by resolved comparables", async () => {
-		const a = { id: "a" },
-			b = { id: "b" },
-			c = { id: "c" },
+	test('sorts items by resolved comparables', async () => {
+		const a = { id: 'a' },
+			b = { id: 'b' },
+			c = { id: 'c' },
 			sortOnColumn = asyncComparable(
 				new Map([
 					[a, 1],
@@ -31,9 +31,9 @@ suite("processItemsAsync", () => {
 		assert.deepEqual(order, [a, c, b]);
 	});
 
-	test("sorts items descending", async () => {
-		const a = { id: "a" },
-			b = { id: "b" },
+	test('sorts items descending', async () => {
+		const a = { id: 'a' },
+			b = { id: 'b' },
 			sortOnColumn = asyncComparable(
 				new Map([
 					[a, 1],
@@ -51,14 +51,14 @@ suite("processItemsAsync", () => {
 		assert.deepEqual(order, [b, a]);
 	});
 
-	test("rejected comparables sort as missing", async () => {
-		const a = { id: "a" },
-			b = { id: "b" },
+	test('rejected comparables sort as missing', async () => {
+		const a = { id: 'a' },
+			b = { id: 'b' },
 			sortOnColumn = {
-				sortOn: "comparable",
+				sortOn: 'comparable',
 				getComparableValue: (_column, item) =>
 					item === b
-						? Promise.reject(new Error("rejected"))
+						? Promise.reject(new Error('rejected'))
 						: Promise.resolve(1),
 			};
 
@@ -75,15 +75,15 @@ suite("processItemsAsync", () => {
 		assert.equal(order.indexOf(b) > -1, true);
 	});
 
-	test("groups items by resolved comparables", async () => {
-		const a = { id: "a" },
-			b = { id: "b" },
-			c = { id: "c" },
+	test('groups items by resolved comparables', async () => {
+		const a = { id: 'a' },
+			b = { id: 'b' },
+			c = { id: 'c' },
 			groupOnColumn = asyncComparable(
 				new Map([
-					[a, "x"],
-					[b, "x"],
-					[c, "y"],
+					[a, 'x'],
+					[b, 'x'],
+					[c, 'y'],
 				])
 			);
 
@@ -96,19 +96,19 @@ suite("processItemsAsync", () => {
 		assert.deepEqual(
 			groups.map((group) => [group.id, group.items.map((item) => item.id)]),
 			[
-				["x", ["a", "b"]],
-				["y", ["c"]],
+				['x', ['a', 'b']],
+				['y', ['c']],
 			]
 		);
 	});
 
-	test("sorts groups descending", async () => {
-		const a = { id: "a" },
-			b = { id: "b" },
+	test('sorts groups descending', async () => {
+		const a = { id: 'a' },
+			b = { id: 'b' },
 			groupOnColumn = asyncComparable(
 				new Map([
-					[a, "x"],
-					[b, "y"],
+					[a, 'x'],
+					[b, 'y'],
 				])
 			);
 
@@ -121,7 +121,48 @@ suite("processItemsAsync", () => {
 
 		assert.deepEqual(
 			groups.map((group) => group.id),
-			["y", "x"]
+			['y', 'x']
+		);
+	});
+
+	test('groups and sort-inside-groups with async comparables', async () => {
+		const a = { id: 'a' },
+			b = { id: 'b' },
+			c = { id: 'c' },
+			groupValues = new Map([
+				[a, 'x'],
+				[b, 'y'],
+				[c, 'y'],
+			]),
+			sortValues = new Map([
+				[a, 1],
+				[b, 4],
+				[c, 3],
+			]),
+			groupOnColumn = {
+				groupOn: 'group',
+				getComparableValue: (_column, item) =>
+					Promise.resolve(groupValues.get(item)),
+			},
+			sortOnColumn = {
+				sortOn: 'sort',
+				getComparableValue: (_column, item) =>
+					Promise.resolve(sortValues.get(item)),
+			};
+
+		const groups = (await processItemsAsync({
+			filteredItems: [a, b, c],
+			groupOnColumn,
+			sortOnColumn,
+			noLocalSort: false,
+		})) as Array<{ id: string; items: Array<{ id: string }> }>;
+
+		assert.deepEqual(
+			groups.map((group) => [group.id, group.items.map((item) => item.id)]),
+			[
+				['x', ['a']],
+				['y', ['c', 'b']],
+			]
 		);
 	});
 });
