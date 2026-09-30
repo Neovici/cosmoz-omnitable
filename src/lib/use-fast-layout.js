@@ -20,6 +20,18 @@ const useAdoptedStyleSheet = (host) => {
 	return styleSheet;
 };
 
+/**
+ * Reflects the host-driven `compact` property (FE-664): container chrome
+ * for narrow canvases — card row look, thin scrollbars, collapsed header.
+ * Independent of the legacy `[mini]` state machine so it can be combined
+ * with a `renderItem` override (e.g. via the breakpoints directive).
+ */
+const useCompactChrome = (host) => {
+	useEffect(() => {
+		host.toggleAttribute('compact', host.compact === true);
+	}, [host.compact]);
+};
+
 export const useFastLayout = ({
 	host,
 	columns,
@@ -33,8 +45,9 @@ export const useFastLayout = ({
 			host,
 			canvasWidth,
 			columns,
-		}),
-		{ groupOnColumn } = sortAndGroupOptions,
+		});
+	useCompactChrome(host);
+	const { groupOnColumn } = sortAndGroupOptions,
 		layout = useLayout({
 			canvasWidth,
 			groupOnColumn,

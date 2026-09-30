@@ -522,29 +522,36 @@ export default css`
 		color: var(--cz-color-text-primary);
 	}
 
-	:host([mini]) {
+	:host([mini]),
+	:host([compact]) {
 		--checkbox-offset: calc(var(--cz-spacing) * 2);
 	}
 
 	:host([mini]) .itemRow .expand,
-	:host([mini]) cosmoz-omnitable-item-expand {
+	:host([compact]) .itemRow .expand,
+	:host([mini]) cosmoz-omnitable-item-expand,
+	:host([compact]) cosmoz-omnitable-item-expand {
 		display: none;
 	}
 
-	:host([mini]) .header > cosmoz-omnitable-header-row {
+	:host([mini]) .header > cosmoz-omnitable-header-row,
+	:host([compact]) .header > cosmoz-omnitable-header-row {
 		flex: 0;
 	}
 
-	:host([mini]) .groupRow {
+	:host([mini]) .groupRow,
+	:host([compact]) .groupRow {
 		padding-left: var(--checkbox-offset);
 	}
 
-	:host([mini]) .header {
+	:host([mini]) .header,
+	:host([compact]) .header {
 		padding-left: var(--checkbox-offset);
 		justify-content: space-between;
 	}
 
-	:host([mini]) .itemRow {
+	:host([mini]) .itemRow,
+	:host([compact]) .itemRow {
 		border-radius: 12px;
 		box-shadow: inset 0 0 0 2px var(--cz-color-border-tertiary);
 		margin-block: var(--checkbox-offset);
@@ -553,32 +560,40 @@ export default css`
 		border: none;
 	}
 
-	:host([mini]) .tableContent {
+	:host([mini]) .tableContent,
+	:host([compact]) .tableContent {
 		overflow: hidden;
 	}
 
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar {
+	:host([mini]) .tableContent-scroller::-webkit-scrollbar,
+	:host([compact]) .tableContent-scroller::-webkit-scrollbar {
 		width: 4px;
 	}
 
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar-track {
+	:host([mini]) .tableContent-scroller::-webkit-scrollbar-track,
+	:host([compact]) .tableContent-scroller::-webkit-scrollbar-track {
 		background: transparent;
 	}
 
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar-thumb {
+	:host([mini]) .tableContent-scroller::-webkit-scrollbar-thumb,
+	:host([compact]) .tableContent-scroller::-webkit-scrollbar-thumb {
 		background: transparent;
 	}
 
-	:host([mini]) .tableContent-scroller:hover::-webkit-scrollbar-thumb {
+	:host([mini]) .tableContent-scroller:hover::-webkit-scrollbar-thumb,
+	:host([compact]) .tableContent-scroller:hover::-webkit-scrollbar-thumb {
 		background: var(--cz-color-bg-tertiary);
 	}
 
 	:host([mini]) .tableContent-scroller::-webkit-scrollbar-button:decrement,
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar-button:increment {
+	:host([compact]) .tableContent-scroller::-webkit-scrollbar-button:decrement,
+	:host([mini]) .tableContent-scroller::-webkit-scrollbar-button:increment,
+	:host([compact]) .tableContent-scroller::-webkit-scrollbar-button:increment {
 		width: 0px;
 	}
 
-	:host([mini]) cosmoz-omnitable-settings::part(columns) {
+	:host([mini]) cosmoz-omnitable-settings::part(columns),
+	:host([compact]) cosmoz-omnitable-settings::part(columns) {
 		display: none;
 	}
 

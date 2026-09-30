@@ -388,3 +388,54 @@ suite('mini dormancy gate', () => {
 		);
 	});
 });
+
+suite('compact chrome', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
+
+	test('compact property reflects to attribute', async () => {
+		const omnitable = await setupOmnitableFixture(
+			html`
+				<cosmoz-omnitable .compact=${true}>
+					<cosmoz-omnitable-column
+						name="name"
+						title="Name"
+						value-path="name"
+					></cosmoz-omnitable-column>
+				</cosmoz-omnitable>
+			`,
+			generateTableDemoData(10, 11, 25)
+		);
+
+		await rowVisible();
+
+		assert.isTrue(omnitable.hasAttribute('compact'), '[compact] reflected');
+	});
+
+	test('renderItem + compact combine (breakpoints driving)', async () => {
+		const omnitable = await setupOmnitableFixture(
+			html`
+				<cosmoz-omnitable
+					selection-enabled
+					.compact=${true}
+					.renderItem=${customRow}
+				>
+					<cosmoz-omnitable-column
+						name="name"
+						title="Name"
+						value-path="name"
+					></cosmoz-omnitable-column>
+				</cosmoz-omnitable>
+			`,
+			generateTableDemoData(10, 11, 25)
+		);
+
+		await rowVisible();
+
+		assert.isTrue(omnitable.hasAttribute('compact'), '[compact] reflected');
+		assert.isFalse(omnitable.hasAttribute('mini'), 'old mini stays dormant');
+		assert.exists(
+			omnitable.shadowRoot.querySelector('custom-row'),
+			'override renders with compact chrome'
+		);
+	});
+});

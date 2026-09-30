@@ -20,11 +20,14 @@ Add `renderItem` / `renderGroup` host props and the `renderMini` export
   inline arrows re-assert on every render. `null` restores the default row
   (the exit path for breakpoint directives).
 - Unset = current behavior, unchanged.
+- New `compact` boolean property, reflected to `[compact]`: the container
+  chrome previously only available in mini mode (card row look, thin
+  scrollbars, collapsed header, hidden settings column picker) as a
+  host-driven state, combinable with `renderItem` (e.g. driven per
+  breakpoint by the caller).
 - New `renderMini` export: the default two-tier card (first mini column as
   title line, the rest in a meta flex row), usable as a `renderItem`.
   Old mini mode is dormant while `renderItem` is set.
-- Known: card chrome arrives with the future `compact` attribute (style via
-  `::part(itemCard)` meanwhile); `index` is the position in the flat list
-  (groups interleaved) — use `item[indexSymbol]` for stable part names;
-  `rowPartFn` applies to default rows only, custom renderers own their
-  parts.
+- `index` is the position in the flat list (groups interleaved) — use
+  `item[indexSymbol]` for stable part names; `rowPartFn` applies to
+  default rows only, custom renderers own their parts.
