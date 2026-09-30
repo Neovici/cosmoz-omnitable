@@ -2,7 +2,8 @@ import type {
 	RenderGroupParams as GroupedListGroupParams,
 	RenderItemParams as GroupedListRowParams,
 } from '../grouped-list/use-cosmoz-grouped-list';
-import type { IndexedGroup, IndexedItem } from './use-list';
+import type { GroupItem } from '../grouped-list/utils';
+import type { indexSymbol } from './utils';
 
 export type LimitFunction = (a: number, b: number) => number | undefined;
 
@@ -118,6 +119,16 @@ export type AmountLimit = Limit<Amount>;
 export type Item = object;
 
 export type Items = Item[];
+
+/** Item annotated with its flat (groups interleaved) position. */
+export interface IndexedItem extends Item {
+	[indexSymbol]: number;
+}
+
+/** Group annotated with its position in the flat list. */
+export interface IndexedGroup extends GroupItem<IndexedItem> {
+	[indexSymbol]: number;
+}
 
 export interface ItemRenderData {
 	item: Item;

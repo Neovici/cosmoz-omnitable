@@ -28,6 +28,14 @@ Add `renderItem` / `renderGroup` host props and the `renderMini` export
 - New `renderMini` export: the default two-tier card (first mini column as
   title line, the rest in a meta flex row), usable as a `renderItem`.
   Old mini mode is dormant while `renderItem` is set.
+- New `defaultRenderItem` / `defaultRenderGroup` exports: the default
+  row/group renderers in the exact `renderItem`/`renderGroup` contract
+  shape, so consumers can wrap or extend the default rendering instead of
+  fully replacing it.
+- Internal: the default row and group renderers moved from `use-list` to
+  `lib/render-item` and `lib/render-group` (also exported via
+  `@neovici/cosmoz-omnitable/lib/render-item.js` etc.). No behavior
+  change.
 - `index` is the position in the flat list (groups interleaved) — use
   `item[indexSymbol]` for stable part names; `rowPartFn` applies to
   default rows only, custom renderers own their parts.

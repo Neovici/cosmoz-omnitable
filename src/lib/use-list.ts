@@ -1,54 +1,22 @@
-/* eslint-disable max-lines */
-import { chevronDownIcon } from '@neovici/cosmoz-icons/untitled';
-import { isEmpty } from '@neovici/cosmoz-utils/template';
-import { html, useCallback, useEffect, useMemo, useRef } from '@pionjs/pion';
+import { useCallback, useEffect, useMemo, useRef } from '@pionjs/pion';
 import type {
 	RenderGroupParams as GroupedListGroupParams,
 	RenderItemParams as GroupedListRowParams,
 } from '../grouped-list/use-cosmoz-grouped-list';
 import type { GroupItem } from '../grouped-list/utils';
-import { renderMinis } from './render-mini';
-import type { Column, HostRenderGroup, HostRenderItem, Item } from './types';
-import { indexSymbol } from './utils';
+import { renderGroup } from './render-group';
+import { renderItem } from './render-item';
+import type {
+	Column,
+	HostRenderGroup,
+	HostRenderItem,
+	IndexedGroup,
+	IndexedItem,
+	Item,
+} from './types';
 import { onItemChange as _onItemChange } from './utils-data';
 
-export interface IndexedItem extends Item {
-	[indexSymbol]: number;
-}
-
-export interface IndexedGroup extends GroupItem<IndexedItem> {
-	[indexSymbol]: number;
-}
-
-export interface RenderItemParams {
-	selected: boolean;
-	expanded: boolean;
-	toggleCollapse: () => void;
-}
-
-export interface RenderGroupParams {
-	selected: boolean;
-	folded: boolean;
-	toggleFold: () => void;
-}
-
-interface RenderItemDeps {
-	columns: Column[];
-	collapsedColumns: Column[];
-	miniColumns: Column[];
-	onItemClick: (event: Event) => void;
-	onCheckboxChange: (event: Event) => void;
-	dataIsValid: boolean;
-	groupOnColumn?: Column;
-	onItemChange: (column: Column, item: Item) => (value: unknown) => void;
-	rowPartFn?: (item: Item, index: number) => string | undefined;
-}
-
-interface RenderGroupDeps {
-	onCheckboxChange: (event: Event) => void;
-	dataIsValid: boolean;
-	groupOnColumn?: Column;
-}
+export type { IndexedGroup, IndexedItem } from './types';
 
 interface GroupedListEl extends HTMLElement {
 	toggleSelectTo(item: Item, selected: boolean): void;
@@ -70,120 +38,6 @@ const isCheckbox = (el: EventTarget | null): el is CheckboxElement =>
 
 const isRow = (el: EventTarget | null): el is RowElement =>
 	el instanceof HTMLElement;
-
-const _getGroupRowClasses = (folded: boolean): string =>
-	folded ? 'groupRow groupRow-folded' : 'groupRow';
-
-const renderItem =
-	({
-		columns,
-		collapsedColumns,
-		miniColumns,
-		onItemClick,
-		onCheckboxChange,
-		dataIsValid,
-		groupOnColumn,
-		onItemChange,
-		rowPartFn,
-	}: RenderItemDeps) =>
-	(
-		item: IndexedItem,
-		index: number,
-		{ selected, expanded, toggleCollapse }: RenderItemParams
-	) =>
-		html`
-			<div
-				?selected=${selected}
-				part="${[
-					'itemRow',
-					`itemRow-${item[indexSymbol]}`,
-					rowPartFn?.(item, index),
-				]
-					.filter(Boolean)
-					.join(' ')}"
-				.dataIndex=${item[indexSymbol]}
-				.dataItem=${item}
-				class="itemRow"
-				@click=${onItemClick}
-			>
-				<div class="itemRow-wrapper" part="itemRow-wrapper">
-					<input
-						class="checkbox"
-						type="checkbox"
-						part="checkbox"
-						.checked=${selected}
-						.dataItem=${item}
-						@input=${onCheckboxChange}
-						?disabled=${!dataIsValid}
-					/>
-					<cosmoz-omnitable-item-row
-						part="itemRow-inner"
-						.columns=${columns}
-						.index=${index}
-						.selected=${selected}
-						.expanded=${expanded}
-						.item=${item}
-						.groupOnColumn=${groupOnColumn}
-						.onItemChange=${onItemChange}
-					>
-					</cosmoz-omnitable-item-row>
-					<button
-						class="expand"
-						?hidden="${isEmpty(collapsedColumns.length)}"
-						?aria-expanded="${expanded}"
-						@click="${toggleCollapse}"
-					>
-						${chevronDownIcon({ width: '16', height: '16' })}
-					</button>
-				</div>
-				${renderMinis({ item, index })(miniColumns)}
-			</div>
-			<cosmoz-omnitable-item-expand
-				.columns=${collapsedColumns}
-				.item=${item}
-				.index=${index}
-				?selected=${selected}
-				?expanded=${expanded}
-				.groupOnColumn=${groupOnColumn}
-				part="item-expand"
-			>
-			</cosmoz-omnitable-item-expand>
-		`;
-
-const renderGroup =
-	({ onCheckboxChange, dataIsValid, groupOnColumn }: RenderGroupDeps) =>
-	(
-		item: IndexedGroup,
-		index: number,
-		{ selected, folded, toggleFold }: RenderGroupParams
-	) =>
-		html` <div
-			class="${_getGroupRowClasses(folded)}"
-			part="groupRow groupRow-${item[indexSymbol]}"
-		>
-			<input
-				class="checkbox"
-				type="checkbox"
-				.checked=${selected}
-				.dataItem=${item}
-				@input=${onCheckboxChange}
-				?disabled=${!dataIsValid}
-			/>
-			<h3 class="groupRow-label">
-				<div><span>${groupOnColumn?.title}</span>: &nbsp;</div>
-				<cosmoz-omnitable-group-row
-					.column=${groupOnColumn}
-					.item=${item.items?.[0]}
-					.selected=${selected}
-					.folded=${folded}
-					.group=${item}
-				></cosmoz-omnitable-group-row>
-			</h3>
-			<div class="groupRow-badge">${item.items!.length}</div>
-			<button class="expand" ?aria-expanded="${folded}" @click=${toggleFold}>
-				${chevronDownIcon({ width: '16', height: '16' })}
-			</button>
-		</div>`;
 
 interface BindItemParams {
 	render: HostRenderItem;

@@ -72,6 +72,8 @@ const tmplt = `
 	<slot name="actions" slot="actions"></slot>
 `;
 
+export { defaultRenderGroup } from './lib/render-group';
+export { defaultRenderItem } from './lib/render-item';
 export { renderMini } from './lib/render-mini';
 
 export const actionSlots = html(Object.assign([tmplt], { raw: [tmplt] })),
