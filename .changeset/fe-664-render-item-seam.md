@@ -28,6 +28,14 @@ Add `renderItem` / `renderGroup` host props and the `renderMini` export
 - New `renderMini` export: the default two-tier card (first mini column as
   title line, the rest in a meta flex row), usable as a `renderItem`.
   Old mini mode is dormant while `renderItem` is set.
+- New `renderItem` / `renderGroup` exports: the default row and group
+  renderers, in the same shape as the host properties. The defaults flow
+  through the exact same params contract as custom renderers, so they can
+  be wrapped (`renderItem(item, i, p)` inside your own fn) or set
+  directly.
+- Item params now also carry `onItemChange` (editable-cell wiring, usable
+  from custom rows), `rowPartFn`, `groupOnColumn` and `miniColumns`;
+  group params carry `groupOnColumn`. Omnitable always injects them.
 - Internal: the default row and group renderers moved from `use-list` to
   `lib/render-item` and `lib/render-group`. No behavior change.
 - `index` is the position in the flat list (groups interleaved) — use

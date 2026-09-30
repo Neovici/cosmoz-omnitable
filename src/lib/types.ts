@@ -161,6 +161,8 @@ export interface ItemRenderParams extends GroupedListRowParams {
 	columns: Column[];
 	/** Columns the layout engine collapsed (the default row surfaces them in the expand block). */
 	collapsedColumns: Column[];
+	/** Columns tagged for mini mode (legacy minis block); empty outside mini size. */
+	miniColumns: Column[];
 	/** Dispatches `omnitable-item-click`; ignores clicks on `a`, `.checkbox` and `.expand`. */
 	onItemClick: (event: Event) => void;
 	/**
@@ -169,6 +171,12 @@ export interface ItemRenderParams extends GroupedListRowParams {
 	 * semantics, and keeps the input from mutating state.
 	 */
 	onCheckboxChange: (event: Event) => void;
+	/** Editable-cell wiring, passed through to `<cosmoz-omnitable-item-row>` / `renderEditCell`. */
+	onItemChange: (column: Column, item: Item) => (value: unknown) => void;
+	/** Extra part name for the row, provided by the `rowPartFn` host property. */
+	rowPartFn?: (item: Item, index: number) => string | undefined;
+	/** The column the table is grouped on, when set. */
+	groupOnColumn?: Column;
 	dataIsValid: boolean;
 }
 
@@ -187,6 +195,8 @@ export interface GroupRenderParams extends GroupedListGroupParams {
 	 * contained items, with shift-range and ctrl select-only semantics.
 	 */
 	onCheckboxChange: (event: Event) => void;
+	/** The column the table is grouped on — titles the default group label. */
+	groupOnColumn?: Column;
 	dataIsValid: boolean;
 }
 

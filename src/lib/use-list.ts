@@ -4,8 +4,8 @@ import type {
 	RenderItemParams as GroupedListRowParams,
 } from '../grouped-list/use-cosmoz-grouped-list';
 import type { GroupItem } from '../grouped-list/utils';
-import { renderGroup } from './render-group';
-import { renderItem } from './render-item';
+import { renderGroup as defaultRenderGroup } from './render-group';
+import { renderItem as defaultRenderItem } from './render-item';
 import type {
 	Column,
 	HostRenderGroup,
@@ -39,48 +39,40 @@ const isCheckbox = (el: EventTarget | null): el is CheckboxElement =>
 const isRow = (el: EventTarget | null): el is RowElement =>
 	el instanceof HTMLElement;
 
-interface BindItemParams {
-	render: HostRenderItem;
+interface ConnectItemParams {
+	renderItem: HostRenderItem;
 	columns: Column[];
 	collapsedColumns: Column[];
+	miniColumns: Column[];
 	onItemClick: (event: Event) => void;
 	onCheckboxChange: (event: Event) => void;
+	onItemChange: (column: Column, item: Item) => (value: unknown) => void;
+	rowPartFn?: (item: Item, index: number) => string | undefined;
+	groupOnColumn?: Column;
 	dataIsValid: boolean;
 }
 
-interface BindGroupParams {
-	render: HostRenderGroup;
+interface ConnectGroupParams {
+	renderGroup: HostRenderGroup;
 	columns: Column[];
 	onCheckboxChange: (event: Event) => void;
+	groupOnColumn?: Column;
 	dataIsValid: boolean;
 }
 
-// wraps a host-provided row renderer, injecting the params omnitable owns
-// (columns, collapsed columns, selection/click wiring)
-const bindItemParams =
-	({
-		render,
-		columns,
-		collapsedColumns,
-		onItemClick,
-		onCheckboxChange,
-		dataIsValid,
-	}: BindItemParams) =>
+// connects a row renderer to the params omnitable owns: the renderer is
+// whatever was picked already (host prop or internal default), the params
+// pass thru it into the renderer's input
+const connectItem =
+	({ renderItem, ...thru }: ConnectItemParams) =>
 	(item: IndexedItem, index: number, params: GroupedListRowParams) =>
-		render(item, index, {
-			...params,
-			columns,
-			collapsedColumns,
-			onItemClick,
-			onCheckboxChange,
-			dataIsValid,
-		});
+		renderItem(item, index, { ...params, ...thru });
 
-// wraps a host-provided group renderer, injecting the params omnitable owns
-const bindGroupParams =
-	({ render, columns, onCheckboxChange, dataIsValid }: BindGroupParams) =>
+// connects a group renderer to the params omnitable owns
+const connectGroup =
+	({ renderGroup, ...thru }: ConnectGroupParams) =>
 	(group: IndexedGroup, index: number, params: GroupedListGroupParams) =>
-		render(group, index, { ...params, columns, onCheckboxChange, dataIsValid });
+		renderGroup(group, index, { ...params, ...thru });
 
 interface UseListHost extends HTMLElement {
 	loading?: boolean;
@@ -116,6 +108,11 @@ export const useList = ({
 	...rest
 }: UseListParams) => {
 	const { loading = false, displayEmptyGroups = false, compareItemsFn } = host,
+		// the effective renderers — the host prop when set, the internal
+		// default otherwise (`??`, not destructuring defaults: `null`
+		// must exit an override)
+		renderItem = host.renderItem ?? defaultRenderItem,
+		renderGroup = host.renderGroup ?? defaultRenderGroup,
 		keyState = useRef({ shiftKey: false, ctrlKey: false }),
 		onCheckboxChange = useCallback((event: Event) => {
 			if (!isCheckbox(event.target)) {
@@ -192,41 +189,6 @@ export const useList = ({
 			[]
 		);
 
-	// default renderers — keep last among the hooks, in this order
-	const baseItem = useMemo(
-			() =>
-				renderItem({
-					columns,
-					collapsedColumns,
-					miniColumns,
-					onItemClick,
-					onCheckboxChange,
-					dataIsValid,
-					groupOnColumn,
-					onItemChange,
-					rowPartFn,
-				}),
-			[
-				columns,
-				collapsedColumns,
-				onItemClick,
-				onCheckboxChange,
-				dataIsValid,
-				groupOnColumn,
-				onItemChange,
-				rowPartFn,
-			]
-		),
-		baseGroup = useMemo(
-			() =>
-				renderGroup({
-					onCheckboxChange,
-					dataIsValid,
-					groupOnColumn,
-				}),
-			[onCheckboxChange, dataIsValid, groupOnColumn]
-		);
-
 	return {
 		...rest,
 		processedItems,
@@ -237,39 +199,44 @@ export const useList = ({
 		displayEmptyGroups,
 		error,
 
+		// keep last among the hooks, in this order
 		renderItem: useMemo(
 			() =>
-				host.renderItem == null
-					? baseItem
-					: bindItemParams({
-							render: host.renderItem,
-							columns,
-							collapsedColumns,
-							onItemClick,
-							onCheckboxChange,
-							dataIsValid,
-					  }),
+				connectItem({
+					renderItem,
+					columns,
+					collapsedColumns,
+					miniColumns,
+					onItemClick,
+					onCheckboxChange,
+					onItemChange,
+					rowPartFn,
+					groupOnColumn,
+					dataIsValid,
+				}),
 			[
-				baseItem,
-				host.renderItem,
+				renderItem,
 				columns,
 				collapsedColumns,
+				miniColumns,
 				onItemClick,
 				onCheckboxChange,
+				onItemChange,
+				rowPartFn,
+				groupOnColumn,
 				dataIsValid,
 			]
 		),
 		renderGroup: useMemo(
 			() =>
-				host.renderGroup == null
-					? baseGroup
-					: bindGroupParams({
-							render: host.renderGroup,
-							columns,
-							onCheckboxChange,
-							dataIsValid,
-					  }),
-			[baseGroup, host.renderGroup, columns, onCheckboxChange, dataIsValid]
+				connectGroup({
+					renderGroup,
+					columns,
+					onCheckboxChange,
+					groupOnColumn,
+					dataIsValid,
+				}),
+			[renderGroup, columns, onCheckboxChange, groupOnColumn, dataIsValid]
 		),
 	};
 };

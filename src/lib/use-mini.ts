@@ -26,7 +26,11 @@ export const useMini = ({
 					: [],
 			[_columns, isMiniSize]
 		),
-		[miniColumn, ...miniColumns] = columns ?? [],
+		// memoized split: the rest-slice of a destructuring would be a new
+		// array every render, which churns anything that depends on
+		// miniColumns identity
+		miniColumns = useMemo(() => columns.slice(1), [columns]),
+		miniColumn = columns[0],
 		// full-row override takes over item rendering — keep mini machinery dormant
 		hasMiniColumn = !!miniColumn && host.renderItem == null;
 

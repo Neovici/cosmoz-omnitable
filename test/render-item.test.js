@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { assert, html, nextFrame } from '@open-wc/testing';
 
 import {
@@ -11,8 +12,10 @@ import {
 	setupOmnitableFixture,
 } from './helpers/utils';
 
+import { indexSymbol } from '../src/lib/utils';
+
 import '../src/cosmoz-omnitable-columns.ts';
-import '../src/cosmoz-omnitable.js';
+import { renderItem } from '../src/cosmoz-omnitable.js';
 import { columnSymbol } from '../src/lib/use-dom-columns';
 
 /* eslint-disable mocha/no-top-level-hooks */
@@ -188,8 +191,10 @@ suite('renderItem seam', () => {
 		);
 		assert.exists(params.columns[0][columnSymbol], 'normalized columns');
 		assert.isArray(params.collapsedColumns);
+		assert.isArray(params.miniColumns);
 		assert.isFunction(params.onItemClick);
 		assert.isFunction(params.onCheckboxChange);
+		assert.isFunction(params.onItemChange);
 		assert.isTrue(params.dataIsValid);
 	});
 
@@ -354,6 +359,64 @@ suite('renderItem seam', () => {
 			list.renderGroup,
 			beforeGroup,
 			'renderItem swap leaves renderGroup untouched'
+		);
+	});
+
+	test('exported renderItem can be wrapped and set as the override', async () => {
+		const wrapped = (item, index, params) =>
+			html`
+				${renderItem(item, index, params)}
+				<span class="badge" part="badge">W:${item[indexSymbol]}</span>
+			`;
+		const omnitable = await setupOmnitableFixture(
+			html`
+				<cosmoz-omnitable selection-enabled .renderItem=${wrapped}>
+					<cosmoz-omnitable-column
+						name="name"
+						value-path="name"
+					></cosmoz-omnitable-column>
+				</cosmoz-omnitable>
+			`,
+			generateTableDemoData(10, 11, 25)
+		);
+
+		await rowVisible();
+		await nextFrame();
+		await nextFrame();
+
+		const row = omnitable.shadowRoot.querySelector('.itemRow');
+		assert.exists(
+			row.querySelector('cosmoz-omnitable-item-row'),
+			'default row renders inside the wrapper'
+		);
+		assert.exists(row.querySelector('.checkbox'), 'checkbox present');
+		const badge = omnitable.shadowRoot.querySelector('.badge');
+		assert.exists(badge, 'wrapper addition renders');
+		assert.equal(badge.textContent, `W:${omnitable.data[0][indexSymbol]}`);
+	});
+
+	test('setting the exported renderItem directly renders the default row', async () => {
+		const omnitable = await setupOmnitableFixture(
+			html`
+				<cosmoz-omnitable selection-enabled .renderItem=${renderItem}>
+					<cosmoz-omnitable-column
+						name="name"
+						value-path="name"
+					></cosmoz-omnitable-column>
+				</cosmoz-omnitable>
+			`,
+			generateTableDemoData(10, 11, 25)
+		);
+
+		await rowVisible();
+
+		assert.exists(
+			omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row'),
+			'default row renders'
+		);
+		assert.exists(
+			omnitable.shadowRoot.querySelector('.itemRow .checkbox'),
+			'checkbox present'
 		);
 	});
 });
