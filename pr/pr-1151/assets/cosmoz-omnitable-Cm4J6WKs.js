@@ -1882,7 +1882,7 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$ as t,Bt as n,C as r,
 				.item=${t}
 				.index=${n}
 				.renderFn=${e}
-			></cosmoz-grouped-list-row>`})})))()}var Xo;function Zo(){return(Zo=e((()=>{T(),Yo(),Xo=e=>Jo(qo(e)),customElements.define(`cosmoz-grouped-list`,w(Xo,{useShadowDOM:!1}))})))()}function Qo(){return(Qo=e((()=>{Zo()})))()}var $o,es,ts;function ns(){return(ns=e((()=>{je(),kt(),$r(),ti(),Ci(),Oi(),ji(),T(),nt(),x(),v(),Pi(),Wi(),Ki(),Zi(),Oo(),Qo(),ro(),so(),ao(),$o=e=>window.ShadyCSS?.ApplyShim?.transformCssText?.(e)||e,es=e=>{let{header:t,list:n,footer:r}=Do(e);return C`
+			></cosmoz-grouped-list-row>`})})))()}var Xo;function Zo(){return(Zo=e((()=>{T(),Yo(),Xo=e=>Jo(qo(e)),customElements.define(`cosmoz-grouped-list`,w(Xo,{useShadowDOM:!1}))})))()}function Qo(){return(Qo=e((()=>{Zo()})))()}var $o,es,ts;function ns(){return(ns=e((()=>{je(),kt(),$r(),ti(),Ci(),Oi(),ji(),T(),nt(),x(),v(),Pi(),Wi(),Ki(),Zi(),Oo(),Qo(),ao(),$o=e=>window.ShadyCSS?.ApplyShim?.transformCssText?.(e)||e,es=e=>{let{header:t,list:n,footer:r}=Do(e);return C`
 		<style>
 			${i([],()=>$o(Ni))}
 		</style>
