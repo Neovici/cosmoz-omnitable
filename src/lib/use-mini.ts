@@ -26,9 +26,8 @@ export const useMini = ({
 					: [],
 			[_columns, isMiniSize]
 		),
-		// memoized split: the rest-slice of a destructuring would be a new
-		// array every render, which churns anything that depends on
-		// miniColumns identity
+		// identity-stable rest slice: a new array every render would churn the
+		// connect deps — grouped-list re-renders rows on wrapper identity
 		miniColumns = useMemo(() => columns.slice(1), [columns]),
 		miniColumn = columns[0],
 		// full-row override takes over item rendering — keep mini machinery dormant

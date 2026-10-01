@@ -150,52 +150,21 @@ export interface HeaderRenderData {
 	headerFocused?: boolean;
 }
 
-/**
- * Params a host-provided `renderItem` receives for item rows.
- *
- * Extends the grouped-list contract (`selected`, `expanded`, `toggleSelect`,
- * `toggleCollapse`) with data only omnitable owns.
- */
 export interface ItemRenderParams extends GroupedListRowParams {
-	/** Full enabled, normalized columns. */
 	columns: Column[];
-	/** Columns the layout engine collapsed (the default row surfaces them in the expand block). */
 	collapsedColumns: Column[];
-	/** Columns tagged for mini mode (legacy minis block); empty outside mini size. */
 	miniColumns: Column[];
-	/** Dispatches `omnitable-item-click`; ignores clicks on `a`, `.checkbox` and `.expand`. */
 	onItemClick: (event: Event) => void;
-	/**
-	 * Default checkbox wiring. Mark your checkbox with `.dataItem=${item}` and
-	 * `@input=${onCheckboxChange}` — carries shift-range and ctrl select-only
-	 * semantics, and keeps the input from mutating state.
-	 */
 	onCheckboxChange: (event: Event) => void;
-	/** Editable-cell wiring, passed through to `<cosmoz-omnitable-item-row>` / `renderEditCell`. */
 	onItemChange: (column: Column, item: Item) => (value: unknown) => void;
-	/** Extra part name for the row, provided by the `rowPartFn` host property. */
 	rowPartFn?: (item: Item, index: number) => string | undefined;
-	/** The column the table is grouped on, when set. */
 	groupOnColumn?: Column;
 	dataIsValid: boolean;
 }
 
-/**
- * Params a host-provided `renderGroup` receives for group rows.
- *
- * Extends the grouped-list contract (`selected`, `folded`, `toggleSelect`,
- * `toggleFold`). The fold affordance is the custom renderer's responsibility.
- */
 export interface GroupRenderParams extends GroupedListGroupParams {
-	/** Full enabled, normalized columns. */
 	columns: Column[];
-	/**
-	 * Default checkbox wiring. Mark your checkbox with `.dataItem=${group}`
-	 * (the group!) — selection is group-aware, so checking it selects all
-	 * contained items, with shift-range and ctrl select-only semantics.
-	 */
 	onCheckboxChange: (event: Event) => void;
-	/** The column the table is grouped on — titles the default group label. */
 	groupOnColumn?: Column;
 	dataIsValid: boolean;
 }

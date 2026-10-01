@@ -39,10 +39,13 @@ const getMiniColumns = (columns: Column[] | undefined): Column[] =>
  * column.renderCell`. The checkbox is wired through `onCheckboxChange`,
  * so shift-range and ctrl select-only semantics work like on default rows.
  */
-export const renderMini: HostRenderItem = (item, index, params) => {
-	const miniColumns = getMiniColumns(params.columns),
-		[titleColumn] = miniColumns,
-		{ selected, onItemClick, onCheckboxChange, dataIsValid } = params;
+export const renderMini: HostRenderItem = (
+	item,
+	index,
+	{ selected, onItemClick, onCheckboxChange, dataIsValid, columns }
+) => {
+	const miniColumns = getMiniColumns(columns),
+		[titleColumn] = miniColumns;
 
 	return html`
 		<div
