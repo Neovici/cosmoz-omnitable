@@ -1,12 +1,10 @@
 import { html } from 'lit-html';
 import { when } from 'lit-html/directives/when.js';
 
-import type { Column, HostRenderItem } from './types';
-import type { IndexedItem } from './use-list';
-import { indexSymbol } from './utils';
+import type { Column, HostRenderItem, Item } from './types';
 
 export const renderMinis =
-	({ item, index }: { item: IndexedItem; index?: number }) =>
+	({ item, index }: { item: Item; index: number }) =>
 	(columns: Column[] | undefined) =>
 		when(
 			(columns?.length ?? 0) > 0,
@@ -49,9 +47,9 @@ export const renderMini: HostRenderItem = (item, index, params) => {
 	return html`
 		<div
 			?selected=${selected}
-			part="itemRow itemCard itemRow-${item[indexSymbol]}"
+			part="itemRow itemCard itemRow-${index}"
 			class="itemRow"
-			.dataIndex=${item[indexSymbol]}
+			.dataIndex=${index}
 			.dataItem=${item}
 			@click=${onItemClick}
 		>

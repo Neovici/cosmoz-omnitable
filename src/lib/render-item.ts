@@ -4,7 +4,6 @@ import { html } from '@pionjs/pion';
 
 import { renderMinis } from './render-mini';
 import type { HostRenderItem } from './types';
-import { indexSymbol } from './utils';
 
 /**
  * The default item-row renderer, in the same shape as the `renderItem`
@@ -13,7 +12,7 @@ import { indexSymbol } from './utils';
  */
 export const renderItem: HostRenderItem = (
 	item,
-	_index,
+	index,
 	{
 		selected,
 		expanded,
@@ -28,12 +27,11 @@ export const renderItem: HostRenderItem = (
 		groupOnColumn,
 		dataIsValid,
 	}
-) => {
-	const index = item[indexSymbol];
-	return html`
+) =>
+	html`
 		<div
 			?selected=${selected}
-			part="${['itemRow', `itemRow-${index}`, rowPartFn?.(item, _index)]
+			part="${['itemRow', `itemRow-${index}`, rowPartFn?.(item, index)]
 				.filter(Boolean)
 				.join(' ')}"
 			.dataIndex=${index}
@@ -54,7 +52,7 @@ export const renderItem: HostRenderItem = (
 				<cosmoz-omnitable-item-row
 					part="itemRow-inner"
 					.columns=${columns}
-					.index=${_index}
+					.index=${index}
 					.selected=${selected}
 					.expanded=${expanded}
 					.item=${item}
@@ -76,7 +74,6 @@ export const renderItem: HostRenderItem = (
 		<cosmoz-omnitable-item-expand
 			.columns=${collapsedColumns}
 			.item=${item}
-			.index=${_index}
 			?selected=${selected}
 			?expanded=${expanded}
 			.groupOnColumn=${groupOnColumn}
@@ -84,4 +81,3 @@ export const renderItem: HostRenderItem = (
 		>
 		</cosmoz-omnitable-item-expand>
 	`;
-};

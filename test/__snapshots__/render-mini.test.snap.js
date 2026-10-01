@@ -4,7 +4,7 @@ export const snapshots = {};
 snapshots['render-mini renderMini'] = `<div>
   <div
     class="itemRow"
-    part="itemRow itemCard itemRow-0"
+    part="itemRow itemCard itemRow-5"
     selected=""
   >
     <div
@@ -21,7 +21,7 @@ snapshots['render-mini renderMini'] = `<div>
         part="item-mini item-mini-name"
       >
         <span>
-          Foo
+          Foo #5
         </span>
       </div>
     </div>
@@ -42,7 +42,7 @@ snapshots['render-mini renderMini'] = `<div>
         part="item-mini item-mini-value"
       >
         <span>
-          1
+          1 #5
         </span>
       </div>
     </div>

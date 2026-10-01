@@ -4,7 +4,7 @@ export const snapshots = {};
 snapshots['render-item renderers renderItem'] = `<div>
   <div
     class="itemRow"
-    part="itemRow itemRow-3 custom-part"
+    part="itemRow itemRow-7 custom-part"
     selected=""
   >
     <div
@@ -25,11 +25,25 @@ snapshots['render-item renderers renderItem'] = `<div>
           title="Name"
         >
           <span>
+            Foo #7
           </span>
         </div>
       </cosmoz-omnitable-item-row>
       <button class="expand">
       </button>
+    </div>
+    <div
+      class="itemRow-minis"
+      part="item-minis"
+    >
+      <div
+        class="itemRow-mini"
+        part="item-mini item-mini-name"
+      >
+        <span>
+          Foo #7
+        </span>
+      </div>
     </div>
   </div>
   <cosmoz-omnitable-item-expand
@@ -38,6 +52,7 @@ snapshots['render-item renderers renderItem'] = `<div>
   >
     <cosmoz-omnitable-item-expand-line exportparts="item-expand-label, item-expand-value">
       <span>
+        Foo #
       </span>
     </cosmoz-omnitable-item-expand-line>
   </cosmoz-omnitable-item-expand>
@@ -48,7 +63,7 @@ snapshots['render-item renderers renderItem'] = `<div>
 snapshots['render-item renderers renderGroup'] = `<div>
   <div
     class="groupRow"
-    part="groupRow groupRow-1"
+    part="groupRow groupRow-2"
   >
     <input
       class="checkbox"
@@ -63,6 +78,7 @@ snapshots['render-item renderers renderGroup'] = `<div>
       </div>
       <cosmoz-omnitable-group-row>
         <span>
+          Foo #
         </span>
       </cosmoz-omnitable-group-row>
     </h3>

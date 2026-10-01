@@ -53,8 +53,9 @@ host-driven state, combinable with `renderItem`. Legacy mini mode
 (`miniBreakpoint`, `column.mini`, `[mini]`) is unaffected and stays
 dormant while `renderItem` is set.
 
-`index` is the position in the flat (groups interleaved) row list; use
-`item[indexSymbol]` for stable part names, like the built-in rows.
+`index` is the row's position in the visible data — stable across group
+fold/unfold, the same number the built-in rows use for part names
+(`itemRow-${index}`) and the `omnitable-item-click` detail.
 
 Removes the unused `RenderItemParams` / `GroupRenderParams` type exports
 from `lib/use-list` (no known consumers; superseded by

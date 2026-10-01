@@ -14,6 +14,7 @@ import type {
 	IndexedItem,
 	Item,
 } from './types';
+import { indexSymbol } from './utils';
 import { onItemChange as _onItemChange } from './utils-data';
 
 export type { IndexedGroup, IndexedItem } from './types';
@@ -62,17 +63,24 @@ interface ConnectGroupParams {
 
 // connects a row renderer to the params omnitable owns: the renderer is
 // whatever was picked already (host prop or internal default), the params
-// pass thru it into the renderer's input
+// pass thru it into the renderer's input.
+//
+// grouped-list passes its internal flat list position — the number of
+// group rows above shifts it under fold/unfold, so it is NOT the
+// renderer contract. The contract index is the row's position in the
+// visible data, which `use-processed-items` annotates on every item
+// (`item[indexSymbol]`) — stable across fold/unfold and group-aware.
 const connectItem =
 	({ renderItem, ...thru }: ConnectItemParams) =>
-	(item: IndexedItem, index: number, params: GroupedListRowParams) =>
-		renderItem(item, index, { ...params, ...thru });
+	(item: IndexedItem, _flatIndex: number, params: GroupedListRowParams) =>
+		renderItem(item, item[indexSymbol], { ...params, ...thru });
 
-// connects a group renderer to the params omnitable owns
+// connects a group renderer to the params omnitable owns; same index
+// treatment: the group's own annotated position, not the flat slot
 const connectGroup =
 	({ renderGroup, ...thru }: ConnectGroupParams) =>
-	(group: IndexedGroup, index: number, params: GroupedListGroupParams) =>
-		renderGroup(group, index, { ...params, ...thru });
+	(group: IndexedGroup, _flatIndex: number, params: GroupedListGroupParams) =>
+		renderGroup(group, group[indexSymbol], { ...params, ...thru });
 
 interface UseListHost extends HTMLElement {
 	loading?: boolean;

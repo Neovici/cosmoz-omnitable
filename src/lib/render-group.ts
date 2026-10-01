@@ -2,7 +2,6 @@ import { chevronDownIcon } from '@neovici/cosmoz-icons/untitled';
 import { html } from '@pionjs/pion';
 
 import type { HostRenderGroup } from './types';
-import { indexSymbol } from './utils';
 
 const _getGroupRowClasses = (folded: boolean): string =>
 	folded ? 'groupRow groupRow-folded' : 'groupRow';
@@ -14,12 +13,12 @@ const _getGroupRowClasses = (folded: boolean): string =>
  */
 export const renderGroup: HostRenderGroup = (
 	item,
-	_index,
+	index,
 	{ selected, folded, toggleFold, onCheckboxChange, groupOnColumn, dataIsValid }
 ) =>
 	html` <div
 		class="${_getGroupRowClasses(folded)}"
-		part="groupRow groupRow-${item[indexSymbol]}"
+		part="groupRow groupRow-${index}"
 	>
 		<input
 			class="checkbox"

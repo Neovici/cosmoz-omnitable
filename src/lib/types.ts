@@ -120,12 +120,12 @@ export type Item = object;
 
 export type Items = Item[];
 
-/** Item annotated with its flat (groups interleaved) position. */
+/** Item annotated with its position in the visible data. */
 export interface IndexedItem extends Item {
 	[indexSymbol]: number;
 }
 
-/** Group annotated with its position in the flat list. */
+/** Group annotated with its position among the rendered groups. */
 export interface IndexedGroup extends GroupItem<IndexedItem> {
 	[indexSymbol]: number;
 }
@@ -204,10 +204,11 @@ export interface GroupRenderParams extends GroupedListGroupParams {
  * Host-provided full row renderer, set as the `renderItem` property on
  * `<cosmoz-omnitable>`. Its output replaces the entire default row.
  *
- * `index` is the position in the flat (groups interleaved) list — use
- * `item[indexSymbol]` for stable part naming, like the default row does.
- * Use a stable reference (module-level function or `guard([], ...)`);
- * inline arrows re-assert on every render.
+ * `index` is the row's position in the visible data — stable across
+ * group fold/unfold, and the same number the built-in rows use for
+ * part names (`itemRow-${index}`), `dataIndex` and the
+ * `omnitable-item-click` detail. Use a stable reference (module-level
+ * function or `guard([], ...)`); inline arrows re-assert on every render.
  */
 export type HostRenderItem = (
 	item: IndexedItem,

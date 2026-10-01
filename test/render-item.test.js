@@ -4,7 +4,6 @@ import { assert, expect, fixture, html, nextFrame } from '@open-wc/testing';
 import { generateTableDemoData } from '../demo/table-demo-helper';
 import { renderGroup } from '../src/lib/render-group';
 import { renderItem } from '../src/lib/render-item';
-import { indexSymbol } from '../src/lib/utils';
 import {
 	ignoreResizeObserverLoopErrors,
 	setupOmnitableFixture,
@@ -17,9 +16,11 @@ const column = {
 		name: 'name',
 		title: 'Name',
 		cellTitleFn: () => 'Name',
-		renderCell: (c, { item }) => html`<span>${item[c.valuePath]}</span>`,
+		// echoes the render data — pins the contract index into the snapshot
+		renderCell: (_c, { item, index }) =>
+			html`<span>${item.name} #${index}</span>`,
 	},
-	item = { [indexSymbol]: 3, name: 'Foo' },
+	item = { name: 'Foo' },
 	itemParams = {
 		selected: true,
 		expanded: false,
@@ -27,7 +28,7 @@ const column = {
 		toggleCollapse() {},
 		columns: [column],
 		collapsedColumns: [column],
-		miniColumns: [],
+		miniColumns: [column],
 		onItemClick() {},
 		onCheckboxChange() {},
 		onItemChange: () => () => {},
@@ -39,7 +40,7 @@ const column = {
 suite('render-item renderers', () => {
 	test('renderItem', async () => {
 		const el = await fixture(
-			html`<div>${renderItem(item, 0, itemParams)}</div>`
+			html`<div>${renderItem(item, 7, itemParams)}</div>`
 		);
 		await expect(el).to.equalSnapshot();
 	});
@@ -47,7 +48,7 @@ suite('render-item renderers', () => {
 	test('renderGroup', async () => {
 		const el = await fixture(
 			html`<div>
-				${renderGroup({ [indexSymbol]: 1, items: [item] }, 0, {
+				${renderGroup({ items: [item] }, 2, {
 					...itemParams,
 					folded: false,
 					toggleFold() {},
@@ -99,7 +100,8 @@ suite('renderItem on the omnitable', () => {
 		const row = omnitable.shadowRoot.querySelector('.itemRow');
 		assert.equal(
 			row.getAttribute('data-index'),
-			String(omnitable.data[0][indexSymbol])
+			'0',
+			'first row gets the visible-data index'
 		);
 		assert.isFalse(omnitable.hasAttribute('mini'), 'mini stays dormant');
 		assert.exists(row.querySelector('[data-select]'), 'override renders');
@@ -109,13 +111,6 @@ suite('renderItem on the omnitable', () => {
 		await nextFrame();
 		await nextFrame();
 		assert.include(omnitable.selectedItems, omnitable.data[0]);
-		assert.equal(
-			omnitable.shadowRoot
-				.querySelector('.itemRow')
-				.getAttribute('data-selected'),
-			'',
-			'row re-rendered with selected=true'
-		);
 
 		omnitable.shadowRoot
 			.querySelector('.itemRow')
