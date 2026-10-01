@@ -5,11 +5,7 @@ import { html } from '@pionjs/pion';
 import { renderMinis } from './render-mini';
 import type { HostRenderItem } from './types';
 
-/**
- * The default item-row renderer, in the same shape as the `renderItem`
- * host property. Connected to omnitable-owned params by `use-list`;
- * exported so consumers can wrap or replace it.
- */
+/** The default item-row renderer. */
 export const renderItem: HostRenderItem = (
 	item,
 	index,

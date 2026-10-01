@@ -6,11 +6,7 @@ import type { HostRenderGroup } from './types';
 const _getGroupRowClasses = (folded: boolean): string =>
 	folded ? 'groupRow groupRow-folded' : 'groupRow';
 
-/**
- * The default group-row renderer, in the same shape as the
- * `renderGroup` host property. Connected to omnitable-owned params by
- * `use-list`; exported so consumers can wrap or replace it.
- */
+/** The default group-row renderer. */
 export const renderGroup: HostRenderGroup = (
 	item,
 	index,

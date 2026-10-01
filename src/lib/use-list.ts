@@ -40,48 +40,6 @@ const isCheckbox = (el: EventTarget | null): el is CheckboxElement =>
 const isRow = (el: EventTarget | null): el is RowElement =>
 	el instanceof HTMLElement;
 
-interface ConnectItemParams {
-	renderItem: HostRenderItem;
-	columns: Column[];
-	collapsedColumns: Column[];
-	miniColumns: Column[];
-	onItemClick: (event: Event) => void;
-	onCheckboxChange: (event: Event) => void;
-	onItemChange: (column: Column, item: Item) => (value: unknown) => void;
-	rowPartFn?: (item: Item, index: number) => string | undefined;
-	groupOnColumn?: Column;
-	dataIsValid: boolean;
-}
-
-interface ConnectGroupParams {
-	renderGroup: HostRenderGroup;
-	columns: Column[];
-	onCheckboxChange: (event: Event) => void;
-	groupOnColumn?: Column;
-	dataIsValid: boolean;
-}
-
-// connects a row renderer to the params omnitable owns: the renderer is
-// whatever was picked already (host prop or internal default), the params
-// pass thru it into the renderer's input.
-//
-// grouped-list passes its internal flat list position — the number of
-// group rows above shifts it under fold/unfold, so it is NOT the
-// renderer contract. The contract index is the row's position in the
-// visible data, which `use-processed-items` annotates on every item
-// (`item[indexSymbol]`) — stable across fold/unfold and group-aware.
-const connectItem =
-	({ renderItem, ...thru }: ConnectItemParams) =>
-	(item: IndexedItem, _flatIndex: number, params: GroupedListRowParams) =>
-		renderItem(item, item[indexSymbol], { ...params, ...thru });
-
-// connects a group renderer to the params omnitable owns; same index
-// treatment: the group's own annotated position, not the flat slot
-const connectGroup =
-	({ renderGroup, ...thru }: ConnectGroupParams) =>
-	(group: IndexedGroup, _flatIndex: number, params: GroupedListGroupParams) =>
-		renderGroup(group, group[indexSymbol], { ...params, ...thru });
-
 interface UseListHost extends HTMLElement {
 	loading?: boolean;
 	displayEmptyGroups?: boolean;
@@ -210,18 +168,19 @@ export const useList = ({
 		// keep last among the hooks, in this order
 		renderItem: useMemo(
 			() =>
-				connectItem({
-					renderItem,
-					columns,
-					collapsedColumns,
-					miniColumns,
-					onItemClick,
-					onCheckboxChange,
-					onItemChange,
-					rowPartFn,
-					groupOnColumn,
-					dataIsValid,
-				}),
+				(item: IndexedItem, _flatIndex: number, params: GroupedListRowParams) =>
+					renderItem(item, item[indexSymbol], {
+						...params,
+						columns,
+						collapsedColumns,
+						miniColumns,
+						onItemClick,
+						onCheckboxChange,
+						onItemChange,
+						rowPartFn,
+						groupOnColumn,
+						dataIsValid,
+					}),
 			[
 				renderItem,
 				columns,
@@ -237,13 +196,18 @@ export const useList = ({
 		),
 		renderGroup: useMemo(
 			() =>
-				connectGroup({
-					renderGroup,
-					columns,
-					onCheckboxChange,
-					groupOnColumn,
-					dataIsValid,
-				}),
+				(
+					group: IndexedGroup,
+					_flatIndex: number,
+					params: GroupedListGroupParams
+				) =>
+					renderGroup(group, group[indexSymbol], {
+						...params,
+						columns,
+						onCheckboxChange,
+						groupOnColumn,
+						dataIsValid,
+					}),
 			[renderGroup, columns, onCheckboxChange, groupOnColumn, dataIsValid]
 		),
 	};

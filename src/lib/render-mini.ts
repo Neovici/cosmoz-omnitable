@@ -31,14 +31,7 @@ const getMiniColumns = (columns: Column[] | undefined): Column[] =>
 		.filter((column) => column.mini != null)
 		.sort((a, b) => (a.mini ?? 0) - (b.mini ?? 0));
 
-/**
- * The default card renderer — set as `renderItem` on `<cosmoz-omnitable>`.
- *
- * Two-tier card: the first mini column is the title line, the rest render
- * in a meta flex row below. Cells render via `column.renderMini ??
- * column.renderCell`. The checkbox is wired through `onCheckboxChange`,
- * so shift-range and ctrl select-only semantics work like on default rows.
- */
+/** Two-tier card: first mini column as the title line, the rest as a meta row. */
 export const renderMini: HostRenderItem = (
 	item,
 	index,

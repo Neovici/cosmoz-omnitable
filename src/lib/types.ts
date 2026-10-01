@@ -169,16 +169,7 @@ export interface GroupRenderParams extends GroupedListGroupParams {
 	dataIsValid: boolean;
 }
 
-/**
- * Host-provided full row renderer, set as the `renderItem` property on
- * `<cosmoz-omnitable>`. Its output replaces the entire default row.
- *
- * `index` is the row's position in the visible data — stable across
- * group fold/unfold, and the same number the built-in rows use for
- * part names (`itemRow-${index}`), `dataIndex` and the
- * `omnitable-item-click` detail. Use a stable reference (module-level
- * function or `guard([], ...)`); inline arrows re-assert on every render.
- */
+/** Host-provided full row renderer — `index` is the position in the visible data. */
 export type HostRenderItem = (
 	item: IndexedItem,
 	index: number,

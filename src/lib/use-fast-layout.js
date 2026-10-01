@@ -20,12 +20,7 @@ const useAdoptedStyleSheet = (host) => {
 	return styleSheet;
 };
 
-/**
- * Reflects the host-driven `compact` property (FE-664): container chrome
- * for narrow canvases — card row look, thin scrollbars, collapsed header.
- * Independent of the legacy `[mini]` state machine so it can be combined
- * with a `renderItem` override (e.g. via the breakpoints directive).
- */
+// pion doesn't reflect props to attributes — the compact chrome CSS targets [compact]
 const useCompactChrome = (host) => {
 	useEffect(() => {
 		host.toggleAttribute('compact', host.compact === true);
