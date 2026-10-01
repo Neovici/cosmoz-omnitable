@@ -1205,36 +1205,29 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$ as t,Bt as n,C as r,
 		color: var(--cz-color-text-primary);
 	}
 
-	:host([mini]),
-	:host([compact]) {
+	:host(:is([mini], [compact])) {
 		--checkbox-offset: calc(var(--cz-spacing) * 2);
 	}
 
-	:host([mini]) .itemRow .expand,
-	:host([compact]) .itemRow .expand,
-	:host([mini]) cosmoz-omnitable-item-expand,
-	:host([compact]) cosmoz-omnitable-item-expand {
+	:host(:is([mini], [compact])) .itemRow .expand,
+	:host(:is([mini], [compact])) cosmoz-omnitable-item-expand {
 		display: none;
 	}
 
-	:host([mini]) .header > cosmoz-omnitable-header-row,
-	:host([compact]) .header > cosmoz-omnitable-header-row {
+	:host(:is([mini], [compact])) .header > cosmoz-omnitable-header-row {
 		flex: 0;
 	}
 
-	:host([mini]) .groupRow,
-	:host([compact]) .groupRow {
+	:host(:is([mini], [compact])) .groupRow {
 		padding-left: var(--checkbox-offset);
 	}
 
-	:host([mini]) .header,
-	:host([compact]) .header {
+	:host(:is([mini], [compact])) .header {
 		padding-left: var(--checkbox-offset);
 		justify-content: space-between;
 	}
 
-	:host([mini]) .itemRow,
-	:host([compact]) .itemRow {
+	:host(:is([mini], [compact])) .itemRow {
 		border-radius: 12px;
 		box-shadow: inset 0 0 0 2px var(--cz-color-border-tertiary);
 		margin-block: var(--checkbox-offset);
@@ -1243,40 +1236,35 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$ as t,Bt as n,C as r,
 		border: none;
 	}
 
-	:host([mini]) .tableContent,
-	:host([compact]) .tableContent {
+	:host(:is([mini], [compact])) .tableContent {
 		overflow: hidden;
 	}
 
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar,
-	:host([compact]) .tableContent-scroller::-webkit-scrollbar {
+	:host(:is([mini], [compact])) .tableContent-scroller::-webkit-scrollbar {
 		width: 4px;
 	}
 
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar-track,
-	:host([compact]) .tableContent-scroller::-webkit-scrollbar-track {
+	:host(:is([mini], [compact]))
+		.tableContent-scroller::-webkit-scrollbar-track {
 		background: transparent;
 	}
 
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar-thumb,
-	:host([compact]) .tableContent-scroller::-webkit-scrollbar-thumb {
+	:host(:is([mini], [compact]))
+		.tableContent-scroller::-webkit-scrollbar-thumb {
 		background: transparent;
 	}
 
-	:host([mini]) .tableContent-scroller:hover::-webkit-scrollbar-thumb,
-	:host([compact]) .tableContent-scroller:hover::-webkit-scrollbar-thumb {
+	:host(:is([mini], [compact]))
+		.tableContent-scroller:hover::-webkit-scrollbar-thumb {
 		background: var(--cz-color-bg-tertiary);
 	}
 
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar-button:decrement,
-	:host([compact]) .tableContent-scroller::-webkit-scrollbar-button:decrement,
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar-button:increment,
-	:host([compact]) .tableContent-scroller::-webkit-scrollbar-button:increment {
+	:host(:is([mini], [compact]))
+		.tableContent-scroller::-webkit-scrollbar-button {
 		width: 0px;
 	}
 
-	:host([mini]) cosmoz-omnitable-settings::part(columns),
-	:host([compact]) cosmoz-omnitable-settings::part(columns) {
+	:host(:is([mini], [compact])) cosmoz-omnitable-settings::part(columns) {
 		display: none;
 	}
 
