@@ -39,6 +39,7 @@ export const useMini = ({
 
 	return {
 		isMini: hasMiniColumn && isMiniSize,
+		hasMiniColumn,
 		miniColumn,
 		miniColumns,
 	};

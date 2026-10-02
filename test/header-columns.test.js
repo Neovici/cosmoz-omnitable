@@ -99,4 +99,65 @@ suite('headerColumns', () => {
 			3
 		);
 	});
+
+	test('narrow canvas: listed cell stays painted, not display:none', async () => {
+		const omnitable = await setupOmnitableFixture(
+			html`
+				<cosmoz-omnitable .headerColumns=${['name']}>
+					<cosmoz-omnitable-column
+						name="name"
+						value-path="name"
+						priority="-10"
+					></cosmoz-omnitable-column>
+					<cosmoz-omnitable-column
+						name="amount"
+						value-path="amount"
+					></cosmoz-omnitable-column>
+					<cosmoz-omnitable-column
+						name="bool"
+						value-path="bool"
+					></cosmoz-omnitable-column>
+				</cosmoz-omnitable>
+			`,
+			generateTableDemoData(10, 11, 25)
+		);
+
+		omnitable.style.width = '210px';
+		await nextFrame();
+		await nextFrame();
+		await nextFrame();
+		await nextFrame();
+
+		const cell = omnitable.shadowRoot.querySelector(
+			'.header-cell[name="name"]'
+		);
+		assert.exists(cell, 'listed cell rendered');
+		assert.notEqual(getComputedStyle(cell).display, 'none', 'not display:none');
+		assert.isAbove(cell.getBoundingClientRect().width, 0, 'painted');
+
+		const hideRule = Array.from(omnitable.shadowRoot.styleSheets).some(
+			(sheet) =>
+				Array.from(sheet.cssRules).some(
+					(rule) =>
+						rule.selectorText?.includes('.cell[name="name"]') &&
+						rule.style.display === 'none'
+				)
+		);
+		assert.isFalse(hideRule, 'no hide rule in the adopted stylesheets');
+
+		omnitable.headerColumns = null;
+		await nextFrame();
+		await nextFrame();
+		await nextFrame();
+		await nextFrame();
+		const nameCell = omnitable.shadowRoot.querySelector(
+			'.header-cell[name="name"]'
+		);
+		assert.exists(nameCell);
+		assert.notEqual(
+			getComputedStyle(nameCell).display,
+			'none',
+			'null restores the cell'
+		);
+	});
 });

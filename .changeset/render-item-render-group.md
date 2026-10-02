@@ -59,8 +59,12 @@ unknown names are dropped); `null` (default) renders all. Titles,
 filters and sort affordances follow the strip; the ⋮ settings and
 select-all don't. Intended to be set per breakpoint tier, e.g.
 `headerColumns: ['supplierName']` narrow, `headerColumns: null` at
-base. Layout math is untouched — column widths don't depend on the
-header strip.
+base. The layout engine fits the header's set (`layoutColumns` mask):
+listed columns get real widths and other columns' cells collapse —
+previously they could be dropped by the fit engine and hidden
+including the listed one. Row cells of masked columns collapse too
+(invisible in practice — override rows are host elements, legacy
+minis render outside cells).
 
 `index` is the row's position in the visible data — stable across group
 fold/unfold, the same number the built-in rows use for part names
