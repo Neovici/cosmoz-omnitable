@@ -1209,8 +1209,8 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$ as t,Bt as n,C as r,
 		--checkbox-offset: calc(var(--cz-spacing) * 2);
 	}
 
-	:host(:is([mini], [compact])) .itemRow .expand,
-	:host(:is([mini], [compact])) cosmoz-omnitable-item-expand {
+	:host([mini]) .itemRow .expand,
+	:host([mini]) cosmoz-omnitable-item-expand {
 		display: none;
 	}
 
@@ -1227,7 +1227,7 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$ as t,Bt as n,C as r,
 		justify-content: space-between;
 	}
 
-	:host(:is([mini], [compact])) .itemRow {
+	:host([mini]) .itemRow {
 		border-radius: 12px;
 		box-shadow: inset 0 0 0 2px var(--cz-color-border-tertiary);
 		margin-block: var(--checkbox-offset);
