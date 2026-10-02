@@ -46,9 +46,10 @@ omnitable.renderItem = (item, index, params) => html`
 `null` restores the built-in rows.
 
 New `compact` boolean property (or `compact` attribute): the container
-chrome previously only available in mini mode — card row look, thin
-scrollbars, collapsed header, hidden settings column picker — as plain
-host-driven state, combinable with `renderItem`. Legacy mini mode
+chrome previously only available in mini mode — thin scrollbars,
+collapsed header, hidden settings column picker — as plain
+host-driven state, combinable with `renderItem`. Item styling is left
+to the rows' renderer. Legacy mini mode
 (`miniBreakpoint`, `column.mini`, `[mini]`) is unaffected and stays
 dormant while `renderItem` is set.
 

@@ -526,8 +526,8 @@ export default css`
 		--checkbox-offset: calc(var(--cz-spacing) * 2);
 	}
 
-	:host(:is([mini], [compact])) .itemRow .expand,
-	:host(:is([mini], [compact])) cosmoz-omnitable-item-expand {
+	:host([mini]) .itemRow .expand,
+	:host([mini]) cosmoz-omnitable-item-expand {
 		display: none;
 	}
 
@@ -544,7 +544,7 @@ export default css`
 		justify-content: space-between;
 	}
 
-	:host(:is([mini], [compact])) .itemRow {
+	:host([mini]) .itemRow {
 		border-radius: 12px;
 		box-shadow: inset 0 0 0 2px var(--cz-color-border-tertiary);
 		margin-block: var(--checkbox-offset);
