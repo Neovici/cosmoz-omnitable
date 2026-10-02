@@ -531,7 +531,7 @@ export default css`
 		display: none;
 	}
 
-	:host(:is([mini], [compact])) .header > cosmoz-omnitable-header-row {
+	:host([mini]) .header > cosmoz-omnitable-header-row {
 		flex: 0;
 	}
 
@@ -581,7 +581,7 @@ export default css`
 		width: 0px;
 	}
 
-	:host(:is([mini], [compact])) cosmoz-omnitable-settings::part(columns) {
+	:host([mini]) cosmoz-omnitable-settings::part(columns) {
 		display: none;
 	}
 

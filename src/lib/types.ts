@@ -169,7 +169,14 @@ export interface GroupRenderParams extends GroupedListGroupParams {
 	dataIsValid: boolean;
 }
 
-/** Host-provided full row renderer — `index` is the position in the visible data. */
+/**
+ * Host-provided full row renderer — `index` is the position in the visible
+ * data. The output IS the row (element-as-row); it must carry the row
+ * contract or machinery breaks: `part="itemRow itemRow-${index}"`,
+ * `.dataItem=${item}` + `.dataIndex` + `@click=${params.onItemClick}`
+ * on the row element, and for selection a checkbox with
+ * `.dataItem=${item}` / `@input=${params.onCheckboxChange}`.
+ */
 export type HostRenderItem = (
 	item: IndexedItem,
 	index: number,

@@ -3,7 +3,7 @@
 ---
 
 Add `renderItem` and `renderGroup` host properties, export `renderItem`
-and `renderGroup`, add `compact` attribute
+and `renderGroup`, add `compact` attribute and `headerColumns` property
 
 New optional host properties for full row rendering:
 
@@ -47,11 +47,20 @@ omnitable.renderItem = (item, index, params) => html`
 
 New `compact` boolean property (or `compact` attribute): the container
 chrome previously only available in mini mode — thin scrollbars,
-collapsed header, hidden settings column picker — as plain
+contained table overflow, tighter header spacing — as plain
 host-driven state, combinable with `renderItem`. Item styling is left
 to the rows' renderer. Legacy mini mode
 (`miniBreakpoint`, `column.mini`, `[mini]`) is unaffected and stays
 dormant while `renderItem` is set.
+
+New `headerColumns` property (array of column names): the header strip
+limits to the listed columns (intersection with the real columns —
+unknown names are dropped); `null` (default) renders all. Titles,
+filters and sort affordances follow the strip; the ⋮ settings and
+select-all don't. Intended to be set per breakpoint tier, e.g.
+`headerColumns: ['supplierName']` narrow, `headerColumns: null` at
+base. Layout math is untouched — column widths don't depend on the
+header strip.
 
 `index` is the row's position in the visible data — stable across group
 fold/unfold, the same number the built-in rows use for part names
