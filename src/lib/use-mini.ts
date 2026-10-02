@@ -2,7 +2,7 @@ import { useEffect, useMemo } from '@pionjs/pion';
 import { Column } from './types';
 
 export interface UseMiniParams {
-	host: HTMLElement & { miniBreakpoint?: number };
+	host: HTMLElement & { miniBreakpoint?: number; renderItem?: unknown };
 	canvasWidth: number;
 	columns: Column[];
 }
@@ -15,7 +15,7 @@ export const useMini = ({
 	const breakpoint = host.miniBreakpoint ?? 480;
 	const isMiniSize = useMemo(
 		() => canvasWidth <= breakpoint,
-		[canvasWidth, breakpoint],
+		[canvasWidth, breakpoint]
 	);
 	const columns = useMemo(
 			() =>
@@ -24,10 +24,14 @@ export const useMini = ({
 							?.filter((c) => c.mini != null)
 							.sort((a, b) => (a.mini ?? 0) - (b.mini ?? 0))
 					: [],
-			[_columns, isMiniSize],
+			[_columns, isMiniSize]
 		),
-		[miniColumn, ...miniColumns] = columns ?? [],
-		hasMiniColumn = !!miniColumn;
+		// identity-stable rest slice: a new array every render would churn the
+		// connect deps — grouped-list re-renders rows on wrapper identity
+		miniColumns = useMemo(() => columns.slice(1), [columns]),
+		miniColumn = columns[0],
+		// full-row override takes over item rendering — keep mini machinery dormant
+		hasMiniColumn = !!miniColumn && host.renderItem == null;
 
 	useEffect(() => {
 		host.toggleAttribute('mini', hasMiniColumn);
@@ -35,6 +39,7 @@ export const useMini = ({
 
 	return {
 		isMini: hasMiniColumn && isMiniSize,
+		hasMiniColumn,
 		miniColumn,
 		miniColumns,
 	};

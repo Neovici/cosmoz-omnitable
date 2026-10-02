@@ -20,6 +20,13 @@ const useAdoptedStyleSheet = (host) => {
 	return styleSheet;
 };
 
+// pion doesn't reflect props to attributes — the compact chrome CSS targets [compact]
+const useCompactChrome = (host) => {
+	useEffect(() => {
+		host.toggleAttribute('compact', host.compact === true);
+	}, [host.compact]);
+};
+
 export const useFastLayout = ({
 	host,
 	columns,
@@ -29,16 +36,22 @@ export const useFastLayout = ({
 	sortAndGroupOptions,
 }) => {
 	const canvasWidth = useCanvasWidth(host),
-		{ isMini, miniColumn, miniColumns } = useMini({
+		{ isMini, hasMiniColumn, miniColumn, miniColumns } = useMini({
 			host,
 			canvasWidth,
 			columns,
-		}),
-		{ groupOnColumn } = sortAndGroupOptions,
+		});
+	useCompactChrome(host);
+	const { groupOnColumn } = sortAndGroupOptions,
+		// the layout engine fits what the header shows: legacy mini derives
+		// the set (frozen behavior), else the headerColumns writer wins
+		layoutColumns = hasMiniColumn
+			? [miniColumn.name]
+			: host.headerColumns ?? null,
 		layout = useLayout({
 			canvasWidth,
 			groupOnColumn,
-			miniColumn,
+			layoutColumns,
 			config: settings.columns,
 		}),
 		styleSheet = useAdoptedStyleSheet(host),

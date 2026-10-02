@@ -31,6 +31,8 @@ interface UseHeaderParams {
 	filters: Record<string, { filter?: unknown }>;
 	setFilterState: (name: string, state: unknown) => void;
 	hideSelectAll?: boolean;
+	/** When set, the header strip limits to these column names. */
+	headerColumns?: string[] | null;
 	requestTween: () => void;
 	[key: string]: unknown;
 }
@@ -49,10 +51,18 @@ export const useHeader = ({
 	filters,
 	setFilterState,
 	hideSelectAll,
+	headerColumns,
 	requestTween,
 	...rest
 }: UseHeaderParams) => {
-	const allSelected =
+	const headerColumnsFiltered = useMemo(
+			() =>
+				headerColumns == null
+					? columns
+					: columns.filter((column) => headerColumns.includes(column.name)),
+			[columns, headerColumns]
+		),
+		allSelected =
 			selectedItems === All ||
 			(!!data &&
 				data.length > 0 &&
@@ -115,7 +125,7 @@ export const useHeader = ({
 		onAllCheckboxChange,
 		data,
 		dataIsValid,
-		columns,
+		columns: headerColumnsFiltered,
 		settingsConfig,
 		filters,
 		groupOnColumn,
