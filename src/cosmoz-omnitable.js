@@ -74,7 +74,6 @@ const tmplt = `
 
 export { renderGroup } from './lib/render-group';
 export { renderItem } from './lib/render-item';
-export { renderMini } from './lib/render-mini';
 
 export const actionSlots = html(Object.assign([tmplt], { raw: [tmplt] })),
 	actionSlotsPolymer = polymerHtml(Object.assign([tmplt], { raw: [tmplt] }));

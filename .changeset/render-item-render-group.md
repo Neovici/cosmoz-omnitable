@@ -2,7 +2,8 @@
 "@neovici/cosmoz-omnitable": minor
 ---
 
-Add `renderItem` and `renderGroup` host properties, export `renderMini`, `renderItem` and `renderGroup`, add `compact` attribute
+Add `renderItem` and `renderGroup` host properties, export `renderItem`
+and `renderGroup`, add `compact` attribute
 
 New optional host properties for full row rendering:
 
@@ -31,13 +32,11 @@ apply; the fold affordance is your responsibility, `params.toggleFold`),
 All functions should be stable references (module-level function or
 `guard([])`); inline arrows re-assert on every render.
 
-The built-in renderers are exported in the same shape:
-`renderMini` (the two-tier card — first `mini`-tagged column as title
-line, the rest as a meta row), `renderItem` and `renderGroup` (the
-default rows). They can be set directly or wrapped:
+The built-in renderers are exported in the same shape and can be set
+directly or wrapped:
 
 ```js
-import { renderItem, renderMini } from "@neovici/cosmoz-omnitable";
+import { renderItem } from "@neovici/cosmoz-omnitable";
 
 omnitable.renderItem = (item, index, params) => html`
 	${renderItem(item, index, params)}<my-badge></my-badge>
