@@ -1888,7 +1888,7 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$ as t,Bt as n,C as r,
 				.item=${t}
 				.index=${n}
 				.renderFn=${e}
-			></cosmoz-grouped-list-row>`})})))()}var $o;function es(){return(es=e((()=>{w(),Qo(),$o=e=>Zo(Xo(e)),customElements.define(`cosmoz-grouped-list`,C($o,{useShadowDOM:!1}))})))()}function ts(){return(ts=e((()=>{es()})))()}var ns,rs,is;function as(){return(as=e((()=>{je(),Pt(),ii(),oi(),Oi(),Ni(),Ii(),w(),rt(),x(),v(),zi(),Yi(),Zi(),na(),jo(),ts(),co(),po(),uo(),ns=e=>window.ShadyCSS?.ApplyShim?.transformCssText?.(e)||e,rs=e=>{let{header:t,list:n,footer:r}=Ao(e);return S`
+			></cosmoz-grouped-list-row>`})})))()}var $o;function es(){return(es=e((()=>{w(),Qo(),$o=e=>Zo(Xo(e)),customElements.define(`cosmoz-grouped-list`,C($o,{useShadowDOM:!1}))})))()}function ts(){return(ts=e((()=>{es()})))()}var ns,rs,is;function as(){return(as=e((()=>{je(),Pt(),ii(),oi(),Oi(),Ni(),Ii(),w(),rt(),x(),v(),zi(),Yi(),Zi(),na(),jo(),ts(),co(),po(),ns=e=>window.ShadyCSS?.ApplyShim?.transformCssText?.(e)||e,rs=e=>{let{header:t,list:n,footer:r}=Ao(e);return S`
 		<style>
 			${i([],()=>ns(Ri))}
 		</style>
