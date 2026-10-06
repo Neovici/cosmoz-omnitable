@@ -410,17 +410,6 @@ export default css`
 		background-color: var(--cz-color-bg-primary-hover);
 	}
 
-	/* Row checkboxes appear on hover, focus or once any row is selected. */
-	@media (hover: hover) {
-		.itemRow .checkbox:not(:checked, :focus-visible) {
-			opacity: 0;
-			transition: opacity 120ms;
-		}
-		.itemRow:hover .checkbox,
-		.tableContent:has(.itemRow[selected]) .itemRow .checkbox {
-			opacity: 1;
-		}
-	}
 	.groupRow:hover .checkbox:not(:checked):not(:hover),
 	.itemRow:hover .checkbox:not(:checked):not(:hover) {
 		box-shadow: 0 0 0 2px
