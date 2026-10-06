@@ -61,6 +61,7 @@ customElements.define(
 			'disabled-filtering',
 			'loading',
 			'mini-breakpoint',
+			'compact',
 			'inline',
 			'enable-select-all',
 		],
@@ -70,6 +71,9 @@ customElements.define(
 const tmplt = `
 	<slot name="actions" slot="actions"></slot>
 `;
+
+export { renderGroup } from './lib/render-group';
+export { renderItem } from './lib/render-item';
 
 export const actionSlots = html(Object.assign([tmplt], { raw: [tmplt] })),
 	actionSlotsPolymer = polymerHtml(Object.assign([tmplt], { raw: [tmplt] }));

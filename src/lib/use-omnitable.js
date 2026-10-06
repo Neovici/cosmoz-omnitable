@@ -72,6 +72,7 @@ export const useOmnitable = (host) => {
 		settingS,
 		setFilterState,
 		hideSelectAll: host.hideSelectAll === true,
+		headerColumns: host.headerColumns ?? null,
 		requestTween,
 	});
 

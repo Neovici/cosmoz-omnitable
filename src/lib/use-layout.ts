@@ -6,15 +6,16 @@ import { Column } from './types';
 interface UseLayoutParams {
 	canvasWidth: number | null | undefined;
 	groupOnColumn?: Column | null;
+	/** Names the layout engine must fit; null = fit everything. */
+	layoutColumns?: string[] | null;
 	config: ColumnConfigInput[];
-	miniColumn?: Column | null;
 }
 
 export const useLayout = ({
 	canvasWidth,
 	groupOnColumn,
+	layoutColumns,
 	config,
-	miniColumn,
 }: UseLayoutParams): (number | undefined)[] =>
 	useMemo(() => {
 		if (!Array.isArray(config) || canvasWidth == null || canvasWidth === 0) {
@@ -32,14 +33,15 @@ export const useLayout = ({
 				hidden: c.name === groupOnColumn?.name || c.disabled,
 			}))
 			.map((c) =>
-				miniColumn ? { ...c, hidden: miniColumn.name !== c.name } : c,
+				layoutColumns != null
+					? { ...c, hidden: !layoutColumns.includes(c.name) }
+					: c
 			)
 			.sort(
 				(
 					{ index: aIndex, priority: aPriority },
-					{ index: bIndex, priority: bPriority },
-				) =>
-					aPriority === bPriority ? bIndex - aIndex : aPriority - bPriority,
+					{ index: bIndex, priority: bPriority }
+				) => (aPriority === bPriority ? bIndex - aIndex : aPriority - bPriority)
 			);
 
 		return computeLayout(columnConfigs, canvasWidth, columnConfigs.length);

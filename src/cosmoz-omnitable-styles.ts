@@ -522,7 +522,7 @@ export default css`
 		color: var(--cz-color-text-primary);
 	}
 
-	:host([mini]) {
+	:host(:is([mini], [compact])) {
 		--checkbox-offset: calc(var(--cz-spacing) * 2);
 	}
 
@@ -535,11 +535,11 @@ export default css`
 		flex: 0;
 	}
 
-	:host([mini]) .groupRow {
+	:host(:is([mini], [compact])) .groupRow {
 		padding-left: var(--checkbox-offset);
 	}
 
-	:host([mini]) .header {
+	:host(:is([mini], [compact])) .header {
 		padding-left: var(--checkbox-offset);
 		justify-content: space-between;
 	}
@@ -553,28 +553,31 @@ export default css`
 		border: none;
 	}
 
-	:host([mini]) .tableContent {
+	:host(:is([mini], [compact])) .tableContent {
 		overflow: hidden;
 	}
 
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar {
+	:host(:is([mini], [compact])) .tableContent-scroller::-webkit-scrollbar {
 		width: 4px;
 	}
 
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar-track {
+	:host(:is([mini], [compact]))
+		.tableContent-scroller::-webkit-scrollbar-track {
 		background: transparent;
 	}
 
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar-thumb {
+	:host(:is([mini], [compact]))
+		.tableContent-scroller::-webkit-scrollbar-thumb {
 		background: transparent;
 	}
 
-	:host([mini]) .tableContent-scroller:hover::-webkit-scrollbar-thumb {
+	:host(:is([mini], [compact]))
+		.tableContent-scroller:hover::-webkit-scrollbar-thumb {
 		background: var(--cz-color-bg-tertiary);
 	}
 
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar-button:decrement,
-	:host([mini]) .tableContent-scroller::-webkit-scrollbar-button:increment {
+	:host(:is([mini], [compact]))
+		.tableContent-scroller::-webkit-scrollbar-button {
 		width: 0px;
 	}
 
