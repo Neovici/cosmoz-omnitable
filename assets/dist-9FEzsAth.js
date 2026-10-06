@@ -587,13 +587,14 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,t as n}from"./p
 		flex-direction: column;
 		gap: calc(var(--cz-spacing) * 1.5);
 		position: relative;
-		font-size: var(--cz-text-base);
-		line-height: var(--cz-text-base-line-height);
+		--control-height: var(--cz-control-height-md);
+		font-size: var(--cz-text-sm);
+		line-height: var(--cz-text-sm-line-height);
 		font-family: var(--cz-font-body);
 	}
 
 	:host(:not([compact])) {
-		margin-bottom: calc(var(--cz-spacing) * 6);
+		margin-bottom: calc(var(--cz-spacing) * 3);
 	}
 
 	:host(:focus-within) {
@@ -602,12 +603,19 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,t as n}from"./p
 
 	:host([disabled]) .wrap {
 		color: var(--cz-color-text-disabled);
-		opacity: 0.5;
+		background: var(--cz-color-bg-disabled-subtle);
+		box-shadow: inset 0 0 0 1px var(--cz-color-border-disabled);
 		cursor: not-allowed;
 	}
 
 	:host([disabled]) #input {
+		color: var(--cz-color-text-disabled);
 		cursor: not-allowed;
+	}
+
+	:host([readonly]) .wrap {
+		background: var(--cz-color-bg-secondary);
+		box-shadow: inset 0 0 0 1px var(--cz-color-border-secondary);
 	}
 
 	:host([invalid]) {
@@ -627,7 +635,10 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,t as n}from"./p
 		position: relative;
 		width: 100%;
 		border-radius: var(--cz-radius-md);
-		box-shadow: inset 0 0 0 1px var(--cz-color-border-primary);
+		background: var(--cz-color-bg-primary);
+		box-shadow:
+			inset 0 0 0 1px var(--cz-color-border-primary),
+			var(--cz-shadow-xs);
 		overflow: hidden;
 		transition-duration: 0.1s;
 		transition-timing-function: linear;
@@ -635,15 +646,17 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,t as n}from"./p
 	}
 
 	.wrap:has(#input:focus) {
-		box-shadow: var(--cz-focus-ring);
+		box-shadow: var(--cz-focus-ring), var(--cz-shadow-xs);
 	}
 
 	:host([invalid]) .wrap {
-		box-shadow: inset 0 0 0 1px var(--cz-color-border-error);
+		box-shadow:
+			inset 0 0 0 1px var(--cz-color-border-error),
+			var(--cz-shadow-xs);
 	}
 
 	:host([invalid]) .wrap:has(#input:focus) {
-		box-shadow: var(--cz-focus-ring-error);
+		box-shadow: var(--cz-focus-ring-error), var(--cz-shadow-xs);
 	}
 
 	.control {
@@ -666,12 +679,18 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,t as n}from"./p
 		font-family: inherit;
 		resize: none;
 		color: var(--cz-color-text-primary);
-		padding-block: calc(var(--cz-spacing) * 2);
+		padding-block: calc((var(--control-height) - 1lh) / 2);
 		padding-inline: calc(var(--cz-spacing) * 3);
 	}
 
 	#input::placeholder {
 		color: var(--cz-color-text-placeholder);
+	}
+
+	/* Paint over the browser's autofill background, which can't be overridden. */
+	#input:autofill {
+		box-shadow: inset 0 0 0 100vmax var(--cz-color-bg-primary);
+		-webkit-text-fill-color: var(--cz-color-text-primary);
 	}
 
 	#input::-webkit-inner-spin-button {
@@ -683,6 +702,7 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,t as n}from"./p
 	label {
 		position: relative;
 		font-size: var(--cz-text-sm);
+		font-weight: var(--cz-font-weight-medium);
 		color: var(--cz-color-text-secondary);
 	}
 
@@ -691,14 +711,10 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,t as n}from"./p
 	.hint {
 		font-size: var(--cz-text-xs);
 		color: var(--cz-color-text-tertiary);
-		position: absolute;
-		bottom: calc(var(--cz-spacing) * -6);
 	}
 
 	.error {
 		font-size: var(--cz-text-xs);
-		position: absolute;
-		bottom: calc(var(--cz-spacing) * -6);
 	}
 
 	/* === Tooltip (fluid error indicator) === */
@@ -729,6 +745,8 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,t as n}from"./p
 	/* === Variant: inline === */
 	:host([variant='inline']) {
 		margin-bottom: 0;
+		font-size: var(--cz-text-base);
+		line-height: var(--cz-text-base-line-height);
 	}
 
 	:host([variant='inline']) .wrap {
@@ -736,6 +754,7 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,t as n}from"./p
 	}
 
 	:host([variant='inline']) #input {
+		padding-block: calc(var(--cz-spacing) * 2);
 		padding-inline: 0;
 	}
 
@@ -745,6 +764,7 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,t as n}from"./p
 
 	:host([variant='inline']) .wrap {
 		border-radius: 0;
+		background: transparent;
 		box-shadow: none;
 		padding-inline: 0;
 	}
@@ -764,6 +784,7 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,t as n}from"./p
 	}
 	:host([variant='inline']) label {
 		position: absolute;
+		font-weight: var(--cz-font-weight-regular);
 		top: 25%;
 		left: 0;
 		width: 100%;
@@ -818,11 +839,16 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,t as n}from"./p
 		border: 0.5px solid transparent;
 	}
 
+	:host([variant='cell']) #input {
+		padding-block: calc(var(--cz-spacing) * 2);
+	}
+
 	:host([variant='cell']) label {
 		display: none;
 	}
 
 	:host([variant='cell']) .error {
+		position: absolute;
 		left: calc(var(--cz-spacing) * 3);
 		bottom: 50%;
 		transform: translateY(50%);
@@ -904,7 +930,7 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,t as n}from"./p
 				max=${K(mT(t,l))}
 				step=${K(u)}
 			/>
-		`,e)},customElements.define(`cosmoz-input`,W(_T,{observedAttributes:gT,styleSheets:[I($w)],shadowRootInit:{mode:`open`,delegatesFocus:!0}}))})))()}var yT,bT,xT;function ST(){return(ST=e((()=>{G(),yT=e=>{e.style.height=``,e.style.height=`${e.scrollHeight}px`},bT=(e,t=0)=>{if(t>0){let n=e.getAttribute(`rows`)??``,r=e.style.height;e.style.height=``,e.setAttribute(`rows`,t),e.style.maxHeight=e.getBoundingClientRect().height+`px`,e.style.height=r,e.setAttribute(`rows`,n)}},xT=e=>{let{value:t,maxRows:n}=e,r=B(()=>()=>e.shadowRoot.querySelector(`#input`),[]);z(()=>bT(r(),n),[n,r]),z(()=>yT(r()),[r,t]),z(()=>{let e=r(),t=new ResizeObserver(()=>requestAnimationFrame(()=>yT(e)));return t.observe(e),()=>t.unobserve(e)},[r])}})))()}var CT,wT;function TT(){return(TT=e((()=>{F(),q(),Pw(),kn(),G(),Qw(),eT(),ST(),fT(),CT=[`rows`,`placeholder`,`label`,`hint`,`required`,...Zw],wT=e=>{let{autocomplete:t,value:n,placeholder:r,readonly:i,disabled:a,rows:o,cols:s,maxlength:c}=e,{onChange:l,onFocus:u,onInput:d,onRef:f}=dT(e);return xT(e),Xw(j`
+		`,e)},customElements.define(`cosmoz-input`,W(_T,{observedAttributes:gT,styleSheets:[I($w)],shadowRootInit:{mode:`open`,delegatesFocus:!0}}))})))()}var yT,bT,xT;function ST(){return(ST=e((()=>{G(),yT=e=>{e.style.height=``,e.style.height=`${e.scrollHeight}px`},bT=(e,t=0)=>{if(t>0){let n=e.getAttribute(`rows`)??``,r=e.style.height;e.style.height=``,e.setAttribute(`rows`,t),e.style.maxHeight=e.getBoundingClientRect().height+`px`,e.style.height=r,e.setAttribute(`rows`,n)}},xT=e=>{let{value:t,maxRows:n}=e,r=B(()=>()=>e.shadowRoot.querySelector(`#input`),[]);z(()=>bT(r(),n),[n,r]),z(()=>yT(r()),[r,t]),z(()=>{let e=r(),t=new ResizeObserver(()=>requestAnimationFrame(()=>yT(e)));return t.observe(e),()=>t.unobserve(e)},[r])}})))()}var CT,wT;function TT(){return(TT=e((()=>{F(),q(),Pw(),kn(),G(),Qw(),eT(),ST(),fT(),CT=[`rows`,`placeholder`,`label`,`hint`,`compact`,`required`,...Zw],wT=e=>{let{autocomplete:t,value:n,placeholder:r,readonly:i,disabled:a,rows:o,cols:s,maxlength:c}=e,{onChange:l,onFocus:u,onInput:d,onRef:f}=dT(e);return xT(e),Xw(j`
 			<textarea id="input" part="input"
 				${On(f)}
 				autocomplete=${K(t)}
@@ -2017,11 +2043,11 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,t as n}from"./p
 		padding: 0 calc(var(--cz-spacing) * 3);
 		color: var(--cz-color-text-secondary);
 	}
-`})))()}var GO,KO;function qO(){return(qO=e((()=>{GO=(e,t=()=>({}))=>{let n={type:e,toString(){return e}};return Object.assign((...e)=>Object.assign(t(...e),n),n)},KO=e=>e.type||e.toString()})))()}var JO,YO;function XO(){return(XO=e((()=>{qO(),JO=e=>Array.isArray(e)?e:[e],YO=(e,t)=>{let n=JO(t),r=(n.every(Array.isArray)?n:[n]).map(([e,t])=>({actions:JO(e).map(KO),handle:t}));return(t=e,n)=>{let i=r.find(e=>e.actions.includes(KO(n)));return i?i.handle(t,n):t}}})))()}var ZO,QO,$O,ek,tk,nk,rk;function ik(){return(ik=e((()=>{G(),XO(),qO(),ZO={pending:`pending`,rejected:`rejected`,resolved:`resolved`},QO={error:void 0,result:void 0,state:ZO.pending},$O=GO(ZO.pending),ek=GO(ZO.resolved,e=>({result:e})),tk=GO(ZO.rejected,e=>({error:e})),nk=YO(QO,[[$O,()=>({error:void 0,result:void 0,state:ZO.pending})],[ek,(e,{result:t})=>({error:void 0,result:t,state:ZO.resolved})],[tk,(e,{error:t})=>({error:t,result:void 0,state:ZO.rejected})]]),rk=e=>{let[{error:t,result:n,state:r},i]=Yt(nk,QO);return z(()=>{if(!e)return;let t=!1;return i($O()),e.then(e=>!t&&i(ek(e)),e=>!t&&i(tk(e))),()=>{t=!0}},[e]),[n,t,r]}})))()}var ak,ok,sk;function ck(){return(ck=e((()=>{JD(),$D(),ak=Symbol(`autocomplete.deselect.last`),ok=Symbol(`autocomplete.search.when.selected`),sk=[...QD,[{key:`Backspace`},[ak],{title:`Deselect last`,description:`Remove the last selected item`},{allowInEditable:!0}],[{key:ND},[ok],{title:`Start searching`,description:`Start searching when you start typing when an item is selected`},{allowInEditable:!0}]]})))()}var lk,uk,dk,fk,pk,mk;function hk(){return(hk=e((()=>{lk=e=>e.normalize(`NFD`).replace(/[\u0300-\u036f]/gu,``),uk=(e,t,n)=>{if(!t)return e;let r=lk(t.toLowerCase()),i=[];for(let t of e){let e=lk(n(t).toLowerCase()).indexOf(r);e<0||i.push({item:t,index:e})}return i.sort((e,t)=>e.index-t.index).map(({item:e})=>e)},dk=e=>e===!1||e==null?[]:e,fk=(e,t,n)=>e.dispatchEvent(new CustomEvent(t,{detail:n})),pk=[],mk=e=>(...t)=>{let n,r=()=>{n&&cancelAnimationFrame(n)};return r(),n=requestAnimationFrame(()=>{n=void 0,e(...t)}),r}})))()}var gk,_k;function vk(){return(vk=e((()=>{sO(),oT(),RD(),ik(),JD(),DD(),G(),ck(),hk(),gk=(e,t,n)=>V(r=>{t?.(r),e.dispatchEvent(new CustomEvent(n,{detail:r}))},[t]),_k=({value:e,text:t,mode:n,onChange:r,onText:i,onSelect:a,limit:o,min:s,source:c,textProperty:l,textual:u,valueProperty:d,keepOpened:f,keepQuery:p,preserveOrder:m,defaultIndex:h,externalSearch:g,disabled:_,lazyOpen:v})=>{let y=o==null?void 0:Number(o),b=s==null?void 0:Number(s),x=n===`select`,S=B(()=>(u??TD)(l),[u,l]),C=aT(),[w,T]=Qt(`opened`,!1),E=!t,D=B(()=>t?.trim(),[t]),ee=gk(C,i,`text`),O=V(e=>{r?.(e,()=>T(!1));let t=x?e[0]:e;fk(C,`value`,t)},[r]),[te,ne]=qt([]),re=!(!v||D),ie=B(()=>re?Promise.resolve([]):Promise.resolve(typeof c==`function`?c({query:D,active:w}):c).then(dk),[c,w,D,re]),k=B(()=>iO(e),[e]);z(()=>ie.then(ne),[ie]),zD({activity:ak,callback:()=>{let e=iO(k);e.length>(b??0)&&O(e.slice(0,-1))},check:()=>!_&&E&&C.matches(`:focus-within`),element:()=>C},[]),zD({activity:ok,callback:e=>{let t=iO(k),n=y===1;t.length>0&&n&&e.key.length===1&&O(t.slice(0,-1))},allowDefault:!0,check:()=>!_&&E&&C.matches(`:focus-within`),element:()=>C},[y]),z(()=>{!w&&!p&&ee(``)},[w,p]),z(()=>{C.toggleAttribute(`opened`,!!w)},[w]);let A=LD({onText:ee,onChange:O,value:k,limit:y,min:b,keepQuery:p,keepOpened:f,setOpened:T,onSelect:a,valueProperty:d}),[,,ae]=rk(ie);return{limit:y,opened:w,query:D,textual:S,value:k,source$:ie,loading:ae===`pending`,items:B(()=>{if(!w||re)return pk;let e=m?te:[...k,...oO(k,wD(d))(te)];return g?e:uk(e,D,S)},[te,w,D,S,E,k,m,d,g,re]),onToggle:V(e=>{_||T(e.newState===`open`)},[_]),onText:V(e=>{_||(ee(e.target.value),T(!0))},[_,ee,t,T]),onSelect:V(e=>{if(_)return;A.onSelect?.(e,A);let{onChange:t,onText:n,limit:r,min:i,value:a,keepQuery:o,keepOpened:s,setOpened:c,valueProperty:l}=A;o||n(``),s||c(!1);let u=iO(a),d=wD(l),f=u.some(t=>d(t)===d(e));f&&u.length===i||t((f?oO(e,d)(u):[...u,e]).slice(-r))},[_,A]),onDeselect:V(e=>{_||A.onChange(oO(e,wD(A.valueProperty))(A.value))},[_,A]),defaultIndex:D!==void 0&&D?.length>0?0:h}}})))()}var yk,bk;function xk(){return(xk=e((()=>{oT(),G(),hk(),yk=e=>{let t=e.shadowRoot.querySelectorAll(`.chip`),n=e.shadowRoot.querySelector(`.badge`);if(!n)return;n.hidden=!0;for(let e of t)e.hidden=!1;let r=e.shadowRoot.querySelector(`cosmoz-input`).shadowRoot?.querySelector(`.control`)?.getBoundingClientRect(),i=0;for(;i<t.length;i++){let e=t[i].getBoundingClientRect();if(!(e.x+e.width<=r.x+r.width-24))break}let a=t.length-i;for(n.querySelector(`span`).textContent=`+`+a.toString(),n.hidden=a<1;i<t.length;i++)t[i].hidden=!0},bk=({value:e,opened:t,wrap:n,limit:r})=>{let i=aT(),a=!(n||r===1)&&e.length>0,o=B(()=>mk(()=>yk(i)),[]),[s,c]=qt(0);Gt(()=>{if(!a)return;let e=i.shadowRoot.querySelector(`cosmoz-input`),t=new ResizeObserver(e=>{c(e[0].contentRect.width)});return t.observe(e),()=>t.disconnect()},[a]),Gt(()=>a?o():void 0,[a,s,t,e])}})))()}var Sk,Ck,wk,Tk,Ek;function Dk(){return(Dk=e((()=>{Fn(),Mw(),AT(),EE(),F(),kE(),q(),Pw(),LE(),xO(),BO(),HO(),WO(),vk(),xk(),Sk=[`input`,`control`,`label`,`line`,`error`,`wrap`].map(e=>`${e}: input-${e}`).join(),Ck=({opened:e,isSingle:t,showSingle:n,hasResultsOrQuery:r})=>!e||t&&!n?!1:r,wk=e=>{let{variant:t,opened:n,invalid:r,errorMessage:i,hint:a,label:o,placeholder:s,required:c,disabled:l,textual:u,text:d,onText:f,onToggle:p,onDeselect:m,value:h,limit:g,min:_,showSingle:v,items:y,source$:b,loading:x,chipRenderer:S,mode:C}=e,w=g===1,T=w&&h?.[0]!=null,E=x||y.length>0||d!=null&&d.length>0;return j`<cosmoz-dropdown-next
+`})))()}var GO,KO;function qO(){return(qO=e((()=>{GO=(e,t=()=>({}))=>{let n={type:e,toString(){return e}};return Object.assign((...e)=>Object.assign(t(...e),n),n)},KO=e=>e.type||e.toString()})))()}var JO,YO;function XO(){return(XO=e((()=>{qO(),JO=e=>Array.isArray(e)?e:[e],YO=(e,t)=>{let n=JO(t),r=(n.every(Array.isArray)?n:[n]).map(([e,t])=>({actions:JO(e).map(KO),handle:t}));return(t=e,n)=>{let i=r.find(e=>e.actions.includes(KO(n)));return i?i.handle(t,n):t}}})))()}var ZO,QO,$O,ek,tk,nk,rk;function ik(){return(ik=e((()=>{G(),XO(),qO(),ZO={pending:`pending`,rejected:`rejected`,resolved:`resolved`},QO={error:void 0,result:void 0,state:ZO.pending},$O=GO(ZO.pending),ek=GO(ZO.resolved,e=>({result:e})),tk=GO(ZO.rejected,e=>({error:e})),nk=YO(QO,[[$O,()=>({error:void 0,result:void 0,state:ZO.pending})],[ek,(e,{result:t})=>({error:void 0,result:t,state:ZO.resolved})],[tk,(e,{error:t})=>({error:t,result:void 0,state:ZO.rejected})]]),rk=e=>{let[{error:t,result:n,state:r},i]=Yt(nk,QO);return z(()=>{if(!e)return;let t=!1;return i($O()),e.then(e=>!t&&i(ek(e)),e=>!t&&i(tk(e))),()=>{t=!0}},[e]),[n,t,r]}})))()}var ak,ok,sk;function ck(){return(ck=e((()=>{JD(),$D(),ak=Symbol(`autocomplete.deselect.last`),ok=Symbol(`autocomplete.search.when.selected`),sk=[...QD,[{key:`Backspace`},[ak],{title:`Deselect last`,description:`Remove the last selected item`},{allowInEditable:!0}],[{key:ND},[ok],{title:`Start searching`,description:`Start searching when you start typing when an item is selected`},{allowInEditable:!0}]]})))()}var lk,uk,dk,fk,pk,mk;function hk(){return(hk=e((()=>{lk=e=>e.normalize(`NFD`).replace(/[\u0300-\u036f]/gu,``),uk=(e,t,n)=>{if(!t)return e;let r=lk(t.toLowerCase()),i=[];for(let t of e){let e=lk(n(t).toLowerCase()).indexOf(r);e<0||i.push({item:t,index:e})}return i.sort((e,t)=>e.index-t.index).map(({item:e})=>e)},dk=e=>e===!1||e==null?[]:e,fk=(e,t,n)=>e.dispatchEvent(new CustomEvent(t,{detail:n})),pk=[],mk=e=>(...t)=>{let n,r=()=>{n&&cancelAnimationFrame(n)};return r(),n=requestAnimationFrame(()=>{n=void 0,e(...t)}),r}})))()}var gk,_k;function vk(){return(vk=e((()=>{sO(),oT(),RD(),ik(),JD(),DD(),G(),ck(),hk(),gk=(e,t,n)=>V(r=>{t?.(r),e.dispatchEvent(new CustomEvent(n,{detail:r}))},[t]),_k=({value:e,text:t,mode:n,onChange:r,onText:i,onSelect:a,limit:o,min:s,source:c,textProperty:l,textual:u,valueProperty:d,keepOpened:f,keepQuery:p,preserveOrder:m,defaultIndex:h,externalSearch:g,disabled:_,lazyOpen:v})=>{let y=o==null?void 0:Number(o),b=s==null?void 0:Number(s),x=n===`select`,S=B(()=>(u??TD)(l),[u,l]),C=aT(),[w,T]=Qt(`opened`,!1),E=!t,D=B(()=>t?.trim(),[t]),ee=gk(C,i,`text`),O=V(e=>{r?.(e,()=>T(!1));let t=x?e[0]:e;fk(C,`value`,t)},[r]),[te,ne]=qt([]),re=!(!v||D),ie=B(()=>re?Promise.resolve([]):Promise.resolve(typeof c==`function`?c({query:D,active:w}):c).then(dk),[c,w,D,re]),k=B(()=>iO(e),[e]);z(()=>ie.then(ne),[ie]),zD({activity:ak,callback:()=>{let e=iO(k);e.length>(b??0)&&O(e.slice(0,-1))},check:()=>!_&&E&&C.matches(`:focus-within`),element:()=>C},[]),zD({activity:ok,callback:e=>{let t=iO(k),n=y===1;t.length>0&&n&&e.key.length===1&&O(t.slice(0,-1))},allowDefault:!0,check:()=>!_&&E&&C.matches(`:focus-within`),element:()=>C},[y]),z(()=>{!w&&!p&&ee(``)},[w,p]),z(()=>{C.toggleAttribute(`opened`,!!w)},[w]);let A=LD({onText:ee,onChange:O,value:k,limit:y,min:b,keepQuery:p,keepOpened:f,setOpened:T,onSelect:a,valueProperty:d}),[,,ae]=rk(ie);return{limit:y,opened:w,query:D,textual:S,value:k,source$:ie,loading:ae===`pending`,items:B(()=>{if(!w||re)return pk;let e=m?te:[...k,...oO(k,wD(d))(te)];return g?e:uk(e,D,S)},[te,w,D,S,E,k,m,d,g,re]),onToggle:V(e=>{_||T(e.newState===`open`)},[_]),onText:V(e=>{_||(ee(e.target.value),T(!0))},[_,ee,t,T]),onSelect:V(e=>{if(_)return;A.onSelect?.(e,A);let{onChange:t,onText:n,limit:r,min:i,value:a,keepQuery:o,keepOpened:s,setOpened:c,valueProperty:l}=A;o||n(``),s||c(!1);let u=iO(a),d=wD(l),f=u.some(t=>d(t)===d(e));f&&u.length===i||t((f?oO(e,d)(u):[...u,e]).slice(-r))},[_,A]),onDeselect:V(e=>{_||A.onChange(oO(e,wD(A.valueProperty))(A.value))},[_,A]),defaultIndex:D!==void 0&&D?.length>0?0:h}}})))()}var yk,bk;function xk(){return(xk=e((()=>{oT(),G(),hk(),yk=e=>{let t=e.shadowRoot.querySelectorAll(`.chip`),n=e.shadowRoot.querySelector(`.badge`);if(!n)return;n.hidden=!0;for(let e of t)e.hidden=!1;let r=e.shadowRoot.querySelector(`cosmoz-input`).shadowRoot?.querySelector(`.control`)?.getBoundingClientRect(),i=0;for(;i<t.length;i++){let e=t[i].getBoundingClientRect();if(!(e.x+e.width<=r.x+r.width-24))break}let a=t.length-i;for(n.querySelector(`span`).textContent=`+`+a.toString(),n.hidden=a<1;i<t.length;i++)t[i].hidden=!0},bk=({value:e,opened:t,wrap:n,limit:r})=>{let i=aT(),a=!(n||r===1)&&e.length>0,o=B(()=>mk(()=>yk(i)),[]),[s,c]=qt(0);Gt(()=>{if(!a)return;let e=i.shadowRoot.querySelector(`cosmoz-input`),t=new ResizeObserver(e=>{c(e[0].contentRect.width)});return t.observe(e),()=>t.disconnect()},[a]),Gt(()=>a?o():void 0,[a,s,t,e])}})))()}var Sk,Ck,wk,Tk,Ek;function Dk(){return(Dk=e((()=>{Fn(),Mw(),AT(),EE(),F(),kE(),q(),Pw(),LE(),xO(),BO(),HO(),WO(),vk(),xk(),Sk=[`input`,`control`,`label`,`line`,`error`,`wrap`].map(e=>`${e}: input-${e}`).join(),Ck=({opened:e,isSingle:t,showSingle:n,hasResultsOrQuery:r})=>!e||t&&!n?!1:r,wk=e=>{let{variant:t,opened:n,invalid:r,errorMessage:i,hint:a,label:o,placeholder:s,compact:c,required:l,disabled:u,textual:d,text:f,onText:p,onToggle:m,onDeselect:h,value:g,limit:_,min:v,showSingle:y,items:b,source$:x,loading:S,chipRenderer:C,mode:w}=e,T=_===1,E=T&&g?.[0]!=null,D=S||b.length>0||f!=null&&f.length>0;return j`<cosmoz-dropdown-next
 			open-on-focus
-			?disabled=${l}
+			?disabled=${u}
 			.opened=${n}
-			@dropdown-toggle=${p}
+			@dropdown-toggle=${m}
 			part="dropdown"
 		>
 			<cosmoz-input
@@ -2029,32 +2055,33 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,t as n}from"./p
 				id="input"
 				part="input"
 				.label=${o}
-				.placeholder=${T?void 0:s}
+				.placeholder=${E?void 0:s}
 				hint=${K(a)}
 				variant=${K(t)}
-				?readonly=${T}
-				?disabled=${l}
-				?required=${c}
-				?invalid=${OE([b,r],()=>IE(b.then(()=>r,()=>!0),r))}
-				.errorMessage=${OE([b,i],()=>IE(b.then(()=>i,e=>e.message),i))}
-				.value=${Nw(d)}
-				@value-changed=${f}
+				?compact=${c}
+				?readonly=${E}
+				?disabled=${u}
+				?required=${l}
+				?invalid=${OE([x,r],()=>IE(x.then(()=>r,()=>!0),r))}
+				.errorMessage=${OE([x,i],()=>IE(x.then(()=>i,e=>e.message),i))}
+				.value=${Nw(f)}
+				@value-changed=${p}
 				autocomplete="off"
 				exportparts=${Sk}
-				?data-one=${w}
-				?data-single=${T}
+				?data-one=${T}
+				?data-single=${E}
 			>
 				<slot name="prefix" slot="prefix"></slot>
 				<slot name="suffix" slot="suffix">
-					${J(C===`select`,()=>Zo({styles:`margin-right: calc(var(--cz-spacing) * 2);color: var(--cz-color-text-secondary);`,width:`16`,height:`16`}))}
+					${J(w===`select`,()=>Zo({styles:`margin-right: calc(var(--cz-spacing) * 2);color: var(--cz-color-text-secondary);`,width:`16`,height:`16`}))}
 				</slot>
-				${zO({value:h,min:_,isOne:w,onDeselect:m,textual:u,disabled:l,chipRenderer:S})}
+				${zO({value:g,min:v,isOne:T,onDeselect:h,textual:d,disabled:u,chipRenderer:C})}
 			</cosmoz-input>
 
-			${J(Ck({opened:n,isSingle:T,showSingle:v,hasResultsOrQuery:E}),()=>bO({...e,items:y,multi:!w},J(x,()=>j`<cosmoz-autocomplete-skeleton-span></cosmoz-autocomplete-skeleton-span>`,()=>J(d!=null&&d.length>0&&y.length===0,()=>j`<slot name="no-result">
+			${J(Ck({opened:n,isSingle:E,showSingle:y,hasResultsOrQuery:D}),()=>bO({...e,items:b,multi:!T},J(S,()=>j`<cosmoz-autocomplete-skeleton-span></cosmoz-autocomplete-skeleton-span>`,()=>J(f!=null&&f.length>0&&b.length===0,()=>j`<slot name="no-result">
 											<span class="no-result">${TE(`No results found`)}</span>
 										</slot>`))))}
-		</cosmoz-dropdown-next>`},Tk=e=>{let t={...e,..._k(e)};return bk(t),wk(t)},Ek=[`variant`,`disabled`,`invalid`,`required`,`hint`,`text-property`,`value-property`,`limit`,`min`,`show-single`,`preserve-order`,`keep-opened`,`keep-query`,`default-index`,`external-search`,`item-height`,`item-limit`,`wrap`,`lazy-open`,`mode`]})))()}var Ok,kk,Ak;function jk(){return(jk=e((()=>{En(),G(),Dk(),Ok=e=>{let{onChange:t,onText:n,mode:r,...i}=e,a=r===`select`,[o,s]=Qt(`value`);return z(()=>{e.onChange!=null&&console.warn(`onChange is deprecated; use value-changed and lift instead`)},[]),Tk({...i,...a&&{limit:1,min:1,showSingle:!0},mode:r,value:o,onChange:V((e,...n)=>{s(a?e[0]:e),t?.(e,...n)},[t,a]),onText:V(t=>{e.text=t,n?.(t)},[n])})},kk=[wn(UO)],Ak={mode:`open`,delegatesFocus:!0},customElements.define(`cosmoz-autocomplete-ui`,W(Tk,{observedAttributes:Ek,styleSheets:kk,shadowRootInit:Ak})),customElements.define(`cosmoz-autocomplete`,W(Ok,{observedAttributes:Ek,styleSheets:kk,shadowRootInit:Ak}))})))()}var Mk;function Nk(){return(Nk=e((()=>{G(),Mk=L`
+		</cosmoz-dropdown-next>`},Tk=e=>{let t={...e,..._k(e)};return bk(t),wk(t)},Ek=[`variant`,`disabled`,`invalid`,`required`,`compact`,`hint`,`text-property`,`value-property`,`limit`,`min`,`show-single`,`preserve-order`,`keep-opened`,`keep-query`,`default-index`,`external-search`,`item-height`,`item-limit`,`wrap`,`lazy-open`,`mode`]})))()}var Ok,kk,Ak;function jk(){return(jk=e((()=>{En(),G(),Dk(),Ok=e=>{let{onChange:t,onText:n,mode:r,...i}=e,a=r===`select`,[o,s]=Qt(`value`);return z(()=>{e.onChange!=null&&console.warn(`onChange is deprecated; use value-changed and lift instead`)},[]),Tk({...i,...a&&{limit:1,min:1,showSingle:!0},mode:r,value:o,onChange:V((e,...n)=>{s(a?e[0]:e),t?.(e,...n)},[t,a]),onText:V(t=>{e.text=t,n?.(t)},[n])})},kk=[wn(UO)],Ak={mode:`open`,delegatesFocus:!0},customElements.define(`cosmoz-autocomplete-ui`,W(Tk,{observedAttributes:Ek,styleSheets:kk,shadowRootInit:Ak})),customElements.define(`cosmoz-autocomplete`,W(Ok,{observedAttributes:Ek,styleSheets:kk,shadowRootInit:Ak}))})))()}var Mk;function Nk(){return(Nk=e((()=>{G(),Mk=L`
 	cosmoz-listbox::part(error)::before {
 		border-color: var(--cz-color-border-error);
 		/* prettier-ignore */
