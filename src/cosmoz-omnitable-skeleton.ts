@@ -35,7 +35,7 @@ const styles = css`
 		margin-right: 7px;
 	}
 	.skeleton > div div.checkbox {
-		min-width: 18px;
+		min-width: 16px;
 		margin-left: 0;
 		margin-right: 12px;
 	}
@@ -59,7 +59,7 @@ type SkeletonProps = {
 const Skeleton = ({ settingsConfig }: SkeletonProps) => {
 	const { columns, collapsed } = settingsConfig,
 		showingColumns = columns.filter(
-			(column) => !collapsed.some((hidden) => hidden.name === column.name),
+			(column) => !collapsed.some((hidden) => hidden.name === column.name)
 		);
 
 	return html`<div class="skeleton">
@@ -74,14 +74,14 @@ const Skeleton = ({ settingsConfig }: SkeletonProps) => {
 								class="cell"
 								part=${`cell-${col.name}`}
 								name=${col.name}
-							></div>`,
+							></div>`
 					)}
-				</div>`,
+				</div>`
 		)}
 	</div>`;
 };
 
 customElements.define(
 	'cosmoz-omnitable-skeleton',
-	component(Skeleton, { styleSheets: [styles] }),
+	component(Skeleton, { styleSheets: [styles] })
 );
