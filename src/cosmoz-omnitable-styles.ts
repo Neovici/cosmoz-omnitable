@@ -4,8 +4,8 @@ import { tagged as css } from '@neovici/cosmoz-utils';
 export const checkbox = css`
 	.checkbox {
 		box-sizing: border-box;
-		width: calc(var(--cz-spacing) * 4.5);
-		height: calc(var(--cz-spacing) * 4.5);
+		width: calc(var(--cz-spacing) * 4);
+		height: calc(var(--cz-spacing) * 4);
 		background: transparent;
 		border-radius: var(--cz-radius-xs);
 		appearance: none;
@@ -34,12 +34,12 @@ export const checkbox = css`
 		position: absolute;
 		box-sizing: content-box;
 		width: 4px;
-		height: 10px;
+		height: 9px;
 		border: 2px solid var(--cz-color-text-on-brand);
 		border-top: none;
 		border-left: none;
-		transform-origin: 4px 10px;
-		transform: translate(3px) rotate(45deg);
+		transform-origin: 4px 9px;
+		transform: translate(2px) rotate(45deg);
 	}
 
 	.checkbox::after {
@@ -63,10 +63,10 @@ export const checkbox = css`
 	.checkbox:indeterminate::before {
 		content: "";
 		position: absolute;
-		width: 10px;
+		width: 8px;
 		height: 2px;
 		left: 4px;
-		top: 8px;
+		top: 7px;
 		background-color: var(--cz-color-text-brand);
 	}
 `;
