@@ -708,8 +708,8 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$ as t,Bt as n,C as r,
 			</div>`),customElements.define(`cosmoz-omnitable-item-row`,T(Pi,{useShadowDOM:!1}))})))()}var Ii,Li;function Ri(){return(Ri=e((()=>{be(),Ii=pe`
 	.checkbox {
 		box-sizing: border-box;
-		width: calc(var(--cz-spacing) * 4.5);
-		height: calc(var(--cz-spacing) * 4.5);
+		width: calc(var(--cz-spacing) * 4);
+		height: calc(var(--cz-spacing) * 4);
 		background: transparent;
 		border-radius: var(--cz-radius-xs);
 		appearance: none;
@@ -738,12 +738,12 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$ as t,Bt as n,C as r,
 		position: absolute;
 		box-sizing: content-box;
 		width: 4px;
-		height: 10px;
+		height: 9px;
 		border: 2px solid var(--cz-color-text-on-brand);
 		border-top: none;
 		border-left: none;
-		transform-origin: 4px 10px;
-		transform: translate(3px) rotate(45deg);
+		transform-origin: 4px 9px;
+		transform: translate(2px) rotate(45deg);
 	}
 
 	.checkbox::after {
@@ -767,10 +767,10 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$ as t,Bt as n,C as r,
 	.checkbox:indeterminate::before {
 		content: "";
 		position: absolute;
-		width: 10px;
+		width: 8px;
 		height: 2px;
 		left: 4px;
-		top: 8px;
+		top: 7px;
 		background-color: var(--cz-color-text-brand);
 	}
 `,Li=pe`
@@ -1399,7 +1399,7 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$ as t,Bt as n,C as r,
 		margin-right: 7px;
 	}
 	.skeleton > div div.checkbox {
-		min-width: 18px;
+		min-width: 16px;
 		margin-left: 0;
 		margin-right: 12px;
 	}
