@@ -77,8 +77,24 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$ as t,Bt as n,C as r,
 		</cosmoz-input>`}legacyFilterToState(e){return{filter:e,inputValue:e}}},customElements.define(`cosmoz-omnitable-column`,Mt)})))()}var Pt,Ft,It;function V(){return(V=e((()=>{h(),E(),S(),Pt=[`label`,`value`,`slot`,`always-float-label`,`disabled`,`variant`],Ft=n`
 	${Ee}
 
+	:host {
+		--text-align: left;
+	}
+
+	:host([text-align='right']) {
+		--text-align: right;
+	}
+
+	:host([text-align='center']) {
+		--text-align: center;
+	}
+
 	label {
-		text-align: left;
+		text-align: var(--text-align);
+	}
+
+	#input {
+		text-align: var(--text-align);
 	}
 
 	.wrap {
