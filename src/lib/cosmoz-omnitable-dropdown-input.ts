@@ -23,8 +23,24 @@ const observedAttributes = [
 const style = css`
 	${inputStyles}
 
+	:host {
+		--text-align: left;
+	}
+
+	:host([text-align='right']) {
+		--text-align: right;
+	}
+
+	:host([text-align='center']) {
+		--text-align: center;
+	}
+
 	label {
-		text-align: left;
+		text-align: var(--text-align);
+	}
+
+	#input {
+		text-align: var(--text-align);
 	}
 
 	.wrap {
@@ -59,5 +75,5 @@ customElements.define(
 	component(DropdownInput, {
 		observedAttributes,
 		styleSheets: [style],
-	})
+	}),
 );
