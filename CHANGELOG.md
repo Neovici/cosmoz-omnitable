@@ -1,3 +1,9 @@
+## 19.2.2
+
+### Patch Changes
+
+- 0a07ab8: Respect `align`/`headerAlign` in range column headers again. The header label and filter value follow the dropdown input's `text-align` attribute instead of being forced left (label) and centered (value).
+
 ## 19.2.1
 
 ### Patch Changes
