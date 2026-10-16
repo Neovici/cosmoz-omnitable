@@ -621,4 +621,3 @@ export default css`
 		flex-basis: auto;
 	}
 `;
-//# sourceMappingURL=cosmoz-omnitable-styles.js.map
