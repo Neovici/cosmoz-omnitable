@@ -1,3 +1,4 @@
+import '@neovici/cosmoz-button';
 import { html } from '@pionjs/pion';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 
@@ -43,11 +44,14 @@ export const render = ({
 }: RenderProps) => {
 	const { name, title } = column ?? {};
 
-	return html`<button
+	return html`<cosmoz-button
+		aria-label=${ifDefined(title)}
+		variant="tertiary"
+		icon-only
 		class="sg"
 		title=${ifDefined(title)}
 		data-on=${ifDefined(
-			(name === on && (descending ? 'desc' : 'asc')) || undefined,
+			(name === on && (descending ? 'desc' : 'asc')) || undefined
 		)}
 		@click=${(e: Event) => {
 			const target = e.currentTarget as HTMLElement;
@@ -68,7 +72,7 @@ export const render = ({
 		<span>${title}</span> ${name === on
 			? chevronDownIcon({ width: '12', height: '12' })
 			: chevronSelectorVerticalIcon({ width: '12', height: '12' })}
-	</button>`;
+	</cosmoz-button>`;
 };
 
 export const renderAll = ({ columns, ...thru }: RenderAllProps) =>

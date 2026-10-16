@@ -188,7 +188,7 @@ suite('disabled-filtering (per-column)', () => {
 		const idHeaderCell = omnitable.shadowRoot.querySelector(
 			'.header-cell[name="id"]'
 		);
-		const sortButton = idHeaderCell.querySelector('button.sg');
+		const sortButton = idHeaderCell.querySelector('cosmoz-button.sg');
 		assert.isNotNull(
 			sortButton,
 			'Sort button should still exist for disabled-filtering column'
@@ -282,7 +282,7 @@ suite('disabled-filtering (table-level)', () => {
 		const idHeaderCell = omnitable.shadowRoot.querySelector(
 			'.header-cell[name="id"]'
 		);
-		const sortButton = idHeaderCell.querySelector('button.sg');
+		const sortButton = idHeaderCell.querySelector('cosmoz-button.sg');
 		assert.isNotNull(
 			sortButton,
 			'Sort button should still exist when filtering is disabled'

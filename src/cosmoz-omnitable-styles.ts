@@ -1,6 +1,5 @@
 /* eslint-disable max-lines */
 import { tagged as css } from '@neovici/cosmoz-utils';
-
 export const checkbox = css`
 	.checkbox {
 		box-sizing: border-box;
@@ -70,7 +69,6 @@ export const checkbox = css`
 		background-color: var(--cz-color-text-brand);
 	}
 `;
-
 export default css`
 	:host {
 		display: flex;
@@ -415,8 +413,10 @@ export default css`
 		box-shadow: 0 0 0 2px
 			rgb(from var(--cz-color-text-primary) r g b / calc(alpha * 0.75)) inset;
 	}
-	.groupRow:hover .expand:not(:hover),
-	.itemRow:hover .expand:not(:hover) {
+	.groupRow:hover cosmoz-button.expand::part(button):not(:hover),
+	.groupRow:hover .expand:not(:hover):not(cosmoz-button),
+	.itemRow:hover cosmoz-button.expand::part(button):not(:hover),
+	.itemRow:hover .expand:not(:hover):not(cosmoz-button) {
 		color: rgb(from var(--cz-color-text-primary) r g b / calc(alpha * 0.75));
 	}
 
@@ -426,7 +426,12 @@ export default css`
 		align-self: center;
 	}
 
-	.expand {
+	cosmoz-button.expand {
+		width: calc(var(--cz-spacing) * 6);
+		height: calc(var(--cz-spacing) * 6);
+		flex: none;
+	}
+	cosmoz-button.expand::part(button) {
 		width: calc(var(--cz-spacing) * 6);
 		height: calc(var(--cz-spacing) * 6);
 		padding: 0;
@@ -442,29 +447,35 @@ export default css`
 		outline: none;
 		color: var(--cz-color-text-primary);
 		background: transparent;
-
-		&[hidden] {
-			display: none;
-		}
 	}
 
-	.groupRow .expand {
+	.groupRow cosmoz-button.expand::part(button),
+	.groupRow .expand:not(cosmoz-button) {
+		margin: var(--cz-spacing);
+	}
+	.groupRow cosmoz-button.expand::part(button) {
+		margin: 0;
+	}
+	.groupRow cosmoz-button.expand {
 		margin: var(--cz-spacing);
 	}
 
 	.expand:not([aria-expanded]) svg {
 		transform: scaleY(1);
 	}
-	.expand:active {
+	cosmoz-button.expand::part(button):active,
+	.expand:active:not(cosmoz-button) {
 		background: rgb(
 			from var(--cz-color-text-primary) r g b / calc(alpha * 0.15)
 		);
 	}
-	.expand:hover {
+	cosmoz-button.expand::part(button):hover,
+	.expand:hover:not(cosmoz-button) {
 		color: rgb(from var(--cz-color-text-primary) r g b / calc(alpha * 0.75));
 	}
 
-	.sg {
+	cosmoz-button.sg::part(button),
+	.sg:not(cosmoz-button) {
 		display: inline-flex;
 		cursor: pointer;
 		align-items: center;
@@ -477,6 +488,12 @@ export default css`
 		padding: 0;
 		transition: transform 0.3s ease;
 		opacity: 0;
+
+		height: auto;
+	}
+	cosmoz-button.sg {
+		display: inline-flex;
+		flex: none;
 	}
 	.sg span {
 		display: none;
@@ -484,14 +501,18 @@ export default css`
 	.sg svg {
 		display: block;
 	}
-	.sg[data-on] {
+	cosmoz-button.sg[data-on]::part(button),
+	.sg[data-on]:not(cosmoz-button) {
 		color: var(--cz-color-text-primary);
 	}
-	.sg:not([data-on="desc"]) {
+	cosmoz-button.sg:not([data-on="desc"])::part(button),
+	.sg:not([data-on="desc"]):not(cosmoz-button) {
 		transform: scaleY(-1);
 	}
-	.cell:hover .sg,
-	.sg[data-on] {
+	.cell:hover cosmoz-button.sg::part(button),
+	.cell:hover .sg:not(cosmoz-button),
+	cosmoz-button.sg[data-on]::part(button),
+	.sg[data-on]:not(cosmoz-button) {
 		opacity: 1;
 	}
 
@@ -515,8 +536,12 @@ export default css`
 		--checkbox-offset: calc(var(--cz-spacing) * 2);
 	}
 
-	:host([mini]) .itemRow .expand,
+	:host([mini]) .itemRow cosmoz-button.expand::part(button),
+	:host([mini]) .itemRow .expand:not(cosmoz-button),
 	:host([mini]) cosmoz-omnitable-item-expand {
+		display: none;
+	}
+	:host([mini]) .itemRow cosmoz-button.expand {
 		display: none;
 	}
 
@@ -596,3 +621,4 @@ export default css`
 		flex-basis: auto;
 	}
 `;
+//# sourceMappingURL=cosmoz-omnitable-styles.js.map

@@ -1,7 +1,8 @@
 /* @web/test-runner snapshot v1 */
 export const snapshots = {};
 
-snapshots['render-item renderers renderItem'] = `<div>
+snapshots["render-item renderers renderItem"] = 
+`<div>
   <div
     class="itemRow"
     part="itemRow itemRow-7 custom-part"
@@ -29,8 +30,13 @@ snapshots['render-item renderers renderItem'] = `<div>
           </span>
         </div>
       </cosmoz-omnitable-item-row>
-      <button class="expand">
-      </button>
+      <cosmoz-button
+        aria-label="Expand or collapse"
+        class="expand"
+        icon-only=""
+        variant="tertiary"
+      >
+      </cosmoz-button>
     </div>
     <div
       class="itemRow-minis"
@@ -60,7 +66,8 @@ snapshots['render-item renderers renderItem'] = `<div>
 `;
 /* end snapshot render-item renderers renderItem */
 
-snapshots['render-item renderers renderGroup'] = `<div>
+snapshots["render-item renderers renderGroup"] = 
+`<div>
   <div
     class="groupRow"
     part="groupRow groupRow-2"
@@ -85,9 +92,15 @@ snapshots['render-item renderers renderGroup'] = `<div>
     <div class="groupRow-badge">
       1
     </div>
-    <button class="expand">
-    </button>
+    <cosmoz-button
+      aria-label="Expand or collapse"
+      class="expand"
+      icon-only=""
+      variant="tertiary"
+    >
+    </cosmoz-button>
   </div>
 </div>
 `;
 /* end snapshot render-item renderers renderGroup */
+

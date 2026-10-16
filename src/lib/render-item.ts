@@ -1,6 +1,8 @@
+import '@neovici/cosmoz-button';
 import { chevronDownIcon } from '@neovici/cosmoz-icons/untitled';
 import { isEmpty } from '@neovici/cosmoz-utils/template';
 import { html } from '@pionjs/pion';
+import { t } from 'i18next';
 
 import { renderMinis } from './render-mini';
 import type { HostRenderItem } from './types';
@@ -56,14 +58,17 @@ export const renderItem: HostRenderItem = (
 					.onItemChange=${onItemChange}
 				>
 				</cosmoz-omnitable-item-row>
-				<button
+				<cosmoz-button
+					aria-label=${t('Expand or collapse')}
+					variant="tertiary"
+					icon-only
 					class="expand"
 					?hidden="${isEmpty(collapsedColumns.length)}"
 					?aria-expanded="${expanded}"
 					@click="${toggleCollapse}"
 				>
 					${chevronDownIcon({ width: '16', height: '16' })}
-				</button>
+				</cosmoz-button>
 			</div>
 			${renderMinis({ item, index })(miniColumns)}
 		</div>
