@@ -47,12 +47,14 @@ export const renderFooter = ({
 		>
 			${download01Icon({ slot: 'button' })}
 			<cosmoz-button
+				variant="tertiary"
 				@click=${() =>
 					saveAsCsvAction(columns as CsvColumn[], items, csvFilename!)}
 			>
 				${t('Save selected items as CSV')}
 			</cosmoz-button>
 			<cosmoz-button
+				variant="tertiary"
 				@click=${() =>
 					saveAsXlsxAction(
 						columns as XlsxColumn[],

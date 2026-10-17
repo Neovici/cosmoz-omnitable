@@ -1,6 +1,7 @@
 /* eslint-disable no-empty-function */
 import { assert, expect, fixture, html, nextFrame } from '@open-wc/testing';
 
+import i18next from 'i18next';
 import { generateTableDemoData } from '../demo/table-demo-helper';
 import { renderGroup } from '../src/lib/render-group';
 import { renderItem } from '../src/lib/render-item';
@@ -11,6 +12,8 @@ import {
 
 import '../src/cosmoz-omnitable-columns.ts';
 import '../src/cosmoz-omnitable.js';
+
+await i18next.init({ lng: 'en', resources: {} });
 
 const column = {
 		name: 'name',
@@ -43,6 +46,24 @@ suite('render-item renderers', () => {
 			html`<div>${renderItem(item, 7, itemParams)}</div>`
 		);
 		await expect(el).to.equalSnapshot();
+	});
+
+	test('the shared expand control invokes the row callback', async () => {
+		let toggles = 0;
+		const el = await fixture(
+			html`<div>
+				${renderItem(item, 7, {
+					...itemParams,
+					toggleCollapse: () => toggles++,
+				})}
+			</div>`
+		);
+		el.querySelector('cosmoz-button.expand').click();
+		assert.equal(toggles, 1);
+		assert.equal(
+			el.querySelector('cosmoz-button.expand').getAttribute('aria-label'),
+			'Expand or collapse'
+		);
 	});
 
 	test('renderGroup', async () => {

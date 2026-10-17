@@ -93,7 +93,13 @@ const renderItem =
 			@dragleave=${onDragLeave}
 			@drop=${onDrop}
 		>
-			<button class="pull">${equalIcon({ width: '16', height: '16' })}</button>
+			<cosmoz-button
+				aria-label=${t('Reorder column')}
+				variant="tertiary"
+				icon-only
+				class="pull"
+				>${equalIcon({ width: '16', height: '16' })}</cosmoz-button
+			>
 			<label class="title" ?has-filter=${!isEmpty(filters[column.name]?.filter)}
 				>${column.title}</label
 			>

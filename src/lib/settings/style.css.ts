@@ -1,6 +1,5 @@
 import { tagged as css } from '@neovici/cosmoz-utils';
 import { checkbox } from '../../cosmoz-omnitable-styles';
-
 export default css`
 	:host {
 		box-sizing: border-box;
@@ -67,8 +66,7 @@ export default css`
 		transform: scaleY(-1);
 	}
 	cosmoz-collapse[opened] + .heading {
-		box-shadow:
-			inset 0px -1px 0px var(--cz-color-border-primary),
+		box-shadow: inset 0px -1px 0px var(--cz-color-border-primary),
 			inset 0px 1px 0px var(--cz-color-border-primary);
 	}
 
@@ -88,7 +86,8 @@ export default css`
 	.item.dragover {
 		box-shadow: 0 -2px 0 0 currentColor;
 	}
-	.pull {
+	cosmoz-button.pull::part(button),
+	.pull:not(cosmoz-button) {
 		border: none;
 		padding: 0;
 		font-size: 0;
@@ -98,6 +97,14 @@ export default css`
 		cursor: move;
 		margin-right: 12px;
 		color: var(--cz-color-bg-brand-solid);
+
+		height: auto;
+	}
+	cosmoz-button.pull::part(button) {
+		margin-right: 0;
+	}
+	cosmoz-button.pull {
+		margin-right: 12px;
 	}
 	.title {
 		flex: auto;
@@ -136,7 +143,8 @@ export default css`
 		grid-template-rows: auto;
 		padding: 14px;
 	}
-	.sg {
+	cosmoz-button.sg::part(button),
+	.sg:not(cosmoz-button) {
 		color: inherit;
 		box-shadow: inset 0 0 0 2px var(--cz-color-border-primary);
 		border: none;
@@ -151,15 +159,19 @@ export default css`
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		transition:
-			background 0.3s ease,
-			box-shadow 0.3s ease;
+		transition: background 0.3s ease, box-shadow 0.3s ease;
+
+		height: auto;
+	}
+	cosmoz-button.sg {
+		display: flex;
 	}
 	.sg span {
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
-	.sg[data-on] {
+	cosmoz-button.sg[data-on]::part(button),
+	.sg[data-on]:not(cosmoz-button) {
 		background: var(--cz-color-bg-brand-secondary);
 		box-shadow: none;
 	}
@@ -170,11 +182,10 @@ export default css`
 		transition: transform 0.3s ease;
 	}
 
-	.sg:not([data-on='desc']) svg {
+	.sg:not([data-on="desc"]) svg {
 		transform: scaleY(-1);
 	}
 `;
-
 export const dropdown = css`
 	:host {
 		display: contents;
@@ -182,9 +193,8 @@ export const dropdown = css`
 			--cosmoz-omnitable-settings-color,
 			var(--cz-text-color, #101010)
 		);
-		--cosmoz-dropdown-box-shadow:
-			0 3px 4px 0 rgb(0 0 0 / 14%), 0 1px 8px 0 rgb(0 0 0 / 12%),
-			0 3px 3px -2px rgb(0 0 0 / 40%);
+		--cosmoz-dropdown-box-shadow: 0 3px 4px 0 rgb(0 0 0 / 14%),
+			0 1px 8px 0 rgb(0 0 0 / 12%), 0 3px 3px -2px rgb(0 0 0 / 40%);
 	}
 	cosmoz-dropdown {
 		outline: none;

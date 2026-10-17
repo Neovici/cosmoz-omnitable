@@ -1,5 +1,7 @@
+import '@neovici/cosmoz-button';
 import { chevronDownIcon } from '@neovici/cosmoz-icons/untitled';
 import { html } from '@pionjs/pion';
+import { t } from 'i18next';
 
 import type { HostRenderGroup } from './types';
 
@@ -35,7 +37,14 @@ export const renderGroup: HostRenderGroup = (
 			></cosmoz-omnitable-group-row>
 		</h3>
 		<div class="groupRow-badge">${item.items!.length}</div>
-		<button class="expand" ?aria-expanded="${folded}" @click=${toggleFold}>
+		<cosmoz-button
+			aria-label=${t('Expand or collapse')}
+			variant="tertiary"
+			icon-only
+			class="expand"
+			?aria-expanded="${folded}"
+			@click=${toggleFold}
+		>
 			${chevronDownIcon({ width: '16', height: '16' })}
-		</button>
+		</cosmoz-button>
 	</div>`;

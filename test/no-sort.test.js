@@ -94,7 +94,7 @@ suite('no-sort', () => {
 		const idHeaderCell = omnitable.shadowRoot.querySelector(
 			'.header-cell[name="id"]'
 		);
-		const sortButton = idHeaderCell.querySelector('button.sg');
+		const sortButton = idHeaderCell.querySelector('cosmoz-button.sg');
 		assert.isNull(
 			sortButton,
 			'Sort button should not exist for no-sort column'
@@ -105,7 +105,7 @@ suite('no-sort', () => {
 		const nameHeaderCell = omnitable.shadowRoot.querySelector(
 			'.header-cell[name="name"]'
 		);
-		const sortButton = nameHeaderCell.querySelector('button.sg');
+		const sortButton = nameHeaderCell.querySelector('cosmoz-button.sg');
 		assert.isNotNull(
 			sortButton,
 			'Sort button should exist for sortable column'
@@ -122,7 +122,7 @@ suite('no-sort', () => {
 		const dropdown = settingsButton.shadowRoot.querySelector('cosmoz-dropdown');
 		assert.isNotNull(dropdown, 'Dropdown should exist');
 
-		const button = dropdown.shadowRoot.querySelector('[part="button"]');
+		const button = dropdown.shadowRoot.querySelector('#dropdownButton');
 		assert.isNotNull(button, 'Dropdown button should exist');
 
 		button.click();
@@ -141,7 +141,7 @@ suite('no-sort', () => {
 		assert.isNotNull(sortConsumer, 'Sort consumer should exist');
 
 		// Check that only sortable columns appear
-		const sortButtons = sortConsumer.querySelectorAll('button.sg');
+		const sortButtons = sortConsumer.querySelectorAll('cosmoz-button.sg');
 		const sortableColumnNames = Array.from(sortButtons).map((btn) =>
 			btn.textContent.trim()
 		);
@@ -168,7 +168,7 @@ suite('no-sort', () => {
 			'cosmoz-omnitable-settings'
 		);
 		const dropdown = settingsButton.shadowRoot.querySelector('cosmoz-dropdown');
-		const button = dropdown.shadowRoot.querySelector('[part="button"]');
+		const button = dropdown.shadowRoot.querySelector('#dropdownButton');
 		button.click();
 		await nextFrame();
 
@@ -199,7 +199,7 @@ suite('no-sort', () => {
 			'cosmoz-omnitable-settings'
 		);
 		const dropdown = settingsButton.shadowRoot.querySelector('cosmoz-dropdown');
-		const button = dropdown.shadowRoot.querySelector('[part="button"]');
+		const button = dropdown.shadowRoot.querySelector('#dropdownButton');
 		button.click();
 		await nextFrame();
 
