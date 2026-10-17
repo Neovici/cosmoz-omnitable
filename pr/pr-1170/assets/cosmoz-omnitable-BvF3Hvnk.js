@@ -1333,11 +1333,13 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$t as t,At as n,Bt as 
 		>
 			${v({slot:`button`})}
 			<cosmoz-button
+				variant="tertiary"
 				@click=${()=>Ii(e,t,r)}
 			>
 				${E(`Save selected items as CSV`)}
 			</cosmoz-button>
 			<cosmoz-button
+				variant="tertiary"
 				@click=${()=>zi(e,t,i,a)}
 			>
 				${E(`Save selected items as XLSX`)}
