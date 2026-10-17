@@ -1,3 +1,9 @@
+## 19.3.0
+
+### Minor Changes
+
+- 28ce5ce: Use shared tertiary `cosmoz-button` controls for row and group expansion, column reordering, sorting and grouping. Preserve compact sizing, accessible labels and existing interactions.
+
 ## 19.2.2
 
 ### Patch Changes
