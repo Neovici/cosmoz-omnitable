@@ -1,5 +1,5 @@
 ---
-"@neovici/cosmoz-omnitable": minor
+'@neovici/cosmoz-omnitable': minor
 ---
 
-Render action and utility controls with cosmoz-button while preserving their layout, callbacks, disabled states and keyboard focus.
+Use shared tertiary `cosmoz-button` controls for row and group expansion, column reordering, sorting and grouping. Preserve compact sizing, accessible labels and existing interactions.
