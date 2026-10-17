@@ -26,7 +26,7 @@ suite('id', () => {
 					></cosmoz-omnitable-column>
 				</cosmoz-omnitable>
 			`,
-			data,
+			data
 		);
 	});
 
@@ -37,12 +37,13 @@ suite('id', () => {
 		assert.equal(
 			groupOnColumn.name,
 			'id',
-			'Expected "groupOnColumn" to be the column that matches "groupOn" value',
+			'Expected "groupOnColumn" to be the column that matches "groupOn" value'
 		);
 		assert.equal(groupOnColumn, omnitable.columns[0]);
 	});
 
 	test('groupOnDescending true for id column changes order of items', async () => {
+		await nextFrame();
 		const items = omnitable.sortedFilteredGroupedItems;
 		assert.isArray(items);
 		assert.isObject(items[0]);
@@ -100,7 +101,7 @@ suite('bool', () => {
 					</cosmoz-omnitable-column-number>
 				</cosmoz-omnitable>
 			`,
-			data,
+			data
 		);
 	});
 
@@ -108,6 +109,8 @@ suite('bool', () => {
 		assert.equal(omnitable.groupOn, 'bool');
 		assert.equal(omnitable.groupOnColumn.name, 'bool');
 		assert.equal(omnitable.groupOnColumn, omnitable.columns[1]);
+
+		await nextFrame();
 
 		const first = omnitable.sortedFilteredGroupedItems[0],
 			idx = omnitable.sortedFilteredGroupedItems.length - 1,
@@ -147,7 +150,7 @@ suite('amount', () => {
 					</cosmoz-omnitable-column-amount>
 				</cosmoz-omnitable>
 			`,
-			data,
+			data
 		);
 	});
 
@@ -159,7 +162,7 @@ suite('amount', () => {
 		assert.equal(
 			groupOnColumn.name,
 			'amount',
-			'Expected "groupOnColumn" to be the column that matches "groupOn" value',
+			'Expected "groupOnColumn" to be the column that matches "groupOn" value'
 		);
 		assert.equal(groupOnColumn, omnitable.columns[1]);
 	});
