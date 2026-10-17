@@ -490,6 +490,8 @@ export default css`
 		opacity: 0;
 
 		height: auto;
+		width: auto;
+		gap: 0;
 	}
 	cosmoz-button.sg {
 		display: inline-flex;
@@ -500,6 +502,8 @@ export default css`
 	}
 	.sg svg {
 		display: block;
+		width: 12px;
+		height: 12px;
 	}
 	cosmoz-button.sg[data-on]::part(button),
 	.sg[data-on]:not(cosmoz-button) {
