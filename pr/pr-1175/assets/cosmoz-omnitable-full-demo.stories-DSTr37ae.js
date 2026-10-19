@@ -1094,10 +1094,10 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$t as t,At as n,Bt as 
 
 	cosmoz-bottom-bar {
 		background: rgb(
-			from var(--cz-color-bg-brand-solid) r g b / calc(alpha * 0.45)
+			from var(--cz-color-bg-action-solid) r g b / calc(alpha * 0.45)
 		);
 		overflow: hidden;
-		color: var(--cz-color-text-on-brand);
+		color: var(--cz-color-text-on-action);
 	}
 	cosmoz-bottom-bar::part(bar) {
 		padding: 0 calc(var(--cz-spacing) * 6);
@@ -1105,9 +1105,9 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$t as t,At as n,Bt as 
 
 	cosmoz-bottom-bar::slotted(*) {
 		background: rgb(
-			from var(--cz-color-bg-brand-solid) r g b / calc(alpha * 0.75)
+			from var(--cz-color-bg-action-solid) r g b / calc(alpha * 0.75)
 		);
-		color: var(--cz-color-text-on-brand);
+		color: var(--cz-color-text-on-action);
 	}
 
 	cosmoz-bottom-bar::slotted([disabled]) {
@@ -1553,7 +1553,7 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$t as t,At as n,Bt as 
 		width: 3px;
 	}
 	.contents::-webkit-scrollbar-thumb {
-		background: var(--cz-color-bg-brand-solid);
+		background: var(--cz-color-fg-quaternary);
 	}
 	.contents::-webkit-scrollbar-track-piece:start,
 	.contents::-webkit-scrollbar-track-piece:end {
@@ -1609,7 +1609,7 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$t as t,At as n,Bt as 
 		background: transparent;
 		cursor: move;
 		margin-right: 12px;
-		color: var(--cz-color-bg-brand-solid);
+		color: var(--cz-color-fg-quaternary);
 
 		height: auto;
 	}
