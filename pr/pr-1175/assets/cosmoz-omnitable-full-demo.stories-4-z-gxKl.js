@@ -641,7 +641,9 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{$t as t,At as n,Bt as 
 			@filter-changed=${({detail:{value:e}})=>l(t=>({...t,filter:e}))}
 			@header-focused-changed=${({detail:{value:e}})=>l(t=>({...t,headerFocused:e}))}
 		></cosmoz-omnitable-time-range-input>`}computeSource(e,t){return vn(e,t)}},customElements.define(`cosmoz-omnitable-column-time`,ni)})))()}function ii(){return(ii=e((()=>{xn(),Rn(),Vn(),nr(),Sr(),Nr(),Fr(),Br(),Wr(),ri()})))()}var ai;function oi(){return(oi=e((()=>{A(),t(),ai=({column:e,item:t,selected:n,folded:r,group:i})=>{if(!e)return w;let a=e.renderGroup??e.renderCell;return a?a(e,{item:t,selected:n,folded:r,group:i}):w},customElements.define(`cosmoz-omnitable-group-row`,j(ai,{useShadowDOM:!1}))})))()}var si;function ci(){return(ci=e((()=>{A(),t(),si=e=>{let{column:t}=e;return l(()=>{let n=0,r=0,i=i=>{e.dispatchEvent(new CustomEvent(`column-resize`,{bubbles:!0,composed:!0,detail:{newWidth:Math.ceil(r+i.pageX-n),column:t}}))},a=()=>{document.removeEventListener(`pointermove`,i),document.removeEventListener(`pointerup`,a)},o=t=>{n=t.pageX,r=e.previousElementSibling.getBoundingClientRect().width,document.addEventListener(`pointermove`,i),document.addEventListener(`pointerup`,a)};return e.addEventListener(`pointerdown`,o),()=>e.removeEventListener(`pointerdown`,o)},[t]),w},customElements.define(`cosmoz-omnitable-resize-nub`,j(si))})))()}var li,ui,di,fi;function pi(){return(pi=e((()=>{Ke(),A(),se(),c(),li=({column:e,on:t,descending:n,setOn:r,setDescending:i})=>{let{name:a,title:o}=e??{};return y`<cosmoz-button
+		aria-label=${_e(o)}
 		variant="tertiary"
+		icon-only
 		class="sg"
 		title=${_e(o)}
 		data-on=${_e(a===t&&(n?`desc`:`asc`)||void 0)}
