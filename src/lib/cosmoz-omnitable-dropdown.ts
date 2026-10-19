@@ -48,6 +48,7 @@ export const renderDropdown = ({
 				min-height: calc(var(--cz-spacing) * 8);
 				display: flex;
 				flex-direction: column;
+				align-items: stretch;
 				justify-content: center;
 			}
 

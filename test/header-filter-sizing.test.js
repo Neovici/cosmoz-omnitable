@@ -52,4 +52,28 @@ suite('header filter sizing', () => {
 		});
 		assert.equal(table.filters.percent.min, 2);
 	});
+
+	test('stretches the filter label across the header cell', async () => {
+		await i18next.init({ lng: 'en', resources: {} });
+		const table = await setupOmnitableFixture(
+			html`
+				<cosmoz-omnitable style="width: 500px; height: 300px">
+					<cosmoz-omnitable-column-number
+						name="quantity"
+						title="Ordered quantity"
+						value-path="quantity"
+						width="150px"
+						flex="0"
+					></cosmoz-omnitable-column-number>
+				</cosmoz-omnitable>
+			`,
+			[{ quantity: 1 }]
+		);
+		await nextFrame();
+		const label = table.shadowRoot
+			.querySelector('.header-cell[name="quantity"] cosmoz-omnitable-number-range-input')
+			.shadowRoot.querySelector('cosmoz-omnitable-dropdown-input')
+			.shadowRoot.querySelector('label');
+		assert.isAbove(label.getBoundingClientRect().width, 100);
+	});
 });

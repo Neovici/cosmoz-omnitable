@@ -1,5 +1,5 @@
 import { navigate } from '@neovici/cosmoz-router';
-import { identity, invoke } from '@neovici/cosmoz-utils/function';
+import { identity } from '@neovici/cosmoz-utils/function';
 import { useMeta } from '@neovici/cosmoz-utils/hooks/use-meta';
 import {
 	hashUrl,
@@ -26,6 +26,9 @@ type MultiHashStateOpts<T extends Record<string, unknown>> = {
 	multi: true;
 	ready?: boolean;
 };
+
+const isUpdater = <T>(state: T | ((prev: T) => T)): state is (prev: T) => T =>
+	typeof state === 'function';
 
 const makeLinker =
 		(
@@ -155,7 +158,7 @@ export function useHashState<T>(
 		setState = useCallback(
 			(state: T | ((prev: T) => T)) =>
 				_setState((oldState) => {
-					const newState = invoke(state, oldState);
+					const newState = isUpdater(state) ? state(oldState) : state;
 
 					if (meta.param != null) {
 						navigate(
