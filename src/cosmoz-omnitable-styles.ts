@@ -373,10 +373,10 @@ export default css`
 
 	cosmoz-bottom-bar {
 		background: rgb(
-			from var(--cz-color-bg-brand-solid) r g b / calc(alpha * 0.45)
+			from var(--cz-color-bg-action-solid) r g b / calc(alpha * 0.45)
 		);
 		overflow: hidden;
-		color: var(--cz-color-text-on-brand);
+		color: var(--cz-color-text-on-action);
 	}
 	cosmoz-bottom-bar::part(bar) {
 		padding: 0 calc(var(--cz-spacing) * 6);
@@ -384,9 +384,9 @@ export default css`
 
 	cosmoz-bottom-bar::slotted(*) {
 		background: rgb(
-			from var(--cz-color-bg-brand-solid) r g b / calc(alpha * 0.75)
+			from var(--cz-color-bg-action-solid) r g b / calc(alpha * 0.75)
 		);
-		color: var(--cz-color-text-on-brand);
+		color: var(--cz-color-text-on-action);
 	}
 
 	cosmoz-bottom-bar::slotted([disabled]) {
