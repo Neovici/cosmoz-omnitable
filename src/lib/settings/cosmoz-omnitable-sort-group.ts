@@ -45,9 +45,7 @@ export const render = ({
 	const { name, title } = column ?? {};
 
 	return html`<cosmoz-button
-		aria-label=${ifDefined(title)}
 		variant="tertiary"
-		icon-only
 		class="sg"
 		title=${ifDefined(title)}
 		data-on=${ifDefined(
