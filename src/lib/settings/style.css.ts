@@ -40,7 +40,7 @@ export default css`
 		width: 3px;
 	}
 	.contents::-webkit-scrollbar-thumb {
-		background: var(--cz-color-bg-brand-solid);
+		background: var(--cz-color-fg-quaternary);
 	}
 	.contents::-webkit-scrollbar-track-piece:start,
 	.contents::-webkit-scrollbar-track-piece:end {
@@ -96,7 +96,7 @@ export default css`
 		background: transparent;
 		cursor: move;
 		margin-right: 12px;
-		color: var(--cz-color-bg-brand-solid);
+		color: var(--cz-color-fg-quaternary);
 
 		height: auto;
 	}
