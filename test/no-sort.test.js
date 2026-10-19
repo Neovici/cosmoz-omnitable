@@ -163,6 +163,25 @@ suite('no-sort', () => {
 		);
 	});
 
+	test('shows column names on the settings sort buttons', async () => {
+		omnitable.style.setProperty('--cz-control-height-md', '32px');
+		const settingsButton = omnitable.shadowRoot.querySelector(
+			'cosmoz-omnitable-settings'
+		);
+		const dropdown = settingsButton.shadowRoot.querySelector('cosmoz-dropdown');
+		dropdown.shadowRoot.querySelector('#dropdownButton').click();
+		await nextFrame();
+
+		const labels = settingsButton.shadowRoot
+			.querySelector('cosmoz-omnitable-settings-ui')
+			.shadowRoot.querySelector('sort-and-group-consumer.sgs')
+			.querySelectorAll('cosmoz-button.sg span');
+		assert.isNotEmpty(labels);
+		labels.forEach((label) =>
+			assert.isAbove(label.getBoundingClientRect().width, 20, label.textContent)
+		);
+	});
+
 	test('reorders columns from settings drag and drop', async () => {
 		const settingsButton = omnitable.shadowRoot.querySelector(
 			'cosmoz-omnitable-settings'
