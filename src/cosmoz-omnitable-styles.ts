@@ -522,6 +522,7 @@ export default css`
 
 	.header-cell {
 		display: inline-flex;
+		vertical-align: top;
 		position: relative;
 	}
 	.header-cell :not(.sg, cosmoz-clear-button) {
