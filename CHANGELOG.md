@@ -1,3 +1,12 @@
+## 19.3.1
+
+### Patch Changes
+
+- f1cece9: Align text, list, number and date column headings vertically. Inline filter cells now share a top edge rather than using the different text baselines supplied by their controls.
+- e14f850: Use neutral action colors for the selection bottom bar and neutral settings drag handles and scrollbar instead of the brand color.
+- 239bb7f: Show number, amount and date column titles again. Since `cosmoz-dropdown` 8.1.0 renders its trigger with `cosmoz-button`, the header button centred its content and the title label collapsed to zero width.
+- 013a511: Show column names on the sort and group buttons in the table settings again. The buttons were marked `icon-only`, which shrinks them to a square and hid their labels.
+
 ## 19.3.0
 
 ### Minor Changes
