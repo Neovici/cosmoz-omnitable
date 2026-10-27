@@ -162,6 +162,38 @@ const unique = (
 	},
 	_computeSource = (column: ListColumn, data: Items): unknown =>
 		computeValues(column, valuesFrom(data, column.valuePath!)),
+	_makeExternalSource =
+		(
+			column: ListColumn & {
+				externalValues?: boolean;
+				values?: unknown[] | (() => Promise<unknown>);
+			}
+		): unknown =>
+		async (...args: unknown[]) =>
+			computeValues(
+				column,
+				await Promise.resolve(
+					(invoke as (...a: unknown[]) => unknown)(column.values, ...args)
+				)
+			),
+	/**
+	 * The external values wrapper does not depend on the items, so it is cached
+	 * per column. A new items array then keeps the same source and the
+	 * autocomplete does not refetch its options.
+	 */
+	externalSources = new WeakMap<object, unknown>(),
+	_externalSource = (
+		column: ListColumn & {
+			externalValues?: boolean;
+			values?: unknown[] | (() => Promise<unknown>);
+		}
+	): unknown => {
+		let source = externalSources.get(column);
+		if (!source) {
+			externalSources.set(column, (source = _makeExternalSource(column)));
+		}
+		return source;
+	},
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	listColumnMixin = (base: any) =>
 		class extends base {
@@ -245,16 +277,7 @@ const unique = (
 				data: Items
 			): unknown {
 				return column.externalValues || typeof column.values === 'function'
-					? async (...args: unknown[]) =>
-							computeValues(
-								column,
-								await Promise.resolve(
-									(invoke as (...a: unknown[]) => unknown)(
-										column.values,
-										...args
-									)
-								)
-							)
+					? _externalSource(column)
 					: _computeSource(column, data);
 			}
 		};

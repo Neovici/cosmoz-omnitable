@@ -12,6 +12,7 @@ import {
 	applyMultiFilter,
 	computeSource,
 	getString,
+	listColumnMixin,
 	toAutocompleteSource,
 	toXlsxValue,
 	unique,
@@ -52,9 +53,9 @@ suite('pure functions', () => {
 					id: 14,
 					group: 'group0',
 					name: 'Item 14',
-				},
+				}
 			),
-			14,
+			14
 		);
 		assert.equal(
 			getComparableValue(
@@ -63,9 +64,9 @@ suite('pure functions', () => {
 					id: 345,
 					group: 'group7',
 					name: 'Item 345',
-				},
+				}
 			),
-			345,
+			345
 		);
 		assert.equal(
 			getComparableValue(
@@ -74,9 +75,9 @@ suite('pure functions', () => {
 					id: 27,
 					group: 'group5',
 					name: 'Item 27',
-				},
+				}
 			),
-			'Item 27',
+			'Item 27'
 		);
 	});
 
@@ -88,9 +89,9 @@ suite('pure functions', () => {
 					id: 70,
 					group: 'group0',
 					name: 'Item 0',
-				},
+				}
 			),
-			70,
+			70
 		);
 		assert.equal(
 			getString(
@@ -99,9 +100,9 @@ suite('pure functions', () => {
 					id: 41,
 					group: 'group4',
 					name: 'Item 41',
-				},
+				}
 			),
-			41,
+			41
 		);
 		assert.equal(
 			getString(
@@ -110,9 +111,9 @@ suite('pure functions', () => {
 					id: 126,
 					group: 'group12',
 					name: 'Item 126',
-				},
+				}
 			),
-			126,
+			126
 		);
 	});
 
@@ -124,9 +125,9 @@ suite('pure functions', () => {
 					id: [],
 					group: 'group0',
 					name: 'Item 0',
-				},
+				}
 			),
-			'',
+			''
 		);
 	});
 
@@ -138,9 +139,9 @@ suite('pure functions', () => {
 					id: [70, 80],
 					group: 'group0',
 					name: 'Item 0',
-				},
+				}
 			),
-			'70, 80',
+			'70, 80'
 		);
 		assert.equal(
 			getString(
@@ -149,9 +150,9 @@ suite('pure functions', () => {
 					id: [32, 743, -39, 285],
 					group: 'group13',
 					name: 'Item 32',
-				},
+				}
 			),
-			'32, 743, -39, 285',
+			'32, 743, -39, 285'
 		);
 	});
 
@@ -165,9 +166,9 @@ suite('pure functions', () => {
 					name: 'Item 0',
 				},
 				undefined,
-				'text',
+				'text'
 			),
-			'10',
+			'10'
 		);
 		assert.equal(
 			getString(
@@ -178,9 +179,9 @@ suite('pure functions', () => {
 					name: 'Item 448',
 				},
 				undefined,
-				'text',
+				'text'
 			),
-			'448',
+			'448'
 		);
 		assert.equal(
 			getString(
@@ -191,9 +192,9 @@ suite('pure functions', () => {
 					name: 'Item 11',
 				},
 				undefined,
-				'text',
+				'text'
 			),
-			'11',
+			'11'
 		);
 	});
 
@@ -205,9 +206,9 @@ suite('pure functions', () => {
 					id: 30,
 					group: 'group0',
 					name: 'Item 30',
-				},
+				}
 			),
-			'',
+			''
 		);
 	});
 
@@ -215,12 +216,12 @@ suite('pure functions', () => {
 		assert.isTrue(
 			applySingleFilter(
 				{ valuePath: 'id' },
-				'some',
+				'some'
 			)({
 				id: 'some',
 				group: 'group0',
 				name: 'Item 30',
-			}),
+			})
 		);
 	});
 
@@ -228,12 +229,12 @@ suite('pure functions', () => {
 		assert.isFalse(
 			applyMultiFilter(
 				{ valuePath: 'id' },
-				[],
+				[]
 			)({
 				id: null,
 				group: 'group0',
 				name: ' Item id null',
-			}),
+			})
 		);
 	});
 
@@ -371,7 +372,7 @@ suite('pure functions', () => {
 	test('toAutocompleteSource sorts string arrays alphabetically', () => {
 		assert.deepEqual(
 			toAutocompleteSource(['Zebra', 'Apple', 'Mango', 'Apple']),
-			['Apple', 'Mango', 'Zebra'],
+			['Apple', 'Mango', 'Zebra']
 		);
 	});
 
@@ -394,13 +395,13 @@ suite('pure functions', () => {
 					{ id: '2', name: 'Mango' },
 				],
 				'id',
-				'name',
+				'name'
 			),
 			[
 				{ id: '1', name: 'Apple' },
 				{ id: '2', name: 'Mango' },
 				{ id: '3', name: 'Zebra' },
-			],
+			]
 		);
 	});
 
@@ -415,7 +416,7 @@ suite('pure functions', () => {
 				{ id: '1', label: 'Apple' },
 				{ id: '2', label: 'Mango' },
 				{ id: '3', label: 'Zebra' },
-			],
+			]
 		);
 	});
 
@@ -433,7 +434,7 @@ suite('pure functions', () => {
 					id3: 2,
 				},
 				'id',
-				'label',
+				'label'
 			),
 			[
 				{
@@ -448,7 +449,7 @@ suite('pure functions', () => {
 					id: 'id3',
 					label: 2,
 				},
-			],
+			]
 		);
 	});
 
@@ -463,13 +464,13 @@ suite('pure functions', () => {
 					id3: 'apple',
 				},
 				'id',
-				'label',
+				'label'
 			),
 			[
 				{ id: 'id3', label: 'apple' },
 				{ id: 'id1', label: 'éclair' },
 				{ id: 'id2', label: 'egg' },
-			],
+			]
 		);
 	});
 });
@@ -479,9 +480,9 @@ suite('primitive value-path with text/value properties', () => {
 		assert.equal(
 			getComparableValue(
 				{ valuePath: 'priority', valueProperty: 'value' },
-				{ priority: 'Normal' },
+				{ priority: 'Normal' }
 			),
-			'Normal',
+			'Normal'
 		);
 	});
 
@@ -489,9 +490,9 @@ suite('primitive value-path with text/value properties', () => {
 		assert.equal(
 			getComparableValue(
 				{ valuePath: 'amount', valueProperty: 'value' },
-				{ amount: 42 },
+				{ amount: 42 }
 			),
-			42,
+			42
 		);
 	});
 
@@ -499,9 +500,9 @@ suite('primitive value-path with text/value properties', () => {
 		assert.equal(
 			getComparableValue(
 				{ valuePath: 'priority', textProperty: 'key' },
-				{ priority: 'Normal' },
+				{ priority: 'Normal' }
 			),
-			'Normal',
+			'Normal'
 		);
 	});
 
@@ -509,9 +510,9 @@ suite('primitive value-path with text/value properties', () => {
 		assert.equal(
 			getString(
 				{ valuePath: 'group', textProperty: 'name' },
-				{ group: { name: 'Grupp 0', value: 'group0' } },
+				{ group: { name: 'Grupp 0', value: 'group0' } }
 			),
-			'Grupp 0',
+			'Grupp 0'
 		);
 	});
 
@@ -519,9 +520,9 @@ suite('primitive value-path with text/value properties', () => {
 		assert.equal(
 			getComparableValue(
 				{ valuePath: 'group', valueProperty: 'value' },
-				{ group: { name: 'Grupp 0', value: 'group0' } },
+				{ group: { name: 'Grupp 0', value: 'group0' } }
 			),
-			'group0',
+			'group0'
 		);
 	});
 
@@ -530,7 +531,7 @@ suite('primitive value-path with text/value properties', () => {
 		assert.isTrue(
 			applyMultiFilter(column, [{ key: 'Normal', value: 'Normal' }])({
 				priority: 'Normal',
-			}),
+			})
 		);
 	});
 
@@ -539,7 +540,7 @@ suite('primitive value-path with text/value properties', () => {
 		assert.isFalse(
 			applyMultiFilter(column, [{ key: 'High', value: 'High' }])({
 				priority: 'Normal',
-			}),
+			})
 		);
 	});
 });
@@ -586,7 +587,7 @@ suite('autocomplete unit tests', () => {
 
 	test('basic render test', async () => {
 		const cells = Array.from(
-			omnitable.shadowRoot.querySelectorAll('.default-column'),
+			omnitable.shadowRoot.querySelectorAll('.default-column')
 		);
 		assert.lengthOf(cells, 12);
 		assert.deepEqual(
@@ -604,13 +605,68 @@ suite('autocomplete unit tests', () => {
 				'3',
 				'group1',
 				'Item 3',
-			],
+			]
 		);
 	});
 });
 
 suite('values as function', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);
+
+	test('builds each column its own options from a shared values function', async () => {
+		const Column = listColumnMixin(class {}),
+			values = async () => [
+				{ id: 1, name: 'One', label: 'Zulu' },
+				{ id: 2, name: 'Two', label: 'Alpha' },
+			],
+			byName = new Column(),
+			byLabel = new Column();
+
+		byName.values = byLabel.values = values;
+		byName.valueProperty = byLabel.valueProperty = 'id';
+		byName.textProperty = 'name';
+		byLabel.textProperty = 'label';
+
+		assert.deepEqual(await byName.computeSource(byName, [])({}), [
+			{ id: 1, name: 'One', label: 'Zulu' },
+			{ id: 2, name: 'Two', label: 'Alpha' },
+		]);
+		assert.deepEqual(await byLabel.computeSource(byLabel, [])({}), [
+			{ id: 2, name: 'Two', label: 'Alpha' },
+			{ id: 1, name: 'One', label: 'Zulu' },
+		]);
+	});
+
+	test('does not refetch the external values when the data changes', async () => {
+		let calls = 0;
+		const values = async () => {
+				calls += 1;
+				return [{ id: 0, label: 'None' }];
+			},
+			omnitable = await setupOmnitableFixture(
+				html`
+					<cosmoz-omnitable style="height:300px">
+						<cosmoz-omnitable-column-autocomplete
+							title="Id"
+							name="id"
+							value-path="id"
+							external-values
+							.values=${values}
+						></cosmoz-omnitable-column-autocomplete>
+					</cosmoz-omnitable>
+				`,
+				data.slice(0)
+			);
+
+		await nextFrame();
+		assert.isAbove(calls, 0);
+
+		const rendered = calls;
+		omnitable.data = data.slice(1);
+		await nextFrame();
+
+		assert.equal(calls, rendered);
+	});
 
 	test('displays values from a source function', async () => {
 		const data = [
@@ -688,7 +744,7 @@ suite('values as function', () => {
 						></cosmoz-omnitable-column-autocomplete>
 					</cosmoz-omnitable>
 				`,
-				data.slice(0),
+				data.slice(0)
 			);
 
 		omnitable.setFilterState('group', {
