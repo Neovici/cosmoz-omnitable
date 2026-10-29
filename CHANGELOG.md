@@ -1,3 +1,9 @@
+## 19.4.0
+
+### Minor Changes
+
+- 95f1c5e: Notify `settingsReady` (`settings-ready-changed`) once saved settings are applied, in the same update as the saved sort and group, so consumers can wait before fetching data.
+
 ## 19.3.1
 
 ### Patch Changes
