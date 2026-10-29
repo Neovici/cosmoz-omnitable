@@ -55,6 +55,7 @@ export const useOmnitable = (host) => {
 			filters,
 			setFilterState,
 			isMini,
+			ready,
 			...sortAndGroupOptions,
 		});
 

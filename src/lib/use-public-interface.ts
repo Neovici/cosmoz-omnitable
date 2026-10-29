@@ -1,6 +1,6 @@
 import { useImperativeApi } from '@neovici/cosmoz-utils/hooks/use-imperative-api';
 import { useNotifyProperty } from '@neovici/cosmoz-utils/hooks/use-notify-property';
-import { useEffect, useMemo, useProperty } from '@pionjs/pion';
+import { useEffect, useMemo, useProperty, useState } from '@pionjs/pion';
 
 import type { Item } from './types';
 import { type TSelection } from './utils';
@@ -96,6 +96,16 @@ type SetFilterState = (
 	state: unknown | ((prev: unknown) => unknown)
 ) => void;
 
+// Flips in the same render as the hash state sync of the saved sort and group, so
+// consumers waiting for saved settings get them together with settingsReady.
+const useSettingsReady = (ready: boolean) => {
+	const [settingsReady, setSettingsReady] = useState(false);
+	useEffect(() => {
+		if (ready) setSettingsReady(true);
+	}, [ready]);
+	return settingsReady;
+};
+
 interface UsePublicInterfaceParams {
 	host: UsePublicInterfaceHost;
 	visibleData: Item[];
@@ -105,6 +115,7 @@ interface UsePublicInterfaceParams {
 	sortOn?: string;
 	descending?: boolean;
 	isMini?: boolean;
+	ready?: boolean;
 	[key: string]: unknown;
 }
 
@@ -112,6 +123,7 @@ export const usePublicInterface = ({
 	host,
 	visibleData,
 	filters,
+	ready = true,
 	...api
 }: UsePublicInterfaceParams) => {
 	const { setFilterState } = api,
@@ -148,6 +160,8 @@ export const usePublicInterface = ({
 	useNotifyProperty('sortOn', api.sortOn);
 	useNotifyProperty('descending', api.descending);
 	useNotifyProperty('isMini', api.isMini);
+
+	useNotifyProperty('settingsReady', useSettingsReady(ready));
 
 	const filterValues = useMemo(
 		() =>

@@ -188,7 +188,7 @@ suite('hash params vs saved settings', () => {
 	test('hash params override saved settings', async () => {
 		localStorage.setItem(
 			SETTINGS_KEY,
-			JSON.stringify({ sortOn: 'name', descending: false }),
+			JSON.stringify({ sortOn: 'name', descending: false })
 		);
 		location.hash = '#!/#test-sortOn=id&test-descending=true';
 		await instantiateWithSettings();
@@ -201,7 +201,7 @@ suite('hash params vs saved settings', () => {
 	test('saved settings sync to hash when no hash params', async () => {
 		localStorage.setItem(
 			SETTINGS_KEY,
-			JSON.stringify({ sortOn: 'name', descending: true }),
+			JSON.stringify({ sortOn: 'name', descending: true })
 		);
 		location.hash = '#!/';
 		await instantiateWithSettings();
@@ -256,7 +256,7 @@ suite('hash params vs saved settings', () => {
 					</cosmoz-omnitable-column>
 				</cosmoz-omnitable>
 			`,
-			data,
+			data
 		);
 		await nextFrame();
 
@@ -267,7 +267,7 @@ suite('hash params vs saved settings', () => {
 	test('saved settings load async does not overwrite explicit hash', async () => {
 		localStorage.setItem(
 			SETTINGS_KEY,
-			JSON.stringify({ sortOn: 'name', descending: true }),
+			JSON.stringify({ sortOn: 'name', descending: true })
 		);
 		location.hash = '#!/#test-sortOn=id&test-descending=false';
 		await instantiateWithSettings();
@@ -281,10 +281,55 @@ suite('hash params vs saved settings', () => {
 		assert.equal(location.hash, '#!/#test-sortOn=id&test-descending=false');
 	});
 
+	test('notifies settingsReady together with the saved sort', async () => {
+		localStorage.setItem(SETTINGS_KEY, JSON.stringify({ sortOn: 'name' }));
+		location.hash = '#!/';
+		const notified = [];
+		omnitable = await setupOmnitableFixture(
+			html`
+				<cosmoz-omnitable
+					hash-param="test"
+					settings-id="test-settings"
+					style="height:300px"
+					@settings-ready-changed=${(e) =>
+						notified.push([e.detail.value, e.target.sortOn])}
+				>
+					<cosmoz-omnitable-column
+						title="Id"
+						name="id"
+						value-path="id"
+						sort-on="id"
+					></cosmoz-omnitable-column>
+					<cosmoz-omnitable-column
+						title="Name"
+						name="name"
+						value-path="name"
+						sort-on="name"
+					></cosmoz-omnitable-column>
+				</cosmoz-omnitable>
+			`,
+			data
+		);
+		await nextFrame();
+		await nextFrame();
+
+		assert.deepEqual(
+			notified.filter(([ready]) => ready),
+			[[true, 'name']]
+		);
+	});
+
+	test('is settingsReady right away without a settings id', async () => {
+		location.hash = '#!/';
+		await instantiate();
+
+		assert.isTrue(omnitable.settingsReady);
+	});
+
 	test('multiple params: hash params take precedence individually', async () => {
 		localStorage.setItem(
 			SETTINGS_KEY,
-			JSON.stringify({ sortOn: 'name', groupOn: 'group' }),
+			JSON.stringify({ sortOn: 'name', groupOn: 'group' })
 		);
 		location.hash = '#!/#test-sortOn=id';
 		await instantiateWithSettings();
