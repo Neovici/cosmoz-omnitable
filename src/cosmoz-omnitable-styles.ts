@@ -14,7 +14,7 @@ export const checkbox = css`
 		user-select: none;
 		cursor: pointer;
 		display: inline-block;
-		box-shadow: inset 0 0 0 2px var(--cz-color-border-primary);
+		box-shadow: inset 0 0 0 1px var(--cz-color-border-primary);
 		-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 		transition: background-color 140ms;
 		margin: 1px calc(var(--cz-spacing) * 3);
@@ -51,8 +51,7 @@ export const checkbox = css`
 	}
 
 	.checkbox:hover {
-		box-shadow: 0 0 0 2px
-			rgb(from var(--cz-color-text-primary) r g b / calc(alpha * 0.75)) inset;
+		box-shadow: inset 0 0 0 1px var(--cz-color-fg-tertiary);
 	}
 
 	.checkbox:checked:hover {
@@ -105,7 +104,14 @@ export default css`
 		position: relative;
 		display: flex;
 		align-items: flex-end;
-		border-block: 1px solid var(--cz-color-border-secondary);
+		border-bottom: 1px solid var(--cz-color-border-secondary);
+	}
+
+	/* Column titles sit a step below the data they head. The header inputs
+	   nest in shadow roots (autocompletes wrap theirs), so the step is set
+	   through the token their labels read. */
+	cosmoz-omnitable-header-row {
+		--cz-color-text-secondary: var(--cz-color-text-quaternary);
 	}
 
 	[hidden] {
@@ -230,7 +236,7 @@ export default css`
 	.tableContent-empty p {
 		font-size: var(--cz-text-base);
 		line-height: var(--cz-text-base-line-height);
-		color: #ddd;
+		color: var(--cz-color-text-tertiary);
 		margin: 0;
 	}
 	.tableContent-empty h3 {
@@ -253,7 +259,8 @@ export default css`
 	}
 
 	.itemRow {
-		border-bottom: 1px var(--cz-color-border-secondary) solid;
+		border-bottom: 1px var(--cz-color-border-tertiary) solid;
+		transition: background-color 120ms;
 	}
 	.itemRow-wrapper {
 		display: flex;
@@ -262,8 +269,15 @@ export default css`
 		padding-right: calc(var(--cz-spacing) * 2);
 	}
 
+	/* A selected row takes the brand tint and a brand edge, so a selection
+	   reads at a glance down a long list. */
 	.itemRow[selected] {
-		background-color: var(--cz-color-bg-primary-hover);
+		background-color: color-mix(
+			in oklab,
+			var(--cz-color-bg-brand-secondary) 55%,
+			transparent
+		);
+		box-shadow: inset 2px 0 0 var(--cz-color-border-brand);
 	}
 
 	.itemRow-cell {
@@ -280,9 +294,11 @@ export default css`
 		flex-direction: column;
 		font-size: var(--cz-text-sm);
 		line-height: var(--cz-text-sm-line-height);
-		padding: 5px 4%;
-		border-bottom: 1px var(--cz-color-border-secondary) solid;
-		background-color: var(--cz-color-bg-disabled);
+		padding: calc(var(--cz-spacing) * 3) 4%;
+		border-bottom: 1px var(--cz-color-border-tertiary) solid;
+		background-color: var(--cz-color-bg-secondary-subtle);
+		box-shadow: inset 0 1px 2px
+			color-mix(in oklab, var(--cz-color-black) 4%, transparent);
 		animation: expand-in 0.25s ease;
 	}
 
@@ -304,10 +320,10 @@ export default css`
 	.groupRow {
 		display: flex;
 		align-items: center;
-		background-color: var(--cz-color-bg-tertiary);
+		background-color: var(--cz-color-bg-secondary-subtle);
 		font-size: var(--cz-text-sm);
 		line-height: var(--cz-text-sm-line-height);
-		font-weight: var(--cz-font-weight-bold);
+		font-weight: var(--cz-font-weight-semibold);
 		color: var(--cz-color-text-primary);
 		border-bottom: 1px solid var(--cz-color-border-secondary);
 	}
@@ -400,12 +416,20 @@ export default css`
 	}
 
 	.omnitable-cell-number,
-	.omnitable-cell-date {
+	.omnitable-cell-date,
+	.amount-cell {
 		font-variant-numeric: tabular-nums;
 	}
 
 	.itemRow:hover {
 		background-color: var(--cz-color-bg-primary-hover);
+	}
+	.itemRow[selected]:hover {
+		background-color: color-mix(
+			in oklab,
+			var(--cz-color-bg-brand-secondary) 80%,
+			transparent
+		);
 	}
 
 	.groupRow:hover .checkbox:not(:checked):not(:hover),
@@ -417,7 +441,7 @@ export default css`
 	.groupRow:hover .expand:not(:hover):not(cosmoz-button),
 	.itemRow:hover cosmoz-button.expand::part(button):not(:hover),
 	.itemRow:hover .expand:not(:hover):not(cosmoz-button) {
-		color: rgb(from var(--cz-color-text-primary) r g b / calc(alpha * 0.75));
+		color: var(--cz-color-fg-secondary);
 	}
 
 	${checkbox}
@@ -445,7 +469,7 @@ export default css`
 		background: none;
 		transition: 0.25s background ease-in;
 		outline: none;
-		color: var(--cz-color-text-primary);
+		color: var(--cz-color-fg-quaternary);
 		background: transparent;
 	}
 
