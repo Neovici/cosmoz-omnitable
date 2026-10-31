@@ -27,7 +27,7 @@ suite('header hierarchy', () => {
 		const table = await setupOmnitableFixture(
 			html`
 				<cosmoz-omnitable
-					style="width: 500px; height: 300px; --cz-color-text-secondary: rgb(1, 2, 3); --cz-color-text-quaternary: rgb(4, 5, 6)"
+					style="width: 500px; height: 300px; --cz-color-text-secondary: rgb(1, 2, 3); --cz-color-text-quaternary: rgb(4, 5, 6); --cz-text-sm: 14px; --cz-text-sm-line-height: 20px; --cz-text-base: 16px; --cz-text-base-line-height: 24px"
 				>
 					<cosmoz-omnitable-column
 						name="description"
@@ -54,6 +54,11 @@ suite('header hierarchy', () => {
 		assert.equal(
 			color(table.shadowRoot.querySelector('.itemRow-cell')),
 			'rgb(1, 2, 3)'
+		);
+		assert.equal(
+			header('description').getBoundingClientRect().top,
+			header('group').getBoundingClientRect().top,
+			'titles of plain and autocomplete filters share a line'
 		);
 	});
 });

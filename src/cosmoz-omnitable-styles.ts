@@ -112,12 +112,6 @@ export default css`
 	   through the token their labels read. */
 	cosmoz-omnitable-header-row {
 		--cz-color-text-secondary: var(--cz-color-text-quaternary);
-		font-size: var(--cz-text-sm);
-		line-height: var(--cz-text-sm-line-height);
-	}
-	cosmoz-omnitable-header-row cosmoz-input {
-		font-size: inherit;
-		line-height: inherit;
 	}
 
 	[hidden] {
@@ -275,8 +269,15 @@ export default css`
 		padding-right: calc(var(--cz-spacing) * 2);
 	}
 
+	/* A selected row takes the brand tint and a brand edge, so a selection
+	   reads at a glance down a long list. */
 	.itemRow[selected] {
-		background-color: var(--cz-color-bg-primary-hover);
+		background-color: color-mix(
+			in oklab,
+			var(--cz-color-bg-brand-secondary) 55%,
+			transparent
+		);
+		box-shadow: inset 2px 0 0 var(--cz-color-border-brand);
 	}
 
 	.itemRow-cell {
@@ -293,9 +294,11 @@ export default css`
 		flex-direction: column;
 		font-size: var(--cz-text-sm);
 		line-height: var(--cz-text-sm-line-height);
-		padding: 5px 4%;
-		border-bottom: 1px var(--cz-color-border-secondary) solid;
-		background-color: var(--cz-color-bg-disabled);
+		padding: calc(var(--cz-spacing) * 3) 4%;
+		border-bottom: 1px var(--cz-color-border-tertiary) solid;
+		background-color: var(--cz-color-bg-secondary-subtle);
+		box-shadow: inset 0 1px 2px
+			color-mix(in oklab, var(--cz-color-black) 4%, transparent);
 		animation: expand-in 0.25s ease;
 	}
 
@@ -420,6 +423,13 @@ export default css`
 
 	.itemRow:hover {
 		background-color: var(--cz-color-bg-primary-hover);
+	}
+	.itemRow[selected]:hover {
+		background-color: color-mix(
+			in oklab,
+			var(--cz-color-bg-brand-secondary) 80%,
+			transparent
+		);
 	}
 
 	.groupRow:hover .checkbox:not(:checked):not(:hover),
