@@ -124,14 +124,14 @@ export default css`
 		white-space: nowrap;
 	}
 
-	cosmoz-omnitable-header-row > div {
+	cosmoz-omnitable-header-row > slot > div {
 		display: inline-block;
 		box-sizing: border-box;
 		padding: 0 3px;
 		white-space: nowrap;
 		text-overflow: ellipsis;
 	}
-	cosmoz-omnitable-header-row > div[hidden] {
+	cosmoz-omnitable-header-row > slot > div[hidden] {
 		display: none !important;
 	}
 

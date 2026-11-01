@@ -49,10 +49,13 @@ const renderHeaderRow = ({
 
 const HeaderRow = ({ columns, settingsConfig, hideSelectAll, ...thru }) => {
 	const sortAndGroup = useContext(SortAndGroupContext);
+	// slotted content replaces the column cells; select all and settings stay
 	return html`
-		${when(columns, (columns) =>
-			renderHeaderRow({ columns, sortAndGroup, ...thru })
-		)}
+		<slot name="header"
+			>${when(columns, (columns) =>
+				renderHeaderRow({ columns, sortAndGroup, ...thru })
+			)}</slot
+		>
 		${when(
 			!hideSelectAll,
 			() =>
