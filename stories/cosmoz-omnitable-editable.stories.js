@@ -7,7 +7,6 @@ const generateData = () =>
 		name: `Item ${i + 1}`,
 		quantity: (i + 1) * 3,
 		price: { amount: (i + 1) * 12.5, currency: ['EUR', 'USD', 'SEK'][i % 3] },
-		dueDate: new Date(2026, i, 1 + i),
 		approved: i % 2 === 0,
 	}));
 
@@ -69,12 +68,6 @@ export const Editable = {
 					value-path="price"
 					editable
 				></cosmoz-omnitable-column-amount>
-				<cosmoz-omnitable-column-date
-					name="dueDate"
-					title="Due date"
-					value-path="dueDate"
-					editable
-				></cosmoz-omnitable-column-date>
 				<cosmoz-omnitable-column-boolean
 					name="approved"
 					title="Approved"
