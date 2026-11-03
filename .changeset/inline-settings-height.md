@@ -2,4 +2,4 @@
 "@neovici/cosmoz-omnitable": patch
 ---
 
-Stop capping the sort and filter settings of an `inline` table at the height of its rows, so they stay fully visible on short tables.
+Stop capping the sort and filter settings drawer at the table body height in all modes, so it stays fully visible on short tables. It now grows to 60vh at most.
