@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from '@pionjs/pion';
+import { useMemo } from '@pionjs/pion';
 
 import type { NormalizedSettings } from './settings/normalize';
 import type { UseSettingsResult } from './settings/use-settings';
@@ -105,20 +105,6 @@ export const useHeader = ({
 			}),
 			[settingS, collapsedColumns, hasHiddenFilter, filters, requestTween]
 		);
-
-	useEffect(() => {
-		const el = host.shadowRoot!.querySelector<HTMLElement>('#tableContent')!,
-			observer = new ResizeObserver((entries: ResizeObserverEntry[]) =>
-				requestAnimationFrame(() => {
-					host.style.setProperty(
-						'--ot-height',
-						entries[0]?.contentRect.height + 'px'
-					);
-				})
-			);
-		observer.observe(el);
-		return () => observer.unobserve(el);
-	}, []);
 
 	return {
 		allSelected,
