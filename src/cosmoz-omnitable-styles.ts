@@ -148,10 +148,28 @@ export default css`
 		width: 7px;
 		height: 100%;
 		margin-left: -3px;
-		background: transparent;
+		/* While the header is hovered, a short faint tick marks where a column
+		   can be resized; it runs the full height in the brand colour while
+		   the tick itself is hovered. */
+		background: linear-gradient(
+				var(--cz-color-border-secondary),
+				var(--cz-color-border-secondary)
+			)
+			center / 1px 0 no-repeat;
 		cursor: ew-resize;
 		z-index: 1000;
 		user-select: none;
+		transition: background-size 120ms;
+	}
+	.header:hover cosmoz-omnitable-resize-nub {
+		background-size: 1px 14px;
+	}
+	.header cosmoz-omnitable-resize-nub:hover {
+		background-image: linear-gradient(
+			var(--cz-color-border-brand),
+			var(--cz-color-border-brand)
+		);
+		background-size: 1px 100%;
 	}
 
 	.time-header-cell,
@@ -405,7 +423,7 @@ export default css`
 	}
 
 	/* Selection actions float over the list as a raised bar, not a slab
-	   across it. The raised tokens are newer than some consumers' tokens. */
+	   across it. The raised shadow is newer than some consumers' tokens. */
 	cosmoz-bottom-bar {
 		position: absolute;
 		inset-inline: 0;
@@ -415,8 +433,9 @@ export default css`
 		margin-inline: auto;
 		border: 0;
 		border-radius: var(--cz-radius-xl);
-		background: var(--cz-color-bg-raised, var(--cz-color-bg-primary));
-		backdrop-filter: var(--cz-backdrop-filter-raised, none);
+		/* Solid, not glass: text over a live blur renders differently from one
+		   frame to the next, which breaks screenshot tests of a selection. */
+		background: var(--cz-color-bg-primary);
 		box-shadow: var(
 				--cz-shadow-raised,
 				0 0 0 1px var(--cz-color-border-secondary)
