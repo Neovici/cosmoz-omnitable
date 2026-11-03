@@ -1,0 +1,1 @@
+import{t as e}from"./iframe-MLvLseD6.js";e();
