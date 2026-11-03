@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r,Dt as i,E as a,G as o,Ht as s,I as c,It as l,Kt as u,Mt as d,O as f,P as p,Pt as m,Q as h,R as g,Rt as _,S as v,T as y,U as b,Ut as x,V as S,X as C,Xt as w,Yt as T,Z as ee,_ as te,_t as ne,at as E,b as D,bt as re,c as O,ct as ie,d as ae,dt as oe,et as se,f as ce,ft as le,gt as ue,ht as de,i as fe,it as pe,kt as me,l as he,lt as ge,m as _e,mt as ve,n as ye,ot as be,p as xe,pt as Se,q as Ce,qt as we,r as Te,s as Ee,st as De,tt as Oe,u as ke,ut as Ae,v as je,vt as k,w as A,x as j,y as M,yt as N,z as Me}from"./iframe-Cd5BQ33K.js";import{A as Ne,B as Pe,C as Fe,D as P,E as Ie,F as Le,H as Re,I as ze,J as Be,K as Ve,L as He,M as Ue,N as F,O as I,P as L,R as We,S as Ge,T as Ke,V as qe,W as Je,_ as Ye,a as Xe,b as Ze,c as Qe,d as $e,f as et,g as tt,h as nt,i as rt,j as it,k as at,l as ot,m as st,n as ct,r as lt,s as ut,t as dt,u as ft,v as pt,w as mt,x as ht,y as gt}from"./dist-BmOmIcn5.js";import{n as _t,t as vt}from"./table-demo-helper-Dj0p9yas.js";var yt;function bt(){return(bt=e((()=>{k(),yt=()=>T`<style>
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r,Dt as i,E as a,G as o,Ht as s,I as c,It as l,Kt as u,Mt as d,O as f,P as p,Pt as m,Q as h,R as g,Rt as _,S as v,T as y,U as b,Ut as x,V as S,X as C,Xt as w,Yt as T,Z as ee,_ as te,_t as ne,at as E,b as D,bt as re,c as O,ct as ie,d as ae,dt as oe,et as se,f as ce,ft as le,gt as ue,ht as de,i as fe,it as pe,kt as me,l as he,lt as ge,m as _e,mt as ve,n as ye,ot as be,p as xe,pt as Se,q as Ce,qt as we,r as Te,s as Ee,st as De,tt as Oe,u as ke,ut as Ae,v as je,vt as k,w as A,x as j,y as M,yt as N,z as Me}from"./iframe-UzNmFGvN.js";import{A as Ne,B as Pe,C as Fe,D as P,E as Ie,F as Le,H as Re,I as ze,J as Be,K as Ve,L as He,M as Ue,N as F,O as I,P as L,R as We,S as Ge,T as Ke,V as qe,W as Je,_ as Ye,a as Xe,b as Ze,c as Qe,d as $e,f as et,g as tt,h as nt,i as rt,j as it,k as at,l as ot,m as st,n as ct,r as lt,s as ut,t as dt,u as ft,v as pt,w as mt,x as ht,y as gt}from"./dist-CNVpIwpM.js";import{n as _t,t as vt}from"./table-demo-helper-Dj0p9yas.js";var yt;function bt(){return(bt=e((()=>{k(),yt=()=>T`<style>
 	@keyframes rotating {
 		100% {
 			transform: rotate(360deg);
@@ -1347,7 +1347,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		overflow: visible;
 		flex-basis: auto;
 	}
-	:host([inline]) cosmoz-omnitable-settings {
+	cosmoz-omnitable-settings {
 		--ot-height: initial;
 	}
 `})))()}var Hi,Ui;function Wi(){return(Wi=e((()=>{rt(),Hi=e=>{let t=e.replace(/"/gu,`""`);return t.search(/("|,|\n)/gu)>=0?`"`+t+`"`:e},Ui=(e,t,n)=>{let r=e.map(e=>Hi(e.title)).join(`;`)+`
