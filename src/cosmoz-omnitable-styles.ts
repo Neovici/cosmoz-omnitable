@@ -625,7 +625,4 @@ export default css`
 		overflow: visible;
 		flex-basis: auto;
 	}
-	cosmoz-omnitable-settings {
-		--ot-height: initial;
-	}
 `;
