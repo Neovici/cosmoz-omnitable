@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{Xt as t,Yt as n}from"./iframe-Cz0nxnb0.js";import{t as r}from"./cosmoz-omnitable-iArtfi7e.js";var i,a,o,s,c;function l(){return(l=e((()=>{t(),r(),{action:i}=__STORYBOOK_MODULE_ACTIONS__,a=()=>Array.from({length:10},(e,t)=>({name:`Item ${t+1}`,quantity:(t+1)*3,price:{amount:(t+1)*12.5,currency:[`EUR`,`USD`,`SEK`][t%3]},dueDate:new Date(2026,t,1+t),approved:t%2==0})),o={title:`Components/CosmozOmnitableEditable`,component:`cosmoz-omnitable`,parameters:{docs:{description:{component:"Columns with the `editable` attribute render inputs instead of plain text. Edits update the item in place and fire a `column-item-changed` event (logged in the Actions panel)."}}}},s={render:()=>n`
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{Xt as t,Yt as n}from"./iframe-Byyx0xvK.js";import{t as r}from"./cosmoz-omnitable-DVLFUOu1.js";var i,a,o,s,c;function l(){return(l=e((()=>{t(),r(),{action:i}=__STORYBOOK_MODULE_ACTIONS__,a=()=>Array.from({length:10},(e,t)=>({name:`Item ${t+1}`,quantity:(t+1)*3,price:{amount:(t+1)*12.5,currency:[`EUR`,`USD`,`SEK`][t%3]},approved:t%2==0})),o={title:`Components/CosmozOmnitableEditable`,component:`cosmoz-omnitable`,parameters:{docs:{description:{component:"Columns with the `editable` attribute render inputs instead of plain text. Edits update the item in place and fire a `column-item-changed` event (logged in the Actions panel)."}}}},s={render:()=>n`
         <style>
             .omnitable-container {
                 height: calc(80vh - 60px);
@@ -41,12 +41,6 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{Xt as t,Yt as n}from".
                     value-path="price"
                     editable
                 ></cosmoz-omnitable-column-amount>
-                <cosmoz-omnitable-column-date
-                    name="dueDate"
-                    title="Due date"
-                    value-path="dueDate"
-                    editable
-                ></cosmoz-omnitable-column-date>
                 <cosmoz-omnitable-column-boolean
                     name="approved"
                     title="Approved"
@@ -101,12 +95,6 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{Xt as t,Yt as n}from".
                     value-path="price"
                     editable
                 ></cosmoz-omnitable-column-amount>
-                <cosmoz-omnitable-column-date
-                    name="dueDate"
-                    title="Due date"
-                    value-path="dueDate"
-                    editable
-                ></cosmoz-omnitable-column-date>
                 <cosmoz-omnitable-column-boolean
                     name="approved"
                     title="Approved"
