@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r,Dt as i,E as a,G as o,Ht as s,I as c,It as l,Kt as u,Mt as d,O as f,P as p,Pt as m,Q as h,R as g,Rt as _,S as v,T as y,U as b,Ut as x,V as S,X as C,Xt as w,Yt as T,Z as ee,_ as te,_t as ne,at as E,b as D,bt as re,c as O,ct as ie,d as ae,dt as oe,et as se,f as ce,ft as k,gt as le,ht as ue,i as de,it as fe,kt as pe,l as me,lt as he,m as ge,mt as _e,n as ve,ot as ye,p as be,pt as xe,q as Se,qt as Ce,r as we,s as Te,st as Ee,tt as De,u as Oe,ut as ke,v as Ae,vt as A,w as j,x as M,y as N,yt as P,z as je}from"./iframe-Bo69QyTO.js";import{A as Me,B as Ne,C as Pe,D as F,E as Fe,F as Ie,H as Le,I as Re,J as ze,K as Be,L as Ve,M as He,N as I,O as L,P as R,R as Ue,S as We,T as Ge,V as Ke,_ as qe,a as Je,b as Ye,c as Xe,d as Ze,f as Qe,g as $e,h as et,i as tt,j as nt,k as rt,l as it,m as at,n as ot,r as st,s as ct,t as lt,u as ut,v as dt,w as ft,x as pt,y as mt}from"./dist-BoO9JQat.js";var ht,gt;function _t(){return(_t=e((()=>{p(),oe(),ie(),A(),ht=k`
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r,Dt as i,E as a,G as o,Ht as s,I as c,It as l,Kt as u,Mt as d,O as f,P as p,Pt as m,Q as h,R as g,Rt as _,S as v,T as y,U as b,Ut as x,V as S,X as C,Xt as w,Yt as T,Z as ee,_ as te,_t as ne,at as E,b as D,bt as re,c as O,ct as ie,d as ae,dt as oe,et as se,f as ce,ft as k,gt as le,ht as ue,i as de,it as fe,kt as pe,l as me,lt as he,m as ge,mt as _e,n as ve,ot as ye,p as be,pt as xe,q as Se,qt as Ce,r as we,s as Te,st as Ee,tt as De,u as Oe,ut as ke,v as Ae,vt as A,w as j,x as M,y as N,yt as P,z as je}from"./iframe-UzNmFGvN.js";import{A as Me,B as Ne,C as Pe,D as F,E as Fe,F as Ie,H as Le,I as Re,J as ze,K as Be,L as Ve,M as He,N as I,O as L,P as R,R as Ue,S as We,T as Ge,V as Ke,_ as qe,a as Je,b as Ye,c as Xe,d as Ze,f as Qe,g as $e,h as et,i as tt,j as nt,k as rt,l as it,m as at,n as ot,r as st,s as ct,t as lt,u as ut,v as dt,w as ft,x as pt,y as mt}from"./dist-CNVpIwpM.js";var ht,gt;function _t(){return(_t=e((()=>{p(),oe(),ie(),A(),ht=k`
 	:host {
 		display: flex;
 		cursor: pointer;
@@ -1327,6 +1327,9 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 	:host([inline]) .tableContent-scroller {
 		overflow: visible;
 		flex-basis: auto;
+	}
+	cosmoz-omnitable-settings {
+		--ot-height: initial;
 	}
 `})))()}var Li,Ri;function zi(){return(zi=e((()=>{tt(),Li=e=>{let t=e.replace(/"/gu,`""`);return t.search(/("|,|\n)/gu)>=0?`"`+t+`"`:e},Ri=(e,t,n)=>{let r=e.map(e=>Li(e.title)).join(`;`)+`
 `,i=t.map(t=>e.map(e=>{let n=e.getString(e,t);return n==null?``:Li(String(n))}).join(`;`)+`
