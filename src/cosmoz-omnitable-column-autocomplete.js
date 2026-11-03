@@ -70,6 +70,7 @@ class OmnitableColumnAutocomplete extends listColumnMixin(
 	renderEditCell(column, { item }, onItemChange) {
 		const onChange = (event) => onItemChange(event.target.value);
 		return html`<cosmoz-input
+			compact
 			type="text"
 			@change=${onChange}
 			.value=${getString(column, item)}
