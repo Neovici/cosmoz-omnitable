@@ -96,7 +96,7 @@ export const renderFooter = ({
 							class="selectAllItems"
 							role="button"
 							tabindex="0"
-							style="cursor: pointer; color: white;"
+							style="cursor: pointer; color: var(--cz-color-text-brand);"
 							@click=${() => setSelectedItems(All)}
 						>
 							${t('Select all items')}
