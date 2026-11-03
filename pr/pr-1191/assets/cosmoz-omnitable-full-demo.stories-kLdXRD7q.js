@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r,Dt as i,E as a,G as o,Ht as s,I as c,It as l,Kt as u,Mt as d,O as f,P as p,Pt as m,Q as h,R as g,Rt as _,S as v,T as y,U as b,Ut as x,V as S,X as C,Xt as w,Yt as T,Z as ee,_ as te,_t as ne,at as re,b as E,bt as ie,c as D,ct as ae,d as oe,dt as se,et as ce,f as le,ft as O,gt as ue,ht as de,i as fe,it as pe,kt as me,l as he,lt as ge,m as _e,mt as ve,n as ye,ot as be,p as xe,pt as Se,q as Ce,qt as we,r as Te,s as Ee,st as De,tt as Oe,u as ke,ut as Ae,v as je,vt as k,w as A,x as j,y as M,yt as N,z as Me}from"./iframe-CmVY1Cir.js";import{A as Ne,B as P,C as Pe,D as Fe,E as Ie,F,G as Le,H as Re,I as ze,J as Be,L as Ve,M as He,N as Ue,O as We,P as I,R as Ge,S as Ke,T as qe,U as Je,V as L,W as Ye,_ as Xe,a as Ze,d as Qe,f as $e,g as et,h as tt,j as nt,k as rt,l as it,m as at,n as ot,q as st,r as ct,s as lt,t as ut,u as dt,v as ft,w as pt,x as mt,y as ht,z as gt}from"./dist-C097n3dP.js";import{n as _t,t as vt}from"./table-demo-helper-Dj0p9yas.js";var yt;function bt(){return(bt=e((()=>{k(),yt=()=>T`<style>
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r,Dt as i,E as a,G as o,Ht as s,I as c,It as l,Kt as u,Mt as d,O as f,P as p,Pt as m,Q as h,R as g,Rt as _,S as v,T as y,U as b,Ut as x,V as S,X as C,Xt as w,Yt as T,Z as ee,_ as te,_t as ne,at as re,b as E,bt as ie,c as D,ct as ae,d as oe,dt as se,et as ce,f as le,ft as O,gt as ue,ht as de,i as fe,it as pe,kt as me,l as he,lt as ge,m as _e,mt as ve,n as ye,ot as be,p as xe,pt as Se,q as Ce,qt as we,r as Te,s as Ee,st as De,tt as Oe,u as ke,ut as Ae,v as je,vt as k,w as A,x as j,y as M,yt as N,z as Me}from"./iframe-DDhhaMyh.js";import{A as Ne,B as P,C as Pe,D as Fe,E as Ie,F,G as Le,H as Re,I as ze,J as Be,L as Ve,M as He,N as Ue,O as We,P as I,R as Ge,S as Ke,T as qe,U as Je,V as L,W as Ye,_ as Xe,a as Ze,d as Qe,f as $e,g as et,h as tt,j as nt,k as rt,l as it,m as at,n as ot,q as st,r as ct,s as lt,t as ut,u as dt,v as ft,w as pt,x as mt,y as ht,z as gt}from"./dist-Deso3m-M.js";import{n as _t,t as vt}from"./table-demo-helper-Dj0p9yas.js";var yt;function bt(){return(bt=e((()=>{k(),yt=()=>T`<style>
 	@keyframes rotating {
 		100% {
 			transform: rotate(360deg);
@@ -879,10 +879,28 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		width: 7px;
 		height: 100%;
 		margin-left: -3px;
-		background: transparent;
+		/* While the header is hovered, a short faint tick marks where a column
+		   can be resized; it runs the full height in the brand colour while
+		   the tick itself is hovered. */
+		background: linear-gradient(
+				var(--cz-color-border-secondary),
+				var(--cz-color-border-secondary)
+			)
+			center / 1px 0 no-repeat;
 		cursor: ew-resize;
 		z-index: 1000;
 		user-select: none;
+		transition: background-size 120ms;
+	}
+	.header:hover cosmoz-omnitable-resize-nub {
+		background-size: 1px 14px;
+	}
+	.header cosmoz-omnitable-resize-nub:hover {
+		background-image: linear-gradient(
+			var(--cz-color-border-brand),
+			var(--cz-color-border-brand)
+		);
+		background-size: 1px 100%;
 	}
 
 	.time-header-cell,
@@ -1136,7 +1154,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 	}
 
 	/* Selection actions float over the list as a raised bar, not a slab
-	   across it. The raised tokens are newer than some consumers' tokens. */
+	   across it. The raised shadow is newer than some consumers' tokens. */
 	cosmoz-bottom-bar {
 		position: absolute;
 		inset-inline: 0;
@@ -1146,8 +1164,9 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		margin-inline: auto;
 		border: 0;
 		border-radius: var(--cz-radius-xl);
-		background: var(--cz-color-bg-raised, var(--cz-color-bg-primary));
-		backdrop-filter: var(--cz-backdrop-filter-raised, none);
+		/* Solid, not glass: text over a live blur renders differently from one
+		   frame to the next, which breaks screenshot tests of a selection. */
+		background: var(--cz-color-bg-primary);
 		box-shadow: var(
 				--cz-shadow-raised,
 				0 0 0 1px var(--cz-color-border-secondary)
