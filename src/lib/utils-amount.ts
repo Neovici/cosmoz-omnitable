@@ -97,11 +97,7 @@ export const applySingleFilter =
 		const min = getComparableValue({ ...column, valuePath: 'min' }, filter);
 		const max = getComparableValue({ ...column, valuePath: 'max' }, filter);
 
-		if (min === undefined || max === undefined) {
-			return true;
-		}
-
-		return !(value < min || value > max);
+		return !(value < (min ?? -Infinity) || value > (max ?? Infinity));
 	};
 
 export const formatters: Record<string, Intl.NumberFormat> = {};
