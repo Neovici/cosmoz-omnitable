@@ -51,6 +51,7 @@ class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
 			onItemChange(event.target.value.split(/,\s*/gu));
 
 		return html`<cosmoz-input
+			compact
 			type="text"
 			.value=${getString(column, item)}
 			@change=${onChange}
@@ -78,7 +79,7 @@ class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
 			.onText=${onText(setState)}
 			>${when(
 				column.loading,
-				() => html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`,
+				() => html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`
 			)}</cosmoz-autocomplete-ui
 		>`;
 	}
