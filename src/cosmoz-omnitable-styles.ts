@@ -425,6 +425,9 @@ export default css`
 	/* Selection actions float over the list as a raised bar, not a slab
 	   across it. The raised shadow is newer than some consumers' tokens. */
 	cosmoz-bottom-bar {
+		/* The bar is solid, so its glass buttons need no blur; text over a
+		   live blur renders differently from one frame to the next. */
+		--cz-backdrop-filter-glass: none;
 		position: absolute;
 		inset-inline: 0;
 		bottom: calc(var(--cz-spacing) * 4);
