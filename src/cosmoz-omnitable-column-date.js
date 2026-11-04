@@ -93,6 +93,7 @@ class OmnitableColumnDate extends columnMixin(PolymerElement) {
 		const onChange = (event) =>
 			onItemChange(fromInputString(event.target.value));
 		return html`<cosmoz-input
+			compact
 			type="date"
 			@change=${onChange}
 			.value=${getInputString(column, item)}

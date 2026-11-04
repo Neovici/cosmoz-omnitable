@@ -82,25 +82,26 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 		const { trueLabel, falseLabel } = column;
 
 		return html`<cosmoz-autocomplete
-			variant="inline"
+			compact
+			mode="select"
 			.title=${computeItemTooltip(
 				column.title,
 				item,
 				column.valuePath,
-				computeSource(trueLabel, falseLabel),
+				computeSource(trueLabel, falseLabel)
 			)}
 			.source=${computeSource(trueLabel, falseLabel)}
 			.textProperty=${'text'}
 			.value=${computeItemValue(
 				column,
 				item,
-				computeSource(trueLabel, falseLabel),
+				computeSource(trueLabel, falseLabel)
 			)}
 			.onChange=${onEditableChange(onItemChange)}
 			.limit=${1}
 			>${when(
 				column.loading,
-				() => html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`,
+				() => html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`
 			)}</cosmoz-autocomplete
 		>`;
 	}
@@ -114,7 +115,7 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 				column.title,
 				filter,
 				column.valuePath,
-				source,
+				source
 			)}
 			.source=${source}
 			.textProperty=${'text'}
@@ -126,7 +127,7 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 			.limit=${1}
 			>${when(
 				column.loading,
-				() => html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`,
+				() => html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`
 			)}</cosmoz-autocomplete-ui
 		>`;
 	}
@@ -152,7 +153,7 @@ class OmnitableColumnBoolean extends columnMixin(PolymerElement) {
 }
 customElements.define(
 	'cosmoz-omnitable-column-boolean',
-	OmnitableColumnBoolean,
+	OmnitableColumnBoolean
 );
 
 export {

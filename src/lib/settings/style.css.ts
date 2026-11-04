@@ -5,7 +5,7 @@ export default css`
 		box-sizing: border-box;
 		display: flex;
 		flex-direction: column;
-		max-height: var(--ot-height, 60vh);
+		max-height: 60vh;
 		outline: none;
 		min-width: 270px;
 		background-color: var(--cz-color-bg-tertiary);

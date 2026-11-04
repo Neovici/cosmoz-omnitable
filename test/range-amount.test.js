@@ -13,6 +13,7 @@ import '../src/cosmoz-omnitable-columns.ts';
 import '../src/cosmoz-omnitable.js';
 import { columnSymbol } from '../src/lib/use-dom-columns';
 import {
+	applySingleFilter,
 	getComparableValue,
 	getCurrency,
 	getString,
@@ -929,5 +930,33 @@ suite('default currency', () => {
 		await nextFrame();
 		assert.equal(omnitable.filters.amount.min.amount, 105);
 		assert.equal(omnitable.filters.amount.max.amount, 150);
+	});
+});
+
+suite('amount filter', () => {
+	const column = { valuePath: 'amount' },
+		items = [10, 50, 100].map((amount) => ({
+			amount: { amount, currency: 'EUR' },
+		})),
+		eur = (amount) => ({ amount, currency: 'EUR' }),
+		amounts = (filter) =>
+			items
+				.filter(applySingleFilter(column, filter))
+				.map((item) => item.amount.amount);
+
+	test('filters on min only', () => {
+		assert.deepEqual(amounts({ min: eur(50), max: undefined }), [50, 100]);
+	});
+
+	test('filters on max only', () => {
+		assert.deepEqual(amounts({ min: undefined, max: eur(50) }), [10, 50]);
+	});
+
+	test('filters on min and max', () => {
+		assert.deepEqual(amounts({ min: eur(20), max: eur(60) }), [50]);
+	});
+
+	test('excludes items without an amount', () => {
+		assert.isFalse(applySingleFilter(column, { min: eur(0) })({}));
 	});
 });

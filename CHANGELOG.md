@@ -1,3 +1,12 @@
+## 19.4.1
+
+### Patch Changes
+
+- 0eb1cdf: Fix amount column filtering when only a minimum or only a maximum is set; previously such a filter matched every row.
+- a2d9467: Render the inputs in editable cells as `compact`, so they drop the label and hint space and fit the row. The boolean edit cell is now a compact select, and the text and boolean edit cells no longer use the `inline` variant.
+- aa106f5: Stop capping the sort and filter settings drawer at the table body height in all modes, so it stays fully visible on short tables. It now grows to 60vh at most.
+- 877e9e6: Remove the unused `--ot-height` custom property; the sort and filter settings drawer is capped at 60vh.
+
 ## 19.4.0
 
 ### Minor Changes
