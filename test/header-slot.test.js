@@ -29,9 +29,7 @@ const mount = async (slotted) => {
 		return omnitable;
 	},
 	headerSlot = (omnitable) =>
-		omnitable.shadowRoot.querySelector(
-			'cosmoz-omnitable-header-row slot[name="header"]'
-		);
+		omnitable.shadowRoot.querySelector('.header > slot[name="header"]');
 
 suite('header slot', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);

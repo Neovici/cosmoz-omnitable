@@ -47,24 +47,11 @@ const renderHeaderRow = ({
 		]
 	);
 
-const HeaderRow = ({ columns, settingsConfig, hideSelectAll, ...thru }) => {
+const HeaderRow = ({ columns, ...thru }) => {
 	const sortAndGroup = useContext(SortAndGroupContext);
-	// slotted content replaces the column cells; select all and settings stay
-	return html`
-		<slot name="header"
-			>${when(columns, (columns) =>
-				renderHeaderRow({ columns, sortAndGroup, ...thru })
-			)}</slot
-		>
-		${when(
-			!hideSelectAll,
-			() =>
-				html` <cosmoz-omnitable-settings
-					.config=${settingsConfig}
-					part="settings"
-				></cosmoz-omnitable-settings>`
-		)}
-	`;
+	return html`${when(columns, (columns) =>
+		renderHeaderRow({ columns, sortAndGroup, ...thru })
+	)}`;
 };
 
 customElements.define(

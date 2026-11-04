@@ -116,7 +116,7 @@ export default css`
 		width: 100%;
 	}
 
-	.header > cosmoz-omnitable-header-row {
+	.header > slot > cosmoz-omnitable-header-row {
 		flex: auto;
 	}
 
@@ -124,14 +124,14 @@ export default css`
 		white-space: nowrap;
 	}
 
-	cosmoz-omnitable-header-row > slot > div {
+	cosmoz-omnitable-header-row > div {
 		display: inline-block;
 		box-sizing: border-box;
 		padding: 0 3px;
 		white-space: nowrap;
 		text-overflow: ellipsis;
 	}
-	cosmoz-omnitable-header-row > slot > div[hidden] {
+	cosmoz-omnitable-header-row > div[hidden] {
 		display: none !important;
 	}
 
@@ -550,7 +550,7 @@ export default css`
 		display: none;
 	}
 
-	:host([mini]) .header > cosmoz-omnitable-header-row {
+	:host([mini]) .header > slot > cosmoz-omnitable-header-row {
 		flex: 0;
 	}
 

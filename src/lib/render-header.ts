@@ -53,7 +53,7 @@ export const renderHeader = ({
 						@input=${onAllCheckboxChange}
 						?disabled=${!dataIsValid}
 						part="all"
-					/>`,
+					/>`
 			)}
 			${when(
 				hideSelectAll,
@@ -61,18 +61,26 @@ export const renderHeader = ({
 					html` <cosmoz-omnitable-settings
 						.newLayout="${true}"
 						.config=${settingsConfig}
-					></cosmoz-omnitable-settings>`,
+					></cosmoz-omnitable-settings>`
 			)}
 
-			<cosmoz-omnitable-header-row
-				part="headerRow"
-				.data=${data}
-				.columns=${columns}
-				.filters=${filters}
-				.groupOnColumn=${groupOnColumn}
-				.setFilterState=${setFilterState}
-				.settingsConfig=${settingsConfig}
-				.hideSelectAll=${hideSelectAll}
-			></cosmoz-omnitable-header-row>
+			<slot name="header">
+				<cosmoz-omnitable-header-row
+					part="headerRow"
+					.data=${data}
+					.columns=${columns}
+					.filters=${filters}
+					.groupOnColumn=${groupOnColumn}
+					.setFilterState=${setFilterState}
+				></cosmoz-omnitable-header-row>
+			</slot>
+			${when(
+				!hideSelectAll,
+				() =>
+					html`<cosmoz-omnitable-settings
+						.config=${settingsConfig}
+						part="settings"
+					></cosmoz-omnitable-settings>`
+			)}
 		</div>
 	</sort-and-group-provider>`;

@@ -46,10 +46,8 @@ suite('headerColumns', () => {
 			'select-all alive'
 		);
 		assert.exists(
-			omnitable.shadowRoot.querySelector(
-				'.header cosmoz-omnitable-header-row cosmoz-omnitable-settings'
-			),
-			'⋮ alive inside the header-row'
+			omnitable.shadowRoot.querySelector('.header > cosmoz-omnitable-settings'),
+			'⋮ alive'
 		);
 	});
 
