@@ -63,8 +63,6 @@ export const useFastLayout = ({
 					!column.disabled
 			)
 			.map((column) => column.name),
-		// layout is a new array on every pixel of width, and rows re-render
-		// whenever this identity changes; key it on the collapsed set instead.
 		collapsedColumns = useMemo(
 			() => collapsedNames.map((name) => columns.find((c) => c.name === name)),
 			[columns, collapsedNames.join()]
