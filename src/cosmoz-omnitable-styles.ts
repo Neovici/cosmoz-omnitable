@@ -230,7 +230,6 @@ export default css`
 	.tableContent-empty > slot > svg {
 		width: calc(var(--cz-spacing) * 10);
 		height: calc(var(--cz-spacing) * 10);
-		margin: 0 !important;
 	}
 
 	.tableContent-empty:has(cosmoz-omnitable-skeleton) {
@@ -288,8 +287,8 @@ export default css`
 		flex-direction: column;
 	}
 
-	/* Rows sit inside the table's edge with no rules between them: a hover,
-	   a selection or an open row reads as one rounded fill. */
+	/* Rows sit inside the table's edge with no rules between them: a hover
+	   or a selection reads as one rounded fill. */
 	.itemRow {
 		margin-inline: calc(var(--cz-spacing) * 2);
 		border-radius: var(--cz-radius-md);
@@ -303,7 +302,7 @@ export default css`
 		padding-right: calc(var(--cz-spacing) * 2);
 	}
 
-	/* A selected row takes the brand tint and a brand edge, so a selection
+	/* A selected row takes the brand tint, so a selection
 	   reads at a glance down a long list. */
 	.itemRow[selected] {
 		background-color: color-mix(
@@ -425,8 +424,6 @@ export default css`
 	/* Selection actions float over the list as a raised bar, not a slab
 	   across it. The raised shadow is newer than some consumers' tokens. */
 	cosmoz-bottom-bar {
-		/* The bar is solid, so its glass buttons need no blur; text over a
-		   live blur renders differently from one frame to the next. */
 		--cz-backdrop-filter-glass: none;
 		position: absolute;
 		inset-inline: 0;
@@ -436,8 +433,9 @@ export default css`
 		margin-inline: auto;
 		border: 0;
 		border-radius: var(--cz-radius-xl);
-		/* Solid, not glass: text over a live blur renders differently from one
-		   frame to the next, which breaks screenshot tests of a selection. */
+		/* Solid, not glass, and so are its buttons: text over a live blur
+		   renders differently from one frame to the next, which breaks
+		   screenshot tests of a selection. */
 		background: var(--cz-color-bg-primary);
 		box-shadow: var(
 				--cz-shadow-raised,
@@ -452,7 +450,8 @@ export default css`
 	cosmoz-bottom-bar::part(bar) {
 		height: calc(var(--cz-spacing) * 13);
 		gap: calc(var(--cz-spacing) * 2);
-		padding: 0 calc(var(--cz-spacing) * 2) 0 calc(var(--cz-spacing) * 4);
+		padding-block: 0;
+		padding-inline: calc(var(--cz-spacing) * 4) calc(var(--cz-spacing) * 2);
 	}
 	.mainContainer:has(cosmoz-bottom-bar[active]) .tableContent-scroller {
 		padding-bottom: calc(var(--cz-spacing) * 20);
@@ -463,8 +462,7 @@ export default css`
 	}
 
 	.omnitable-cell-number,
-	.omnitable-cell-date,
-	.amount-cell {
+	.omnitable-cell-date {
 		font-variant-numeric: tabular-nums;
 	}
 
@@ -479,8 +477,7 @@ export default css`
 		);
 	}
 
-	.groupRow:hover .checkbox:not(:checked):not(:hover),
-	.itemRow:hover .checkbox:not(:checked):not(:hover) {
+	.groupRow:hover .checkbox:not(:checked):not(:hover) {
 		box-shadow: 0 0 0 2px
 			rgb(from var(--cz-color-text-primary) r g b / calc(alpha * 0.75)) inset;
 	}
@@ -501,9 +498,9 @@ export default css`
 			opacity: 0;
 			transition: opacity 120ms;
 		}
-		.itemRow:is(:hover, :has(:focus-visible)) .checkbox,
-		.itemRow:is(:hover, :has(:focus-visible)) cosmoz-button.expand,
-		.mainContainer:has(.itemRow[selected]) .itemRow .checkbox {
+		.itemRow:is(:hover, :focus-within) .checkbox,
+		.itemRow:is(:hover, :focus-within) cosmoz-button.expand,
+		.mainContainer:has(cosmoz-bottom-bar[active]) .itemRow .checkbox {
 			opacity: 1;
 		}
 	}
