@@ -512,12 +512,14 @@ export default css`
 	   anything is selected, every checkbox shows. */
 	@media (hover: hover) {
 		.itemRow .checkbox:not(:checked),
-		.itemRow cosmoz-button.expand:not([aria-expanded]) {
+		.itemRow cosmoz-button.expand:not([aria-expanded]),
+		.itemRow .row-menu-trigger {
 			opacity: 0;
 			transition: opacity 120ms;
 		}
 		.itemRow:is(:hover, :focus-within) .checkbox,
 		.itemRow:is(:hover, :focus-within) cosmoz-button.expand,
+		.itemRow:is(:hover, :focus-within) .row-menu-trigger,
 		.mainContainer:has(cosmoz-bottom-bar[active]) .itemRow .checkbox {
 			opacity: 1;
 		}
@@ -703,6 +705,44 @@ export default css`
 
 	:host([mini]) cosmoz-omnitable-settings::part(columns) {
 		display: none;
+	}
+
+	/* Per-row action menu: the trigger sits next to the checkbox in a fixed
+	   slot, which the header keeps empty so the columns stay aligned. The
+	   menu is one solid raised popover at the trigger or the pointer. */
+	cosmoz-button.row-menu-trigger {
+		flex: none;
+		--cz-control-height-md: 24px;
+		width: 24px;
+		margin-inline-end: var(--cz-spacing);
+		color: var(--cz-color-fg-quaternary);
+	}
+	:host([row-menu]) .header cosmoz-omnitable-header-row {
+		margin-inline-start: calc(var(--cz-spacing) + 24px);
+	}
+	.row-menu {
+		position: fixed;
+		inset: auto;
+		margin: 0;
+		min-width: 220px;
+		max-width: 320px;
+		max-height: min(420px, calc(100dvh - 16px));
+		overflow-y: auto;
+		box-sizing: border-box;
+		padding: var(--cz-spacing);
+		border: 0;
+		border-radius: var(--cz-radius-lg);
+		background: var(--cz-color-bg-primary);
+		box-shadow: var(
+				--cz-shadow-raised,
+				0 0 0 1px var(--cz-color-border-secondary)
+			),
+			var(--cz-shadow-lg);
+		color: var(--cz-color-text-primary);
+		font-family: inherit;
+		font-size: var(--cz-text-sm);
+		line-height: var(--cz-text-sm-line-height);
+		outline: none;
 	}
 
 	:host([inline]) {

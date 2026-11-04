@@ -37,6 +37,7 @@ const Omnitable = (host) => {
 			</div>
 			${renderFooter(footer)}
 		</div>
+		${list.renderRowMenu()}
 
 		<div id="columns">
 			<slot id="columnsSlot"></slot>

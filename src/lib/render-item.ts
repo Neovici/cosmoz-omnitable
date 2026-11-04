@@ -1,8 +1,12 @@
 import '@neovici/cosmoz-button';
-import { chevronDownIcon } from '@neovici/cosmoz-icons/untitled';
+import {
+	chevronDownIcon,
+	dotsHorizontalIcon,
+} from '@neovici/cosmoz-icons/untitled';
 import { isEmpty } from '@neovici/cosmoz-utils/template';
 import { html } from '@pionjs/pion';
 import { t } from 'i18next';
+import { when } from 'lit-html/directives/when.js';
 
 import { renderMinis } from './render-mini';
 import type { HostRenderItem } from './types';
@@ -24,6 +28,8 @@ export const renderItem: HostRenderItem = (
 		rowPartFn,
 		groupOnColumn,
 		dataIsValid,
+		onRowMenu,
+		onRowContextMenu,
 	}
 ) =>
 	html`
@@ -36,6 +42,7 @@ export const renderItem: HostRenderItem = (
 			.dataItem=${item}
 			class="itemRow"
 			@click=${onItemClick}
+			@contextmenu=${onRowContextMenu}
 		>
 			<div class="itemRow-wrapper" part="itemRow-wrapper">
 				<input
@@ -47,6 +54,21 @@ export const renderItem: HostRenderItem = (
 					@input=${onCheckboxChange}
 					?disabled=${!dataIsValid}
 				/>
+				${when(
+					onRowMenu,
+					() =>
+						html`<cosmoz-button
+							aria-label=${t('Actions')}
+							aria-haspopup="menu"
+							variant="tertiary"
+							icon-only
+							class="row-menu-trigger"
+							part="row-menu-trigger"
+							@click=${onRowMenu}
+						>
+							${dotsHorizontalIcon({ width: '16', height: '16' })}
+						</cosmoz-button>`
+				)}
 				<cosmoz-omnitable-item-row
 					part="itemRow-inner"
 					.columns=${columns}
