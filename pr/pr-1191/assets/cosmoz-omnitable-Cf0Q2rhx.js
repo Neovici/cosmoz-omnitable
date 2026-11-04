@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r,Dt as i,E as a,G as o,Ht as s,I as c,It as l,Kt as u,Mt as d,O as f,P as p,Pt as m,Q as h,R as g,Rt as _,S as v,T as y,U as b,Ut as x,V as S,X as C,Xt as w,Yt as T,Z as ee,_ as te,_t as ne,at as E,b as D,bt as re,c as O,ct as ie,d as ae,dt as oe,et as se,f as ce,ft as k,gt as le,ht as ue,i as de,it as fe,kt as pe,l as me,lt as he,m as ge,mt as _e,n as ve,ot as ye,p as be,pt as xe,q as Se,qt as Ce,r as we,s as Te,st as Ee,tt as De,u as Oe,ut as ke,v as Ae,vt as A,w as j,x as M,y as N,yt as P,z as je}from"./iframe-DDhhaMyh.js";import{A as Me,B as F,C as Ne,D as Pe,E as Fe,F as I,G as Ie,H as Le,I as Re,J as ze,L as Be,M as Ve,N as He,O as Ue,P as L,R as We,S as Ge,T as Ke,U as qe,V as R,W as Je,_ as Ye,d as Xe,f as Ze,g as Qe,h as $e,j as et,k as tt,l as nt,m as rt,n as it,q as at,r as ot,s as st,t as ct,u as lt,v as ut,w as dt,x as ft,y as pt,z as mt}from"./dist-Deso3m-M.js";var ht,gt;function z(){return(z=e((()=>{p(),oe(),ie(),A(),ht=k`
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r,Dt as i,E as a,G as o,Ht as s,I as c,It as l,Kt as u,Mt as d,O as f,P as p,Pt as m,Q as h,R as g,Rt as _,S as v,T as y,U as b,Ut as x,V as S,X as C,Xt as w,Yt as T,Z as ee,_ as te,_t as ne,at as E,b as D,bt as re,c as O,ct as ie,d as ae,dt as oe,et as se,f as ce,ft as k,gt as le,ht as ue,i as de,it as fe,kt as pe,l as me,lt as he,m as ge,mt as _e,n as ve,ot as ye,p as be,pt as xe,q as Se,qt as Ce,r as we,s as Te,st as Ee,tt as De,u as Oe,ut as ke,v as Ae,vt as A,w as j,x as M,y as N,yt as P,z as je}from"./iframe-DWJxfKPp.js";import{A as Me,B as F,C as Ne,D as Pe,E as Fe,F as I,G as Ie,H as Le,I as Re,J as ze,L as Be,M as Ve,N as He,O as Ue,P as L,R as We,S as Ge,T as Ke,U as qe,V as R,W as Je,_ as Ye,d as Xe,f as Ze,g as Qe,h as $e,j as et,k as tt,l as nt,m as rt,n as it,q as at,r as ot,s as st,t as ct,u as lt,v as ut,w as dt,x as ft,y as pt,z as mt}from"./dist-B_MiIxof.js";var ht,gt;function z(){return(z=e((()=>{p(),oe(),ie(),A(),ht=k`
 	:host {
 		display: flex;
 		cursor: pointer;
@@ -1137,6 +1137,9 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 	/* Selection actions float over the list as a raised bar, not a slab
 	   across it. The raised shadow is newer than some consumers' tokens. */
 	cosmoz-bottom-bar {
+		/* The bar is solid, so its glass buttons need no blur; text over a
+		   live blur renders differently from one frame to the next. */
+		--cz-backdrop-filter-glass: none;
 		position: absolute;
 		inset-inline: 0;
 		bottom: calc(var(--cz-spacing) * 4);
