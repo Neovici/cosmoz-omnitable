@@ -54,7 +54,7 @@ export default {
 			description: {
 				component:
 					'Set `rowMenu` to `(items) => template` to give each row an action menu. ' +
-					'Open it from the "…" button on a row, or by right-clicking the row. ' +
+					'Right-click a row to open it. ' +
 					'A row inside a multi-row selection acts on the whole selection. ' +
 					'Clicking a `role="menuitem"` closes the menu (logged in the Actions panel).',
 			},

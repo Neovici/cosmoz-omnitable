@@ -134,9 +134,7 @@ export const useList = ({
 
 		if (
 			path.some(
-				(el) =>
-					el instanceof Element &&
-					el.matches('a, .checkbox, .expand, .row-menu-trigger')
+				(el) => el instanceof Element && el.matches('a, .checkbox, .expand')
 			)
 		) {
 			return;

@@ -18,7 +18,7 @@ interface MenuState {
 	y: number;
 	/** Had focus when the menu opened; gets it back when the menu closes. */
 	opener?: HTMLElement;
-	/** The "…" button that opened the menu, if any. */
+	/** The consumer's button that opened the menu, if any. */
 	trigger?: HTMLElement;
 	/** Set while closing: whether focus was inside the menu. */
 	hadFocus?: boolean;
@@ -36,8 +36,8 @@ const GAP = 4,
 		]);
 
 /**
- * A per-row action menu: opened from a row's "…" button or by right-clicking
- * the row. A row inside a multi-row selection acts on the whole selection,
+ * A per-row action menu: opened by right-clicking a row, or from a button a
+ * custom renderItem wires to `onRowMenu`. A row inside a multi-row selection acts on the whole selection,
  * any other row on itself. The host supplies the content through `rowMenu`.
  */
 export const useRowMenu = (
@@ -103,11 +103,6 @@ export const useRowMenu = (
 			},
 			[open]
 		);
-
-	// Lets the header reserve the trigger's slot, so columns stay aligned.
-	useEffect(() => {
-		host.toggleAttribute('row-menu', !!rowMenu);
-	}, [rowMenu]);
 
 	// The rows it was opened for are gone or have moved.
 	useEffect(() => setMenu(undefined), [processedItems]);
