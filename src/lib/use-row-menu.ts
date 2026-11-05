@@ -76,7 +76,10 @@ export const useRowMenu = (
 			(e: Event) => {
 				e.stopPropagation();
 				const trigger = e.currentTarget as HTMLElement,
-					row = trigger.closest('.itemRow') as RowElement | null,
+					// Through shadow roots, for a custom renderItem's own row element.
+					row = e.composedPath().find((el) => (el as RowElement).dataItem) as
+						| RowElement
+						| undefined,
 					{ trigger: last, at } = dismissed.current!;
 				if (!row || (last === trigger && performance.now() - at < 500)) {
 					return;

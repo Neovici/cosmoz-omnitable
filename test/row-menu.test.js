@@ -186,3 +186,50 @@ suite('row menu', () => {
 		assert.isFalse(!!menu(omnitable), 'the menu is closed');
 	});
 });
+
+suite('row menu: custom renderItem', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
+
+	customElements.define(
+		'row-menu-test-row',
+		class extends HTMLElement {
+			connectedCallback() {
+				const button = document.createElement('button');
+				button.className = 'trigger';
+				button.addEventListener('click', (e) => this.onRowMenu(e));
+				this.attachShadow({ mode: 'open' }).append(button);
+			}
+		}
+	);
+
+	test('a trigger in the row\'s shadow root opens the menu for its row', async () => {
+		const calls = [];
+		await ensureDemoI18nInitialized();
+		const omnitable = await setupOmnitableFixture(
+			html`<cosmoz-omnitable
+				.rowMenu=${(items) => calls.push(items)}
+				.renderItem=${(item, index, { onRowMenu }) =>
+					html`<row-menu-test-row
+						.dataItem=${item}
+						.onRowMenu=${onRowMenu}
+					></row-menu-test-row>`}
+			>
+				<cosmoz-omnitable-column
+					name="name"
+					value-path="name"
+				></cosmoz-omnitable-column>
+			</cosmoz-omnitable>`,
+			generateTableDemoData(5, 5, 25)
+		);
+		await perform(async ({ page, expect }) => {
+			await expect(page.locator('row-menu-test-row').nth(1)).toBeAttached();
+		});
+		const row = omnitable.shadowRoot.querySelectorAll('row-menu-test-row')[1];
+
+		row.shadowRoot.querySelector('.trigger').click();
+		await nextFrame();
+
+		assert.isTrue(menu(omnitable).matches(':popover-open'));
+		assert.deepEqual(calls.at(-1), [row.dataItem]);
+	});
+});
