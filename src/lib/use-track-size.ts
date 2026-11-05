@@ -10,7 +10,7 @@ export const LAYOUT_OFFSET =
 
 export const useTrackSize = (
 	host: HTMLElement,
-	setCanvasWidth: (width: number) => void
+	setCanvasWidth: (width: number) => void,
 ) =>
 	useEffect(() => {
 		const onResize = ([entry]: ResizeObserverEntry[]) => {

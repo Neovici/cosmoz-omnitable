@@ -437,10 +437,8 @@ export default css`
 		   renders differently from one frame to the next, which breaks
 		   screenshot tests of a selection. */
 		background: var(--cz-color-bg-primary);
-		box-shadow: var(
-				--cz-shadow-raised,
-				0 0 0 1px var(--cz-color-border-secondary)
-			),
+		box-shadow:
+			var(--cz-shadow-raised, 0 0 0 1px var(--cz-color-border-secondary)),
 			var(--cz-shadow-lg);
 		color: var(--cz-color-text-primary);
 		font-size: var(--cz-text-sm);
