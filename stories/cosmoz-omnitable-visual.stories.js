@@ -1,4 +1,5 @@
 import { html } from 'lit-html';
+import '@neovici/cosmoz-button';
 import '../src/cosmoz-omnitable.js';
 import demoData from './data.json';
 
@@ -43,6 +44,6 @@ export const Hierarchy = () => html`
 			priority="-1"
 			width="200px"
 		></cosmoz-omnitable-column>
-		<button slot="actions">Export</button>
+		<cosmoz-button slot="actions" size="sm">Export</cosmoz-button>
 	</cosmoz-omnitable>
 `;
