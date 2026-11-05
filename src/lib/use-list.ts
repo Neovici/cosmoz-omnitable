@@ -155,6 +155,15 @@ export const useList = ({
 			[]
 		);
 
+	const visibleColumns = useMemo(
+		() =>
+			columns.filter(
+				(column) =>
+					column.editable ||
+					(column !== groupOnColumn && !collapsedColumns.includes(column))
+			),
+		[columns, collapsedColumns, groupOnColumn]
+	);
 	return {
 		...rest,
 		processedItems,
@@ -172,6 +181,7 @@ export const useList = ({
 					renderItem(item, item[indexSymbol], {
 						...params,
 						columns,
+						visibleColumns,
 						collapsedColumns,
 						miniColumns,
 						onItemClick,
@@ -184,6 +194,7 @@ export const useList = ({
 			[
 				renderItem,
 				columns,
+				visibleColumns,
 				collapsedColumns,
 				miniColumns,
 				onItemClick,

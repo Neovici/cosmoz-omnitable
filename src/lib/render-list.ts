@@ -21,6 +21,7 @@ interface HeaderParams {
 }
 
 interface ListParams {
+	fixedRowHeight?: number;
 	processedItems: (Item | unknown)[];
 	dataIsValid: boolean;
 	filterIsTooStrict: boolean;
@@ -50,6 +51,7 @@ export const renderList = (header: HeaderParams, list: ListParams) => {
 			renderItem,
 			renderGroup,
 			error,
+			fixedRowHeight,
 		} = list;
 
 	return html`${when(
@@ -119,6 +121,7 @@ export const renderList = (header: HeaderParams, list: ListParams) => {
 			<cosmoz-grouped-list
 				id="groupedList"
 				.data=${processedItems}
+				.fixedRowHeight=${fixedRowHeight}
 				.selectedItems=${selectedItems}
 				@selected-items-changed=${lift(setSelectedItems)}
 				.displayEmptyGroups=${

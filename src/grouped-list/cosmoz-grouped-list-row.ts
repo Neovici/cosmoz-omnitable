@@ -5,6 +5,7 @@ customElements.define(
 	'cosmoz-grouped-list-row',
 	class Element extends HTMLElement {
 		private _item?: Item;
+		private _renderPending = false;
 		private _index?: number;
 		private _renderFn?: (item: Item, index: number) => unknown;
 
@@ -31,7 +32,7 @@ customElements.define(
 		}
 
 		set renderFn(
-			renderFn: ((item: Item, index: number) => unknown) | undefined,
+			renderFn: ((item: Item, index: number) => unknown) | undefined
 		) {
 			this._renderFn = renderFn;
 			this._render();
@@ -42,7 +43,18 @@ customElements.define(
 				return;
 			}
 
-			render(this._renderFn(this._item, this._index), this);
+			if (this._renderPending) return;
+			this._renderPending = true;
+			queueMicrotask(() => {
+				this._renderPending = false;
+				if (
+					this._item != null &&
+					this._index != null &&
+					this._renderFn != null
+				) {
+					render(this._renderFn(this._item, this._index), this);
+				}
+			});
 		}
-	},
+	}
 );

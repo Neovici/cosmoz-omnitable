@@ -16,6 +16,7 @@ export const renderItem: HostRenderItem = (
 		expanded,
 		toggleCollapse,
 		columns,
+		visibleColumns,
 		collapsedColumns,
 		miniColumns,
 		onItemClick,
@@ -49,7 +50,12 @@ export const renderItem: HostRenderItem = (
 				/>
 				<cosmoz-omnitable-item-row
 					part="itemRow-inner"
-					.columns=${columns}
+					.columns=${visibleColumns ??
+					columns.filter(
+						(column) =>
+							column.editable ||
+							(column !== groupOnColumn && !collapsedColumns.includes(column))
+					)}
 					.index=${index}
 					.selected=${selected}
 					.expanded=${expanded}

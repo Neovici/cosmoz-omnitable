@@ -40,8 +40,7 @@ const _assertDataIsHomogeneous = (data: unknown[]): void => {
 
 	const firstItemIsAGroup = Array.isArray((data[0] as GroupItem)?.items),
 		isHomogeneous = data.every(
-			(group) =>
-				Array.isArray((group as GroupItem).items) === firstItemIsAGroup,
+			(group) => Array.isArray((group as GroupItem).items) === firstItemIsAGroup
 		);
 
 	if (!isHomogeneous) {
@@ -52,7 +51,7 @@ const _assertDataIsHomogeneous = (data: unknown[]): void => {
 const prepareData = <T extends Item>(
 	data: T[] | GroupItem<T>[],
 	displayEmptyGroups: boolean,
-	itemsState: ItemsState,
+	itemsState: ItemsState
 ): (T | GroupItem<T>)[] | undefined => {
 	if (!Array.isArray(data)) {
 		return;
@@ -61,37 +60,23 @@ const prepareData = <T extends Item>(
 	// data should be either all items or all grouped items, never mixed
 	_assertDataIsHomogeneous(data);
 
-	const flatData = data.reduce(
-		(acc, item) => {
-			const groupItem = item as GroupItem<T>;
-
-			// simple items
-			if (!groupItem.items) {
-				return acc.concat(item);
-			}
-
-			// groups with items
-			if (groupItem.items.length) {
-				if (getItemState(item, itemsState).folded) {
-					return acc.concat(item);
+	const flatData: (T | GroupItem<T>)[] = [];
+	for (const item of data) {
+		if (!('items' in item) || !Array.isArray(item.items)) {
+			flatData.push(item);
+			continue;
+		}
+		if (item.items.length) {
+			flatData.push(item);
+			if (!getItemState(item, itemsState).folded) {
+				for (const child of item.items) {
+					flatData.push(Object.assign(child, { [symbols.group]: item }));
 				}
-				return acc.concat(
-					item,
-					groupItem.items.map((i) =>
-						Object.assign(i as Item, { [symbols.group]: item }),
-					),
-				);
 			}
-
-			// groups without items
-			if (displayEmptyGroups) {
-				return acc.concat(item);
-			}
-
-			return acc;
-		},
-		[] as (T | GroupItem<T>)[],
-	);
+		} else if (displayEmptyGroups) {
+			flatData.push(item);
+		}
+	}
 
 	return flatData;
 };
@@ -110,12 +95,12 @@ const callFn = <T, A extends unknown[]>(
 const byReference = <T>(a: T, b: T): boolean => a === b;
 
 export {
-	symbols,
-	prepareData,
+	byReference,
+	callFn,
 	getItemState,
 	isExpanded,
 	isFolded,
 	isGroup,
-	callFn,
-	byReference,
+	prepareData,
+	symbols,
 };

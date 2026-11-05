@@ -151,6 +151,7 @@ export interface HeaderRenderData {
 }
 
 export interface ItemRenderParams extends GroupedListRowParams {
+	visibleColumns?: Column[];
 	columns: Column[];
 	collapsedColumns: Column[];
 	miniColumns: Column[];
