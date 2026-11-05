@@ -1,5 +1,4 @@
 import { html } from 'lit-html';
-import '../src/cosmoz-omnitable-columns.ts';
 import '../src/cosmoz-omnitable.js';
 import demoData from './data.json';
 
