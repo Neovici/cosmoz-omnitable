@@ -91,6 +91,12 @@ export const useRowMenu = (
 		),
 		onRowContextMenu = useCallback(
 			(e: MouseEvent) => {
+				// Leave links and selected text to the browser's own menu
+				// (open in new tab, copy).
+				const onLink = e
+					.composedPath()
+					.some((el) => el instanceof Element && el.matches('a[href]'));
+				if (onLink || !document.getSelection()?.isCollapsed) return;
 				e.preventDefault();
 				open(e.currentTarget as RowElement, { x: e.clientX, y: e.clientY });
 			},

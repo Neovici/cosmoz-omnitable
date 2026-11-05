@@ -92,6 +92,30 @@ suite('row menu', () => {
 		assert.closeTo(menu(omnitable).getBoundingClientRect().left, x, 1);
 	});
 
+	test('right-clicking a link or selected text leaves the browser menu', async () => {
+		const [row] = rows(omnitable),
+			rightClick = (target) =>
+				target.dispatchEvent(
+					new MouseEvent('contextmenu', {
+						bubbles: true,
+						composed: true,
+						cancelable: true,
+					})
+				),
+			link = Object.assign(document.createElement('a'), { href: '#x' });
+		row.querySelector('cosmoz-omnitable-item-row').append(link);
+
+		assert.isTrue(rightClick(link), 'not prevented on a link');
+		document.getSelection().selectAllChildren(row);
+		assert.isTrue(rightClick(row), 'not prevented on selected text');
+		await nextFrame();
+		assert.isFalse(!!menu(omnitable), 'the menu stays closed');
+
+		link.remove();
+		document.getSelection().removeAllRanges();
+		assert.isFalse(rightClick(row), 'the row menu takes over again');
+	});
+
 	test('a row in a multi-row selection acts on the whole selection', async () => {
 		const all = rows(omnitable);
 		all[0].querySelector('.checkbox').click();
