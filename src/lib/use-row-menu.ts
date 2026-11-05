@@ -142,13 +142,18 @@ export const useRowMenu = (
 					style=${styleMap({ left: `${menu.x}px`, top: `${menu.y}px` })}
 					${ref((el) => (popover.current = el as HTMLElement))}
 					@keydown=${(e: KeyboardEvent) => {
-						// The menu itself holds focus until an item does; the
-						// content handles arrow keys from there.
-						if (e.target !== popover.current) return;
-						const items = menuItems(popover.current),
-							first = ['ArrowDown', 'Home'].includes(e.key),
-							last = ['ArrowUp', 'End'].includes(e.key),
-							item = first ? items[0] : last && items[items.length - 1];
+						if (e.defaultPrevented) return;
+						const items = menuItems(popover.current!),
+							last = items.length - 1,
+							// -1 while the menu itself has focus.
+							i = items.indexOf(activeElement() as HTMLElement),
+							next = {
+								ArrowDown: i < last ? i + 1 : 0,
+								ArrowUp: i > 0 ? i - 1 : last,
+								Home: 0,
+								End: last,
+							}[e.key],
+							item = next === undefined ? undefined : items[next];
 						if (!item) return;
 						e.preventDefault();
 						item.focus();

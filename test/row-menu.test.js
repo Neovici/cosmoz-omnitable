@@ -175,6 +175,25 @@ suite('row menu', () => {
 		);
 	});
 
+	test('arrow keys move between the items and wrap around', async () => {
+		omnitable.rowMenu = () =>
+			html`<button role="menuitem">One</button
+				><button role="menuitem">Two</button>`;
+		await nextFrame();
+		rows(omnitable)[0].querySelector('.row-menu-trigger').click();
+		await nextFrame();
+		const press = (key) =>
+			perform(async ({ page }, key) => page.keyboard.press(key), key);
+
+		await press('ArrowDown');
+		await press('ArrowDown');
+		assert.equal(activeElement()?.textContent, 'Two');
+		await press('ArrowDown');
+		assert.equal(activeElement()?.textContent, 'One');
+		await press('ArrowUp');
+		assert.equal(activeElement()?.textContent, 'Two');
+	});
+
 	test('the menu closes when the data changes', async () => {
 		rows(omnitable)[0].querySelector('.row-menu-trigger').click();
 		await nextFrame();
