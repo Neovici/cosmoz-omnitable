@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{Qt as t,Zt as n}from"./iframe-BLfPNmMu.js";import{t as r}from"./cosmoz-omnitable-BISmuH1W.js";var i,a,o,s,c,l;function u(){return(u=e((()=>{t(),r(),{action:i}=__STORYBOOK_MODULE_ACTIONS__,a=Array.from({length:20},(e,t)=>({name:`Invoice ${1001+t}`,supplier:[`Acme`,`Globex`,`Initech`,`Umbrella`][t%4],amount:{amount:(t+1)*125.5,currency:`EUR`}})),o=e=>n`
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{Xt as t,Yt as n}from"./iframe-C6dW2lso.js";import{t as r}from"./cosmoz-omnitable-CyZ6yA1I.js";var i,a,o,s,c,l;function u(){return(u=e((()=>{t(),r(),{action:i}=__STORYBOOK_MODULE_ACTIONS__,a=Array.from({length:20},(e,t)=>({name:`Invoice ${1001+t}`,supplier:[`Acme`,`Globex`,`Initech`,`Umbrella`][t%4],amount:{amount:(t+1)*125.5,currency:`EUR`}})),o=e=>n`
         <style>
             [role="menuitem"] {
                 display: block;
@@ -30,7 +30,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{Qt as t,Zt as n}from".
                 >
                     ${t}
                 </button>`)}
-    `,s={title:`Components/CosmozOmnitableRowMenu`,component:`cosmoz-omnitable`,parameters:{docs:{description:{component:'Set `rowMenu` to `(items) => template` to give each row an action menu. Open it from the "…" button on a row, or by right-clicking the row. A row inside a multi-row selection acts on the whole selection. Clicking a `role="menuitem"` closes the menu (logged in the Actions panel).'}}}},c={render:()=>n`
+    `,s={title:`Components/CosmozOmnitableRowMenu`,component:`cosmoz-omnitable`,parameters:{docs:{description:{component:'Set `rowMenu` to `(items) => template` to give each row an action menu. Right-click a row to open it. A row inside a multi-row selection acts on the whole selection. Clicking a `role="menuitem"` closes the menu (logged in the Actions panel).'}}}},c={render:()=>n`
         <style>
             .omnitable-container {
                 height: calc(80vh - 60px);
