@@ -2,6 +2,7 @@ import { useImperativeApi } from '@neovici/cosmoz-utils/hooks/use-imperative-api
 import { useNotifyProperty } from '@neovici/cosmoz-utils/hooks/use-notify-property';
 import { useEffect, useMemo, useProperty, useState } from '@pionjs/pion';
 
+import { animateRemoval } from './animate-removal';
 import type { Item } from './types';
 import { type TSelection } from './utils';
 
@@ -18,23 +19,27 @@ interface UsePublicInterfaceHost extends HTMLElement {
 }
 
 const mkNapi = (host: UsePublicInterfaceHost) => {
-	const /**
+	const remove = (items: Item[]) => {
+			const commit = () => {
+				host.data = host.data.filter((i) => !items.includes(i));
+			};
+			if (host.hasAttribute('animate-removal')) {
+				animateRemoval(host, items, commit);
+			} else {
+				commit();
+			}
+		},
+		/**
 		 * Helper method to remove an item from `data`.
 		 * @param	 {Object} item Item to remove
 		 * @return {Object} item removed
 		 */
 		removeItem = (item: Item): Item | null | undefined => {
-			const index = host.data.indexOf(item);
-
-			if (index < 0) {
+			if (!host.data.includes(item)) {
 				return null;
 			}
-
-			const removed = host.data.splice(index, 1);
-			host.data = host.data.slice();
-			if (Array.isArray(removed) && removed.length > 0) {
-				return removed[0];
-			}
+			remove([item]);
+			return item;
 		},
 		replaceItemAtIndex = (index: number, newItem: Item): void => {
 			host.data.splice(index, 1, newItem);
@@ -44,13 +49,9 @@ const mkNapi = (host: UsePublicInterfaceHost) => {
 	return {
 		removeItem,
 		removeItems(items: Item[]): Item[] {
-			const removedItems: Item[] = [];
-
-			for (let i = items.length - 1; i >= 0; i -= 1) {
-				const removed = removeItem(items[i]);
-				if (removed != null) {
-					removedItems.push(removed);
-				}
+			const removedItems = items.filter((i) => host.data.includes(i)).reverse();
+			if (removedItems.length > 0) {
+				remove(removedItems);
 			}
 			return removedItems;
 		},
