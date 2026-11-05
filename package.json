@@ -66,14 +66,15 @@
     "lint": "eslint --cache --ext .js,.ts src/",
     "check:duplicates": "check-duplicate-components",
     "start": "wds",
-    "test": "wtr --coverage",
+    "test": "wtr --coverage && npm run e2e",
     "test:watch": "wtr --watch",
     "storybook:start": "storybook dev -p 8000",
     "storybook:build": "storybook build",
     "storybook:deploy": "storybook-to-ghpages",
-    "storybook:preview": "npm run storybook:build && web-dev-server --root-dir ./storybook-static/ --open",
+    "storybook:preview": "npm run storybook:build && web-dev-server --root-dir ./storybook-static/ --hostname 127.0.0.1 --port 8080",
     "prepare": "husky",
-    "changeset": "changeset"
+    "changeset": "changeset",
+    "e2e": "playwright test"
   },
   "publishConfig": {
     "access": "public"

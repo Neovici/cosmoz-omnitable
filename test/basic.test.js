@@ -457,7 +457,7 @@ suite('fit columns behaviour', () => {
 			[true, true, true, true, true],
 		);
 
-		omnitable.style.width = '400px';
+		omnitable.style.width = '416px';
 		await nextFrame();
 		await nextFrame();
 		await nextFrame();

@@ -58,9 +58,9 @@ export const renderList = (header: HeaderParams, list: ListParams) => {
 				html`<div class="tableContent-empty">
 					<slot name="empty-set-message">
 						${announcementIcon({
-							width: '96px',
-							height: '96px',
-							styles: 'margin-right: 24px; fill: currentColor;',
+							width: '40px',
+							height: '40px',
+							styles: 'fill: currentColor;',
 						})}
 						<div class="tableContent-empty-message">
 							<h3>${t('Working set empty')}</h3>
@@ -74,9 +74,9 @@ export const renderList = (header: HeaderParams, list: ListParams) => {
 			() =>
 				html`<div class="tableContent-empty">
 					${announcementIcon({
-						width: '96px',
-						height: '96px',
-						styles: 'margin-right: 24px; fill: currentColor;',
+						width: '40px',
+						height: '40px',
+						styles: 'fill: currentColor;',
 					})}
 					<div>
 						<h3>${t('Filter too strict')}</h3>
@@ -105,9 +105,9 @@ export const renderList = (header: HeaderParams, list: ListParams) => {
 			() =>
 				html`<div class="tableContent-empty overlay">
 					${errorIcon({
-						width: '96px',
-						height: '96px',
-						styles: 'margin-right: 24px; fill: currentColor;',
+						width: '40px',
+						height: '40px',
+						styles: 'fill: currentColor;',
 					})}
 					<div class="tableContent-empty-message">
 						<h3>${t('Error loading data')}</h3>

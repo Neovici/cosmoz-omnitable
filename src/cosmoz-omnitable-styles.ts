@@ -14,7 +14,7 @@ export const checkbox = css`
 		user-select: none;
 		cursor: pointer;
 		display: inline-block;
-		box-shadow: inset 0 0 0 2px var(--cz-color-border-primary);
+		box-shadow: inset 0 0 0 1px var(--cz-color-border-primary);
 		-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 		transition: background-color 140ms;
 		margin: 1px calc(var(--cz-spacing) * 3);
@@ -51,8 +51,7 @@ export const checkbox = css`
 	}
 
 	.checkbox:hover {
-		box-shadow: 0 0 0 2px
-			rgb(from var(--cz-color-text-primary) r g b / calc(alpha * 0.75)) inset;
+		box-shadow: inset 0 0 0 1px var(--cz-color-fg-tertiary);
 	}
 
 	.checkbox:checked:hover {
@@ -105,7 +104,14 @@ export default css`
 		position: relative;
 		display: flex;
 		align-items: flex-end;
-		border-block: 1px solid var(--cz-color-border-secondary);
+		padding-inline: calc(var(--cz-spacing) * 2);
+	}
+
+	/* Column titles sit a step below the data they head. The header inputs
+	   nest in shadow roots (autocompletes wrap theirs), so the step is set
+	   through the token their labels read. */
+	cosmoz-omnitable-header-row {
+		--cz-color-text-secondary: var(--cz-color-text-quaternary);
 	}
 
 	[hidden] {
@@ -142,10 +148,28 @@ export default css`
 		width: 7px;
 		height: 100%;
 		margin-left: -3px;
-		background: transparent;
+		/* While the header is hovered, a short faint tick marks where a column
+		   can be resized; it runs the full height in the brand colour while
+		   the tick itself is hovered. */
+		background: linear-gradient(
+				var(--cz-color-border-secondary),
+				var(--cz-color-border-secondary)
+			)
+			center / 1px 0 no-repeat;
 		cursor: ew-resize;
 		z-index: 1000;
 		user-select: none;
+		transition: background-size 120ms;
+	}
+	.header:hover cosmoz-omnitable-resize-nub {
+		background-size: 1px 14px;
+	}
+	.header cosmoz-omnitable-resize-nub:hover {
+		background-image: linear-gradient(
+			var(--cz-color-border-brand),
+			var(--cz-color-border-brand)
+		);
+		background-size: 1px 100%;
 	}
 
 	.time-header-cell,
@@ -189,21 +213,30 @@ export default css`
 		opacity: 0.3;
 	}
 
-	/* Empty data set styling */
+	/* Empty data set styling: a small icon over a short title and line,
+	   centred and quiet, so an empty list doesn't shout. */
 	.tableContent-empty {
 		position: absolute;
 		inset: 0;
 		display: flex;
+		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		color: var(--cz-color-text-disabled);
+		gap: calc(var(--cz-spacing) * 3);
+		text-align: center;
+		color: var(--cz-color-text-quaternary);
+	}
+	.tableContent-empty > svg,
+	.tableContent-empty > slot > svg {
+		width: calc(var(--cz-spacing) * 10);
+		height: calc(var(--cz-spacing) * 10);
 	}
 
 	.tableContent-empty:has(cosmoz-omnitable-skeleton) {
+		flex-direction: row;
 		justify-content: stretch;
 	}
 	.tableContent-empty.overlay {
-		color: var(--cz-color-text-disabled);
 		z-index: 1;
 	}
 	.tableContent-empty > div {
@@ -219,25 +252,27 @@ export default css`
 		align-items: flex-start;
 	}
 	.tableContent-empty div.tableContent-empty-message {
-		@apply --layout-vertical;
-		@apply --layout-center-justified;
-
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 		padding-bottom: calc(var(--cz-spacing) * 6);
 	}
 	.tableContent-empty.overlay div.tableContent-empty-message {
 		padding-bottom: 0;
 	}
 	.tableContent-empty p {
-		font-size: var(--cz-text-base);
-		line-height: var(--cz-text-base-line-height);
-		color: #ddd;
+		font-size: var(--cz-text-sm);
+		line-height: var(--cz-text-sm-line-height);
+		color: var(--cz-color-text-tertiary);
 		margin: 0;
 	}
 	.tableContent-empty h3 {
-		font-size: var(--cz-text-xl);
-		line-height: var(--cz-text-xl-line-height);
+		font-size: var(--cz-text-base);
+		line-height: var(--cz-text-base-line-height);
+		font-weight: var(--cz-font-weight-semibold);
+		color: var(--cz-color-text-secondary);
 		white-space: nowrap;
-		margin: 0px 0px 8px 0px;
+		margin: 0 0 var(--cz-spacing);
 	}
 
 	/* End of empty data set styling */
@@ -252,8 +287,13 @@ export default css`
 		flex-direction: column;
 	}
 
+	/* Rows sit inside the table's edge with no rules between them: a hover
+	   or a selection reads as one rounded fill. */
 	.itemRow {
-		border-bottom: 1px var(--cz-color-border-secondary) solid;
+		margin-inline: calc(var(--cz-spacing) * 2);
+		border-radius: var(--cz-radius-md);
+		font-variant-numeric: tabular-nums;
+		transition: background-color 120ms;
 	}
 	.itemRow-wrapper {
 		display: flex;
@@ -262,8 +302,14 @@ export default css`
 		padding-right: calc(var(--cz-spacing) * 2);
 	}
 
+	/* A selected row takes the brand tint, so a selection
+	   reads at a glance down a long list. */
 	.itemRow[selected] {
-		background-color: var(--cz-color-bg-primary-hover);
+		background-color: color-mix(
+			in oklab,
+			var(--cz-color-bg-brand-secondary) 55%,
+			transparent
+		);
 	}
 
 	.itemRow-cell {
@@ -280,9 +326,12 @@ export default css`
 		flex-direction: column;
 		font-size: var(--cz-text-sm);
 		line-height: var(--cz-text-sm-line-height);
-		padding: 5px 4%;
-		border-bottom: 1px var(--cz-color-border-secondary) solid;
-		background-color: var(--cz-color-bg-disabled);
+		margin: 0 calc(var(--cz-spacing) * 2) var(--cz-spacing);
+		padding: calc(var(--cz-spacing) * 3) 4%;
+		border-radius: var(--cz-radius-md);
+		background-color: var(--cz-color-bg-secondary-subtle);
+		box-shadow: inset 0 1px 2px
+			color-mix(in oklab, var(--cz-color-black) 4%, transparent);
 		animation: expand-in 0.25s ease;
 	}
 
@@ -304,12 +353,13 @@ export default css`
 	.groupRow {
 		display: flex;
 		align-items: center;
-		background-color: var(--cz-color-bg-tertiary);
+		background-color: var(--cz-color-bg-secondary-subtle);
 		font-size: var(--cz-text-sm);
 		line-height: var(--cz-text-sm-line-height);
-		font-weight: var(--cz-font-weight-bold);
+		font-weight: var(--cz-font-weight-semibold);
 		color: var(--cz-color-text-primary);
-		border-bottom: 1px solid var(--cz-color-border-secondary);
+		margin-inline: calc(var(--cz-spacing) * 2);
+		border-radius: var(--cz-radius-md);
 	}
 
 	.groupRow-label {
@@ -371,28 +421,38 @@ export default css`
 		text-align: center;
 	}
 
+	/* Selection actions float over the list as a raised bar, not a slab
+	   across it. The raised shadow is newer than some consumers' tokens. */
 	cosmoz-bottom-bar {
-		background: rgb(
-			from var(--cz-color-bg-action-solid) r g b / calc(alpha * 0.45)
-		);
-		overflow: hidden;
-		color: var(--cz-color-text-on-action);
+		--cz-backdrop-filter-glass: none;
+		position: absolute;
+		inset-inline: 0;
+		bottom: calc(var(--cz-spacing) * 4);
+		width: fit-content;
+		max-width: calc(100% - var(--cz-spacing) * 8);
+		margin-inline: auto;
+		border: 0;
+		border-radius: var(--cz-radius-xl);
+		/* Solid, not glass, and so are its buttons: text over a live blur
+		   renders differently from one frame to the next, which breaks
+		   screenshot tests of a selection. */
+		background: var(--cz-color-bg-primary);
+		box-shadow:
+			var(--cz-shadow-raised, 0 0 0 1px var(--cz-color-border-secondary)),
+			var(--cz-shadow-lg);
+		color: var(--cz-color-text-primary);
+		font-size: var(--cz-text-sm);
+		line-height: var(--cz-text-sm-line-height);
+		z-index: 2;
 	}
 	cosmoz-bottom-bar::part(bar) {
-		padding: 0 calc(var(--cz-spacing) * 6);
+		height: calc(var(--cz-spacing) * 13);
+		gap: calc(var(--cz-spacing) * 2);
+		padding-block: 0;
+		padding-inline: calc(var(--cz-spacing) * 4) calc(var(--cz-spacing) * 2);
 	}
-
-	cosmoz-bottom-bar::slotted(*) {
-		background: rgb(
-			from var(--cz-color-bg-action-solid) r g b / calc(alpha * 0.75)
-		);
-		color: var(--cz-color-text-on-action);
-	}
-
-	cosmoz-bottom-bar::slotted([disabled]) {
-		color: var(--cz-color-text-disabled);
-		border-color: var(--cz-color-border-disabled);
-		cursor: not-allowed;
+	.mainContainer:has(cosmoz-bottom-bar[active]) .tableContent-scroller {
+		padding-bottom: calc(var(--cz-spacing) * 20);
 	}
 
 	.boolean-cell[editable] {
@@ -407,9 +467,15 @@ export default css`
 	.itemRow:hover {
 		background-color: var(--cz-color-bg-primary-hover);
 	}
+	.itemRow[selected]:hover {
+		background-color: color-mix(
+			in oklab,
+			var(--cz-color-bg-brand-secondary) 80%,
+			transparent
+		);
+	}
 
-	.groupRow:hover .checkbox:not(:checked):not(:hover),
-	.itemRow:hover .checkbox:not(:checked):not(:hover) {
+	.groupRow:hover .checkbox:not(:checked):not(:hover) {
 		box-shadow: 0 0 0 2px
 			rgb(from var(--cz-color-text-primary) r g b / calc(alpha * 0.75)) inset;
 	}
@@ -417,10 +483,25 @@ export default css`
 	.groupRow:hover .expand:not(:hover):not(cosmoz-button),
 	.itemRow:hover cosmoz-button.expand::part(button):not(:hover),
 	.itemRow:hover .expand:not(:hover):not(cosmoz-button) {
-		color: rgb(from var(--cz-color-text-primary) r g b / calc(alpha * 0.75));
+		color: var(--cz-color-fg-secondary);
 	}
 
 	${checkbox}
+
+	/* Row controls wait for the pointer, so the list reads as data. Once
+	   anything is selected, every checkbox shows. */
+	@media (hover: hover) {
+		.itemRow .checkbox:not(:checked),
+		.itemRow cosmoz-button.expand:not([aria-expanded]) {
+			opacity: 0;
+			transition: opacity 120ms;
+		}
+		.itemRow:is(:hover, :focus-within) .checkbox,
+		.itemRow:is(:hover, :focus-within) cosmoz-button.expand,
+		.mainContainer:has(cosmoz-bottom-bar[active]) .itemRow .checkbox {
+			opacity: 1;
+		}
+	}
 
 	.all {
 		align-self: center;
@@ -445,7 +526,7 @@ export default css`
 		background: none;
 		transition: 0.25s background ease-in;
 		outline: none;
-		color: var(--cz-color-text-primary);
+		color: var(--cz-color-fg-quaternary);
 		background: transparent;
 	}
 
