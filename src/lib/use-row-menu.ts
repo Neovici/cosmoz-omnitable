@@ -96,7 +96,8 @@ export const useRowMenu = (
 				const onLink = e
 					.composedPath()
 					.some((el) => el instanceof Element && el.matches('a[href]'));
-				if (onLink || !document.getSelection()?.isCollapsed) return;
+				// isCollapsed misreports selections inside shadow roots in Chrome.
+				if (onLink || document.getSelection()?.type === 'Range') return;
 				e.preventDefault();
 				open(e.currentTarget as RowElement, { x: e.clientX, y: e.clientY });
 			},
