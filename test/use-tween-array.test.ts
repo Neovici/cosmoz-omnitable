@@ -1,6 +1,6 @@
 import { renderHook } from '@neovici/testing';
 import { expect, nextFrame } from '@open-wc/testing';
-import { spy } from 'sinon';
+import { spy, stub } from 'sinon';
 import { useTweenArray } from '../src/lib/use-tween-array';
 
 const tick = async (frames = 1) => {
@@ -15,7 +15,7 @@ suite('useTweenArray', () => {
 		const { rerender } = await renderHook(
 			({ target, speed }: { target: number[]; speed: number }) =>
 				useTweenArray(target, speed, cb),
-			{ initialProps: { target: [0], speed: 1 } },
+			{ initialProps: { target: [0], speed: 1 } }
 		);
 
 		cb.resetHistory();
@@ -27,12 +27,31 @@ suite('useTweenArray', () => {
 		expect(cb.callCount).to.equal(1);
 	});
 
+	test('applies a snap without waiting for the next frame', async () => {
+		const cb = spy();
+		const { rerender } = await renderHook(
+			({ target, speed }: { target: number[]; speed: number }) =>
+				useTweenArray(target, speed, cb),
+			{ initialProps: { target: [0], speed: 1 } }
+		);
+
+		cb.resetHistory();
+		const raf = stub(window, 'requestAnimationFrame').returns(0);
+		try {
+			await rerender({ target: [100], speed: 1 });
+		} finally {
+			raf.restore();
+		}
+
+		expect(cb.calledWith([100])).to.equal(true);
+	});
+
 	test('eases toward target when speedFactor > 1', async () => {
 		const cb = spy();
 		const { rerender } = await renderHook(
 			({ target, speed }: { target: number[]; speed: number }) =>
 				useTweenArray(target, speed, cb),
-			{ initialProps: { target: [0], speed: 1 } },
+			{ initialProps: { target: [0], speed: 1 } }
 		);
 
 		cb.resetHistory();
@@ -59,7 +78,7 @@ suite('useTweenArray', () => {
 				speed: number;
 				onDone: () => void;
 			}) => useTweenArray(target, speed, cb, onDone),
-			{ initialProps: { target: [0], speed: 1, onDone: onConverge } },
+			{ initialProps: { target: [0], speed: 1, onDone: onConverge } }
 		);
 
 		onConverge.resetHistory();
@@ -74,7 +93,7 @@ suite('useTweenArray', () => {
 		const { rerender } = await renderHook(
 			({ target, speed }: { target: number[]; speed: number }) =>
 				useTweenArray(target, speed, cb),
-			{ initialProps: { target: [0], speed: 1 } },
+			{ initialProps: { target: [0], speed: 1 } }
 		);
 
 		// Change to speed 1.9 with a new target -> should ease (not snap)
