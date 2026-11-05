@@ -1,3 +1,9 @@
+## 19.4.2
+
+### Patch Changes
+
+- 3c03852: Keep rows from re-rendering on every pixel of a width change: collapsed columns keep their identity until a column actually collapses or expands.
+
 ## 19.4.1
 
 ### Patch Changes

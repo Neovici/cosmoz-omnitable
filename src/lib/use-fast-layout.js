@@ -55,18 +55,17 @@ export const useFastLayout = ({
 			config: settings.columns,
 		}),
 		styleSheet = useAdoptedStyleSheet(host),
+		collapsedNames = settings.columns
+			.filter(
+				(column, index) =>
+					layout[index] == null &&
+					column.name !== groupOnColumn?.name &&
+					!column.disabled
+			)
+			.map((column) => column.name),
 		collapsedColumns = useMemo(
-			() =>
-				settings.columns.reduce(
-					(acc, column, index) =>
-						layout[index] != null ||
-						column.name === groupOnColumn?.name ||
-						column.disabled
-							? acc
-							: [...acc, columns.find((c) => c.name === column.name)],
-					[]
-				),
-			[columns, settings, layout]
+			() => collapsedNames.map((name) => columns.find((c) => c.name === name)),
+			[columns, collapsedNames.join()]
 		);
 
 	// Tween only runs briefly for direct column interactions (show/hide,
