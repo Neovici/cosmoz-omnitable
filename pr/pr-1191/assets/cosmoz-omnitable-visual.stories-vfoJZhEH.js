@@ -1,5 +1,5 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{Xt as t,Yt as n}from"./iframe-CNOSaX7M.js";import{t as r}from"./cosmoz-omnitable-B9pqg-CE.js";import{n as i,t as a}from"./data-Bh8FuB_z.js";var o,s,c,l;function u(){return(u=e((()=>{t(),r(),i(),o={title:`Visual/CosmozOmnitable`,component:`cosmoz-omnitable`,parameters:{docs:{disable:!0}}},s=a.slice(0,8),c=()=>n`
-    <cosmoz-omnitable .data=${s} style="width: 600px; height: 480px">
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{Xt as t,Yt as n}from"./iframe-Ch0_f9zW.js";import{J as r}from"./dist-pTkjU_c2.js";import{t as i}from"./cosmoz-omnitable-BwUTaKPE.js";import{n as a,t as o}from"./data-Bh8FuB_z.js";var s,c,l,u;function d(){return(d=e((()=>{t(),r(),i(),a(),s={title:`Visual/CosmozOmnitable`,component:`cosmoz-omnitable`,parameters:{docs:{disable:!0}}},c=o.slice(0,8),l=()=>n`
+    <cosmoz-omnitable .data=${c} style="width: 600px; height: 480px">
         <cosmoz-omnitable-column
             name="company"
             title="Company"
@@ -31,9 +31,9 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{Xt as t,Yt as n}from".
             priority="-1"
             width="200px"
         ></cosmoz-omnitable-column>
-        <button slot="actions">Export</button>
+        <cosmoz-button slot="actions" size="sm">Export</cosmoz-button>
     </cosmoz-omnitable>
-`,l=[`Hierarchy`],c.parameters={...c.parameters,docs:{...c.parameters?.docs,source:{originalSource:`() => html\`
+`,u=[`Hierarchy`],l.parameters={...l.parameters,docs:{...l.parameters?.docs,source:{originalSource:`() => html\`
     <cosmoz-omnitable .data=\${data} style="width: 600px; height: 480px">
         <cosmoz-omnitable-column
             name="company"
@@ -66,6 +66,6 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{Xt as t,Yt as n}from".
             priority="-1"
             width="200px"
         ></cosmoz-omnitable-column>
-        <button slot="actions">Export</button>
+        <cosmoz-button slot="actions" size="sm">Export</cosmoz-button>
     </cosmoz-omnitable>
-\``,...c.parameters?.docs?.source}}}})))()}u();export{c as Hierarchy,l as __namedExportsOrder,o as default};
+\``,...l.parameters?.docs?.source}}}})))()}d();export{l as Hierarchy,u as __namedExportsOrder,s as default};
