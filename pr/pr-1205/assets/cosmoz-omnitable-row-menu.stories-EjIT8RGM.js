@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{Qt as t,Zt as n}from"./iframe-TeRByS78.js";import{t as r}from"./cosmoz-omnitable-C2TcFbGU.js";var i,a,o,s,c,l;function u(){return(u=e((()=>{t(),r(),{action:i}=__STORYBOOK_MODULE_ACTIONS__,a=Array.from({length:20},(e,t)=>({name:`Invoice ${1001+t}`,supplier:[`Acme`,`Globex`,`Initech`,`Umbrella`][t%4],amount:{amount:(t+1)*125.5,currency:`EUR`}})),o=e=>n`
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{Qt as t,Zt as n}from"./iframe-B3_gKFJ-.js";import{t as r}from"./cosmoz-omnitable-BqrqLrAs.js";var i,a,o,s,c,l;function u(){return(u=e((()=>{t(),r(),{action:i}=__STORYBOOK_MODULE_ACTIONS__,a=Array.from({length:20},(e,t)=>({name:`Invoice ${1001+t}`,supplier:[`Acme`,`Globex`,`Initech`,`Umbrella`][t%4],amount:{amount:(t+1)*125.5,currency:`EUR`}})),o=e=>n`
         <style>
             [role="menuitem"] {
                 display: block;
