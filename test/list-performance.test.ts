@@ -166,7 +166,6 @@ suite('invoice table rendering', () => {
 					toggleCollapse: () => undefined,
 					toggleSelect: () => undefined,
 					columns: [visible, collapsed],
-					visibleColumns: [visible],
 					collapsedColumns: [collapsed],
 					miniColumns: [],
 					onItemClick: () => undefined,

@@ -5,7 +5,10 @@ import type {
 } from '../grouped-list/use-cosmoz-grouped-list';
 import type { GroupItem } from '../grouped-list/utils';
 import { renderGroup as defaultRenderGroup } from './render-group';
-import { renderItem as defaultRenderItem } from './render-item';
+import {
+	renderItem as defaultRenderItem,
+	getVisibleColumns,
+} from './render-item';
 import type {
 	Column,
 	HostRenderGroup,
@@ -156,12 +159,7 @@ export const useList = ({
 		);
 
 	const visibleColumns = useMemo(
-		() =>
-			columns.filter(
-				(column) =>
-					column.editable ||
-					(column !== groupOnColumn && !collapsedColumns.includes(column))
-			),
+		() => getVisibleColumns(columns, collapsedColumns, groupOnColumn),
 		[columns, collapsedColumns, groupOnColumn]
 	);
 
