@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r,Dt as i,E as a,G as o,Ht as s,I as c,It as l,Kt as u,Mt as d,O as f,P as p,Pt as m,Q as h,R as g,Rt as _,S as v,T as y,U as b,Ut as x,V as S,X as C,Xt as w,Yt as T,Z as ee,_ as te,_t as ne,at as E,b as D,bt as re,c as O,ct as ie,d as ae,dt as oe,et as se,f as ce,ft as k,gt as le,ht as ue,i as de,it as fe,kt as pe,l as me,lt as he,m as ge,mt as _e,n as ve,ot as ye,p as be,pt as xe,q as Se,qt as Ce,r as we,s as Te,st as Ee,tt as De,u as Oe,ut as ke,v as Ae,vt as A,w as j,x as M,y as N,yt as P,z as je}from"./iframe-CrtUOc5i.js";import{A as Me,B as F,C as Ne,D as Pe,E as Fe,F as I,G as Ie,H as Le,I as Re,J as ze,L as Be,M as Ve,N as He,O as Ue,P as L,R as We,S as Ge,T as Ke,U as qe,V as R,W as Je,_ as Ye,d as Xe,f as Ze,g as Qe,h as $e,j as et,k as tt,l as nt,m as rt,n as it,q as at,r as ot,s as st,t as ct,u as lt,v as ut,w as dt,x as ft,y as pt,z as mt}from"./dist-BWPlkV1T.js";var ht,gt;function z(){return(z=e((()=>{p(),oe(),ie(),A(),ht=k`
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r,Dt as i,E as a,G as o,Ht as s,I as c,It as l,Kt as u,Mt as d,O as f,P as p,Pt as m,Q as h,R as g,Rt as _,S as v,T as y,U as b,Ut as x,V as S,X as C,Xt as w,Yt as T,Z as ee,_ as te,_t as ne,at as E,b as D,bt as re,c as O,ct as ie,d as ae,dt as oe,et as se,f as ce,ft as k,gt as le,ht as ue,i as de,it as fe,kt as pe,l as me,lt as he,m as ge,mt as _e,n as ve,ot as ye,p as be,pt as xe,q as Se,qt as Ce,r as we,s as Te,st as Ee,tt as De,u as Oe,ut as ke,v as Ae,vt as A,w as j,x as M,y as N,yt as P,z as je}from"./iframe-D1Q5RCR8.js";import{A as Me,B as F,C as Ne,D as Pe,E as Fe,F as I,G as Ie,H as Le,I as Re,J as ze,L as Be,M as Ve,N as He,O as Ue,P as L,R as We,S as Ge,T as Ke,U as qe,V as R,W as Je,_ as Ye,d as Xe,f as Ze,g as Qe,h as $e,j as et,k as tt,l as nt,m as rt,n as it,q as at,r as ot,s as st,t as ct,u as lt,v as ut,w as dt,x as ft,y as pt,z as mt}from"./dist-DGqpJ2sz.js";var ht,gt;function z(){return(z=e((()=>{p(),oe(),ie(),A(),ht=k`
 	:host {
 		display: flex;
 		cursor: pointer;
@@ -921,8 +921,28 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		flex: auto;
 		background-color: var(--cz-color-bg-primary);
 	}
-	.tableContent:has(.tableContent-empty.spinner) {
-		opacity: 0.3;
+	/* A refresh keeps the current rows readable and only dims them once it
+	   takes longer than a quick search. Where the wait is shown, and with what
+	   text, is up to the app. */
+	.tableContent-scroller {
+		transition: opacity var(--cz-duration-fast, 150ms)
+			var(--cz-ease-out, ease-out);
+	}
+	.tableContent-empty.spinner {
+		pointer-events: none;
+	}
+	.tableContent:has(> .tableContent-empty.spinner) > .tableContent-scroller {
+		opacity: 0.5;
+		transition: opacity var(--cz-duration-normal, 250ms)
+			var(--cz-ease-out, ease-out) 400ms;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.tableContent-scroller {
+			transition: none;
+		}
+		.tableContent:has(> .tableContent-empty.spinner) > .tableContent-scroller {
+			transition: opacity 0s 400ms;
+		}
 	}
 
 	/* Empty data set styling: a small icon over a short title and line,
@@ -1397,16 +1417,6 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		display: none;
 	}
 
-	cz-spinner {
-		width: calc(var(--cz-spacing) * 12);
-		height: calc(var(--cz-spacing) * 12);
-		position: absolute;
-		top: 40%;
-		right: 50%;
-		border-color: var(--cz-color-gray-700);
-		border-top-color: var(--cz-color-black);
-	}
-
 	:host([inline]) {
 		overflow: visible;
 	}
@@ -1564,9 +1574,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 						.settingsConfig=${n}
 					></cosmoz-omnitable-skeleton>
 				</div>`)}
-		${C(o&&r.length,()=>T`<div class="tableContent-empty overlay spinner">
-					<cz-spinner></cz-spinner>
-				</div>`)}
+		${C(o&&r.length,()=>T`<div class="tableContent-empty overlay spinner"></div>`)}
 		${C(p,()=>T`<div class="tableContent-empty overlay">
 					${ot({width:`40px`,height:`40px`,styles:`fill: currentColor;`})}
 					<div class="tableContent-empty-message">
