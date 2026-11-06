@@ -216,6 +216,9 @@ export default css`
 		transition: opacity var(--cz-duration-fast, 150ms)
 			var(--cz-ease-out, ease-out);
 	}
+	.tableContent-empty.spinner {
+		pointer-events: none;
+	}
 	.tableContent:has(> .tableContent-empty.spinner) > .tableContent-scroller {
 		opacity: 0.5;
 		transition: opacity var(--cz-duration-normal, 250ms)
