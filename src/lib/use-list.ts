@@ -14,7 +14,8 @@ import type {
 	IndexedItem,
 	Item,
 } from './types';
-import { indexSymbol } from './utils';
+import { useRowMenu, type RowMenu } from './use-row-menu';
+import { indexSymbol, type TSelection } from './utils';
 import { onItemChange as _onItemChange } from './utils-data';
 
 export type { IndexedGroup, IndexedItem } from './types';
@@ -46,6 +47,7 @@ interface UseListHost extends HTMLElement {
 	compareItemsFn?: <T>(a: T, b: T) => boolean;
 	renderItem?: HostRenderItem;
 	renderGroup?: HostRenderGroup;
+	rowMenu?: RowMenu;
 }
 
 interface UseListParams {
@@ -58,6 +60,7 @@ interface UseListParams {
 	miniColumns: Column[];
 	sortAndGroupOptions: { groupOnColumn?: Column; [key: string]: unknown };
 	rowPartFn?: (item: Item, index: number) => string | undefined;
+	selectedItems: TSelection<Item>;
 	[key: string]: unknown;
 }
 
@@ -71,6 +74,7 @@ export const useList = ({
 	miniColumns,
 	sortAndGroupOptions,
 	rowPartFn,
+	selectedItems,
 	...rest
 }: UseListParams) => {
 	const { loading = false, displayEmptyGroups = false, compareItemsFn } = host,
@@ -148,6 +152,12 @@ export const useList = ({
 		);
 	}, []);
 
+	const { onRowMenu, onRowContextMenu, renderRowMenu } = useRowMenu(
+		host,
+		selectedItems,
+		processedItems
+	);
+
 	const { groupOnColumn } = sortAndGroupOptions,
 		onItemChange = useCallback(
 			(column: Column, item: Item) => (value: unknown) =>
@@ -157,6 +167,8 @@ export const useList = ({
 
 	return {
 		...rest,
+		selectedItems,
+		renderRowMenu,
 		processedItems,
 		dataIsValid,
 		filterIsTooStrict: dataIsValid && processedItems.length < 1,
@@ -180,9 +192,13 @@ export const useList = ({
 						rowPartFn,
 						groupOnColumn,
 						dataIsValid,
+						onRowMenu,
+						onRowContextMenu,
 					}),
 			[
 				renderItem,
+				onRowMenu,
+				onRowContextMenu,
 				columns,
 				collapsedColumns,
 				miniColumns,
