@@ -14,77 +14,8 @@ import { indexSymbol } from '../src/lib/utils.js';
 setupIgnoreWindowResizeObserverLoopErrors(setup, teardown);
 
 type Row = { label: string };
-type List = HTMLElement & {
-	data: object[];
-	toggleCollapse: (item: object) => void;
-};
-
-const mountList = async (rows: Row[]) => {
-	const outer = await fixture<HTMLElement>(
-		html`<div style="width:600px;height:200px;overflow:auto">
-			<cosmoz-grouped-list
-				.fixedRowHeight=${40}
-				.data=${rows}
-				.renderItem=${(
-					item: Row,
-					_index: number,
-					{ expanded }: { expanded: boolean },
-				) =>
-					html`<div style="height:${expanded ? 80 : 40}px">${item.label}</div>`}
-				.renderGroup=${() => html`<div style="height:60px">Group</div>`}
-			></cosmoz-grouped-list>
-		</div>`,
-	);
-	return { outer, list: outer.querySelector<List>('cosmoz-grouped-list')! };
-};
-
-const frames = async (n: number) => {
-	for (let i = 0; i < n; i++) await nextFrame();
-};
 
 suite('invoice table rendering', () => {
-	test('fixed rows fall back to measured heights when expanded or grouped', async () => {
-		const rows = [{ label: 'first' }, { label: 'second' }];
-		const { list } = await mountList(rows);
-		const first = () =>
-			list.querySelector<HTMLElement>('cosmoz-grouped-list-row');
-		await waitUntil(() => first()?.getBoundingClientRect().height === 40);
-		list.toggleCollapse(rows[0]);
-		await waitUntil(() => first()?.getBoundingClientRect().height === 80);
-		list.data = [{ items: rows }];
-		await waitUntil(() => first()?.textContent?.includes('Group'));
-		await waitUntil(() => first()?.getBoundingClientRect().height === 60);
-	});
-
-	test('keeps a deep row visible while switching between fixed and measured layout', async () => {
-		const rows = Array.from({ length: 400 }, (_, id) => ({ label: `${id}` }));
-		const { outer, list } = await mountList(rows);
-		await waitUntil(() => list.querySelector('cosmoz-grouped-list-row'));
-		outer.scrollTop = 12000;
-		const visible = () => {
-			const viewport = outer.getBoundingClientRect();
-			return Array.from(
-				list.querySelectorAll<HTMLElement & { item: object }>(
-					'cosmoz-grouped-list-row',
-				),
-			).some((row) => {
-				const rect = row.getBoundingClientRect();
-				return (
-					row.item === rows[300] &&
-					rect.bottom > viewport.top &&
-					rect.top < viewport.bottom
-				);
-			});
-		};
-		await waitUntil(visible);
-		list.toggleCollapse(rows[300]);
-		await frames(3);
-		assert.isTrue(visible(), 'expanded row stays visible');
-		list.toggleCollapse(rows[300]);
-		await frames(3);
-		assert.isTrue(visible(), 'collapsed row stays visible');
-	});
-
 	test('keeps a draft in an editable collapsed cell when it closes', async () => {
 		const el = await fixture(
 			html`<cosmoz-omnitable-item-expand

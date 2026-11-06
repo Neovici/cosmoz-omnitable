@@ -84,10 +84,6 @@ export const useOmnitable = (host) => {
 			error,
 			dataIsValid,
 			processedItems,
-			fixedRowHeight:
-				columns.some((column) => column.editable) || miniColumns.length
-					? undefined
-					: host.fixedRowHeight,
 			selectedItems,
 			setSelectedItems,
 			columns,
