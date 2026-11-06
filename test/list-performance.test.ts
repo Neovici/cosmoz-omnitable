@@ -13,29 +13,39 @@ import { indexSymbol } from '../src/lib/utils.js';
 
 setupIgnoreWindowResizeObserverLoopErrors(setup, teardown);
 
+type Row = { label: string };
+type List = HTMLElement & {
+	data: object[];
+	toggleCollapse: (item: object) => void;
+};
+
+const mountList = async (rows: Row[]) => {
+	const outer = await fixture<HTMLElement>(
+		html`<div style="width:600px;height:200px;overflow:auto">
+			<cosmoz-grouped-list
+				.fixedRowHeight=${40}
+				.data=${rows}
+				.renderItem=${(
+					item: Row,
+					_index: number,
+					{ expanded }: { expanded: boolean },
+				) =>
+					html`<div style="height:${expanded ? 80 : 40}px">${item.label}</div>`}
+				.renderGroup=${() => html`<div style="height:60px">Group</div>`}
+			></cosmoz-grouped-list>
+		</div>`,
+	);
+	return { outer, list: outer.querySelector<List>('cosmoz-grouped-list')! };
+};
+
+const frames = async (n: number) => {
+	for (let i = 0; i < n; i++) await nextFrame();
+};
+
 suite('invoice table rendering', () => {
 	test('fixed rows fall back to measured heights when expanded or grouped', async () => {
 		const rows = [{ label: 'first' }, { label: 'second' }];
-		const outer = await fixture<HTMLElement>(
-			html`<div style="width:600px;height:200px;overflow:auto">
-				<cosmoz-grouped-list
-					.fixedRowHeight=${40}
-					.data=${rows}
-					.renderItem=${(
-						item: object,
-						_index: number,
-						{ expanded }: { expanded: boolean }
-					) =>
-						html`<div style=${`height:${expanded ? 80 : 40}px`}>
-							${Reflect.get(item, 'label')}
-						</div>`}
-					.renderGroup=${() => html`<div style="height:60px">Group</div>`}
-				></cosmoz-grouped-list>
-			</div>`
-		);
-		const list = outer.querySelector<
-			HTMLElement & { data: object[]; toggleCollapse: (item: object) => void }
-		>('cosmoz-grouped-list')!;
+		const { list } = await mountList(rows);
 		const first = () =>
 			list.querySelector<HTMLElement>('cosmoz-grouped-list-row');
 		await waitUntil(() => first()?.getBoundingClientRect().height === 40);
@@ -47,52 +57,31 @@ suite('invoice table rendering', () => {
 	});
 
 	test('keeps a deep row visible while switching between fixed and measured layout', async () => {
-		const rows = Array.from({ length: 400 }, (_, id) => ({ id }));
-		const outer = await fixture<HTMLElement>(
-			html`<div style="width:600px;height:200px;overflow:auto">
-				<cosmoz-grouped-list
-					.fixedRowHeight=${40}
-					.data=${rows}
-					.renderItem=${(
-						item: object,
-						_index: number,
-						{ expanded }: { expanded: boolean }
-					) =>
-						html`<div style=${`height:${expanded ? 80 : 40}px`}>
-							${Reflect.get(item, 'id')}
-						</div>`}
-				></cosmoz-grouped-list>
-			</div>`
-		);
-		const list = outer.querySelector<
-			HTMLElement & { toggleCollapse: (item: object) => void }
-		>('cosmoz-grouped-list')!;
+		const rows = Array.from({ length: 400 }, (_, id) => ({ label: `${id}` }));
+		const { outer, list } = await mountList(rows);
 		await waitUntil(() => list.querySelector('cosmoz-grouped-list-row'));
 		outer.scrollTop = 12000;
-		const visible = () =>
-			Array.from(
+		const visible = () => {
+			const viewport = outer.getBoundingClientRect();
+			return Array.from(
 				list.querySelectorAll<HTMLElement & { item: object }>(
-					'cosmoz-grouped-list-row'
-				)
+					'cosmoz-grouped-list-row',
+				),
 			).some((row) => {
-				const rect = row.getBoundingClientRect(),
-					viewport = outer.getBoundingClientRect();
+				const rect = row.getBoundingClientRect();
 				return (
 					row.item === rows[300] &&
 					rect.bottom > viewport.top &&
 					rect.top < viewport.bottom
 				);
 			});
+		};
 		await waitUntil(visible);
 		list.toggleCollapse(rows[300]);
-		await nextFrame();
-		await nextFrame();
-		await nextFrame();
+		await frames(3);
 		assert.isTrue(visible(), 'expanded row stays visible');
 		list.toggleCollapse(rows[300]);
-		await nextFrame();
-		await nextFrame();
-		await nextFrame();
+		await frames(3);
 		assert.isTrue(visible(), 'collapsed row stays visible');
 	});
 
@@ -107,7 +96,7 @@ suite('invoice table rendering', () => {
 						renderCell: () => html`<input .value=${'original'} />`,
 					},
 				]}
-			></cosmoz-omnitable-item-expand>`
+			></cosmoz-omnitable-item-expand>`,
 		);
 		const input = el.querySelector('input')!;
 		input.value = 'draft';
@@ -124,8 +113,7 @@ suite('invoice table rendering', () => {
 			label: `row ${id}`,
 		}));
 		const renderRow = spy(
-			(item: object) =>
-				html`<div style="height:40px">${Reflect.get(item, 'label')}</div>`
+			(item: Row) => html`<div style="height:40px">${item.label}</div>`,
 		);
 		const outer = await fixture<HTMLElement>(html`<div></div>`);
 		const draw = () =>
@@ -135,7 +123,7 @@ suite('invoice table rendering', () => {
 						${renderCosmozGroupedList({ renderRow, flatData: rows })}
 					</div>
 				</div>`,
-				outer
+				outer,
 			);
 		draw();
 		const scroller = outer.querySelector<HTMLElement>('#scroll')!;
@@ -146,11 +134,11 @@ suite('invoice table rendering', () => {
 		renderRow.resetHistory();
 		scroller.scrollTop = 100;
 		await waitUntil(
-			() => scroller.querySelectorAll('cosmoz-grouped-list-row').length > count
+			() => scroller.querySelectorAll('cosmoz-grouped-list-row').length > count,
 		);
 		await nextFrame();
 		assert.isFalse(
-			renderRow.getCalls().some((call) => call.args[0] === rows[0])
+			renderRow.getCalls().some((call) => call.args[0] === rows[0]),
 		);
 		rows[0].label = 'refreshed';
 		draw();
@@ -178,6 +166,7 @@ suite('invoice table rendering', () => {
 					toggleCollapse: () => undefined,
 					toggleSelect: () => undefined,
 					columns: [visible, collapsed],
+					visibleColumns: [visible],
 					collapsedColumns: [collapsed],
 					miniColumns: [],
 					onItemClick: () => undefined,
@@ -185,7 +174,7 @@ suite('invoice table rendering', () => {
 					onItemChange: () => () => undefined,
 					dataIsValid: true,
 				})}
-			</div>`
+			</div>`,
 		);
 		await nextFrame();
 		assert.include(el.textContent, 'visible value');
@@ -208,7 +197,7 @@ suite('invoice table rendering', () => {
 		el.item = { label: 'old' };
 		el.index = 0;
 		const render = spy(
-			(item: { label: string }, index: number) => `${item.label} ${index}`
+			(item: { label: string }, index: number) => `${item.label} ${index}`,
 		);
 		el.renderFn = render;
 		await nextFrame();
@@ -223,7 +212,7 @@ suite('invoice table rendering', () => {
 
 	test('defers collapsed cells and renders their current value when expanded', async () => {
 		const renderCell = spy(
-			(_column: unknown, { item }: { item: { label: string } }) => item.label
+			(_column: unknown, { item }: { item: { label: string } }) => item.label,
 		);
 		const el = await fixture<HTMLElement & { item: { label: string } }>(html`
 			<cosmoz-omnitable-item-expand
@@ -266,7 +255,7 @@ suite('invoice table rendering', () => {
 		]);
 		assert.deepEqual(
 			prepareData([first, second, third], false, new WeakMap()),
-			[first, second, third]
+			[first, second, third],
 		);
 	});
 });

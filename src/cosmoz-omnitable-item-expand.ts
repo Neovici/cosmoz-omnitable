@@ -20,9 +20,8 @@ const ItemExpand = ({
 	groupOnColumn,
 }: ItemExpandProps) => {
 	return map(columns, (column) =>
-		!expanded && !column.editable
-			? nothing
-			: html`<cosmoz-omnitable-item-expand-line
+		expanded || column.editable
+			? html`<cosmoz-omnitable-item-expand-line
 					.column=${column}
 					?hidden=${column === groupOnColumn}
 					exportparts="item-expand-label, item-expand-value"
@@ -31,7 +30,8 @@ const ItemExpand = ({
 						selected,
 						expanded,
 					})}</cosmoz-omnitable-item-expand-line
-			  >`
+				>`
+			: nothing,
 	);
 };
 

@@ -16,6 +16,7 @@ import {
 	GroupItem,
 	isExpanded,
 	isFolded,
+	isGroup,
 	prepareData,
 } from './utils';
 
@@ -51,18 +52,17 @@ const styles: Record<string, Partial<CSSStyleDeclaration>> = {
 	host: { position: 'relative', display: 'flex', flexDirection: 'column' },
 };
 
-// Buffer roughly a viewport on each side while retaining variable-height measurement.
+// Buffer roughly a viewport on each side.
 class TableFlowLayout extends FlowLayout {
 	protected override _overhang = 600;
 	get estimatedRowHeight() {
 		return this._itemSize.height;
 	}
 	set estimatedRowHeight(height: number | undefined) {
-		if (typeof height === 'number' && Number.isFinite(height) && height > 0) {
-			this._itemSize.height = height;
-		}
+		if (height! > 0) this._itemSize.height = height!;
 	}
 }
+
 class FixedRowLayout extends GridLayout {
 	protected override _overhang = 600;
 	protected override get _idealSize2() {
@@ -149,18 +149,13 @@ const useCosmozGroupedList = (host: UseCosmozGroupedListHost) => {
 
 	const rowHeight = useMemo(
 		() =>
-			typeof fixedRowHeight === 'number' &&
-			Number.isFinite(fixedRowHeight) &&
-			fixedRowHeight > 0 &&
-			flatData?.every(
-				(item) =>
-					!('items' in item && Array.isArray(item.items)) &&
-					!isExpanded(item, state)
-			)
+			fixedRowHeight! > 0 &&
+			flatData?.every((item) => !isGroup(item) && !isExpanded(item, state))
 				? fixedRowHeight
 				: undefined,
-		[flatData, signal, fixedRowHeight]
+		[flatData, signal, fixedRowHeight],
 	);
+
 	return { renderRow, flatData, rowHeight, estimatedRowHeight: fixedRowHeight };
 };
 
@@ -175,39 +170,35 @@ const renderCosmozGroupedList = ({
 	rowHeight?: number;
 	estimatedRowHeight?: number;
 }): DirectiveResult => {
-	// Invalidate on parent updates, including explicit refreshes of mutable items.
-	// Scrolling alone reuses bindings for rows that remain mounted.
-	const renderEpoch = {};
-	const fixedLayout: NonNullable<
-		ConstructorParameters<typeof GridLayout>[1]
-	> & { type: typeof FixedRowLayout } = {
-		type: FixedRowLayout,
-		itemSize: { width: '1px', height: `${rowHeight ?? 1}px` },
-		flex: { preserve: 'height' },
-		gap: '0',
-		padding: '0',
-	};
-	const flowLayout: NonNullable<ConstructorParameters<typeof FlowLayout>[1]> & {
-		type: typeof TableFlowLayout;
-		estimatedRowHeight?: number;
-	} = { type: TableFlowLayout, estimatedRowHeight };
+	// A fresh epoch per parent render refreshes mutable items; scrolling reuses retained rows.
+	const epoch = {};
+	const layout = rowHeight
+		? {
+				type: FixedRowLayout,
+				itemSize: { width: '1px', height: `${rowHeight}px` },
+				flex: { preserve: 'height' },
+				gap: '0',
+				padding: '0',
+			}
+		: { type: TableFlowLayout, estimatedRowHeight };
 	return virtualize({
 		items: flatData,
-		layout: rowHeight ? fixedLayout : flowLayout,
+		layout,
 		renderItem: (item: Item, index: number) =>
 			html`${guard(
-				[renderEpoch, item, index],
+				[epoch, item, index],
 				() =>
 					html`<cosmoz-grouped-list-row
 						style=${styleMap({
-							height: rowHeight ? `${rowHeight}px` : 'auto',
 							width: '100%',
+							height: rowHeight && `${rowHeight}px`,
 						})}
 						.item=${item}
 						.index=${index}
 						.renderFn=${renderRow}
-					></cosmoz-grouped-list-row>`
+					></cosmoz-grouped-list-row>`,
 			)}`,
 	});
 };
+
 export { renderCosmozGroupedList, useCosmozGroupedList };

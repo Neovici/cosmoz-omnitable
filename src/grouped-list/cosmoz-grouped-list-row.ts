@@ -5,9 +5,9 @@ customElements.define(
 	'cosmoz-grouped-list-row',
 	class Element extends HTMLElement {
 		private _item?: Item;
-		private _renderPending = false;
 		private _index?: number;
 		private _renderFn?: (item: Item, index: number) => unknown;
+		private _renderPending = false;
 
 		get item() {
 			return this._item;
@@ -32,29 +32,21 @@ customElements.define(
 		}
 
 		set renderFn(
-			renderFn: ((item: Item, index: number) => unknown) | undefined
+			renderFn: ((item: Item, index: number) => unknown) | undefined,
 		) {
 			this._renderFn = renderFn;
 			this._render();
 		}
 
 		_render() {
-			if (this._item == null || this._index == null || this._renderFn == null) {
-				return;
-			}
-
 			if (this._renderPending) return;
 			this._renderPending = true;
 			queueMicrotask(() => {
 				this._renderPending = false;
-				if (
-					this._item != null &&
-					this._index != null &&
-					this._renderFn != null
-				) {
-					render(this._renderFn(this._item, this._index), this);
-				}
+				const { _item: item, _index: index, _renderFn: renderFn } = this;
+				if (item == null || index == null || renderFn == null) return;
+				render(renderFn(item, index), this);
 			});
 		}
-	}
+	},
 );

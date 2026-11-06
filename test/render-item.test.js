@@ -30,6 +30,7 @@ const column = {
 		toggleSelect() {},
 		toggleCollapse() {},
 		columns: [column],
+		visibleColumns: [],
 		collapsedColumns: [column],
 		miniColumns: [column],
 		onItemClick() {},

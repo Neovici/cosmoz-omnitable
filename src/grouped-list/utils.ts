@@ -40,7 +40,8 @@ const _assertDataIsHomogeneous = (data: unknown[]): void => {
 
 	const firstItemIsAGroup = Array.isArray((data[0] as GroupItem)?.items),
 		isHomogeneous = data.every(
-			(group) => Array.isArray((group as GroupItem).items) === firstItemIsAGroup
+			(group) =>
+				Array.isArray((group as GroupItem).items) === firstItemIsAGroup,
 		);
 
 	if (!isHomogeneous) {
@@ -51,7 +52,7 @@ const _assertDataIsHomogeneous = (data: unknown[]): void => {
 const prepareData = <T extends Item>(
 	data: T[] | GroupItem<T>[],
 	displayEmptyGroups: boolean,
-	itemsState: ItemsState
+	itemsState: ItemsState,
 ): (T | GroupItem<T>)[] | undefined => {
 	if (!Array.isArray(data)) {
 		return;
@@ -60,25 +61,16 @@ const prepareData = <T extends Item>(
 	// data should be either all items or all grouped items, never mixed
 	_assertDataIsHomogeneous(data);
 
-	const flatData: (T | GroupItem<T>)[] = [];
-	for (const item of data) {
-		if (!('items' in item) || !Array.isArray(item.items)) {
-			flatData.push(item);
-			continue;
-		}
-		if (item.items.length) {
-			flatData.push(item);
-			if (!getItemState(item, itemsState).folded) {
-				for (const child of item.items) {
-					flatData.push(Object.assign(child, { [symbols.group]: item }));
-				}
-			}
-		} else if (displayEmptyGroups) {
-			flatData.push(item);
-		}
-	}
-
-	return flatData;
+	return data.flatMap((item): (T | GroupItem<T>)[] => {
+		if (!isGroup(item)) return [item];
+		const items = item.items as T[];
+		if (!items.length) return displayEmptyGroups ? [item] : [];
+		if (isFolded(item, itemsState)) return [item];
+		return [
+			item,
+			...items.map((child) => Object.assign(child, { [symbols.group]: item })),
+		];
+	});
 };
 
 const callFn = <T, A extends unknown[]>(
@@ -95,12 +87,12 @@ const callFn = <T, A extends unknown[]>(
 const byReference = <T>(a: T, b: T): boolean => a === b;
 
 export {
-	byReference,
-	callFn,
+	symbols,
+	prepareData,
 	getItemState,
 	isExpanded,
 	isFolded,
 	isGroup,
-	prepareData,
-	symbols,
+	callFn,
+	byReference,
 };

@@ -164,6 +164,7 @@ export const useList = ({
 			),
 		[columns, collapsedColumns, groupOnColumn]
 	);
+
 	return {
 		...rest,
 		processedItems,
