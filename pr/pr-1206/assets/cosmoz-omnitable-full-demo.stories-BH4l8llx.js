@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r,Dt as i,E as a,G as o,Ht as s,I as c,It as l,Kt as u,Mt as d,O as f,P as p,Pt as m,Q as h,R as g,Rt as _,S as v,T as y,U as b,Ut as x,V as S,X as C,Xt as w,Yt as T,Z as ee,_ as te,_t as ne,at as re,b as E,bt as ie,c as D,ct as ae,d as oe,dt as se,et as ce,f as le,ft as O,gt as ue,ht as de,i as fe,it as pe,kt as me,l as he,lt as ge,m as _e,mt as ve,n as ye,ot as be,p as xe,pt as Se,q as Ce,qt as we,r as Te,s as Ee,st as De,tt as Oe,u as ke,ut as Ae,v as je,vt as k,w as A,x as j,y as M,yt as N,z as Me}from"./iframe-CYRpXqye.js";import{A as Ne,B as P,C as Pe,D as Fe,E as Ie,F,G as Le,H as Re,I as ze,J as Be,L as Ve,M as He,N as Ue,O as We,P as I,R as Ge,S as Ke,T as qe,U as Je,V as L,W as Ye,_ as Xe,a as Ze,d as Qe,f as $e,g as et,h as tt,j as nt,k as rt,l as it,m as at,n as ot,q as st,r as ct,s as lt,t as ut,u as dt,v as ft,w as pt,x as mt,y as ht,z as gt}from"./dist-qqhka3pN.js";import{n as _t,t as vt}from"./table-demo-helper-Dj0p9yas.js";var yt;function bt(){return(bt=e((()=>{k(),yt=()=>T`<style>
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r,Dt as i,E as a,G as o,Ht as s,I as c,It as l,Kt as u,Mt as d,O as f,P as p,Pt as m,Q as h,R as g,Rt as _,S as v,T as y,U as b,Ut as x,V as S,X as C,Xt as w,Yt as T,Z as ee,_ as te,_t as ne,at as re,b as E,bt as ie,c as D,ct as ae,d as oe,dt as se,et as ce,f as le,ft as O,gt as ue,ht as de,i as fe,it as pe,kt as me,l as he,lt as ge,m as _e,mt as ve,n as ye,ot as be,p as xe,pt as Se,q as Ce,qt as we,r as Te,s as Ee,st as De,tt as Oe,u as ke,ut as Ae,v as je,vt as k,w as A,x as j,y as M,yt as N,z as Me}from"./iframe-C1EhIe4n.js";import{A as Ne,B as P,C as Pe,D as Fe,E as Ie,F,G as Le,H as Re,I as ze,J as Be,L as Ve,M as He,N as Ue,O as We,P as I,R as Ge,S as Ke,T as qe,U as Je,V as L,W as Ye,_ as Xe,a as Ze,d as Qe,f as $e,g as et,h as tt,j as nt,k as rt,l as it,m as at,n as ot,q as st,r as ct,s as lt,t as ut,u as dt,v as ft,w as pt,x as mt,y as ht,z as gt}from"./dist-DI5BZoWL.js";import{n as _t,t as vt}from"./table-demo-helper-Dj0p9yas.js";var yt;function bt(){return(bt=e((()=>{k(),yt=()=>T`<style>
 	@keyframes rotating {
 		100% {
 			transform: rotate(360deg);
@@ -746,7 +746,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		user-select: none;
 		cursor: pointer;
 		display: inline-block;
-		box-shadow: inset 0 0 0 2px var(--cz-color-border-primary);
+		box-shadow: inset 0 0 0 1px var(--cz-color-border-primary);
 		-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 		transition: background-color 140ms;
 		margin: 1px calc(var(--cz-spacing) * 3);
@@ -783,8 +783,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 	}
 
 	.checkbox:hover {
-		box-shadow: 0 0 0 2px
-			rgb(from var(--cz-color-text-primary) r g b / calc(alpha * 0.75)) inset;
+		box-shadow: inset 0 0 0 1px var(--cz-color-fg-tertiary);
 	}
 
 	.checkbox:checked:hover {
@@ -836,7 +835,14 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		position: relative;
 		display: flex;
 		align-items: flex-end;
-		border-block: 1px solid var(--cz-color-border-secondary);
+		padding-inline: calc(var(--cz-spacing) * 2);
+	}
+
+	/* Column titles sit a step below the data they head. The header inputs
+	   nest in shadow roots (autocompletes wrap theirs), so the step is set
+	   through the token their labels read. */
+	cosmoz-omnitable-header-row {
+		--cz-color-text-secondary: var(--cz-color-text-quaternary);
 	}
 
 	[hidden] {
@@ -873,10 +879,28 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		width: 7px;
 		height: 100%;
 		margin-left: -3px;
-		background: transparent;
+		/* While the header is hovered, a short faint tick marks where a column
+		   can be resized; it runs the full height in the brand colour while
+		   the tick itself is hovered. */
+		background: linear-gradient(
+				var(--cz-color-border-secondary),
+				var(--cz-color-border-secondary)
+			)
+			center / 1px 0 no-repeat;
 		cursor: ew-resize;
 		z-index: 1000;
 		user-select: none;
+		transition: background-size 120ms;
+	}
+	.header:hover cosmoz-omnitable-resize-nub {
+		background-size: 1px 14px;
+	}
+	.header cosmoz-omnitable-resize-nub:hover {
+		background-image: linear-gradient(
+			var(--cz-color-border-brand),
+			var(--cz-color-border-brand)
+		);
+		background-size: 1px 100%;
 	}
 
 	.time-header-cell,
@@ -920,21 +944,30 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		opacity: 0.3;
 	}
 
-	/* Empty data set styling */
+	/* Empty data set styling: a small icon over a short title and line,
+	   centred and quiet, so an empty list doesn't shout. */
 	.tableContent-empty {
 		position: absolute;
 		inset: 0;
 		display: flex;
+		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		color: var(--cz-color-text-disabled);
+		gap: calc(var(--cz-spacing) * 3);
+		text-align: center;
+		color: var(--cz-color-text-quaternary);
+	}
+	.tableContent-empty > svg,
+	.tableContent-empty > slot > svg {
+		width: calc(var(--cz-spacing) * 10);
+		height: calc(var(--cz-spacing) * 10);
 	}
 
 	.tableContent-empty:has(cosmoz-omnitable-skeleton) {
+		flex-direction: row;
 		justify-content: stretch;
 	}
 	.tableContent-empty.overlay {
-		color: var(--cz-color-text-disabled);
 		z-index: 1;
 	}
 	.tableContent-empty > div {
@@ -950,25 +983,27 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		align-items: flex-start;
 	}
 	.tableContent-empty div.tableContent-empty-message {
-		@apply --layout-vertical;
-		@apply --layout-center-justified;
-
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 		padding-bottom: calc(var(--cz-spacing) * 6);
 	}
 	.tableContent-empty.overlay div.tableContent-empty-message {
 		padding-bottom: 0;
 	}
 	.tableContent-empty p {
-		font-size: var(--cz-text-base);
-		line-height: var(--cz-text-base-line-height);
-		color: #ddd;
+		font-size: var(--cz-text-sm);
+		line-height: var(--cz-text-sm-line-height);
+		color: var(--cz-color-text-tertiary);
 		margin: 0;
 	}
 	.tableContent-empty h3 {
-		font-size: var(--cz-text-xl);
-		line-height: var(--cz-text-xl-line-height);
+		font-size: var(--cz-text-base);
+		line-height: var(--cz-text-base-line-height);
+		font-weight: var(--cz-font-weight-semibold);
+		color: var(--cz-color-text-secondary);
 		white-space: nowrap;
-		margin: 0px 0px 8px 0px;
+		margin: 0 0 var(--cz-spacing);
 	}
 
 	/* End of empty data set styling */
@@ -983,8 +1018,13 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		flex-direction: column;
 	}
 
+	/* Rows sit inside the table's edge with no rules between them: a hover
+	   or a selection reads as one rounded fill. */
 	.itemRow {
-		border-bottom: 1px var(--cz-color-border-secondary) solid;
+		margin-inline: calc(var(--cz-spacing) * 2);
+		border-radius: var(--cz-radius-md);
+		font-variant-numeric: tabular-nums;
+		transition: background-color 120ms;
 	}
 	.itemRow-wrapper {
 		display: flex;
@@ -993,8 +1033,14 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		padding-right: calc(var(--cz-spacing) * 2);
 	}
 
+	/* A selected row takes the brand tint, so a selection
+	   reads at a glance down a long list. */
 	.itemRow[selected] {
-		background-color: var(--cz-color-bg-primary-hover);
+		background-color: color-mix(
+			in oklab,
+			var(--cz-color-bg-brand-secondary) 55%,
+			transparent
+		);
 	}
 
 	.itemRow-cell {
@@ -1011,9 +1057,12 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		flex-direction: column;
 		font-size: var(--cz-text-sm);
 		line-height: var(--cz-text-sm-line-height);
-		padding: 5px 4%;
-		border-bottom: 1px var(--cz-color-border-secondary) solid;
-		background-color: var(--cz-color-bg-disabled);
+		margin: 0 calc(var(--cz-spacing) * 2) var(--cz-spacing);
+		padding: calc(var(--cz-spacing) * 3) 4%;
+		border-radius: var(--cz-radius-md);
+		background-color: var(--cz-color-bg-secondary-subtle);
+		box-shadow: inset 0 1px 2px
+			color-mix(in oklab, var(--cz-color-black) 4%, transparent);
 		animation: expand-in 0.25s ease;
 	}
 
@@ -1035,12 +1084,13 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 	.groupRow {
 		display: flex;
 		align-items: center;
-		background-color: var(--cz-color-bg-tertiary);
+		background-color: var(--cz-color-bg-secondary-subtle);
 		font-size: var(--cz-text-sm);
 		line-height: var(--cz-text-sm-line-height);
-		font-weight: var(--cz-font-weight-bold);
+		font-weight: var(--cz-font-weight-semibold);
 		color: var(--cz-color-text-primary);
-		border-bottom: 1px solid var(--cz-color-border-secondary);
+		margin-inline: calc(var(--cz-spacing) * 2);
+		border-radius: var(--cz-radius-md);
 	}
 
 	.groupRow-label {
@@ -1102,28 +1152,38 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		text-align: center;
 	}
 
+	/* Selection actions float over the list as a raised bar, not a slab
+	   across it. The raised shadow is newer than some consumers' tokens. */
 	cosmoz-bottom-bar {
-		background: rgb(
-			from var(--cz-color-bg-action-solid) r g b / calc(alpha * 0.45)
-		);
-		overflow: hidden;
-		color: var(--cz-color-text-on-action);
+		--cz-backdrop-filter-glass: none;
+		position: absolute;
+		inset-inline: 0;
+		bottom: calc(var(--cz-spacing) * 4);
+		width: fit-content;
+		max-width: calc(100% - var(--cz-spacing) * 8);
+		margin-inline: auto;
+		border: 0;
+		border-radius: var(--cz-radius-xl);
+		/* Solid, not glass, and so are its buttons: text over a live blur
+		   renders differently from one frame to the next, which breaks
+		   screenshot tests of a selection. */
+		background: var(--cz-color-bg-primary);
+		box-shadow:
+			var(--cz-shadow-raised, 0 0 0 1px var(--cz-color-border-secondary)),
+			var(--cz-shadow-lg);
+		color: var(--cz-color-text-primary);
+		font-size: var(--cz-text-sm);
+		line-height: var(--cz-text-sm-line-height);
+		z-index: 2;
 	}
 	cosmoz-bottom-bar::part(bar) {
-		padding: 0 calc(var(--cz-spacing) * 6);
+		height: calc(var(--cz-spacing) * 13);
+		gap: calc(var(--cz-spacing) * 2);
+		padding-block: 0;
+		padding-inline: calc(var(--cz-spacing) * 4) calc(var(--cz-spacing) * 2);
 	}
-
-	cosmoz-bottom-bar::slotted(*) {
-		background: rgb(
-			from var(--cz-color-bg-action-solid) r g b / calc(alpha * 0.75)
-		);
-		color: var(--cz-color-text-on-action);
-	}
-
-	cosmoz-bottom-bar::slotted([disabled]) {
-		color: var(--cz-color-text-disabled);
-		border-color: var(--cz-color-border-disabled);
-		cursor: not-allowed;
+	.mainContainer:has(cosmoz-bottom-bar[active]) .tableContent-scroller {
+		padding-bottom: calc(var(--cz-spacing) * 20);
 	}
 
 	.boolean-cell[editable] {
@@ -1138,9 +1198,15 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 	.itemRow:hover {
 		background-color: var(--cz-color-bg-primary-hover);
 	}
+	.itemRow[selected]:hover {
+		background-color: color-mix(
+			in oklab,
+			var(--cz-color-bg-brand-secondary) 80%,
+			transparent
+		);
+	}
 
-	.groupRow:hover .checkbox:not(:checked):not(:hover),
-	.itemRow:hover .checkbox:not(:checked):not(:hover) {
+	.groupRow:hover .checkbox:not(:checked):not(:hover) {
 		box-shadow: 0 0 0 2px
 			rgb(from var(--cz-color-text-primary) r g b / calc(alpha * 0.75)) inset;
 	}
@@ -1148,10 +1214,25 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 	.groupRow:hover .expand:not(:hover):not(cosmoz-button),
 	.itemRow:hover cosmoz-button.expand::part(button):not(:hover),
 	.itemRow:hover .expand:not(:hover):not(cosmoz-button) {
-		color: rgb(from var(--cz-color-text-primary) r g b / calc(alpha * 0.75));
+		color: var(--cz-color-fg-secondary);
 	}
 
 	${zi}
+
+	/* Row controls wait for the pointer, so the list reads as data. Once
+	   anything is selected, every checkbox shows. */
+	@media (hover: hover) {
+		.itemRow .checkbox:not(:checked),
+		.itemRow cosmoz-button.expand:not([aria-expanded]) {
+			opacity: 0;
+			transition: opacity 120ms;
+		}
+		.itemRow:is(:hover, :focus-within) .checkbox,
+		.itemRow:is(:hover, :focus-within) cosmoz-button.expand,
+		.mainContainer:has(cosmoz-bottom-bar[active]) .itemRow .checkbox {
+			opacity: 1;
+		}
+	}
 
 	.all {
 		align-self: center;
@@ -1176,7 +1257,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		background: none;
 		transition: 0.25s background ease-in;
 		outline: none;
-		color: var(--cz-color-text-primary);
+		color: var(--cz-color-fg-quaternary);
 		background: transparent;
 	}
 
@@ -1390,7 +1471,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 							class="selectAllItems"
 							role="button"
 							tabindex="0"
-							style="cursor: pointer; color: white;"
+							style="cursor: pointer; color: var(--cz-color-text-brand);"
 							@click=${()=>n($)}
 						>
 							${E(`Select all items`)}
@@ -1483,7 +1564,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 				</div>`)}
 	</div>`},customElements.define(`cosmoz-omnitable-skeleton`,N(na,{styleSheets:[ta]}))})))()}var ia;function aa(){return(aa=e((()=>{k(),ra(),ot(),M(),w(),ia=(e,t)=>{let{settingsConfig:n}=e,{processedItems:r,dataIsValid:i,filterIsTooStrict:a,loading:o,displayEmptyGroups:s,compareItemsFn:c,selectedItems:l,setSelectedItems:u,renderItem:d,renderGroup:f,error:p}=t;return T`${C(!o&&!i&&!p,()=>T`<div class="tableContent-empty">
 					<slot name="empty-set-message">
-						${lt({width:`96px`,height:`96px`,styles:`margin-right: 24px; fill: currentColor;`})}
+						${lt({width:`40px`,height:`40px`,styles:`fill: currentColor;`})}
 						<div class="tableContent-empty-message">
 							<h3>${E(`Working set empty`)}</h3>
 							<p>${E(`No data to display`)}</p>
@@ -1491,7 +1572,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 					</slot>
 				</div>`)}
 		${C(a,()=>T`<div class="tableContent-empty">
-					${lt({width:`96px`,height:`96px`,styles:`margin-right: 24px; fill: currentColor;`})}
+					${lt({width:`40px`,height:`40px`,styles:`fill: currentColor;`})}
 					<div>
 						<h3>${E(`Filter too strict`)}</h3>
 						<p>${E(`No matches for selection`)}</p>
@@ -1506,7 +1587,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 					<cz-spinner></cz-spinner>
 				</div>`)}
 		${C(p,()=>T`<div class="tableContent-empty overlay">
-					${ct({width:`96px`,height:`96px`,styles:`margin-right: 24px; fill: currentColor;`})}
+					${ct({width:`40px`,height:`40px`,styles:`fill: currentColor;`})}
 					<div class="tableContent-empty-message">
 						<h3>${E(`Error loading data`)}</h3>
 						<p>${p.message}</p>
@@ -1867,7 +1948,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		></cosmoz-omnitable-settings-ui>
 	</cosmoz-dropdown>
 `,customElements.define(`cosmoz-omnitable-settings`,N(ha,{styleSheets:[Ae(sa)]}))})))()}var _a,va,ya,ba,xa;function Sa(){return(Sa=e((()=>{Ee(),_a=[`sortOn`,`descending`,`groupOn`,`groupOnDescending`],va=e=>t=>typeof t==`object`&&!!t&&`name`in t&&t.name===e,ya=(e=[],t=[],n=[])=>{let r=t.filter(t=>e.some(va(t.name))),i=e.filter(e=>e.name!=null&&!t.some(va(e.name))&&!n.some(va(e.name))),a=n.filter(e=>!t.some(va(e.name)));return[...r,...a.flatMap(t=>{let n=e.find(e=>e.name===t.name);return n?{...t,title:n.title??t.title??``,minWidth:parseInt(n.minWidth??`0`,10)}:[]}),...i.map(e=>{let{name:t,title:n,priority:r,minWidth:i,width:a,flex:o}=e;return{name:t??``,title:n??``,priority:r??0,minWidth:parseInt(i??`0`,10),width:parseInt(a??`0`,10),flex:parseInt(o??`0`,10)}})]},ba=(e,t)=>({...t,...he(Array.from(_a))(e),columns:e.columns?.map(he([`name`,`priority`,`width`,`flex`,`disabled`]))??t?.columns}),xa=({columns:e,settings:t,savedSettings:n,initial:r})=>({...Object.fromEntries(_a.flatMap(e=>r?.[e]==null?[]:[[e,r[e]]])),...n?he(Array.from(_a))(n):{},...t,columns:ya(e,t?.columns,n?.columns)})})))()}var Ca;function wa(){return(wa=e((()=>{Ca=({prefix:e=`omnitable-`}={})=>({write:async(t,n)=>{let r=e+t;try{n?localStorage.setItem(r,JSON.stringify(n)):localStorage.removeItem(r)}catch(e){console.error(e)}},read:async t=>{if(!t)return null;try{let n=localStorage.getItem(e+t);return n==null?null:JSON.parse(n)}catch(e){return console.error(e),null}}})})))()}var Ta,Ea;function Da(){return(Da=e((()=>{k(),wa(),Ta=ie(Ca),Ea=()=>{let e=r(Ta);return _(()=>e(),[e])}})))()}function Oa(){return(Oa=e((()=>{Da()})))()}var ka;function Aa(){return(Aa=e((()=>{k(),Oa(),Sa(),ka=(e,t,n,r)=>{let[i,a]=d(e?void 0:null),{read:o,write:c}=Ea();return s(async()=>{e&&a(await o(e))},[e,o]),{settingsId:e,savedSettings:i,onSave:l(async()=>{if(!e)return;let r=ba(t,i);await c(e,r),n(),a(r)},[t,i]),onReset:l(async()=>{n(),e&&i!=null&&(await c(e),a(null)),r?.()},[e,i,c,r]),hasChanges:t!=null,canReset:t!=null||i!=null}}})))()}var ja;function Ma(){return(Ma=e((()=>{k(),J(),Sa(),Aa(),ja=({settingsId:e,host:t})=>{let n=_(()=>Object.fromEntries(_a.map(e=>[e,t[e]])),[]),r=i(),a=l(()=>{r.current?.(n)},[n]),[o,s]=d(),[c,u]=d({columns:!0,sort:!0}),{savedSettings:f,...p}=ka(e,o,s,a),{enabledColumns:m,disabledFiltering:h}=t,g=gn(t,{enabledColumns:m,disabledFiltering:h}),v=_(()=>xa({columns:g,settings:o,savedSettings:f??void 0,initial:n}),[g,o,f]),y=_(()=>v.columns.map(e=>g.find(t=>t.name===e.name)).filter(e=>e!==void 0),[g,...v.columns.map(e=>e.name)]);return{...p,savedSettings:f,opened:c,setOpened:u,settings:v,columns:y,setSettings:s,resetRef:r}}})))()}function Na(){return(Na=e((()=>{ga(),Ma()})))()}var Pa,Fa;function Ia(){return(Ia=e((()=>{Pa=e=>Number.isFinite(e)?e:0,Fa=(e,t)=>{let n=[],[r,i]=e.reduce(([e,t],{width:n,flex:r})=>[e+n,t+r],[0,0]),a=t-r,o=Pa(a/i),s=0,c=0,l=0;for(let t=0;t<e.length;t++){let{width:i,minWidth:u,flex:d}=e[t];u>i+(a>=0?o*d:i*a/r)?(s+=i,c+=u,l+=d,n[t]=u):d===0&&(s+=i,c+=i,n[t]=i)}r-=s,a=t-c-r,i-=l,o=Pa(a/i);for(let t=0;t<e.length;t++){if(n[t]!=null)continue;let{width:i,flex:s}=e[t],c=a>=0?o*s:i*a/r;n[t]=i+c}return n}})))()}var La,Ra,za;function Ba(){return(Ba=e((()=>{Ia(),Xi(),La=(e,t)=>{let n=Yi(e,e=>e!=null&&e>0),r=(e,t)=>`.cell[name="${e}"], cosmoz-omnitable-skeleton::part(cell-${e}){width: ${t}px;padding: 0 min(3px, ${t/2}px)}`,i=e=>`cosmoz-omnitable-resize-nub[name="${e}"]{display:none}`,a=e=>`cosmoz-omnitable-resize-nub[name="${e}"], .cell[name="${e}"]{display:none}`,o=0,s=0;return t.map((t,c)=>{let l=e[c];if(l==null||l===0)return a(t.name);o+=l;let u=Math.round(o),d=u-s;s=u;let f=r(t.name,d);return c===n?`${f}\n${i(t.name)}`:f}).join(`
-`)},Ra=(e,t,n)=>{let r=e.filter(e=>!e.hidden),i=r.reduce((e,{width:t})=>e+t,0);if(r.length>1&&i>t)return Ra(r.slice(1),t,n);let a=r.reduce(([e,t],n,r)=>[Math.max(e,n.index),n.index>e?r:t],[-1,-1])[1];return a!==-1&&(r[a].flex=1),Fa(r,t).reduce((e,t,n)=>(e[r[n].index]=t,e),Array(n).fill(void 0))},za=(e,t)=>e.length===0?`.cell {display: none;}`:La(e,t)})))()}var Va;function Ha(){return(Ha=e((()=>{k(),Va=(e,t)=>s(()=>{let n=new ResizeObserver(([e])=>{e.contentRect?.width!==0&&t(e.contentRect.width-88)});return n.observe(e),()=>n.unobserve(e)},[])})))()}var Ua;function Wa(){return(Wa=e((()=>{k(),Ha(),Ua=e=>{let[t,n]=d(()=>e.getBoundingClientRect().width-88);return Va(e,n),t}})))()}var Ga;function Ka(){return(Ka=e((()=>{k(),Ba(),Ga=({canvasWidth:e,groupOnColumn:t,layoutColumns:n,config:r})=>_(()=>{if(!Array.isArray(r)||e==null||e===0)return[];let i=r.map((e,n)=>({minWidth:e.minWidth,width:e.width,flex:e.flex,priority:e.priority,name:e.name,index:n,hidden:e.name===t?.name||e.disabled})).map(e=>n==null?e:{...e,hidden:!n.includes(e.name)}).sort(({index:e,priority:t},{index:n,priority:r})=>t===r?n-e:t-r);return Ra(i,e,i.length)},[e,t,r])})))()}var qa;function Ja(){return(Ja=e((()=>{k(),qa=({host:e,canvasWidth:t,columns:n})=>{let r=e.miniBreakpoint??480,i=_(()=>t<=r,[t,r]),a=_(()=>i?n?.filter(e=>e.mini!=null).sort((e,t)=>(e.mini??0)-(t.mini??0)):[],[n,i]),o=_(()=>a.slice(1),[a]),c=a[0],l=!!c&&e.renderItem==null;return s(()=>{e.toggleAttribute(`mini`,l)},[l]),{isMini:l&&i,hasMiniColumn:l,miniColumn:c,miniColumns:o}}})))()}var Ya;function Xa(){return(Xa=e((()=>{k(),Ya=({host:e,canvasWidth:t,layout:n,setSettings:r,requestTween:a})=>{let o=i();o.current=e=>{a(),r(r=>{let i=r.columns,{detail:{newWidth:a,column:o}}=e,s=i.findIndex(e=>e.name===o.name),c=[],l=i.reduce((e,t)=>Math.max(e,t.priority),-1/0);for(let e=0;e<n.length;e++)if(c[e]={...i[e]},e<s&&n[e]&&(c[e].width=n[e],c[e].flex=0,c[e].priority=l),e===s){let r=n.reduce((e,t,n)=>n<s&&t?e-t:e,t);c[e].width=Math.min(r,Math.max(a,i[e].minWidth)),c[e].flex=0,c[e].priority=l}return{...r,columns:c}})},s(()=>{let t=e=>o.current?.(e);return e.addEventListener(`column-resize`,t),()=>e.removeEventListener(`column-resize`,t)},[])}})))()}var Za,Qa,$a;function eo(){return(eo=e((()=>{re(),ce(),k(),Za=(e,t)=>{let n=_(()=>{let t=!1,n,r=()=>{t&&(n=requestAnimationFrame(r),e()&&(t=!1))};return{start:()=>{t=!0,cancelAnimationFrame(n),n=requestAnimationFrame(r)},stop:()=>{t=!1,cancelAnimationFrame(n)}}},[]);s(()=>{n.start()},t),s(()=>()=>n.stop(),[])},Qa=(e=0,t=0)=>Math.abs(e-t)<.1,$a=(e,t=1.9,n=De,r)=>{let i=Oe({target:e,speedFactor:t,onConverge:r}),a=l(()=>{if(!i.tween)return i.tween=i.target,n(i.tween),i.onConverge?.(),!0;if(i.target.every((e,t)=>i.tween[t]===e))return n(i.tween),i.onConverge?.(),!0;if(i.tween=i.target.map((e,t)=>Qa(i.tween[t],e)?e:(i.tween[t]??0)+((e??0)-(i.tween[t]??0))/i.speedFactor||0),n(i.tween),i.tween.every((e,t)=>e===i.target[t]))return i.onConverge?.(),!0},[]);Za(a,[e])}})))()}var to,no,ro;function io(){return(io=e((()=>{ce(),k(),Ba(),Wa(),Ka(),Ja(),Xa(),eo(),to=e=>{let t=_(()=>new CSSStyleSheet,[]);return s(()=>{e.shadowRoot.adoptedStyleSheets=[...e.shadowRoot.adoptedStyleSheets,t]},[]),t},no=e=>{s(()=>{e.toggleAttribute(`compact`,e.compact===!0)},[e.compact])},ro=({host:e,columns:t,settings:n,setSettings:r,resizeSpeedFactor:i,sortAndGroupOptions:a})=>{let o=Ua(e),{isMini:s,hasMiniColumn:c,miniColumn:u,miniColumns:f}=qa({host:e,canvasWidth:o,columns:t});no(e);let{groupOnColumn:p}=a,m=c?[u.name]:e.headerColumns??null,h=Ga({canvasWidth:o,groupOnColumn:p,layoutColumns:m,config:n.columns}),g=to(e),v=n.columns.filter((e,t)=>h[t]==null&&e.name!==p?.name&&!e.disabled).map(e=>e.name),y=_(()=>v.map(e=>t.find(t=>t.name===e)),[t,v.join()]),[b,x]=d(1),S=l(()=>x(i??1.9),[i]),C=l(()=>x(1),[]),w=Oe({columns:n.columns});return $a(h,b,e=>{let t=za(e,w.columns);g.replaceSync(t)},C),Ya({host:e,canvasWidth:o,layout:h,setSettings:e=>r(e(n)),requestTween:S}),{isMini:s,collapsedColumns:y,miniColumns:f,requestTween:S}}})))()}var ao;function oo(){return(oo=e((()=>{ao=({host:e,...t})=>{let{csvFilename:n=`omnitable.csv`,xlsxFilename:r=`omnitable.xlsx`,xlsxSheetname:i=`Omnitable`,topPlacement:a=`top-end`}=e;return{csvFilename:n,xlsxFilename:r,xlsxSheetname:i,topPlacement:a,...t}}})))()}var so;function co(){return(co=e((()=>{k(),Xi(),so=({host:e,selectedItems:t,data:n,dataIsValid:r,columns:i,sortAndGroupOptions:a,collapsedColumns:o,settings:s,filterFunctions:c,settingS:l,filters:u,setFilterState:d,hideSelectAll:f,headerColumns:p,requestTween:m,...h})=>{let g=_(()=>p==null?i:i.filter(e=>p.includes(e.name)),[i,p]),v=t===$||!!n&&n.length>0&&Array.isArray(t)&&t.length===n.length,y=t=>{if(!(t.target instanceof HTMLInputElement))return;let n=e.shadowRoot.querySelector(`#groupedList`);t.target.checked?n.selectAll():n.deselectAll()},{groupOnColumn:b}=a,x=_(()=>[b,...o,...s.columns.filter(e=>e.disabled)].some(e=>!!e&&!!e.name&&Object.keys(c).includes(e.name)),[c,s,o]);return{allSelected:v,onAllCheckboxChange:y,data:n,dataIsValid:r,columns:g,settingsConfig:_(()=>({...l,collapsed:o,badge:x,filters:u,requestTween:m}),[l,o,x,u,m]),filters:u,groupOnColumn:b,setFilterState:d,hideSelectAll:f,sortAndGroup:a.sortAndGroup,...h}}})))()}var lo,uo;function fo(){return(fo=e((()=>{Be(),p(),k(),M(),lo=e=>e?`groupRow groupRow-folded`:`groupRow`,uo=(e,t,{selected:n,folded:r,toggleFold:i,onCheckboxChange:a,groupOnColumn:o,dataIsValid:s})=>T` <div
+`)},Ra=(e,t,n)=>{let r=e.filter(e=>!e.hidden),i=r.reduce((e,{width:t})=>e+t,0);if(r.length>1&&i>t)return Ra(r.slice(1),t,n);let a=r.reduce(([e,t],n,r)=>[Math.max(e,n.index),n.index>e?r:t],[-1,-1])[1];return a!==-1&&(r[a].flex=1),Fa(r,t).reduce((e,t,n)=>(e[r[n].index]=t,e),Array(n).fill(void 0))},za=(e,t)=>e.length===0?`.cell {display: none;}`:La(e,t)})))()}var Va;function Ha(){return(Ha=e((()=>{k(),Va=(e,t)=>s(()=>{let n=new ResizeObserver(([e])=>{e.contentRect?.width!==0&&t(e.contentRect.width-104)});return n.observe(e),()=>n.unobserve(e)},[])})))()}var Ua;function Wa(){return(Wa=e((()=>{k(),Ha(),Ua=e=>{let[t,n]=d(()=>e.getBoundingClientRect().width-104);return Va(e,n),t}})))()}var Ga;function Ka(){return(Ka=e((()=>{k(),Ba(),Ga=({canvasWidth:e,groupOnColumn:t,layoutColumns:n,config:r})=>_(()=>{if(!Array.isArray(r)||e==null||e===0)return[];let i=r.map((e,n)=>({minWidth:e.minWidth,width:e.width,flex:e.flex,priority:e.priority,name:e.name,index:n,hidden:e.name===t?.name||e.disabled})).map(e=>n==null?e:{...e,hidden:!n.includes(e.name)}).sort(({index:e,priority:t},{index:n,priority:r})=>t===r?n-e:t-r);return Ra(i,e,i.length)},[e,t,r])})))()}var qa;function Ja(){return(Ja=e((()=>{k(),qa=({host:e,canvasWidth:t,columns:n})=>{let r=e.miniBreakpoint??480,i=_(()=>t<=r,[t,r]),a=_(()=>i?n?.filter(e=>e.mini!=null).sort((e,t)=>(e.mini??0)-(t.mini??0)):[],[n,i]),o=_(()=>a.slice(1),[a]),c=a[0],l=!!c&&e.renderItem==null;return s(()=>{e.toggleAttribute(`mini`,l)},[l]),{isMini:l&&i,hasMiniColumn:l,miniColumn:c,miniColumns:o}}})))()}var Ya;function Xa(){return(Xa=e((()=>{k(),Ya=({host:e,canvasWidth:t,layout:n,setSettings:r,requestTween:a})=>{let o=i();o.current=e=>{a(),r(r=>{let i=r.columns,{detail:{newWidth:a,column:o}}=e,s=i.findIndex(e=>e.name===o.name),c=[],l=i.reduce((e,t)=>Math.max(e,t.priority),-1/0);for(let e=0;e<n.length;e++)if(c[e]={...i[e]},e<s&&n[e]&&(c[e].width=n[e],c[e].flex=0,c[e].priority=l),e===s){let r=n.reduce((e,t,n)=>n<s&&t?e-t:e,t);c[e].width=Math.min(r,Math.max(a,i[e].minWidth)),c[e].flex=0,c[e].priority=l}return{...r,columns:c}})},s(()=>{let t=e=>o.current?.(e);return e.addEventListener(`column-resize`,t),()=>e.removeEventListener(`column-resize`,t)},[])}})))()}var Za,Qa,$a;function eo(){return(eo=e((()=>{re(),ce(),k(),Za=(e,t)=>{let n=_(()=>{let t=!1,n,r=()=>{t&&(n=requestAnimationFrame(r),e()&&(t=!1))};return{start:()=>{t=!0,cancelAnimationFrame(n),r()},stop:()=>{t=!1,cancelAnimationFrame(n)}}},[]);s(()=>{n.start()},t),s(()=>()=>n.stop(),[])},Qa=(e=0,t=0)=>Math.abs(e-t)<.1,$a=(e,t=1.9,n=De,r)=>{let i=Oe({target:e,speedFactor:t,onConverge:r}),a=l(()=>{if(!i.tween)return i.tween=i.target,n(i.tween),i.onConverge?.(),!0;if(i.target.every((e,t)=>i.tween[t]===e))return n(i.tween),i.onConverge?.(),!0;if(i.tween=i.target.map((e,t)=>Qa(i.tween[t],e)?e:(i.tween[t]??0)+((e??0)-(i.tween[t]??0))/i.speedFactor||0),n(i.tween),i.tween.every((e,t)=>e===i.target[t]))return i.onConverge?.(),!0},[]);Za(a,[e])}})))()}var to,no,ro;function io(){return(io=e((()=>{ce(),k(),Ba(),Wa(),Ka(),Ja(),Xa(),eo(),to=e=>{let t=_(()=>new CSSStyleSheet,[]);return s(()=>{e.shadowRoot.adoptedStyleSheets=[...e.shadowRoot.adoptedStyleSheets,t]},[]),t},no=e=>{s(()=>{e.toggleAttribute(`compact`,e.compact===!0)},[e.compact])},ro=({host:e,columns:t,settings:n,setSettings:r,resizeSpeedFactor:i,sortAndGroupOptions:a})=>{let o=Ua(e),{isMini:s,hasMiniColumn:c,miniColumn:u,miniColumns:f}=qa({host:e,canvasWidth:o,columns:t});no(e);let{groupOnColumn:p}=a,m=c?[u.name]:e.headerColumns??null,h=Ga({canvasWidth:o,groupOnColumn:p,layoutColumns:m,config:n.columns}),g=to(e),v=n.columns.filter((e,t)=>h[t]==null&&e.name!==p?.name&&!e.disabled).map(e=>e.name),y=_(()=>v.map(e=>t.find(t=>t.name===e)),[t,v.join()]),[b,x]=d(1),S=l(()=>x(i??1.9),[i]),C=l(()=>x(1),[]),w=Oe({columns:n.columns});return $a(h,b,e=>{let t=za(e,w.columns);g.replaceSync(t)},C),Ya({host:e,canvasWidth:o,layout:h,setSettings:e=>r(e(n)),requestTween:S}),{isMini:s,collapsedColumns:y,miniColumns:f,requestTween:S}}})))()}var ao;function oo(){return(oo=e((()=>{ao=({host:e,...t})=>{let{csvFilename:n=`omnitable.csv`,xlsxFilename:r=`omnitable.xlsx`,xlsxSheetname:i=`Omnitable`,topPlacement:a=`top-end`}=e;return{csvFilename:n,xlsxFilename:r,xlsxSheetname:i,topPlacement:a,...t}}})))()}var so;function co(){return(co=e((()=>{k(),Xi(),so=({host:e,selectedItems:t,data:n,dataIsValid:r,columns:i,sortAndGroupOptions:a,collapsedColumns:o,settings:s,filterFunctions:c,settingS:l,filters:u,setFilterState:d,hideSelectAll:f,headerColumns:p,requestTween:m,...h})=>{let g=_(()=>p==null?i:i.filter(e=>p.includes(e.name)),[i,p]),v=t===$||!!n&&n.length>0&&Array.isArray(t)&&t.length===n.length,y=t=>{if(!(t.target instanceof HTMLInputElement))return;let n=e.shadowRoot.querySelector(`#groupedList`);t.target.checked?n.selectAll():n.deselectAll()},{groupOnColumn:b}=a,x=_(()=>[b,...o,...s.columns.filter(e=>e.disabled)].some(e=>!!e&&!!e.name&&Object.keys(c).includes(e.name)),[c,s,o]);return{allSelected:v,onAllCheckboxChange:y,data:n,dataIsValid:r,columns:g,settingsConfig:_(()=>({...l,collapsed:o,badge:x,filters:u,requestTween:m}),[l,o,x,u,m]),filters:u,groupOnColumn:b,setFilterState:d,hideSelectAll:f,sortAndGroup:a.sortAndGroup,...h}}})))()}var lo,uo;function fo(){return(fo=e((()=>{Be(),p(),k(),M(),lo=e=>e?`groupRow groupRow-folded`:`groupRow`,uo=(e,t,{selected:n,folded:r,toggleFold:i,onCheckboxChange:a,groupOnColumn:o,dataIsValid:s})=>T` <div
 		class="${lo(r)}"
 		part="groupRow groupRow-${t}"
 	>
