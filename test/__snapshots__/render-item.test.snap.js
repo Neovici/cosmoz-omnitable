@@ -1,7 +1,7 @@
 /* @web/test-runner snapshot v1 */
 export const snapshots = {};
 
-snapshots["render-item renderers renderItem"] = 
+snapshots['render-item renderers renderItem'] = 
 `<div>
   <div
     class="itemRow"
@@ -18,17 +18,6 @@ snapshots["render-item renderers renderItem"] =
         type="checkbox"
       >
       <cosmoz-omnitable-item-row part="itemRow-inner">
-        <div
-          align="left"
-          class="cell itemRow-cell"
-          name="name"
-          part="cell itemRow-cell cell-name itemRow-cell-name"
-          title="Name"
-        >
-          <span>
-            Foo #7
-          </span>
-        </div>
       </cosmoz-omnitable-item-row>
       <cosmoz-button
         aria-label="Expand or collapse"
@@ -56,17 +45,12 @@ snapshots["render-item renderers renderItem"] =
     part="item-expand"
     selected=""
   >
-    <cosmoz-omnitable-item-expand-line exportparts="item-expand-label, item-expand-value">
-      <span>
-        Foo #
-      </span>
-    </cosmoz-omnitable-item-expand-line>
   </cosmoz-omnitable-item-expand>
 </div>
 `;
 /* end snapshot render-item renderers renderItem */
 
-snapshots["render-item renderers renderGroup"] = 
+snapshots['render-item renderers renderGroup'] = 
 `<div>
   <div
     class="groupRow"
