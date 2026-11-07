@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r,Dt as i,E as a,G as o,Ht as s,I as c,It as l,Kt as u,Mt as d,O as f,P as p,Pt as m,Q as h,R as g,Rt as _,S as v,T as y,U as b,Ut as x,V as S,X as C,Xt as w,Yt as T,Z as ee,_ as te,_t as ne,at as re,b as E,bt as ie,c as D,ct as ae,d as oe,dt as se,et as ce,f as le,ft as O,gt as ue,ht as de,i as fe,it as pe,kt as me,l as he,lt as ge,m as _e,mt as ve,n as ye,ot as be,p as xe,pt as Se,q as Ce,qt as we,r as Te,s as Ee,st as De,tt as Oe,u as ke,ut as Ae,v as je,vt as k,w as A,x as j,y as M,yt as N,z as Me}from"./iframe-C1EhIe4n.js";import{A as Ne,B as P,C as Pe,D as Fe,E as Ie,F,G as Le,H as Re,I as ze,J as Be,L as Ve,M as He,N as Ue,O as We,P as I,R as Ge,S as Ke,T as qe,U as Je,V as L,W as Ye,_ as Xe,a as Ze,d as Qe,f as $e,g as et,h as tt,j as nt,k as rt,l as it,m as at,n as ot,q as st,r as ct,s as lt,t as ut,u as dt,v as ft,w as pt,x as mt,y as ht,z as gt}from"./dist-DI5BZoWL.js";import{n as _t,t as vt}from"./table-demo-helper-Dj0p9yas.js";var yt;function bt(){return(bt=e((()=>{k(),yt=()=>T`<style>
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r,Dt as i,E as a,G as o,Ht as s,I as c,It as l,Kt as u,Mt as d,O as f,P as p,Pt as m,Q as h,R as g,Rt as _,S as v,T as y,U as b,Ut as x,V as S,X as C,Xt as w,Yt as T,Z as ee,_ as te,_t as ne,at as re,b as E,bt as ie,c as D,ct as ae,d as oe,dt as se,et as ce,f as le,ft as O,gt as ue,ht as de,i as fe,it as pe,kt as me,l as he,lt as ge,m as _e,mt as ve,n as ye,ot as be,p as xe,pt as Se,q as Ce,qt as we,r as Te,s as Ee,st as De,tt as Oe,u as ke,ut as Ae,v as je,vt as k,w as A,x as j,y as M,yt as N,z as Me}from"./iframe-DKppTvFR.js";import{A as Ne,B as P,C as Pe,D as Fe,E as Ie,F,G as Le,H as Re,I as ze,J as Be,L as Ve,M as He,N as Ue,O as We,P as I,R as Ge,S as Ke,T as qe,U as Je,V as L,W as Ye,_ as Xe,a as Ze,d as Qe,f as $e,g as et,h as tt,j as nt,k as rt,l as it,m as at,n as ot,q as st,r as ct,s as lt,t as ut,u as dt,v as ft,w as pt,x as mt,y as ht,z as gt}from"./dist-BhkSu1vH.js";import{n as _t,t as vt}from"./table-demo-helper-Dj0p9yas.js";var yt;function bt(){return(bt=e((()=>{k(),yt=()=>T`<style>
 	@keyframes rotating {
 		100% {
 			transform: rotate(360deg);
@@ -940,8 +940,28 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		flex: auto;
 		background-color: var(--cz-color-bg-primary);
 	}
-	.tableContent:has(.tableContent-empty.spinner) {
-		opacity: 0.3;
+	/* A refresh keeps the current rows readable and only dims them once it
+	   takes longer than a quick search. Where the wait is shown, and with what
+	   text, is up to the app. */
+	.tableContent-scroller {
+		transition: opacity var(--cz-duration-fast, 150ms)
+			var(--cz-ease-out, ease-out);
+	}
+	.tableContent-empty.spinner {
+		pointer-events: none;
+	}
+	.tableContent:has(> .tableContent-empty.spinner) > .tableContent-scroller {
+		opacity: 0.5;
+		transition: opacity var(--cz-duration-normal, 250ms)
+			var(--cz-ease-out, ease-out) 400ms;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.tableContent-scroller {
+			transition: none;
+		}
+		.tableContent:has(> .tableContent-empty.spinner) > .tableContent-scroller {
+			transition: opacity 0s 400ms;
+		}
 	}
 
 	/* Empty data set styling: a small icon over a short title and line,
@@ -1416,16 +1436,6 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		display: none;
 	}
 
-	cz-spinner {
-		width: calc(var(--cz-spacing) * 12);
-		height: calc(var(--cz-spacing) * 12);
-		position: absolute;
-		top: 40%;
-		right: 50%;
-		border-color: var(--cz-color-gray-700);
-		border-top-color: var(--cz-color-black);
-	}
-
 	:host([inline]) {
 		overflow: visible;
 	}
@@ -1583,9 +1593,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 						.settingsConfig=${n}
 					></cosmoz-omnitable-skeleton>
 				</div>`)}
-		${C(o&&r.length,()=>T`<div class="tableContent-empty overlay spinner">
-					<cz-spinner></cz-spinner>
-				</div>`)}
+		${C(o&&r.length,()=>T`<div class="tableContent-empty overlay spinner"></div>`)}
 		${C(p,()=>T`<div class="tableContent-empty overlay">
 					${ct({width:`40px`,height:`40px`,styles:`fill: currentColor;`})}
 					<div class="tableContent-empty-message">
