@@ -19,6 +19,17 @@ import { onItemChange as _onItemChange } from './utils-data';
 
 export type { IndexedGroup, IndexedItem } from './types';
 
+const getVisibleColumns = (
+	columns: Column[],
+	collapsedColumns: Column[],
+	groupOnColumn?: Column
+) =>
+	columns.filter(
+		(column) =>
+			column.editable ||
+			(column !== groupOnColumn && !collapsedColumns.includes(column))
+	);
+
 interface GroupedListEl extends HTMLElement {
 	toggleSelectTo(item: Item, selected: boolean): void;
 	selectOnly(item: Item): void;
@@ -149,6 +160,10 @@ export const useList = ({
 	}, []);
 
 	const { groupOnColumn } = sortAndGroupOptions,
+		visibleColumns = useMemo(
+			() => getVisibleColumns(columns, collapsedColumns, groupOnColumn),
+			[columns, collapsedColumns, groupOnColumn]
+		),
 		onItemChange = useCallback(
 			(column: Column, item: Item) => (value: unknown) =>
 				_onItemChange(host, column, item, value),
@@ -171,7 +186,7 @@ export const useList = ({
 				(item: IndexedItem, _flatIndex: number, params: GroupedListRowParams) =>
 					renderItem(item, item[indexSymbol], {
 						...params,
-						columns,
+						columns: visibleColumns,
 						collapsedColumns,
 						miniColumns,
 						onItemClick,
@@ -183,7 +198,7 @@ export const useList = ({
 					}),
 			[
 				renderItem,
-				columns,
+				visibleColumns,
 				collapsedColumns,
 				miniColumns,
 				onItemClick,
