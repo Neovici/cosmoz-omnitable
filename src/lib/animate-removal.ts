@@ -53,9 +53,10 @@ export const animateRemoval = (
 	Promise.all(outs.map((a) => a.finished.catch(() => undefined))).then(
 		async () => {
 			commit();
-			// By the next task the virtualizer has re-rendered and recycled the faded
-			// rows for other items, so they are unhidden in the frame the glide starts.
-			await new Promise((r) => setTimeout(r, 0));
+			// The virtualizer re-renders in microtasks, so by the next frame callback
+			// the faded rows hold other items. Unhiding them and starting the glide
+			// there lands both in the frame that first paints the new rows.
+			await new Promise((r) => requestAnimationFrame(r));
 			outs.forEach((a) => a.cancel());
 			const duration = ms(token(host, '--cz-duration-normal', '250ms')),
 				easing = token(host, '--cz-ease-out', 'ease-out');

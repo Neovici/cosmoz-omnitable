@@ -30,7 +30,8 @@ const mkNapi = (host: UsePublicInterfaceHost) => {
 			}
 		},
 		/**
-		 * Helper method to remove an item from `data`.
+		 * Helper method to remove an item from `data`. With `animate-removal`, `data`
+		 * changes once the row has faded out (`--cz-duration-exit`), not at once.
 		 * @param	 {Object} item Item to remove
 		 * @return {Object} item removed
 		 */
