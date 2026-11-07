@@ -22,9 +22,7 @@ const styles = css`
 		color: var(--cz-color-text-disabled);
 		border-radius: var(--cz-radius-full);
 		box-sizing: border-box;
-		transition:
-			background-color 0.25s,
-			color 0.25s;
+		transition: background-color 0.25s, color 0.25s;
 		float: right;
 	}
 
@@ -40,4 +38,8 @@ const Clear = () => html`
 	${xCircleIcon({ className: 'icon', width: '18', height: '18' })}
 `;
 
-customElements.define('cosmoz-clear-button', component(Clear));
+/* Storybook chunking can duplicate this module across story chunks; only the
+   first evaluation may define the tag. */
+if (!customElements.get('cosmoz-clear-button')) {
+	customElements.define('cosmoz-clear-button', component(Clear));
+}
