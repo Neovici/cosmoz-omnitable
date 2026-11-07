@@ -1,3 +1,10 @@
+## 19.5.1
+
+### Patch Changes
+
+- 3cd9465: Apply the column layout in the same frame as a width change, so a wider table no longer paints one frame with its old, narrower columns.
+- 7f265d7: Keep the rows readable while a list refreshes. They no longer drop to 30% opacity under a large spinner at once. After 400ms they fade to half opacity, and nothing is drawn over them. Show the wait where the user acted, for example in the search field.
+
 ## 19.5.0
 
 ### Minor Changes

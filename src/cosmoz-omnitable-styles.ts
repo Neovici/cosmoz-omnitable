@@ -209,8 +209,28 @@ export default css`
 		flex: auto;
 		background-color: var(--cz-color-bg-primary);
 	}
-	.tableContent:has(.tableContent-empty.spinner) {
-		opacity: 0.3;
+	/* A refresh keeps the current rows readable and only dims them once it
+	   takes longer than a quick search. Where the wait is shown, and with what
+	   text, is up to the app. */
+	.tableContent-scroller {
+		transition: opacity var(--cz-duration-fast, 150ms)
+			var(--cz-ease-out, ease-out);
+	}
+	.tableContent-empty.spinner {
+		pointer-events: none;
+	}
+	.tableContent:has(> .tableContent-empty.spinner) > .tableContent-scroller {
+		opacity: 0.5;
+		transition: opacity var(--cz-duration-normal, 250ms)
+			var(--cz-ease-out, ease-out) 400ms;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.tableContent-scroller {
+			transition: none;
+		}
+		.tableContent:has(> .tableContent-empty.spinner) > .tableContent-scroller {
+			transition: opacity 0s 400ms;
+		}
 	}
 
 	/* Empty data set styling: a small icon over a short title and line,
@@ -683,16 +703,6 @@ export default css`
 
 	:host([mini]) cosmoz-omnitable-settings::part(columns) {
 		display: none;
-	}
-
-	cz-spinner {
-		width: calc(var(--cz-spacing) * 12);
-		height: calc(var(--cz-spacing) * 12);
-		position: absolute;
-		top: 40%;
-		right: 50%;
-		border-color: var(--cz-color-gray-700);
-		border-top-color: var(--cz-color-black);
 	}
 
 	:host([inline]) {

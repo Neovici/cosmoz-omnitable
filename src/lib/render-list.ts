@@ -95,10 +95,7 @@ export const renderList = (header: HeaderParams, list: ListParams) => {
 		)}
 		${when(
 			loading && processedItems.length,
-			() =>
-				html`<div class="tableContent-empty overlay spinner">
-					<cz-spinner></cz-spinner>
-				</div>`
+			() => html`<div class="tableContent-empty overlay spinner"></div>`
 		)}
 		${when(
 			error,
