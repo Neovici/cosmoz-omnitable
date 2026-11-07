@@ -1,4 +1,4 @@
-import { assert, aTimeout, html, nextFrame } from '@open-wc/testing';
+import { assert, aTimeout, html, waitUntil } from '@open-wc/testing';
 import { emulateMedia } from '@web/test-runner-commands';
 
 import { generateTableDemoData } from '../demo/table-demo-helper';
@@ -23,7 +23,7 @@ const mount = async () => {
 		</cosmoz-omnitable>`,
 		generateTableDemoData(10, 11, 25)
 	);
-	await nextFrame();
+	await waitUntil(() => rowOf(omnitable, omnitable.data[3]));
 	return omnitable;
 };
 
