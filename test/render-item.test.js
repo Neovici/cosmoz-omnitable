@@ -4,7 +4,7 @@ import { assert, expect, fixture, html, nextFrame } from '@open-wc/testing';
 import i18next from 'i18next';
 import { generateTableDemoData } from '../demo/table-demo-helper';
 import { renderGroup } from '../src/lib/render-group';
-import { renderItem } from '../src/lib/render-item';
+import { getVisibleColumns, renderItem } from '../src/lib/render-item';
 import {
 	ignoreResizeObserverLoopErrors,
 	setupOmnitableFixture,
@@ -30,6 +30,7 @@ const column = {
 		toggleSelect() {},
 		toggleCollapse() {},
 		columns: [column],
+		visibleColumns: getVisibleColumns([column], [column], undefined),
 		collapsedColumns: [column],
 		miniColumns: [column],
 		onItemClick() {},

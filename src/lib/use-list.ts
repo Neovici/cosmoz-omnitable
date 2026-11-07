@@ -5,7 +5,10 @@ import type {
 } from '../grouped-list/use-cosmoz-grouped-list';
 import type { GroupItem } from '../grouped-list/utils';
 import { renderGroup as defaultRenderGroup } from './render-group';
-import { renderItem as defaultRenderItem } from './render-item';
+import {
+	renderItem as defaultRenderItem,
+	getVisibleColumns,
+} from './render-item';
 import type {
 	Column,
 	HostRenderGroup,
@@ -149,6 +152,10 @@ export const useList = ({
 	}, []);
 
 	const { groupOnColumn } = sortAndGroupOptions,
+		visibleColumns = useMemo(
+			() => getVisibleColumns(columns, collapsedColumns, groupOnColumn),
+			[columns, collapsedColumns, groupOnColumn]
+		),
 		onItemChange = useCallback(
 			(column: Column, item: Item) => (value: unknown) =>
 				_onItemChange(host, column, item, value),
@@ -172,6 +179,7 @@ export const useList = ({
 					renderItem(item, item[indexSymbol], {
 						...params,
 						columns,
+						visibleColumns,
 						collapsedColumns,
 						miniColumns,
 						onItemClick,
@@ -184,6 +192,7 @@ export const useList = ({
 			[
 				renderItem,
 				columns,
+				visibleColumns,
 				collapsedColumns,
 				miniColumns,
 				onItemClick,

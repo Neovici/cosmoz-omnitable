@@ -5,7 +5,18 @@ import { html } from '@pionjs/pion';
 import { t } from 'i18next';
 
 import { renderMinis } from './render-mini';
-import type { HostRenderItem } from './types';
+import type { Column, HostRenderItem } from './types';
+
+export const getVisibleColumns = (
+	columns: Column[],
+	collapsedColumns: Column[],
+	groupOnColumn?: Column
+) =>
+	columns.filter(
+		(column) =>
+			column.editable ||
+			(column !== groupOnColumn && !collapsedColumns.includes(column))
+	);
 
 /** The default item-row renderer. */
 export const renderItem: HostRenderItem = (
@@ -15,7 +26,7 @@ export const renderItem: HostRenderItem = (
 		selected,
 		expanded,
 		toggleCollapse,
-		columns,
+		visibleColumns,
 		collapsedColumns,
 		miniColumns,
 		onItemClick,
@@ -49,7 +60,7 @@ export const renderItem: HostRenderItem = (
 				/>
 				<cosmoz-omnitable-item-row
 					part="itemRow-inner"
-					.columns=${columns}
+					.columns=${visibleColumns}
 					.index=${index}
 					.selected=${selected}
 					.expanded=${expanded}
