@@ -45,11 +45,6 @@ snapshots["render-item renderers renderItem"] =
     part="item-expand"
     selected=""
   >
-    <cosmoz-omnitable-item-expand-line exportparts="item-expand-label, item-expand-value">
-      <span>
-        Foo #
-      </span>
-    </cosmoz-omnitable-item-expand-line>
   </cosmoz-omnitable-item-expand>
 </div>
 `;
