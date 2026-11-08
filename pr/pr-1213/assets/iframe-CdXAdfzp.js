@@ -1,1 +1,0 @@
-import{t as e}from"./iframe-Bn7UluwK.js";e();
