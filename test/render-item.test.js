@@ -146,7 +146,7 @@ suite('renderItem on the omnitable', () => {
 		await nextFrame();
 		await nextFrame();
 		assert.exists(
-			omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row'),
+			omnitable.shadowRoot.querySelector('.itemRow'),
 			'null restores the built-in row'
 		);
 	});

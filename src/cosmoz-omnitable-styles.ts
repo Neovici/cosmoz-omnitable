@@ -185,7 +185,7 @@ export default css`
 		white-space: nowrap;
 	}
 
-	cosmoz-omnitable-item-row > div {
+	.itemRow-wrapper > :where(div.itemRow-cell) {
 		display: block;
 		flex: none;
 		padding: 0 3px;
@@ -196,7 +196,7 @@ export default css`
 		align-self: center;
 	}
 
-	cosmoz-omnitable-item-row > div[hidden] {
+	.itemRow-wrapper > :where(div.itemRow-cell[hidden]) {
 		display: none !important;
 	}
 

@@ -265,7 +265,7 @@ suite('render cell function', () => {
 	test('renders custom cell template with access to data from the column, row AND item', async () => {
 		assert.equal(
 			omnitable.shadowRoot
-				.querySelector('cosmoz-omnitable-item-row')
+				.querySelector('.itemRow')
 				.textContent.trim(),
 			'object.label - false - aa',
 		);
@@ -276,7 +276,7 @@ suite('render cell function', () => {
 		await nextFrame();
 		assert.equal(
 			omnitable.shadowRoot
-				.querySelector('cosmoz-omnitable-item-row')
+				.querySelector('.itemRow')
 				.textContent.trim(),
 			'object.label - true - aa',
 		);
@@ -285,7 +285,7 @@ suite('render cell function', () => {
 		await nextFrame();
 		assert.equal(
 			omnitable.shadowRoot
-				.querySelector('cosmoz-omnitable-item-row')
+				.querySelector('.itemRow')
 				.textContent.trim(),
 			'object.label - false - aa',
 		);
@@ -300,7 +300,7 @@ suite('render cell function', () => {
 
 		assert.equal(
 			omnitable.shadowRoot
-				.querySelector('cosmoz-omnitable-item-row')
+				.querySelector('.itemRow')
 				.textContent.trim(),
 			'object.label - false - EDITED',
 		);
@@ -311,7 +311,7 @@ suite('render cell function', () => {
 		await nextFrame();
 		assert.equal(
 			omnitable.shadowRoot
-				.querySelector('cosmoz-omnitable-item-row')
+				.querySelector('.itemRow')
 				.textContent.trim(),
 			'name - false - BB',
 		);
@@ -325,7 +325,7 @@ suite('render header function', () => {
 	const getRows = () =>
 			Array.from(
 				omnitable.shadowRoot.querySelectorAll(
-					'cosmoz-omnitable-item-row:not([hidden])',
+					'.itemRow',
 				),
 			),
 		toggle = async () => {

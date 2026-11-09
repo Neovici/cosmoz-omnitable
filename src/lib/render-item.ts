@@ -5,6 +5,7 @@ import { html } from '@pionjs/pion';
 import { t } from 'i18next';
 
 import { renderMinis } from './render-mini';
+import { renderRowCells } from '../cosmoz-omnitable-item-row';
 import type { HostRenderItem } from './types';
 
 /** The default item-row renderer. */
@@ -47,17 +48,15 @@ export const renderItem: HostRenderItem = (
 					@input=${onCheckboxChange}
 					?disabled=${!dataIsValid}
 				/>
-				<cosmoz-omnitable-item-row
-					part="itemRow-inner"
-					.columns=${columns}
-					.index=${index}
-					.selected=${selected}
-					.expanded=${expanded}
-					.item=${item}
-					.groupOnColumn=${groupOnColumn}
-					.onItemChange=${onItemChange}
-				>
-				</cosmoz-omnitable-item-row>
+				${renderRowCells({
+					columns,
+					item,
+					index,
+					selected,
+					expanded,
+					groupOnColumn,
+					onItemChange,
+				})}
 				<cosmoz-button
 					aria-label=${t('Expand or collapse')}
 					variant="tertiary"

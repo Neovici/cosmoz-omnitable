@@ -17,19 +17,17 @@ snapshots["render-item renderers renderItem"] =
         part="checkbox"
         type="checkbox"
       >
-      <cosmoz-omnitable-item-row part="itemRow-inner">
-        <div
-          align="left"
-          class="cell itemRow-cell"
-          name="name"
-          part="cell itemRow-cell cell-name itemRow-cell-name"
-          title="Name"
-        >
-          <span>
-            Foo #7
-          </span>
-        </div>
-      </cosmoz-omnitable-item-row>
+      <div
+        align="left"
+        class="cell itemRow-cell"
+        name="name"
+        part="cell itemRow-cell cell-name itemRow-cell-name"
+        title="Name"
+      >
+        <span>
+          Foo #7
+        </span>
+      </div>
       <cosmoz-button
         aria-label="Expand or collapse"
         class="expand"

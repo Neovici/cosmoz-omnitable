@@ -21,7 +21,7 @@ const renderCell = (
 		? column.renderEditCell!(column, data, onItemChange(column, data.item))
 		: column.renderCell!(column, data);
 
-const ItemRow = ({
+export const renderRowCells = ({
 	columns,
 	groupOnColumn,
 	item,
@@ -47,6 +47,8 @@ const ItemRow = ({
 			</div>`;
 		}
 	);
+
+const ItemRow = (props: ItemRowProps) => renderRowCells(props);
 
 customElements.define(
 	'cosmoz-omnitable-item-row',
