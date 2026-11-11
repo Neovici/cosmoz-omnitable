@@ -1,3 +1,18 @@
+## 19.5.2
+
+### Patch Changes
+
+- fe499cd: perf: rows whose `item`/`index` bindings are unchanged no longer re-render while scrolling
+
+  `cosmoz-grouped-list-row` is now a pion component: the row re-renders with the final `item`/`index`/`renderFn` of the tick exactly once (pion coalesces the commits), instead of once per property setter, and pion's reflective-property identity check keeps rows whose bindings are identity-identical from re-rendering across scroll reconciliations and host re-renders. Scrolling builds content only for rows entering the DOM; full-list refreshes rebuild nothing when the data does not change identity. Rows still re-render from changed bindings: replaced items, index changes and row-content callback identity churn such as selection state. The row element contract is unchanged (`cosmoz-grouped-list-row`, `.item`/`.index`/`.renderFn` properties, light-DOM content, no shadow root, no new dependencies).
+
+## 19.5.1
+
+### Patch Changes
+
+- 3cd9465: Apply the column layout in the same frame as a width change, so a wider table no longer paints one frame with its old, narrower columns.
+- 7f265d7: Keep the rows readable while a list refreshes. They no longer drop to 30% opacity under a large spinner at once. After 400ms they fade to half opacity, and nothing is drawn over them. Show the wait where the user acted, for example in the search field.
+
 ## 19.5.0
 
 ### Minor Changes

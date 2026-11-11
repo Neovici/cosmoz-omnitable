@@ -1,6 +1,6 @@
 {
   "name": "@neovici/cosmoz-omnitable",
-  "version": "19.5.0",
+  "version": "19.5.2",
   "description": "[![Build Status](https://travis-ci.org/Neovici/cosmoz-omnitable.svg?branch=master)](https://travis-ci.org/Neovici/cosmoz-omnitable)",
   "keywords": [
     "web-components"
@@ -124,7 +124,7 @@
     "@neovici/cfg": "^2.15.0",
     "@neovici/testing": "^2.1.1",
     "@open-wc/testing": "^5.0.0",
-    "@playwright/test": "1.64.1",
+    "@playwright/test": "1.65.0",
     "@polymer/iron-test-helpers": "^3.0.0",
     "@polymer/paper-button": "^3.0.0",
     "@polymer/paper-dropdown-menu": "^3.2.0",
