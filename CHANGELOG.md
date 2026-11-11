@@ -1,3 +1,9 @@
+## 19.5.3
+
+### Patch Changes
+
+- 052e8d7: Always show row selection checkboxes instead of only on row hover, so users can see that rows are selectable.
+
 ## 19.5.2
 
 ### Patch Changes
