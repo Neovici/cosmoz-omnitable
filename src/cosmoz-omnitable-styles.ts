@@ -29,7 +29,7 @@ export const checkbox = css`
 	}
 
 	.checkbox:checked::before {
-		content: "";
+		content: '';
 		position: absolute;
 		box-sizing: content-box;
 		width: 4px;
@@ -42,7 +42,7 @@ export const checkbox = css`
 	}
 
 	.checkbox::after {
-		content: "";
+		content: '';
 		display: block;
 		bottom: -5px;
 		left: -5px;
@@ -59,7 +59,7 @@ export const checkbox = css`
 	}
 
 	.checkbox:indeterminate::before {
-		content: "";
+		content: '';
 		position: absolute;
 		width: 8px;
 		height: 2px;
@@ -219,7 +219,7 @@ export default css`
 	.tableContent-empty.spinner {
 		pointer-events: none;
 	}
-	.tableContent:has(> .tableContent-empty.spinner) > .tableContent-scroller {
+	.tableContent.has-spinner > .tableContent-scroller {
 		opacity: 0.5;
 		transition: opacity var(--cz-duration-normal, 250ms)
 			var(--cz-ease-out, ease-out) 400ms;
@@ -228,7 +228,7 @@ export default css`
 		.tableContent-scroller {
 			transition: none;
 		}
-		.tableContent:has(> .tableContent-empty.spinner) > .tableContent-scroller {
+		.tableContent.has-spinner > .tableContent-scroller {
 			transition: opacity 0s 400ms;
 		}
 	}
@@ -252,7 +252,7 @@ export default css`
 		height: calc(var(--cz-spacing) * 10);
 	}
 
-	.tableContent-empty:has(cosmoz-omnitable-skeleton) {
+	.tableContent-empty.has-skeleton {
 		flex-direction: row;
 		justify-content: stretch;
 	}
@@ -268,7 +268,7 @@ export default css`
 	.tableContent-empty.overlay > div {
 		padding-bottom: 0;
 	}
-	.tableContent-empty.overlay:has(cosmoz-omnitable-skeleton) {
+	.tableContent-empty.overlay.has-skeleton {
 		align-items: flex-start;
 	}
 	.tableContent-empty div.tableContent-empty-message {
@@ -429,15 +429,15 @@ export default css`
 		text-align: right;
 	}
 
-	.cell[align="right"] {
+	.cell[align='right'] {
 		text-align: right;
 	}
 
-	.cell[align="left"] {
+	.cell[align='left'] {
 		text-align: left;
 	}
 
-	.cell[align="center"] {
+	.cell[align='center'] {
 		text-align: center;
 	}
 
@@ -457,10 +457,8 @@ export default css`
 		   renders differently from one frame to the next, which breaks
 		   screenshot tests of a selection. */
 		background: var(--cz-color-bg-primary);
-		box-shadow: var(
-				--cz-shadow-raised,
-				0 0 0 1px var(--cz-color-border-secondary)
-			),
+		box-shadow:
+			var(--cz-shadow-raised, 0 0 0 1px var(--cz-color-border-secondary)),
 			var(--cz-shadow-lg);
 		color: var(--cz-color-text-primary);
 		font-size: var(--cz-text-sm);
@@ -473,7 +471,7 @@ export default css`
 		padding-block: 0;
 		padding-inline: calc(var(--cz-spacing) * 4) calc(var(--cz-spacing) * 2);
 	}
-	.mainContainer:has(cosmoz-bottom-bar[active]) .tableContent-scroller {
+	.mainContainer.bottombar-active .tableContent-scroller {
 		padding-bottom: calc(var(--cz-spacing) * 20);
 	}
 
@@ -607,8 +605,8 @@ export default css`
 	.sg[data-on]:not(cosmoz-button) {
 		color: var(--cz-color-text-primary);
 	}
-	cosmoz-button.sg:not([data-on="desc"])::part(button),
-	.sg:not([data-on="desc"]):not(cosmoz-button) {
+	cosmoz-button.sg:not([data-on='desc'])::part(button),
+	.sg:not([data-on='desc']):not(cosmoz-button) {
 		transform: scaleY(-1);
 	}
 	.cell:hover cosmoz-button.sg::part(button),
