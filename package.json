@@ -74,7 +74,10 @@
     "storybook:preview": "npm run storybook:build && web-dev-server --root-dir ./storybook-static/ --hostname 127.0.0.1 --port 8080",
     "prepare": "husky",
     "changeset": "changeset",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "testbed:serve": "web-dev-server --config testbed/web-dev-server.config.mjs",
+    "testbed:bench": "node testbed/bench.mjs",
+    "testbed:trace": "node testbed/trace.mjs"
   },
   "publishConfig": {
     "access": "public"
@@ -122,6 +125,8 @@
     "@commitlint/cli": "^21.0.0",
     "@commitlint/config-conventional": "^21.0.0",
     "@neovici/cfg": "^2.15.0",
+    "@neovici/cosmoz-badge": "1.1.3",
+    "@neovici/cosmoz-tooltip": "1.4.0",
     "@neovici/testing": "^2.1.1",
     "@open-wc/testing": "^5.0.0",
     "@playwright/test": "1.65.0",
