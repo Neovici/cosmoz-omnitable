@@ -136,7 +136,7 @@ suite('column resize jitter', () => {
 
 		for (let i = 0; i < 30; i++) {
 			await nextFrame();
-			const bodyRow = host.querySelector('cosmoz-omnitable-item-row');
+			const bodyRow = host.querySelector('.itemRow');
 			if (!bodyRow) {
 				continue;
 			}

@@ -165,12 +165,10 @@ render(
 const omnitable = frag.querySelector('cosmoz-omnitable');
 app.appendChild(omnitable);
 
-// Rows render with useShadowDOM:false inside the omnitable's shadow root
-// (cosmoz-grouped-list renders item-rows as its light children).
+// Row bodies render via the default renderItem as .itemRow divs inside the
+// omnitable's shadow root (grouped-list renders them as its light children).
 const deepRows = (root) =>
-	root?.shadowRoot
-		? [...root.shadowRoot.querySelectorAll('cosmoz-omnitable-item-row')]
-		: [];
+	root?.shadowRoot ? [...root.shadowRoot.querySelectorAll('.itemRow')] : [];
 
 const scroller = () => omnitable.shadowRoot?.getElementById('scroller') ?? null;
 
@@ -200,9 +198,8 @@ window.__testbed = {
 			columns: total,
 			mountedRows: rows.length,
 			mountedCells: rows[0]
-				? omnitable.shadowRoot.querySelectorAll(
-						'cosmoz-omnitable-item-row:first-of-type .cell',
-					).length
+				? omnitable.shadowRoot.querySelectorAll('.itemRow:first-of-type .cell')
+						.length
 				: 0,
 			scrollerHeight: sc?.clientHeight ?? null,
 			scrollHeight: sc?.scrollHeight ?? null,

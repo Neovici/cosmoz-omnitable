@@ -4,13 +4,13 @@ const open = async (page: Page) => {
 	await page.goto(
 		'iframe.html?id=visual-cosmozomnitable--hierarchy&viewMode=story',
 	);
-	await expect(page.locator('cosmoz-omnitable-item-row').first()).toBeVisible();
+	await expect(page.locator('.itemRow').first()).toBeVisible();
 	await page.evaluate(() => document.fonts.ready);
 };
 
 const table = (page: Page) => page.locator('cosmoz-omnitable');
 const row = (page: Page, i: number) =>
-	page.locator('cosmoz-omnitable-item-row').nth(i);
+	page.locator('.itemRow').nth(i);
 
 test.describe('omnitable visual', () => {
 	test('default', async ({ page }) => {

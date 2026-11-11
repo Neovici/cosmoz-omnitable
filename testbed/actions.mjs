@@ -91,19 +91,19 @@ export const benchMeasure = async ({
 		return i;
 	};
 
-	const firstRow = () => sr.querySelector('cosmoz-omnitable-item-row');
+	const firstRow = () => sr.querySelector('.itemRow');
 	const stamp = () => {
 		const row = firstRow();
 		const cell = row && row.querySelector(':scope > .cell');
 		return {
-			mountedRows: sr.querySelectorAll('cosmoz-omnitable-item-row').length,
+			mountedRows: sr.querySelectorAll('.itemRow').length,
 			cellsFirstRow: row ? row.querySelectorAll(':scope > .cell').length : 0,
 			firstCellWidth: cell ? Math.round(cell.getBoundingClientRect().width) : 0,
-			firstId: row && row.item ? row.item.id : null,
+			firstId: row ? (row.dataItem ?? row.item)?.id : null,
 			lastId: (() => {
-				const rows = sr.querySelectorAll('cosmoz-omnitable-item-row');
+				const rows = sr.querySelectorAll('.itemRow');
 				const r = rows[rows.length - 1];
-				return r && r.item ? r.item.id : null;
+				return r ? (r.dataItem ?? r.item)?.id : null;
 			})(),
 			scrollTop: Math.round(sc.scrollTop),
 			scrollLeft: Math.round(sc.scrollLeft),
@@ -164,7 +164,7 @@ export const benchMeasure = async ({
 				bubbles: true,
 				composed: true,
 				detail: { newWidth: w, column: nub.column },
-			})
+			}),
 		);
 	};
 
@@ -189,7 +189,7 @@ export const benchMeasure = async ({
 		case 'widen': {
 			const nub = sr.querySelector('cosmoz-omnitable-resize-nub');
 			const w0 = Math.round(
-				nub.previousElementSibling.getBoundingClientRect().width
+				nub.previousElementSibling.getBoundingClientRect().width,
 			);
 			sample = await measure(async () => fireResize(w0 + widenDelta));
 			sample.w0 = w0;
