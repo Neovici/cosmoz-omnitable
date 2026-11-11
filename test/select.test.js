@@ -33,9 +33,15 @@ suite('basic', () => {
 					></cosmoz-omnitable-column>
 				</cosmoz-omnitable>
 			`,
-			generateTableDemoData(10, 11, 25),
+			generateTableDemoData(10, 11, 25)
 		);
 		await rowVisible();
+	});
+
+	test('shows unchecked row checkboxes without hover', () => {
+		const checkbox = omnitable.shadowRoot.querySelector('.itemRow .checkbox');
+		assert.isFalse(checkbox.checked);
+		assert.equal(getComputedStyle(checkbox).opacity, '1');
 	});
 
 	test('selects and deselect all items', async () => {
@@ -48,8 +54,8 @@ suite('basic', () => {
 		assert.sameMembers(omnitable.data, omnitable.selectedItems);
 		assert.isTrue(
 			Array.from(omnitable.shadowRoot.querySelectorAll('.itemRow')).every(
-				(el) => el.matches('[selected]'),
-			),
+				(el) => el.matches('[selected]')
+			)
 		);
 
 		all.click();
@@ -62,9 +68,7 @@ suite('basic', () => {
 
 	test('shift click select multiple items', async () => {
 		const items = Array.from(
-				omnitable.shadowRoot.querySelectorAll(
-					'.itemRow input[type="checkbox"]',
-				),
+				omnitable.shadowRoot.querySelectorAll('.itemRow input[type="checkbox"]')
 			),
 			keyEvent = new KeyboardEvent('keydown', {
 				key: 'Shift',
@@ -86,15 +90,13 @@ suite('basic', () => {
 		assert.isTrue(
 			Array.from(omnitable.shadowRoot.querySelectorAll('.itemRow'))
 				.slice(0, 4)
-				.every((el) => el.matches('[selected]')),
+				.every((el) => el.matches('[selected]'))
 		);
 	});
 
 	test('ctrl click to remain one item selected', async () => {
 		const items = Array.from(
-				omnitable.shadowRoot.querySelectorAll(
-					'.itemRow input[type="checkbox"]',
-				),
+				omnitable.shadowRoot.querySelectorAll('.itemRow input[type="checkbox"]')
 			),
 			keyEvent = new KeyboardEvent('keydown', {
 				key: 'Ctrl',
@@ -120,7 +122,7 @@ suite('basic', () => {
 			items
 				.slice(0, 2)
 				.concat(items.slice(-5))
-				.every((el) => el.checked),
+				.every((el) => el.checked)
 		);
 		assert.notSameMembers(omnitable.data, omnitable.selectedItems);
 	});

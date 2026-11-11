@@ -457,8 +457,10 @@ export default css`
 		   renders differently from one frame to the next, which breaks
 		   screenshot tests of a selection. */
 		background: var(--cz-color-bg-primary);
-		box-shadow:
-			var(--cz-shadow-raised, 0 0 0 1px var(--cz-color-border-secondary)),
+		box-shadow: var(
+				--cz-shadow-raised,
+				0 0 0 1px var(--cz-color-border-secondary)
+			),
 			var(--cz-shadow-lg);
 		color: var(--cz-color-text-primary);
 		font-size: var(--cz-text-sm);
@@ -508,17 +510,12 @@ export default css`
 
 	${checkbox}
 
-	/* Row controls wait for the pointer, so the list reads as data. Once
-	   anything is selected, every checkbox shows. */
 	@media (hover: hover) {
-		.itemRow .checkbox:not(:checked),
 		.itemRow cosmoz-button.expand:not([aria-expanded]) {
 			opacity: 0;
 			transition: opacity 120ms;
 		}
-		.itemRow:is(:hover, :focus-within) .checkbox,
-		.itemRow:is(:hover, :focus-within) cosmoz-button.expand,
-		.mainContainer:has(cosmoz-bottom-bar[active]) .itemRow .checkbox {
+		.itemRow:is(:hover, :focus-within) cosmoz-button.expand {
 			opacity: 1;
 		}
 	}
