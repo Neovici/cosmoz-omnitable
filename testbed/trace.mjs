@@ -33,7 +33,9 @@ const ONLY = (
 const OUTDIR = arg('out-dir', 'testbed/results');
 
 const PORT = 8123;
-const URL = `http://127.0.0.1:${PORT}/testbed/index.html?rows=${ROWS}&seed=${SEED}`;
+const SPEED = Number(arg('speed', 0));
+const SPEEDPARAM = SPEED ? `&speed=${SPEED}` : '';
+const URL = `http://127.0.0.1:${PORT}/testbed/index.html?rows=${ROWS}&seed=${SEED}${SPEEDPARAM}`;
 const VIEWPORT = { width: 1600, height: 900 };
 const TRACE_CATEGORIES = [
 	'devtools.timeline',
@@ -90,7 +92,7 @@ const analyze = (events, label) => {
 	const tl = events.filter(
 		(e) =>
 			typeof e.dur === 'number' &&
-			String(e.cat).split(',').includes('devtools.timeline')
+			String(e.cat).split(',').includes('devtools.timeline'),
 	);
 	selfTime(tl);
 
@@ -131,7 +133,7 @@ const analyze = (events, label) => {
 				a.name.padEnd(40),
 				`count:${String(a.count).padStart(6)}`,
 				`total:${a.total.toFixed(1).padStart(8)}ms`,
-				`self:${a.self.toFixed(1).padStart(8)}ms`
+				`self:${a.self.toFixed(1).padStart(8)}ms`,
 			);
 		}
 	};
@@ -159,7 +161,7 @@ const analyze = (events, label) => {
 			console.log(
 				a.key.padEnd(62),
 				`self:${a.self.toFixed(1).padStart(8)}ms`,
-				`n:${a.count}`
+				`n:${a.count}`,
 			);
 		}
 	}
@@ -178,7 +180,7 @@ const analyze = (events, label) => {
 			.slice(0, 8)) {
 			console.log(
 				('dispatch:' + type).padEnd(56),
-				`self:${ms.toFixed(1).padStart(8)}ms`
+				`self:${ms.toFixed(1).padStart(8)}ms`,
 			);
 		}
 	}
@@ -254,7 +256,7 @@ const gotoReady = async () => {
 	await page.goto(URL, { waitUntil: 'load' });
 	await page.waitForFunction(
 		() => !!window.__testbed?.ready && window.__testbed.info().mountedRows > 0,
-		{ timeout: 60000 }
+		{ timeout: 60000 },
 	);
 };
 
@@ -322,12 +324,12 @@ for (let rep = 0; rep < REPS; rep++) {
 			fs.writeFileSync(file.replace('.json', '.json.gz'), zlib.gzipSync(big));
 
 			console.log(
-				`\n[scenario ${w}] measured ms=${sample.ms} active=${sample.activeMs} frames=${sample.frames} muts=${sample.muts}`
+				`\n[scenario ${w}] measured ms=${sample.ms} active=${sample.activeMs} frames=${sample.frames} muts=${sample.muts}`,
 			);
 			const summary = analyze(chunks, w);
 			fs.writeFileSync(
 				path.join(OUTDIR, `trace-summary-${w}${suffix}.json`),
-				JSON.stringify({ file, sample, summary }, null, 1)
+				JSON.stringify({ file, sample, summary }, null, 1),
 			);
 		}
 	}

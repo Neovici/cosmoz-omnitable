@@ -35,7 +35,7 @@ const supplierCell = (column, { item }) =>
 		item,
 		html`<cz-link view="purchase/suppliers/view" param-id=${item.supplier?.id}
 			>${item.supplier?.name}</cz-link
-		>`
+		>`,
 	);
 
 const statusCell = (column, { item }) => czStatus({ status: item?.status });
@@ -63,7 +63,7 @@ for (let i = 0; i < cfg.supplier; i++) {
 			value-property="id"
 			.values=${suppliers}
 			.renderCell=${supplierCell}
-		></cosmoz-omnitable-column-autocomplete>`
+		></cosmoz-omnitable-column-autocomplete>`,
 	);
 }
 
@@ -77,7 +77,7 @@ for (let i = 0; i < cfg.link; i++) {
 			overflow
 			value-path="invoiceNumber"
 			.renderCell=${invoiceNumberCell}
-		></cosmoz-omnitable-column>`
+		></cosmoz-omnitable-column>`,
 	);
 }
 
@@ -96,50 +96,55 @@ for (let i = 0; i < cfg.status; i++) {
 			value-property="name"
 			.values=${STATUSES}
 			.renderCell=${statusCell}
-		></cosmoz-omnitable-column-autocomplete>`
+		></cosmoz-omnitable-column-autocomplete>`,
 	);
 }
 
 // Plain fields live on data.field0 .. field{plain-1} using the generator's CYCLE.
 const plan = columnPlan(cfg.plain),
 	planCol = {
-		string: (i) => html`<cosmoz-omnitable-column
-			name=${`field${i}`}
-			title=${`String ${i}`}
-			width="130px"
-			overflow
-			value-path=${`field${i}`}
-		></cosmoz-omnitable-column>`,
-		number: (i) => html`<cosmoz-omnitable-column-number
-			name=${`field${i}`}
-			title=${`Number ${i}`}
-			flex="0"
-			width="105px"
-			value-path=${`field${i}`}
-		></cosmoz-omnitable-column-number>`,
-		autocomplete: (i) => html`<cosmoz-omnitable-column-autocomplete
-			name=${`field${i}`}
-			title=${`Text ${i}`}
-			flex="0"
-			width="115px"
-			overflow
-			value-path=${`field${i}`}
-		></cosmoz-omnitable-column-autocomplete>`,
-		date: (i) => html`<cosmoz-omnitable-column-date
-			name=${`field${i}`}
-			title=${`Date ${i}`}
-			flex="0"
-			width="100px"
-			value-path=${`field${i}`}
-		></cosmoz-omnitable-column-date>`,
-		boolean: (i) => html`<cosmoz-omnitable-column-boolean
-			name=${`field${i}`}
-			title=${`Bool ${i}`}
-			width="65px"
-			true-label="Yes"
-			false-label="No"
-			value-path=${`field${i}`}
-		></cosmoz-omnitable-column-boolean>`,
+		string: (i) =>
+			html`<cosmoz-omnitable-column
+				name=${`field${i}`}
+				title=${`String ${i}`}
+				width="130px"
+				overflow
+				value-path=${`field${i}`}
+			></cosmoz-omnitable-column>`,
+		number: (i) =>
+			html`<cosmoz-omnitable-column-number
+				name=${`field${i}`}
+				title=${`Number ${i}`}
+				flex="0"
+				width="105px"
+				value-path=${`field${i}`}
+			></cosmoz-omnitable-column-number>`,
+		autocomplete: (i) =>
+			html`<cosmoz-omnitable-column-autocomplete
+				name=${`field${i}`}
+				title=${`Text ${i}`}
+				flex="0"
+				width="115px"
+				overflow
+				value-path=${`field${i}`}
+			></cosmoz-omnitable-column-autocomplete>`,
+		date: (i) =>
+			html`<cosmoz-omnitable-column-date
+				name=${`field${i}`}
+				title=${`Date ${i}`}
+				flex="0"
+				width="100px"
+				value-path=${`field${i}`}
+			></cosmoz-omnitable-column-date>`,
+		boolean: (i) =>
+			html`<cosmoz-omnitable-column-boolean
+				name=${`field${i}`}
+				title=${`Bool ${i}`}
+				width="65px"
+				true-label="Yes"
+				false-label="No"
+				value-path=${`field${i}`}
+			></cosmoz-omnitable-column-boolean>`,
 	};
 
 for (let k = 0; k < cfg.plain; k++) {
@@ -155,7 +160,7 @@ render(
 	html`<cosmoz-omnitable id="t" selection-enabled>
 		${colTemplates}
 	</cosmoz-omnitable>`,
-	frag
+	frag,
 );
 const omnitable = frag.querySelector('cosmoz-omnitable');
 app.appendChild(omnitable);
@@ -196,8 +201,8 @@ window.__testbed = {
 			mountedRows: rows.length,
 			mountedCells: rows[0]
 				? omnitable.shadowRoot.querySelectorAll(
-						'cosmoz-omnitable-item-row:first-of-type .cell'
-				  ).length
+						'cosmoz-omnitable-item-row:first-of-type .cell',
+					).length
 				: 0,
 			scrollerHeight: sc?.clientHeight ?? null,
 			scrollHeight: sc?.scrollHeight ?? null,

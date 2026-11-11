@@ -54,12 +54,23 @@ type SkeletonProps = {
 		columns: Column[];
 		collapsed: Column[];
 	};
+	widths?: Record<string, number>;
 };
 
-const Skeleton = ({ settingsConfig }: SkeletonProps) => {
+const cellStyle = (
+	widths: Record<string, number> | undefined,
+	name: Column['name'],
+) => {
+	const width = name == null ? undefined : widths?.[name];
+	return width == null
+		? ''
+		: `width: ${width}px; padding: 0 min(3px, ${width / 2}px)`;
+};
+
+const Skeleton = ({ settingsConfig, widths }: SkeletonProps) => {
 	const { columns, collapsed } = settingsConfig,
 		showingColumns = columns.filter(
-			(column) => !collapsed.some((hidden) => hidden.name === column.name)
+			(column) => !collapsed.some((hidden) => hidden.name === column.name),
 		);
 
 	return html`<div class="skeleton">
@@ -74,14 +85,15 @@ const Skeleton = ({ settingsConfig }: SkeletonProps) => {
 								class="cell"
 								part=${`cell-${col.name}`}
 								name=${col.name}
-							></div>`
+								style=${cellStyle(widths, col.name)}
+							></div>`,
 					)}
-				</div>`
+				</div>`,
 		)}
 	</div>`;
 };
 
 customElements.define(
 	'cosmoz-omnitable-skeleton',
-	component(Skeleton, { styleSheets: [styles] })
+	component(Skeleton, { styleSheets: [styles] }),
 );
