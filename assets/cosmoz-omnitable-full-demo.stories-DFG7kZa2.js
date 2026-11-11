@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r,Dt as i,E as a,G as o,Ht as s,I as c,It as l,Kt as u,Mt as d,O as f,P as p,Pt as m,Q as h,R as g,Rt as _,S as v,T as y,U as b,Ut as x,V as S,X as C,Xt as w,Yt as T,Z as ee,_ as te,_t as ne,at as E,b as D,bt as re,c as O,ct as ie,d as ae,dt as oe,et as se,f as ce,ft as k,gt as le,ht as ue,i as de,it as fe,kt as pe,l as me,lt as he,m as ge,mt as _e,n as ve,ot as ye,p as be,pt as xe,q as Se,qt as Ce,r as we,s as Te,st as Ee,tt as De,u as Oe,ut as ke,v as Ae,vt as A,w as j,x as M,y as N,yt as P,z as je}from"./iframe-Cn0fwubk.js";import{A as Me,B as F,C as Ne,D as Pe,E as Fe,F as I,G as Ie,H as Le,I as Re,J as ze,L as Be,M as Ve,N as He,O as Ue,P as L,R as We,S as Ge,T as Ke,U as qe,V as R,W as Je,_ as Ye,a as Xe,d as Ze,f as Qe,g as $e,h as et,j as tt,k as nt,l as rt,m as it,n as at,q as ot,r as st,s as ct,t as lt,u as ut,v as dt,w as ft,x as pt,y as mt,z as ht}from"./dist-Bkcq81uC.js";import{n as gt,t as _t}from"./table-demo-helper-Dj0p9yas.js";var vt;function yt(){return(yt=e((()=>{A(),vt=()=>T`<style>
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r,Dt as i,E as a,G as o,Ht as s,I as c,It as l,Kt as u,Mt as d,O as f,P as p,Pt as m,Q as h,R as g,Rt as _,S as v,T as y,U as b,Ut as x,V as S,X as C,Xt as w,Yt as T,Z as ee,_ as te,_t as ne,at as E,b as D,bt as re,c as O,ct as ie,d as ae,dt as oe,et as se,f as ce,ft as k,gt as le,ht as ue,i as de,it as fe,kt as pe,l as me,lt as he,m as ge,mt as _e,n as ve,ot as ye,p as be,pt as xe,q as Se,qt as Ce,r as we,s as Te,st as Ee,tt as De,u as Oe,ut as ke,v as Ae,vt as A,w as j,x as M,y as N,yt as P,z as je}from"./iframe-CwolXHmT.js";import{A as Me,B as F,C as Ne,D as Pe,E as Fe,F as I,G as Ie,H as Le,I as Re,J as ze,L as Be,M as Ve,N as He,O as Ue,P as L,R as We,S as Ge,T as Ke,U as qe,V as R,W as Je,_ as Ye,a as Xe,d as Ze,f as Qe,g as $e,h as et,j as tt,k as nt,l as rt,m as it,n as at,q as ot,r as st,s as ct,t as lt,u as ut,v as dt,w as ft,x as pt,y as mt,z as ht}from"./dist-CiexKffJ.js";import{n as gt,t as _t}from"./table-demo-helper-Dj0p9yas.js";var vt;function yt(){return(yt=e((()=>{A(),vt=()=>T`<style>
 	@keyframes rotating {
 		100% {
 			transform: rotate(360deg);
@@ -1188,8 +1188,10 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		   renders differently from one frame to the next, which breaks
 		   screenshot tests of a selection. */
 		background: var(--cz-color-bg-primary);
-		box-shadow:
-			var(--cz-shadow-raised, 0 0 0 1px var(--cz-color-border-secondary)),
+		box-shadow: var(
+				--cz-shadow-raised,
+				0 0 0 1px var(--cz-color-border-secondary)
+			),
 			var(--cz-shadow-lg);
 		color: var(--cz-color-text-primary);
 		font-size: var(--cz-text-sm);
@@ -1239,17 +1241,12 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 
 	${zi}
 
-	/* Row controls wait for the pointer, so the list reads as data. Once
-	   anything is selected, every checkbox shows. */
 	@media (hover: hover) {
-		.itemRow .checkbox:not(:checked),
 		.itemRow cosmoz-button.expand:not([aria-expanded]) {
 			opacity: 0;
 			transition: opacity 120ms;
 		}
-		.itemRow:is(:hover, :focus-within) .checkbox,
-		.itemRow:is(:hover, :focus-within) cosmoz-button.expand,
-		.mainContainer:has(cosmoz-bottom-bar[active]) .itemRow .checkbox {
+		.itemRow:is(:hover, :focus-within) cosmoz-button.expand {
 			opacity: 1;
 		}
 	}
