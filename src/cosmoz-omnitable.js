@@ -17,6 +17,7 @@ import { renderFooter } from './lib/render-footer';
 import { renderHeader } from './lib/render-header';
 import { renderList } from './lib/render-list';
 import { useOmnitable } from './lib/use-omnitable';
+import { All } from './lib/utils';
 
 import './grouped-list/index';
 
@@ -25,14 +26,21 @@ const shimCSS = (s) => window.ShadyCSS?.ApplyShim?.transformCssText?.(s) || s;
 const Omnitable = (host) => {
 	const { header, list, footer } = useOmnitable(host);
 
+	const hasSpinner = list.loading && list.processedItems.length > 0,
+		hasSelection =
+			footer.selectedItems === All || footer.selectedItems.length > 0;
+
 	return html`
 		<style>
 			${guard([], () => shimCSS(styles))}
 		</style>
 
-		<div class="mainContainer">
+		<div class="mainContainer${hasSelection ? ' bottombar-active' : ''}">
 			${renderHeader(header)}
-			<div class="tableContent" id="tableContent">
+			<div
+				class="tableContent${hasSpinner ? ' has-spinner' : ''}"
+				id="tableContent"
+			>
 				${renderList(header, list)}
 			</div>
 			${renderFooter(footer)}
@@ -65,7 +73,7 @@ customElements.define(
 			'inline',
 			'enable-select-all',
 		],
-	})
+	}),
 );
 
 const tmplt = `
