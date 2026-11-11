@@ -2,62 +2,79 @@ import { ColumnConfig, ColumnConfigInput, layout } from './layout';
 import { findLastIndex } from './utils';
 
 type ItemName = ColumnConfigInput['name'];
-type Width = ColumnConfigInput['width'];
+interface HideRule {
+	name: string;
+	kind: 'hide';
+}
+interface WidthRule {
+	name: string;
+	kind: 'width';
+	width: number;
+	lastVisible: boolean;
+}
+// One rule per column config entry, in config order. The trailing resize-nub
+// hide rule (last visible column) is not part of this list.
+export type LayoutRule = HideRule | WidthRule;
 
-const _toCss = (
+export const toLayoutRules = (
 	layout: (number | undefined)[],
-	config: ColumnConfigInput[]
-) => {
+	config: ColumnConfigInput[],
+): LayoutRule[] => {
 	const lastVisibleIndex = findLastIndex(
 		layout,
-		(width) => width != null && width > 0
+		(width) => width != null && width > 0,
 	);
-
-	const generateCellCSS = (itemName: ItemName, width: Width) =>
-		`.cell[name="${itemName}"], cosmoz-omnitable-skeleton::part(cell-${itemName}){width: ${width}px;padding: 0 min(3px, ${
-			width / 2
-		}px)}`;
-
-	const hideResizeNub = (itemName: ItemName) =>
-		`cosmoz-omnitable-resize-nub[name="${itemName}"]{display:none}`;
-
-	const hideColumn = (itemName: ItemName) =>
-		`cosmoz-omnitable-resize-nub[name="${itemName}"], .cell[name="${itemName}"]{display:none}`;
 
 	let cumulative = 0,
 		offset = 0;
 
-	return config
-		.map((item, index) => {
-			const width = layout[index];
+	return config.map((item, index) => {
+		const width = layout[index];
 
-			// Hidden columns
-			if (width == null || width === 0) {
-				return hideColumn(item.name);
-			}
+		// Hidden columns
+		if (width == null || width === 0) {
+			return { name: item.name, kind: 'hide' };
+		}
 
-			cumulative += width;
-			const nextOffset = Math.round(cumulative),
-				cellWidth = nextOffset - offset;
-			offset = nextOffset;
+		cumulative += width;
+		const nextOffset = Math.round(cumulative),
+			cellWidth = nextOffset - offset;
+		offset = nextOffset;
 
-			const cellCSS = generateCellCSS(item.name, cellWidth);
+		return {
+			name: item.name,
+			kind: 'width',
+			width: cellWidth,
+			lastVisible: index === lastVisibleIndex,
+		};
+	});
+};
 
-			// Last visible column, show cell but hide its resize nub
-			if (index === lastVisibleIndex) {
-				return `${cellCSS}\n${hideResizeNub(item.name)}`;
-			}
+const cellCss = (rule: WidthRule) =>
+	`.cell[name="${rule.name}"]{width: ${rule.width}px;padding: 0 min(3px, ${rule.width / 2}px)}`;
 
-			// Other visible columns just show the cell
-			return cellCSS;
-		})
-		.join('\n');
+const hideNubCss = (name: ItemName) =>
+	`cosmoz-omnitable-resize-nub[name="${name}"]{display:none}`;
+
+const hideColumnCss = (name: ItemName) =>
+	`cosmoz-omnitable-resize-nub[name="${name}"], .cell[name="${name}"]{display:none}`;
+
+const _toCss = (rules: LayoutRule[]): string => {
+	const parts = rules.map((rule) => {
+		if (rule.kind === 'hide') {
+			return hideColumnCss(rule.name);
+		}
+		const css = cellCss(rule);
+		// Last visible column, show cell but hide its resize nub
+		return rule.lastVisible ? `${css}\n${hideNubCss(rule.name)}` : css;
+	});
+	return parts.join('\n');
 };
 
 export const computeLayout = (
 	_columnConfigs: ColumnConfig[],
 	canvasWidth: number,
-	numColumns: number
+	numColumns: number,
 ): (number | undefined)[] => {
 	const columnConfigs = _columnConfigs.filter((c) => !c.hidden),
 		totalWidths = columnConfigs.reduce((sum, { width }) => sum + width, 0);
@@ -75,7 +92,7 @@ export const computeLayout = (
 			Math.max(max, column.index),
 			column.index > max ? index : maxIndex,
 		],
-		[-1, -1]
+		[-1, -1],
 	)[1];
 
 	// force the last visible column to flex
@@ -93,5 +110,8 @@ export const computeLayout = (
 
 export const toCss = (
 	layout: (number | undefined)[],
-	config: ColumnConfigInput[]
-) => (layout.length === 0 ? '.cell {display: none;}' : _toCss(layout, config));
+	config: ColumnConfigInput[],
+): string =>
+	layout.length === 0
+		? '.cell {display: none;}'
+		: _toCss(toLayoutRules(layout, config));
