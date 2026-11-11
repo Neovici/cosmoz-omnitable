@@ -34,6 +34,7 @@ interface ListParams {
 	renderItem: (item: Item, index: number, params: unknown) => unknown;
 	renderGroup: (item: unknown, index: number, params: unknown) => unknown;
 	error?: { message: string } | null;
+	partWidths?: Record<string, number>;
 }
 
 export const renderList = (header: HeaderParams, list: ListParams) => {
@@ -50,6 +51,7 @@ export const renderList = (header: HeaderParams, list: ListParams) => {
 			renderItem,
 			renderGroup,
 			error,
+			partWidths,
 		} = list;
 
 	return html`${when(
@@ -90,6 +92,7 @@ export const renderList = (header: HeaderParams, list: ListParams) => {
 				html`<div class="tableContent-empty overlay has-skeleton">
 					<cosmoz-omnitable-skeleton
 						.settingsConfig=${settingsConfig}
+						.widths=${partWidths}
 					></cosmoz-omnitable-skeleton>
 				</div>`,
 		)}

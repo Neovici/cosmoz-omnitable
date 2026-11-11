@@ -38,14 +38,15 @@ export const useOmnitable = (host) => {
 				noLocalSort,
 				noLocalFilter,
 			}),
-		{ isMini, collapsedColumns, miniColumns, requestTween } = useFastLayout({
-			host,
-			columns,
-			settings,
-			setSettings,
-			resizeSpeedFactor,
-			sortAndGroupOptions,
-		}),
+		{ isMini, collapsedColumns, miniColumns, requestTween, partWidths } =
+			useFastLayout({
+				host,
+				columns,
+				settings,
+				setSettings,
+				resizeSpeedFactor,
+				sortAndGroupOptions,
+			}),
 		dataIsValid = data && Array.isArray(data) && data.length > 0,
 		{ selectedItems, setSelectedItems } = usePublicInterface({
 			host,
@@ -91,6 +92,7 @@ export const useOmnitable = (host) => {
 			miniColumns,
 			sortAndGroupOptions,
 			rowPartFn,
+			partWidths,
 		}),
 		footer: useFooter({
 			host,

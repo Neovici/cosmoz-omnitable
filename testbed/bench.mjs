@@ -39,7 +39,9 @@ const ONLY = (arg('only', 'scroll-1,scroll-several,jump-end,resize,hide') || '')
 const OUT = arg('out', '');
 
 const PORT = 8123;
-const URL = `http://127.0.0.1:${PORT}/testbed/index.html?rows=${ROWS}&seed=${SEED}`;
+const SPEED = Number(arg('speed', 0));
+const SPEEDPARAM = SPEED ? `&speed=${SPEED}` : '';
+const URL = `http://127.0.0.1:${PORT}/testbed/index.html?rows=${ROWS}&seed=${SEED}${SPEEDPARAM}`;
 const VIEWPORT = { width: 1600, height: 900 };
 
 const preflight = async () => {
@@ -49,7 +51,7 @@ const preflight = async () => {
 	} catch {
 		console.error(
 			`Testbed server not reachable at ${URL}\nStart it with:\n` +
-				`  cd /home/coder/omni-1953 && npx web-dev-server --config wds.config.mjs --hostname 127.0.0.1 --port ${PORT}`
+				`  cd /home/coder/omni-1953 && npx web-dev-server --config wds.config.mjs --hostname 127.0.0.1 --port ${PORT}`,
 		);
 		process.exit(1);
 	}
@@ -92,7 +94,7 @@ const metricDelta = (a, b) => {
 const report = (results) => {
 	console.log('\n=== omnitable testbed benchmark ===');
 	console.log(
-		`rows=${ROWS} cols=50 seed=${SEED} reps=${REPS} viewport=${VIEWPORT.width}x${VIEWPORT.height}`
+		`rows=${ROWS} cols=50 seed=${SEED} reps=${REPS} viewport=${VIEWPORT.width}x${VIEWPORT.height}`,
 	);
 	console.log(
 		'scenario'.padEnd(15),
@@ -106,7 +108,7 @@ const report = (results) => {
 		'style#'.padStart(7),
 		'rowsΔ'.padStart(6),
 		'mutΔ'.padStart(7),
-		'first cell w / id moved'
+		'first cell w / id moved',
 	);
 	for (const id of [
 		'scroll-1',
@@ -130,7 +132,7 @@ const report = (results) => {
 			String(s.metrics.RecalcStyleCount).padStart(7),
 			String(s.rowsDelta).padStart(6),
 			String(s.mutsDelta).padStart(7),
-			`${s.firstCellWidth}  idMoved:${s.idMoved}`
+			`${s.firstCellWidth}  idMoved:${s.idMoved}`,
 		);
 	}
 };
@@ -171,7 +173,7 @@ const gotoReady = async () => {
 	await page.goto(URL, { waitUntil: 'load' });
 	await page.waitForFunction(
 		() => !!window.__testbed?.ready && window.__testbed.info().mountedRows > 0,
-		{ timeout: 60000 }
+		{ timeout: 60000 },
 	);
 	return Date.now() - t0;
 };
@@ -235,7 +237,7 @@ const pass = async (record) => {
 };
 
 console.error(
-	`Running benchmark: reps=${REPS} several=${SEVERAL} widen=${WIDEN}px rows=${ROWS} seed=${SEED}`
+	`Running benchmark: reps=${REPS} several=${SEVERAL} widen=${WIDEN}px rows=${ROWS} seed=${SEED}`,
 );
 
 for (let i = 0; i < 1; i++) {
@@ -265,8 +267,8 @@ for (const [id, arr] of Object.entries(results.samples)) {
 		arr.map(
 			(s) =>
 				(s.after.lastId !== s.before.lastId ? 1 : 0) +
-				(s.after.firstId !== s.before.firstId ? 1 : 0)
-		)
+				(s.after.firstId !== s.before.firstId ? 1 : 0),
+		),
 	);
 	summary[id] = {
 		n: arr.length,
@@ -284,15 +286,15 @@ for (const [id, arr] of Object.entries(results.samples)) {
 			sum: round2(key((s) => s.longtasks.sum)),
 		},
 		metrics: Object.fromEntries(
-			METRIC_KEYS.map((k) => [k, round2(key((s) => s.metrics[k]))])
+			METRIC_KEYS.map((k) => [k, round2(key((s) => s.metrics[k]))]),
 		),
 		rowsDelta: Math.round(
-			median(arr.map((s) => s.after.mountedRows - s.before.mountedRows))
+			median(arr.map((s) => s.after.mountedRows - s.before.mountedRows)),
 		),
 		mutsDelta: Math.round(median(arr.map((s) => s.muts))),
 		idMoved,
 		firstCellWidth: `${Math.round(
-			median(arr.map((s) => s.before.firstCellWidth))
+			median(arr.map((s) => s.before.firstCellWidth)),
 		)} -> ${Math.round(median(arr.map((s) => s.after.firstCellWidth)))}`,
 	};
 }
@@ -324,7 +326,7 @@ fs.writeFileSync(
 			samples: results.samples,
 		},
 		null,
-		1
-	)
+		1,
+	),
 );
 console.log('\nresults written to ' + outFile);
