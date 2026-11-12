@@ -176,13 +176,23 @@ class PooledRecycler extends BaseAsyncDirective {
 		this._scroller = el ?? null;
 		if (el) {
 			this._scrollerTarget = el;
-			el.addEventListener('scroll', this._scrollerListener, {
-				passive: true,
-			});
+			el.addEventListener('scroll', this._onScroll, { passive: true });
 		}
 	}
 
-	_scrollerListener = () => this._schedule();
+	// pump synchronously on the first scroll event of a burst so the frame
+	// that paints the new position already has rows bound (no white gap),
+	// then keep a trailing rAF pump for position corrections.
+	_onScroll = () => {
+		this._pump();
+		if (this._rafId != null) {
+			return;
+		}
+		this._rafId = requestAnimationFrame(() => {
+			this._rafId = null;
+			this._pump();
+		});
+	};
 
 	_measureViewport() {
 		// pool = enough slots to cover the viewport at the smallest row height
@@ -416,7 +426,7 @@ class PooledRecycler extends BaseAsyncDirective {
 			this._rafId = null;
 		}
 		this._ro?.disconnect();
-		this._scroller?.removeEventListener('scroll', this._scrollerListener);
+		this._scroller?.removeEventListener('scroll', this._onScroll);
 	}
 
 	reconnected() {
