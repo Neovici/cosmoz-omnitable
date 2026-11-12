@@ -329,10 +329,9 @@ class PooledRecycler extends BaseAsyncDirective {
 		if (this._host && this._host.style.height !== `${total}px`) {
 			this._host.style.height = `${total}px`;
 		}
-		if (this._canvas && this._canvas.style.height !== `${total}px`) {
-			this._canvas.style.height = `${total}px`;
-		}
 
+		// span covers viewport + cushions on both sides; it is derived from
+		// the viewport span, never from pool.length
 		const span = Math.min(
 			n - first,
 			Math.ceil(viewport / MIN_ROW_HEIGHT) + OVERSCAN_ROWS * 2,
