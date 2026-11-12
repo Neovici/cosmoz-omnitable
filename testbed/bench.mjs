@@ -38,7 +38,7 @@ const ONLY = (arg('only', 'scroll-1,scroll-several,jump-end,resize,hide') || '')
 	.filter(Boolean);
 const OUT = arg('out', '');
 
-const PORT = 8123;
+const PORT = Number(arg('port', '8123'));
 const SPEED = Number(arg('speed', 0));
 const SPEEDPARAM = SPEED ? `&speed=${SPEED}` : '';
 const URL = `http://127.0.0.1:${PORT}/testbed/index.html?rows=${ROWS}&seed=${SEED}${SPEEDPARAM}`;
