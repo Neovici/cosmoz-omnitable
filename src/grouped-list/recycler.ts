@@ -59,6 +59,31 @@ class PooledRecycler extends BaseAsyncDirective {
 	_observing = new WeakSet<HTMLElement>();
 	_boundRenderRow: ((item: Item, index: number) => unknown) | null = null;
 
+	pumpCount = 0;
+	_debugPump() {
+		const w = document.defaultView as unknown as {
+			__rec?: PooledRecycler;
+			__recLog?: unknown[];
+		};
+		w.__rec = this;
+		const bound = this._pool.filter((s) => s.bound != null).length;
+		const firstBound = this._pool.find((s) => s.bound != null);
+		(w.__recLog ??= []).push({
+			t: 'pumpEnd',
+			items: this._items.length,
+			pumpCount: this.pumpCount,
+			pool: this._pool.length,
+			bound,
+			firstBound: firstBound ? String(firstBound.bound) : 'none',
+			firstBoundItem: firstBound?.boundItem
+				? String(firstBound.boundItem).slice(0, 20)
+				: 'none',
+			firstVis: firstBound ? firstBound.el.style.visibility : 'none',
+			firstIndex: this._firstIndex(this._scroller?.scrollTop ?? 0),
+			scrollTop: this._scroller?.scrollTop,
+		});
+	}
+
 	render(config: RecyclerConfig) {
 		this._items = config.items ?? [];
 		this._renderRow = config.renderRow;
@@ -264,6 +289,7 @@ class PooledRecycler extends BaseAsyncDirective {
 	}
 
 	_pump() {
+		this.pumpCount = (this.pumpCount ?? 0) + 1;
 		const n = this._items.length;
 		if (this._prefix.length !== n + 1) {
 			this._invalidate();
@@ -299,6 +325,7 @@ class PooledRecycler extends BaseAsyncDirective {
 		const last = first + span - 1;
 		this._ensurePool(span);
 
+		this._debugPump();
 		// stable assignment: keep every slot bound to its index while the
 		// index stays covered; only entering indexes re-bind (DOM reuse)
 		const covering = new Set<number>();
@@ -359,20 +386,24 @@ class PooledRecycler extends BaseAsyncDirective {
 		if (slot.bound === index && slot.boundItem === item) {
 			return;
 		}
-		const indexChanged = slot.bound !== index;
-		if (indexChanged) {
-			// stable wrapper: identity per slot so the row element is never
-			// marked dirty by re-bind cycles; it reads the live renderer
-			slot.wrapper = ((item: Item) =>
-				this._renderRow(
-					item,
-					slot.bound as number,
-				)) as GroupedListRowHost['renderFn'];
-			slot.el.renderFn = slot.wrapper;
+		slot.bound = index;
+		slot.boundItem = item;
+		slot.el.index = index;
+		slot.el.item = item as Item;
+		if (slot.bound != index) {
+			// impossible post-assignment; kept for clarity
+			return;
 		}
-		if (indexChanged) {
-			slot.el.style.top = `${this._offset(index)}px`;
-		}
+		// stable wrapper: identity per slot so the row element is never
+		// marked dirty by re-bind cycles; it reads the live renderer
+		slot.wrapper = ((item: Item) =>
+			this._renderRow(
+				item,
+				slot.bound as number,
+			)) as GroupedListRowHost['renderFn'];
+		slot.el.renderFn = slot.wrapper;
+		slot.el.style.top = `${this._offset(index)}px`;
+		slot.el.style.visibility = 'visible';
 		if (this._ro && !this._observing.has(slot.el)) {
 			this._observing.add(slot.el);
 			this._ro.observe(slot.el);
