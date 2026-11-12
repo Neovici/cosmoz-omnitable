@@ -45,6 +45,7 @@ type Slot = {
 	height: number;
 	bound: number | undefined; // bound data index, or undefined when idle
 	boundItem?: unknown; // bound item reference (for identity rebinds)
+	off?: number; // y the transform was last written for (undefined = never)
 	wrapper?: GroupedListRowHost['renderFn'];
 };
 
@@ -511,6 +512,10 @@ class PooledRecycler extends BaseAsyncDirective {
 		}
 		if (changed) {
 			this._invalidate();
+			// a measured height change shifts the prefix for every row below
+			// it: re-place still-bound slots whose cached offset no longer
+			// matches (expanded rows, first-measurement corrections)
+			this._syncBoundTransforms();
 			// scroll anchoring: keep the anchor row stable when offsets above
 			// the viewport change
 			const anchorOffset = this._offset(this._anchorIndex);
@@ -520,6 +525,20 @@ class PooledRecycler extends BaseAsyncDirective {
 				this._lastAnchorTop += delta;
 			}
 			this._schedule();
+		}
+	}
+
+	_syncBoundTransforms() {
+		for (const slot of this._pool) {
+			if (slot.bound == null) {
+				slot.off = 0;
+				continue;
+			}
+			const want = this._offset(slot.bound);
+			if (want !== slot.off) {
+				slot.el.style.transform = `translate3d(0, ${want}px, 0)`;
+				slot.off = want;
+			}
 		}
 	}
 
@@ -663,6 +682,7 @@ class PooledRecycler extends BaseAsyncDirective {
 			if (idle && slot.el.style.visibility !== 'hidden') {
 				slot.el.style.visibility = 'hidden';
 				slot.bound = undefined;
+				slot.off = 0;
 				slot.el.style.transform = '';
 			}
 		}
@@ -705,9 +725,11 @@ class PooledRecycler extends BaseAsyncDirective {
 				slot.bound as number,
 			)) as GroupedListRowHost['renderFn'];
 		slot.el.renderFn = slot.wrapper;
-		// transform-fixed at the data offset: written ONLY here (bind time);
-		// the canvas layer move per scroll frame happens on the canvas alone
+		// transform-fixed at the data offset: written ONLY here (bind time)
+		// or by the height-change sync; the canvas layer move per scroll
+		// frame happens on the canvas alone
 		slot.el.style.transform = `translate3d(0, ${this._offset(index)}px, 0)`;
+		slot.off = this._offset(index);
 		slot.el.style.visibility = 'visible';
 		if (this._ro && !this._observing.has(slot.el)) {
 			this._observing.add(slot.el);
