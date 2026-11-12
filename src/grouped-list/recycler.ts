@@ -252,6 +252,9 @@ class PooledRecycler extends BaseAsyncDirective {
 	}
 
 	_anchorIndex = 0;
+	_lastScrollY = 0;
+	_lastScrollT = 0;
+	_velocityRowsS = 0; // smoothed scroll velocity, rows/second
 	_lastAnchorTop = 0;
 
 	_invalidate() {
@@ -307,6 +310,26 @@ class PooledRecycler extends BaseAsyncDirective {
 		const scrollTop = this._scroller?.scrollTop ?? 0;
 		const viewport = this._scroller?.clientHeight ?? 300;
 
+		// scroll velocity: smoothed magnitude in rows/second, used below to
+		// extend the covering window during fast thumb drags; a long gap is
+		// a new gesture, so the stale velocity must not leak into it
+		const now = performance.now();
+		const dt = now - this._lastScrollT;
+		if (dt >= 4) {
+			const avgRow = Math.max(
+				1,
+				n > 0 ? (this._prefix[n] ?? 0) / n : DEFAULT_HEIGHT,
+			);
+			const instant = Math.min(
+				10000,
+				((Math.abs(scrollTop - this._lastScrollY) / dt) * 1000) / avgRow,
+			);
+			this._velocityRowsS =
+				dt > 120 ? instant : 0.5 * this._velocityRowsS + 0.5 * instant;
+		}
+		this._lastScrollY = scrollTop;
+		this._lastScrollT = now;
+
 		if (
 			this._scroller &&
 			this._scroller.clientHeight !== this._measuredViewport
@@ -319,7 +342,7 @@ class PooledRecycler extends BaseAsyncDirective {
 		// when scrolling up are pre-bound and pre-measured, no white gap)
 		const first = Math.max(
 			0,
-			this._firstIndex(Math.max(0, scrollTop)) - OVERSCAN_ROWS
+			this._firstIndex(Math.max(0, scrollTop)) - OVERSCAN_ROWS,
 		);
 		const anchorTop = this._offset(this._anchorIndex ?? first);
 		this._anchorIndex = this._firstIndex(Math.max(0, scrollTop));
@@ -333,9 +356,18 @@ class PooledRecycler extends BaseAsyncDirective {
 			this._canvas.style.height = `${total}px`;
 		}
 
+		// velocity-adaptive overscan: during fast drags (thumbed scrollbar)
+		// extend the covered window proportionally to the flick velocity, so
+		// the composited frames are mostly covered by bound rows; bounded.
+		const velocityRows = Math.min(
+			240,
+			Math.round(Math.abs(this._velocityRowsS ?? 0) * 0.15),
+		);
 		const span = Math.min(
 			n - first,
-			Math.ceil(viewport / MIN_ROW_HEIGHT) + OVERSCAN_ROWS * 2,
+			Math.ceil(viewport / MIN_ROW_HEIGHT) +
+				OVERSCAN_ROWS * 2 +
+				velocityRows * 2,
 		);
 		const last = first + span - 1;
 		this._ensurePool(span);
@@ -407,10 +439,6 @@ class PooledRecycler extends BaseAsyncDirective {
 		slot.boundItem = item;
 		slot.el.index = index;
 		slot.el.item = item as Item;
-		if (slot.bound != index) {
-			// impossible post-assignment; kept for clarity
-			return;
-		}
 		// stable wrapper: identity per slot so the row element is never
 		// marked dirty by re-bind cycles; it reads the live renderer
 		slot.wrapper = ((item: Item) =>
