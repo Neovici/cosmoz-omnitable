@@ -50,7 +50,7 @@ export const normalizeColumns = (
 			(column) => !settings.some(byName(column.name))
 		);
 
-	return [
+	const merged: NormalizedSettings['columns'] = [
 		..._settings,
 		..._savedSettings.flatMap((setting) => {
 			const column = columns.find((c) => c.name === setting.name);
@@ -65,18 +65,29 @@ export const normalizeColumns = (
 				minWidth: parseInt(column.minWidth ?? '0', 10),
 			};
 		}),
-		...cols.map((column) => {
-			const { name, title, priority, minWidth, width, flex } = column;
-			return {
+	];
+
+	// A column missing from the settings goes after the column it follows in `columns`, not at the end.
+	return cols.reduce((acc, column) => {
+		const { name, title, priority, minWidth, width, flex } = column,
+			before = columns
+				.slice(0, columns.indexOf(column))
+				.reverse()
+				.find((c) => acc.some(byName(c.name!))),
+			at = before ? acc.findIndex(byName(before.name!)) + 1 : 0;
+		return [
+			...acc.slice(0, at),
+			{
 				name: name ?? '',
 				title: title ?? '',
 				priority: priority ?? 0,
 				minWidth: parseInt(minWidth ?? '0', 10),
 				width: parseInt(width ?? '0', 10),
 				flex: parseInt(flex ?? '0', 10),
-			};
-		}),
-	];
+			},
+			...acc.slice(at),
+		];
+	}, merged);
 };
 
 export const normalizeStore = (
