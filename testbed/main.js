@@ -5,10 +5,17 @@
 import i18next from 'i18next';
 import { html, render } from 'lit-html';
 import '../src/cosmoz-omnitable.js';
+import { renderItem as defaultRenderItem } from '../src/lib/render-item';
 import './cz-link.js';
 import { czStatus } from './cz-status.js';
 import { supplierLogo } from './cz-supplier-logo.js';
-import { STATUSES, columnPlan, makeRows, suppliers } from './data.js';
+import {
+	STATUSES,
+	columnPlan,
+	makeRows,
+	mulberry32,
+	suppliers,
+} from './data.js';
 
 i18next.init({ lng: 'en', resources: {} });
 
@@ -25,6 +32,7 @@ const params = new URLSearchParams(window.location.search),
 		status: numParam('status', 1),
 		link: numParam('link', 1),
 		plain: numParam('plain', 47),
+		var: numParam('var', 0),
 	};
 const total = cfg.plain + cfg.supplier + cfg.status + cfg.link;
 
@@ -165,6 +173,27 @@ render(
 const omnitable = frag.querySelector('cosmoz-omnitable');
 app.appendChild(omnitable);
 
+// Variable-height rows (?var=1): a host renderItem that appends a
+// deterministic per-index detail block under the default row template.
+// Heights derive from the row index and the seed — no Date.now/Math.random.
+const detailBlock = (item, index) => {
+	const lines = Math.floor(mulberry32(cfg.seed * 7919 + index)() * 5),
+		h = 16 + lines * 20;
+	return html`<div
+		class="detail-preview"
+		part="detail-preview"
+		style=${`box-sizing: border-box; height: ${h}px; padding: 8px 12px;`}
+	>
+		<span style="color: #666; font-size: 13px;"
+			>${`context block — ${lines} line${lines === 1 ? '' : 's'}`}
+		</span>
+	</div>`;
+};
+if (cfg.var) {
+	omnitable.renderItem = (item, index, params) =>
+		html`${defaultRenderItem(item, index, params)}${detailBlock(item, index)}`;
+}
+
 // A/B switch for the cell-containment prototype (?contain=both|body|none).
 // Injected into the omnitable's shadow root so it can override the
 // component stylesheet without touching the sources.
@@ -236,6 +265,7 @@ i18next.init({ lng: 'en', resources: {} }).then(() => {
 
 	document.getElementById('info').textContent =
 		`omnitable testbed — ${omnitable.data.length} rows × ${total} columns` +
-		` (supplier: ${cfg.supplier}, invoice links: ${cfg.link}, status badges: ${cfg.status}, plain: ${cfg.plain})` +
+		` (supplier: ${cfg.supplier}, invoice links: ${cfg.link}, status badges: ${cfg.status}, plain: ${cfg.plain}` +
+		`${cfg.var ? ', variable heights' : ''})` +
 		` — seed ${cfg.seed}`;
 });
