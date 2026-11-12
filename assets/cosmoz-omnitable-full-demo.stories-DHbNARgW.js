@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r,Dt as i,E as a,G as o,Ht as s,I as c,It as l,Kt as u,Mt as d,O as f,P as p,Pt as m,Q as h,R as g,Rt as _,S as v,T as y,U as b,Ut as x,V as S,X as C,Xt as w,Yt as T,Z as ee,_ as te,_t as ne,at as E,b as D,bt as re,c as O,ct as ie,d as ae,dt as oe,et as se,f as ce,ft as k,gt as le,ht as ue,i as de,it as fe,kt as pe,l as me,lt as he,m as ge,mt as _e,n as ve,ot as ye,p as be,pt as xe,q as Se,qt as Ce,r as we,s as Te,st as Ee,tt as De,u as Oe,ut as ke,v as Ae,vt as A,w as j,x as M,y as N,yt as P,z as je}from"./iframe-CwolXHmT.js";import{A as Me,B as F,C as Ne,D as Pe,E as Fe,F as I,G as Ie,H as Le,I as Re,J as ze,L as Be,M as Ve,N as He,O as Ue,P as L,R as We,S as Ge,T as Ke,U as qe,V as R,W as Je,_ as Ye,a as Xe,d as Ze,f as Qe,g as $e,h as et,j as tt,k as nt,l as rt,m as it,n as at,q as ot,r as st,s as ct,t as lt,u as ut,v as dt,w as ft,x as pt,y as mt,z as ht}from"./dist-CiexKffJ.js";import{n as gt,t as _t}from"./table-demo-helper-Dj0p9yas.js";var vt;function yt(){return(yt=e((()=>{A(),vt=()=>T`<style>
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r,Dt as i,E as a,G as o,Ht as s,I as c,It as l,Kt as u,Mt as d,O as f,P as p,Pt as m,Q as h,R as g,Rt as _,S as v,T as y,U as b,Ut as x,V as S,X as C,Xt as w,Yt as T,Z as ee,_ as te,_t as ne,at as E,b as D,bt as re,c as O,ct as ie,d as ae,dt as oe,et as se,f as ce,ft as k,gt as le,ht as ue,i as de,it as fe,kt as pe,l as me,lt as he,m as ge,mt as _e,n as ve,ot as ye,p as be,pt as xe,q as Se,qt as Ce,r as we,s as Te,st as Ee,tt as De,u as Oe,ut as ke,v as Ae,vt as A,w as j,x as M,y as N,yt as P,z as je}from"./iframe-DEJygSjQ.js";import{A as Me,B as F,C as Ne,D as Pe,E as Fe,F as I,G as Ie,H as Le,I as Re,J as ze,L as Be,M as Ve,N as He,O as Ue,P as L,R as We,S as Ge,T as Ke,U as qe,V as R,W as Je,_ as Ye,a as Xe,d as Ze,f as Qe,g as $e,h as et,j as tt,k as nt,l as rt,m as it,n as at,q as ot,r as st,s as ct,t as lt,u as ut,v as dt,w as ft,x as pt,y as mt,z as ht}from"./dist-uUVJqEln.js";import{n as gt,t as _t}from"./table-demo-helper-Dj0p9yas.js";var vt;function yt(){return(yt=e((()=>{A(),vt=()=>T`<style>
 	@keyframes rotating {
 		100% {
 			transform: rotate(360deg);
@@ -838,6 +838,21 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		padding-inline: calc(var(--cz-spacing) * 2);
 	}
 
+	/* Hairline rules on pseudo-elements stay straight under the rounded
+	   row fills. */
+	.header::after,
+	.itemRow::after {
+		content: '';
+		position: absolute;
+		inset-inline: 0;
+		bottom: 0;
+		border-bottom: 1px solid var(--cz-color-border-secondary);
+		pointer-events: none;
+	}
+	.header::after {
+		inset-inline: calc(var(--cz-spacing) * 2);
+	}
+
 	/* Column titles sit a step below the data they head. The header inputs
 	   nest in shadow roots (autocompletes wrap theirs), so the step is set
 	   through the token their labels read. */
@@ -1038,9 +1053,10 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		flex-direction: column;
 	}
 
-	/* Rows sit inside the table's edge with no rules between them: a hover
-	   or a selection reads as one rounded fill. */
+	/* Rows sit inside the table's edge; a hover or a selection reads as one
+	   rounded fill. */
 	.itemRow {
+		position: relative;
 		margin-inline: calc(var(--cz-spacing) * 2);
 		border-radius: var(--cz-radius-md);
 		font-variant-numeric: tabular-nums;
@@ -1390,6 +1406,10 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 	:host(:is([mini], [compact])) .header {
 		padding-left: var(--checkbox-offset);
 		justify-content: space-between;
+	}
+
+	:host([mini]) .itemRow::after {
+		display: none;
 	}
 
 	:host([mini]) .itemRow {
