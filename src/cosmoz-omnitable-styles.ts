@@ -107,6 +107,21 @@ export default css`
 		padding-inline: calc(var(--cz-spacing) * 2);
 	}
 
+	/* Hairline rules on pseudo-elements stay straight under the rounded
+	   row fills. */
+	.header::after,
+	.itemRow::after {
+		content: '';
+		position: absolute;
+		inset-inline: 0;
+		bottom: 0;
+		border-bottom: 1px solid var(--cz-color-border-secondary);
+		pointer-events: none;
+	}
+	.header::after {
+		inset-inline: calc(var(--cz-spacing) * 2);
+	}
+
 	/* Column titles sit a step below the data they head. The header inputs
 	   nest in shadow roots (autocompletes wrap theirs), so the step is set
 	   through the token their labels read. */
@@ -307,9 +322,10 @@ export default css`
 		flex-direction: column;
 	}
 
-	/* Rows sit inside the table's edge with no rules between them: a hover
-	   or a selection reads as one rounded fill. */
+	/* Rows sit inside the table's edge; a hover or a selection reads as one
+	   rounded fill. */
 	.itemRow {
+		position: relative;
 		margin-inline: calc(var(--cz-spacing) * 2);
 		border-radius: var(--cz-radius-md);
 		font-variant-numeric: tabular-nums;
@@ -659,6 +675,10 @@ export default css`
 	:host(:is([mini], [compact])) .header {
 		padding-left: var(--checkbox-offset);
 		justify-content: space-between;
+	}
+
+	:host([mini]) .itemRow::after {
+		display: none;
 	}
 
 	:host([mini]) .itemRow {

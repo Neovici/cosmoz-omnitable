@@ -44,6 +44,13 @@ suite('basic', () => {
 		assert.equal(getComputedStyle(checkbox).opacity, '1');
 	});
 
+	test('rules off the header and every row', () => {
+		omnitable.style.setProperty('--cz-color-border-secondary', 'gray');
+		const rule = (el) => getComputedStyle(el, '::after').borderBottomWidth;
+		assert.equal(rule(omnitable.shadowRoot.querySelector('.header')), '1px');
+		assert.equal(rule(omnitable.shadowRoot.querySelector('.itemRow')), '1px');
+	});
+
 	test('selects and deselect all items', async () => {
 		const all = omnitable.shadowRoot.querySelector('input[type="checkbox"]');
 		all.click();
