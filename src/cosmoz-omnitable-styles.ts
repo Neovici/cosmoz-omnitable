@@ -722,6 +722,33 @@ export default css`
 		display: none;
 	}
 
+	/* Per-row action menu: one solid raised popover at the pointer or the
+	   consumer's own button. */
+	.row-menu {
+		position: fixed;
+		inset: auto;
+		margin: 0;
+		min-width: 220px;
+		max-width: 320px;
+		max-height: min(420px, calc(100dvh - 16px));
+		overflow-y: auto;
+		box-sizing: border-box;
+		padding: var(--cz-spacing);
+		border: 0;
+		border-radius: var(--cz-radius-lg);
+		background: var(--cz-color-bg-primary);
+		box-shadow: var(
+				--cz-shadow-raised,
+				0 0 0 1px var(--cz-color-border-secondary)
+			),
+			var(--cz-shadow-lg);
+		color: var(--cz-color-text-primary);
+		font-family: inherit;
+		font-size: var(--cz-text-sm);
+		line-height: var(--cz-text-sm-line-height);
+		outline: none;
+	}
+
 	:host([inline]) {
 		overflow: visible;
 	}

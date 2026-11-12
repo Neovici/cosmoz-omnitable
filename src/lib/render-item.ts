@@ -24,6 +24,7 @@ export const renderItem: HostRenderItem = (
 		rowPartFn,
 		groupOnColumn,
 		dataIsValid,
+		onRowContextMenu,
 	}
 ) =>
 	html`
@@ -36,6 +37,7 @@ export const renderItem: HostRenderItem = (
 			.dataItem=${item}
 			class="itemRow"
 			@click=${onItemClick}
+			@contextmenu=${onRowContextMenu}
 		>
 			<div class="itemRow-wrapper" part="itemRow-wrapper">
 				<input
