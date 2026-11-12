@@ -46,6 +46,7 @@ type Slot = {
 	bound: number | undefined; // bound data index, or undefined when idle
 	boundItem?: unknown; // bound item reference (for identity rebinds)
 	off?: number; // y the transform was last written for (undefined = never)
+	h?: number; // last RO-observed el height (el keeps its size while idle)
 	wrapper?: GroupedListRowHost['renderFn'];
 };
 
@@ -498,13 +499,22 @@ class PooledRecycler extends BaseAsyncDirective {
 			if (!slot) {
 				continue;
 			}
+			// the entry is a stale snapshot when the slot rebinds within the
+			// queued frame: a 40px snapshot delivered after a rebind to an
+			// 80px row poisons the heights of the NEW index. The RO callback
+			// runs in the rendering phase with layout settled, so a fresh
+			// read is authoritative and reflow-free; treat the entry as a
+			// wake-up signal only.
+			const height = Math.round(slot.el.getBoundingClientRect().height);
+			// this size is the el's real height whatever the slot is bound
+			// to; keep it as the rebind-time seed
+			if (height > 0) {
+				slot.h = height;
+			}
 			const index = slot.bound;
 			if (index == null || index < 0 || index >= this._items.length) {
 				continue;
 			}
-			const height = Math.round(
-				entry.borderBoxSize?.[0]?.blockSize ?? entry.contentRect.height,
-			);
 			if (height > 0 && this._heights[index] !== height) {
 				this._heights[index] = height;
 				changed = true;
@@ -712,6 +722,17 @@ class PooledRecycler extends BaseAsyncDirective {
 		const item = this._items[index];
 		if (slot.bound === index && slot.boundItem === item) {
 			return;
+		}
+		// re-seed the index with the el's last known real height whenever the
+		// map disagrees: the RO is effectively silent for same-size rebinds
+		// (no size change → no entry) and delivery timing lags a frame, so a
+		// map value of DEFAULT or a stale attribution must lose to slot.h.
+		// A genuine size change is delivered by the RO one frame after render
+		// and corrects any transient seed error.
+		if (slot.h != null && this._heights[index] !== slot.h) {
+			this._heights[index] = slot.h;
+			this._invalidate();
+			this._syncBoundTransforms();
 		}
 		slot.bound = index;
 		slot.boundItem = item;

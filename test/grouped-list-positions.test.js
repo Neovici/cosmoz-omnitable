@@ -10,7 +10,7 @@ import '../src/grouped-list/index';
 const renderItem = (item, index) => html`
 		<div
 			class="row-content"
-			style="height: ${40 + (item.id % 5) * 20}px; box-sizing: border-box;"
+			style="height: ${40 + (Math.floor(item.id / 2) % 2) * 40}px; box-sizing: border-box;"
 		>
 			I:${item.id}:${index}
 		</div>
@@ -20,7 +20,7 @@ const renderItem = (item, index) => html`
 			<cosmoz-grouped-list .renderItem=${renderItem}></cosmoz-grouped-list>
 		</div>
 	`,
-	DATA = Array.from({ length: 40 }, (_, id) => ({ id }));
+	DATA = Array.from({ length: 80 }, (_, id) => ({ id }));
 
 const nextEvent = (element, eventName) =>
 	new Promise((resolve) =>
@@ -100,6 +100,66 @@ suite('variable-height positions', function () {
 
 	test('slots sit at their prefix offsets on first measurement', () => {
 		assertPositions(element, 'initial');
+	});
+
+	test('no row overlaps while scrolling by steps', async () => {
+		const rec = window.__rec,
+			sc = rec._scroller,
+			scan = () => {
+				const slots = rec._pool
+					.filter(
+						(slot) =>
+							slot.bound != null && slot.el.style.visibility !== 'hidden',
+					)
+					.map((slot) => ({
+						idx: slot.bound,
+						top: slot.el.getBoundingClientRect().top,
+						h: slot.el.getBoundingClientRect().height,
+					}))
+					.sort((a, b) => a.idx - b.idx);
+				const bad = [];
+				for (let i = 0; i + 1 < slots.length; i++) {
+					if (slots[i + 1].idx !== slots[i].idx + 1) {
+						continue; // adjacent indexes only
+					}
+					const gap = slots[i + 1].top - (slots[i].top + slots[i].h);
+					if (gap < -1 || gap > 1) {
+						bad.push(
+							`idx${slots[i].idx}/idx${slots[i + 1].idx} gap:${Math.round(gap)}`,
+						);
+					}
+				}
+				return bad;
+			};
+		let roCalls = 0,
+			delivCount = 0;
+		const origOn = rec._onResize;
+		rec._onResize = (ents) => {
+			roCalls += 1;
+			delivCount += ents?.length ?? 0;
+			return origOn.call(rec, ents);
+		};
+		sc.scrollTop = 0;
+		await settle();
+		for (let k = 1; k <= 24; k++) {
+			sc.scrollTop += 100;
+			await settle();
+			const bad = scan();
+			if (bad.length === 0) {
+				continue;
+			}
+			const d = bad[0].match(/idx(\d+)\/idx(\d+)/),
+				probe = (idx) => {
+					const s = rec._pool.find((x) => x.bound === Number(idx));
+					return s
+						? `elH:${Math.round(s.el.getBoundingClientRect().height)} slotH:${s.h ?? 'null'} hm:${rec._heights[idx] ?? 'def'}`
+						: 'unbound';
+				};
+			assert.isEmpty(
+				bad,
+				`step ${k} (scrollTop ${sc.scrollTop}): ${bad.slice(0, 4).join('; ')} | diag: ${d[1]}=[${probe(d[1])}] ${d[2]}=[${probe(d[2])}] roCalls:${roCalls} deliv:${delivCount}`,
+			);
+		}
 	});
 
 	test('slots sit at their prefix offsets after scrolling away and back', async () => {
