@@ -353,7 +353,9 @@ class PooledRecycler extends BaseAsyncDirective {
 		for (const slot of this._pool) {
 			if (slot.bound != null && covering.has(slot.bound)) {
 				stillBound.add(slot.bound);
-			} else if (slot.bound != null) {
+			} else {
+				// unbound-but-pooled slots are recyclable too (they are the
+				// hidden pool from previous windows)
 				free.push(slot);
 			}
 		}
