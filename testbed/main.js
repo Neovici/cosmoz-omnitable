@@ -165,6 +165,23 @@ render(
 const omnitable = frag.querySelector('cosmoz-omnitable');
 app.appendChild(omnitable);
 
+// A/B switch for the cell-containment prototype (?contain=both|body|none).
+// Injected into the omnitable's shadow root so it can override the
+// component stylesheet without touching the sources.
+const containMode = params.get('contain') ?? 'both';
+if (containMode !== 'both') {
+	const strip = new CSSStyleSheet();
+	strip.replaceSync(
+		`${
+			containMode === 'none' ? 'cosmoz-omnitable-item-row > div,' : ''
+		} cosmoz-omnitable-header-row > div { contain: none !important; }`,
+	);
+	omnitable.shadowRoot.adoptedStyleSheets = [
+		...omnitable.shadowRoot.adoptedStyleSheets,
+		strip,
+	];
+}
+
 // Rows render with useShadowDOM:false inside the omnitable's shadow root
 // (cosmoz-grouped-list renders item-rows as its light children).
 const deepRows = (root) =>
