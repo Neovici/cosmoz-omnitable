@@ -32,6 +32,7 @@ const SEVERAL = Number(arg('several', 10));
 const WIDEN = Number(arg('widen', 120));
 const ROWS = Number(arg('rows', 10000));
 const SEED = Number(arg('seed', 42));
+const VAR = Number(arg('var', 0));
 const ONLY = (arg('only', 'scroll-1,scroll-several,jump-end,resize,hide') || '')
 	.split(',')
 	.map((s) => s.trim())
@@ -41,7 +42,7 @@ const OUT = arg('out', '');
 const PORT = Number(arg('port', '8123'));
 const SPEED = Number(arg('speed', 0));
 const SPEEDPARAM = SPEED ? `&speed=${SPEED}` : '';
-const URL = `http://127.0.0.1:${PORT}/testbed/index.html?rows=${ROWS}&seed=${SEED}${SPEEDPARAM}`;
+const URL = `http://127.0.0.1:${PORT}/testbed/index.html?rows=${ROWS}&seed=${SEED}${VAR ? `&var=${VAR}` : ''}${SPEEDPARAM}`;
 const VIEWPORT = { width: 1600, height: 900 };
 
 const preflight = async () => {
@@ -94,7 +95,7 @@ const metricDelta = (a, b) => {
 const report = (results) => {
 	console.log('\n=== omnitable testbed benchmark ===');
 	console.log(
-		`rows=${ROWS} cols=50 seed=${SEED} reps=${REPS} viewport=${VIEWPORT.width}x${VIEWPORT.height}`,
+		`rows=${ROWS} cols=50 seed=${SEED} var=${VAR || 0} reps=${REPS} viewport=${VIEWPORT.width}x${VIEWPORT.height}`,
 	);
 	console.log(
 		'scenario'.padEnd(15),
