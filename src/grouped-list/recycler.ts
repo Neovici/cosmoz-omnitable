@@ -1,15 +1,23 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, max-statements, complexity, no-bitwise, no-param-reassign -- perf prototype with imperative DOM pool */
+/* eslint-disable max-statements, complexity -- perf prototype with imperative DOM pool */
 // Bespoke pooled row virtualizer for cosmoz-grouped-list.
 //
-// Replaces @lit-labs/virtualizer with an aggressive DOM-recycling model:
-// - a fixed pool of persistent `cosmoz-grouped-list-row` elements,
-// - a content canvas translated by the scroll offset (one transform per frame),
-// - slots bound to data indexes via a prefix-sum offset map (row heights
-//   corrected by a ResizeObserver, with scroll anchoring),
-// - re-binding only entering/leaving slots; no row element is created or
+// Replaces @lit-labs/virtualizer with a pooled "move-then-fill" model:
+// - the native scroller carries ONLY a spacer (its height = total content)
+//   so native scrolling (scrollbar, wheel over the scrollbar strip, anchors)
+//   keeps working,
+// - OUTSIDE the scrolled subtree, a viewport-sized clip wrapper contains a
+//   content-tall canvas that is moved once per scroll pump with
+//   translate3d(0, -scrollTop, 0) ("move"; the wrapper does the viewport
+//   clipping, the canvas the row coordinate space),
+// - a fixed pool of persistent `cosmoz-grouped-list-row` elements in that
+//   canvas are transform-fixed at their data offsets; offsets are written at
+//   bind time (and reset on idle), never per scroll frame,
+// - the covered window is re-bound ("fill") via a prefix-sum offset map
+//   (row heights corrected by a ResizeObserver, with scroll anchoring);
+//   only entering/leaving slots re-bind; no row element is created or
 //   destroyed after the pool fills.
 
-import { html, noChange } from 'lit';
+import { noChange } from 'lit';
 import {
 	AsyncDirective as BaseAsyncDirective,
 	directive,
@@ -47,6 +55,7 @@ class PooledRecycler extends BaseAsyncDirective {
 	};
 	_host: HTMLElement | null = null;
 	_canvas: HTMLDivElement | null = null;
+	_clip: HTMLDivElement | null = null;
 	_scroller: HTMLElement | null = null;
 	_pool: Slot[] = [];
 	_heights: number[] = [];
@@ -84,16 +93,18 @@ class PooledRecycler extends BaseAsyncDirective {
 		});
 	}
 
-	render(config: RecyclerConfig) {
-		this._items = config.items ?? [];
-		this._renderRow = config.renderRow;
+	render(_config: RecyclerConfig) {
+		this._items = _config.items ?? [];
+		this._renderRow = _config.renderRow;
 		if (this._built) {
 			this._schedule();
 			return noChange;
 		}
-		// the canvas shell is committed once; its children are managed
-		// imperatively from here on.
-		return html`<div class="glist-recycler-canvas"></div>`;
+		// nothing is committed through lit: the overlay canvas and its pool
+		// are built imperatively in update()/_build. Keeping this result
+		// empty (noChange) leaves only marker comments in the host so host
+		// re-renders never wipe the pooled rows.
+		return noChange;
 	}
 
 	update(part: import('lit/async-directive.js').Part, args: [RecyclerConfig]) {
@@ -140,21 +151,35 @@ class PooledRecycler extends BaseAsyncDirective {
 	_build(parent: HTMLElement | null | undefined) {
 		const host = parent ?? document.createElement('div');
 		this._host = host;
-		// the host carries the full scroll size: prevent flex-shrink from
-		// collapsing it inside the overflow container
+		// the host is the SPACER inside the native scroller: it only carries
+		// the full scroll size; prevent flex-shrink from collapsing it
 		host.style.flexShrink = '0';
+		// viewport-sized clip LAYER excluded from native scroll, with a
+		// content-canvas inside that is moved once per pump with
+		// translate3d(-scrollTop) while its pooled rows stay transform-fixed
+		// at their data offsets. The clip must NOT be on the moving canvas:
+		// overflow clips in the element's LOCAL space, and rows translated to
+		// offsets beyond the viewport box would be cut off — so the static
+		// wrapper clips at the viewport while the tall canvas carries the row
+		// coordinate space (0..total).
+		const clip = document.createElement('div');
+		clip.className = 'glist-recycler-viewport';
+		clip.style.position = 'absolute';
+		clip.style.overflow = 'hidden';
 		const canvas = document.createElement('div');
 		canvas.className = 'glist-recycler-canvas';
 		canvas.style.position = 'absolute';
 		canvas.style.top = '0';
 		canvas.style.left = '0';
 		canvas.style.width = '100%';
+		canvas.style.willChange = 'transform';
+		clip.appendChild(canvas);
+		this._clip = clip;
 		this._canvas = canvas;
 
 		this._resolveScroller();
 		this._measureViewport();
-
-		host.appendChild(canvas);
+		this._attachCanvas();
 
 		this._ro = new ResizeObserver((entries) => this._onResize(entries));
 		this._schedule();
@@ -179,6 +204,89 @@ class PooledRecycler extends BaseAsyncDirective {
 			el.addEventListener('scroll', this._onScroll, { passive: true });
 		}
 	}
+
+	// the clip wrapper must live in the WRAPPER that contains the scroller
+	// (a sibling of the scroller), never inside the scrolled subtree: rows
+	// in the scroller would natively scroll on top of the layer transform
+	// and double-count the offset (historical bug). Rows as scroller
+	// children at data offsets is precisely the model this replaces.
+	_attachCanvas() {
+		const clip = this._clip;
+		const scroller = this._scroller;
+		if (!clip || !scroller) {
+			return;
+		}
+		const container = scroller.parentElement;
+		if (container && clip.parentElement !== container) {
+			container.appendChild(clip);
+		}
+		// the layer is above the scroller for pointer events, so wheel input
+		// must be forwarded (one application; preventDefault stops the
+		// native chain, which could otherwise scroll the page instead)
+		clip.addEventListener('wheel', this._onWheel, { passive: false });
+		this._syncCanvasBox();
+	}
+
+	// keep the canvas box in sync with the scroller viewport (client sizes:
+	// never covers the scrollbar strip; offsets follow flex re-layouts of
+	// the wrapper, e.g. in-flow empty states). Returns true when the box
+	// changed (callers may need to re-measure the pool).
+	_syncCanvasBox() {
+		const scroller = this._scroller;
+		const clip = this._clip;
+		if (!scroller || !clip) {
+			return false;
+		}
+		const top = scroller.offsetTop;
+		const left = scroller.offsetLeft;
+		const width = scroller.clientWidth;
+		const height = scroller.clientHeight;
+		if (
+			top === this._boxTop &&
+			left === this._boxLeft &&
+			width === this._boxWidth &&
+			height === this._boxHeight
+		) {
+			return false;
+		}
+		this._boxTop = top;
+		this._boxLeft = left;
+		this._boxWidth = width;
+		this._boxHeight = height;
+		clip.style.top = `${top}px`;
+		clip.style.left = `${left}px`;
+		clip.style.width = `${width}px`;
+		clip.style.height = `${height}px`;
+		return true;
+	}
+
+	// the canvas layer sits above the scroller, so native wheel scrolling
+	// would chain past it to the page: forward once (preventDefault stops
+	// the native chain) and the scroller scrolls exactly one step. The
+	// scroller is NOT an ancestor of the canvas, so there is no native path
+	// that can double-apply the delta to it. ctrlKey (pinch zoom) is left
+	// to the browser.
+	_onWheel = (event: WheelEvent) => {
+		const scroller = this._scroller;
+		if (!scroller || event.ctrlKey) {
+			return;
+		}
+		event.preventDefault();
+		// delta units: 0 = pixels, 1 = lines (approximate the browser line
+		// height), 2 = pages
+		let unit = 1;
+		if (event.deltaMode === 1) {
+			unit = 40;
+		} else if (event.deltaMode === 2) {
+			unit = scroller.clientHeight;
+		}
+		if (event.deltaY !== 0) {
+			scroller.scrollTop += event.deltaY * unit;
+		}
+		if (event.deltaX !== 0) {
+			scroller.scrollLeft += event.deltaX * unit;
+		}
+	};
 
 	// pump synchronously on the first scroll event of a burst so the frame
 	// that paints the new position already has rows bound (no white gap),
@@ -212,6 +320,7 @@ class PooledRecycler extends BaseAsyncDirective {
 			el.style.position = 'absolute';
 			el.style.left = '0';
 			el.style.right = '0';
+			el.style.top = '0';
 			el.style.visibility = 'hidden';
 			this._canvas?.appendChild(el);
 			this._pool.push({ el, height: DEFAULT_HEIGHT, bound: undefined });
@@ -253,6 +362,13 @@ class PooledRecycler extends BaseAsyncDirective {
 
 	_anchorIndex = 0;
 	_lastAnchorTop = 0;
+	// cached box of the canvas overlay layer (matches the scroller viewport)
+	_boxTop = -1;
+	_boxLeft = -1;
+	_boxWidth = -1;
+	_boxHeight = -1;
+	// last scroll offset the canvas transform was written for
+	_appliedScroll = NaN;
 
 	_invalidate() {
 		this._prefix.length = 0;
@@ -308,11 +424,19 @@ class PooledRecycler extends BaseAsyncDirective {
 		const viewport = this._scroller?.clientHeight ?? 300;
 
 		if (
-			this._scroller &&
-			this._scroller.clientHeight !== this._measuredViewport
+			this._syncCanvasBox() ||
+			this._scroller?.clientHeight !== this._measuredViewport
 		) {
-			this._measuredViewport = this._scroller.clientHeight;
+			this._measuredViewport = this._scroller?.clientHeight ?? 0;
 			this._measureViewport();
+		}
+
+		// MOVE: the one per-frame write for the whole row layer. The scroller
+		// carries only the spacer (native scroll), the canvas counter-scrolls
+		// it; rows inside are never moved per scroll frame.
+		if (this._canvas && this._appliedScroll !== scrollTop) {
+			this._appliedScroll = scrollTop;
+			this._canvas.style.transform = `translate3d(0, ${-scrollTop}px, 0)`;
 		}
 
 		// cushion the window ABOVE the scroll position (the rows that enter
@@ -328,6 +452,9 @@ class PooledRecycler extends BaseAsyncDirective {
 		const total = this._prefix[n] ?? 0;
 		if (this._host && this._host.style.height !== `${total}px`) {
 			this._host.style.height = `${total}px`;
+		}
+		if (this._canvas && this._canvas.style.height !== `${total}px`) {
+			this._canvas.style.height = `${total}px`;
 		}
 
 		// span covers viewport + cushions on both sides; it is derived from
@@ -373,7 +500,7 @@ class PooledRecycler extends BaseAsyncDirective {
 			if (idle && slot.el.style.visibility !== 'hidden') {
 				slot.el.style.visibility = 'hidden';
 				slot.bound = undefined;
-				slot.el.style.top = '0';
+				slot.el.style.transform = '';
 			}
 		}
 	}
@@ -387,6 +514,7 @@ class PooledRecycler extends BaseAsyncDirective {
 		el.style.position = 'absolute';
 		el.style.left = '0';
 		el.style.right = '0';
+		el.style.top = '0';
 		el.style.visibility = 'hidden';
 		this._canvas?.appendChild(el);
 		const slot = { el, height: DEFAULT_HEIGHT, bound: undefined };
@@ -414,7 +542,9 @@ class PooledRecycler extends BaseAsyncDirective {
 				slot.bound as number,
 			)) as GroupedListRowHost['renderFn'];
 		slot.el.renderFn = slot.wrapper;
-		slot.el.style.top = `${this._offset(index)}px`;
+		// transform-fixed at the data offset: written ONLY here (bind time);
+		// the canvas layer move per scroll frame happens on the canvas alone
+		slot.el.style.transform = `translate3d(0, ${this._offset(index)}px, 0)`;
 		slot.el.style.visibility = 'visible';
 		if (this._ro && !this._observing.has(slot.el)) {
 			this._observing.add(slot.el);
@@ -429,6 +559,7 @@ class PooledRecycler extends BaseAsyncDirective {
 		}
 		this._ro?.disconnect();
 		this._scroller?.removeEventListener('scroll', this._onScroll);
+		this._clip?.removeEventListener('wheel', this._onWheel);
 	}
 
 	reconnected() {
@@ -440,6 +571,7 @@ class PooledRecycler extends BaseAsyncDirective {
 			}
 		}
 		this._resolveScroller();
+		this._attachCanvas();
 		this._schedule();
 	}
 }
