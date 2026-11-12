@@ -166,6 +166,12 @@ class PooledRecycler extends BaseAsyncDirective {
 		clip.className = 'glist-recycler-viewport';
 		clip.style.position = 'absolute';
 		clip.style.overflow = 'hidden';
+		// touch/pen pans over the rows are forwarded by the pointer listeners;
+		// browser panning must not intercept the gesture first. Scoping is
+		// safe: the clip is sized to scroller.clientWidth (never the scrollbar
+		// strip), so native interaction with the scroller's own scrollbars
+		// stays available.
+		clip.style.touchAction = 'none';
 		const canvas = document.createElement('div');
 		canvas.className = 'glist-recycler-canvas';
 		canvas.style.position = 'absolute';
@@ -224,6 +230,14 @@ class PooledRecycler extends BaseAsyncDirective {
 		// must be forwarded (one application; preventDefault stops the
 		// native chain, which could otherwise scroll the page instead)
 		clip.addEventListener('wheel', this._onWheel, { passive: false });
+		// identical layer problem for keyboard and touch drags: scroll keys
+		// and touch pans must be forwarded to the scroller. Same lifecycle
+		// as wheel (identical function refs keep re-attachment dedupe-safe).
+		clip.addEventListener('keydown', this._onKeydown);
+		clip.addEventListener('pointerdown', this._onPointerDown);
+		clip.addEventListener('pointermove', this._onPointerMove);
+		clip.addEventListener('pointerup', this._onPointerEnd);
+		clip.addEventListener('pointercancel', this._onPointerEnd);
 		this._syncCanvasBox();
 	}
 
@@ -287,6 +301,155 @@ class PooledRecycler extends BaseAsyncDirective {
 			scroller.scrollLeft += event.deltaX * unit;
 		}
 	};
+
+	// KEYBOARD: focusable row cells live inside the clip, whose ancestor
+	// chain has no scrollable element, so browser-native scroll keys
+	// (Space, PageUp/PageDown, Home, End, ArrowUp/ArrowDown) would scroll
+	// the PAGE or do nothing. Forward the vertical keys exactly once:
+	// preventDefault stops the native chain and the scroller 'scroll'
+	// listener pumps the new window — no direct _pump call.
+	_onKeydown = (event: KeyboardEvent) => {
+		const scroller = this._scroller;
+		if (
+			!scroller ||
+			event.defaultPrevented ||
+			event.ctrlKey ||
+			event.altKey ||
+			event.metaKey
+		) {
+			return;
+		}
+		if (this._isInteractiveKeyTarget(event)) {
+			// Space and the arrows keep their native meaning on interactive/
+			// editable row parts (button/checkbox toggle, radio navigation,
+			// option/menu item activation, link activation, typing)
+			return;
+		}
+		// ArrowLeft/Right are column-tab navigation in omnitable: not captured
+		let delta: number | null = null;
+		let to: number | null = null;
+		switch (event.key) {
+			case 'ArrowUp':
+				delta = -40;
+				break;
+			case 'ArrowDown':
+				delta = 40;
+				break;
+			case 'PageUp':
+				delta = -Math.round(scroller.clientHeight * 0.9);
+				break;
+			case 'PageDown':
+				delta = Math.round(scroller.clientHeight * 0.9);
+				break;
+			case ' ':
+				delta = event.shiftKey ? -scroller.clientHeight : scroller.clientHeight;
+				break;
+			case 'Home':
+				to = 0;
+				break;
+			case 'End':
+				to = scroller.scrollHeight;
+				break;
+			default:
+				return;
+		}
+		event.preventDefault();
+		if (delta != null) {
+			scroller.scrollTop += delta;
+		} else if (to != null) {
+			scroller.scrollTop = to;
+		}
+	};
+
+	// Space/arrows must not be captured when the keypress starts on an
+	// interactive or editable part of a row: those keys keep their native
+	// meaning there (toggle, activation, radio navigation, typing).
+	_isInteractiveKeyTarget(event: KeyboardEvent) {
+		const target = event.composedPath()[0] ?? event.target;
+		if (!(target instanceof Element)) {
+			return false;
+		}
+		if (target instanceof HTMLElement && target.isContentEditable) {
+			return true;
+		}
+		return target.matches(
+			'button, input, select, textarea, a[href], [contenteditable], [role="checkbox"], [role="option"], [role="radio"], [role="menuitem"]',
+		);
+	}
+
+	// POINTER (touch/pen): rows live inside the clip whose chain has no
+	// scrollable ancestor, so a native touch pan has nothing to scroll —
+	// forward the drag 1:1 to the scroller while the pointer is down, with
+	// no momentum. Mouse is excluded (native drag/selection semantics);
+	// preventDefault applies to the MOVES only: suppressing pointerdown
+	// would kill the compat click path taps rely on, and pointercancel
+	// (e.g. native text selection taking over) ends the drag cleanly.
+	_activePointer: number | null = null;
+	_dragStartX = 0;
+	_dragStartY = 0;
+	_dragStartScrollTop = 0;
+	_dragStartScrollLeft = 0;
+	_dragScrolling = false;
+
+	_onPointerDown = (event: PointerEvent) => {
+		if (this._activePointer != null) {
+			// a second pointer arrived during a drag (two-finger gesture):
+			// release the first, let the gesture proceed unmanaged
+			this._endPointerDrag();
+			return;
+		}
+		if (event.pointerType !== 'touch' && event.pointerType !== 'pen') {
+			return;
+		}
+		const scroller = this._scroller;
+		if (!scroller) {
+			return;
+		}
+		this._activePointer = event.pointerId;
+		this._dragStartX = event.clientX;
+		this._dragStartY = event.clientY;
+		this._dragStartScrollTop = scroller.scrollTop;
+		this._dragStartScrollLeft = scroller.scrollLeft;
+		this._dragScrolling = false;
+	};
+
+	_onPointerMove = (event: PointerEvent) => {
+		if (event.pointerId !== this._activePointer) {
+			return;
+		}
+		const scroller = this._scroller;
+		if (!scroller) {
+			return;
+		}
+		const dx = event.clientX - this._dragStartX;
+		const dy = event.clientY - this._dragStartY;
+		if (!this._dragScrolling) {
+			// dead zone ~2px: jitter and taps must not scroll anything
+			if (Math.abs(dx) < 2 && Math.abs(dy) < 2) {
+				return;
+			}
+			this._dragScrolling = true;
+		}
+		event.preventDefault();
+		// natural drag direction: the content follows the finger (drag up =
+		// scroll down); 1:1 always derived from the drag anchor, never
+		// accumulated, so it cannot drift
+		scroller.scrollTop = this._dragStartScrollTop - dy;
+		scroller.scrollLeft = this._dragStartScrollLeft - dx;
+	};
+
+	_onPointerEnd = (event: PointerEvent) => {
+		if (event.pointerId === this._activePointer) {
+			// no preventDefault: the compat click must still be delivered
+			// for taps, and native selection behavior survives
+			this._endPointerDrag();
+		}
+	};
+
+	_endPointerDrag() {
+		this._activePointer = null;
+		this._dragScrolling = false;
+	}
 
 	// pump synchronously on the first scroll event of a burst so the frame
 	// that paints the new position already has rows bound (no white gap),
@@ -560,6 +723,12 @@ class PooledRecycler extends BaseAsyncDirective {
 		this._ro?.disconnect();
 		this._scroller?.removeEventListener('scroll', this._onScroll);
 		this._clip?.removeEventListener('wheel', this._onWheel);
+		this._clip?.removeEventListener('keydown', this._onKeydown);
+		this._clip?.removeEventListener('pointerdown', this._onPointerDown);
+		this._clip?.removeEventListener('pointermove', this._onPointerMove);
+		this._clip?.removeEventListener('pointerup', this._onPointerEnd);
+		this._clip?.removeEventListener('pointercancel', this._onPointerEnd);
+		this._endPointerDrag();
 	}
 
 	reconnected() {
