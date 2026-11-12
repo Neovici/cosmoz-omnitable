@@ -55,4 +55,19 @@ test.describe('omnitable visual', () => {
 		await page.mouse.move(0, 0);
 		await expect(table(page)).toHaveScreenshot('filter-empty.png');
 	});
+
+	test('renders some rows', async ({ page }) => {
+		await page.goto(
+			'iframe.html?id=visual-cosmozomnitable--rows&viewMode=story',
+		);
+		await expect(row(page, 0)).toBeVisible();
+		await page.evaluate(() => document.fonts.ready);
+		await expect(table(page)).toHaveScreenshot('rows.png');
+
+		await page.locator('.tableContent-scroller').evaluate((scroller) => {
+			scroller.scrollTop = 400;
+		});
+		await expect(row(page, 12)).toBeVisible();
+		await expect(table(page)).toHaveScreenshot('rows-scrolled.png');
+	});
 });
