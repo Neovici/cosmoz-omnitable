@@ -32,3 +32,4 @@ codecov.SHA256SUM.sig
 
 # testbed benchmark outputs
 testbed/results/
+testbed/bundle.js
