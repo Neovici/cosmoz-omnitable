@@ -1,3 +1,9 @@
+## 19.5.4
+
+### Patch Changes
+
+- 20e9064: Draw a hairline under the header and between rows again, so rows are easy to follow across wide tables.
+
 ## 19.5.3
 
 ### Patch Changes
