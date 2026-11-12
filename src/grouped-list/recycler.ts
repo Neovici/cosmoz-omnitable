@@ -315,9 +315,14 @@ class PooledRecycler extends BaseAsyncDirective {
 			this._measureViewport();
 		}
 
-		const first = this._firstIndex(Math.max(0, scrollTop));
-		const anchorTop = this._offset(first);
-		this._anchorIndex = first;
+		// cushion the window ABOVE the scroll position (the rows that enter
+		// when scrolling up are pre-bound and pre-measured, no white gap)
+		const first = Math.max(
+			0,
+			this._firstIndex(Math.max(0, scrollTop)) - OVERSCAN_ROWS
+		);
+		const anchorTop = this._offset(this._anchorIndex ?? first);
+		this._anchorIndex = this._firstIndex(Math.max(0, scrollTop));
 		this._lastAnchorTop = anchorTop;
 
 		const total = this._prefix[n] ?? 0;
