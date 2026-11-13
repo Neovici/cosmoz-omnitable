@@ -559,6 +559,21 @@ class PooledRecycler extends BaseAsyncDirective {
 		}
 	}
 
+	// debug/log hook: fires on the testbed console when the calculated
+	// scrollable height changes (prod pages have no subscriber: no-op)
+	_appliedTotal = -1;
+	_logTotalChange(total: number, source: 'invalidate' | 'pump') {
+		if (total === this._appliedTotal) {
+			return;
+		}
+		const prev = this._appliedTotal;
+		this._appliedTotal = total;
+		(
+			document.defaultView as unknown as {
+				__recTotal?: (total: number, prev: number, source: string) => void;
+			}
+		).__recTotal?.(total, prev, source);
+	}
 	_anchorIndex = 0;
 	_lastAnchorTop = 0;
 	// cached box of the canvas overlay layer (matches the scroller viewport)
@@ -649,6 +664,7 @@ class PooledRecycler extends BaseAsyncDirective {
 		this._lastAnchorTop = anchorTop;
 
 		const total = this._prefix[n] ?? 0;
+		this._logTotalChange(total, 'pump');
 		if (this._host && this._host.style.height !== `${total}px`) {
 			this._host.style.height = `${total}px`;
 		}
