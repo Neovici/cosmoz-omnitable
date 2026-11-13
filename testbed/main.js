@@ -33,6 +33,7 @@ const params = new URLSearchParams(window.location.search),
 		link: numParam('link', 1),
 		plain: numParam('plain', 47),
 		var: numParam('var', 0),
+		updates: numParam('updates', 0),
 	};
 const total = cfg.plain + cfg.supplier + cfg.status + cfg.link;
 
@@ -264,6 +265,34 @@ window.__recTotal = (total, prev, source) =>
 	console.info(
 		`[scrollHeight] ${total}px (was ${prev < 0 ? 'unset' : prev + 'px'}) — ${source}`,
 	);
+// --- data-update stress (?updates=500 or __testbed.enableStress(500)) ---
+let stressInterval = null;
+let stressSeed = cfg.seed + 1000;
+window.__testbed.enableStress = (ms = 500) => {
+	if (stressInterval) {
+		return;
+	}
+	stressInterval = setInterval(() => {
+		stressSeed += 7919;
+		omnitable.data = makeRows(cfg.rows, stressSeed, cfg.plain);
+		document.getElementById('info').textContent =
+			`omnitable testbed — stress: dataset swap #${stressSeed - cfg.seed - 1000} every ${ms}ms`;
+	}, ms);
+	console.info(`[testbed] stress: dataset updates every ${ms}ms`);
+};
+window.__testbed.disableStress = () => {
+	if (stressInterval) {
+		clearInterval(stressInterval);
+		stressInterval = null;
+		console.info('[testbed] stress: stopped');
+	}
+};
+if (cfg.updates > 0) {
+	i18next.init({ lng: 'en', resources: {} }).then(() => {
+		window.__testbed.enableStress(cfg.updates);
+	});
+}
+
 // --- data + header ---
 
 i18next.init({ lng: 'en', resources: {} }).then(() => {
