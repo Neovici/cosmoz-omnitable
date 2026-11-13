@@ -149,7 +149,7 @@ suite('variable-height positions', function () {
 				probe = (idx) => {
 					const s = rec._pool.find((x) => x.bound === Number(idx));
 					return s
-						? `elH:${Math.round(s.el.getBoundingClientRect().height)} slotH:${s.h ?? 'null'} hm:${rec._heights[idx] ?? 'def'}`
+						? `elH:${Math.round(s.el.getBoundingClientRect().height)} slotH:${s.h ?? 'null'} hm:${rec._heights[idx] ?? 'def'} m:${rec._measured[idx] ?? 0}`
 						: 'unbound';
 				};
 			assert.isEmpty(
@@ -184,42 +184,68 @@ suite('variable-height positions', function () {
 		);
 	});
 
-	test('calculated total never dips during enter/exit cycles', async () => {
-		// a previously measured (expanded) row must keep its height entry
-		// when it exits and re-enters the window: every applied change of the
-		// total (the __recTotal stream, exactly what the user sees in the
-		// logs) must be monotone non-decreasing — content here is static
+	test('unknown rows are estimated with the running measured average', async () => {
+		// the prefix contribution of a row we have never seen must be the
+		// exact mean of all real measurements, not a hardcoded default
 		const rec = window.__rec,
-			{ _scroller: sc, _prefix: prefix } = rec,
+			{ _scroller: sc, _prefix: prefix, _heights: heights } = rec,
 			n = rec._items.length;
-		const changes = [];
-		rec._logTotalChange = (total, source) => {
-			changes.push({ total, source, t: prefix[n] ?? 0 });
-		};
-		let maxApplied = -1;
+		await settle();
+		// snapshot after settle, jump far (all rows beyond the initial window
+		// are unknown except the landing window, which binds with real
+		// measures), and verify the algebraic identity on the current state
+		sc.scrollTop = sc.scrollHeight;
+		await rafOnce();
+		await rafOnce();
+		let sum = 0,
+			count = 0;
+		for (let i = 0; i < n; i++) {
+			if (rec._measured[i]) {
+				sum += heights[i] ?? 0;
+				count++;
+			}
+		}
+		assert.isAbove(count, 0, 'landing window rows are measured');
+		const avg = sum / count;
+		const expected = sum + avg * (n - count);
+		const got = prefix[n] ?? 0;
+		assert.closeTo(
+			got,
+			expected,
+			0.5,
+			`unmeasured rows estimated at avg ${avg.toFixed(2)} — got ${got} total (expected ${expected.toFixed(2)})`,
+		);
+	});
+
+	test('measured heights never regress (total dips test)', async () => {
+		// once a row has a real measured height its entry must never go
+		// DOWN during/after scrolling (that was the expanded-row
+		// oscillation bug: a total dip meant a row losing its height
+		// state). The total itself may legitimately shift while the
+		// running average converges — the per-index rule is the invariant.
+		const rec = window.__rec,
+			{ _scroller: sc, _heights: heights, _measured: measured } = rec,
+			n = rec._items.length;
 		sc.scrollTop = 0;
 		await settle();
-		maxApplied = Math.max(maxApplied, prefix[n] ?? 0);
+		const before = Array.from(heights).map((v2, i) =>
+			measured[i] ? v2 : null,
+		);
 		for (let k = 1; k <= 24; k++) {
 			sc.scrollTop += 100;
 			await rafOnce();
-			maxApplied = Math.max(maxApplied, prefix[n] ?? 0);
 		}
 		await settle();
-		const dips = changes
-			.map((c, i) => ({
-				i,
-				total: c.total,
-				prev: changes[i - 1]?.total ?? c.total,
-			}))
-			.filter((c) => c.total < c.prev);
-		assert.isEmpty(
-			dips,
-			`total dipped on the applied stream → dips:${dips
-				.slice(0, 6)
-				.map((d) => d.total + '(from ' + d.prev + ')')
-				.join(', ')}`,
-		);
+		for (let i = 0; i < n; i++) {
+			if (before[i] == null) {
+				continue;
+			}
+			assert.isAtLeast(
+				heights[i],
+				before[i] - 0.5,
+				`row ${i}: measured height regressed ${before[i]} -> ${heights[i]}`,
+			);
+		}
 	});
 
 	test('slots sit at their prefix offsets after scrolling away and back', async () => {
