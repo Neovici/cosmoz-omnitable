@@ -787,6 +787,16 @@ class PooledRecycler extends BaseAsyncDirective {
 				this._bind(slot, slot.bound);
 			}
 		}
+
+		// keep the canvas children in DATA-INDEX order: tab navigation and
+		// screen readers follow DOM order. One pass per pump: append the
+		// bound slots in ascending index order (moves are layout-free for
+		// absolutely-positioned transform rows).
+		for (const slot of this._pool
+			.filter((s) => s.bound != null && s.el.style.visibility !== 'hidden')
+			.sort((a, b) => (a.bound ?? 0) - (b.bound ?? 0))) {
+			this._canvas?.appendChild(slot.el);
+		}
 	}
 
 	// the nearest visible slot with an equivalent focusable (same tag +
@@ -909,24 +919,6 @@ class PooledRecycler extends BaseAsyncDirective {
 		slot.el.style.transform = `translate3d(0, ${this._offset(index)}px, 0)`;
 		slot.off = this._offset(index);
 		slot.el.style.visibility = 'visible';
-		// keep the canvas children in DATA-INDEX order: tab navigation and
-		// screen readers follow DOM order, which used to be pool creation
-		// order (arbitrary, often descending) after rebinds
-		const canvas = slot.el.parentElement;
-		if (canvas) {
-			let before: Element | null = null;
-			for (const child of canvas.children) {
-				const idx = (child as GroupedListRowHost).index;
-				if (child === slot.el) {
-					break;
-				}
-				if (typeof idx === 'number' && idx > index) {
-					before = child;
-					break;
-				}
-			}
-			canvas.insertBefore(slot.el, before);
-		}
 		if (this._ro && !this._observing.has(slot.el)) {
 			this._observing.add(slot.el);
 			this._ro.observe(slot.el);

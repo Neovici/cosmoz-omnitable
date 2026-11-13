@@ -172,6 +172,7 @@ export const makeRows = (rowsCount, seed = 42, plainCount = 47) => {
 		const status = STATUSES[(rng() * STATUSES.length) | 0];
 		const row = {
 			id: `inv-${String(i + 1).padStart(6, '0')}`,
+			numId: i + 1,
 			invoiceNumber: `${SERIES[(rng() * SERIES.length) | 0]}-${
 				1000 + ((rng() * 90000) | 0)
 			}`,
