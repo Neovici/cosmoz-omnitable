@@ -42,7 +42,7 @@ const OUT = arg('out', '');
 const PORT = Number(arg('port', '8123'));
 const SPEED = Number(arg('speed', 0));
 const SPEEDPARAM = SPEED ? `&speed=${SPEED}` : '';
-const URL = `http://127.0.0.1:${PORT}/testbed/index.html?rows=${ROWS}&seed=${SEED}${VAR ? `&var=${VAR}` : ''}${SPEEDPARAM}`;
+const URL = `http://127.0.0.1:${PORT}/testbed/bundle.html?rows=${ROWS}&seed=${SEED}${VAR ? `&var=${VAR}` : ''}${SPEEDPARAM}`;
 const VIEWPORT = { width: 1600, height: 900 };
 
 const preflight = async () => {
@@ -184,6 +184,7 @@ const UNITS = [
 	{ id: 'scroll-1', windows: ['scroll-1'] },
 	{ id: 'scroll-several', windows: ['scroll-several'] },
 	{ id: 'jump-end', windows: ['jump-end'] },
+	{ id: 'stress', windows: ['stress'] },
 	{ id: 'resize', windows: ['widen', 'narrow'] },
 	{ id: 'hide', windows: ['hide'] },
 ];
@@ -197,6 +198,7 @@ for (const w of [
 	'widen',
 	'narrow',
 	'hide',
+	'stress',
 ]) {
 	samplesById[w] = [];
 }
