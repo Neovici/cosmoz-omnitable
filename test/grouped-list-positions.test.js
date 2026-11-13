@@ -162,6 +162,29 @@ suite('variable-height positions', function () {
 		}
 	});
 
+	test('pool spans in measured row heights, not a hardcoded floor', async () => {
+		const rec = window.__rec;
+		await settle();
+		const pool = rec._pool.length;
+		// viewport 300px, measured minimum row height 40 (the fixture's
+		// smallest), 12-row cushion on each side: span = ceil(300/40) + 24
+		assert.isAtMost(
+			pool,
+			Math.ceil(300 / 40) + 24 + 1,
+			`pool must be sized by the measured minimum (got ${pool})`,
+		);
+		// away and back: the pool must not grow past the same span
+		rec._scroller.scrollTop = 4000;
+		await settle();
+		rec._scroller.scrollTop = 0;
+		await settle();
+		assert.isAtMost(
+			rec._pool.length,
+			Math.ceil(300 / 40) + 24 + 1,
+			`pool must not grow after roundtrip (got ${rec._pool.length})`,
+		);
+	});
+
 	test('slots sit at their prefix offsets after scrolling away and back', async () => {
 		const rec = window.__rec,
 			sc = rec._scroller;

@@ -472,7 +472,7 @@ class PooledRecycler extends BaseAsyncDirective {
 		const viewport = this._scroller?.clientHeight ?? 300;
 		const wanted = Math.max(
 			MIN_POOL,
-			Math.ceil(viewport / MIN_ROW_HEIGHT) + OVERSCAN_ROWS * 2,
+			Math.ceil(viewport / this._rowBudget()) + OVERSCAN_ROWS * 2,
 		);
 		this._ensurePool(wanted);
 	}
@@ -515,9 +515,16 @@ class PooledRecycler extends BaseAsyncDirective {
 			if (index == null || index < 0 || index >= this._items.length) {
 				continue;
 			}
-			if (height > 0 && this._heights[index] !== height) {
-				this._heights[index] = height;
-				changed = true;
+			if (height > 0) {
+				// track the measured minimum: the span budget follows real
+				// heights instead of a hardcoded worst-case floor
+				if (height < this._minMeasured) {
+					this._minMeasured = height;
+				}
+				if (this._heights[index] !== height) {
+					this._heights[index] = height;
+					changed = true;
+				}
 			}
 		}
 		if (changed) {
@@ -650,10 +657,14 @@ class PooledRecycler extends BaseAsyncDirective {
 		}
 
 		// span covers viewport + cushions on both sides; it is derived from
-		// the viewport span, never from pool.length
+		// the viewport span, never from pool.length. The per-slot budget is
+		// the SMALLEST row height actually measured (clamped to the
+		// worst-case floor), so the pool stays small when real rows are taller
+		// than the default estimate. Expanding a row grows heights, never
+		// shrinks the measured minimum, so expansion never needs more slots.
 		const span = Math.min(
 			n - first,
-			Math.ceil(viewport / MIN_ROW_HEIGHT) + OVERSCAN_ROWS * 2,
+			Math.ceil(viewport / this._rowBudget()) + OVERSCAN_ROWS * 2,
 		);
 		const last = first + span - 1;
 		this._ensurePool(span);
@@ -699,6 +710,15 @@ class PooledRecycler extends BaseAsyncDirective {
 	}
 
 	_measuredViewport = 0;
+	// smallest row height actually measured so far; the per-slot budget for
+	// the covering span, clamped to the worst-case floor. Monotone
+	// non-increasing: only smaller measurements lower it, so row expansions
+	// (which grow heights) never require a larger pool.
+	_minMeasured = Number.POSITIVE_INFINITY;
+
+	_rowBudget() {
+		return Math.max(MIN_ROW_HEIGHT, this._minMeasured);
+	} // the measured minimum (initialized to the worst-case floor via the clamp above)
 
 	_allocateSlot(): Slot {
 		const el = document.createElement(
