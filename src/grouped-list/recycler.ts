@@ -524,9 +524,18 @@ class PooledRecycler extends BaseAsyncDirective {
 				if (height < this._minMeasured) {
 					this._minMeasured = height;
 				}
+				const wasMeasured = this._measured[index];
 				if (this._heights[index] !== height) {
 					this._heights[index] = height;
-					this._measured[index] = 1;
+					changed = true;
+				}
+				// mark even when EQUAL to the stored value (an unmarked
+				// default-equal row reads as unmeasured and the running
+				// average overrides its real height), and recompute when
+				// the mark is NEW: the prefix of previously unknown rows
+				// was estimated with the older average
+				this._measured[index] = 1;
+				if (!wasMeasured) {
 					changed = true;
 				}
 			}
@@ -589,11 +598,29 @@ class PooledRecycler extends BaseAsyncDirective {
 	_appliedScroll = NaN;
 
 	_invalidate() {
+		// running average of REAL measurements: the estimate for rows we
+		// have never seen (recomputed on every pass, so it tracks the data
+		// instead of a hardcoded default; stays at DEFAULT_HEIGHT until the
+		// first measurement arrives)
+		let sum = 0,
+			count = 0;
+		for (let i = 0; i < this._items.length; i++) {
+			if (this._measured[i]) {
+				sum += this._heights[i] ?? DEFAULT_HEIGHT;
+				count++;
+			}
+		}
+		if (count > 0) {
+			this._avgRowHeight = sum / count;
+		}
 		this._prefix.length = 0;
 		this._prefix.push(0);
 		for (let i = 0; i < this._items.length; i++) {
 			this._prefix.push(
-				(this._prefix[i] ?? 0) + (this._heights[i] ?? DEFAULT_HEIGHT),
+				(this._prefix[i] ?? 0) +
+					(this._measured[i]
+						? (this._heights[i] ?? DEFAULT_HEIGHT)
+						: this._avgRowHeight),
 			);
 		}
 		if (this._host) {
@@ -727,6 +754,21 @@ class PooledRecycler extends BaseAsyncDirective {
 				slot.el.style.transform = '';
 			}
 		}
+
+		// item-reference refresh: a data swap with an unchanged LENGTH
+		// leaves the covering set identical, so stable-binding would keep
+		// every slot rendering the OLD dataset's item forever (the screen
+		// freezes on stale content). A still-bound slot whose item is not
+		// the current object re-binds: content updates, position stays.
+		for (const slot of this._pool) {
+			if (slot.bound == null) {
+				continue;
+			}
+			const item = this._items[slot.bound];
+			if (item !== undefined && slot.boundItem !== item) {
+				this._bind(slot, slot.bound);
+			}
+		}
 	}
 
 	_measuredViewport = 0;
@@ -735,6 +777,8 @@ class PooledRecycler extends BaseAsyncDirective {
 	// non-increasing: only smaller measurements lower it, so row expansions
 	// (which grow heights) never require a larger pool.
 	_minMeasured = Number.POSITIVE_INFINITY;
+	// running mean of measured row heights: the estimate for unknown rows
+	_avgRowHeight = DEFAULT_HEIGHT;
 
 	_rowBudget() {
 		return Math.max(MIN_ROW_HEIGHT, this._minMeasured);
@@ -769,22 +813,16 @@ class PooledRecycler extends BaseAsyncDirective {
 		if (slot.bound === index && slot.boundItem === item) {
 			return;
 		}
-		// seed a NEVER-measured index with the el's last known real height:
-		// the RO is silent for same-size rebinds (no size change → no
-		// entry), so such rows would otherwise stay at the DEFAULT height
-		// in the prefix. Indexes with a real measurement are never
-		// overwritten here — that is what keeps an expanded row's height
-		// stable while it exits and re-enters the window (a previously
-		// measured expanded row re-binding onto a small slot must not pull
-		// the slot's previous content size into the prefix). A genuine size
-		// change still corrects a transient seed error via the RO.
-		if (
-			slot.h != null &&
-			!this._measured[index] &&
-			this._heights[index] !== slot.h
-		) {
-			this._heights[index] = slot.h;
+		// mark FIRST-BIND indexes as measured: the RO is silent for
+		// same-size rebinds and a value-equal first measurement would
+		// otherwise leave the index "unmeasured" forever, letting the
+		// running-average estimate override a row's known real height
+		// (rows spaced by the average instead of their real heights).
+		if (slot.h != null && !this._measured[index]) {
 			this._measured[index] = 1;
+			if (this._heights[index] !== slot.h) {
+				this._heights[index] = slot.h;
+			}
 			this._invalidate();
 			this._syncBoundTransforms();
 		}
