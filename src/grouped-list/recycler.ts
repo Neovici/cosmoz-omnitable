@@ -745,14 +745,32 @@ class PooledRecycler extends BaseAsyncDirective {
 			const slot = free.pop() ?? this._allocateSlot();
 			this._bind(slot, index);
 		}
+		// focus restoration: a focused element inside a slot that is about
+		// to leave the window would be dropped to <body> by the hide below
+		let focusRecovery: HTMLElement | null = null;
+		const active = document.activeElement as Node | null;
+		const dbg = {
+			contains: 0,
+			recovery: null as string | null,
+			slotBound: null as number | null,
+		};
 		for (const slot of this._pool) {
 			const idle = slot.bound == null || !covering.has(slot.bound);
 			if (idle && slot.el.style.visibility !== 'hidden') {
+				if (active != null && slot.el.contains(active)) {
+					const focusable = active as HTMLElement;
+					focusRecovery =
+						this._nearestFocusable(slot.bound, focusable) ??
+						this._nearestFocusable(this._firstVisibleIndex(), focusable);
+				}
 				slot.el.style.visibility = 'hidden';
 				slot.bound = undefined;
 				slot.off = 0;
 				slot.el.style.transform = '';
 			}
+		}
+		if (focusRecovery) {
+			focusRecovery.focus();
 		}
 
 		// item-reference refresh: a data swap with an unchanged LENGTH
@@ -769,6 +787,53 @@ class PooledRecycler extends BaseAsyncDirective {
 				this._bind(slot, slot.bound);
 			}
 		}
+	}
+
+	// the nearest visible slot with an equivalent focusable (same tag +
+	// classes as the previously focused element), at or after the given
+	// index; used to restore focus when a focused row leaves the window
+	_nearestFocusable(index: number | undefined | null, previous: HTMLElement) {
+		if (index == null) {
+			return null;
+		}
+		const selector = 'input,button,select,textarea,a[href],[tabindex]';
+		const classes = Array.from(previous.classList);
+		let best: HTMLElement | null = null;
+		let bestDist = Number.POSITIVE_INFINITY;
+		for (const slot of this._pool) {
+			if (
+				slot.bound == null ||
+				slot.el.style.visibility === 'hidden' ||
+				slot.bound === index
+			) {
+				continue;
+			}
+			const candidates = Array.from(
+				slot.el.querySelectorAll<HTMLElement>(selector),
+			);
+			const match =
+				candidates.find(
+					(c) =>
+						c.tagName === previous.tagName &&
+						classes.every((cl) => c.classList.contains(cl)),
+				) ??
+				(classes.length === 0 && candidates[0]) ??
+				null;
+			if (!match) {
+				continue;
+			}
+			const dist = Math.abs(slot.bound - index);
+			if (dist < bestDist) {
+				best = match;
+				bestDist = dist;
+			}
+		}
+		return best;
+	}
+
+	_firstVisibleIndex() {
+		const sc = this._scroller?.scrollTop ?? 0;
+		return this._firstIndex(sc);
 	}
 
 	_measuredViewport = 0;
@@ -844,6 +909,24 @@ class PooledRecycler extends BaseAsyncDirective {
 		slot.el.style.transform = `translate3d(0, ${this._offset(index)}px, 0)`;
 		slot.off = this._offset(index);
 		slot.el.style.visibility = 'visible';
+		// keep the canvas children in DATA-INDEX order: tab navigation and
+		// screen readers follow DOM order, which used to be pool creation
+		// order (arbitrary, often descending) after rebinds
+		const canvas = slot.el.parentElement;
+		if (canvas) {
+			let before: Element | null = null;
+			for (const child of canvas.children) {
+				const idx = (child as GroupedListRowHost).index;
+				if (child === slot.el) {
+					break;
+				}
+				if (typeof idx === 'number' && idx > index) {
+					before = child;
+					break;
+				}
+			}
+			canvas.insertBefore(slot.el, before);
+		}
 		if (this._ro && !this._observing.has(slot.el)) {
 			this._observing.add(slot.el);
 			this._ro.observe(slot.el);
