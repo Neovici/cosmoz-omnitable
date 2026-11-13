@@ -58,6 +58,18 @@ const invoiceNumberCell = (column, { item }) =>
 
 const colTemplates = [];
 
+// The stable row id column FIRST: rows are ordered 1..N by it, and it
+// survives dataset swaps (index-based, not seed-derived).
+colTemplates.push(
+	html`<cosmoz-omnitable-column-number
+		name="numId"
+		title="#"
+		flex="0"
+		width="70px"
+		value-path="numId"
+	></cosmoz-omnitable-column-number>`,
+);
+
 // The "supplier" column: autocomplete column + supplier logo cell.
 for (let i = 0; i < cfg.supplier; i++) {
 	colTemplates.push(
