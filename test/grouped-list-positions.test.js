@@ -22,11 +22,7 @@ const renderItem = (item, index) => html`
 	`,
 	DATA = Array.from({ length: 80 }, (_, id) => ({ id }));
 
-const nextEvent = (element, eventName) =>
-	new Promise((resolve) =>
-		element.addEventListener(eventName, resolve, { once: true }),
-	);
-
+const rafOnce = () => new Promise((r) => requestAnimationFrame(r));
 const settle = async () => {
 	// poll until the recycler state stops changing (bounded)
 	const rec = window.__rec;
@@ -51,7 +47,7 @@ const settle = async () => {
 	await nextFrame();
 };
 
-const boundSlots = (element) => {
+const boundSlots = () => {
 	const rec = window.__rec;
 	assert.isOk(rec, 'recycler debug instance (window.__rec) available');
 	const clip = rec._clip;
@@ -70,8 +66,8 @@ const boundSlots = (element) => {
 		}));
 };
 
-const assertPositions = (element, tag) => {
-	const slots = boundSlots(element);
+const assertPositions = (tag) => {
+	const slots = boundSlots();
 	assert.isNotEmpty(slots, `${tag}: has bound slots`);
 	const bad = slots
 		.filter((s) => Math.abs(s.want - s.got) > 1)
@@ -86,6 +82,7 @@ const assertPositions = (element, tag) => {
 };
 
 suite('variable-height positions', function () {
+	/* eslint-disable-next-line no-invalid-this */
 	this.timeout(20000);
 	setupIgnoreWindowResizeObserverLoopErrors(setup, teardown);
 
@@ -99,7 +96,7 @@ suite('variable-height positions', function () {
 	});
 
 	test('slots sit at their prefix offsets on first measurement', () => {
-		assertPositions(element, 'initial');
+		assertPositions('initial');
 	});
 
 	test('no row overlaps while scrolling by steps', async () => {
@@ -148,7 +145,7 @@ suite('variable-height positions', function () {
 			if (bad.length === 0) {
 				continue;
 			}
-			const d = bad[0].match(/idx(\d+)\/idx(\d+)/),
+			const d = bad[0].match(/idx(\d+)\/idx(\d+)/u),
 				probe = (idx) => {
 					const s = rec._pool.find((x) => x.bound === Number(idx));
 					return s
@@ -157,7 +154,9 @@ suite('variable-height positions', function () {
 				};
 			assert.isEmpty(
 				bad,
-				`step ${k} (scrollTop ${sc.scrollTop}): ${bad.slice(0, 4).join('; ')} | diag: ${d[1]}=[${probe(d[1])}] ${d[2]}=[${probe(d[2])}] roCalls:${roCalls} deliv:${delivCount}`,
+				`step ${k} (${sc.scrollTop}px): ${bad.slice(0, 4).join('; ')}` +
+					` | diag: ${d[1]}=[${probe(d[1])}] ${d[2]}=[${probe(d[2])}]` +
+					` roCalls:${roCalls} deliv:${delivCount}`,
 			);
 		}
 	});
@@ -185,6 +184,44 @@ suite('variable-height positions', function () {
 		);
 	});
 
+	test('calculated total never dips during enter/exit cycles', async () => {
+		// a previously measured (expanded) row must keep its height entry
+		// when it exits and re-enters the window: every applied change of the
+		// total (the __recTotal stream, exactly what the user sees in the
+		// logs) must be monotone non-decreasing — content here is static
+		const rec = window.__rec,
+			{ _scroller: sc, _prefix: prefix } = rec,
+			n = rec._items.length;
+		const changes = [];
+		rec._logTotalChange = (total, source) => {
+			changes.push({ total, source, t: prefix[n] ?? 0 });
+		};
+		let maxApplied = -1;
+		sc.scrollTop = 0;
+		await settle();
+		maxApplied = Math.max(maxApplied, prefix[n] ?? 0);
+		for (let k = 1; k <= 24; k++) {
+			sc.scrollTop += 100;
+			await rafOnce();
+			maxApplied = Math.max(maxApplied, prefix[n] ?? 0);
+		}
+		await settle();
+		const dips = changes
+			.map((c, i) => ({
+				i,
+				total: c.total,
+				prev: changes[i - 1]?.total ?? c.total,
+			}))
+			.filter((c) => c.total < c.prev);
+		assert.isEmpty(
+			dips,
+			`total dipped on the applied stream → dips:${dips
+				.slice(0, 6)
+				.map((d) => d.total + '(from ' + d.prev + ')')
+				.join(', ')}`,
+		);
+	});
+
 	test('slots sit at their prefix offsets after scrolling away and back', async () => {
 		const rec = window.__rec,
 			sc = rec._scroller;
@@ -192,6 +229,6 @@ suite('variable-height positions', function () {
 		await settle();
 		sc.scrollTop = 0;
 		await settle();
-		assertPositions(element, 'roundtrip');
+		assertPositions('roundtrip');
 	});
 });

@@ -132,6 +132,9 @@ class PooledRecycler extends BaseAsyncDirective {
 			this._heights.fill(DEFAULT_HEIGHT);
 			this._invalidate();
 		}
+		if (this._measured.length !== this._items.length) {
+			this._measured = new Uint8Array(this._items.length);
+		}
 		// host-driven re-renders must propagate to bound rows even when the
 		// item references are unchanged (mutated state, selection): refresh
 		// the renderFn identity of every bound row once per host render.
@@ -523,6 +526,7 @@ class PooledRecycler extends BaseAsyncDirective {
 				}
 				if (this._heights[index] !== height) {
 					this._heights[index] = height;
+					this._measured[index] = 1;
 					changed = true;
 				}
 			}
@@ -734,7 +738,13 @@ class PooledRecycler extends BaseAsyncDirective {
 
 	_rowBudget() {
 		return Math.max(MIN_ROW_HEIGHT, this._minMeasured);
-	} // the measured minimum (initialized to the worst-case floor via the clamp above)
+	}
+
+	// 1 per index whose height is a REAL measurement (RO or slot.h seed at
+	// first bind); never-overwrite protection: a known-height index (e.g. an
+	// expanded row that leaves the window) cannot regress to a slot's
+	// previous content size on rebind.
+	_measured = new Uint8Array(0); // 1 = the index has a real measured height
 
 	_allocateSlot(): Slot {
 		const el = document.createElement(
@@ -759,14 +769,22 @@ class PooledRecycler extends BaseAsyncDirective {
 		if (slot.bound === index && slot.boundItem === item) {
 			return;
 		}
-		// re-seed the index with the el's last known real height whenever the
-		// map disagrees: the RO is effectively silent for same-size rebinds
-		// (no size change → no entry) and delivery timing lags a frame, so a
-		// map value of DEFAULT or a stale attribution must lose to slot.h.
-		// A genuine size change is delivered by the RO one frame after render
-		// and corrects any transient seed error.
-		if (slot.h != null && this._heights[index] !== slot.h) {
+		// seed a NEVER-measured index with the el's last known real height:
+		// the RO is silent for same-size rebinds (no size change → no
+		// entry), so such rows would otherwise stay at the DEFAULT height
+		// in the prefix. Indexes with a real measurement are never
+		// overwritten here — that is what keeps an expanded row's height
+		// stable while it exits and re-enters the window (a previously
+		// measured expanded row re-binding onto a small slot must not pull
+		// the slot's previous content size into the prefix). A genuine size
+		// change still corrects a transient seed error via the RO.
+		if (
+			slot.h != null &&
+			!this._measured[index] &&
+			this._heights[index] !== slot.h
+		) {
 			this._heights[index] = slot.h;
+			this._measured[index] = 1;
 			this._invalidate();
 			this._syncBoundTransforms();
 		}
