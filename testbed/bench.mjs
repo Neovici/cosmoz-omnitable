@@ -32,16 +32,18 @@ const SEVERAL = Number(arg('several', 10));
 const WIDEN = Number(arg('widen', 120));
 const ROWS = Number(arg('rows', 10000));
 const SEED = Number(arg('seed', 42));
+const VAR = Number(arg('var', 0));
 const ONLY = (arg('only', 'scroll-1,scroll-several,jump-end,resize,hide') || '')
 	.split(',')
 	.map((s) => s.trim())
 	.filter(Boolean);
 const OUT = arg('out', '');
+const STYLETRACE = !!arg('styletrace', 0);
 
-const PORT = 8123;
+const PORT = Number(arg('port', '8123'));
 const SPEED = Number(arg('speed', 0));
 const SPEEDPARAM = SPEED ? `&speed=${SPEED}` : '';
-const URL = `http://127.0.0.1:${PORT}/testbed/index.html?rows=${ROWS}&seed=${SEED}${SPEEDPARAM}`;
+const URL = `http://127.0.0.1:${PORT}/testbed/bundle.html?rows=${ROWS}&seed=${SEED}${VAR ? `&var=${VAR}` : ''}${SPEEDPARAM}`;
 const VIEWPORT = { width: 1600, height: 900 };
 
 const preflight = async () => {
@@ -94,7 +96,7 @@ const metricDelta = (a, b) => {
 const report = (results) => {
 	console.log('\n=== omnitable testbed benchmark ===');
 	console.log(
-		`rows=${ROWS} cols=50 seed=${SEED} reps=${REPS} viewport=${VIEWPORT.width}x${VIEWPORT.height}`,
+		`rows=${ROWS} cols=50 seed=${SEED} var=${VAR || 0} reps=${REPS} viewport=${VIEWPORT.width}x${VIEWPORT.height}`,
 	);
 	console.log(
 		'scenario'.padEnd(15),
@@ -106,6 +108,7 @@ const report = (results) => {
 		'l.sum'.padStart(7),
 		'layout#'.padStart(8),
 		'style#'.padStart(7),
+		...(STYLETRACE ? ['style c/ms'.padStart(9)] : []),
 		'rowsΔ'.padStart(6),
 		'mutΔ'.padStart(7),
 		'first cell w / id moved',
@@ -117,6 +120,7 @@ const report = (results) => {
 		'widen',
 		'narrow',
 		'hide',
+		'stress',
 	]) {
 		const s = results.summary[id];
 		if (!s) continue;
@@ -132,6 +136,9 @@ const report = (results) => {
 			String(s.metrics.RecalcStyleCount).padStart(7),
 			String(s.rowsDelta).padStart(6),
 			String(s.mutsDelta).padStart(7),
+			s.style
+				? String(s.style.totalMs + '/' + s.style.count).padStart(9)
+				: ''.padStart(9),
 			`${s.firstCellWidth}  idMoved:${s.idMoved}`,
 		);
 	}
@@ -183,6 +190,7 @@ const UNITS = [
 	{ id: 'scroll-1', windows: ['scroll-1'] },
 	{ id: 'scroll-several', windows: ['scroll-several'] },
 	{ id: 'jump-end', windows: ['jump-end'] },
+	{ id: 'stress', windows: ['stress'] },
 	{ id: 'resize', windows: ['widen', 'narrow'] },
 	{ id: 'hide', windows: ['hide'] },
 ];
@@ -196,6 +204,7 @@ for (const w of [
 	'widen',
 	'narrow',
 	'hide',
+	'stress',
 ]) {
 	samplesById[w] = [];
 }
@@ -213,6 +222,23 @@ const runUnit = async (unit, record) => {
 	});
 
 	for (const w of unit.windows) {
+		let traceEvents = null;
+		if (STYLETRACE) {
+			traceEvents = [];
+			const onData = (d) => {
+				if (d.value) {
+					traceEvents.push(...d.value);
+				}
+			};
+			cdp.on('Tracing.dataCollected', onData);
+			await cdp.send('Tracing.start', {
+				traceConfig: {
+					recordMode: 'recordAsMuchAsPossible',
+					includedCategories: ['devtools.timeline'],
+				},
+			});
+			cdp._traceOnData = onData;
+		}
 		if (w === 'hide') {
 			const opened = await page.evaluate(benchOpenPanel);
 			if (!opened) throw new Error('settings panel did not open');
@@ -225,6 +251,27 @@ const runUnit = async (unit, record) => {
 		const sample = await page.evaluate(benchMeasure, opts);
 		const m1 = metricsToObj((await cdp.send('Performance.getMetrics')).metrics);
 		sample.metrics = metricDelta(m0, m1);
+		if (STYLETRACE && traceEvents) {
+			const done = new Promise((resolve) => {
+				cdp.once('Tracing.tracingComplete', resolve);
+			});
+			await cdp.send('Tracing.end');
+			await done;
+			cdp.off('Tracing.dataCollected', cdp._traceOnData ?? (() => {}));
+			const uts = traceEvents
+				.filter(
+					(e) =>
+						typeof e.dur === 'number' &&
+						String(e.cat).includes('devtools.timeline') &&
+						e.name === 'UpdateLayoutTree',
+				)
+				.map((e) => ({ ms: e.dur / 1000 }));
+			sample.style = {
+				count: uts.length,
+				totalMs: +uts.reduce((a, b) => a + b.ms, 0).toFixed(1),
+				maxMs: uts.length ? +Math.max(...uts.map((x) => x.ms)).toFixed(1) : 0,
+			};
+		}
 		sample.loadMs = loadMs;
 		sample.w0 = prep.w0;
 		sample.rowH = prep.rowH;

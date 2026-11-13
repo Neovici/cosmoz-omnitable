@@ -1,0 +1,958 @@
+/* eslint-disable max-statements, complexity -- perf prototype with imperative DOM pool */
+// Bespoke pooled row virtualizer for cosmoz-grouped-list.
+//
+// Replaces @lit-labs/virtualizer with a pooled "move-then-fill" model:
+// - the native scroller carries ONLY a spacer (its height = total content)
+//   so native scrolling (scrollbar, wheel over the scrollbar strip, anchors)
+//   keeps working,
+// - OUTSIDE the scrolled subtree, a viewport-sized clip wrapper contains a
+//   content-tall canvas that is moved once per scroll pump with
+//   translate3d(0, -scrollTop, 0) ("move"; the wrapper does the viewport
+//   clipping, the canvas the row coordinate space),
+// - a fixed pool of persistent `cosmoz-grouped-list-row` elements in that
+//   canvas are transform-fixed at their data offsets; offsets are written at
+//   bind time (and reset on idle), never per scroll frame,
+// - the covered window is re-bound ("fill") via a prefix-sum offset map
+//   (row heights corrected by a ResizeObserver, with scroll anchoring);
+//   only entering/leaving slots re-bind; no row element is created or
+//   destroyed after the pool fills.
+
+import { noChange } from 'lit';
+import {
+	AsyncDirective as BaseAsyncDirective,
+	directive,
+} from 'lit/async-directive.js';
+import type { Item } from '../lib/types';
+
+export interface GroupedListRowHost extends HTMLElement {
+	item?: Item;
+	index?: number;
+	renderFn?: (item: Item, index: number) => unknown;
+}
+
+export interface RecyclerConfig {
+	items: Item[] | null;
+	renderRow: (item: Item, index: number) => unknown;
+}
+
+const DEFAULT_HEIGHT = 40;
+const MIN_ROW_HEIGHT = 24;
+const OVERSCAN_ROWS = 12;
+const MIN_POOL = 16;
+
+type Slot = {
+	el: GroupedListRowHost;
+	height: number;
+	bound: number | undefined; // bound data index, or undefined when idle
+	boundItem?: unknown; // bound item reference (for identity rebinds)
+	off?: number; // y the transform was last written for (undefined = never)
+	h?: number; // last RO-observed el height (el keeps its size while idle)
+	wrapper?: GroupedListRowHost['renderFn'];
+};
+
+class PooledRecycler extends BaseAsyncDirective {
+	_items: unknown[] = [];
+	_renderRow: (item: Item, index: number) => unknown = () => {
+		return undefined;
+	};
+	_host: HTMLElement | null = null;
+	_canvas: HTMLDivElement | null = null;
+	_clip: HTMLDivElement | null = null;
+	_scroller: HTMLElement | null = null;
+	_pool: Slot[] = [];
+	_heights: number[] = [];
+	_prefix: number[] = [0];
+	_itemsVersion = '';
+	_built = false;
+	_rafId: number | null = null;
+	_ro: ResizeObserver | null = null;
+	_scrollerTarget: HTMLElement | null = null;
+	_observing = new WeakSet<HTMLElement>();
+	_boundRenderRow: ((item: Item, index: number) => unknown) | null = null;
+
+	pumpCount = 0;
+	_debugPump() {
+		const w = document.defaultView as unknown as {
+			__rec?: PooledRecycler;
+			__recLog?: unknown[];
+		};
+		w.__rec = this;
+		const bound = this._pool.filter((s) => s.bound != null).length;
+		const firstBound = this._pool.find((s) => s.bound != null);
+		(w.__recLog ??= []).push({
+			t: 'pumpEnd',
+			items: this._items.length,
+			pumpCount: this.pumpCount,
+			pool: this._pool.length,
+			bound,
+			firstBound: firstBound ? String(firstBound.bound) : 'none',
+			firstBoundItem: firstBound?.boundItem
+				? String(firstBound.boundItem).slice(0, 20)
+				: 'none',
+			firstVis: firstBound ? firstBound.el.style.visibility : 'none',
+			firstIndex: this._firstIndex(this._scroller?.scrollTop ?? 0),
+			scrollTop: this._scroller?.scrollTop,
+		});
+	}
+
+	render(_config: RecyclerConfig) {
+		this._items = _config.items ?? [];
+		this._renderRow = _config.renderRow;
+		if (this._built) {
+			this._schedule();
+			return noChange;
+		}
+		// nothing is committed through lit: the overlay canvas and its pool
+		// are built imperatively in update()/_build. Keeping this result
+		// empty (noChange) leaves only marker comments in the host so host
+		// re-renders never wipe the pooled rows.
+		return noChange;
+	}
+
+	update(part: import('lit/async-directive.js').Part, args: [RecyclerConfig]) {
+		const config = args[0];
+		if (!config) {
+			return noChange;
+		}
+		this._items = config.items ?? [];
+		this._renderRow = config.renderRow;
+		const w = document.defaultView as unknown as { __recLog?: unknown[] };
+		(w.__recLog ??= []).push({
+			t: 'update',
+			n: this._items.length,
+			scroller: this._scroller?.clientHeight,
+		});
+		if (!this._built) {
+			const partWithParent = part as unknown as { parentNode: HTMLElement };
+			this._build(partWithParent.parentNode);
+			this._built = true;
+		}
+		if (this._heights.length !== this._items.length) {
+			this._heights.length = this._items.length;
+			this._heights.fill(DEFAULT_HEIGHT);
+			this._invalidate();
+		}
+		if (this._measured.length !== this._items.length) {
+			this._measured = new Uint8Array(this._items.length);
+		}
+		// host-driven re-renders must propagate to bound rows even when the
+		// item references are unchanged (mutated state, selection): refresh
+		// the renderFn identity of every bound row once per host render.
+		if (this._boundRenderRow !== this._renderRow) {
+			this._boundRenderRow = this._renderRow;
+			for (const slot of this._pool) {
+				if (slot.bound == null) {
+					continue;
+				}
+				const bound = slot.bound;
+				slot.el.renderFn = ((item: Item) =>
+					this._renderRow(item, bound)) as GroupedListRowHost['renderFn'];
+			}
+		}
+		this._pump();
+		return noChange;
+	}
+
+	_build(parent: HTMLElement | null | undefined) {
+		const host = parent ?? document.createElement('div');
+		this._host = host;
+		// the host is the SPACER inside the native scroller: it only carries
+		// the full scroll size; prevent flex-shrink from collapsing it
+		host.style.flexShrink = '0';
+		// viewport-sized clip LAYER excluded from native scroll, with a
+		// content-canvas inside that is moved once per pump with
+		// translate3d(-scrollTop) while its pooled rows stay transform-fixed
+		// at their data offsets. The clip must NOT be on the moving canvas:
+		// overflow clips in the element's LOCAL space, and rows translated to
+		// offsets beyond the viewport box would be cut off — so the static
+		// wrapper clips at the viewport while the tall canvas carries the row
+		// coordinate space (0..total).
+		const clip = document.createElement('div');
+		clip.className = 'glist-recycler-viewport';
+		clip.style.position = 'absolute';
+		clip.style.overflow = 'hidden';
+		// touch/pen pans over the rows are forwarded by the pointer listeners;
+		// browser panning must not intercept the gesture first. Scoping is
+		// safe: the clip is sized to scroller.clientWidth (never the scrollbar
+		// strip), so native interaction with the scroller's own scrollbars
+		// stays available.
+		clip.style.touchAction = 'none';
+		const canvas = document.createElement('div');
+		canvas.className = 'glist-recycler-canvas';
+		canvas.style.position = 'absolute';
+		canvas.style.top = '0';
+		canvas.style.left = '0';
+		canvas.style.width = '100%';
+		canvas.style.willChange = 'transform';
+		clip.appendChild(canvas);
+		this._clip = clip;
+		this._canvas = canvas;
+
+		this._resolveScroller();
+		this._measureViewport();
+		this._attachCanvas();
+
+		this._ro = new ResizeObserver((entries) => this._onResize(entries));
+		this._schedule();
+	}
+
+	_resolveScroller() {
+		let el = this._host?.parentElement;
+		while (el) {
+			const overflow = getComputedStyle(el).overflowY;
+			if (
+				overflow === 'auto' ||
+				overflow === 'scroll' ||
+				overflow === 'overlay'
+			) {
+				break;
+			}
+			el = el.parentElement;
+		}
+		this._scroller = el ?? null;
+		if (el) {
+			this._scrollerTarget = el;
+			el.addEventListener('scroll', this._onScroll, { passive: true });
+		}
+	}
+
+	// the clip wrapper must live in the WRAPPER that contains the scroller
+	// (a sibling of the scroller), never inside the scrolled subtree: rows
+	// in the scroller would natively scroll on top of the layer transform
+	// and double-count the offset (historical bug). Rows as scroller
+	// children at data offsets is precisely the model this replaces.
+	_attachCanvas() {
+		const clip = this._clip;
+		const scroller = this._scroller;
+		if (!clip || !scroller) {
+			return;
+		}
+		const container = scroller.parentElement;
+		if (container && clip.parentElement !== container) {
+			container.appendChild(clip);
+		}
+		// the layer is above the scroller for pointer events, so wheel input
+		// must be forwarded (one application; preventDefault stops the
+		// native chain, which could otherwise scroll the page instead)
+		clip.addEventListener('wheel', this._onWheel, { passive: false });
+		// identical layer problem for keyboard and touch drags: scroll keys
+		// and touch pans must be forwarded to the scroller. Same lifecycle
+		// as wheel (identical function refs keep re-attachment dedupe-safe).
+		clip.addEventListener('keydown', this._onKeydown);
+		clip.addEventListener('pointerdown', this._onPointerDown);
+		clip.addEventListener('pointermove', this._onPointerMove);
+		clip.addEventListener('pointerup', this._onPointerEnd);
+		clip.addEventListener('pointercancel', this._onPointerEnd);
+		this._syncCanvasBox();
+	}
+
+	// keep the canvas box in sync with the scroller viewport (client sizes:
+	// never covers the scrollbar strip; offsets follow flex re-layouts of
+	// the wrapper, e.g. in-flow empty states). Returns true when the box
+	// changed (callers may need to re-measure the pool).
+	_syncCanvasBox() {
+		const scroller = this._scroller;
+		const clip = this._clip;
+		if (!scroller || !clip) {
+			return false;
+		}
+		const top = scroller.offsetTop;
+		const left = scroller.offsetLeft;
+		const width = scroller.clientWidth;
+		const height = scroller.clientHeight;
+		if (
+			top === this._boxTop &&
+			left === this._boxLeft &&
+			width === this._boxWidth &&
+			height === this._boxHeight
+		) {
+			return false;
+		}
+		this._boxTop = top;
+		this._boxLeft = left;
+		this._boxWidth = width;
+		this._boxHeight = height;
+		clip.style.top = `${top}px`;
+		clip.style.left = `${left}px`;
+		clip.style.width = `${width}px`;
+		clip.style.height = `${height}px`;
+		return true;
+	}
+
+	// the canvas layer sits above the scroller, so native wheel scrolling
+	// would chain past it to the page: forward once (preventDefault stops
+	// the native chain) and the scroller scrolls exactly one step. The
+	// scroller is NOT an ancestor of the canvas, so there is no native path
+	// that can double-apply the delta to it. ctrlKey (pinch zoom) is left
+	// to the browser.
+	_onWheel = (event: WheelEvent) => {
+		const scroller = this._scroller;
+		if (!scroller || event.ctrlKey) {
+			return;
+		}
+		event.preventDefault();
+		// delta units: 0 = pixels, 1 = lines (approximate the browser line
+		// height), 2 = pages
+		let unit = 1;
+		if (event.deltaMode === 1) {
+			unit = 40;
+		} else if (event.deltaMode === 2) {
+			unit = scroller.clientHeight;
+		}
+		if (event.deltaY !== 0) {
+			scroller.scrollTop += event.deltaY * unit;
+		}
+		if (event.deltaX !== 0) {
+			scroller.scrollLeft += event.deltaX * unit;
+		}
+	};
+
+	// KEYBOARD: focusable row cells live inside the clip, whose ancestor
+	// chain has no scrollable element, so browser-native scroll keys
+	// (Space, PageUp/PageDown, Home, End, ArrowUp/ArrowDown) would scroll
+	// the PAGE or do nothing. Forward the vertical keys exactly once:
+	// preventDefault stops the native chain and the scroller 'scroll'
+	// listener pumps the new window — no direct _pump call.
+	_onKeydown = (event: KeyboardEvent) => {
+		const scroller = this._scroller;
+		if (
+			!scroller ||
+			event.defaultPrevented ||
+			event.ctrlKey ||
+			event.altKey ||
+			event.metaKey
+		) {
+			return;
+		}
+		if (this._isInteractiveKeyTarget(event)) {
+			// Space and the arrows keep their native meaning on interactive/
+			// editable row parts (button/checkbox toggle, radio navigation,
+			// option/menu item activation, link activation, typing)
+			return;
+		}
+		// ArrowLeft/Right are column-tab navigation in omnitable: not captured
+		let delta: number | null = null;
+		let to: number | null = null;
+		switch (event.key) {
+			case 'ArrowUp':
+				delta = -40;
+				break;
+			case 'ArrowDown':
+				delta = 40;
+				break;
+			case 'PageUp':
+				delta = -Math.round(scroller.clientHeight * 0.9);
+				break;
+			case 'PageDown':
+				delta = Math.round(scroller.clientHeight * 0.9);
+				break;
+			case ' ':
+				delta = event.shiftKey ? -scroller.clientHeight : scroller.clientHeight;
+				break;
+			case 'Home':
+				to = 0;
+				break;
+			case 'End':
+				to = scroller.scrollHeight;
+				break;
+			default:
+				return;
+		}
+		event.preventDefault();
+		if (delta != null) {
+			scroller.scrollTop += delta;
+		} else if (to != null) {
+			scroller.scrollTop = to;
+		}
+	};
+
+	// Space/arrows must not be captured when the keypress starts on an
+	// interactive or editable part of a row: those keys keep their native
+	// meaning there (toggle, activation, radio navigation, typing).
+	_isInteractiveKeyTarget(event: KeyboardEvent) {
+		const target = event.composedPath()[0] ?? event.target;
+		if (!(target instanceof Element)) {
+			return false;
+		}
+		if (target instanceof HTMLElement && target.isContentEditable) {
+			return true;
+		}
+		return target.matches(
+			'button, input, select, textarea, a[href], [contenteditable], [role="checkbox"], [role="option"], [role="radio"], [role="menuitem"]',
+		);
+	}
+
+	// POINTER (touch/pen): rows live inside the clip whose chain has no
+	// scrollable ancestor, so a native touch pan has nothing to scroll —
+	// forward the drag 1:1 to the scroller while the pointer is down, with
+	// no momentum. Mouse is excluded (native drag/selection semantics);
+	// preventDefault applies to the MOVES only: suppressing pointerdown
+	// would kill the compat click path taps rely on, and pointercancel
+	// (e.g. native text selection taking over) ends the drag cleanly.
+	_activePointer: number | null = null;
+	_dragStartX = 0;
+	_dragStartY = 0;
+	_dragStartScrollTop = 0;
+	_dragStartScrollLeft = 0;
+	_dragScrolling = false;
+
+	_onPointerDown = (event: PointerEvent) => {
+		if (this._activePointer != null) {
+			// a second pointer arrived during a drag (two-finger gesture):
+			// release the first, let the gesture proceed unmanaged
+			this._endPointerDrag();
+			return;
+		}
+		if (event.pointerType !== 'touch' && event.pointerType !== 'pen') {
+			return;
+		}
+		const scroller = this._scroller;
+		if (!scroller) {
+			return;
+		}
+		this._activePointer = event.pointerId;
+		this._dragStartX = event.clientX;
+		this._dragStartY = event.clientY;
+		this._dragStartScrollTop = scroller.scrollTop;
+		this._dragStartScrollLeft = scroller.scrollLeft;
+		this._dragScrolling = false;
+	};
+
+	_onPointerMove = (event: PointerEvent) => {
+		if (event.pointerId !== this._activePointer) {
+			return;
+		}
+		const scroller = this._scroller;
+		if (!scroller) {
+			return;
+		}
+		const dx = event.clientX - this._dragStartX;
+		const dy = event.clientY - this._dragStartY;
+		if (!this._dragScrolling) {
+			// dead zone ~2px: jitter and taps must not scroll anything
+			if (Math.abs(dx) < 2 && Math.abs(dy) < 2) {
+				return;
+			}
+			this._dragScrolling = true;
+		}
+		event.preventDefault();
+		// natural drag direction: the content follows the finger (drag up =
+		// scroll down); 1:1 always derived from the drag anchor, never
+		// accumulated, so it cannot drift
+		scroller.scrollTop = this._dragStartScrollTop - dy;
+		scroller.scrollLeft = this._dragStartScrollLeft - dx;
+	};
+
+	_onPointerEnd = (event: PointerEvent) => {
+		if (event.pointerId === this._activePointer) {
+			// no preventDefault: the compat click must still be delivered
+			// for taps, and native selection behavior survives
+			this._endPointerDrag();
+		}
+	};
+
+	_endPointerDrag() {
+		this._activePointer = null;
+		this._dragScrolling = false;
+	}
+
+	// pump synchronously on the first scroll event of a burst so the frame
+	// that paints the new position already has rows bound (no white gap),
+	// then keep a trailing rAF pump for position corrections.
+	_onScroll = () => {
+		this._pump();
+		if (this._rafId != null) {
+			return;
+		}
+		this._rafId = requestAnimationFrame(() => {
+			this._rafId = null;
+			this._pump();
+		});
+	};
+
+	_measureViewport() {
+		// pool = enough slots to cover the viewport at the smallest row height
+		const viewport = this._scroller?.clientHeight ?? 300;
+		const wanted = Math.max(
+			MIN_POOL,
+			Math.ceil(viewport / this._rowBudget()) + OVERSCAN_ROWS * 2,
+		);
+		this._ensurePool(wanted);
+	}
+
+	_ensurePool(wanted: number) {
+		while (this._pool.length < wanted) {
+			const el = document.createElement(
+				'cosmoz-grouped-list-row',
+			) as GroupedListRowHost;
+			el.style.position = 'absolute';
+			el.style.left = '0';
+			el.style.right = '0';
+			el.style.top = '0';
+			el.style.visibility = 'hidden';
+			this._canvas?.appendChild(el);
+			this._pool.push({ el, height: DEFAULT_HEIGHT, bound: undefined });
+		}
+	}
+
+	_onResize(entries: ResizeObserverEntry[]) {
+		let changed = false;
+		for (const entry of entries) {
+			const slot = this._pool.find((p) => p.el === entry.target);
+			if (!slot) {
+				continue;
+			}
+			// the entry is a stale snapshot when the slot rebinds within the
+			// queued frame: a 40px snapshot delivered after a rebind to an
+			// 80px row poisons the heights of the NEW index. The RO callback
+			// runs in the rendering phase with layout settled, so a fresh
+			// read is authoritative and reflow-free; treat the entry as a
+			// wake-up signal only.
+			const height = Math.round(slot.el.getBoundingClientRect().height);
+			// this size is the el's real height whatever the slot is bound
+			// to; keep it as the rebind-time seed
+			if (height > 0) {
+				slot.h = height;
+			}
+			const index = slot.bound;
+			if (index == null || index < 0 || index >= this._items.length) {
+				continue;
+			}
+			if (height > 0) {
+				// track the measured minimum: the span budget follows real
+				// heights instead of a hardcoded worst-case floor
+				if (height < this._minMeasured) {
+					this._minMeasured = height;
+				}
+				const wasMeasured = this._measured[index];
+				if (this._heights[index] !== height) {
+					this._heights[index] = height;
+					changed = true;
+				}
+				// mark even when EQUAL to the stored value (an unmarked
+				// default-equal row reads as unmeasured and the running
+				// average overrides its real height), and recompute when
+				// the mark is NEW: the prefix of previously unknown rows
+				// was estimated with the older average
+				this._measured[index] = 1;
+				if (!wasMeasured) {
+					changed = true;
+				}
+			}
+		}
+		if (changed) {
+			this._invalidate();
+			// a measured height change shifts the prefix for every row below
+			// it: re-place still-bound slots whose cached offset no longer
+			// matches (expanded rows, first-measurement corrections)
+			this._syncBoundTransforms();
+			// scroll anchoring: keep the anchor row stable when offsets above
+			// the viewport change
+			const anchorOffset = this._offset(this._anchorIndex);
+			const delta = anchorOffset - this._lastAnchorTop;
+			if (delta !== 0 && this._scroller) {
+				this._scroller.scrollTop += delta;
+				this._lastAnchorTop += delta;
+			}
+			this._schedule();
+		}
+	}
+
+	_syncBoundTransforms() {
+		for (const slot of this._pool) {
+			if (slot.bound == null) {
+				slot.off = 0;
+				continue;
+			}
+			const want = this._offset(slot.bound);
+			if (want !== slot.off) {
+				slot.el.style.transform = `translate3d(0, ${want}px, 0)`;
+				slot.off = want;
+			}
+		}
+	}
+
+	// debug/log hook: fires on the testbed console when the calculated
+	// scrollable height changes (prod pages have no subscriber: no-op)
+	_appliedTotal = -1;
+	_logTotalChange(total: number, source: 'invalidate' | 'pump') {
+		if (total === this._appliedTotal) {
+			return;
+		}
+		const prev = this._appliedTotal;
+		this._appliedTotal = total;
+		(
+			document.defaultView as unknown as {
+				__recTotal?: (total: number, prev: number, source: string) => void;
+			}
+		).__recTotal?.(total, prev, source);
+	}
+	_anchorIndex = 0;
+	_lastAnchorTop = 0;
+	// cached box of the canvas overlay layer (matches the scroller viewport)
+	_boxTop = -1;
+	_boxLeft = -1;
+	_boxWidth = -1;
+	_boxHeight = -1;
+	// last scroll offset the canvas transform was written for
+	_appliedScroll = NaN;
+
+	_invalidate() {
+		// running average of REAL measurements: the estimate for rows we
+		// have never seen (recomputed on every pass, so it tracks the data
+		// instead of a hardcoded default; stays at DEFAULT_HEIGHT until the
+		// first measurement arrives)
+		let sum = 0,
+			count = 0;
+		for (let i = 0; i < this._items.length; i++) {
+			if (this._measured[i]) {
+				sum += this._heights[i] ?? DEFAULT_HEIGHT;
+				count++;
+			}
+		}
+		if (count > 0) {
+			this._avgRowHeight = sum / count;
+		}
+		this._prefix.length = 0;
+		this._prefix.push(0);
+		for (let i = 0; i < this._items.length; i++) {
+			this._prefix.push(
+				(this._prefix[i] ?? 0) +
+					(this._measured[i]
+						? (this._heights[i] ?? DEFAULT_HEIGHT)
+						: this._avgRowHeight),
+			);
+		}
+		if (this._host) {
+			this._host.style.height = `${this._prefix[this._items.length] ?? 0}px`;
+		}
+	}
+
+	_offset(index: number) {
+		return this._prefix[index] ?? 0;
+	}
+
+	_firstIndex(offset: number) {
+		const n = this._items.length;
+		let low = 0;
+		let hi = Math.max(0, n - 1);
+		let result = 0;
+		while (low <= hi) {
+			const mid = Math.floor((low + hi) / 2);
+			if ((this._prefix[mid] ?? 0) <= offset) {
+				result = mid;
+				low = mid + 1;
+			} else {
+				hi = mid - 1;
+			}
+		}
+		return result;
+	}
+
+	_schedule() {
+		if (this._rafId != null) {
+			return;
+		}
+		this._rafId = requestAnimationFrame(() => {
+			this._rafId = null;
+			this._pump();
+		});
+	}
+
+	_pump() {
+		this.pumpCount = (this.pumpCount ?? 0) + 1;
+		const n = this._items.length;
+		if (this._prefix.length !== n + 1) {
+			this._invalidate();
+		}
+		const scrollTop = this._scroller?.scrollTop ?? 0;
+		const viewport = this._scroller?.clientHeight ?? 300;
+
+		if (
+			this._syncCanvasBox() ||
+			this._scroller?.clientHeight !== this._measuredViewport
+		) {
+			this._measuredViewport = this._scroller?.clientHeight ?? 0;
+			this._measureViewport();
+		}
+
+		// MOVE: the one per-frame write for the whole row layer. The scroller
+		// carries only the spacer (native scroll), the canvas counter-scrolls
+		// it; rows inside are never moved per scroll frame.
+		if (this._canvas && this._appliedScroll !== scrollTop) {
+			this._appliedScroll = scrollTop;
+			this._canvas.style.transform = `translate3d(0, ${-scrollTop}px, 0)`;
+		}
+
+		// cushion the window ABOVE the scroll position (the rows that enter
+		// when scrolling up are pre-bound and pre-measured, no white gap)
+		const first = Math.max(
+			0,
+			this._firstIndex(Math.max(0, scrollTop)) - OVERSCAN_ROWS,
+		);
+		const anchorTop = this._offset(this._anchorIndex ?? first);
+		this._anchorIndex = this._firstIndex(Math.max(0, scrollTop));
+		this._lastAnchorTop = anchorTop;
+
+		const total = this._prefix[n] ?? 0;
+		this._logTotalChange(total, 'pump');
+		if (this._host && this._host.style.height !== `${total}px`) {
+			this._host.style.height = `${total}px`;
+		}
+		if (this._canvas && this._canvas.style.height !== `${total}px`) {
+			this._canvas.style.height = `${total}px`;
+		}
+
+		// span covers viewport + cushions on both sides; it is derived from
+		// the viewport span, never from pool.length. The per-slot budget is
+		// the SMALLEST row height actually measured (clamped to the
+		// worst-case floor), so the pool stays small when real rows are taller
+		// than the default estimate. Expanding a row grows heights, never
+		// shrinks the measured minimum, so expansion never needs more slots.
+		const span = Math.min(
+			n - first,
+			Math.ceil(viewport / this._rowBudget()) + OVERSCAN_ROWS * 2,
+		);
+		const last = first + span - 1;
+		this._ensurePool(span);
+
+		this._debugPump();
+		// stable assignment: keep every slot bound to its index while the
+		// index stays covered; only entering indexes re-bind (DOM reuse)
+		const covering = new Set<number>();
+
+		for (let index = first; index <= last; index++) {
+			covering.add(index);
+		}
+		const free: Slot[] = [];
+		const stillBound = new Set<number>();
+		for (const slot of this._pool) {
+			if (slot.bound != null && covering.has(slot.bound)) {
+				stillBound.add(slot.bound);
+			} else {
+				// unbound-but-pooled slots are recyclable too (they are the
+				// hidden pool from previous windows)
+				free.push(slot);
+			}
+		}
+		const missing: number[] = [];
+		for (let index = first; index <= last; index++) {
+			if (!stillBound.has(index)) {
+				missing.push(index);
+			}
+		}
+		for (const index of missing) {
+			const slot = free.pop() ?? this._allocateSlot();
+			this._bind(slot, index);
+		}
+		// focus restoration: a focused element inside a slot that is about
+		// to leave the window would be dropped to <body> by the hide below
+		let focusRecovery: HTMLElement | null = null;
+		const active = document.activeElement as Node | null;
+		const dbg = {
+			contains: 0,
+			recovery: null as string | null,
+			slotBound: null as number | null,
+		};
+		for (const slot of this._pool) {
+			const idle = slot.bound == null || !covering.has(slot.bound);
+			if (idle && slot.el.style.visibility !== 'hidden') {
+				if (active != null && slot.el.contains(active)) {
+					const focusable = active as HTMLElement;
+					focusRecovery =
+						this._nearestFocusable(slot.bound, focusable) ??
+						this._nearestFocusable(this._firstVisibleIndex(), focusable);
+				}
+				slot.el.style.visibility = 'hidden';
+				slot.bound = undefined;
+				slot.off = 0;
+				slot.el.style.transform = '';
+			}
+		}
+		if (focusRecovery) {
+			focusRecovery.focus();
+		}
+
+		// item-reference refresh: a data swap with an unchanged LENGTH
+		// leaves the covering set identical, so stable-binding would keep
+		// every slot rendering the OLD dataset's item forever (the screen
+		// freezes on stale content). A still-bound slot whose item is not
+		// the current object re-binds: content updates, position stays.
+		for (const slot of this._pool) {
+			if (slot.bound == null) {
+				continue;
+			}
+			const item = this._items[slot.bound];
+			if (item !== undefined && slot.boundItem !== item) {
+				this._bind(slot, slot.bound);
+			}
+		}
+
+		// keep the canvas children in DATA-INDEX order: tab navigation and
+		// screen readers follow DOM order. One pass per pump: append the
+		// bound slots in ascending index order (moves are layout-free for
+		// absolutely-positioned transform rows).
+		for (const slot of this._pool
+			.filter((s) => s.bound != null && s.el.style.visibility !== 'hidden')
+			.sort((a, b) => (a.bound ?? 0) - (b.bound ?? 0))) {
+			this._canvas?.appendChild(slot.el);
+		}
+	}
+
+	// the nearest visible slot with an equivalent focusable (same tag +
+	// classes as the previously focused element), at or after the given
+	// index; used to restore focus when a focused row leaves the window
+	_nearestFocusable(index: number | undefined | null, previous: HTMLElement) {
+		if (index == null) {
+			return null;
+		}
+		const selector = 'input,button,select,textarea,a[href],[tabindex]';
+		const classes = Array.from(previous.classList);
+		let best: HTMLElement | null = null;
+		let bestDist = Number.POSITIVE_INFINITY;
+		for (const slot of this._pool) {
+			if (
+				slot.bound == null ||
+				slot.el.style.visibility === 'hidden' ||
+				slot.bound === index
+			) {
+				continue;
+			}
+			const candidates = Array.from(
+				slot.el.querySelectorAll<HTMLElement>(selector),
+			);
+			const match =
+				candidates.find(
+					(c) =>
+						c.tagName === previous.tagName &&
+						classes.every((cl) => c.classList.contains(cl)),
+				) ??
+				(classes.length === 0 && candidates[0]) ??
+				null;
+			if (!match) {
+				continue;
+			}
+			const dist = Math.abs(slot.bound - index);
+			if (dist < bestDist) {
+				best = match;
+				bestDist = dist;
+			}
+		}
+		return best;
+	}
+
+	_firstVisibleIndex() {
+		const sc = this._scroller?.scrollTop ?? 0;
+		return this._firstIndex(sc);
+	}
+
+	_measuredViewport = 0;
+	// smallest row height actually measured so far; the per-slot budget for
+	// the covering span, clamped to the worst-case floor. Monotone
+	// non-increasing: only smaller measurements lower it, so row expansions
+	// (which grow heights) never require a larger pool.
+	_minMeasured = Number.POSITIVE_INFINITY;
+	// running mean of measured row heights: the estimate for unknown rows
+	_avgRowHeight = DEFAULT_HEIGHT;
+
+	_rowBudget() {
+		return Math.max(MIN_ROW_HEIGHT, this._minMeasured);
+	}
+
+	// 1 per index whose height is a REAL measurement (RO or slot.h seed at
+	// first bind); never-overwrite protection: a known-height index (e.g. an
+	// expanded row that leaves the window) cannot regress to a slot's
+	// previous content size on rebind.
+	_measured = new Uint8Array(0); // 1 = the index has a real measured height
+
+	_allocateSlot(): Slot {
+		const el = document.createElement(
+			'cosmoz-grouped-list-row',
+		) as GroupedListRowHost;
+		el.style.position = 'absolute';
+		el.style.left = '0';
+		el.style.right = '0';
+		el.style.top = '0';
+		el.style.visibility = 'hidden';
+		this._canvas?.appendChild(el);
+		const slot = { el, height: DEFAULT_HEIGHT, bound: undefined };
+		this._pool.push(slot);
+		if (this._ro) {
+			this._ro.observe(el);
+		}
+		return slot;
+	}
+
+	_bind(slot: Slot, index: number) {
+		const item = this._items[index];
+		if (slot.bound === index && slot.boundItem === item) {
+			return;
+		}
+		// mark FIRST-BIND indexes as measured: the RO is silent for
+		// same-size rebinds and a value-equal first measurement would
+		// otherwise leave the index "unmeasured" forever, letting the
+		// running-average estimate override a row's known real height
+		// (rows spaced by the average instead of their real heights).
+		if (slot.h != null && !this._measured[index]) {
+			this._measured[index] = 1;
+			if (this._heights[index] !== slot.h) {
+				this._heights[index] = slot.h;
+			}
+			this._invalidate();
+			this._syncBoundTransforms();
+		}
+		slot.bound = index;
+		slot.boundItem = item;
+		slot.el.index = index;
+		slot.el.item = item as Item;
+		// stable wrapper: identity per slot so the row element is never
+		// marked dirty by re-bind cycles; it reads the live renderer
+		slot.wrapper = ((item: Item) =>
+			this._renderRow(
+				item,
+				slot.bound as number,
+			)) as GroupedListRowHost['renderFn'];
+		slot.el.renderFn = slot.wrapper;
+		// transform-fixed at the data offset: written ONLY here (bind time)
+		// or by the height-change sync; the canvas layer move per scroll
+		// frame happens on the canvas alone
+		slot.el.style.transform = `translate3d(0, ${this._offset(index)}px, 0)`;
+		slot.off = this._offset(index);
+		slot.el.style.visibility = 'visible';
+		if (this._ro && !this._observing.has(slot.el)) {
+			this._observing.add(slot.el);
+			this._ro.observe(slot.el);
+		}
+	}
+
+	disconnected() {
+		if (this._rafId != null) {
+			cancelAnimationFrame(this._rafId);
+			this._rafId = null;
+		}
+		this._ro?.disconnect();
+		this._scroller?.removeEventListener('scroll', this._onScroll);
+		this._clip?.removeEventListener('wheel', this._onWheel);
+		this._clip?.removeEventListener('keydown', this._onKeydown);
+		this._clip?.removeEventListener('pointerdown', this._onPointerDown);
+		this._clip?.removeEventListener('pointermove', this._onPointerMove);
+		this._clip?.removeEventListener('pointerup', this._onPointerEnd);
+		this._clip?.removeEventListener('pointercancel', this._onPointerEnd);
+		this._endPointerDrag();
+	}
+
+	reconnected() {
+		this._ro?.disconnect();
+		this._ro = new ResizeObserver((entries) => this._onResize(entries));
+		for (const slot of this._pool) {
+			if (slot.bound != null) {
+				this._ro.observe(slot.el);
+			}
+		}
+		this._resolveScroller();
+		this._attachCanvas();
+		this._schedule();
+	}
+}
+
+export const pooledRows = directive(PooledRecycler);
