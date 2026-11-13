@@ -257,6 +257,13 @@ window.__testbed = {
 	},
 };
 
+// Calculated-scrollable-height log: the pooled recycler fires
+// window.__recTotal(total, prev, source) whenever the height it applies
+// changes; log it for the bundle testbed.
+window.__recTotal = (total, prev, source) =>
+	console.info(
+		`[scrollHeight] ${total}px (was ${prev < 0 ? 'unset' : prev + 'px'}) — ${source}`,
+	);
 // --- data + header ---
 
 i18next.init({ lng: 'en', resources: {} }).then(() => {
