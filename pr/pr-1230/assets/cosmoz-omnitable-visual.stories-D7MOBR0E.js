@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{$t as t,en as n}from"./iframe-Dr0tqKIh.js";import{J as r}from"./dist-CLXCsQCR.js";import{t as i}from"./cosmoz-omnitable-DYtrQONc.js";import{n as a,t as o}from"./data-Bh8FuB_z.js";var s,c,l,u;function d(){return(d=e((()=>{n(),r(),i(),a(),s={title:`Visual/CosmozOmnitable`,component:`cosmoz-omnitable`,parameters:{docs:{disable:!0}}},c=o.slice(0,8),l=()=>t`
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{$t as t,en as n}from"./iframe-Dz5l_sx0.js";import{J as r}from"./dist-4U30SCEx.js";import{t as i}from"./cosmoz-omnitable-B0oCmIw1.js";import{n as a,t as o}from"./data-Bh8FuB_z.js";var s,c,l,u;function d(){return(d=e((()=>{n(),r(),i(),a(),s={title:`Visual/CosmozOmnitable`,component:`cosmoz-omnitable`,parameters:{docs:{disable:!0}}},c=o.slice(0,8),l=()=>t`
     <cosmoz-omnitable .data=${c} style="width: 600px; height: 480px">
         <cosmoz-omnitable-column
             name="company"
