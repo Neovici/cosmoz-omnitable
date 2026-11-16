@@ -737,19 +737,19 @@ class PooledRecycler extends BaseAsyncDirective {
 				missing.push(index);
 			}
 		}
+		// rebound slots this pump: entering indexes re-bound to the freed
+		// pool slots. The repair moves only these (k moves); every
+		// still-bound slot keeps its canvas position.
+		const rebounds: Slot[] = [];
 		for (const index of missing) {
 			const slot = free.pop() ?? this._allocateSlot();
 			this._bind(slot, index);
+			rebounds.push(slot);
 		}
 		// focus restoration: a focused element inside a slot that is about
 		// to leave the window would be dropped to <body> by the hide below
 		let focusRecovery: HTMLElement | null = null;
 		const active = document.activeElement as Node | null;
-		const dbg = {
-			contains: 0,
-			recovery: null as string | null,
-			slotBound: null as number | null,
-		};
 		for (const slot of this._pool) {
 			const idle = slot.bound == null || !covering.has(slot.bound);
 			if (idle && slot.el.style.visibility !== 'hidden') {
@@ -798,7 +798,7 @@ class PooledRecycler extends BaseAsyncDirective {
 					) - 1,
 					this._items.length - 1,
 				);
-		if (true) {
+		{
 			const range = { first: firstVis, last: Math.max(lastVis, firstVis) };
 			const prev = this._visibilityRange;
 			if (
@@ -810,30 +810,72 @@ class PooledRecycler extends BaseAsyncDirective {
 				this._host?.dispatchEvent(new VisibilityChangedEvent(range));
 			}
 		}
+		this._repairDomOrder(rebounds, stillBound);
+	}
 
-		// keep the canvas children in DATA-INDEX order: tab navigation and
-		// screen readers follow DOM order. Insertion-repair: walk the bound
-		// slots in ascending index order and move only the out-of-place
-		// elements (one insertBefore each; no moves when already ordered).
-		{
-			const bound = this._pool
-				.filter((s) => s.bound != null && s.el.style.visibility !== 'hidden')
-				.sort((x, y) => (x.bound ?? 0) - (y.bound ?? 0));
-			let prevEl: Element | null = null;
-			for (const slot of bound) {
-				const el = slot.el;
-				if (prevEl === null) {
-					if (this._canvas?.firstElementChild !== el) {
-						this._canvas?.insertBefore(el, this._canvas?.firstElementChild);
-					}
-					prevEl = el;
-					continue;
+	// keep the canvas children in DATA-INDEX order: tab navigation and
+	// screen readers follow DOM order. A scroll slide is order-preserving
+	// up to rotation: the rebound block sits at ONE window edge, so move
+	// exactly the rebound slots to that edge (k moves). Down-slide: head
+	// slots rebind to tail indexes → move them to the canvas tail.
+	// Up-slide: tail slots rebind to head indexes → move them to the
+	// canvas head. Only mixed (non-rotational) changes fall back to the
+	// full resync walk. Still-bound slots are never relocated: their DOM
+	// order is already settled by previous pumps.
+	_repairDomOrder(rebounds: Slot[], stillBound: Set<number>) {
+		if (!this._canvas || rebounds.length === 0) {
+			return;
+		}
+		let maxStill = -Infinity,
+			minStill = Infinity;
+		for (const bound of stillBound) {
+			if (bound > maxStill) {
+				maxStill = bound;
+			}
+			if (bound < minStill) {
+				minStill = bound;
+			}
+		}
+		const allTail = rebounds.every(
+			(slot) => (slot.bound ?? maxStill) > maxStill,
+		);
+		const allHead =
+			stillBound.size > 0 &&
+			rebounds.every((slot) => (slot.bound ?? minStill) < minStill);
+		if (allTail) {
+			for (const slot of rebounds) {
+				if (this._canvas.lastElementChild !== slot.el) {
+					this._canvas.appendChild(slot.el);
 				}
-				if (prevEl.nextElementSibling !== el) {
-					this._canvas?.insertBefore(el, prevEl.nextElementSibling);
+			}
+			return;
+		}
+		if (allHead) {
+			for (let i = rebounds.length - 1; i >= 0; i--) {
+				const el = rebounds[i].el;
+				if (this._canvas.firstElementChild !== el) {
+					this._canvas.insertBefore(el, this._canvas.firstElementChild);
+				}
+			}
+			return;
+		}
+		const bound = this._pool
+			.filter((s) => s.bound != null && s.el.style.visibility !== 'hidden')
+			.sort((x, y) => (x.bound ?? 0) - (y.bound ?? 0));
+		let prevEl: Element | null = null;
+		for (const slot of bound) {
+			const el = slot.el;
+			if (prevEl === null) {
+				if (this._canvas.firstElementChild !== el) {
+					this._canvas.insertBefore(el, this._canvas.firstElementChild);
 				}
 				prevEl = el;
+				continue;
 			}
+			if (prevEl.nextElementSibling !== el) {
+				this._canvas.insertBefore(el, prevEl.nextElementSibling);
+			}
+			prevEl = el;
 		}
 	}
 

@@ -257,4 +257,172 @@ suite('variable-height positions', function () {
 		await settle();
 		assertPositions('roundtrip');
 	});
+
+	test('down-slide keeps still-bound slots at their canvas position', async () => {
+		// Rebinding entering indexes must only relocate the REBOUND slots.
+		// The move-then-fill slide frees the canvas-head slots and rebinds
+		// them to tail indexes; the repair must move exactly those k slots
+		// to the tail — not reshuffle the whole pool (that was the
+		// down-direction jank: ~45 DOM moves per pump while an up-slide
+		// needed k).
+		const rec = window.__rec,
+			sc = rec._scroller,
+			canvas = rec._canvas;
+		await settle();
+		// instrument the actual DOM moves of the repair
+		const movedEls = new Set(),
+			origInsert = canvas.insertBefore.bind(canvas),
+			origAppend = canvas.appendChild.bind(canvas);
+		canvas.insertBefore = (node, ref) => {
+			movedEls.add(node);
+			return origInsert(node, ref);
+		};
+		canvas.appendChild = function (node) {
+			movedEls.add(node);
+			return origAppend(node);
+		};
+		const before = new Map(
+			rec._pool
+				.filter((slot) => slot.bound != null)
+				.map((slot) => [slot, slot.bound]),
+		);
+		assert.isAtLeast(before.size, 5, 'initial window has bound slots');
+		sc.scrollTop = 900;
+		await settle();
+		const violated = [];
+		for (const [slot, was] of before) {
+			if (slot.bound === was && movedEls.has(slot.el)) {
+				violated.push(was);
+			}
+		}
+		assert.isEmpty(
+			violated,
+			`still-bound slots relocated on a down-slide: indexes ${violated.slice(0, 8)}`,
+		);
+		// tab-order invariant: canvas children stay in ascending index order
+		const bounds = Array.from(canvas.children)
+			.map((el) => rec._pool.find((x) => x.el === el)?.bound ?? null)
+			.filter((b) => b != null);
+		assert.deepEqual(
+			bounds,
+			[...bounds].sort((a, b) => a - b),
+			'canvas child order must stay index-ascending',
+		);
+	});
+
+	test('up-slide keeps still-bound slots at their canvas position', async () => {
+		const rec = window.__rec,
+			sc = rec._scroller,
+			canvas = rec._canvas;
+		sc.scrollTop = 900;
+		await settle();
+		const movedEls = new Set(),
+			origInsert = canvas.insertBefore.bind(canvas),
+			origAppend = canvas.appendChild.bind(canvas);
+		canvas.insertBefore = (node, ref) => {
+			movedEls.add(node);
+			return origInsert(node, ref);
+		};
+		canvas.appendChild = function (node) {
+			movedEls.add(node);
+			return origAppend(node);
+		};
+		const before = new Map(
+			rec._pool
+				.filter((slot) => slot.bound != null)
+				.map((slot) => [slot, slot.bound]),
+		);
+		assert.isAtLeast(before.size, 5, 'mid-table window has bound slots');
+		sc.scrollTop = 0;
+		await settle();
+		// the up-slide frees the canvas-tail slots and rebinds them to head
+		// indexes; the repair must move exactly those k slots to the head
+		const violated = [];
+		for (const [slot, was] of before) {
+			if (slot.bound === was && movedEls.has(slot.el)) {
+				violated.push(was);
+			}
+		}
+		assert.isEmpty(
+			violated,
+			`still-bound slots relocated on an up-slide: indexes ${violated.slice(0, 8)}`,
+		);
+		const bounds = Array.from(canvas.children)
+			.map((el) => rec._pool.find((x) => x.el === el)?.bound ?? null)
+			.filter((b) => b != null);
+		assert.deepEqual(
+			bounds,
+			[...bounds].sort((a, b) => a - b),
+			'canvas child order must stay index-ascending',
+		);
+	});
+
+	test('far jump resyncs through the fallback walk in a single pass', async () => {
+		// a jump past the window overlaps nothing: every bound slot is a
+		// rebound (still-bound set empty) → appendChild-ascending resync.
+		// Each element must be moved at most once.
+		const rec = window.__rec,
+			sc = rec._scroller,
+			canvas = rec._canvas;
+		await settle();
+		const counts = new Map(),
+			origInsert = canvas.insertBefore.bind(canvas),
+			origAppend = canvas.appendChild.bind(canvas);
+		canvas.insertBefore = (node, ref) => {
+			counts.set(node, (counts.get(node) ?? 0) + 1);
+			return origInsert(node, ref);
+		};
+		canvas.appendChild = function (node) {
+			counts.set(node, (counts.get(node) ?? 0) + 1);
+			return origAppend(node);
+		};
+		sc.scrollTop = 3800;
+		await settle();
+		const over = [...counts].filter(([, c]) => c > 1);
+		assert.isEmpty(
+			over,
+			'repair moved some elements more than once during a jump',
+		);
+		assertPositions('far jump');
+		const bounds = Array.from(canvas.children)
+			.map((el) => rec._pool.find((x) => x.el === el)?.bound ?? null)
+			.filter((b) => b != null);
+		assert.deepEqual(
+			bounds,
+			[...bounds].sort((a, b) => a - b),
+			'canvas child order must stay index-ascending',
+		);
+	});
+
+	test('mixed window change falls back to the full resync walk', async () => {
+		// the mixed case (rebound bounds straddling the still-bound range —
+		// viewport resize, data swap) has no edge to slide to: the fallback
+		// must restore full ascending order regardless of the current one.
+		const rec = window.__rec,
+			canvas = rec._canvas;
+		await settle();
+		const slots = rec._pool.filter((slot) => slot.bound != null);
+		const sorted = [...slots].sort((a, b) => a.bound - b.bound);
+		const min = sorted[0].bound,
+			max = sorted[sorted.length - 1].bound;
+		// worst case: fully reversed canvas order
+		for (const el of [...canvas.children].reverse()) {
+			canvas.appendChild(el);
+		}
+		// straddling rebounds: one bound above the still range, one below
+		const over = sorted[0],
+			under = sorted[sorted.length - 1];
+		over.bound = max + 1;
+		under.bound = min - 1;
+		const still = sorted.slice(1, -1).map((slot) => slot.bound);
+		rec._repairDomOrder([over, under], new Set(still));
+		const bounds = Array.from(canvas.children)
+			.map((el) => rec._pool.find((x) => x.el === el)?.bound ?? null)
+			.filter((b) => b != null);
+		assert.deepEqual(
+			bounds,
+			[...bounds].sort((a, b) => a - b),
+			'fallback walk must restore ascending index order',
+		);
+	});
 });
