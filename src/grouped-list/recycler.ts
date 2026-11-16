@@ -206,8 +206,18 @@ class PooledRecycler extends BaseAsyncDirective {
 	// children at data offsets is precisely the model this replaces.
 	_attachCanvas() {
 		const clip = this._clip;
+		if (!clip) {
+			return;
+		}
 		const scroller = this._scroller;
-		if (!clip || !scroller) {
+		if (!scroller) {
+			// inline (no-scroller) mode: the clip is the host's in-flow box
+			// (relative/100%/content-height, sized by _syncCanvasBox) and the
+			// page scrolls the host natively — no layer move, no input
+			// forwarding (the handlers would preventDefault the page scroll).
+			if (this._host && clip.parentElement !== this._host) {
+				this._host.appendChild(clip);
+			}
 			return;
 		}
 		const container = scroller.parentElement;
