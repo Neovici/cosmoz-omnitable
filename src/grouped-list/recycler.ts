@@ -789,13 +789,28 @@ class PooledRecycler extends BaseAsyncDirective {
 		}
 
 		// keep the canvas children in DATA-INDEX order: tab navigation and
-		// screen readers follow DOM order. One pass per pump: append the
-		// bound slots in ascending index order (moves are layout-free for
-		// absolutely-positioned transform rows).
-		for (const slot of this._pool
-			.filter((s) => s.bound != null && s.el.style.visibility !== 'hidden')
-			.sort((a, b) => (a.bound ?? 0) - (b.bound ?? 0))) {
-			this._canvas?.appendChild(slot.el);
+		// screen readers follow DOM order. Insertion-repair: walk the bound
+		// slots in ascending index order and move only the out-of-place
+		// elements (one insertBefore each; no moves when already ordered).
+		{
+			const bound = this._pool
+				.filter((s) => s.bound != null && s.el.style.visibility !== 'hidden')
+				.sort((x, y) => (x.bound ?? 0) - (y.bound ?? 0));
+			let prevEl: Element | null = null;
+			for (const slot of bound) {
+				const el = slot.el;
+				if (prevEl === null) {
+					if (this._canvas?.firstElementChild !== el) {
+						this._canvas?.insertBefore(el, this._canvas?.firstElementChild);
+					}
+					prevEl = el;
+					continue;
+				}
+				if (prevEl.nextElementSibling !== el) {
+					this._canvas?.insertBefore(el, prevEl.nextElementSibling);
+				}
+				prevEl = el;
+			}
 		}
 	}
 
