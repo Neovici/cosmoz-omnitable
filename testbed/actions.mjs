@@ -130,6 +130,13 @@ export const benchMeasure = async ({
 		}
 	})();
 
+	const rafs = (n) =>
+		new Promise((r) => {
+			let i = 0;
+			const tick = () => (i++ >= n ? r() : requestAnimationFrame(tick));
+			requestAnimationFrame(tick);
+		});
+
 	const measure = async (action) => {
 		await quiet(2); // baseline silence inside armed observers
 		const before = stamp();
@@ -164,7 +171,7 @@ export const benchMeasure = async ({
 				bubbles: true,
 				composed: true,
 				detail: { newWidth: w, column: nub.column },
-			})
+			}),
 		);
 	};
 
@@ -189,7 +196,7 @@ export const benchMeasure = async ({
 		case 'widen': {
 			const nub = sr.querySelector('cosmoz-omnitable-resize-nub');
 			const w0 = Math.round(
-				nub.previousElementSibling.getBoundingClientRect().width
+				nub.previousElementSibling.getBoundingClientRect().width,
 			);
 			sample = await measure(async () => fireResize(w0 + widenDelta));
 			sample.w0 = w0;
@@ -208,6 +215,29 @@ export const benchMeasure = async ({
 				cb = ui.shadowRoot.querySelector('.item input.checkbox');
 				cb.click();
 			});
+			break;
+		}
+		case 'stress': {
+			// data update every 500ms (full regen with a fresh seed) while
+			// the table is scrolled continuously; measures frame time
+			// under mutation churn, and restores the original data after.
+			let flips = 0,
+				interval = null;
+			sample = await measure(async () => {
+				const baseSeed = t.cfg.seed;
+				interval = setInterval(() => {
+					flips++;
+					t.regen(baseSeed + flips);
+				}, 500);
+				const delta = Math.round(sc.scrollHeight / t.info().dataRows) * 4;
+				for (let k = 0; k < 12; k++) {
+					sc.scrollTop += delta / 2;
+					await rafs(2);
+				}
+				clearInterval(interval);
+				interval = null;
+			});
+			sample.flips = flips;
 			break;
 		}
 		default:

@@ -136,6 +136,7 @@ export default css`
 		padding: 0 3px;
 		white-space: nowrap;
 		text-overflow: ellipsis;
+		contain: layout paint;
 	}
 	cosmoz-omnitable-header-row > div[hidden] {
 		display: none !important;
@@ -194,6 +195,7 @@ export default css`
 		text-overflow: ellipsis;
 		box-sizing: border-box;
 		align-self: center;
+		contain: layout paint;
 	}
 
 	cosmoz-omnitable-item-row > div[hidden] {

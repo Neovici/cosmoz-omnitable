@@ -34,7 +34,14 @@ interface DirectRouteHost {
 setupIgnoreWindowResizeObserverLoopErrors(setup, teardown);
 
 const rowsOf = (outer: HTMLElement) =>
-	Array.from(outer.querySelectorAll<RowEl>('cosmoz-grouped-list-row'));
+	// The recycler attaches its viewport clip OUTSIDE the scrolled subtree
+	// (a sibling of the scroller, by design: an in-scroller layer would
+	// double-count the scroll offset), so row elements may live above the
+	// fixture's queried node. Query the connected rows in the document;
+	// fixtures run sequentially, so exactly one live pool exists.
+	Array.from(
+		document.querySelectorAll<RowEl>('cosmoz-grouped-list-row'),
+	).filter((row) => row.isConnected);
 
 const rowOf = (outer: HTMLElement, item: unknown) =>
 	rowsOf(outer).find((row) => row.item === item);
@@ -51,7 +58,7 @@ const directRoute = async (count: number): Promise<DirectRouteHost> => {
 		})),
 		buildRow = sinonSpy(
 			(item: RowItem) =>
-				html`<div class="content" style="height:40px">${item.label}</div>`
+				html`<div class="content" style="height:40px">${item.label}</div>`,
 		),
 		outer = await fixture<HTMLElement>(html`<div></div>`),
 		draw = () =>
@@ -61,7 +68,7 @@ const directRoute = async (count: number): Promise<DirectRouteHost> => {
 						${renderCosmozGroupedList({ renderRow: buildRow, flatData: rows })}
 					</div>
 				</div>`,
-				outer
+				outer,
 			);
 
 	draw();
@@ -87,7 +94,7 @@ suite('cosmoz-grouped-list-row rendering contract', () => {
 					.index=${3}
 					.renderFn=${(item: RowItem, index: number) =>
 						html`<div class="content">${item.label + index}</div>`}
-				></cosmoz-grouped-list-row>`
+				></cosmoz-grouped-list-row>`,
 			);
 			await nextFrame();
 			assert.isNull(el.shadowRoot, 'no shadow root per contract');
@@ -97,13 +104,13 @@ suite('cosmoz-grouped-list-row rendering contract', () => {
 
 		test('renders a recycled row once with all its new bindings', async () => {
 			const el = await fixture<RowEl>(
-				html`<cosmoz-grouped-list-row></cosmoz-grouped-list-row>`
+				html`<cosmoz-grouped-list-row></cosmoz-grouped-list-row>`,
 			);
 			el.item = { id: 0, label: 'old' };
 			el.index = 0;
 			const builder = sinonSpy(
 				(item: RowItem, index: number) =>
-					html`<div class="content">${item.label} ${index}</div>`
+					html`<div class="content">${item.label} ${index}</div>`,
 			);
 			el.renderFn = builder;
 			await nextFrame();
@@ -133,7 +140,7 @@ suite('cosmoz-grouped-list-row rendering contract', () => {
 			assert.equal(
 				builderCallsFor(direct, rows[0]),
 				0,
-				'row 0 builder not called during scroll'
+				'row 0 builder not called during scroll',
 			);
 		});
 
@@ -146,7 +153,7 @@ suite('cosmoz-grouped-list-row rendering contract', () => {
 			await nextFrame();
 			assert.isNotNull(
 				rowOf(direct.outer, rows[0]),
-				'precondition: row 0 mounted'
+				'precondition: row 0 mounted',
 			);
 
 			rows[0].label = 'refreshed';
@@ -157,12 +164,12 @@ suite('cosmoz-grouped-list-row rendering contract', () => {
 			assert.equal(
 				builderCallsFor(direct, rows[0]),
 				0,
-				'in-place item mutation is not committed: identical bindings rebuild nothing'
+				'in-place item mutation is not committed: identical bindings rebuild nothing',
 			);
 			assert.include(
 				rowOf(direct.outer, rows[0])!.textContent!,
 				'row 0',
-				'the row keeps its last committed DOM'
+				'the row keeps its last committed DOM',
 			);
 		});
 
@@ -175,7 +182,7 @@ suite('cosmoz-grouped-list-row rendering contract', () => {
 			await nextFrame();
 			assert.isNotNull(
 				rowOf(direct.outer, rows[0]),
-				'precondition: row 0 mounted'
+				'precondition: row 0 mounted',
 			);
 
 			rows[0] = { id: rows[0].id, label: 'refreshed' };
@@ -188,12 +195,12 @@ suite('cosmoz-grouped-list-row rendering contract', () => {
 			assert.include(
 				row0!.textContent!,
 				'refreshed',
-				'changed item binding renders the new content'
+				'changed item binding renders the new content',
 			);
 			assert.equal(
 				builderCallsFor(direct, rows[0]),
 				1,
-				'replaced item renders its row exactly once'
+				'replaced item renders its row exactly once',
 			);
 		});
 
@@ -210,14 +217,14 @@ suite('cosmoz-grouped-list-row rendering contract', () => {
 								${renderCosmozGroupedList({ renderRow, flatData: rows })}
 							</div>
 						</div>`,
-						outer
+						outer,
 					);
 
 			draw(
 				(item, index) =>
 					html`<div class="content" style="height:40px">
 						A ${item.label} ${index}
-					</div>`
+					</div>`,
 			);
 			await waitUntil(() => outer.textContent!.includes('A row 0'));
 			await nextFrame();
@@ -228,14 +235,14 @@ suite('cosmoz-grouped-list-row rendering contract', () => {
 				(item, index) =>
 					html`<div class="content" style="height:40px">
 						B ${item.label} ${index}
-					</div>`
+					</div>`,
 			);
 			await nextFrame();
 			await nextFrame();
 			assert.include(
 				outer.textContent!,
 				'B row 0',
-				'rows re-render with the new content'
+				'rows re-render with the new content',
 			);
 			assert.equal(rowsOf(outer).length, 20, 'row count unchanged');
 		});
@@ -257,7 +264,7 @@ suite('cosmoz-grouped-list-row rendering contract', () => {
 								</div>`}
 							.renderGroup=${() => html`<div style="height:60px">Group</div>`}
 						></cosmoz-grouped-list>
-					</div>`
+					</div>`,
 				),
 				list = outer.querySelector<GroupedListEl>('cosmoz-grouped-list')!,
 				visible = (item: unknown) =>
@@ -272,6 +279,11 @@ suite('cosmoz-grouped-list-row rendering contract', () => {
 					});
 
 			await waitUntil(() => rowsOf(outer).length > 0);
+			// settle the pumped host height into layout before scrolling: a
+			// scrollTop set while the scroll span is not grown yet clamps to
+			// the current max and is never re-applied by the browser
+			await nextFrame();
+			await nextFrame();
 			outer.scrollTop = 12000;
 			await waitUntil(() => visible(rows[300]));
 			list.toggleCollapse(rows[300]);
@@ -298,18 +310,18 @@ suite('cosmoz-grouped-list-row rendering contract', () => {
 							.renderItem=${(item: RowItem) =>
 								html`<div style="height:40px">${item.label}</div>`}
 						></cosmoz-grouped-list>
-					</div>`
+					</div>`,
 				),
 				list = outer.querySelector<GroupedListEl>('cosmoz-grouped-list')!;
 
 			await waitUntil(() =>
-				rowsOf(outer).some((row) => row.textContent!.includes('row 0'))
+				rowsOf(outer).some((row) => row.textContent!.includes('row 0')),
 			);
 
 			rows[0] = { id: 0, label: 'refreshed' };
 			list.data = [...rows];
 			await waitUntil(() =>
-				rowsOf(outer).some((row) => row.textContent!.includes('refreshed'))
+				rowsOf(outer).some((row) => row.textContent!.includes('refreshed')),
 			);
 		});
 	});

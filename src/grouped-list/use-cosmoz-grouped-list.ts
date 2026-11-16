@@ -1,10 +1,8 @@
-import { virtualize } from '@lit-labs/virtualizer/virtualize.js';
 import { useImperativeApi } from '@neovici/cosmoz-utils/hooks/use-imperative-api';
 import { useCallback, useLayoutEffect, useMemo } from '@pionjs/pion';
-import { html } from 'lit-html';
-import type { DirectiveResult } from 'lit/directive.js';
 import type { Item } from '../lib/types';
 import './cosmoz-grouped-list-row';
+import { pooledRows } from './recycler';
 import { useCollapsibleItems } from './use-collapsible-items';
 import { useSelectedItems } from './use-selected-items';
 import {
@@ -35,7 +33,7 @@ export interface UseCosmozGroupedListHost extends HTMLElement {
 	renderGroup: (
 		item: GroupItem<Item>,
 		index: number,
-		params: RenderGroupParams
+		params: RenderGroupParams,
 	) => unknown;
 	displayEmptyGroups: boolean;
 	compareItemsFn?: <T>(a: T, b: T) => boolean;
@@ -60,7 +58,7 @@ const useCosmozGroupedList = (host: UseCosmozGroupedListHost) => {
 	// suggested fix: separate signal for item collapse and group fold
 	const flatData = useMemo(
 			() => prepareData(data, displayEmptyGroups, state),
-			[data, displayEmptyGroups, signal]
+			[data, displayEmptyGroups, signal],
 		),
 		{
 			selectedItems,
@@ -84,21 +82,21 @@ const useCosmozGroupedList = (host: UseCosmozGroupedListHost) => {
 						toggleSelect: (selected?: boolean) =>
 							toggleSelect(
 								item,
-								typeof selected === 'boolean' ? selected : undefined
+								typeof selected === 'boolean' ? selected : undefined,
 							),
 						toggleFold: () => toggleFold(item as Item),
-				  })
+					})
 				: renderItem(item as Item, index, {
 						selected: isItemSelected(item as Item),
 						expanded: isExpanded(item as Item, state),
 						toggleSelect: (selected?: boolean) =>
 							toggleSelect(
 								item,
-								typeof selected === 'boolean' ? selected : undefined
+								typeof selected === 'boolean' ? selected : undefined,
 							),
 						toggleCollapse: () => toggleCollapse(item as Item),
-				  }),
-		[renderItem, renderGroup, selectedItems, toggleSelect, signal]
+					}),
+		[renderItem, renderGroup, selectedItems, toggleSelect, signal],
 	);
 
 	useLayoutEffect(() => {
@@ -131,15 +129,15 @@ const renderCosmozGroupedList = ({
 }: {
 	renderRow: (item: Item | GroupItem<Item>, index: number) => unknown;
 	flatData: (Item | GroupItem<Item>)[] | undefined;
-}): DirectiveResult => {
-	return virtualize({
-		items: flatData,
-		renderItem: (item: Item, index: number) =>
-			html`<cosmoz-grouped-list-row
-				.item=${item}
-				.index=${index}
-				.renderFn=${renderRow}
-			></cosmoz-grouped-list-row>`,
+}) => {
+	return pooledRows({
+		items: flatData as unknown as Item[],
+		// STABLE IDENTITY: the recycler refreshes bound rows whenever the
+		// renderRow reference changes (host-driven re-renders must propagate).
+		// Wrapping renderRow in a fresh closure per render would flag that
+		// refresh on EVERY host render and rebuild all mounted rows. The
+		// hook's renderRow is already useCallback-stable; pass it through.
+		renderRow: renderRow as unknown as (item: Item, index: number) => unknown,
 	});
 };
 

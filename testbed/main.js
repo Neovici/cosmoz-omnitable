@@ -5,10 +5,17 @@
 import i18next from 'i18next';
 import { html, render } from 'lit-html';
 import '../src/cosmoz-omnitable.js';
+import { renderItem as defaultRenderItem } from '../src/lib/render-item';
 import './cz-link.js';
 import { czStatus } from './cz-status.js';
 import { supplierLogo } from './cz-supplier-logo.js';
-import { STATUSES, columnPlan, makeRows, suppliers } from './data.js';
+import {
+	STATUSES,
+	columnPlan,
+	makeRows,
+	mulberry32,
+	suppliers,
+} from './data.js';
 
 i18next.init({ lng: 'en', resources: {} });
 
@@ -25,6 +32,8 @@ const params = new URLSearchParams(window.location.search),
 		status: numParam('status', 1),
 		link: numParam('link', 1),
 		plain: numParam('plain', 47),
+		var: numParam('var', 0),
+		updates: numParam('updates', 0),
 	};
 const total = cfg.plain + cfg.supplier + cfg.status + cfg.link;
 
@@ -48,6 +57,18 @@ const invoiceNumberCell = (column, { item }) =>
 // --- column templates ---
 
 const colTemplates = [];
+
+// The stable row id column FIRST: rows are ordered 1..N by it, and it
+// survives dataset swaps (index-based, not seed-derived).
+colTemplates.push(
+	html`<cosmoz-omnitable-column-number
+		name="numId"
+		title="#"
+		flex="0"
+		width="70px"
+		value-path="numId"
+	></cosmoz-omnitable-column-number>`,
+);
 
 // The "supplier" column: autocomplete column + supplier logo cell.
 for (let i = 0; i < cfg.supplier; i++) {
@@ -165,6 +186,44 @@ render(
 const omnitable = frag.querySelector('cosmoz-omnitable');
 app.appendChild(omnitable);
 
+// Variable-height rows (?var=1): a host renderItem that appends a
+// deterministic per-index detail block under the default row template.
+// Heights derive from the row index and the seed — no Date.now/Math.random.
+const detailBlock = (item, index) => {
+	const lines = Math.floor(mulberry32(cfg.seed * 7919 + index)() * 5),
+		h = 16 + lines * 20;
+	return html`<div
+		class="detail-preview"
+		part="detail-preview"
+		style=${`box-sizing: border-box; height: ${h}px; padding: 8px 12px;`}
+	>
+		<span style="color: #666; font-size: 13px;"
+			>${`context block — ${lines} line${lines === 1 ? '' : 's'}`}
+		</span>
+	</div>`;
+};
+if (cfg.var) {
+	omnitable.renderItem = (item, index, params) =>
+		html`${defaultRenderItem(item, index, params)}${detailBlock(item, index)}`;
+}
+
+// A/B switch for the cell-containment prototype (?contain=both|body|none).
+// Injected into the omnitable's shadow root so it can override the
+// component stylesheet without touching the sources.
+const containMode = params.get('contain') ?? 'both';
+if (containMode !== 'both') {
+	const strip = new CSSStyleSheet();
+	strip.replaceSync(
+		`${
+			containMode === 'none' ? 'cosmoz-omnitable-item-row > div,' : ''
+		} cosmoz-omnitable-header-row > div { contain: none !important; }`,
+	);
+	omnitable.shadowRoot.adoptedStyleSheets = [
+		...omnitable.shadowRoot.adoptedStyleSheets,
+		strip,
+	];
+}
+
 // Rows render with useShadowDOM:false inside the omnitable's shadow root
 // (cosmoz-grouped-list renders item-rows as its light children).
 const deepRows = (root) =>
@@ -211,6 +270,41 @@ window.__testbed = {
 	},
 };
 
+// Calculated-scrollable-height log: the pooled recycler fires
+// window.__recTotal(total, prev, source) whenever the height it applies
+// changes; log it for the bundle testbed.
+window.__recTotal = (total, prev, source) =>
+	console.info(
+		`[scrollHeight] ${total}px (was ${prev < 0 ? 'unset' : prev + 'px'}) — ${source}`,
+	);
+// --- data-update stress (?updates=500 or __testbed.enableStress(500)) ---
+let stressInterval = null;
+let stressSeed = cfg.seed + 1000;
+window.__testbed.enableStress = (ms = 500) => {
+	if (stressInterval) {
+		return;
+	}
+	stressInterval = setInterval(() => {
+		stressSeed += 7919;
+		omnitable.data = makeRows(cfg.rows, stressSeed, cfg.plain);
+		document.getElementById('info').textContent =
+			`omnitable testbed — stress: dataset swap #${stressSeed - cfg.seed - 1000} every ${ms}ms`;
+	}, ms);
+	console.info(`[testbed] stress: dataset updates every ${ms}ms`);
+};
+window.__testbed.disableStress = () => {
+	if (stressInterval) {
+		clearInterval(stressInterval);
+		stressInterval = null;
+		console.info('[testbed] stress: stopped');
+	}
+};
+if (cfg.updates > 0) {
+	i18next.init({ lng: 'en', resources: {} }).then(() => {
+		window.__testbed.enableStress(cfg.updates);
+	});
+}
+
 // --- data + header ---
 
 i18next.init({ lng: 'en', resources: {} }).then(() => {
@@ -219,6 +313,7 @@ i18next.init({ lng: 'en', resources: {} }).then(() => {
 
 	document.getElementById('info').textContent =
 		`omnitable testbed — ${omnitable.data.length} rows × ${total} columns` +
-		` (supplier: ${cfg.supplier}, invoice links: ${cfg.link}, status badges: ${cfg.status}, plain: ${cfg.plain})` +
+		` (supplier: ${cfg.supplier}, invoice links: ${cfg.link}, status badges: ${cfg.status}, plain: ${cfg.plain}` +
+		`${cfg.var ? ', variable heights' : ''})` +
 		` — seed ${cfg.seed}`;
 });
