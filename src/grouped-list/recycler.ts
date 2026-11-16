@@ -17,6 +17,7 @@
 //   only entering/leaving slots re-bind; no row element is created or
 //   destroyed after the pool fills.
 
+import { VisibilityChangedEvent } from '@lit-labs/virtualizer/events.js';
 import { noChange } from 'lit';
 import {
 	AsyncDirective as BaseAsyncDirective,
@@ -253,8 +254,18 @@ class PooledRecycler extends BaseAsyncDirective {
 	_syncCanvasBox() {
 		const scroller = this._scroller;
 		const clip = this._clip;
-		if (!scroller || !clip) {
+		if (!clip) {
 			return false;
+		}
+		if (!scroller) {
+			// inline mode: the clip is the host's full box (the rows are
+			// all rendered; the page scrolls the host itself)
+			clip.style.position = 'relative';
+			clip.style.top = '0';
+			clip.style.left = '0';
+			clip.style.width = '100%';
+			clip.style.height = `${this._prefix[this._items.length] ?? 0}px`;
+			return true;
 		}
 		const top = scroller.offsetTop;
 		const left = scroller.offsetLeft;
@@ -685,11 +696,13 @@ class PooledRecycler extends BaseAsyncDirective {
 		}
 
 		// cushion the window ABOVE the scroll position (the rows that enter
-		// when scrolling up are pre-bound and pre-measured, no white gap)
-		const first = Math.max(
-			0,
-			this._firstIndex(Math.max(0, scrollTop)) - OVERSCAN_ROWS,
-		);
+		// when scrolling up are pre-bound and pre-measured, no white gap).
+		// inline mode (no scroller ancestor): the covering window is ALL
+		// items (lit-virtualizer's inline behavior).
+		const inline = this._scroller == null;
+		const first = inline
+			? 0
+			: Math.max(0, this._firstIndex(Math.max(0, scrollTop)) - OVERSCAN_ROWS);
 		const anchorTop = this._offset(this._anchorIndex ?? first);
 		this._anchorIndex = this._firstIndex(Math.max(0, scrollTop));
 		this._lastAnchorTop = anchorTop;
@@ -709,10 +722,12 @@ class PooledRecycler extends BaseAsyncDirective {
 		// worst-case floor), so the pool stays small when real rows are taller
 		// than the default estimate. Expanding a row grows heights, never
 		// shrinks the measured minimum, so expansion never needs more slots.
-		const span = Math.min(
-			n - first,
-			Math.ceil(viewport / this._rowBudget()) + OVERSCAN_ROWS * 2,
-		);
+		const span = inline
+			? n
+			: Math.min(
+					n - first,
+					Math.ceil(viewport / this._rowBudget()) + OVERSCAN_ROWS * 2,
+				);
 		const last = first + span - 1;
 		this._ensurePool(span);
 
@@ -785,6 +800,33 @@ class PooledRecycler extends BaseAsyncDirective {
 			const item = this._items[slot.bound];
 			if (item !== undefined && slot.boundItem !== item) {
 				this._bind(slot, slot.bound);
+			}
+		}
+
+		// visibilityChanged dispatch (lit-virtualizer compat): the visible
+		// range changes fire the event with the {first,last} shape.
+		const firstVis = inline
+			? 0
+			: this._firstIndex(this._scroller?.scrollTop ?? 0);
+		const lastVis = inline
+			? Math.max(this._items.length - 1, 0)
+			: Math.min(
+					this._firstIndex(
+						(this._scroller?.scrollTop ?? 0) +
+							(this._scroller?.clientHeight ?? 0),
+					) - 1,
+					this._items.length - 1,
+				);
+		if (true) {
+			const range = { first: firstVis, last: Math.max(lastVis, firstVis) };
+			const prev = this._visibilityRange;
+			if (
+				prev == null ||
+				prev.first !== range.first ||
+				prev.last !== range.last
+			) {
+				this._visibilityRange = range;
+				this._host?.dispatchEvent(new VisibilityChangedEvent(range));
 			}
 		}
 
@@ -879,6 +921,7 @@ class PooledRecycler extends BaseAsyncDirective {
 	// expanded row that leaves the window) cannot regress to a slot's
 	// previous content size on rebind.
 	_measured = new Uint8Array(0); // 1 = the index has a real measured height
+	_visibilityRange: { first: number; last: number } | null = null;
 
 	_allocateSlot(): Slot {
 		const el = document.createElement(
