@@ -137,6 +137,9 @@ const report = (results) => {
 			String(s.rowsDelta).padStart(6),
 			String(s.mutsDelta).padStart(7),
 			s.style
+				? (String(s.style.count) + '/' + String(s.style.totalMs)).padStart(9)
+				: ''.padStart(9),
+			s.style
 				? String(s.style.totalMs + '/' + s.style.count).padStart(9)
 				: ''.padStart(9),
 			`${s.firstCellWidth}  idMoved:${s.idMoved}`,
@@ -335,6 +338,14 @@ for (const [id, arr] of Object.entries(results.samples)) {
 		metrics: Object.fromEntries(
 			METRIC_KEYS.map((k) => [k, round2(key((s) => s.metrics[k]))]),
 		),
+		style:
+			STYLETRACE && arr.some((s) => s.style)
+				? {
+						count: round2(key((s) => s.style.count)),
+						totalMs: round2(key((s) => s.style.totalMs)),
+						maxMs: round2(key((s) => s.style.maxMs)),
+					}
+				: null,
 		rowsDelta: Math.round(
 			median(arr.map((s) => s.after.mountedRows - s.before.mountedRows)),
 		),
