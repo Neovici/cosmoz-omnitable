@@ -473,11 +473,18 @@ class PooledRecycler extends BaseAsyncDirective {
 	};
 
 	_measureViewport() {
-		// pool = enough slots to cover the viewport at the smallest row height
+		// pool = enough slots to cover the viewport at the smallest row
+		// height, capped at the item count (the pump's span cap): an
+		// uncapped ensure allocates the worst-case budget even for short
+		// lists (200px viewport / measured 40px rows → 29 slots for 20
+		// items) and _ensurePool never shrinks.
 		const viewport = this._scroller?.clientHeight ?? 300;
-		const wanted = Math.max(
-			MIN_POOL,
-			Math.ceil(viewport / this._rowBudget()) + OVERSCAN_ROWS * 2,
+		const wanted = Math.min(
+			this._items.length,
+			Math.max(
+				MIN_POOL,
+				Math.ceil(viewport / this._rowBudget()) + OVERSCAN_ROWS * 2,
+			),
 		);
 		this._ensurePool(wanted);
 	}
@@ -667,6 +674,18 @@ class PooledRecycler extends BaseAsyncDirective {
 		if (this._prefix.length !== n + 1) {
 			this._invalidate();
 		}
+		// re-resolve a scroller that appeared after the first build: the
+		// directive can commit before the host's scrollable ancestor exists
+		// or has its overflow styles applied (lazy template parts). Once
+		// found, the clip moves from its inline (host) position to the
+		// scroller's wrapper and the input listeners attach.
+		if (!this._scroller && this._host?.isConnected) {
+			this._resolveScroller();
+			if (this._scroller) {
+				this._attachCanvas();
+				this._scrollerRO?.observe(this._scroller);
+			}
+		}
 		const scrollTop = this._scroller?.scrollTop ?? 0;
 		const viewport = this._scroller?.clientHeight ?? 300;
 
@@ -771,8 +790,18 @@ class PooledRecycler extends BaseAsyncDirective {
 				}
 				slot.el.style.visibility = 'hidden';
 				slot.bound = undefined;
+				slot.boundItem = undefined;
 				slot.off = 0;
 				slot.el.style.transform = '';
+				// drop the rendered content: clear the row's props so its pion
+				// part commits to `nothing` — idle slots keep no stale row
+				// content in the DOM (the old virtualizer disconnected
+				// out-of-window parts). Clearing via props, not textContent,
+				// races correctly with pion's queued task commits: any pending
+				// update renders the CLEARED props, never a stale item.
+				slot.el.item = undefined;
+				slot.el.index = undefined;
+				slot.el.renderFn = undefined;
 			}
 		}
 		if (focusRecovery) {

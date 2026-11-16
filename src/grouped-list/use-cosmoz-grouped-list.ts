@@ -1,7 +1,5 @@
 import { useImperativeApi } from '@neovici/cosmoz-utils/hooks/use-imperative-api';
 import { useCallback, useLayoutEffect, useMemo } from '@pionjs/pion';
-import { html } from 'lit-html';
-import type { DirectiveResult } from 'lit/directive.js';
 import type { Item } from '../lib/types';
 import './cosmoz-grouped-list-row';
 import { pooledRows } from './recycler';
@@ -134,7 +132,12 @@ const renderCosmozGroupedList = ({
 }) => {
 	return pooledRows({
 		items: flatData as unknown as Item[],
-		renderRow: (item: Item, index: number) => renderRow(item, index),
+		// STABLE IDENTITY: the recycler refreshes bound rows whenever the
+		// renderRow reference changes (host-driven re-renders must propagate).
+		// Wrapping renderRow in a fresh closure per render would flag that
+		// refresh on EVERY host render and rebuild all mounted rows. The
+		// hook's renderRow is already useCallback-stable; pass it through.
+		renderRow: renderRow as unknown as (item: Item, index: number) => unknown,
 	});
 };
 
