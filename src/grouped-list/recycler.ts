@@ -72,29 +72,6 @@ class PooledRecycler extends BaseAsyncDirective {
 	_boundRenderRow: ((item: Item, index: number) => unknown) | null = null;
 
 	pumpCount = 0;
-	_debugPump() {
-		const w = document.defaultView as unknown as {
-			__rec?: PooledRecycler;
-			__recLog?: unknown[];
-		};
-		w.__rec = this;
-		const bound = this._pool.filter((s) => s.bound != null).length;
-		const firstBound = this._pool.find((s) => s.bound != null);
-		(w.__recLog ??= []).push({
-			t: 'pumpEnd',
-			items: this._items.length,
-			pumpCount: this.pumpCount,
-			pool: this._pool.length,
-			bound,
-			firstBound: firstBound ? String(firstBound.bound) : 'none',
-			firstBoundItem: firstBound?.boundItem
-				? String(firstBound.boundItem).slice(0, 20)
-				: 'none',
-			firstVis: firstBound ? firstBound.el.style.visibility : 'none',
-			firstIndex: this._firstIndex(this._scroller?.scrollTop ?? 0),
-			scrollTop: this._scroller?.scrollTop,
-		});
-	}
 
 	render(_config: RecyclerConfig) {
 		this._items = _config.items ?? [];
@@ -194,6 +171,11 @@ class PooledRecycler extends BaseAsyncDirective {
 		this._attachCanvas();
 
 		this._ro = new ResizeObserver((entries) => this._onResize(entries));
+		this._scrollerRO?.disconnect();
+		this._scrollerRO = new ResizeObserver(() => this._syncCanvasBox());
+		if (this._scroller) {
+			this._scrollerRO.observe(this._scroller);
+		}
 		this._schedule();
 	}
 
@@ -244,7 +226,6 @@ class PooledRecycler extends BaseAsyncDirective {
 		clip.addEventListener('pointermove', this._onPointerMove);
 		clip.addEventListener('pointerup', this._onPointerEnd);
 		clip.addEventListener('pointercancel', this._onPointerEnd);
-		this._syncCanvasBox();
 	}
 
 	// keep the canvas box in sync with the scroller viewport (client sizes:
@@ -731,7 +712,7 @@ class PooledRecycler extends BaseAsyncDirective {
 		const last = first + span - 1;
 		this._ensurePool(span);
 
-		this._debugPump();
+		(window as unknown as { __rec?: PooledRecycler }).__rec = this;
 		// stable assignment: keep every slot bound to its index while the
 		// index stays covered; only entering indexes re-bind (DOM reuse)
 		const covering = new Set<number>();
@@ -903,6 +884,7 @@ class PooledRecycler extends BaseAsyncDirective {
 		return this._firstIndex(sc);
 	}
 
+	_scrollerRO?: ResizeObserver; // box sync on resize: keeps layout reads out of the scroll path
 	_measuredViewport = 0;
 	// smallest row height actually measured so far; the per-slot budget for
 	// the covering span, clamped to the worst-case floor. Monotone
