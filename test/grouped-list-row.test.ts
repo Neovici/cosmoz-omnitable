@@ -34,11 +34,8 @@ interface DirectRouteHost {
 setupIgnoreWindowResizeObserverLoopErrors(setup, teardown);
 
 const rowsOf = (outer: HTMLElement) =>
-	// The recycler attaches its viewport clip OUTSIDE the scrolled subtree
-	// (a sibling of the scroller, by design: an in-scroller layer would
-	// double-count the scroll offset), so row elements may live above the
-	// fixture's queried node. Query the connected rows in the document;
-	// fixtures run sequentially, so exactly one live pool exists.
+	// Row elements may live outside the fixture's subtree depending on the
+	// engine; query the connected rows in the document.
 	Array.from(
 		document.querySelectorAll<RowEl>('cosmoz-grouped-list-row'),
 	).filter((row) => row.isConnected);

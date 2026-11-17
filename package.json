@@ -74,11 +74,7 @@
     "storybook:preview": "npm run storybook:build && web-dev-server --root-dir ./storybook-static/ --hostname 127.0.0.1 --port 8080",
     "prepare": "husky",
     "changeset": "changeset",
-    "e2e": "playwright test",
-    "testbed:serve": "web-dev-server --config testbed/web-dev-server.config.mjs",
-    "testbed:bench": "node testbed/bench.mjs",
-    "testbed:trace": "node testbed/trace.mjs",
-    "testbed:bundle": "esbuild testbed/main.js --bundle --format=esm --target=es2020 --outfile=testbed/bundle.js --log-level=warning"
+    "e2e": "playwright test"
   },
   "publishConfig": {
     "access": "public"

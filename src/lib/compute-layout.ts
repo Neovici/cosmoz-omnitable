@@ -1,14 +1,14 @@
-import { ColumnConfig, ColumnConfigInput, layout } from "./layout";
-import { findLastIndex } from "./utils";
+import { ColumnConfig, ColumnConfigInput, layout } from './layout';
+import { findLastIndex } from './utils';
 
-type ItemName = ColumnConfigInput["name"];
+type ItemName = ColumnConfigInput['name'];
 interface HideRule {
 	name: string;
-	kind: "hide";
+	kind: 'hide';
 }
 interface WidthRule {
 	name: string;
-	kind: "width";
+	kind: 'width';
 	width: number;
 	lastVisible: boolean;
 }
@@ -18,11 +18,11 @@ export type LayoutRule = HideRule | WidthRule;
 
 export const toLayoutRules = (
 	layout: (number | undefined)[],
-	config: ColumnConfigInput[]
+	config: ColumnConfigInput[],
 ): LayoutRule[] => {
 	const lastVisibleIndex = findLastIndex(
 		layout,
-		(width) => width != null && width > 0
+		(width) => width != null && width > 0,
 	);
 
 	let cumulative = 0,
@@ -33,7 +33,7 @@ export const toLayoutRules = (
 
 		// Hidden columns
 		if (width == null || width === 0) {
-			return { name: item.name, kind: "hide" };
+			return { name: item.name, kind: 'hide' };
 		}
 
 		cumulative += width;
@@ -43,7 +43,7 @@ export const toLayoutRules = (
 
 		return {
 			name: item.name,
-			kind: "width",
+			kind: 'width',
 			width: cellWidth,
 			lastVisible: index === lastVisibleIndex,
 		};
@@ -63,20 +63,20 @@ const hideColumnCss = (name: ItemName) =>
 
 const _toCss = (rules: LayoutRule[]): string => {
 	const parts = rules.map((rule) => {
-		if (rule.kind === "hide") {
+		if (rule.kind === 'hide') {
 			return hideColumnCss(rule.name);
 		}
 		const css = cellCss(rule);
 		// Last visible column, show cell but hide its resize nub
 		return rule.lastVisible ? `${css}\n${hideNubCss(rule.name)}` : css;
 	});
-	return parts.join("\n");
+	return parts.join('\n');
 };
 
 export const computeLayout = (
 	_columnConfigs: ColumnConfig[],
 	canvasWidth: number,
-	numColumns: number
+	numColumns: number,
 ): (number | undefined)[] => {
 	const columnConfigs = _columnConfigs.filter((c) => !c.hidden),
 		totalWidths = columnConfigs.reduce((sum, { width }) => sum + width, 0);
@@ -94,7 +94,7 @@ export const computeLayout = (
 			Math.max(max, column.index),
 			column.index > max ? index : maxIndex,
 		],
-		[-1, -1]
+		[-1, -1],
 	)[1];
 
 	// force the last visible column to flex
@@ -112,8 +112,8 @@ export const computeLayout = (
 
 export const toCss = (
 	layout: (number | undefined)[],
-	config: ColumnConfigInput[]
+	config: ColumnConfigInput[],
 ): string =>
 	layout.length === 0
-		? ".cell {display: none;}"
+		? '.cell {display: none;}'
 		: _toCss(toLayoutRules(layout, config));

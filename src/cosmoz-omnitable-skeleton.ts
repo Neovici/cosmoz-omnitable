@@ -1,5 +1,5 @@
-import { component, css, html } from "@pionjs/pion";
-import type { Column } from "./lib/types";
+import { component, css, html } from '@pionjs/pion';
+import type { Column } from './lib/types';
 
 const styles = css`
 	:host {
@@ -59,18 +59,18 @@ type SkeletonProps = {
 
 const cellStyle = (
 	widths: Record<string, number> | undefined,
-	name: Column["name"]
+	name: Column['name'],
 ) => {
 	const width = name == null ? undefined : widths?.[name];
 	return width == null
-		? ""
+		? ''
 		: `width: ${width}px; padding: 0 min(3px, ${width / 2}px)`;
 };
 
 const Skeleton = ({ settingsConfig, widths }: SkeletonProps) => {
 	const { columns, collapsed } = settingsConfig,
 		showingColumns = columns.filter(
-			(column) => !collapsed.some((hidden) => hidden.name === column.name)
+			(column) => !collapsed.some((hidden) => hidden.name === column.name),
 		);
 
 	return html`<div class="skeleton">
@@ -86,14 +86,14 @@ const Skeleton = ({ settingsConfig, widths }: SkeletonProps) => {
 								part=${`cell-${col.name}`}
 								name=${col.name}
 								style=${cellStyle(widths, col.name)}
-							></div>`
+							></div>`,
 					)}
-				</div>`
+				</div>`,
 		)}
 	</div>`;
 };
 
 customElements.define(
-	"cosmoz-omnitable-skeleton",
-	component(Skeleton, { styleSheets: [styles] })
+	'cosmoz-omnitable-skeleton',
+	component(Skeleton, { styleSheets: [styles] }),
 );
