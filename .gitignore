@@ -29,3 +29,7 @@ codecov.SHA256SUM.sig
 # Playwright
 /test-results/
 /playwright-report/
+
+# testbed benchmark outputs
+testbed/results/
+testbed/bundle.js

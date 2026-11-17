@@ -34,7 +34,14 @@ interface DirectRouteHost {
 setupIgnoreWindowResizeObserverLoopErrors(setup, teardown);
 
 const rowsOf = (outer: HTMLElement) =>
-	Array.from(outer.querySelectorAll<RowEl>('cosmoz-grouped-list-row'));
+	// The recycler attaches its viewport clip OUTSIDE the scrolled subtree
+	// (a sibling of the scroller, by design: an in-scroller layer would
+	// double-count the scroll offset), so row elements may live above the
+	// fixture's queried node. Query the connected rows in the document;
+	// fixtures run sequentially, so exactly one live pool exists.
+	Array.from(
+		document.querySelectorAll<RowEl>('cosmoz-grouped-list-row'),
+	).filter((row) => row.isConnected);
 
 const rowOf = (outer: HTMLElement, item: unknown) =>
 	rowsOf(outer).find((row) => row.item === item);
@@ -272,6 +279,11 @@ suite('cosmoz-grouped-list-row rendering contract', () => {
 					});
 
 			await waitUntil(() => rowsOf(outer).length > 0);
+			// settle the pumped host height into layout before scrolling: a
+			// scrollTop set while the scroll span is not grown yet clamps to
+			// the current max and is never re-applied by the browser
+			await nextFrame();
+			await nextFrame();
 			outer.scrollTop = 12000;
 			await waitUntil(() => visible(rows[300]));
 			list.toggleCollapse(rows[300]);

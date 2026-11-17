@@ -1,6 +1,12 @@
 import { useMeta } from '@neovici/cosmoz-utils/hooks/use-meta';
-import { useCallback, useEffect, useMemo, useState } from '@pionjs/pion';
-import { toCss } from './compute-layout';
+import {
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from '@pionjs/pion';
+import { toCss, toLayoutRules } from './compute-layout';
 import { useCanvasWidth } from './use-canvas-width';
 import { useLayout } from './use-layout';
 import { useMini } from './use-mini';
@@ -78,12 +84,55 @@ export const useFastLayout = ({
 		onConverge = useCallback(() => setTweenSpeed(1), []);
 
 	const meta = useMeta({ columns: settings.columns });
+	// Surgical stylesheet updates: each config entry maps to one CSSRule;
+	// only rules whose width changed get written per tween frame. Structure
+	// changes (hide, order, last visible) still rebuild the sheet.
+	const applied = useRef({ rules: undefined, widths: [] }).current,
+		[partWidths, setPartWidths] = useState(undefined),
+		syncPartWidths = (rules) =>
+			setPartWidths(
+				rules.reduce(
+					(map, rule) =>
+						rule.kind === 'width' ? { ...map, [rule.name]: rule.width } : map,
+					{},
+				),
+			);
 	useTweenArray(
 		layout,
 		tweenSpeed,
 		(tweenedlayout) => {
-			const layoutCss = toCss(tweenedlayout, meta.columns);
-			styleSheet.replaceSync(layoutCss);
+			const rules = toLayoutRules(tweenedlayout, meta.columns);
+			const structure =
+				toCss(tweenedlayout, meta.columns) === '.cell {display: none;}'
+					? 'empty'
+					: rules.map((rule) => rule.kind).join('#') +
+						'#' +
+						(rules.findIndex((rule) => rule.lastVisible) + 1);
+			if (applied.rules !== structure) {
+				styleSheet.replaceSync(toCss(tweenedlayout, meta.columns));
+				applied.rules = structure;
+				applied.widths = rules.map((rule) =>
+					rule.kind === 'width' ? rule.width : undefined,
+				);
+				syncPartWidths(rules);
+				return;
+			}
+			const sheet = styleSheet.cssRules;
+			let changed = false;
+			rules.forEach((rule, index) => {
+				if (rule.kind !== 'width' || applied.widths[index] === rule.width) {
+					return;
+				}
+				const cssRule = sheet[index];
+				cssRule.style.width = `${rule.width}px`;
+				cssRule.style.padding = `0 min(3px, ${rule.width / 2}px)`;
+				applied.widths[index] = rule.width;
+				changed = true;
+			});
+			// while the loading skeleton is visible it renders the widths
+			if (changed && host.loading) {
+				syncPartWidths(rules);
+			}
 		},
 		onConverge,
 	);
@@ -96,5 +145,5 @@ export const useFastLayout = ({
 		requestTween,
 	});
 
-	return { isMini, collapsedColumns, miniColumns, requestTween };
+	return { isMini, collapsedColumns, miniColumns, requestTween, partWidths };
 };
