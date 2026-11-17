@@ -1,13 +1,14 @@
+import { setupIgnoreWindowResizeObserverLoopErrors } from '@lit-labs/virtualizer/support/resize-observer-errors.js';
 import { expect, html, nextFrame } from '@open-wc/testing';
 
 import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
 import { setupOmnitableFixture } from '../helpers/utils';
 
 import '../../src/cosmoz-omnitable.js';
-import { columnSymbol } from '../../src/lib/use-dom-columns';
 import '../helpers/fixtures/basic-column.js';
 
 suite('Basic omnitable functionality', () => {
+	setupIgnoreWindowResizeObserverLoopErrors(setup, teardown);
 	let omnitable;
 
 	setup(async () => {
@@ -146,9 +147,11 @@ suite('Basic omnitable functionality', () => {
 	});
 
 	test('should use editable template when the column is editable', async () => {
-		omnitable.columns.forEach((c) => {
-			c[columnSymbol].editable = true;
-		});
+		// flip the DOM column's reactive property: its notify event
+		// re-normalizes the columns and rows re-render as editable
+		omnitable
+			.querySelectorAll('basic-column')
+			.forEach((column) => (column.editable = true));
 
 		await nextFrame();
 
@@ -165,5 +168,18 @@ suite('Basic omnitable functionality', () => {
 		]);
 	});
 
-	test('should detach all template instances when omnitable is detached');
+	test('should detach all template instances when omnitable is detached', async () => {
+		const cells = () =>
+			omnitable.shadowRoot.querySelectorAll(
+				'.basic-column-cell, .overriden-column-cell',
+			);
+		assert.isNotEmpty(cells(), 'precondition: cells are rendered');
+		omnitable.remove();
+		polymerFlush();
+		await nextFrame();
+		assert.isEmpty(
+			cells(),
+			'detaching the omnitable drops the rendered template instances',
+		);
+	});
 });

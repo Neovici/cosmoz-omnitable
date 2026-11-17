@@ -113,6 +113,45 @@ suite('xlsx-export-omnitable', () => {
 	});
 });
 
+suite('xlsx-export hidden columns', () => {
+	ignoreResizeObserverLoopErrors(setup, teardown);
+
+	test('excludes hidden columns from the export headers', async () => {
+		const omni = await setupOmnitableFixture(
+			html`
+				<cosmoz-omnitable style="height:300px" .resizeSpeedFactor=${1}>
+					<cosmoz-omnitable-column
+						name="keep"
+						title="Keep"
+						value-path="amount"
+					></cosmoz-omnitable-column>
+					<cosmoz-omnitable-column
+						name="drop"
+						title="Drop"
+						value-path="number"
+						hidden
+					></cosmoz-omnitable-column>
+				</cosmoz-omnitable>
+			`,
+			[{ id: 0, number: 4, amount: 12.4 }],
+		);
+
+		assert.equal(
+			omni.columns.length,
+			1,
+			'hidden columns are not normalized into the columns state',
+		);
+		const xlsx = prepareXlsxData(omni.columns, omni.data),
+			headers = xlsx[0];
+		assert.include(headers, 'Keep');
+		assert.notInclude(
+			headers,
+			'Drop',
+			'a hidden column is excluded from the exported headers',
+		);
+	});
+});
+
 suite('toXlsx range tests', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable, xlsx;
@@ -254,17 +293,19 @@ suite('toXlsx range tests', () => {
 	});
 
 	test('prepares amount values', () => {
-		const amounts = xlsx.map((row) => row[1]);
-		// const nonBreakingSpace = String.fromCharCode(160);
+		const amounts = xlsx.map((row) => row[1]),
+			// Intl formats the code-currency separator ("AED 11.00") with an
+			// NBSP (U+00A0), so the expectations below are written with it
+			nb = String.fromCharCode(160);
 
 		assert.equal(amounts[1], '£2,781.00'); // currency: 'GBP', amount: 2781
 		assert.equal(amounts[2], '€845.00'); // currency: 'EUR', amount: 845
 		assert.equal(amounts[3], '$107.00'); // currency: 'USD', amount: 107
 		assert.equal(amounts[4], 'R$4,406.00'); // currency: 'BRL', amount: 4406
 		assert.equal(amounts[5], '¥341'); // currency: 'JPY', amount: 341
-		// assert.equal(amounts[6], `SEK${nonBreakingSpace}11.00`);		// currency: 'SEK', amount: 11		// 'kr11.00'
+		assert.equal(amounts[6], `DKK${nb}11.00`); // currency: 'DKK', amount: 11
 		assert.equal(amounts[7], '€932.00'); // currency: 'EUR', amount: 932
-		// assert.equal(amounts[8], `AED${nonBreakingSpace}765,432.00`); //currency: 'AED', amount: 765432
+		assert.equal(amounts[8], `AED${nb}765,432.00`); // currency: 'AED', amount: 765432
 		assert.equal(amounts[9], '-A$101.00'); // currency: 'AUD', amount: -101
 		assert.equal(amounts[10], '-CA$4,321.00'); //currency: 'CAD', amount: -4321
 		assert.equal(amounts[11], '-€22.00'); //currency: 'EUR', amount: -22

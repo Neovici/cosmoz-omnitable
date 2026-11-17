@@ -1,4 +1,4 @@
-import { assert, html, nextFrame } from '@open-wc/testing';
+import { assert, nextFrame } from '@open-wc/testing';
 
 import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
 import {
@@ -15,6 +15,7 @@ import {
 	toHashString,
 	toInputString,
 } from '../src/lib/utils-time';
+import { rangeAllFixture } from './helpers/fixtures/range-fixture.js';
 
 const data = [
 		{
@@ -62,44 +63,7 @@ const data = [
 			time: '00:00:00',
 		},
 	],
-	rangeFixture = html`
-		<cosmoz-omnitable
-			id="omnitable"
-			style="width: 800px"
-			.resizeSpeedFactor=${1}
-		>
-			<cosmoz-omnitable-column-number title="Age" name="age" value-path="age">
-			</cosmoz-omnitable-column-number>
-			<cosmoz-omnitable-column-amount
-				title="Amount"
-				name="amount"
-				value-path="amount"
-			>
-			</cosmoz-omnitable-column-amount>
-			<cosmoz-omnitable-column-date
-				title="Date"
-				name="date"
-				value-path="date"
-				locale="en-US"
-				editable
-			>
-			</cosmoz-omnitable-column-date>
-			<cosmoz-omnitable-column-datetime
-				title="Datetime"
-				name="datetime"
-				value-path="date"
-				editable
-			>
-			</cosmoz-omnitable-column-datetime>
-			<cosmoz-omnitable-column-time
-				title="Time"
-				name="time"
-				value-path="time"
-				editable
-			>
-			</cosmoz-omnitable-column-time>
-		</cosmoz-omnitable>
-	`;
+	rangeFixture = rangeAllFixture;
 
 suite('time', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);
