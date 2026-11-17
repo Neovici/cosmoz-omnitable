@@ -1,7 +1,7 @@
-import { toLocalISOString, ensureDate } from '@neovici/cosmoz-utils/date';
+import { ensureDate, toLocalISOString } from '@neovici/cosmoz-utils/date';
 import { get } from '@polymer/polymer/lib/utils/path';
+import { DateColumn, Item, Limit, LimitFunction } from './types';
 import { toNumber } from './utils-number';
-import { DateColumn, Item, LimitFunction, Limit } from './types';
 
 export const getTimezoneString = (localISOString: string) => {
 	const off = -new Date(localISOString).getTimezoneOffset() / 60;

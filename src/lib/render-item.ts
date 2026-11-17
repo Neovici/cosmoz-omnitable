@@ -24,61 +24,60 @@ export const renderItem: HostRenderItem = (
 		rowPartFn,
 		groupOnColumn,
 		dataIsValid,
-	}
-) =>
-	html`
-		<div
-			?selected=${selected}
-			part="${['itemRow', `itemRow-${index}`, rowPartFn?.(item, index)]
-				.filter(Boolean)
-				.join(' ')}"
-			.dataIndex=${index}
-			.dataItem=${item}
-			class="itemRow"
-			@click=${onItemClick}
-		>
-			<div class="itemRow-wrapper" part="itemRow-wrapper">
-				<input
-					class="checkbox"
-					type="checkbox"
-					part="checkbox"
-					.checked=${selected}
-					.dataItem=${item}
-					@input=${onCheckboxChange}
-					?disabled=${!dataIsValid}
-				/>
-				<cosmoz-omnitable-item-row
-					part="itemRow-inner"
-					.columns=${columns}
-					.index=${index}
-					.selected=${selected}
-					.expanded=${expanded}
-					.item=${item}
-					.groupOnColumn=${groupOnColumn}
-					.onItemChange=${onItemChange}
-				>
-				</cosmoz-omnitable-item-row>
-				<cosmoz-button
-					aria-label=${t('Expand or collapse')}
-					variant="tertiary"
-					icon-only
-					class="expand"
-					?hidden="${isEmpty(collapsedColumns.length)}"
-					?aria-expanded="${expanded}"
-					@click="${toggleCollapse}"
-				>
-					${chevronDownIcon({ width: '16', height: '16' })}
-				</cosmoz-button>
-			</div>
-			${renderMinis({ item, index })(miniColumns)}
+	},
+) => html`
+	<div
+		?selected=${selected}
+		part="${['itemRow', `itemRow-${index}`, rowPartFn?.(item, index)]
+			.filter(Boolean)
+			.join(' ')}"
+		.dataIndex=${index}
+		.dataItem=${item}
+		class="itemRow"
+		@click=${onItemClick}
+	>
+		<div class="itemRow-wrapper" part="itemRow-wrapper">
+			<input
+				class="checkbox"
+				type="checkbox"
+				part="checkbox"
+				.checked=${selected}
+				.dataItem=${item}
+				@input=${onCheckboxChange}
+				?disabled=${!dataIsValid}
+			/>
+			<cosmoz-omnitable-item-row
+				part="itemRow-inner"
+				.columns=${columns}
+				.index=${index}
+				.selected=${selected}
+				.expanded=${expanded}
+				.item=${item}
+				.groupOnColumn=${groupOnColumn}
+				.onItemChange=${onItemChange}
+			>
+			</cosmoz-omnitable-item-row>
+			<cosmoz-button
+				aria-label=${t('Expand or collapse')}
+				variant="tertiary"
+				icon-only
+				class="expand"
+				?hidden="${isEmpty(collapsedColumns.length)}"
+				?aria-expanded="${expanded}"
+				@click="${toggleCollapse}"
+			>
+				${chevronDownIcon({ width: '16', height: '16' })}
+			</cosmoz-button>
 		</div>
-		<cosmoz-omnitable-item-expand
-			.columns=${collapsedColumns}
-			.item=${item}
-			?selected=${selected}
-			?expanded=${expanded}
-			.groupOnColumn=${groupOnColumn}
-			part="item-expand"
-		>
-		</cosmoz-omnitable-item-expand>
-	`;
+		${renderMinis({ item, index })(miniColumns)}
+	</div>
+	<cosmoz-omnitable-item-expand
+		.columns=${collapsedColumns}
+		.item=${item}
+		?selected=${selected}
+		?expanded=${expanded}
+		.groupOnColumn=${groupOnColumn}
+		part="item-expand"
+	>
+	</cosmoz-omnitable-item-expand>
+`;

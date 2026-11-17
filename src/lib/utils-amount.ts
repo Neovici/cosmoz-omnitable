@@ -1,15 +1,15 @@
 import { get } from '@polymer/polymer/lib/utils/path';
-import { toNumber } from './utils-number';
 import {
 	Amount,
+	AmountColumn,
+	AmountLimit,
 	Currency,
 	GetPath,
-	AmountColumn,
 	Item,
-	AmountLimit,
-	Rates,
 	LimitFunction,
+	Rates,
 } from './types';
+import { toNumber } from './utils-number';
 
 // Converts a value to an amount object optionaly limiting it.
 export const toAmount = (

@@ -130,7 +130,7 @@ export const useList = ({
 
 		if (
 			path.some(
-				(el) => el instanceof Element && el.matches('a, .checkbox, .expand')
+				(el) => el instanceof Element && el.matches('a, .checkbox, .expand'),
 			)
 		) {
 			return;
@@ -144,7 +144,7 @@ export const useList = ({
 					item: current.dataItem,
 					index: current.dataIndex,
 				},
-			})
+			}),
 		);
 	}, []);
 
@@ -152,7 +152,7 @@ export const useList = ({
 		onItemChange = useCallback(
 			(column: Column, item: Item) => (value: unknown) =>
 				_onItemChange(host, column, item, value),
-			[]
+			[],
 		);
 
 	return {
@@ -192,14 +192,14 @@ export const useList = ({
 				rowPartFn,
 				groupOnColumn,
 				dataIsValid,
-			]
+			],
 		),
 		renderGroup: useMemo(
 			() =>
 				(
 					group: IndexedGroup,
 					_flatIndex: number,
-					params: GroupedListGroupParams
+					params: GroupedListGroupParams,
 				) =>
 					renderGroup(group, group[indexSymbol], {
 						...params,
@@ -208,7 +208,7 @@ export const useList = ({
 						groupOnColumn,
 						dataIsValid,
 					}),
-			[renderGroup, columns, onCheckboxChange, groupOnColumn, dataIsValid]
+			[renderGroup, columns, onCheckboxChange, groupOnColumn, dataIsValid],
 		),
 	};
 };

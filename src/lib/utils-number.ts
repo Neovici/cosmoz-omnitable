@@ -1,11 +1,11 @@
-import { get } from '@polymer/polymer/lib/utils/path';
 import { memoooize } from '@neovici/cosmoz-utils/memoize';
+import { get } from '@polymer/polymer/lib/utils/path';
 import {
-	LimitFunction,
+	AmountLimit,
 	GetPath,
 	Item,
+	LimitFunction,
 	NumberColumn,
-	AmountLimit,
 } from './types.js';
 
 export const toNumber = (

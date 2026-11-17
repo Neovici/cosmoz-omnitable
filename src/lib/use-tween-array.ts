@@ -16,7 +16,7 @@ interface TweenState {
 
 const useAnimationLoop = (
 	animate: () => boolean | undefined,
-	trigger: unknown[]
+	trigger: unknown[],
 ) => {
 	const animationLoop = useMemo((): AnimationLoop => {
 		let running = false;
@@ -57,7 +57,7 @@ export const useTweenArray = (
 	target: (number | undefined)[],
 	speedFactor = 1.9,
 	callback: (tween: (number | undefined)[]) => void = noop,
-	onConverge?: () => void
+	onConverge?: () => void,
 ): void => {
 	const state = useMeta<TweenState>({ target, speedFactor, onConverge });
 
@@ -81,7 +81,7 @@ export const useTweenArray = (
 			isCloseEnough(state.tween![idx], t)
 				? t
 				: (state.tween![idx] ?? 0) +
-						((t ?? 0) - (state.tween![idx] ?? 0)) / state.speedFactor || 0
+						((t ?? 0) - (state.tween![idx] ?? 0)) / state.speedFactor || 0,
 		);
 
 		callback(state.tween);

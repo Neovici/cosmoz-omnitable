@@ -1,7 +1,7 @@
 import { toLocalISOString } from '@neovici/cosmoz-utils/date';
 import { get } from '@polymer/polymer/lib/utils/path';
-import { renderValue, toDate } from './utils-date';
 import { DateColumn, Item } from './types';
+import { renderValue, toDate } from './utils-date';
 
 export const formatters: Record<string, Intl.DateTimeFormat> = {};
 

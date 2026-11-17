@@ -1,6 +1,6 @@
 import { get, set } from '@polymer/polymer/lib/utils/path';
+import { Column, GetPath, Item, Items } from './types';
 import { columnSymbol } from './use-dom-columns';
-import { GetPath, Items, Item, Column } from './types';
 
 interface DefaultComputeSource {
 	externalValues?: unknown[];

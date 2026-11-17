@@ -1,12 +1,12 @@
 import { toLocalISOString } from '@neovici/cosmoz-utils/date';
 import { get } from '@polymer/polymer/lib/utils/path';
+import { DateColumn, Item, Limit, LimitFunction } from './types';
 import {
 	getAbsoluteISOString,
 	renderValue,
 	toDate as superToDate,
 } from './utils-date';
 import { toNumber } from './utils-number';
-import { Limit, LimitFunction, DateColumn, Item } from './types';
 
 export const _fixedDate = '1970-01-01' as const;
 

@@ -1,5 +1,5 @@
-import { genericSorter } from '../src/lib/generic-sorter';
 import { assert } from '@open-wc/testing';
+import { genericSorter } from '../src/lib/generic-sorter';
 
 suite('generic sorter', () => {
 	test('array sort', () => {

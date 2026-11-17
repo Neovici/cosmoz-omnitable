@@ -1,6 +1,9 @@
-import { html } from 'lit-html';
 import { PolymerElement } from '@polymer/polymer/polymer-element';
-import { columnMixin, getString } from '../../../src/cosmoz-omnitable-column-mixin';
+import { html } from 'lit-html';
+import {
+	columnMixin,
+	getString,
+} from '../../../src/cosmoz-omnitable-column-mixin';
 
 class BasicColumn extends columnMixin(PolymerElement) {
 	renderCell(column, { item }) {

@@ -35,13 +35,14 @@ export const useLayout = ({
 			.map((c) =>
 				layoutColumns != null
 					? { ...c, hidden: !layoutColumns.includes(c.name) }
-					: c
+					: c,
 			)
 			.sort(
 				(
 					{ index: aIndex, priority: aPriority },
-					{ index: bIndex, priority: bPriority }
-				) => (aPriority === bPriority ? bIndex - aIndex : aPriority - bPriority)
+					{ index: bIndex, priority: bPriority },
+				) =>
+					aPriority === bPriority ? bIndex - aIndex : aPriority - bPriority,
 			);
 
 		return computeLayout(columnConfigs, canvasWidth, columnConfigs.length);
