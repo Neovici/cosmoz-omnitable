@@ -1,8 +1,9 @@
 import { useImperativeApi } from '@neovici/cosmoz-utils/hooks/use-imperative-api';
 import { useCallback, useLayoutEffect, useMemo } from '@pionjs/pion';
-import { html } from 'lit-html';
+import { nothing } from 'lit-html';
 import type { Item } from '../lib/types';
 import './cosmoz-grouped-list-row';
+import { renderRecycler } from './recycler-attach';
 import { useCollapsibleItems } from './use-collapsible-items';
 import { useSelectedItems } from './use-selected-items';
 import {
@@ -130,16 +131,13 @@ const renderCosmozGroupedList = ({
 	renderRow: (item: Item | GroupItem<Item>, index: number) => unknown;
 	flatData: (Item | GroupItem<Item>)[] | undefined;
 }) => {
-	// kept referenced so the seam signature stays identical
-	Boolean(renderRow);
-	Boolean(flatData);
-	// The list engine was removed. Rebuild it so the test suite in test/
-	// passes end to end - the suite is the executable specification.
-	// Contract: this function receives the row content builder (renderRow)
-	// and the flat item list (flatData) and returns the lit-html child
-	// content that renders and virtualizes the rows for the consumer's
-	// scrolling element.
-	return html`nothing`;
+	// no data, no rows: the list renders nothing until it has content
+	if (flatData == null) {
+		return nothing;
+	}
+	// the pooled recycler renders the rows for the consumer's scrolling
+	// element; the engine spec is test/grouped-list-positions.test.js
+	return renderRecycler({ renderRow, flatData });
 };
 
 export { renderCosmozGroupedList, useCosmozGroupedList };
