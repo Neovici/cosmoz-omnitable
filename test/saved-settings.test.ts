@@ -52,4 +52,50 @@ suite('useSavedSettings', () => {
 			normalizeStore({ sortOn: 'name' } as never, saved as never).columns,
 		).to.deep.equal(saved.columns);
 	});
+
+	test('saving writes the complete normalized shape for every sort-and-group prop', () => {
+		const stored = normalizeStore(
+			{
+				sortOn: 'name',
+				groupOn: 'id',
+				descending: true,
+				columns: [
+					{ name: 'id', priority: 3 },
+					{ name: 'name', priority: 0, width: 120, flex: 2, disabled: true },
+				],
+			} as never,
+			saved as never,
+		);
+		expect(stored.sortOn).to.equal('name');
+		expect(stored.groupOn).to.equal('id');
+		expect(stored.descending).to.equal(true);
+		// props() keeps only present keys: the bare column keeps its two keys
+		expect(stored.columns).to.deep.equal([
+			{ name: 'id', priority: 3 },
+			{
+				name: 'name',
+				priority: 0,
+				width: 120,
+				flex: 2,
+				disabled: true,
+			},
+		]);
+	});
+
+	test('onSave round-trips settings through the driver', async () => {
+		const { result } = await render({
+			sortOn: 'name',
+			columns: [{ name: 'id', priority: 0 }],
+		} as never);
+		await result.current.onSave();
+		await nextFrame();
+
+		const written = JSON.parse(localStorage.getItem(key) ?? 'null');
+		expect(written.sortOn).to.equal('name');
+		expect(written.columns?.[0]?.name).to.equal('id');
+
+		// a re-render reads the written settings back
+		const { result: reRead } = await render();
+		expect(reRead.current.savedSettings?.sortOn).to.equal('name');
+	});
 });

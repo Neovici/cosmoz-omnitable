@@ -88,6 +88,48 @@ suite('useTweenArray', () => {
 		expect(onConverge.calledOnce).to.equal(true);
 	});
 
+	test('fires no callbacks after convergence', async () => {
+		const cb = spy();
+		const { rerender } = await renderHook(
+			({ target, speed }: { target: number[]; speed: number }) =>
+				useTweenArray(target, speed, cb),
+			{ initialProps: { target: [0], speed: 1.9 } },
+		);
+
+		await rerender({ target: [100], speed: 1.9 });
+		// let the tween finish, then idle for many more frames
+		await tick(60);
+		const total = cb.callCount;
+		await tick(30);
+
+		expect(cb.callCount).to.equal(
+			total,
+			'a converged tween stays quiet (no idle callbacks)',
+		);
+	});
+
+	test('re-bases when the array length changes mid-animation', async () => {
+		const cb = spy();
+		const { rerender } = await renderHook(
+			({ target, speed }: { target: number[]; speed: number }) =>
+				useTweenArray(target, speed, cb),
+			{ initialProps: { target: [0, 0, 0], speed: 1.9 } },
+		);
+
+		await rerender({ target: [100, 100, 100], speed: 1.9 });
+		await tick(3);
+		// a shorter array arrives mid-animation: the hook must adopt the
+		// new length and keep converging on it
+		await rerender({ target: [50], speed: 1.9 });
+		await tick(60);
+
+		const last = cb.getCalls().at(-1)?.args[0];
+		expect(last).to.deep.equal(
+			[50],
+			'the tween converges on the shorter array (length-change rebase)',
+		);
+	});
+
 	test('speedFactor updates apply on the next target change', async () => {
 		const cb = spy();
 		const { rerender } = await renderHook(
