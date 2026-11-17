@@ -11,7 +11,6 @@ import {
 import { toLocalISOString } from '@neovici/cosmoz-utils/date';
 import '../src/cosmoz-omnitable-columns.ts';
 import '../src/cosmoz-omnitable.js';
-import { columnSymbol } from '../src/lib/use-dom-columns';
 import { getComparableValue, getString, toDate } from '../src/lib/utils-date';
 import { rangeAllFixture } from './helpers/fixtures/range-fixture.js';
 
@@ -62,20 +61,43 @@ suite('render', () => {
 	});
 });
 
+// public drive for the header range input (see test/range.test.js): typing
+// through the cosmoz-input's inner input commits the value, a blur commits
+// the filter to the omnitable
+const inputsOf = (header) => [
+		...header.shadowRoot.querySelectorAll('cosmoz-input'),
+	],
+	inputValues = (header) => inputsOf(header).map((input) => input.value),
+	typeInto = async (header, inputNo, value) => {
+		const input = inputsOf(header)[inputNo];
+		input.focus();
+		await nextFrame();
+		const inner = input.shadowRoot.querySelector('input, textarea');
+		inner.value = String(value);
+		inner.dispatchEvent(new Event('input', { bubbles: true }));
+		await nextFrame();
+	},
+	applyFilter = (header) =>
+		inputsOf(header).forEach((input) => input.dispatchEvent(new Event('blur')));
+
 suite('date', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable, column, columnHeaderInput;
 
 	setup(async () => {
 		omnitable = await setupOmnitableFixture(rangeFixture, data);
-		column = omnitable.columns[2][columnSymbol];
+		column = omnitable.columns[2];
 		columnHeaderInput = omnitable.shadowRoot.querySelector(
 			'cosmoz-omnitable-date-range-input',
 		);
 	});
 
 	test('instantiates a cosmoz-omnitable-column-date', () => {
-		assert.equal(column.constructor.name, 'OmnitableColumnDate');
+		assert.isNotNull(
+			customElements.get('cosmoz-omnitable-column-date'),
+			'the date column element is registered',
+		);
+		assert.equal(column.name, 'date');
 	});
 
 	test('deserializeFilter returns null for non-string filters', () => {
@@ -89,9 +111,11 @@ suite('date', () => {
 		assert.isUndefined(omnitable.filters.date);
 
 		omnitable.setFilterState('date', { filter: { min, max } });
+		polymerFlush();
+		await nextFrame();
 		await nextFrame();
 
-		const { max: fMax, min: fMin } = columnHeaderInput._filterInput;
+		const [fMin, fMax] = inputValues(columnHeaderInput);
 		assert.equal(
 			fMin,
 			toLocalISOString(min).slice(0, 10),
@@ -119,11 +143,13 @@ suite('date', () => {
 		const columnHeaderInput = omnitable.shadowRoot.querySelector(
 			'cosmoz-omnitable-date-range-input',
 		);
-		assert.isNull(columnHeaderInput._filterInput.min);
-		assert.isNull(columnHeaderInput._filterInput.max);
+		assert.deepEqual(inputValues(columnHeaderInput), [null, null]);
 
-		columnHeaderInput._filterInput = { min: '2015-03-18', max: '2023-03-21' };
+		await typeInto(columnHeaderInput, 0, '2015-03-18');
+		await typeInto(columnHeaderInput, 1, '2023-03-21');
+		applyFilter(columnHeaderInput);
 		polymerFlush();
+		await nextFrame();
 		await nextFrame();
 		assert.equal(
 			omnitable.filters.date.min.getTime(),
@@ -137,8 +163,10 @@ suite('date', () => {
 	});
 
 	test('changing only _filterInput min updates filter min', async () => {
-		columnHeaderInput.set('_filterInput.min', '2015-08-27');
+		await typeInto(columnHeaderInput, 0, '2015-08-27');
+		applyFilter(columnHeaderInput);
 		polymerFlush();
+		await nextFrame();
 		await nextFrame();
 		assert.equal(
 			omnitable.filters.date.min.getTime(),
@@ -149,8 +177,11 @@ suite('date', () => {
 	test('filtering on specific date with datetime source', async () => {
 		const value = data[5][column.valuePath]; // '2017-12-22T23:00:00Z'
 
-		columnHeaderInput._filterInput = { min: '2017-12-22', max: '2017-12-23' };
+		await typeInto(columnHeaderInput, 0, '2017-12-22');
+		await typeInto(columnHeaderInput, 1, '2017-12-23');
+		applyFilter(columnHeaderInput);
 		polymerFlush();
+		await nextFrame();
 		await nextFrame();
 
 		assert.include(
