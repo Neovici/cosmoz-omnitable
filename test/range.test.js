@@ -10,7 +10,6 @@ import {
 
 import '../src/cosmoz-omnitable-columns.ts';
 import '../src/cosmoz-omnitable.js';
-import { columnSymbol } from '../src/lib/use-dom-columns';
 import {
 	getComparableValue,
 	getString,
@@ -75,13 +74,34 @@ const data = [
 
 sinonAssert.expose(assert, { prefix: '' });
 
+// Public drive for the header range input: the two cosmoz-input fields its
+// template binds _filterInput to. Typing goes through the component's inner
+// input (its 'input' event is what commits the value, exactly like a user
+// keystroke: programmatic host property writes fire no value-changed), and a
+// blur commits the filter to the omnitable.
+const inputsOf = (header) => [
+		...header.shadowRoot.querySelectorAll('cosmoz-input'),
+	],
+	inputValues = (header) => inputsOf(header).map((input) => input.value),
+	typeInto = async (header, inputNo, value) => {
+		const input = inputsOf(header)[inputNo];
+		input.focus();
+		await nextFrame();
+		const inner = input.shadowRoot.querySelector('input, textarea');
+		inner.value = String(value);
+		inner.dispatchEvent(new Event('input', { bubbles: true }));
+		await nextFrame();
+	},
+	applyFilter = (header) =>
+		inputsOf(header).forEach((input) => input.dispatchEvent(new Event('blur')));
+
 suite('number', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable, column, columnHeaderInput;
 
 	setup(async () => {
 		omnitable = await setupOmnitableFixture(rangeFixture, data);
-		column = omnitable.columns[0][columnSymbol];
+		column = omnitable.querySelector('cosmoz-omnitable-column-number');
 		column.autoupdate = true;
 		await nextFrame();
 		columnHeaderInput = omnitable.shadowRoot.querySelector(
@@ -90,16 +110,26 @@ suite('number', () => {
 	});
 
 	test('instantiates a cosmoz-omnitable-column-number', () => {
-		assert.equal(column.constructor.name, 'OmnitableColumnNumber');
+		assert.isNotNull(
+			customElements.get('cosmoz-omnitable-column-number'),
+			'the number column element is registered',
+		);
+		assert.equal(omnitable.columns[0].name, 'age');
 	});
 
-	test('computes range from values', () => {
-		assert.isObject(columnHeaderInput._range);
-		assert.equal(columnHeaderInput._range.min, -11);
-		assert.equal(columnHeaderInput._range.max, 46.768);
+	test('computes range from values (bounds on the public inputs)', async () => {
+		// settle the header render so the computed bounds are committed
+		await nextFrame();
+		await nextFrame();
+		const inputs = inputsOf(columnHeaderInput).map((i) =>
+			i.shadowRoot.querySelector('input'),
+		);
+		assert.isNotEmpty(inputs, 'the range header exposes two inputs');
+		assert.equal(inputs[0].min, '-11');
+		assert.equal(inputs[0].max, '46.768');
 	});
 
-	test('changing filter updates _filterInput', async () => {
+	test('changing filter reflects on the header inputs', async () => {
 		assert.isUndefined(omnitable.filters.age);
 		omnitable.setFilterState('age', {
 			filter: {
@@ -107,80 +137,70 @@ suite('number', () => {
 				max: 200,
 			},
 		});
+		flush();
 		await nextFrame();
-		assert.equal(columnHeaderInput._filterInput.min, 3);
-		assert.equal(columnHeaderInput._filterInput.max, 200);
+		assert.deepEqual(inputValues(columnHeaderInput), [3, 200]);
 	});
 
-	test('changing _filterInput updates filter', async () => {
-		assert.isNull(columnHeaderInput._filterInput.min);
-		assert.isNull(columnHeaderInput._filterInput.max);
-		columnHeaderInput._filterInput = {
-			min: -10,
-			max: 15,
-		};
+	test('changing the header inputs updates filter', async () => {
+		assert.deepEqual(inputValues(columnHeaderInput), [null, null]);
+		await typeInto(columnHeaderInput, 0, -10);
+		await typeInto(columnHeaderInput, 1, 15);
+		applyFilter(columnHeaderInput);
 		flush();
 		await nextFrame();
 		assert.equal(omnitable.filters.age.min, -10);
 		assert.equal(omnitable.filters.age.max, 15);
 	});
 
-	test('changing only _filterInput min updates filter min', async () => {
-		columnHeaderInput.set('_filterInput.min', -21);
+	test('changing only the min input updates filter min', async () => {
+		await typeInto(columnHeaderInput, 0, -21);
+		applyFilter(columnHeaderInput);
 		flush();
 		await nextFrame();
 		assert.equal(omnitable.filters.age.min, -11);
 	});
 
-	test('changing out of range _filterInput limits _filterInput', async () => {
-		assert.isNull(columnHeaderInput._filterInput.min);
-		assert.isNull(columnHeaderInput._filterInput.max);
-
-		columnHeaderInput._filterInput = {
-			min: -11,
-			max: 17,
-		};
+	test('out of range header inputs are limited to the computed range', async () => {
+		assert.deepEqual(inputValues(columnHeaderInput), [null, null]);
+		await typeInto(columnHeaderInput, 0, -11);
+		await typeInto(columnHeaderInput, 1, 17);
+		applyFilter(columnHeaderInput);
 		flush();
 		await nextFrame();
 
-		assert.equal(columnHeaderInput._filterInput.min, -11);
-		assert.equal(columnHeaderInput._filterInput.max, 17);
+		assert.deepEqual(inputValues(columnHeaderInput), ['-11', '17']);
 		assert.equal(omnitable.filters.age.min, -11);
 		assert.equal(omnitable.filters.age.max, 17);
 
-		columnHeaderInput.set('_filterInput.min', 20);
+		await typeInto(columnHeaderInput, 0, 20);
+		applyFilter(columnHeaderInput);
 		flush();
 		await nextFrame();
 
 		assert.equal(omnitable.filters.age.min, 17);
 	});
 
-	test('when autoupdate is off, changing _filterInput does not update filter', async () => {
+	test('without autoupdate, committing the header inputs still applies the filter (blur)', async () => {
 		column.autoupdate = false;
 		await nextFrame();
 
-		assert.isNull(columnHeaderInput._filterInput.min);
-		assert.isNull(columnHeaderInput._filterInput.max);
-		columnHeaderInput._filterInput = {
-			min: -10,
-			max: 15,
-		};
-		await nextFrame();
-		columnHeaderInput._updateFilter();
-
+		assert.deepEqual(inputValues(columnHeaderInput), [null, null]);
+		await typeInto(columnHeaderInput, 0, -10);
+		await typeInto(columnHeaderInput, 1, 15);
+		// the component applies on blur/enter without autoupdate
+		applyFilter(columnHeaderInput);
+		flush();
 		await nextFrame();
 		assert.equal(omnitable.filters.age.min, -10);
 		assert.equal(omnitable.filters.age.max, 15);
 	});
 
 	test('filter comparision uses maximumFractionDigits; item age outside the range', async () => {
-		assert.isNull(columnHeaderInput._filterInput.min);
-		assert.isNull(columnHeaderInput._filterInput.max);
-
-		columnHeaderInput._filterInput = {
-			min: 46.75,
-			max: 46.76,
-		};
+		assert.deepEqual(inputValues(columnHeaderInput), [null, null]);
+		await typeInto(columnHeaderInput, 0, 46.75);
+		await typeInto(columnHeaderInput, 1, 46.76);
+		applyFilter(columnHeaderInput);
 		flush();
 		await nextFrame();
 
@@ -193,10 +213,9 @@ suite('number', () => {
 	});
 
 	test('filter comparision uses maximumFractionDigits, item age inside range', async () => {
-		columnHeaderInput._filterInput = {
-			min: 46.75,
-			max: 46.76,
-		};
+		await typeInto(columnHeaderInput, 0, 46.75);
+		await typeInto(columnHeaderInput, 1, 46.76);
+		applyFilter(columnHeaderInput);
 		flush();
 		await nextFrame();
 
@@ -266,15 +285,16 @@ suite('external values', () => {
 				`,
 				[{ age: 1 }, { age: 0 }, { age: 20 }],
 			),
-			column = omnitable.columns[0][columnSymbol],
 			columnHeaderInput = omnitable.shadowRoot.querySelector(
 				'cosmoz-omnitable-number-range-input',
 			);
-
-		column.autoupdate = true;
+		omnitable
+			.querySelector('cosmoz-omnitable-column-number')
+			.setAttribute('autoupdate', '');
 		await nextFrame();
 
-		columnHeaderInput.set('_filterInput.min', -1);
+		await typeInto(columnHeaderInput, 0, -1);
+		applyFilter(columnHeaderInput);
 		flush();
 		await nextFrame();
 

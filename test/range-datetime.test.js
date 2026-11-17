@@ -64,6 +64,28 @@ const data = [
 	],
 	rangeFixture = rangeAllFixture;
 
+// public drive for the header range input (see test/range.test.js): typing
+// through the cosmoz-input's inner input commits the value, a blur commits
+// the filter to the omnitable
+// the datetime header composites a cosmoz-datetime-input wrapping two
+// cosmoz-inputs (date part first, time part second)
+const inputsOf = (header) =>
+		[...header.shadowRoot.querySelectorAll('cosmoz-datetime-input')].flatMap(
+			(composite) => [...composite.shadowRoot.querySelectorAll('cosmoz-input')],
+		),
+	inputValues = (header) => inputsOf(header).map((input) => input.value),
+	typeInto = async (header, inputNo, value) => {
+		const input = inputsOf(header)[inputNo];
+		input.focus();
+		await nextFrame();
+		const inner = input.shadowRoot.querySelector('input, textarea');
+		inner.value = String(value);
+		inner.dispatchEvent(new Event('input', { bubbles: true }));
+		await nextFrame();
+	},
+	applyFilter = (header) =>
+		inputsOf(header).forEach((input) => input.dispatchEvent(new Event('blur')));
+
 suite('datetime', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable, columnHeaderInput;
@@ -83,17 +105,27 @@ suite('datetime', () => {
 				max: new Date(1999, 5, 24, 11, 33, 30),
 			},
 		});
+		polymerFlush();
 		await nextFrame();
-		assert.equal(columnHeaderInput._filterInput.min, '1970-01-02T02:00:00');
-		assert.equal(columnHeaderInput._filterInput.max, '1999-06-24T11:33:30');
+		await nextFrame();
+		assert.deepEqual(inputValues(columnHeaderInput), [
+			'1970-01-02',
+			'02:00:00',
+			'1999-06-24',
+			'11:33:30',
+		]);
 	});
 
 	test('changing _filterInput updates filter', async () => {
-		columnHeaderInput._filterInput = {
-			min: '1970-01-02T02:00:00',
-			max: '1999-06-24T11:33:30',
-		};
+		// the composite splits each datetime into a date and a time input
+		await typeInto(columnHeaderInput, 0, '1970-01-02');
+		await typeInto(columnHeaderInput, 1, '02:00:00');
+		await typeInto(columnHeaderInput, 2, '1999-06-24');
+		await typeInto(columnHeaderInput, 3, '11:33:30');
+		applyFilter(columnHeaderInput);
 		polymerFlush();
+		await nextFrame();
+		await nextFrame();
 		await nextFrame();
 		assert.equal(
 			omnitable.filters.datetime.min.getTime(),
@@ -106,8 +138,12 @@ suite('datetime', () => {
 	});
 
 	test('changing only _filterInput min updates filter min', async () => {
-		columnHeaderInput.set('_filterInput.min', '2014-06-24T11:33:30');
+		await typeInto(columnHeaderInput, 0, '2014-06-24');
+		await typeInto(columnHeaderInput, 1, '11:33:30');
+		applyFilter(columnHeaderInput);
 		polymerFlush();
+		await nextFrame();
+		await nextFrame();
 		await nextFrame();
 		assert.equal(
 			omnitable.filters.datetime.min.getTime(),

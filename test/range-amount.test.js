@@ -11,7 +11,6 @@ import {
 
 import '../src/cosmoz-omnitable-columns.ts';
 import '../src/cosmoz-omnitable.js';
-import { columnSymbol } from '../src/lib/use-dom-columns';
 import {
 	applySingleFilter,
 	getComparableValue,
@@ -79,6 +78,40 @@ const data = [
 
 sinonAssert.expose(assert, { prefix: '' });
 
+// public drive for the header range input (see test/range.test.js): typing
+// through the cosmoz-input's inner input commits the value, a blur commits
+// the filter to the omnitable
+// shared exchange-rate fixture: EUR is the pivot, the values are
+// illustrative cross rates used by the suites below
+const testRates = {
+	EUR: 1,
+	USD: 0.8169982616,
+	AUD: 0.6529827192,
+	SEK: 0.1019271438,
+	GBP: 1.1347079368,
+};
+const inputsOf = (header) => [
+		...header.shadowRoot.querySelectorAll('cosmoz-input'),
+	],
+	inputValues = (header) =>
+		inputsOf(header).map((input) => {
+			const v = input.value;
+			return typeof v === 'string' && v !== '' && !Number.isNaN(Number(v))
+				? Number(v)
+				: v;
+		}),
+	typeInto = async (header, inputNo, value) => {
+		const input = inputsOf(header)[inputNo];
+		input.focus();
+		await nextFrame();
+		const inner = input.shadowRoot.querySelector('input, textarea');
+		inner.value = String(value);
+		inner.dispatchEvent(new Event('input', { bubbles: true }));
+		await nextFrame();
+	},
+	applyFilter = (header) =>
+		inputsOf(header).forEach((input) => input.dispatchEvent(new Event('blur')));
+
 suite('amount', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);
 	const rates = undefined;
@@ -86,7 +119,7 @@ suite('amount', () => {
 
 	setup(async () => {
 		omnitable = await setupOmnitableFixture(rangeFixture, data);
-		column = omnitable.columns[1][columnSymbol];
+		column = omnitable.querySelector('cosmoz-omnitable-column-amount');
 		column.autoupdate = true;
 		await nextFrame();
 		columnHeaderInput = omnitable.shadowRoot.querySelector(
@@ -95,7 +128,11 @@ suite('amount', () => {
 	});
 
 	test('column is an instance of the correct class', () => {
-		assert.equal(column.constructor.name, 'OmnitableColumnAmount');
+		assert.isNotNull(
+			customElements.get('cosmoz-omnitable-column-amount'),
+			'the amount column element is registered',
+		);
+		assert.equal(omnitable.columns[1].name, 'amount');
 	});
 
 	test('toAmount returns a valid amount', () => {
@@ -325,17 +362,13 @@ suite('amount', () => {
 		});
 		flush();
 		await nextFrame();
-		assert.equal(columnHeaderInput._filterInput.min, 225);
-		assert.equal(columnHeaderInput._filterInput.max, 457);
+		assert.deepEqual(inputValues(columnHeaderInput), [225, 457]);
 	});
 
 	test('changing _filterInput updates filter', async () => {
-		assert.isNull(columnHeaderInput._filterInput.min);
-		assert.isNull(columnHeaderInput._filterInput.max);
-		columnHeaderInput._filterInput = {
-			min: 1,
-			max: 15,
-		};
+		assert.deepEqual(inputValues(columnHeaderInput), [null, null]);
+		await typeInto(columnHeaderInput, 0, 1);
+		await typeInto(columnHeaderInput, 1, 15);
 		flush();
 		await nextFrame();
 		assert.equal(omnitable.filters.amount.min.amount, 1);
@@ -343,28 +376,26 @@ suite('amount', () => {
 	});
 
 	test('changing only _filterInput min updates filter min', async () => {
-		columnHeaderInput.set('_filterInput.min', -2317);
+		await typeInto(columnHeaderInput, 0, -2317);
+		applyFilter(columnHeaderInput);
 		flush();
 		await nextFrame();
 		assert.equal(omnitable.filters.amount.min.amount, -8);
 	});
 
 	test('changing out of range _filterInput limits _filterInput', async () => {
-		assert.isNull(columnHeaderInput._filterInput.min);
-		assert.isNull(columnHeaderInput._filterInput.max);
+		assert.deepEqual(inputValues(columnHeaderInput), [null, null]);
 
-		columnHeaderInput._filterInput = {
-			min: 7,
-			max: 77,
-		};
+		await typeInto(columnHeaderInput, 0, 7);
+		await typeInto(columnHeaderInput, 1, 77);
+		applyFilter(columnHeaderInput);
 		flush();
 		await nextFrame();
-		assert.equal(columnHeaderInput._filterInput.min, 7);
-		assert.equal(columnHeaderInput._filterInput.max, 77);
+		assert.deepEqual(inputValues(columnHeaderInput), [7, 77]);
 		assert.equal(omnitable.filters.amount.min.amount, 7);
 		assert.equal(omnitable.filters.amount.max.amount, 77);
 
-		columnHeaderInput.set('_filterInput.min', 9992);
+		await typeInto(columnHeaderInput, 0, 9992);
 		flush();
 		await nextFrame();
 		assert.equal(omnitable.filters.amount.min.amount, 77);
@@ -436,9 +467,9 @@ suite('currency rates', () => {
 			`,
 			newData,
 		);
-		column = omnitable.columns[0][columnSymbol];
+		column = omnitable.querySelector('cosmoz-omnitable-column-amount');
 		column.autoupdate = true;
-		column.rates = rates;
+		column.rates = testRates;
 		columnHeaderInput = omnitable.shadowRoot.querySelector(
 			'cosmoz-omnitable-amount-range-input',
 		);
@@ -446,7 +477,11 @@ suite('currency rates', () => {
 	});
 
 	test('column is an instance of the correct class', () => {
-		assert.equal(column.constructor.name, 'OmnitableColumnAmount');
+		assert.isNotNull(
+			customElements.get('cosmoz-omnitable-column-amount'),
+			'the amount column element is registered',
+		);
+		assert.equal(omnitable.columns[0].name, 'amount');
 	});
 
 	test('getComparableValue with rates returns value', () => {
@@ -883,15 +918,9 @@ suite('default currency', () => {
 			`,
 			data,
 		);
-		column = omnitable.columns[0][columnSymbol];
+		column = omnitable.querySelector('cosmoz-omnitable-column-amount');
 		column.autoupdate = true;
-		column.rates = {
-			EUR: 1,
-			USD: 0.8169982616,
-			AUD: 0.6529827192,
-			SEK: 0.1019271438,
-			GBP: 1.1347079368,
-		};
+		column.rates = testRates;
 		await nextFrame();
 		columnHeaderInput = omnitable.shadowRoot.querySelector(
 			'cosmoz-omnitable-amount-range-input',
@@ -903,13 +932,9 @@ suite('default currency', () => {
 	});
 
 	test('changing _filterInput updates filter with rates', async () => {
-		// TODO: this test does not seem to match the test description
-		assert.isNull(columnHeaderInput._filterInput.min);
-		assert.isNull(columnHeaderInput._filterInput.max);
-		columnHeaderInput._filterInput = {
-			min: 105,
-			max: 150,
-		};
+		assert.deepEqual(inputValues(columnHeaderInput), [null, null]);
+		await typeInto(columnHeaderInput, 0, 105);
+		await typeInto(columnHeaderInput, 1, 150);
 		flush();
 		await nextFrame();
 		assert.equal(omnitable.filters.amount.min.amount, 105);
