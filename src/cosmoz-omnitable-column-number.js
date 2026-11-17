@@ -129,7 +129,7 @@ class OmnitableColumnNumber extends columnMixin(PolymerElement) {
 		},
 		{ filter },
 		setState,
-		source
+		source,
 	) {
 		return html`<cosmoz-omnitable-number-range-input
 			.title=${title}

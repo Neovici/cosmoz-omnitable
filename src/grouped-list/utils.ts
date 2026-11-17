@@ -110,12 +110,12 @@ const callFn = <T, A extends unknown[]>(
 const byReference = <T>(a: T, b: T): boolean => a === b;
 
 export {
-	symbols,
-	prepareData,
+	byReference,
+	callFn,
 	getItemState,
 	isExpanded,
 	isFolded,
 	isGroup,
-	callFn,
-	byReference,
+	prepareData,
+	symbols,
 };

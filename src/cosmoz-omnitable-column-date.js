@@ -104,7 +104,7 @@ class OmnitableColumnDate extends columnMixin(PolymerElement) {
 		{ title, min, max, limits, locale, disabledFiltering, headerAlign, align },
 		{ filter },
 		setState,
-		source
+		source,
 	) {
 		return html`<cosmoz-omnitable-date-range-input
 			.title=${title}

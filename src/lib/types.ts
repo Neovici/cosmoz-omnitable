@@ -43,17 +43,17 @@ export interface Column {
 	renderEditCell?: (
 		column: Column,
 		data: ItemRenderData,
-		onItemChange: (value: unknown) => void
+		onItemChange: (value: unknown) => void,
 	) => unknown;
 	renderGroup?: <GroupType = Record<string, unknown>>(
 		column: Column,
-		data: GroupRenderData<GroupType>
+		data: GroupRenderData<GroupType>,
 	) => unknown;
 	renderMini?: (column: Column, data: ItemRenderData) => unknown;
 	renderHeader?: (
 		column: Column,
 		data: HeaderRenderData,
-		setState: (s: unknown) => void
+		setState: (s: unknown) => void,
 	) => unknown;
 	cellTitleFn?: (column: Column, item: Item) => string;
 	headerTitleFn?: (column: Column) => string | undefined;
@@ -64,7 +64,7 @@ export interface Column {
 	deserializeFilter?: (column: Column, filter: unknown) => unknown;
 	getFilterFn?: (
 		column: Column,
-		filter: unknown
+		filter: unknown,
 	) => ((item: Item) => boolean) | undefined;
 	computeSource?: (column: Column, data: unknown) => unknown;
 	values?: unknown[];
@@ -180,12 +180,12 @@ export interface GroupRenderParams extends GroupedListGroupParams {
 export type HostRenderItem = (
 	item: IndexedItem,
 	index: number,
-	params: ItemRenderParams
+	params: ItemRenderParams,
 ) => unknown;
 
 /** Host-provided full group-row renderer, set as the `renderGroup` property. */
 export type HostRenderGroup = (
 	group: IndexedGroup,
 	index: number,
-	params: GroupRenderParams
+	params: GroupRenderParams,
 ) => unknown;

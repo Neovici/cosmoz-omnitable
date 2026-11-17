@@ -1,5 +1,5 @@
-import { fixture } from '@open-wc/testing';
 import { perform } from '@neovici/cfg/web/perform.js';
+import { fixture } from '@open-wc/testing';
 
 export const setupOmnitableFixture = async (omnitableFixture, data) => {
 	const omnitable = await fixture(omnitableFixture);

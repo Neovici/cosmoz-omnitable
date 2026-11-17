@@ -1,6 +1,6 @@
 import { useCallback, useState } from '@pionjs/pion';
-import { callFn, getItemState, ItemsState, ItemState } from './utils';
 import { Item } from '../lib/types';
+import { callFn, getItemState, ItemsState, ItemState } from './utils';
 
 export const useWeakState = () => {
 	const [wrapper, setState] = useState<[ItemsState]>(() => [new WeakMap()]),

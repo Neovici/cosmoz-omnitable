@@ -5,9 +5,9 @@ import {
 	setupOmnitableFixture,
 } from './helpers/utils';
 
-import '../src/cosmoz-omnitable.js';
 import '../src/cosmoz-omnitable-column-autocomplete.js';
 import '../src/cosmoz-omnitable-column.js';
+import '../src/cosmoz-omnitable.js';
 
 let omnitable;
 const data = [
@@ -75,9 +75,11 @@ const data = [
 
 suite('basic-read', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);
+
 	setup(() => {
 		location.hash = '#!/';
 	});
+
 	test('updates sortOn from url hash', async () => {
 		location.hash = '#!/#test-sortOn=id';
 		await instantiate();

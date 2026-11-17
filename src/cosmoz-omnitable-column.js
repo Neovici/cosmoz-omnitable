@@ -20,7 +20,7 @@ const onChange = (setState) => (event) =>
 			clearTimeout(state.t);
 			const t = setTimeout(
 				() => setState((state) => ({ ...state, filter: state.inputValue })),
-				1000
+				1000,
 			);
 			return { ...state, inputValue: event.target.value, t };
 		}),
@@ -94,7 +94,7 @@ class OmnitableColumn extends columnMixin(PolymerElement) {
 						?visible=${hasFilter(filter)}
 						light
 						@click=${resetFilter(setState)}
-					></cosmoz-clear-button>`
+					></cosmoz-clear-button>`,
 			)}
 		</cosmoz-input>`;
 	}

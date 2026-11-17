@@ -1,18 +1,17 @@
- 
 import { assert, html, nextFrame } from '@open-wc/testing';
 
-import {
-	ignoreResizeObserverLoopErrors,
-	setupOmnitableFixture,
-} from './helpers/utils';
+import { toLocalISOString } from '@neovici/cosmoz-utils/date';
 import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
+import { toDate } from '../src/lib/utils-date';
 import {
 	fromHashString,
 	toHashString,
 	toInputString,
 } from '../src/lib/utils-datetime';
-import { toLocalISOString } from '@neovici/cosmoz-utils/date';
-import { toDate } from '../src/lib/utils-date';
+import {
+	ignoreResizeObserverLoopErrors,
+	setupOmnitableFixture,
+} from './helpers/utils';
 
 import '../src/cosmoz-omnitable';
 

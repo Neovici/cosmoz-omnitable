@@ -9,7 +9,7 @@ import { rangeInputMixin } from './cosmoz-omnitable-range-input-mixin';
 import { polymerHauntedRender } from './polymer-haunted-render-mixin';
 
 class NumberRangeInput extends rangeInputMixin(
-	polymerHauntedRender(PolymerElement)
+	polymerHauntedRender(PolymerElement),
 ) {
 	static get properties() {
 		return {
@@ -90,7 +90,7 @@ class NumberRangeInput extends rangeInputMixin(
 							></cosmoz-input>
 						`,
 					})}
-				`
+				`,
 			)}
 		`;
 	}

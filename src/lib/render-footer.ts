@@ -12,7 +12,7 @@ interface RenderFooterParams {
 	columns: Column[];
 	selectedItems: Item[] | TAll;
 	setSelectedItems: (
-		items: Item[] | TAll | ((prev: Item[] | TAll) => Item[] | TAll)
+		items: Item[] | TAll | ((prev: Item[] | TAll) => Item[] | TAll),
 	) => void;
 	csvFilename?: string;
 	xlsxFilename?: string;
@@ -60,7 +60,7 @@ export const renderFooter = ({
 						columns as XlsxColumn[],
 						items,
 						xlsxFilename!,
-						xlsxSheetname!
+						xlsxSheetname!,
 					)}
 			>
 				${t('Save selected items as XLSX')}
@@ -77,7 +77,7 @@ export const renderFooter = ({
 		() =>
 			t('{count} selected item', {
 				count: selectedItems === All ? 0 : selectedItems.length,
-			})
+			}),
 	);
 
 	return html`<cosmoz-bottom-bar
@@ -100,14 +100,14 @@ export const renderFooter = ({
 							@click=${() => setSelectedItems(All)}
 						>
 							${t('Select all items')}
-						</span>`
+						</span>`,
 			)}
 		</slot>
 		<slot name="actions" id="actions"></slot>
 		<slot name="bottom-bar-toolbar" slot="bottom-bar-toolbar"></slot>
 		<slot name="bottom-bar-menu" slot="bottom-bar-menu"></slot>
 		${when(selectedItems !== All, () =>
-			renderExportMenu(selectedItems as Item[])
+			renderExportMenu(selectedItems as Item[]),
 		)}
 	</cosmoz-bottom-bar>`;
 };

@@ -66,7 +66,8 @@ export default css`
 		transform: scaleY(-1);
 	}
 	cosmoz-collapse[opened] + .heading {
-		box-shadow: inset 0px -1px 0px var(--cz-color-border-primary),
+		box-shadow:
+			inset 0px -1px 0px var(--cz-color-border-primary),
 			inset 0px 1px 0px var(--cz-color-border-primary);
 	}
 
@@ -159,7 +160,9 @@ export default css`
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		transition: background 0.3s ease, box-shadow 0.3s ease;
+		transition:
+			background 0.3s ease,
+			box-shadow 0.3s ease;
 
 		height: auto;
 	}
@@ -182,7 +185,7 @@ export default css`
 		transition: transform 0.3s ease;
 	}
 
-	.sg:not([data-on="desc"]) svg {
+	.sg:not([data-on='desc']) svg {
 		transform: scaleY(-1);
 	}
 `;
@@ -193,8 +196,9 @@ export const dropdown = css`
 			--cosmoz-omnitable-settings-color,
 			var(--cz-text-color, #101010)
 		);
-		--cosmoz-dropdown-box-shadow: 0 3px 4px 0 rgb(0 0 0 / 14%),
-			0 1px 8px 0 rgb(0 0 0 / 12%), 0 3px 3px -2px rgb(0 0 0 / 40%);
+		--cosmoz-dropdown-box-shadow:
+			0 3px 4px 0 rgb(0 0 0 / 14%), 0 1px 8px 0 rgb(0 0 0 / 12%),
+			0 3px 3px -2px rgb(0 0 0 / 40%);
 	}
 	cosmoz-dropdown {
 		outline: none;

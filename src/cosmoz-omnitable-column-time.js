@@ -117,7 +117,7 @@ class OmnitableColumnTime extends columnMixin(PolymerElement) {
 		},
 		{ filter },
 		setState,
-		source
+		source,
 	) {
 		return html`<cosmoz-omnitable-time-range-input
 			.title=${title}

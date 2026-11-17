@@ -60,7 +60,7 @@ export const useHeader = ({
 				headerColumns == null
 					? columns
 					: columns.filter((column) => headerColumns.includes(column.name)),
-			[columns, headerColumns]
+			[columns, headerColumns],
 		),
 		allSelected =
 			selectedItems === All ||
@@ -91,9 +91,9 @@ export const useHeader = ({
 					(column) =>
 						!!column &&
 						!!column.name &&
-						Object.keys(filterFunctions).includes(column.name)
+						Object.keys(filterFunctions).includes(column.name),
 				),
-			[filterFunctions, settings, collapsedColumns]
+			[filterFunctions, settings, collapsedColumns],
 		),
 		settingsConfig = useMemo(
 			() => ({
@@ -103,7 +103,7 @@ export const useHeader = ({
 				filters,
 				requestTween,
 			}),
-			[settingS, collapsedColumns, hasHiddenFilter, filters, requestTween]
+			[settingS, collapsedColumns, hasHiddenFilter, filters, requestTween],
 		);
 
 	return {
