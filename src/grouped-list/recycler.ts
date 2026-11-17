@@ -137,24 +137,20 @@ class PooledRecycler extends BaseAsyncDirective {
 		// the host is the SPACER inside the native scroller: it only carries
 		// the full scroll size; prevent flex-shrink from collapsing it
 		host.style.flexShrink = '0';
-		// viewport-sized clip LAYER excluded from native scroll, with a
-		// content-canvas inside that is moved once per pump with
-		// translate3d(-scrollTop) while its pooled rows stay transform-fixed
-		// at their data offsets. The clip must NOT be on the moving canvas:
-		// overflow clips in the element's LOCAL space, and rows translated to
-		// offsets beyond the viewport box would be cut off — so the static
-		// wrapper clips at the viewport while the tall canvas carries the row
-		// coordinate space (0..total).
+		// viewport-sized clip layer pinned INSIDE the scrolled subtree as a
+		// position: sticky child: the sticky displacement cancels the scroll
+		// displacement exactly once, so the content-canvas inside can keep
+		// moving once per pump with translate3d(-scrollTop) while its pooled
+		// rows stay transform-fixed at their data offsets - viewport row
+		// position stays offset - scrollTop and rows never see the scroll
+		// twice. The wrapper clips at the viewport while the tall canvas
+		// carries the row coordinate space (0..total).
 		const clip = document.createElement('div');
 		clip.className = 'glist-recycler-viewport';
-		clip.style.position = 'absolute';
+		clip.style.position = 'sticky';
+		clip.style.top = '0';
 		clip.style.overflow = 'hidden';
-		// touch/pen pans over the rows are forwarded by the pointer listeners;
-		// browser panning must not intercept the gesture first. Scoping is
-		// safe: the clip is sized to scroller.clientWidth (never the scrollbar
-		// strip), so native interaction with the scroller's own scrollbars
-		// stays available.
-		clip.style.touchAction = 'none';
+		clip.style.flex = 'none';
 		const canvas = document.createElement('div');
 		canvas.className = 'glist-recycler-canvas';
 		canvas.style.position = 'absolute';
@@ -199,49 +195,26 @@ class PooledRecycler extends BaseAsyncDirective {
 		}
 	}
 
-	// the clip wrapper must live in the WRAPPER that contains the scroller
-	// (a sibling of the scroller), never inside the scrolled subtree: rows
-	// in the scroller would natively scroll on top of the layer transform
-	// and double-count the offset (historical bug). Rows as scroller
-	// children at data offsets is precisely the model this replaces.
+	// the clip lives INSIDE the scrolled subtree as a position: sticky
+	// child of the host: the sticky displacement cancels the scroller's
+	// scroll displacement exactly once, so the canvas translate(-scrollTop)
+	// positions rows at (row offset - scrollTop) in the viewport, and all
+	// scrolling - touch, flick momentum, wheel, scroll keys - is native,
+	// driven by the scroller the browser already composites.
 	_attachCanvas() {
 		const clip = this._clip;
 		if (!clip) {
 			return;
 		}
-		const scroller = this._scroller;
-		if (!scroller) {
-			// inline (no-scroller) mode: the clip is the host's in-flow box
-			// (relative/100%/content-height, sized by _syncCanvasBox) and the
-			// page scrolls the host natively — no layer move, no input
-			// forwarding (the handlers would preventDefault the page scroll).
-			if (this._host && clip.parentElement !== this._host) {
-				this._host.appendChild(clip);
-			}
-			return;
+		if (this._host && clip.parentElement !== this._host) {
+			// idempotent: shared placement for inline and scroller modes
+			this._host.appendChild(clip);
 		}
-		const container = scroller.parentElement;
-		if (container && clip.parentElement !== container) {
-			container.appendChild(clip);
-		}
-		// the layer is above the scroller for pointer events, so wheel input
-		// must be forwarded (one application; preventDefault stops the
-		// native chain, which could otherwise scroll the page instead)
-		clip.addEventListener('wheel', this._onWheel, { passive: false });
-		// identical layer problem for keyboard and touch drags: scroll keys
-		// and touch pans must be forwarded to the scroller. Same lifecycle
-		// as wheel (identical function refs keep re-attachment dedupe-safe).
-		clip.addEventListener('keydown', this._onKeydown);
-		clip.addEventListener('pointerdown', this._onPointerDown);
-		clip.addEventListener('pointermove', this._onPointerMove);
-		clip.addEventListener('pointerup', this._onPointerEnd);
-		clip.addEventListener('pointercancel', this._onPointerEnd);
 	}
 
 	// keep the canvas box in sync with the scroller viewport (client sizes:
-	// never covers the scrollbar strip; offsets follow flex re-layouts of
-	// the wrapper, e.g. in-flow empty states). Returns true when the box
-	// changed (callers may need to re-measure the pool).
+	// never covers the scrollbar strip). Returns true when the box changed
+	// (callers may need to re-measure the pool).
 	_syncCanvasBox() {
 		const scroller = this._scroller;
 		const clip = this._clip;
@@ -249,213 +222,25 @@ class PooledRecycler extends BaseAsyncDirective {
 			return false;
 		}
 		if (!scroller) {
-			// inline mode: the clip is the host's full box (the rows are
-			// all rendered; the page scrolls the host itself)
+			// inline mode: the clip is the host's full in-flow box (the rows
+			// are all rendered; the page scrolls the host itself)
 			clip.style.position = 'relative';
-			clip.style.top = '0';
-			clip.style.left = '0';
 			clip.style.width = '100%';
 			clip.style.height = `${this._prefix[this._items.length] ?? 0}px`;
 			return true;
 		}
-		const top = scroller.offsetTop;
-		const left = scroller.offsetLeft;
 		const width = scroller.clientWidth;
 		const height = scroller.clientHeight;
-		if (
-			top === this._boxTop &&
-			left === this._boxLeft &&
-			width === this._boxWidth &&
-			height === this._boxHeight
-		) {
+		if (width === this._boxWidth && height === this._boxHeight) {
 			return false;
 		}
-		this._boxTop = top;
-		this._boxLeft = left;
 		this._boxWidth = width;
 		this._boxHeight = height;
-		clip.style.top = `${top}px`;
-		clip.style.left = `${left}px`;
+		clip.style.position = 'sticky';
+		clip.style.top = '0';
 		clip.style.width = `${width}px`;
 		clip.style.height = `${height}px`;
 		return true;
-	}
-
-	// the canvas layer sits above the scroller, so native wheel scrolling
-	// would chain past it to the page: forward once (preventDefault stops
-	// the native chain) and the scroller scrolls exactly one step. The
-	// scroller is NOT an ancestor of the canvas, so there is no native path
-	// that can double-apply the delta to it. ctrlKey (pinch zoom) is left
-	// to the browser.
-	_onWheel = (event: WheelEvent) => {
-		const scroller = this._scroller;
-		if (!scroller || event.ctrlKey) {
-			return;
-		}
-		event.preventDefault();
-		// delta units: 0 = pixels, 1 = lines (approximate the browser line
-		// height), 2 = pages
-		let unit = 1;
-		if (event.deltaMode === 1) {
-			unit = 40;
-		} else if (event.deltaMode === 2) {
-			unit = scroller.clientHeight;
-		}
-		if (event.deltaY !== 0) {
-			scroller.scrollTop += event.deltaY * unit;
-		}
-		if (event.deltaX !== 0) {
-			scroller.scrollLeft += event.deltaX * unit;
-		}
-	};
-
-	// KEYBOARD: focusable row cells live inside the clip, whose ancestor
-	// chain has no scrollable element, so browser-native scroll keys
-	// (Space, PageUp/PageDown, Home, End, ArrowUp/ArrowDown) would scroll
-	// the PAGE or do nothing. Forward the vertical keys exactly once:
-	// preventDefault stops the native chain and the scroller 'scroll'
-	// listener pumps the new window — no direct _pump call.
-	_onKeydown = (event: KeyboardEvent) => {
-		const scroller = this._scroller;
-		if (
-			!scroller ||
-			event.defaultPrevented ||
-			event.ctrlKey ||
-			event.altKey ||
-			event.metaKey
-		) {
-			return;
-		}
-		if (this._isInteractiveKeyTarget(event)) {
-			// Space and the arrows keep their native meaning on interactive/
-			// editable row parts (button/checkbox toggle, radio navigation,
-			// option/menu item activation, link activation, typing)
-			return;
-		}
-		// ArrowLeft/Right are column-tab navigation in omnitable: not captured
-		let delta: number | null = null;
-		let to: number | null = null;
-		switch (event.key) {
-			case 'ArrowUp':
-				delta = -40;
-				break;
-			case 'ArrowDown':
-				delta = 40;
-				break;
-			case 'PageUp':
-				delta = -Math.round(scroller.clientHeight * 0.9);
-				break;
-			case 'PageDown':
-				delta = Math.round(scroller.clientHeight * 0.9);
-				break;
-			case ' ':
-				delta = event.shiftKey ? -scroller.clientHeight : scroller.clientHeight;
-				break;
-			case 'Home':
-				to = 0;
-				break;
-			case 'End':
-				to = scroller.scrollHeight;
-				break;
-			default:
-				return;
-		}
-		event.preventDefault();
-		if (delta != null) {
-			scroller.scrollTop += delta;
-		} else if (to != null) {
-			scroller.scrollTop = to;
-		}
-	};
-
-	// Space/arrows must not be captured when the keypress starts on an
-	// interactive or editable part of a row: those keys keep their native
-	// meaning there (toggle, activation, radio navigation, typing).
-	_isInteractiveKeyTarget(event: KeyboardEvent) {
-		const target = event.composedPath()[0] ?? event.target;
-		if (!(target instanceof Element)) {
-			return false;
-		}
-		if (target instanceof HTMLElement && target.isContentEditable) {
-			return true;
-		}
-		return target.matches(
-			'button, input, select, textarea, a[href], [contenteditable], [role="checkbox"], [role="option"], [role="radio"], [role="menuitem"]',
-		);
-	}
-
-	// POINTER (touch/pen): rows live inside the clip whose chain has no
-	// scrollable ancestor, so a native touch pan has nothing to scroll —
-	// forward the drag 1:1 to the scroller while the pointer is down, with
-	// no momentum. Mouse is excluded (native drag/selection semantics);
-	// preventDefault applies to the MOVES only: suppressing pointerdown
-	// would kill the compat click path taps rely on, and pointercancel
-	// (e.g. native text selection taking over) ends the drag cleanly.
-	_activePointer: number | null = null;
-	_dragStartX = 0;
-	_dragStartY = 0;
-	_dragStartScrollTop = 0;
-	_dragStartScrollLeft = 0;
-	_dragScrolling = false;
-
-	_onPointerDown = (event: PointerEvent) => {
-		if (this._activePointer != null) {
-			// a second pointer arrived during a drag (two-finger gesture):
-			// release the first, let the gesture proceed unmanaged
-			this._endPointerDrag();
-			return;
-		}
-		if (event.pointerType !== 'touch' && event.pointerType !== 'pen') {
-			return;
-		}
-		const scroller = this._scroller;
-		if (!scroller) {
-			return;
-		}
-		this._activePointer = event.pointerId;
-		this._dragStartX = event.clientX;
-		this._dragStartY = event.clientY;
-		this._dragStartScrollTop = scroller.scrollTop;
-		this._dragStartScrollLeft = scroller.scrollLeft;
-		this._dragScrolling = false;
-	};
-
-	_onPointerMove = (event: PointerEvent) => {
-		if (event.pointerId !== this._activePointer) {
-			return;
-		}
-		const scroller = this._scroller;
-		if (!scroller) {
-			return;
-		}
-		const dx = event.clientX - this._dragStartX;
-		const dy = event.clientY - this._dragStartY;
-		if (!this._dragScrolling) {
-			// dead zone ~2px: jitter and taps must not scroll anything
-			if (Math.abs(dx) < 2 && Math.abs(dy) < 2) {
-				return;
-			}
-			this._dragScrolling = true;
-		}
-		event.preventDefault();
-		// natural drag direction: the content follows the finger (drag up =
-		// scroll down); 1:1 always derived from the drag anchor, never
-		// accumulated, so it cannot drift
-		scroller.scrollTop = this._dragStartScrollTop - dy;
-		scroller.scrollLeft = this._dragStartScrollLeft - dx;
-	};
-
-	_onPointerEnd = (event: PointerEvent) => {
-		if (event.pointerId === this._activePointer) {
-			// no preventDefault: the compat click must still be delivered
-			// for taps, and native selection behavior survives
-			this._endPointerDrag();
-		}
-	};
-
-	_endPointerDrag() {
-		this._activePointer = null;
-		this._dragScrolling = false;
 	}
 
 	// pump synchronously on the first scroll event of a burst so the frame
@@ -483,8 +268,8 @@ class PooledRecycler extends BaseAsyncDirective {
 			this._items.length,
 			Math.max(
 				MIN_POOL,
-				Math.ceil(viewport / this._rowBudget()) + OVERSCAN_ROWS * 2,
-			),
+				Math.ceil(viewport / this._rowBudget()) + OVERSCAN_ROWS * 2
+			)
 		);
 		this._ensurePool(wanted);
 	}
@@ -492,7 +277,7 @@ class PooledRecycler extends BaseAsyncDirective {
 	_ensurePool(wanted: number) {
 		while (this._pool.length < wanted) {
 			const el = document.createElement(
-				'cosmoz-grouped-list-row',
+				'cosmoz-grouped-list-row'
 			) as GroupedListRowHost;
 			el.style.position = 'absolute';
 			el.style.left = '0';
@@ -628,8 +413,8 @@ class PooledRecycler extends BaseAsyncDirective {
 			this._prefix.push(
 				(this._prefix[i] ?? 0) +
 					(this._measured[i]
-						? (this._heights[i] ?? DEFAULT_HEIGHT)
-						: this._avgRowHeight),
+						? this._heights[i] ?? DEFAULT_HEIGHT
+						: this._avgRowHeight)
 			);
 		}
 		if (this._host) {
@@ -736,8 +521,8 @@ class PooledRecycler extends BaseAsyncDirective {
 			? n
 			: Math.min(
 					n - first,
-					Math.ceil(viewport / this._rowBudget()) + OVERSCAN_ROWS * 2,
-				);
+					Math.ceil(viewport / this._rowBudget()) + OVERSCAN_ROWS * 2
+			  );
 		const last = first + span - 1;
 		this._ensurePool(span);
 
@@ -833,10 +618,10 @@ class PooledRecycler extends BaseAsyncDirective {
 			: Math.min(
 					this._firstIndex(
 						(this._scroller?.scrollTop ?? 0) +
-							(this._scroller?.clientHeight ?? 0),
+							(this._scroller?.clientHeight ?? 0)
 					) - 1,
-					this._items.length - 1,
-				);
+					this._items.length - 1
+			  );
 		{
 			const range = { first: firstVis, last: Math.max(lastVis, firstVis) };
 			const prev = this._visibilityRange;
@@ -876,7 +661,7 @@ class PooledRecycler extends BaseAsyncDirective {
 			}
 		}
 		const allTail = rebounds.every(
-			(slot) => (slot.bound ?? maxStill) > maxStill,
+			(slot) => (slot.bound ?? maxStill) > maxStill
 		);
 		const allHead =
 			stillBound.size > 0 &&
@@ -938,13 +723,13 @@ class PooledRecycler extends BaseAsyncDirective {
 				continue;
 			}
 			const candidates = Array.from(
-				slot.el.querySelectorAll<HTMLElement>(selector),
+				slot.el.querySelectorAll<HTMLElement>(selector)
 			);
 			const match =
 				candidates.find(
 					(c) =>
 						c.tagName === previous.tagName &&
-						classes.every((cl) => c.classList.contains(cl)),
+						classes.every((cl) => c.classList.contains(cl))
 				) ??
 				(classes.length === 0 && candidates[0]) ??
 				null;
@@ -988,7 +773,7 @@ class PooledRecycler extends BaseAsyncDirective {
 
 	_allocateSlot(): Slot {
 		const el = document.createElement(
-			'cosmoz-grouped-list-row',
+			'cosmoz-grouped-list-row'
 		) as GroupedListRowHost;
 		el.style.position = 'absolute';
 		el.style.left = '0';
@@ -1031,7 +816,7 @@ class PooledRecycler extends BaseAsyncDirective {
 		slot.wrapper = ((item: Item) =>
 			this._renderRow(
 				item,
-				slot.bound as number,
+				slot.bound as number
 			)) as GroupedListRowHost['renderFn'];
 		slot.el.renderFn = slot.wrapper;
 		// transform-fixed at the data offset: written ONLY here (bind time)
@@ -1053,13 +838,6 @@ class PooledRecycler extends BaseAsyncDirective {
 		}
 		this._ro?.disconnect();
 		this._scroller?.removeEventListener('scroll', this._onScroll);
-		this._clip?.removeEventListener('wheel', this._onWheel);
-		this._clip?.removeEventListener('keydown', this._onKeydown);
-		this._clip?.removeEventListener('pointerdown', this._onPointerDown);
-		this._clip?.removeEventListener('pointermove', this._onPointerMove);
-		this._clip?.removeEventListener('pointerup', this._onPointerEnd);
-		this._clip?.removeEventListener('pointercancel', this._onPointerEnd);
-		this._endPointerDrag();
 	}
 
 	reconnected() {
