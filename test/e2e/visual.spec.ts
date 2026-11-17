@@ -26,7 +26,7 @@ const settleRows = async (page: Page) => {
 		let prev = state();
 		for (let i = 0; i < 50; i++) {
 			await new Promise((resolve) =>
-				requestAnimationFrame(() => requestAnimationFrame(resolve))
+				requestAnimationFrame(() => requestAnimationFrame(resolve)),
 			);
 			const cur = state();
 			if (cur === prev) {
@@ -54,13 +54,28 @@ const settleCapture = async (page: Page, table: Locator) => {
 	throw new Error('table render never settled to a stable screenshot');
 };
 
-const open = async (page: Page) => {
-	await page.goto(
-		'iframe.html?id=visual-cosmozomnitable--hierarchy&viewMode=story'
-	);
+type OpenOptions = {
+	id?: string;
+	scrollTop?: number;
+};
+
+const open = async (
+	page: Page,
+	{ id = 'visual-cosmozomnitable--hierarchy', scrollTop = 0 }: OpenOptions = {},
+) => {
+	await page.goto(`iframe.html?id=${id}&viewMode=story`);
 	const table = page.locator('cosmoz-omnitable').first();
 	await expect(page.locator('cosmoz-omnitable-item-row').first()).toBeVisible();
 	await settleRows(page);
+	if (scrollTop > 0) {
+		await page
+			.locator('.tableContent-scroller')
+			.first()
+			.evaluate((el, top) => {
+				el.scrollTop = top;
+			}, scrollTop);
+		await settleRows(page);
+	}
 	await settleCapture(page, table);
 };
 
@@ -110,5 +125,29 @@ test.describe('omnitable visual', () => {
 		await expect(page.locator('.tableContent-empty')).toBeVisible();
 		await page.mouse.move(0, 0);
 		await expect(table(page)).toHaveScreenshot('filter-empty.png');
+	});
+
+	test('grouped, one group folded', async ({ page }) => {
+		await open(page, { id: 'visual-cosmozomnitable--grouped' });
+		await page.locator('.groupRow .expand').first().click();
+		await page.mouse.move(0, 0);
+		await settleRows(page);
+		await settleCapture(page, table(page));
+		await expect(table(page)).toHaveScreenshot('grouped.png');
+	});
+
+	test('wide', async ({ page }) => {
+		await open(page, { id: 'visual-cosmozomnitable--wide' });
+		await page.mouse.move(0, 0);
+		await expect(table(page)).toHaveScreenshot('wide.png');
+	});
+
+	test('tall rows, captured mid-list', async ({ page }) => {
+		await open(page, {
+			id: 'visual-cosmozomnitable--tall-rows-scrolled',
+			scrollTop: 900,
+		});
+		await page.mouse.move(0, 0);
+		await expect(table(page)).toHaveScreenshot('tall-rows-scrolled.png');
 	});
 });
