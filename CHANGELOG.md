@@ -1,3 +1,15 @@
+## 19.5.4
+
+### Patch Changes
+
+- 20e9064: Draw a hairline under the header and between rows again, so rows are easy to follow across wide tables.
+
+## 19.5.3
+
+### Patch Changes
+
+- 052e8d7: Always show row selection checkboxes instead of only on row hover, so users can see that rows are selectable.
+
 ## 19.5.2
 
 ### Patch Changes

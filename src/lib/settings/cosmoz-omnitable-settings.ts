@@ -29,7 +29,7 @@ interface SettingsUiConfigExtended extends SettingsUiConfig {
 	setOpened: (
 		opened:
 			| Record<string, boolean>
-			| ((prev: Record<string, boolean>) => Record<string, boolean>)
+			| ((prev: Record<string, boolean>) => Record<string, boolean>),
 	) => void;
 }
 
@@ -114,7 +114,7 @@ const renderItem =
 	};
 
 const SettingsUI = (
-	host: HTMLElement & { config: SettingsUiConfigExtended }
+	host: HTMLElement & { config: SettingsUiConfigExtended },
 ) => {
 	const {
 		settings,
@@ -208,13 +208,13 @@ const SettingsUI = (
 					>
 						${t('Save')}
 					</cosmoz-button>
-				</div>`
+				</div>`,
 		)}`;
 };
 
 customElements.define(
 	'cosmoz-omnitable-settings-ui',
-	component(SettingsUI, { styleSheets: [sheet(style)] })
+	component(SettingsUI, { styleSheets: [sheet(style)] }),
 );
 
 const Settings = ({ config, newLayout }: SettingsProps) => html`
@@ -231,7 +231,7 @@ const Settings = ({ config, newLayout }: SettingsProps) => html`
 						width: '20',
 						height: '20',
 						styles: 'color: var(--cz-color-text-primary)',
-					})}`
+					})}`,
 			)}
 			${when(config?.badge, () => html`<div class="badge"></div>`)}
 		</div>
@@ -244,5 +244,5 @@ const Settings = ({ config, newLayout }: SettingsProps) => html`
 
 customElements.define(
 	'cosmoz-omnitable-settings',
-	component(Settings, { styleSheets: [sheet(dropdownStyle)] })
+	component(Settings, { styleSheets: [sheet(dropdownStyle)] }),
 );

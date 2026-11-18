@@ -11,7 +11,7 @@ const data = Array.from({ length: 20 }, (_, i) => ({
 	// its own styles.
 	rowMenu = (items) => html`
 		<style>
-			[role="menuitem"] {
+			[role='menuitem'] {
 				display: block;
 				width: 100%;
 				padding: 6px 8px;
@@ -23,7 +23,7 @@ const data = Array.from({ length: 20 }, (_, i) => ({
 				text-align: start;
 				cursor: pointer;
 			}
-			[role="menuitem"]:is(:hover, :focus-visible) {
+			[role='menuitem']:is(:hover, :focus-visible) {
 				background: var(--cz-color-bg-secondary, #f2f4f7);
 				outline: none;
 			}
@@ -42,7 +42,7 @@ const data = Array.from({ length: 20 }, (_, i) => ({
 					@click=${() => action(label)(items.map((item) => item.name))}
 				>
 					${label}
-				</button>`
+				</button>`,
 		)}
 	`;
 

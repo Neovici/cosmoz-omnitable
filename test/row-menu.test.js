@@ -25,7 +25,7 @@ const activeElement = (root = document) =>
 				bubbles: true,
 				composed: true,
 				cancelable: true,
-			})
+			}),
 		),
 	openMenu = async (row) => {
 		rightClick(row.querySelector('cosmoz-omnitable-item-row'));
@@ -40,7 +40,7 @@ const activeElement = (root = document) =>
 					value-path="name"
 				></cosmoz-omnitable-column>
 			</cosmoz-omnitable>`,
-			generateTableDemoData(5, 5, 25)
+			generateTableDemoData(5, 5, 25),
 		);
 		await rowVisible();
 		return omnitable;
@@ -83,7 +83,7 @@ suite('row menu', () => {
 				await page.mouse.click(x, y, { button: 'right' });
 			},
 			x,
-			y
+			y,
 		);
 		await nextFrame();
 
@@ -143,7 +143,7 @@ suite('row menu', () => {
 
 		assert.isTrue(
 			menu(omnitable).querySelector('[role=menuitem]') === activeElement(),
-			'the first item has focus'
+			'the first item has focus',
 		);
 	});
 
@@ -189,7 +189,7 @@ suite('row menu: custom renderItem', () => {
 				button.addEventListener('click', (e) => this.onRowMenu(e));
 				this.attachShadow({ mode: 'open' }).append(button);
 			}
-		}
+		},
 	);
 
 	let omnitable, calls;
@@ -218,14 +218,14 @@ suite('row menu: custom renderItem', () => {
 					value-path="name"
 				></cosmoz-omnitable-column>
 			</cosmoz-omnitable>`,
-			generateTableDemoData(5, 5, 25)
+			generateTableDemoData(5, 5, 25),
 		);
 		await perform(async ({ page, expect }) => {
 			await expect(page.locator('row-menu-test-row').nth(2)).toBeAttached();
 		});
 	});
 
-	test('a button in the row\'s shadow root opens the menu for its row', async () => {
+	test("a button in the row's shadow root opens the menu for its row", async () => {
 		const row = omnitable.shadowRoot.querySelectorAll('row-menu-test-row')[1];
 
 		trigger(1).click();
@@ -260,7 +260,7 @@ suite('row menu: custom renderItem', () => {
 						await page.mouse.click(x, y);
 					},
 					box.left + box.width / 2,
-					box.top + box.height / 2
+					box.top + box.height / 2,
 				);
 
 		await click();

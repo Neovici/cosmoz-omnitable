@@ -79,7 +79,7 @@ class OmnitableColumnList extends listColumnMixin(columnMixin(PolymerElement)) {
 			.onText=${onText(setState)}
 			>${when(
 				column.loading,
-				() => html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`
+				() => html`<cosmoz-spinner slot="suffix"></cosmoz-spinner>`,
 			)}</cosmoz-autocomplete-ui
 		>`;
 	}

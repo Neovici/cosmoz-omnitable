@@ -5,8 +5,7 @@ import type { Column, GetPath } from './types';
 export const columnSymbol: unique symbol = Symbol('column');
 
 export interface DomColumn
-	extends HTMLElement,
-		Omit<Column, 'title' | 'hidden'> {
+	extends HTMLElement, Omit<Column, 'title' | 'hidden'> {
 	isOmnitableColumn: boolean;
 	hidden: boolean;
 	__ownChange?: boolean;
@@ -38,7 +37,7 @@ const verifyColumnSetup = (columns: DomColumn[]): boolean => {
 		// eslint-disable-next-line no-console
 		console.error(
 			'The name attribute needs to be set on all columns! Missing on column',
-			column
+			column,
 		);
 	});
 
@@ -52,7 +51,7 @@ const verifyColumnSetup = (columns: DomColumn[]): boolean => {
 		// eslint-disable-next-line no-console
 		console.error(
 			'The name attribute needs to be unique among all columns! Not unique on column',
-			column
+			column,
 		);
 	});
 	return ok;
@@ -60,7 +59,7 @@ const verifyColumnSetup = (columns: DomColumn[]): boolean => {
 
 const normalizeColumn = (
 	column: DomColumn,
-	disabledFiltering?: boolean
+	disabledFiltering?: boolean,
 ): NormalizedColumn => {
 	const valuePath: GetPath = column.valuePath ?? column.name!;
 
@@ -162,7 +161,7 @@ const collectDomColumns = (assignedElements: Node[]): DomColumn[] => {
 const normalizeColumns = (
 	domColumns: DomColumn[],
 	enabledColumns: string[] | undefined,
-	disabledFiltering?: boolean
+	disabledFiltering?: boolean,
 ): NormalizedColumn[] => {
 	const columns = Array.isArray(enabledColumns)
 		? domColumns.filter((column) => enabledColumns.includes(column.name!))
@@ -178,7 +177,7 @@ interface UseDOMColumnsParams {
 
 export const useDOMColumns = (
 	host: HTMLElement,
-	{ enabledColumns, disabledFiltering }: UseDOMColumnsParams
+	{ enabledColumns, disabledFiltering }: UseDOMColumnsParams,
 ): NormalizedColumn[] => {
 	const [columns, setColumns] = useState<NormalizedColumn[]>([]);
 
@@ -194,7 +193,7 @@ export const useDOMColumns = (
 				const added = current.filter((n) => !previous.includes(n));
 				const removed = previous.filter((n) => !current.includes(n));
 				const columnsChanged = [...added, ...removed].some(
-					(element) => (element as Partial<DomColumn>).isOmnitableColumn
+					(element) => (element as Partial<DomColumn>).isOmnitableColumn,
 				);
 
 				previous = current;
@@ -208,15 +207,15 @@ export const useDOMColumns = (
 				normalizeColumns(
 					collectDomColumns(current),
 					enabledColumns,
-					disabledFiltering
-				)
+					disabledFiltering,
+				),
 			);
 		};
 
 		const scheduleUpdate = (ev?: Event) => {
 			cancelAnimationFrame(sched!);
 			sched = requestAnimationFrame(
-				update(ev?.type === 'cosmoz-column-prop-changed')
+				update(ev?.type === 'cosmoz-column-prop-changed'),
 			);
 		};
 

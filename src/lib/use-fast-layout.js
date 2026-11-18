@@ -47,7 +47,7 @@ export const useFastLayout = ({
 		// the set (frozen behavior), else the headerColumns writer wins
 		layoutColumns = hasMiniColumn
 			? [miniColumn.name]
-			: host.headerColumns ?? null,
+			: (host.headerColumns ?? null),
 		layout = useLayout({
 			canvasWidth,
 			groupOnColumn,
@@ -60,12 +60,12 @@ export const useFastLayout = ({
 				(column, index) =>
 					layout[index] == null &&
 					column.name !== groupOnColumn?.name &&
-					!column.disabled
+					!column.disabled,
 			)
 			.map((column) => column.name),
 		collapsedColumns = useMemo(
 			() => collapsedNames.map((name) => columns.find((c) => c.name === name)),
-			[columns, collapsedNames.join()]
+			[columns, collapsedNames.join()],
 		);
 
 	// Tween only runs briefly for direct column interactions (show/hide,
@@ -73,7 +73,7 @@ export const useFastLayout = ({
 	const [tweenSpeed, setTweenSpeed] = useState(1),
 		requestTween = useCallback(
 			() => setTweenSpeed(resizeSpeedFactor ?? 1.9),
-			[resizeSpeedFactor]
+			[resizeSpeedFactor],
 		),
 		onConverge = useCallback(() => setTweenSpeed(1), []);
 
@@ -85,7 +85,7 @@ export const useFastLayout = ({
 			const layoutCss = toCss(tweenedlayout, meta.columns);
 			styleSheet.replaceSync(layoutCss);
 		},
-		onConverge
+		onConverge,
 	);
 
 	useResizableColumns({

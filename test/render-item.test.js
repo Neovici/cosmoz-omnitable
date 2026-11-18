@@ -43,7 +43,7 @@ const column = {
 suite('render-item renderers', () => {
 	test('renderItem', async () => {
 		const el = await fixture(
-			html`<div>${renderItem(item, 7, itemParams)}</div>`
+			html`<div>${renderItem(item, 7, itemParams)}</div>`,
 		);
 		await expect(el).to.equalSnapshot();
 	});
@@ -56,13 +56,13 @@ suite('render-item renderers', () => {
 					...itemParams,
 					toggleCollapse: () => toggles++,
 				})}
-			</div>`
+			</div>`,
 		);
 		el.querySelector('cosmoz-button.expand').click();
 		assert.equal(toggles, 1);
 		assert.equal(
 			el.querySelector('cosmoz-button.expand').getAttribute('aria-label'),
-			'Expand or collapse'
+			'Expand or collapse',
 		);
 	});
 
@@ -75,7 +75,7 @@ suite('render-item renderers', () => {
 					toggleFold() {},
 					groupOnColumn: column,
 				})}
-			</div>`
+			</div>`,
 		);
 		await expect(el).to.equalSnapshot();
 	});
@@ -112,7 +112,7 @@ suite('renderItem on the omnitable', () => {
 						></cosmoz-omnitable-column>
 					</cosmoz-omnitable>
 				`,
-				generateTableDemoData(10, 11, 25)
+				generateTableDemoData(10, 11, 25),
 			);
 
 		await nextFrame();
@@ -122,7 +122,7 @@ suite('renderItem on the omnitable', () => {
 		assert.equal(
 			row.getAttribute('data-index'),
 			'0',
-			'first row gets the visible-data index'
+			'first row gets the visible-data index',
 		);
 		assert.isFalse(omnitable.hasAttribute('mini'), 'mini stays dormant');
 		assert.exists(row.querySelector('[data-select]'), 'override renders');
@@ -147,7 +147,7 @@ suite('renderItem on the omnitable', () => {
 		await nextFrame();
 		assert.exists(
 			omnitable.shadowRoot.querySelector('cosmoz-omnitable-item-row'),
-			'null restores the built-in row'
+			'null restores the built-in row',
 		);
 	});
 
@@ -161,7 +161,7 @@ suite('renderItem on the omnitable', () => {
 					></cosmoz-omnitable-column>
 				</cosmoz-omnitable>
 			`,
-			generateTableDemoData(10, 11, 25)
+			generateTableDemoData(10, 11, 25),
 		);
 
 		assert.isTrue(omnitable.hasAttribute('compact'), '[compact] reflected');

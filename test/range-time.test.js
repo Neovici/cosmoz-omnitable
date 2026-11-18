@@ -1,21 +1,20 @@
- 
 import { assert, html, nextFrame } from '@open-wc/testing';
 
+import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
 import {
 	ignoreResizeObserverLoopErrors,
 	setupOmnitableFixture,
 } from './helpers/utils';
-import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
 
+import { toLocalISOString } from '@neovici/cosmoz-utils/date';
 import '../src/cosmoz-omnitable';
+import { columnSymbol } from '../src/lib/use-dom-columns';
 import {
 	getComparableValue,
 	toDate,
 	toHashString,
 	toInputString,
 } from '../src/lib/utils-time';
-import { toLocalISOString } from '@neovici/cosmoz-utils/date';
-import { columnSymbol } from '../src/lib/use-dom-columns';
 
 const data = [
 		{

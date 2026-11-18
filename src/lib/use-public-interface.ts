@@ -93,7 +93,7 @@ const mkNapi = (host: UsePublicInterfaceHost) => {
 
 type SetFilterState = (
 	name: string,
-	state: unknown | ((prev: unknown) => unknown)
+	state: unknown | ((prev: unknown) => unknown),
 ) => void;
 
 // Flips in the same render as the hash state sync of the saved sort and group, so
@@ -131,7 +131,7 @@ export const usePublicInterface = ({
 
 	const [selectedItems, setSelectedItems] = useProperty<TSelection<Item>>(
 		'selectedItems',
-		[]
+		[],
 	);
 
 	useImperativeApi(api, Object.values(api));
@@ -155,7 +155,7 @@ export const usePublicInterface = ({
 	useNotifyProperty('visibleData', visibleData);
 	useNotifyProperty(
 		'sortedFilteredGroupedItems',
-		api.sortedFilteredGroupedItems
+		api.sortedFilteredGroupedItems,
 	);
 	useNotifyProperty('sortOn', api.sortOn);
 	useNotifyProperty('descending', api.descending);
@@ -168,9 +168,9 @@ export const usePublicInterface = ({
 			Object.fromEntries(
 				Object.entries(filters)
 					.filter(([, { filter }]) => filter !== undefined)
-					.map(([key, { filter }]) => [key, filter])
+					.map(([key, { filter }]) => [key, filter]),
 			),
-		[filters]
+		[filters],
 	);
 
 	useNotifyProperty('filters', filterValues, Object.values(filterValues));

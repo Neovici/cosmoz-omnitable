@@ -1,5 +1,5 @@
 import { useState } from '@pionjs/pion';
-import { useTrackSize, LAYOUT_OFFSET } from './use-track-size';
+import { LAYOUT_OFFSET, useTrackSize } from './use-track-size';
 
 export const useCanvasWidth = (host: HTMLElement) => {
 	const [canvasWidth, setCanvasWidth] = useState(

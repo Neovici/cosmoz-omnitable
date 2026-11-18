@@ -29,7 +29,7 @@ export const checkbox = css`
 	}
 
 	.checkbox:checked::before {
-		content: "";
+		content: '';
 		position: absolute;
 		box-sizing: content-box;
 		width: 4px;
@@ -42,7 +42,7 @@ export const checkbox = css`
 	}
 
 	.checkbox::after {
-		content: "";
+		content: '';
 		display: block;
 		bottom: -5px;
 		left: -5px;
@@ -59,7 +59,7 @@ export const checkbox = css`
 	}
 
 	.checkbox:indeterminate::before {
-		content: "";
+		content: '';
 		position: absolute;
 		width: 8px;
 		height: 2px;
@@ -105,6 +105,21 @@ export default css`
 		display: flex;
 		align-items: flex-end;
 		padding-inline: calc(var(--cz-spacing) * 2);
+	}
+
+	/* Hairline rules on pseudo-elements stay straight under the rounded
+	   row fills. */
+	.header::after,
+	.itemRow::after {
+		content: '';
+		position: absolute;
+		inset-inline: 0;
+		bottom: 0;
+		border-bottom: 1px solid var(--cz-color-border-secondary);
+		pointer-events: none;
+	}
+	.header::after {
+		inset-inline: calc(var(--cz-spacing) * 2);
 	}
 
 	/* Column titles sit a step below the data they head. The header inputs
@@ -307,9 +322,10 @@ export default css`
 		flex-direction: column;
 	}
 
-	/* Rows sit inside the table's edge with no rules between them: a hover
-	   or a selection reads as one rounded fill. */
+	/* Rows sit inside the table's edge; a hover or a selection reads as one
+	   rounded fill. */
 	.itemRow {
+		position: relative;
 		margin-inline: calc(var(--cz-spacing) * 2);
 		border-radius: var(--cz-radius-md);
 		font-variant-numeric: tabular-nums;
@@ -429,15 +445,15 @@ export default css`
 		text-align: right;
 	}
 
-	.cell[align="right"] {
+	.cell[align='right'] {
 		text-align: right;
 	}
 
-	.cell[align="left"] {
+	.cell[align='left'] {
 		text-align: left;
 	}
 
-	.cell[align="center"] {
+	.cell[align='center'] {
 		text-align: center;
 	}
 
@@ -508,17 +524,12 @@ export default css`
 
 	${checkbox}
 
-	/* Row controls wait for the pointer, so the list reads as data. Once
-	   anything is selected, every checkbox shows. */
 	@media (hover: hover) {
-		.itemRow .checkbox:not(:checked),
 		.itemRow cosmoz-button.expand:not([aria-expanded]) {
 			opacity: 0;
 			transition: opacity 120ms;
 		}
-		.itemRow:is(:hover, :focus-within) .checkbox,
-		.itemRow:is(:hover, :focus-within) cosmoz-button.expand,
-		.mainContainer:has(cosmoz-bottom-bar[active]) .itemRow .checkbox {
+		.itemRow:is(:hover, :focus-within) cosmoz-button.expand {
 			opacity: 1;
 		}
 	}
@@ -610,8 +621,8 @@ export default css`
 	.sg[data-on]:not(cosmoz-button) {
 		color: var(--cz-color-text-primary);
 	}
-	cosmoz-button.sg:not([data-on="desc"])::part(button),
-	.sg:not([data-on="desc"]):not(cosmoz-button) {
+	cosmoz-button.sg:not([data-on='desc'])::part(button),
+	.sg:not([data-on='desc']):not(cosmoz-button) {
 		transform: scaleY(-1);
 	}
 	.cell:hover cosmoz-button.sg::part(button),
@@ -662,6 +673,10 @@ export default css`
 	:host(:is([mini], [compact])) .header {
 		padding-left: var(--checkbox-offset);
 		justify-content: space-between;
+	}
+
+	:host([mini]) .itemRow::after {
+		display: none;
 	}
 
 	:host([mini]) .itemRow {
@@ -720,10 +735,8 @@ export default css`
 		border: 0;
 		border-radius: var(--cz-radius-lg);
 		background: var(--cz-color-bg-primary);
-		box-shadow: var(
-				--cz-shadow-raised,
-				0 0 0 1px var(--cz-color-border-secondary)
-			),
+		box-shadow:
+			var(--cz-shadow-raised, 0 0 0 1px var(--cz-color-border-secondary)),
 			var(--cz-shadow-lg);
 		color: var(--cz-color-text-primary);
 		font-family: inherit;

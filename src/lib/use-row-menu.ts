@@ -43,7 +43,7 @@ const GAP = 4,
 export const useRowMenu = (
 	host: HTMLElement & { rowMenu?: RowMenu },
 	selectedItems: TSelection<Item>,
-	processedItems: unknown
+	processedItems: unknown,
 ) => {
 	const [menu, setMenu] = useState<MenuState>(),
 		popover = useRef<HTMLElement>(),
@@ -70,7 +70,7 @@ export const useRowMenu = (
 					opener: (activeElement() as HTMLElement | null) ?? undefined,
 				});
 			},
-			[]
+			[],
 		),
 		onRowMenu = useCallback(
 			(e: Event) => {
@@ -78,8 +78,7 @@ export const useRowMenu = (
 				const trigger = e.currentTarget as HTMLElement,
 					// Through shadow roots, for a custom renderItem's own row element.
 					row = e.composedPath().find((el) => (el as RowElement).dataItem) as
-						| RowElement
-						| undefined,
+						RowElement | undefined,
 					{ trigger: last, at } = dismissed.current!;
 				if (!row || (last === trigger && performance.now() - at < 500)) {
 					return;
@@ -87,7 +86,7 @@ export const useRowMenu = (
 				const { left, bottom } = trigger.getBoundingClientRect();
 				open(row, { x: left, y: bottom + GAP, trigger });
 			},
-			[open]
+			[open],
 		),
 		onRowContextMenu = useCallback(
 			(e: MouseEvent) => {
@@ -101,7 +100,7 @@ export const useRowMenu = (
 				e.preventDefault();
 				open(e.currentTarget as RowElement, { x: e.clientX, y: e.clientY });
 			},
-			[open]
+			[open],
 		);
 
 	// The rows it was opened for are gone or have moved.
@@ -118,7 +117,7 @@ export const useRowMenu = (
 			top = menu.y + height > innerHeight ? menu.y - height - GAP : menu.y;
 		el.style.left = `${Math.max(
 			GAP,
-			Math.min(menu.x, innerWidth - width - GAP)
+			Math.min(menu.x, innerWidth - width - GAP),
 		)}px`;
 		el.style.top = `${Math.max(GAP, top)}px`;
 
@@ -190,13 +189,13 @@ export const useRowMenu = (
 							.some(
 								(el) =>
 									el instanceof Element &&
-									el.getAttribute('role') === 'menuitem'
+									el.getAttribute('role') === 'menuitem',
 							);
 						if (picked) popover.current?.hidePopover();
 					}}
-			  >
+				>
 					${rowMenu(menu.items)}
-			  </div>`
+				</div>`
 			: nothing;
 
 	return {

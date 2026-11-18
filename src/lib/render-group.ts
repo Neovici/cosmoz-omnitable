@@ -12,7 +12,14 @@ const _getGroupRowClasses = (folded: boolean): string =>
 export const renderGroup: HostRenderGroup = (
 	item,
 	index,
-	{ selected, folded, toggleFold, onCheckboxChange, groupOnColumn, dataIsValid }
+	{
+		selected,
+		folded,
+		toggleFold,
+		onCheckboxChange,
+		groupOnColumn,
+		dataIsValid,
+	},
 ) =>
 	html` <div
 		class="${_getGroupRowClasses(folded)}"

@@ -20,5 +20,5 @@ const GroupedListRow = (host: GroupedListRowHost) => {
 
 customElements.define(
 	'cosmoz-grouped-list-row',
-	component(GroupedListRow, { useShadowDOM: false })
+	component(GroupedListRow, { useShadowDOM: false }),
 );

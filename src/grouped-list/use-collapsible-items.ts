@@ -1,7 +1,7 @@
 import { useCallback } from '@pionjs/pion';
+import type { Item } from '../lib/types';
 import { useWeakState } from './use-weak-state';
 import { isGroup } from './utils';
-import type { Item } from '../lib/types';
 
 export const useCollapsibleItems = () => {
 	const { setItemState, state, signal } = useWeakState(),

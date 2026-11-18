@@ -4,9 +4,9 @@ import {
 	fromHashString,
 	getComparableValue,
 	getFormatter,
+	getString,
 	renderValue,
 	toHashString,
-	getString,
 } from '../src/lib/utils-amount';
 
 suite('utils-amount', () => {
@@ -27,6 +27,7 @@ suite('utils-amount', () => {
 			assert.equal(renderValue({}, { currency: '', amount: 2 }, ''), '');
 		});
 	});
+
 	suite('getComparableValue', () => {
 		test('item null', () => {
 			assert.equal(getComparableValue({}, null), undefined);
