@@ -1,5 +1,5 @@
 import { expect, fixture, html, nextFrame } from '@open-wc/testing';
-import i18next, { init, t } from 'i18next';
+import { init } from 'i18next';
 import { renderList } from '../src/lib/render-list';
 
 suite('render-list', () => {

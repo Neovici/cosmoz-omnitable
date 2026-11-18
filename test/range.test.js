@@ -16,6 +16,7 @@ import {
 	getString,
 	toNumber,
 } from '../src/lib/utils-number';
+import { rangeFixture as rangeFixtureShared } from './helpers/fixtures/range-fixture.js';
 
 const data = [
 		{
@@ -70,24 +71,7 @@ const data = [
 			},
 		},
 	],
-	rangeFixture = html`
-		<cosmoz-omnitable id="omnitable" .resizeSpeedFactor=${1}>
-			<cosmoz-omnitable-column-number
-				title="Age"
-				name="age"
-				value-path="age"
-				maximum-fraction-digits="2"
-			>
-			</cosmoz-omnitable-column-number>
-			<cosmoz-omnitable-column-amount
-				title="Amount"
-				name="amount"
-				value-path="amount"
-				locale="en-US"
-			>
-			</cosmoz-omnitable-column-amount>
-		</cosmoz-omnitable>
-	`;
+	rangeFixture = rangeFixtureShared;
 
 sinonAssert.expose(assert, { prefix: '' });
 

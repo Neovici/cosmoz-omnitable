@@ -49,7 +49,11 @@ suite('empty', () => {
 
 		await nextFrame();
 
-		assert.isTrue(spy.called);
+		// GAP (audit): init fires selected-items-changed twice - once from
+		// the hook's initial value, once from the keep-selection effect -
+		// although the contract is "only once". Pinned at the current
+		// behavior; the assert flips to 1 when the duplicate write is fixed.
+		assert.equal(spy.callCount, 2, 'selectedItems changes during init');
 		assert.strictEqual(spy.firstCall.args[0].detail.value.length, 0);
 	});
 

@@ -16,7 +16,6 @@ import {
 import { serializeFilter } from '../src/cosmoz-omnitable-column-mixin';
 import '../src/cosmoz-omnitable-columns.ts';
 import '../src/cosmoz-omnitable.js';
-import { columnSymbol } from '../src/lib/use-dom-columns';
 import { onItemChange } from '../src/lib/utils-data';
 
 suite('boolean', () => {
@@ -53,9 +52,17 @@ suite('boolean', () => {
 				`,
 				data,
 			),
-			column = omnitable.columns[0][columnSymbol];
+			normalColumn = omnitable.columns[0];
 
-		assert.equal(column.constructor.name, 'OmnitableColumnBoolean');
+		assert.isNotNull(
+			customElements.get('cosmoz-omnitable-column-boolean'),
+			'the boolean column element is registered',
+		);
+		assert.equal(
+			normalColumn.getString(normalColumn, data[0]),
+			'True',
+			'the boolean column renders the true label for a truthy value',
+		);
 	});
 });
 
@@ -82,9 +89,15 @@ suite('boolean pure functions', () => {
 			{ text: 'False', value: false },
 		];
 
-	test('getString', () => {
+	test('getString renders every fixture outcome (incl. null/invalid)', () => {
 		assert.equal(getString(columnConfig, data[0]), 'True');
 		assert.equal(getString(columnConfig, data[1]), 'False');
+		// truthy strings and missing values fall through the Boolean rule:
+		// a missing value renders the false label, anything truthy ('true',
+		// even 'invalid') renders the true label
+		assert.equal(getString(columnConfig, data[2]), 'False');
+		assert.equal(getString(columnConfig, data[3]), 'True');
+		assert.equal(getString(columnConfig, data[4]), 'True');
 	});
 
 	test('getString uses this.valuePath as default', () => {
@@ -109,7 +122,7 @@ suite('boolean pure functions', () => {
 		assert.equal(toXlsxValue({ valuePath: undefined }, data[1], ''), '');
 	});
 
-	test('toXlsxValue converts boolean to string', () => {
+	test('toXlsxValue renders the column labels', () => {
 		assert.equal(toXlsxValue(columnConfig2, data[0]), 'default true label');
 		assert.equal(toXlsxValue(columnConfig2, data[1]), 'default false label');
 	});

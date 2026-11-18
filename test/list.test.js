@@ -14,7 +14,6 @@ import {
 import { applySingleFilter } from '../src/cosmoz-omnitable-column-mixin';
 import '../src/cosmoz-omnitable-columns.ts';
 import '../src/cosmoz-omnitable.js';
-import { columnSymbol } from '../src/lib/use-dom-columns';
 
 suite('basic', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);
@@ -36,11 +35,19 @@ suite('basic', () => {
 			data,
 		);
 
-		column = omnitable.columns[0][columnSymbol];
+		column = omnitable.columns[0];
 	});
 
-	test('initializes list column', () => {
-		assert.equal(column.constructor.name, 'OmnitableColumnList');
+	test('initializes list column and renders its joined list values', () => {
+		assert.isNotNull(
+			customElements.get('cosmoz-omnitable-column-list'),
+			'the list column element is registered',
+		);
+		assert.equal(
+			column.getString(column, data[0]),
+			'item 1, item 2, item 3',
+			'the list column renders its items joined',
+		);
 	});
 
 	test('it does not set a filter by default', () => {
@@ -124,7 +131,7 @@ suite('horizontal', () => {
 			`,
 			data,
 		);
-		column = omnitable.columns[0][columnSymbol];
+		column = omnitable.columns[0];
 	});
 
 	test('basic render', async () => {
@@ -136,8 +143,16 @@ suite('horizontal', () => {
 		assert.include(cells[0].innerText, 'item 1item 2item 3');
 	});
 
-	test('initializes list column', () => {
-		assert.equal(column.constructor.name, 'OmnitableColumnListHorizontal');
+	test('initializes list horizontal column', () => {
+		assert.isNotNull(
+			customElements.get('cosmoz-omnitable-column-list-horizontal'),
+			'the list horizontal column element is registered',
+		);
+		assert.equal(
+			column.getString(column, data[0]),
+			'item 1, item 2, item 3',
+			'the list horizontal column renders its items joined',
+		);
 	});
 
 	test('it does not set a filter by default', () => {

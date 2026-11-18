@@ -1,4 +1,4 @@
-import { assert, html, nextFrame } from '@open-wc/testing';
+import { assert, nextFrame } from '@open-wc/testing';
 import { assert as sinonAssert } from 'sinon';
 
 import { flush as polymerFlush } from '@polymer/polymer/lib/utils/flush';
@@ -13,6 +13,7 @@ import '../src/cosmoz-omnitable-columns.ts';
 import '../src/cosmoz-omnitable.js';
 import { columnSymbol } from '../src/lib/use-dom-columns';
 import { getComparableValue, getString, toDate } from '../src/lib/utils-date';
+import { rangeAllFixture } from './helpers/fixtures/range-fixture.js';
 
 const data = [
 		{
@@ -42,44 +43,7 @@ const data = [
 		},
 		{ date: '2017-12-22T23:00:00Z', time: '00:00:00' },
 	],
-	rangeFixture = html`
-		<cosmoz-omnitable
-			id="omnitable"
-			style="width: 800px"
-			.resizeSpeedFactor=${1}
-		>
-			<cosmoz-omnitable-column-number title="Age" name="age" value-path="age">
-			</cosmoz-omnitable-column-number>
-			<cosmoz-omnitable-column-amount
-				title="Amount"
-				name="amount"
-				value-path="amount"
-			>
-			</cosmoz-omnitable-column-amount>
-			<cosmoz-omnitable-column-date
-				title="Date"
-				name="date"
-				value-path="date"
-				locale="en-US"
-				editable
-			>
-			</cosmoz-omnitable-column-date>
-			<cosmoz-omnitable-column-datetime
-				title="Datetime"
-				name="datetime"
-				value-path="date"
-				editable
-			>
-			</cosmoz-omnitable-column-datetime>
-			<cosmoz-omnitable-column-time
-				title="Time"
-				name="time"
-				value-path="time"
-				editable
-			>
-			</cosmoz-omnitable-column-time>
-		</cosmoz-omnitable>
-	`;
+	rangeFixture = rangeAllFixture;
 
 sinonAssert.expose(assert, { prefix: '' });
 
@@ -183,13 +147,8 @@ suite('date', () => {
 	});
 
 	test('filtering on specific date with datetime source', async () => {
-		const value = data[5][column.valuePath], // '2017-12-22T23:00:00Z'
-			day = new Date(value).getDate();
+		const value = data[5][column.valuePath]; // '2017-12-22T23:00:00Z'
 
-		columnHeaderInput._filterInput = {
-			min: `2017-12-${day}`,
-			max: `2017-12-${day + 1}`,
-		};
 		columnHeaderInput._filterInput = { min: '2017-12-22', max: '2017-12-23' };
 		polymerFlush();
 		await nextFrame();
@@ -203,11 +162,12 @@ suite('date', () => {
 
 	test('filtering on specific date, with datetime source, same day test', async () => {
 		const value = data[5][column.valuePath], // '2017-12-22T23:00:00Z'
-			day = new Date(value).getDate();
+			// TZ-stable: the filtered day is the value's local ISO day
+			day = toLocalISOString(toDate(value)).slice(0, 10);
 
 		columnHeaderInput._filterInput = {
-			min: `2017-12-${day}`,
-			max: `2017-12-${day}`,
+			min: day,
+			max: day,
 		};
 
 		polymerFlush();

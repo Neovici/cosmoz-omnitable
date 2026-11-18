@@ -91,10 +91,19 @@ suite('column resize jitter', () => {
 				.shadowRoot.querySelector('cosmoz-dropdown div[slot="button"]'),
 			xs = [];
 
+		const resizedHeaderCell = host.querySelector('.header .cell[name="c"]'),
+			animated = [];
 		for (let i = 0; i < 30; i++) {
 			await nextFrame();
 			xs.push(button.getBoundingClientRect().x);
+			animated.push(resizedHeaderCell.getBoundingClientRect().width);
 		}
+
+		assert.notEqual(
+			animated[0],
+			animated[animated.length - 1],
+			'liveness: the resize actually animated the column width, otherwise the assert below is vacuous',
+		);
 
 		const span = Math.max(...xs) - Math.min(...xs);
 		assert.ok(
@@ -119,6 +128,10 @@ suite('column resize jitter', () => {
 			prev = x;
 		}
 
+		assert.ok(
+			Math.max(...deltas.map(Math.abs)) > 0.1,
+			'liveness: the resize actually moved the column, otherwise the assert below is vacuous',
+		);
 		const maxBackward = Math.min(...deltas);
 		assert.ok(
 			maxBackward >= -0.5,
@@ -134,9 +147,11 @@ suite('column resize jitter', () => {
 			headerCell = host.querySelector('.header .cell[name="d"]'),
 			gaps = [];
 
+		const headerX = [];
 		for (let i = 0; i < 30; i++) {
 			await nextFrame();
 			const bodyRow = host.querySelector('cosmoz-omnitable-item-row');
+			headerX.push(headerCell.getBoundingClientRect().x);
 			if (!bodyRow) {
 				continue;
 			}
@@ -154,6 +169,11 @@ suite('column resize jitter', () => {
 		assert.ok(
 			gaps.length > 0,
 			'no body rows were available to compare header/body alignment',
+		);
+		assert.notEqual(
+			headerX[0],
+			headerX[headerX.length - 1],
+			'liveness: the sampled header cells actually moved during the resize, otherwise the assert below is vacuous',
 		);
 		const maxGap = Math.max(...gaps);
 		assert.ok(

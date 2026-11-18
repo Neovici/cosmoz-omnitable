@@ -18,7 +18,6 @@ import {
 import '@polymer/paper-toggle-button';
 import '../src/cosmoz-omnitable-columns.ts';
 import '../src/cosmoz-omnitable.js';
-import { columnSymbol } from '../src/lib/use-dom-columns';
 
 sinonAssert.expose(assert, { prefix: '' });
 
@@ -146,9 +145,12 @@ suite('basic', () => {
 	});
 
 	// Column Behavior unit tests for more coverage
-	test('_hiddenChanged fires cosmoz-column-hidden-changed', () => {
-		const column = omnitable.columns[3][columnSymbol],
+	test('hiding a column fires cosmoz-column-prop-changed', () => {
+		const column = omnitable.querySelector(
+				'cosmoz-omnitable-column[name="columnWithGroupOn"]',
+			),
 			hiddenSpy = spy();
+		assert.isNotNull(column, 'the column element exists in the DOM');
 		assert.isUndefined(column.hidden);
 		column.addEventListener('cosmoz-column-prop-changed', hiddenSpy);
 		column.hidden = true;
