@@ -1,6 +1,6 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{Xt as t,Yt as n}from"./iframe-BePeSCVW.js";import{t as r}from"./cosmoz-omnitable-CI_ERxPU.js";var i,a,o,s,c,l;function u(){return(u=e((()=>{t(),r(),{action:i}=__STORYBOOK_MODULE_ACTIONS__,a=Array.from({length:20},(e,t)=>({name:`Invoice ${1001+t}`,supplier:[`Acme`,`Globex`,`Initech`,`Umbrella`][t%4],amount:{amount:(t+1)*125.5,currency:`EUR`}})),o=e=>n`
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{Xt as t,Yt as n}from"./iframe-CMAg1PR_.js";import{t as r}from"./cosmoz-omnitable-DLu6ZUl1.js";var i,a,o,s,c,l;function u(){return(u=e((()=>{t(),r(),{action:i}=__STORYBOOK_MODULE_ACTIONS__,a=Array.from({length:20},(e,t)=>({name:`Invoice ${1001+t}`,supplier:[`Acme`,`Globex`,`Initech`,`Umbrella`][t%4],amount:{amount:(t+1)*125.5,currency:`EUR`}})),o=e=>n`
         <style>
-            [role="menuitem"] {
+            [role='menuitem'] {
                 display: block;
                 width: 100%;
                 padding: 6px 8px;
@@ -12,7 +12,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{Xt as t,Yt as n}from".
                 text-align: start;
                 cursor: pointer;
             }
-            [role="menuitem"]:is(:hover, :focus-visible) {
+            [role='menuitem']:is(:hover, :focus-visible) {
                 background: var(--cz-color-bg-secondary, #f2f4f7);
                 outline: none;
             }

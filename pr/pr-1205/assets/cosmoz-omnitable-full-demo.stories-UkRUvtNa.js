@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r,Dt as i,E as a,G as o,Ht as s,I as c,It as l,Kt as u,Mt as d,O as f,P as p,Pt as m,Q as h,R as g,Rt as _,S as v,T as y,U as b,Ut as x,V as S,X as C,Xt as w,Yt as T,Z as ee,_ as E,_t as te,at as ne,b as D,bt as re,c as O,ct as ie,d as ae,dt as oe,et as se,f as ce,ft as k,gt as le,ht as ue,i as de,it as fe,kt as pe,l as me,lt as he,m as ge,mt as _e,n as ve,nt as ye,ot as be,p as xe,pt as Se,q as Ce,qt as we,r as Te,rt as Ee,s as De,st as Oe,tt as ke,u as Ae,ut as je,v as Me,vt as A,w as j,x as M,y as N,yt as P,z as Ne}from"./iframe-BePeSCVW.js";import{A as Pe,B as F,C as Fe,D as Ie,E as Le,F as I,G as Re,H as ze,I as Be,J as Ve,L as He,M as Ue,N as We,O as Ge,P as L,R as Ke,S as qe,T as Je,U as Ye,V as R,W as Xe,X as Ze,Y as Qe,_ as $e,a as et,d as tt,f as nt,g as rt,h as it,j as at,k as ot,l as st,m as ct,n as lt,q as ut,r as dt,s as ft,t as pt,u as mt,v as ht,w as gt,x as _t,y as vt,z as yt}from"./dist-iGwBAh57.js";import{n as bt,t as xt}from"./table-demo-helper-Dj0p9yas.js";var St;function Ct(){return(Ct=e((()=>{A(),St=()=>T`<style>
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r,Dt as i,E as a,G as o,Ht as s,I as c,It as l,Kt as u,Mt as d,O as f,P as p,Pt as m,Q as h,R as g,Rt as _,S as v,T as y,U as b,Ut as x,V as S,X as C,Xt as w,Yt as T,Z as ee,_ as E,_t as te,at as ne,b as D,bt as re,c as O,ct as ie,d as ae,dt as oe,et as se,f as ce,ft as k,gt as le,ht as ue,i as de,it as fe,kt as pe,l as me,lt as he,m as ge,mt as _e,n as ve,nt as ye,ot as be,p as xe,pt as Se,q as Ce,qt as we,r as Te,rt as Ee,s as De,st as Oe,tt as ke,u as Ae,ut as je,v as Me,vt as A,w as j,x as M,y as N,yt as P,z as Ne}from"./iframe-CMAg1PR_.js";import{A as Pe,B as F,C as Fe,D as Ie,E as Le,F as I,G as Re,H as ze,I as Be,J as Ve,L as He,M as Ue,N as We,O as Ge,P as L,R as Ke,S as qe,T as Je,U as Ye,V as R,W as Xe,X as Ze,Y as Qe,_ as $e,a as et,d as tt,f as nt,g as rt,h as it,j as at,k as ot,l as st,m as ct,n as lt,q as ut,r as dt,s as ft,t as pt,u as mt,v as ht,w as gt,x as _t,y as vt,z as yt}from"./dist-lS6QLiTH.js";import{n as bt,t as xt}from"./table-demo-helper-Dj0p9yas.js";var St;function Ct(){return(Ct=e((()=>{A(),St=()=>T`<style>
 	@keyframes rotating {
 		100% {
 			transform: rotate(360deg);
@@ -228,7 +228,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 							</cosmoz-input>
 						`})}
 				`)}
-		`}_valuesChanged(e,t,n){if(!Array.isArray(n)||n.length<1||!e&&t)return;let r=n.reduce((e,t)=>{if(t.currency){let n=t.currency;e[n]=(e[n]||0)+1}return e},{}),i=Object.keys(r)[0];Object.keys(r).reduce((e,t)=>{let n=Math.max(e,r[t]);return n===r[t]&&(i=t),n},0),this.set(`currency`,i)}toAmount(e,t,n){if(e==null||e===``)return;if(typeof e!=`object`||e.currency==null||e.currency===``)return null;let r=this.toNumber(e.amount);if(r==null||Number.isNaN(r))return null;let i={currency:e.currency,amount:r};if(n==null||t==null)return i;let a=this.toAmount(t);if(a==null)return i;let o=this.rates||{},s=i.amount*(o[i.currency]||1),c=a.amount*(o[a.currency]||1);return this.toNumber(s,c,n)===s?i:a}toValue(){return this.toAmount.apply(this,arguments)}getComparableValue(e,t){let n=super.getComparableValue(e,t);if(n==null)return;let r=this.toNumber(n.amount),i=this.rates;return i==null?r:r*(i[n.currency]||1)}getString(e,t=this.valuePath){let n=this.toValue(this.get(t,e));return n===void 0?``:n===null?`Invalid value`:this.renderValue(n)}getCurrency(e,t){let n=this.get(t,e);return n&&n.currency}getFormatter(e,t){let n=e+(t||``)||``,r=this._formatters=this._formatters||{};return r[n]||(r[n]=new Intl.NumberFormat(t||void 0,{style:`currency`,currency:e})),r[n]}renderValue(e){let t=this.toAmount(e);return t==null?``:this.getFormatter(t.currency,this.locale).format(e.amount)}_amountValueChanged(e){let t=e.target.value,n=e.model.item,r=this.get(this.valuePath,n),i={amount:Number(t),currency:r.currency};this.set(this.valuePath,i,n),this._fireItemChangeEvent(n,this.valuePath,r,this.renderValue.bind(this))}_toInputString(e){let t=this.toValue(e);return t==null?null:this.toNumber(t.amount)}_toInputStringAmount(e){let t=this.rates;if(t==null)return this._toInputString(e);let n=this.toValue(e);return n==null?null:(this.toNumber(n.amount)*(t[n.currency]||1)/(t[this.currency]||1)).toFixed(2)}_fromInputString(e,t){let n=this.toNumber(e);if(n!=null)return this.toValue({amount:n,currency:t&&this.get([`filter`,t,`currency`])||this.currency})}},customElements.define(`cosmoz-omnitable-amount-range-input`,Jt)})))()}var W,Xt,Zt,Qt,G,$t,en,tn;function nn(){return(nn=e((()=>{R(),gt(),W=(e,t,n)=>{if(e==null||e===``)return;let r=typeof e==`number`?e:Number(e);if(Number.isNaN(r))return;if(n==null||t==null)return r;let i=W(t);return i==null?r:n(r,i)},Xt=e=>{let t=W(e);return t==null?null:t.toString()},Zt=({valuePath:e},t)=>{let n=W(e?F(t,e):t);return Xt(n)},Qt=e=>Xt(e)??``,G=({valuePath:e,maximumFractionDigits:t},n)=>{if(n==null)return;let r=e?F(n,e):n,i=W(r);if(i!=null)return t===null?i:W(i.toFixed(t))},$t=Le((e,t,n)=>{let r={localeMatcher:`best fit`};return t!==null&&(r.minimumFractionDigits=t),n!==null&&(r.maximumFractionDigits=n),new Intl.NumberFormat(e||void 0,r)}),en=({valuePath:e,locale:t,minimumFractionDigits:n,maximumFractionDigits:r},i)=>{let a=e?F(i,e):i;if(a==null)return``;let o=W(a);if(o!=null)return $t(t,n,r).format(o)},tn=(e,t)=>n=>{let r=G(e,n);if(r==null)return!1;let i=G({...e,valuePath:`min`},t),a=G({...e,valuePath:`max`},t);return!(r<(i??-1/0)||r>(a??1/0))}})))()}var K,q,rn,an,on,sn,cn,ln,un,dn,fn;function pn(){return(pn=e((()=>{R(),nn(),K=(e={},t,n,r)=>{if(t==null||t===``)return;if(typeof t!=`object`||t.currency==null||t.currency===``)return null;let i=W(t.amount);if(i==null||Number.isNaN(i))return null;let a={currency:t.currency,amount:i};if(r==null||n==null)return a;let o=K(e,n);if(o==null)return a;let s=a.amount*(e[a.currency]||1),c=o.amount*(e[o.currency]||1);return W(s,c,r)===s?a:o},q=({valuePath:e,rates:t},n)=>{if(n==null)return;let r=n;e!=null&&(r=F(n,e));let i=K(t,r);if(i==null)return;let a=W(i.amount);return t==null||a==null?a:a*(t?.[i.currency]||1)},rn=(e,t)=>n=>{let r=q(e,n);if(r===void 0)return!1;let i=q({...e,valuePath:`min`},t),a=q({...e,valuePath:`max`},t);return!(r<(i??-1/0)||r>(a??1/0))},an={},on=(e,t)=>{let n=e+(t||``)||``;return an[n]||(an[n]=new Intl.NumberFormat(t||void 0,{style:`currency`,currency:e})),an[n]},sn=(e,t,n)=>{let r=K(e,t);return r==null?``:on(r.currency,n).format(r.amount)},cn=({valuePath:e,rates:t,locale:n},r)=>{let i=K(t,e?F(r,e):void 0);return i===void 0?``:i===null?`Invalid value`:sn(t,i,n)},ln=e=>e?e.amount+e.currency:``,un=e=>{if(e==null||e===``)return;let t=e.match(/^(-?[\d]+)([\D]+?)$/iu);if(!(!Array.isArray(t)||t.length<0))return{amount:Number(t[1]),currency:t[2]}},dn=({valuePath:e},t)=>e?F(t,e)?.currency:null,fn=({valuePath:e},t)=>e?F(t,e)?.amount:void 0})))()}var J,mn,hn,gn,_n,vn,yn;function bn(){return(bn=e((()=>{gt(),A(),J=Symbol(`column`),mn=e=>{let t=!0,n=e.map(e=>e.name);return e.forEach(e=>{e.name??(t=!1,console.error(`The name attribute needs to be set on all columns! Missing on column`,e))}),e.forEach(e=>{n.indexOf(e.name)!==n.lastIndexOf(e.name)&&(t=!1,console.error(`The name attribute needs to be unique among all columns! Not unique on column`,e))}),t},hn=(e,t)=>{let n=e.valuePath??e.name;return{name:e.name,title:e.title,valuePath:n,groupOn:e.groupOn??n,sortOn:e.sortOn??n,noSort:e.noSort,disabledFiltering:t||e.disabledFiltering,minWidth:e.minWidth,width:e.width,flex:e.flex,priority:e.priority,getString:e.getString,getComparableValue:e.getComparableValue,serializeFilter:e.serializeFilter,deserializeFilter:e.deserializeFilter,toXlsxValue:e.toXlsxValue,renderHeader:e.renderHeader,renderCell:e.renderCell,renderEditCell:e.renderEditCell,renderGroup:e.renderGroup,cellTitleFn:e.cellTitleFn,headerTitleFn:e.headerTitleFn,getFilterFn:e.getFilterFn,headerCellClass:e.headerCellClass,cellClass:e.cellClass,editable:e.editable,values:e.values,source:Je(e.computeSource),noLocalFilter:e.noLocalFilter,mini:e.mini,renderMini:e.renderMini,align:e.align,headerAlign:e.headerAlign,loading:e.loading,externalValues:e.externalValues,computeSource:e.computeSource,trueLabel:e.trueLabel,falseLabel:e.falseLabel,valueProperty:e.valueProperty,textProperty:e.textProperty,emptyLabel:e.emptyLabel,emptyValue:e.emptyValue,min:e.min,max:e.max,locale:e.locale,autoupdate:e.autoupdate,maximumFractionDigits:e.maximumFractionDigits,minimumFractionDigits:e.minimumFractionDigits,currency:e.currency,rates:e.rates,autodetect:e.autodetect,ownerTree:e.ownerTree,keyProperty:e.keyProperty,...e.getConfig?.(e),[J]:e}},gn=e=>e.isOmnitableColumn&&!e.hidden,_n=e=>{let t=e.filter(gn);return mn(t)?t:[]},vn=(e,t,n)=>(Array.isArray(t)?e.filter(e=>t.includes(e.name)):e.filter(e=>!e.disabled)).map(e=>hn(e,n)),yn=(e,{enabledColumns:t,disabledFiltering:n})=>{let[r,i]=d([]);return m(()=>{let r,a=[],o=e.shadowRoot.querySelector(`#columnsSlot`),s=e=>()=>{let r=o.assignedNodes({flatten:!0});if(e)a=r;else{let e=r.filter(e=>!a.includes(e)),t=a.filter(e=>!r.includes(e)),n=[...e,...t].some(e=>e.isOmnitableColumn);if(a=r,!n)return}i(vn(_n(r),t,n))},c=e=>{cancelAnimationFrame(r),r=requestAnimationFrame(s(e?.type===`cosmoz-column-prop-changed`))};return c(),o.addEventListener(`slotchange`,c),e.addEventListener(`cosmoz-column-prop-changed`,c),()=>{o.removeEventListener(`slotchange`,c),e.removeEventListener(`cosmoz-column-prop-changed`,c),cancelAnimationFrame(r)}},[t,n]),r}})))()}var xn,Sn,Cn;function Y(){return(Y=e((()=>{R(),bn(),xn=(e,t)=>Array.isArray(e)?e.map(e=>F(e,t)).filter((e,t,n)=>e!=null&&n.indexOf(e)===t):void 0,Sn=({externalValues:e,values:t,valuePath:n},r)=>{if(e)return e;if(typeof t==`function`)return t;if(n!==void 0)return xn(r,n)},Cn=(e,t,n,r)=>{let{valuePath:i}=t,a=i===void 0?void 0:F(n,i);if(r===a)return;i!==void 0&&ze(n,i,r);let o={item:n,valuePath:i,value:r,oldValue:a,column:t[J]};e.dispatchEvent(new CustomEvent(`column-item-changed`,{bubbles:!0,composed:!0,detail:o}))}})))()}var wn;function Tn(){return(Tn=e((()=>{M(),z(),I(),w(),R(),H(),Yt(),pn(),Y(),wn=class extends V(L){static get properties(){return{min:{type:Number,value:null,notify:!0},max:{type:Number,value:null,notify:!0},limits:{type:Function},locale:{type:String,value:null,notify:!0},autoupdate:{type:Boolean,value:!1,notify:!0},currency:{type:String,notify:!0},autodetect:{type:Boolean,value:!1,notify:!0},rates:{type:Object,notify:!0},width:{type:String,value:`70px`},cellClass:{type:String,value:`amount-cell`},headerCellClass:{type:String,value:`amount-header-cell`},align:{type:String,value:`right`}}}getConfig(e){return{limits:e.limits}}getFilterFn(e,t){let n=q({...e,valuePath:`min`},t),r=q({...e,valuePath:`max`},t);if(n!=null||r!=null)return rn(e,t)}getString(e,t){return cn(e,t)}toXlsxValue(e,t){return cn(e,t)}getComparableValue(e,t){return q(e,t)}serializeFilter({rates:e},t){if(t==null)return;let n=K(e,t.min),r=K(e,t.max);if(n!=null||r!=null)return ln(n)+`~`+ln(r)}deserializeFilter(e,t){if(typeof t!=`string`||t===``)return null;let n=t.match(/^([^~]+)?~([^~]+)?/iu);return Array.isArray(n)?{min:un(n[1]),max:un(n[2])}:null}renderCell(e,{item:t}){return T`<span>${e.getString(e,t)}</span>`}renderEditCell(e,{item:t},n){return T`<cosmoz-input
+		`}_valuesChanged(e,t,n){if(!Array.isArray(n)||n.length<1||!e&&t)return;let r=n.reduce((e,t)=>{if(t.currency){let n=t.currency;e[n]=(e[n]||0)+1}return e},{}),i=Object.keys(r)[0];Object.keys(r).reduce((e,t)=>{let n=Math.max(e,r[t]);return n===r[t]&&(i=t),n},0),this.set(`currency`,i)}toAmount(e,t,n){if(e==null||e===``)return;if(typeof e!=`object`||e.currency==null||e.currency===``)return null;let r=this.toNumber(e.amount);if(r==null||Number.isNaN(r))return null;let i={currency:e.currency,amount:r};if(n==null||t==null)return i;let a=this.toAmount(t);if(a==null)return i;let o=this.rates||{},s=i.amount*(o[i.currency]||1),c=a.amount*(o[a.currency]||1);return this.toNumber(s,c,n)===s?i:a}toValue(){return this.toAmount.apply(this,arguments)}getComparableValue(e,t){let n=super.getComparableValue(e,t);if(n==null)return;let r=this.toNumber(n.amount),i=this.rates;return i==null?r:r*(i[n.currency]||1)}getString(e,t=this.valuePath){let n=this.toValue(this.get(t,e));return n===void 0?``:n===null?`Invalid value`:this.renderValue(n)}getCurrency(e,t){let n=this.get(t,e);return n&&n.currency}getFormatter(e,t){let n=e+(t||``)||``,r=this._formatters=this._formatters||{};return r[n]||(r[n]=new Intl.NumberFormat(t||void 0,{style:`currency`,currency:e})),r[n]}renderValue(e){let t=this.toAmount(e);return t==null?``:this.getFormatter(t.currency,this.locale).format(e.amount)}_amountValueChanged(e){let t=e.target.value,n=e.model.item,r=this.get(this.valuePath,n),i={amount:Number(t),currency:r.currency};this.set(this.valuePath,i,n),this._fireItemChangeEvent(n,this.valuePath,r,this.renderValue.bind(this))}_toInputString(e){let t=this.toValue(e);return t==null?null:this.toNumber(t.amount)}_toInputStringAmount(e){let t=this.rates;if(t==null)return this._toInputString(e);let n=this.toValue(e);return n==null?null:(this.toNumber(n.amount)*(t[n.currency]||1)/(t[this.currency]||1)).toFixed(2)}_fromInputString(e,t){let n=this.toNumber(e);if(n!=null)return this.toValue({amount:n,currency:t&&this.get([`filter`,t,`currency`])||this.currency})}},customElements.define(`cosmoz-omnitable-amount-range-input`,Jt)})))()}var W,Xt,Zt,Qt,G,$t,en,tn;function nn(){return(nn=e((()=>{gt(),R(),W=(e,t,n)=>{if(e==null||e===``)return;let r=typeof e==`number`?e:Number(e);if(Number.isNaN(r))return;if(n==null||t==null)return r;let i=W(t);return i==null?r:n(r,i)},Xt=e=>{let t=W(e);return t==null?null:t.toString()},Zt=({valuePath:e},t)=>{let n=W(e?F(t,e):t);return Xt(n)},Qt=e=>Xt(e)??``,G=({valuePath:e,maximumFractionDigits:t},n)=>{if(n==null)return;let r=e?F(n,e):n,i=W(r);if(i!=null)return t===null?i:W(i.toFixed(t))},$t=Le((e,t,n)=>{let r={localeMatcher:`best fit`};return t!==null&&(r.minimumFractionDigits=t),n!==null&&(r.maximumFractionDigits=n),new Intl.NumberFormat(e||void 0,r)}),en=({valuePath:e,locale:t,minimumFractionDigits:n,maximumFractionDigits:r},i)=>{let a=e?F(i,e):i;if(a==null)return``;let o=W(a);if(o!=null)return $t(t,n,r).format(o)},tn=(e,t)=>n=>{let r=G(e,n);if(r==null)return!1;let i=G({...e,valuePath:`min`},t),a=G({...e,valuePath:`max`},t);return!(r<(i??-1/0)||r>(a??1/0))}})))()}var K,q,rn,an,on,sn,cn,ln,un,dn,fn;function pn(){return(pn=e((()=>{R(),nn(),K=(e={},t,n,r)=>{if(t==null||t===``)return;if(typeof t!=`object`||t.currency==null||t.currency===``)return null;let i=W(t.amount);if(i==null||Number.isNaN(i))return null;let a={currency:t.currency,amount:i};if(r==null||n==null)return a;let o=K(e,n);if(o==null)return a;let s=a.amount*(e[a.currency]||1),c=o.amount*(e[o.currency]||1);return W(s,c,r)===s?a:o},q=({valuePath:e,rates:t},n)=>{if(n==null)return;let r=n;e!=null&&(r=F(n,e));let i=K(t,r);if(i==null)return;let a=W(i.amount);return t==null||a==null?a:a*(t?.[i.currency]||1)},rn=(e,t)=>n=>{let r=q(e,n);if(r===void 0)return!1;let i=q({...e,valuePath:`min`},t),a=q({...e,valuePath:`max`},t);return!(r<(i??-1/0)||r>(a??1/0))},an={},on=(e,t)=>{let n=e+(t||``)||``;return an[n]||(an[n]=new Intl.NumberFormat(t||void 0,{style:`currency`,currency:e})),an[n]},sn=(e,t,n)=>{let r=K(e,t);return r==null?``:on(r.currency,n).format(r.amount)},cn=({valuePath:e,rates:t,locale:n},r)=>{let i=K(t,e?F(r,e):void 0);return i===void 0?``:i===null?`Invalid value`:sn(t,i,n)},ln=e=>e?e.amount+e.currency:``,un=e=>{if(e==null||e===``)return;let t=e.match(/^(-?[\d]+)([\D]+?)$/iu);if(!(!Array.isArray(t)||t.length<0))return{amount:Number(t[1]),currency:t[2]}},dn=({valuePath:e},t)=>e?F(t,e)?.currency:null,fn=({valuePath:e},t)=>e?F(t,e)?.amount:void 0})))()}var J,mn,hn,gn,_n,vn,yn;function bn(){return(bn=e((()=>{gt(),A(),J=Symbol(`column`),mn=e=>{let t=!0,n=e.map(e=>e.name);return e.forEach(e=>{e.name??(t=!1,console.error(`The name attribute needs to be set on all columns! Missing on column`,e))}),e.forEach(e=>{n.indexOf(e.name)!==n.lastIndexOf(e.name)&&(t=!1,console.error(`The name attribute needs to be unique among all columns! Not unique on column`,e))}),t},hn=(e,t)=>{let n=e.valuePath??e.name;return{name:e.name,title:e.title,valuePath:n,groupOn:e.groupOn??n,sortOn:e.sortOn??n,noSort:e.noSort,disabledFiltering:t||e.disabledFiltering,minWidth:e.minWidth,width:e.width,flex:e.flex,priority:e.priority,getString:e.getString,getComparableValue:e.getComparableValue,serializeFilter:e.serializeFilter,deserializeFilter:e.deserializeFilter,toXlsxValue:e.toXlsxValue,renderHeader:e.renderHeader,renderCell:e.renderCell,renderEditCell:e.renderEditCell,renderGroup:e.renderGroup,cellTitleFn:e.cellTitleFn,headerTitleFn:e.headerTitleFn,getFilterFn:e.getFilterFn,headerCellClass:e.headerCellClass,cellClass:e.cellClass,editable:e.editable,values:e.values,source:Je(e.computeSource),noLocalFilter:e.noLocalFilter,mini:e.mini,renderMini:e.renderMini,align:e.align,headerAlign:e.headerAlign,loading:e.loading,externalValues:e.externalValues,computeSource:e.computeSource,trueLabel:e.trueLabel,falseLabel:e.falseLabel,valueProperty:e.valueProperty,textProperty:e.textProperty,emptyLabel:e.emptyLabel,emptyValue:e.emptyValue,min:e.min,max:e.max,locale:e.locale,autoupdate:e.autoupdate,maximumFractionDigits:e.maximumFractionDigits,minimumFractionDigits:e.minimumFractionDigits,currency:e.currency,rates:e.rates,autodetect:e.autodetect,ownerTree:e.ownerTree,keyProperty:e.keyProperty,...e.getConfig?.(e),[J]:e}},gn=e=>e.isOmnitableColumn&&!e.hidden,_n=e=>{let t=e.filter(gn);return mn(t)?t:[]},vn=(e,t,n)=>(Array.isArray(t)?e.filter(e=>t.includes(e.name)):e.filter(e=>!e.disabled)).map(e=>hn(e,n)),yn=(e,{enabledColumns:t,disabledFiltering:n})=>{let[r,i]=d([]);return m(()=>{let r,a=[],o=e.shadowRoot.querySelector(`#columnsSlot`),s=e=>()=>{let r=o.assignedNodes({flatten:!0});if(e)a=r;else{let e=r.filter(e=>!a.includes(e)),t=a.filter(e=>!r.includes(e)),n=[...e,...t].some(e=>e.isOmnitableColumn);if(a=r,!n)return}i(vn(_n(r),t,n))},c=e=>{cancelAnimationFrame(r),r=requestAnimationFrame(s(e?.type===`cosmoz-column-prop-changed`))};return c(),o.addEventListener(`slotchange`,c),e.addEventListener(`cosmoz-column-prop-changed`,c),()=>{o.removeEventListener(`slotchange`,c),e.removeEventListener(`cosmoz-column-prop-changed`,c),cancelAnimationFrame(r)}},[t,n]),r}})))()}var xn,Sn,Cn;function Y(){return(Y=e((()=>{R(),bn(),xn=(e,t)=>Array.isArray(e)?e.map(e=>F(e,t)).filter((e,t,n)=>e!=null&&n.indexOf(e)===t):void 0,Sn=({externalValues:e,values:t,valuePath:n},r)=>{if(e)return e;if(typeof t==`function`)return t;if(n!==void 0)return xn(r,n)},Cn=(e,t,n,r)=>{let{valuePath:i}=t,a=i===void 0?void 0:F(n,i);if(r===a)return;i!==void 0&&ze(n,i,r);let o={item:n,valuePath:i,value:r,oldValue:a,column:t[J]};e.dispatchEvent(new CustomEvent(`column-item-changed`,{bubbles:!0,composed:!0,detail:o}))}})))()}var wn;function Tn(){return(Tn=e((()=>{M(),z(),I(),w(),R(),H(),Yt(),pn(),Y(),wn=class extends V(L){static get properties(){return{min:{type:Number,value:null,notify:!0},max:{type:Number,value:null,notify:!0},limits:{type:Function},locale:{type:String,value:null,notify:!0},autoupdate:{type:Boolean,value:!1,notify:!0},currency:{type:String,notify:!0},autodetect:{type:Boolean,value:!1,notify:!0},rates:{type:Object,notify:!0},width:{type:String,value:`70px`},cellClass:{type:String,value:`amount-cell`},headerCellClass:{type:String,value:`amount-header-cell`},align:{type:String,value:`right`}}}getConfig(e){return{limits:e.limits}}getFilterFn(e,t){let n=q({...e,valuePath:`min`},t),r=q({...e,valuePath:`max`},t);if(n!=null||r!=null)return rn(e,t)}getString(e,t){return cn(e,t)}toXlsxValue(e,t){return cn(e,t)}getComparableValue(e,t){return q(e,t)}serializeFilter({rates:e},t){if(t==null)return;let n=K(e,t.min),r=K(e,t.max);if(n!=null||r!=null)return ln(n)+`~`+ln(r)}deserializeFilter(e,t){if(typeof t!=`string`||t===``)return null;let n=t.match(/^([^~]+)?~([^~]+)?/iu);return Array.isArray(n)?{min:un(n[1]),max:un(n[2])}:null}renderCell(e,{item:t}){return T`<span>${e.getString(e,t)}</span>`}renderEditCell(e,{item:t},n){return T`<cosmoz-input
 			compact
 			type="number"
 			@change=${r=>n({amount:r.target.value,currency:F(t,e.valuePath)?.currency})}
@@ -761,7 +761,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 	}
 
 	.checkbox:checked::before {
-		content: "";
+		content: '';
 		position: absolute;
 		box-sizing: content-box;
 		width: 4px;
@@ -774,7 +774,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 	}
 
 	.checkbox::after {
-		content: "";
+		content: '';
 		display: block;
 		bottom: -5px;
 		left: -5px;
@@ -791,7 +791,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 	}
 
 	.checkbox:indeterminate::before {
-		content: "";
+		content: '';
 		position: absolute;
 		width: 8px;
 		height: 2px;
@@ -836,6 +836,21 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		display: flex;
 		align-items: flex-end;
 		padding-inline: calc(var(--cz-spacing) * 2);
+	}
+
+	/* Hairline rules on pseudo-elements stay straight under the rounded
+	   row fills. */
+	.header::after,
+	.itemRow::after {
+		content: '';
+		position: absolute;
+		inset-inline: 0;
+		bottom: 0;
+		border-bottom: 1px solid var(--cz-color-border-secondary);
+		pointer-events: none;
+	}
+	.header::after {
+		inset-inline: calc(var(--cz-spacing) * 2);
 	}
 
 	/* Column titles sit a step below the data they head. The header inputs
@@ -1038,9 +1053,10 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		flex-direction: column;
 	}
 
-	/* Rows sit inside the table's edge with no rules between them: a hover
-	   or a selection reads as one rounded fill. */
+	/* Rows sit inside the table's edge; a hover or a selection reads as one
+	   rounded fill. */
 	.itemRow {
+		position: relative;
 		margin-inline: calc(var(--cz-spacing) * 2);
 		border-radius: var(--cz-radius-md);
 		font-variant-numeric: tabular-nums;
@@ -1160,15 +1176,15 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		text-align: right;
 	}
 
-	.cell[align="right"] {
+	.cell[align='right'] {
 		text-align: right;
 	}
 
-	.cell[align="left"] {
+	.cell[align='left'] {
 		text-align: left;
 	}
 
-	.cell[align="center"] {
+	.cell[align='center'] {
 		text-align: center;
 	}
 
@@ -1239,17 +1255,12 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 
 	${Ui}
 
-	/* Row controls wait for the pointer, so the list reads as data. Once
-	   anything is selected, every checkbox shows. */
 	@media (hover: hover) {
-		.itemRow .checkbox:not(:checked),
 		.itemRow cosmoz-button.expand:not([aria-expanded]) {
 			opacity: 0;
 			transition: opacity 120ms;
 		}
-		.itemRow:is(:hover, :focus-within) .checkbox,
-		.itemRow:is(:hover, :focus-within) cosmoz-button.expand,
-		.mainContainer:has(cosmoz-bottom-bar[active]) .itemRow .checkbox {
+		.itemRow:is(:hover, :focus-within) cosmoz-button.expand {
 			opacity: 1;
 		}
 	}
@@ -1341,8 +1352,8 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 	.sg[data-on]:not(cosmoz-button) {
 		color: var(--cz-color-text-primary);
 	}
-	cosmoz-button.sg:not([data-on="desc"])::part(button),
-	.sg:not([data-on="desc"]):not(cosmoz-button) {
+	cosmoz-button.sg:not([data-on='desc'])::part(button),
+	.sg:not([data-on='desc']):not(cosmoz-button) {
 		transform: scaleY(-1);
 	}
 	.cell:hover cosmoz-button.sg::part(button),
@@ -1393,6 +1404,10 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 	:host(:is([mini], [compact])) .header {
 		padding-left: var(--checkbox-offset);
 		justify-content: space-between;
+	}
+
+	:host([mini]) .itemRow::after {
+		display: none;
 	}
 
 	:host([mini]) .itemRow {
@@ -1451,10 +1466,8 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		border: 0;
 		border-radius: var(--cz-radius-lg);
 		background: var(--cz-color-bg-primary);
-		box-shadow: var(
-				--cz-shadow-raised,
-				0 0 0 1px var(--cz-color-border-secondary)
-			),
+		box-shadow:
+			var(--cz-shadow-raised, 0 0 0 1px var(--cz-color-border-secondary)),
 			var(--cz-shadow-lg);
 		color: var(--cz-color-text-primary);
 		font-family: inherit;
@@ -1706,7 +1719,8 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		transform: scaleY(-1);
 	}
 	cosmoz-collapse[opened] + .heading {
-		box-shadow: inset 0px -1px 0px var(--cz-color-border-primary),
+		box-shadow:
+			inset 0px -1px 0px var(--cz-color-border-primary),
 			inset 0px 1px 0px var(--cz-color-border-primary);
 	}
 
@@ -1799,7 +1813,9 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		transition: background 0.3s ease, box-shadow 0.3s ease;
+		transition:
+			background 0.3s ease,
+			box-shadow 0.3s ease;
 
 		height: auto;
 	}
@@ -1822,7 +1838,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 		transition: transform 0.3s ease;
 	}
 
-	.sg:not([data-on="desc"]) svg {
+	.sg:not([data-on='desc']) svg {
 		transform: scaleY(-1);
 	}
 `,da=k`
@@ -1832,8 +1848,9 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 			--cosmoz-omnitable-settings-color,
 			var(--cz-text-color, #101010)
 		);
-		--cosmoz-dropdown-box-shadow: 0 3px 4px 0 rgb(0 0 0 / 14%),
-			0 1px 8px 0 rgb(0 0 0 / 12%), 0 3px 3px -2px rgb(0 0 0 / 40%);
+		--cosmoz-dropdown-box-shadow:
+			0 3px 4px 0 rgb(0 0 0 / 14%), 0 1px 8px 0 rgb(0 0 0 / 12%),
+			0 3px 3px -2px rgb(0 0 0 / 40%);
 	}
 	cosmoz-dropdown {
 		outline: none;
@@ -2026,60 +2043,60 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 							</div>`)}
 				</div>
 			`)})))()}var yo;function bo(){return(bo=e((()=>{Ze(),p(),le(),A(),N(),vo(),yo=(e,t,{selected:n,expanded:r,toggleCollapse:i,columns:a,collapsedColumns:o,miniColumns:s,onItemClick:c,onCheckboxChange:l,onItemChange:u,rowPartFn:d,groupOnColumn:f,dataIsValid:p,onRowContextMenu:m})=>T`
-		<div
-			?selected=${n}
-			part="${[`itemRow`,`itemRow-${t}`,d?.(e,t)].filter(Boolean).join(` `)}"
-			.dataIndex=${t}
-			.dataItem=${e}
-			class="itemRow"
-			@click=${c}
-			@contextmenu=${m}
-		>
-			<div class="itemRow-wrapper" part="itemRow-wrapper">
-				<input
-					class="checkbox"
-					type="checkbox"
-					part="checkbox"
-					.checked=${n}
-					.dataItem=${e}
-					@input=${l}
-					?disabled=${!p}
-				/>
-				<cosmoz-omnitable-item-row
-					part="itemRow-inner"
-					.columns=${a}
-					.index=${t}
-					.selected=${n}
-					.expanded=${r}
-					.item=${e}
-					.groupOnColumn=${f}
-					.onItemChange=${u}
-				>
-				</cosmoz-omnitable-item-row>
-				<cosmoz-button
-					aria-label=${D(`Expand or collapse`)}
-					variant="tertiary"
-					icon-only
-					class="expand"
-					?hidden="${te(o.length)}"
-					?aria-expanded="${r}"
-					@click="${i}"
-				>
-					${Ce({width:`16`,height:`16`})}
-				</cosmoz-button>
-			</div>
-			${_o({item:e,index:t})(s)}
+	<div
+		?selected=${n}
+		part="${[`itemRow`,`itemRow-${t}`,d?.(e,t)].filter(Boolean).join(` `)}"
+		.dataIndex=${t}
+		.dataItem=${e}
+		class="itemRow"
+		@click=${c}
+		@contextmenu=${m}
+	>
+		<div class="itemRow-wrapper" part="itemRow-wrapper">
+			<input
+				class="checkbox"
+				type="checkbox"
+				part="checkbox"
+				.checked=${n}
+				.dataItem=${e}
+				@input=${l}
+				?disabled=${!p}
+			/>
+			<cosmoz-omnitable-item-row
+				part="itemRow-inner"
+				.columns=${a}
+				.index=${t}
+				.selected=${n}
+				.expanded=${r}
+				.item=${e}
+				.groupOnColumn=${f}
+				.onItemChange=${u}
+			>
+			</cosmoz-omnitable-item-row>
+			<cosmoz-button
+				aria-label=${D(`Expand or collapse`)}
+				variant="tertiary"
+				icon-only
+				class="expand"
+				?hidden="${te(o.length)}"
+				?aria-expanded="${r}"
+				@click="${i}"
+			>
+				${Ce({width:`16`,height:`16`})}
+			</cosmoz-button>
 		</div>
-		<cosmoz-omnitable-item-expand
-			.columns=${o}
-			.item=${e}
-			?selected=${n}
-			?expanded=${r}
-			.groupOnColumn=${f}
-			part="item-expand"
-		>
-		</cosmoz-omnitable-item-expand>
-	`})))()}var xo,So,Co,wo;function To(){return(To=e((()=>{A(),w(),ye(),Ve(),xo=4,So=(e=document)=>{let t=e.activeElement;return t?.shadowRoot?.activeElement?So(t.shadowRoot):t},Co=e=>[e,...e.querySelectorAll(`*`)].flatMap(e=>[...e.getAttribute(`role`)===`menuitem`?[e]:[],...e.shadowRoot?[...e.shadowRoot.children].flatMap(Co):[]]),wo=(e,t,n)=>{let[r,a]=d(),o=i(),c=i(t),f=i({at:0}),p=e.rowMenu;c.current=t;let m=l((e,t)=>{let n=e.dataItem,r=c.current,i=Array.isArray(r)&&r.length>1&&r.includes(n);a({...t,items:i?r:[n],opener:So()??void 0})},[]),h=l(e=>{e.stopPropagation();let t=e.currentTarget,n=e.composedPath().find(e=>e.dataItem),{trigger:r,at:i}=f.current;if(!n||r===t&&performance.now()-i<500)return;let{left:a,bottom:o}=t.getBoundingClientRect();m(n,{x:a,y:o+xo,trigger:t})},[m]),g=l(e=>{e.composedPath().some(e=>e instanceof Element&&e.matches(`a[href]`))||document.getSelection()?.type===`Range`||(e.preventDefault(),m(e.currentTarget,{x:e.clientX,y:e.clientY}))},[m]);return s(()=>a(void 0),[n]),s(()=>{let t=o.current;if(!r||!t)return;t.showPopover(),t.focus(),r.trigger?.setAttribute(`aria-expanded`,`true`);let{width:n,height:i}=t.getBoundingClientRect(),a=r.y+i>innerHeight?r.y-i-xo:r.y;t.style.left=`${Math.max(xo,Math.min(r.x,innerWidth-n-xo))}px`,t.style.top=`${Math.max(xo,a)}px`;let s=e=>!e.composedPath().includes(t)&&t.hidePopover(),c=e.shadowRoot;return c.addEventListener(`scroll`,s,!0),()=>{c.removeEventListener(`scroll`,s,!0),r.trigger?.removeAttribute(`aria-expanded`)}},[r]),{onRowMenu:p?h:void 0,onRowContextMenu:p?g:void 0,renderRowMenu:()=>r&&p?T`<div
+		${_o({item:e,index:t})(s)}
+	</div>
+	<cosmoz-omnitable-item-expand
+		.columns=${o}
+		.item=${e}
+		?selected=${n}
+		?expanded=${r}
+		.groupOnColumn=${f}
+		part="item-expand"
+	>
+	</cosmoz-omnitable-item-expand>
+`})))()}var xo,So,Co,wo;function To(){return(To=e((()=>{A(),w(),ye(),Ve(),xo=4,So=(e=document)=>{let t=e.activeElement;return t?.shadowRoot?.activeElement?So(t.shadowRoot):t},Co=e=>[e,...e.querySelectorAll(`*`)].flatMap(e=>[...e.getAttribute(`role`)===`menuitem`?[e]:[],...e.shadowRoot?[...e.shadowRoot.children].flatMap(Co):[]]),wo=(e,t,n)=>{let[r,a]=d(),o=i(),c=i(t),f=i({at:0}),p=e.rowMenu;c.current=t;let m=l((e,t)=>{let n=e.dataItem,r=c.current,i=Array.isArray(r)&&r.length>1&&r.includes(n);a({...t,items:i?r:[n],opener:So()??void 0})},[]),h=l(e=>{e.stopPropagation();let t=e.currentTarget,n=e.composedPath().find(e=>e.dataItem),{trigger:r,at:i}=f.current;if(!n||r===t&&performance.now()-i<500)return;let{left:a,bottom:o}=t.getBoundingClientRect();m(n,{x:a,y:o+xo,trigger:t})},[m]),g=l(e=>{e.composedPath().some(e=>e instanceof Element&&e.matches(`a[href]`))||document.getSelection()?.type===`Range`||(e.preventDefault(),m(e.currentTarget,{x:e.clientX,y:e.clientY}))},[m]);return s(()=>a(void 0),[n]),s(()=>{let t=o.current;if(!r||!t)return;t.showPopover(),t.focus(),r.trigger?.setAttribute(`aria-expanded`,`true`);let{width:n,height:i}=t.getBoundingClientRect(),a=r.y+i>innerHeight?r.y-i-xo:r.y;t.style.left=`${Math.max(xo,Math.min(r.x,innerWidth-n-xo))}px`,t.style.top=`${Math.max(xo,a)}px`;let s=e=>!e.composedPath().includes(t)&&t.hidePopover(),c=e.shadowRoot;return c.addEventListener(`scroll`,s,!0),()=>{c.removeEventListener(`scroll`,s,!0),r.trigger?.removeAttribute(`aria-expanded`)}},[r]),{onRowMenu:p?h:void 0,onRowContextMenu:p?g:void 0,renderRowMenu:()=>r&&p?T`<div
 					popover="auto"
 					class="row-menu"
 					part="row-menu"
@@ -2091,9 +2108,9 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 					@beforetoggle=${e=>{e.newState===`closed`&&(f.current={trigger:r.trigger,at:performance.now()},r.hadFocus=!!o.current?.matches(`:focus-within`))}}
 					@toggle=${e=>{if(e.newState!==`closed`)return;let t=So(),n=!t||t===document.body||!!o.current?.matches(`:focus-within`);r.hadFocus&&n&&(r.trigger??r.opener)?.focus(),a(void 0)}}
 					@click=${e=>{e.composedPath().some(e=>e instanceof Element&&e.getAttribute(`role`)===`menuitem`)&&o.current?.hidePopover()}}
-			  >
+				>
 					${p(r.items)}
-			  </div>`:u}}})))()}var Eo,Do,Oo;function ko(){return(ko=e((()=>{A(),go(),bo(),To(),ea(),Y(),Eo=e=>e instanceof HTMLInputElement,Do=e=>e instanceof HTMLElement,Oo=({host:e,error:t,dataIsValid:n,processedItems:r,columns:a,collapsedColumns:o,miniColumns:c,sortAndGroupOptions:u,rowPartFn:d,selectedItems:f,...p})=>{let{loading:m=!1,displayEmptyGroups:h=!1,compareItemsFn:g}=e,v=e.renderItem??yo,y=e.renderGroup??ho,b=i({shiftKey:!1,ctrlKey:!1}),x=l(t=>{if(!Eo(t.target))return;let n=t.target,r=n.dataItem,i=n.checked,a=e.shadowRoot.querySelector(`#groupedList`);b.current.shiftKey?a.toggleSelectTo(r,i):b.current.ctrlKey?(n.checked=!0,a.selectOnly(r)):a.toggleSelect(r,i),t.preventDefault(),t.stopPropagation()},[]);s(()=>{let e=({shiftKey:e,ctrlKey:t})=>{b.current={shiftKey:e,ctrlKey:t}};return window.addEventListener(`keydown`,e),window.addEventListener(`keyup`,e),()=>{window.removeEventListener(`keydown`,e),window.removeEventListener(`keyup`,e)}},[]);let S=l(t=>{if(!Do(t.currentTarget))return;let n=t.currentTarget,r=t.composedPath();r.slice(0,r.indexOf(n)).some(e=>e instanceof Element&&e.matches(`a, .checkbox, .expand`))||e.dispatchEvent(new window.CustomEvent(`omnitable-item-click`,{bubbles:!0,composed:!0,detail:{item:n.dataItem,index:n.dataIndex}}))},[]),{onRowMenu:C,onRowContextMenu:w,renderRowMenu:T}=wo(e,f,r),{groupOnColumn:ee}=u,E=l((t,n)=>r=>Cn(e,t,n,r),[]);return{...p,selectedItems:f,renderRowMenu:T,processedItems:r,dataIsValid:n,filterIsTooStrict:n&&r.length<1,loading:m,compareItemsFn:g,displayEmptyGroups:h,error:t,renderItem:_(()=>(e,t,r)=>v(e,e[Qi],{...r,columns:a,collapsedColumns:o,miniColumns:c,onItemClick:S,onCheckboxChange:x,onItemChange:E,rowPartFn:d,groupOnColumn:ee,dataIsValid:n,onRowMenu:C,onRowContextMenu:w}),[v,C,w,a,o,c,S,x,E,d,ee,n]),renderGroup:_(()=>(e,t,r)=>y(e,e[Qi],{...r,columns:a,onCheckboxChange:x,groupOnColumn:ee,dataIsValid:n}),[y,a,x,ee,n])}}})))()}var Ao;function jo(){return(jo=e((()=>{Ao=(e,t)=>{if(e===t)return 0;if(e==null)return-1;if(t==null)return 1;let n=typeof e,r=typeof t;return n===`object`&&r===`object`?e.toString()<t.toString()?-1:1:n===`number`&&r===`number`?e-t:n===`string`&&r===`string`?e<t?-1:1:n===`boolean`&&r===`boolean`?e?-1:1:(console.warn(`unsupported sort`,n,e,r,t),0)}})))()}var Mo,No,Po,Fo,Io,Lo;function Ro(){return(Ro=e((()=>{ne(),A(),jo(),bn(),Ti(),ea(),Mo=(e,t)=>(n,r)=>Ao(e(n),e(r))*(t?-1:1),No=e=>e.replace(/([a-z0-9])([A-Z])/gu,`$1-$2`).toLowerCase(),Po=(e,t)=>{e&&t&&Object.entries(t).forEach(([t,n])=>{let r=e[J];r.__ownChange=!0,Object.assign(r,{[t]:n}),r.__ownChange=!1,r.dispatchEvent(new CustomEvent(`${No(t)}-changed`,{bubbles:!0,detail:{value:n}}))})},Fo=(e,t)=>Object.assign(e,{[Qi]:t}),Io=Symbol(`unparsed`),Lo=({data:e,columns:t,hashParam:n,sortAndGroupOptions:r,noLocalSort:i,noLocalFilter:a})=>{let{groupOnColumn:o,groupOnDescending:c,sortOnColumn:u,descending:d}=r,f=l(([e,n])=>{let r=t.find(({name:t})=>t===e);return r==null?[e,void 0]:[e,n.filter&&r.serializeFilter(r,n.filter)]},[t]),p=l(([e,n])=>{let r=t.find(({name:t})=>t===e);if(r==null)return[e,{[Io]:n}];let i={filter:r.deserializeFilter(r,n)};return Po(r,i),[e,i]},[t]),[m,h]=yi({},n,{multi:!0,suffix:`-filter--`,write:f,read:p}),g=l((e,n)=>h(r=>{let i=be(n,r[e]);return Po(t.find(t=>t.name===e),i),{...r,[e]:{...r[e],...i}}}),[t,h]),v=_(()=>Object.values(m).map(e=>e.filter),[m]),y=_(()=>Object.fromEntries(t.map(e=>[e.name,!e.noLocalFilter&&e.getFilterFn(e,m[e.name]?.filter)]).filter(e=>!!e[1])),[t,...v]),b=_(()=>!Array.isArray(e)||e.length===0?[]:Object.entries(y).length===0||a?e.slice():e.filter(e=>Object.values(y).every(t=>t(e))),[e,y,a]),x=_(()=>{if(!i&&!o&&u!=null&&u.sortOn!=null)return b.slice().sort(Mo(e=>u.getComparableValue({...u,valuePath:u.sortOn},e),d));if(o!=null&&o.groupOn!=null){let e=b.reduce((e,t)=>{let n=o.getComparableValue({...o,valuePath:o.groupOn},t);if(n===void 0)return e;let r=e.find(e=>e.id===n);return r?(r.items.push(t),e):(r={id:n,name:n,items:[t]},[...e,r])},[]);return e.sort(Mo(e=>o.getComparableValue({...o,valuePath:o.groupOn},e.items[0]),c)),!u||i?e:e.filter(e=>Array.isArray(e.items)).map(e=>(e.items.sort(Mo(e=>u.getComparableValue({...u,valuePath:u.sortOn},e),d)),e))}return b},[b,o,c,u,d,i]),S=_(()=>{let e=0,t=0,n=[];return x.forEach(r=>{if(`items`in r&&Array.isArray(r.items))Fo(r,t++),r.items.forEach(t=>{Fo(t,e++),n.push(t)});else return Fo(r,e++),n.push(r)},[]),n},[x]);return s(()=>{h(e=>Object.values(e).some(e=>e[Io]!=null)?Object.fromEntries(Object.entries(e).map(([e,t])=>{let n=t[Io];return n==null?[e,t]:p([e,n])})):e)},[p]),{processedItems:x,visibleData:S,filters:m,filterFunctions:y,setFilterState:g}}})))()}var zo,Bo,Vo;function Ho(){return(Ho=e((()=>{y(),v(),A(),zo=e=>{let t=t=>{let n=e.data.indexOf(t);if(n<0)return null;let r=e.data.splice(n,1);if(e.data=e.data.slice(),Array.isArray(r)&&r.length>0)return r[0]},n=(t,n)=>{e.data.splice(t,1,n),e.data=e.data.slice()};return{removeItem:t,removeItems(e){let n=[];for(let r=e.length-1;r>=0;--r){let i=t(e[r]);i!=null&&n.push(i)}return n},replaceItemAtIndex:n,replaceItem(t,r){let i=e.data.indexOf(t);i>-1&&n(i,r)},selectItem(t){e.shadowRoot.querySelector(`#groupedList`).select(t)},selectAll(){e.shadowRoot.querySelector(`#groupedList`).selectAll()},deselectAll(){e.shadowRoot.querySelector(`#groupedList`).deselectAll()},deselectItem(t){e.shadowRoot.querySelector(`#groupedList`).deselect(t)},isItemSelected(t){return e.shadowRoot.querySelector(`#groupedList`).isItemSelected(t)}}},Bo=e=>{let[t,n]=d(!1);return s(()=>{e&&n(!0)},[e]),t},Vo=({host:e,visibleData:t,filters:r,ready:i=!0,...o})=>{let{setFilterState:c}=o,l=_(()=>zo(e),[]),[u,d]=n(`selectedItems`,[]);a(o,Object.values(o)),a(l,Object.values(l)),s(()=>{let t=e=>{if(!(e instanceof CustomEvent))return;let t=e.detail;c(t.name,e=>({...typeof e==`object`&&e?e:{},...t.state}))};return e.addEventListener(`legacy-filter-changed`,t),()=>e.removeEventListener(`legacy-filter-changed`,t)},[]),j(`visibleData`,t),j(`sortedFilteredGroupedItems`,o.sortedFilteredGroupedItems),j(`sortOn`,o.sortOn),j(`descending`,o.descending),j(`isMini`,o.isMini),j(`settingsReady`,Bo(i));let f=_(()=>Object.fromEntries(Object.entries(r).filter(([,{filter:e}])=>e!==void 0).map(([e,{filter:t}])=>[e,t])),[r]);return j(`filters`,f,Object.values(f)),{selectedItems:u,setSelectedItems:d}}})))()}var Uo;function Wo(){return(Wo=e((()=>{La(),co(),uo(),po(),ko(),Ro(),Ho(),ji(),Uo=e=>{let{hashParam:t,settingsId:n,data:r,resizeSpeedFactor:i,noLocal:a,noLocalSort:o=a,noLocalFilter:s=a,error:c,rowPartFn:l}=e,u=Fa({settingsId:n,host:e}),{settings:d,setSettings:f,columns:p,resetRef:m,savedSettings:h}=u,g=h!==void 0,_=ki(p,t,{settings:d,setSettings:f,resetRef:m,ready:g}),{processedItems:v,visibleData:y,filters:b,setFilterState:x,filterFunctions:S}=Lo({data:r,columns:p,hashParam:t,sortAndGroupOptions:_,noLocalSort:o,noLocalFilter:s}),{isMini:C,collapsedColumns:w,miniColumns:T,requestTween:ee}=so({host:e,columns:p,settings:d,setSettings:f,resizeSpeedFactor:i,sortAndGroupOptions:_}),E=r&&Array.isArray(r)&&r.length>0,{selectedItems:te,setSelectedItems:ne}=Vo({host:e,visibleData:y,sortedFilteredGroupedItems:v,columns:p,filters:b,setFilterState:x,isMini:C,ready:g,..._}),D=fo({host:e,selectedItems:te,sortAndGroupOptions:_,dataIsValid:E,data:r,columns:p,filters:b,collapsedColumns:w,settings:d,filterFunctions:S,settingS:u,setFilterState:x,hideSelectAll:e.hideSelectAll===!0,headerColumns:e.headerColumns??null,requestTween:ee});return{header:D,list:Oo({host:e,error:c,dataIsValid:E,processedItems:v,selectedItems:te,setSelectedItems:ne,columns:p,collapsedColumns:w,miniColumns:T,sortAndGroupOptions:_,rowPartFn:l}),footer:lo({host:e,selectedItems:te,allSelected:D.allSelected,setSelectedItems:ne,columns:p,enableSelectAll:e.enableSelectAll,allItemsCount:e.allItemsCount})}}})))()}var Go;function Ko(){return(Ko=e((()=>{A(),w(),Go=e=>{let{item:t,index:n,renderFn:r}=e;return t==null||n==null||r==null?u:r(t,n)},customElements.define(`cosmoz-grouped-list-row`,P(Go,{useShadowDOM:!1}))})))()}var qo,Jo,Yo,Xo,Zo,Qo,$o,es,ts;function ns(){return(ns=e((()=>{qo={group:Symbol(`group`)},Jo=(e,t)=>(t.has(e)||t.set(e,{}),t.get(e)),Yo=(e,t)=>!!Jo(e,t).expanded,Xo=(e,t)=>!!Jo(e,t).folded,Zo=e=>e?e.items instanceof Array:!1,Qo=e=>{if(!Array.isArray(e)||e.length===0)return;let t=Array.isArray(e[0]?.items);if(!e.every(e=>Array.isArray(e.items)===t))throw Error(`Data must be homogeneous.`)},$o=(e,t,n)=>{if(Array.isArray(e))return Qo(e),e.reduce((e,r)=>{let i=r;return i.items?i.items.length?Jo(r,n).folded?e.concat(r):e.concat(r,i.items.map(e=>Object.assign(e,{[qo.group]:r}))):t?e.concat(r):e:e.concat(r)},[])},es=(e,...t)=>typeof e==`function`?e(...t):e,ts=(e,t)=>e===t})))()}var rs;function is(){return(is=e((()=>{A(),ns(),rs=()=>{let[e,t]=d(()=>[new WeakMap]);return{setItemState:l((e,n)=>t(([t])=>{let r=Jo(e,t);return Object.assign(r,es(n,r)),[t]}),[]),state:e[0],signal:e}}})))()}var as;function os(){return(os=e((()=>{A(),is(),ns(),as=()=>{let{setItemState:e,state:t,signal:n}=rs();return{state:t,signal:n,toggleFold:l((t,n)=>{Zo(t)&&e(t,e=>({folded:n===void 0?!e.folded:n}))},[]),toggleCollapse:l((t,n)=>{Zo(t)||e(t,e=>({expanded:n===void 0?!e.expanded:!n}))},[])}}})))()}var ss;function cs(){return(cs=e((()=>{A(),ea(),ns(),ss=({compareItemsFn:e,data:t,flatData:r})=>{let[i,a]=n(`selectedItems`,()=>[]),[o,c]=d(),u=l(e=>i===$||i.includes(e),[i]),f=l(e=>i===$||(e?.items?.every(u)??!1),[i,u]),p=l(e=>u(e)||f(e),[u,f]),m=l(e=>{let t=e.items??[e];a(e=>e===$?e:[...e,...t.filter(t=>!e.includes(t))]),c(e)},[]),h=l(e=>{let t=e.items??[e];a(e=>e===$?(r??[]).filter(e=>!Zo(e)).filter(e=>!t.includes(e)):e.filter(e=>!t.includes(e))),c(e)},[r]),g=l(e=>{a(e.items?.slice()||[e]),c(e)},[]),_=l(()=>{a(t.flatMap(e=>e.items||e)),c(void 0)},[t]),v=l(()=>{a([]),c(void 0)},[]),y=l((e,t=!p(e))=>t?m(e):h(e),[p]),b=l((t,n)=>{if(!r)return;let i=o?r.findIndex(t=>e(t,o)):-1;if(i<0)return y(t,n);let[a,s]=[i,r.indexOf(t)].sort((e,t)=>e-t);r.slice(a,s+1).forEach((e,t,r)=>{t>0&&t<r.length-1&&Zo(e)||y(e,n)}),c(t)},[r,e,y]);return s(()=>a(t=>t!==$&&t.length>0&&r?r.filter(n=>t.find(t=>e(n,t))):t),[r]),{selectedItems:i,isItemSelected:u,isGroupSelected:f,isSelected:p,select:m,deselect:h,selectOnly:g,selectAll:_,deselectAll:v,toggleSelect:y,toggleSelectTo:b}}})))()}var ls,us,ds;function fs(){return(fs=e((()=>{ae(),y(),A(),w(),Ko(),os(),cs(),ns(),ls={host:{position:`relative`,display:`flex`,flexDirection:`column`}},us=e=>{let{data:t,renderItem:n,renderGroup:r,displayEmptyGroups:i,compareItemsFn:o=ts}=e,{toggleFold:s,toggleCollapse:c,state:u,signal:d}=as(),f=_(()=>$o(t,i,u),[t,i,d]),{selectedItems:p,isItemSelected:h,isGroupSelected:g,isSelected:v,select:y,deselect:b,selectOnly:x,selectAll:S,deselectAll:C,toggleSelect:w,toggleSelectTo:T}=ss({compareItemsFn:o,data:t,flatData:f}),ee=l((e,t)=>Array.isArray(e.items)?r(e,t,{selected:g(e),folded:Xo(e,u),toggleSelect:t=>w(e,typeof t==`boolean`?t:void 0),toggleFold:()=>s(e)}):n(e,t,{selected:h(e),expanded:Yo(e,u),toggleSelect:t=>w(e,typeof t==`boolean`?t:void 0),toggleCollapse:()=>c(e)}),[n,r,p,w,d]);m(()=>{Object.assign(e.style,ls.host)},[]);let E={toggleFold:s,toggleCollapse:c,isItemSelected:h,isGroupSelected:g,isSelected:v,select:y,deselect:b,selectOnly:x,selectAll:S,deselectAll:C,toggleSelect:w,toggleSelectTo:T};return a(E,Object.values(E)),{renderRow:ee,flatData:f}},ds=({renderRow:e,flatData:t})=>ce({items:t,renderItem:(t,n)=>T`<cosmoz-grouped-list-row
+				</div>`:u}}})))()}var Eo,Do,Oo;function ko(){return(ko=e((()=>{A(),go(),bo(),To(),ea(),Y(),Eo=e=>e instanceof HTMLInputElement,Do=e=>e instanceof HTMLElement,Oo=({host:e,error:t,dataIsValid:n,processedItems:r,columns:a,collapsedColumns:o,miniColumns:c,sortAndGroupOptions:u,rowPartFn:d,selectedItems:f,...p})=>{let{loading:m=!1,displayEmptyGroups:h=!1,compareItemsFn:g}=e,v=e.renderItem??yo,y=e.renderGroup??ho,b=i({shiftKey:!1,ctrlKey:!1}),x=l(t=>{if(!Eo(t.target))return;let n=t.target,r=n.dataItem,i=n.checked,a=e.shadowRoot.querySelector(`#groupedList`);b.current.shiftKey?a.toggleSelectTo(r,i):b.current.ctrlKey?(n.checked=!0,a.selectOnly(r)):a.toggleSelect(r,i),t.preventDefault(),t.stopPropagation()},[]);s(()=>{let e=({shiftKey:e,ctrlKey:t})=>{b.current={shiftKey:e,ctrlKey:t}};return window.addEventListener(`keydown`,e),window.addEventListener(`keyup`,e),()=>{window.removeEventListener(`keydown`,e),window.removeEventListener(`keyup`,e)}},[]);let S=l(t=>{if(!Do(t.currentTarget))return;let n=t.currentTarget,r=t.composedPath();r.slice(0,r.indexOf(n)).some(e=>e instanceof Element&&e.matches(`a, .checkbox, .expand`))||e.dispatchEvent(new window.CustomEvent(`omnitable-item-click`,{bubbles:!0,composed:!0,detail:{item:n.dataItem,index:n.dataIndex}}))},[]),{onRowMenu:C,onRowContextMenu:w,renderRowMenu:T}=wo(e,f,r),{groupOnColumn:ee}=u,E=l((t,n)=>r=>Cn(e,t,n,r),[]);return{...p,selectedItems:f,renderRowMenu:T,processedItems:r,dataIsValid:n,filterIsTooStrict:n&&r.length<1,loading:m,compareItemsFn:g,displayEmptyGroups:h,error:t,renderItem:_(()=>(e,t,r)=>v(e,e[Qi],{...r,columns:a,collapsedColumns:o,miniColumns:c,onItemClick:S,onCheckboxChange:x,onItemChange:E,rowPartFn:d,groupOnColumn:ee,dataIsValid:n,onRowMenu:C,onRowContextMenu:w}),[v,C,w,a,o,c,S,x,E,d,ee,n]),renderGroup:_(()=>(e,t,r)=>y(e,e[Qi],{...r,columns:a,onCheckboxChange:x,groupOnColumn:ee,dataIsValid:n}),[y,a,x,ee,n])}}})))()}var Ao;function jo(){return(jo=e((()=>{Ao=(e,t)=>{if(e===t)return 0;if(e==null)return-1;if(t==null)return 1;let n=typeof e,r=typeof t;return n===`object`&&r===`object`?e.toString()<t.toString()?-1:1:n===`number`&&r===`number`?e-t:n===`string`&&r===`string`?e<t?-1:1:n===`boolean`&&r===`boolean`?e?-1:1:(console.warn(`unsupported sort`,n,e,r,t),0)}})))()}var Mo,No,Po,Fo,Io,Lo;function Ro(){return(Ro=e((()=>{ne(),A(),jo(),bn(),Ti(),ea(),Mo=(e,t)=>(n,r)=>Ao(e(n),e(r))*(t?-1:1),No=e=>e.replace(/([a-z0-9])([A-Z])/gu,`$1-$2`).toLowerCase(),Po=(e,t)=>{e&&t&&Object.entries(t).forEach(([t,n])=>{let r=e[J];r.__ownChange=!0,Object.assign(r,{[t]:n}),r.__ownChange=!1,r.dispatchEvent(new CustomEvent(`${No(t)}-changed`,{bubbles:!0,detail:{value:n}}))})},Fo=(e,t)=>Object.assign(e,{[Qi]:t}),Io=Symbol(`unparsed`),Lo=({data:e,columns:t,hashParam:n,sortAndGroupOptions:r,noLocalSort:i,noLocalFilter:a})=>{let{groupOnColumn:o,groupOnDescending:c,sortOnColumn:u,descending:d}=r,f=l(([e,n])=>{let r=t.find(({name:t})=>t===e);return r==null?[e,void 0]:[e,n.filter&&r.serializeFilter(r,n.filter)]},[t]),p=l(([e,n])=>{let r=t.find(({name:t})=>t===e);if(r==null)return[e,{[Io]:n}];let i={filter:r.deserializeFilter(r,n)};return Po(r,i),[e,i]},[t]),[m,h]=yi({},n,{multi:!0,suffix:`-filter--`,write:f,read:p}),g=l((e,n)=>h(r=>{let i=be(n,r[e]);return Po(t.find(t=>t.name===e),i),{...r,[e]:{...r[e],...i}}}),[t,h]),v=_(()=>Object.values(m).map(e=>e.filter),[m]),y=_(()=>Object.fromEntries(t.map(e=>[e.name,!e.noLocalFilter&&e.getFilterFn(e,m[e.name]?.filter)]).filter(e=>!!e[1])),[t,...v]),b=_(()=>!Array.isArray(e)||e.length===0?[]:Object.entries(y).length===0||a?e.slice():e.filter(e=>Object.values(y).every(t=>t(e))),[e,y,a]),x=_(()=>{if(!i&&!o&&u!=null&&u.sortOn!=null)return b.slice().sort(Mo(e=>u.getComparableValue({...u,valuePath:u.sortOn},e),d));if(o!=null&&o.groupOn!=null){let e=b.reduce((e,t)=>{let n=o.getComparableValue({...o,valuePath:o.groupOn},t);if(n===void 0)return e;let r=e.find(e=>e.id===n);return r?(r.items.push(t),e):(r={id:n,name:n,items:[t]},[...e,r])},[]);return e.sort(Mo(e=>o.getComparableValue({...o,valuePath:o.groupOn},e.items[0]),c)),!u||i?e:e.filter(e=>Array.isArray(e.items)).map(e=>(e.items.sort(Mo(e=>u.getComparableValue({...u,valuePath:u.sortOn},e),d)),e))}return b},[b,o,c,u,d,i]),S=_(()=>{let e=0,t=0,n=[];return x.forEach(r=>{if(`items`in r&&Array.isArray(r.items))Fo(r,t++),r.items.forEach(t=>{Fo(t,e++),n.push(t)});else return Fo(r,e++),n.push(r)},[]),n},[x]);return s(()=>{h(e=>Object.values(e).some(e=>e[Io]!=null)?Object.fromEntries(Object.entries(e).map(([e,t])=>{let n=t[Io];return n==null?[e,t]:p([e,n])})):e)},[p]),{processedItems:x,visibleData:S,filters:m,filterFunctions:y,setFilterState:g}}})))()}var zo,Bo,Vo;function Ho(){return(Ho=e((()=>{y(),v(),A(),zo=e=>{let t=t=>{let n=e.data.indexOf(t);if(n<0)return null;let r=e.data.splice(n,1);if(e.data=e.data.slice(),Array.isArray(r)&&r.length>0)return r[0]},n=(t,n)=>{e.data.splice(t,1,n),e.data=e.data.slice()};return{removeItem:t,removeItems(e){let n=[];for(let r=e.length-1;r>=0;--r){let i=t(e[r]);i!=null&&n.push(i)}return n},replaceItemAtIndex:n,replaceItem(t,r){let i=e.data.indexOf(t);i>-1&&n(i,r)},selectItem(t){e.shadowRoot.querySelector(`#groupedList`).select(t)},selectAll(){e.shadowRoot.querySelector(`#groupedList`).selectAll()},deselectAll(){e.shadowRoot.querySelector(`#groupedList`).deselectAll()},deselectItem(t){e.shadowRoot.querySelector(`#groupedList`).deselect(t)},isItemSelected(t){return e.shadowRoot.querySelector(`#groupedList`).isItemSelected(t)}}},Bo=e=>{let[t,n]=d(!1);return s(()=>{e&&n(!0)},[e]),t},Vo=({host:e,visibleData:t,filters:r,ready:i=!0,...o})=>{let{setFilterState:c}=o,l=_(()=>zo(e),[]),[u,d]=n(`selectedItems`,[]);a(o,Object.values(o)),a(l,Object.values(l)),s(()=>{let t=e=>{if(!(e instanceof CustomEvent))return;let t=e.detail;c(t.name,e=>({...typeof e==`object`&&e?e:{},...t.state}))};return e.addEventListener(`legacy-filter-changed`,t),()=>e.removeEventListener(`legacy-filter-changed`,t)},[]),j(`visibleData`,t),j(`sortedFilteredGroupedItems`,o.sortedFilteredGroupedItems),j(`sortOn`,o.sortOn),j(`descending`,o.descending),j(`isMini`,o.isMini),j(`settingsReady`,Bo(i));let f=_(()=>Object.fromEntries(Object.entries(r).filter(([,{filter:e}])=>e!==void 0).map(([e,{filter:t}])=>[e,t])),[r]);return j(`filters`,f,Object.values(f)),{selectedItems:u,setSelectedItems:d}}})))()}var Uo;function Wo(){return(Wo=e((()=>{La(),co(),uo(),po(),ko(),Ro(),Ho(),ji(),Uo=e=>{let{hashParam:t,settingsId:n,data:r,resizeSpeedFactor:i,noLocal:a,noLocalSort:o=a,noLocalFilter:s=a,error:c,rowPartFn:l}=e,u=Fa({settingsId:n,host:e}),{settings:d,setSettings:f,columns:p,resetRef:m,savedSettings:h}=u,g=h!==void 0,_=ki(p,t,{settings:d,setSettings:f,resetRef:m,ready:g}),{processedItems:v,visibleData:y,filters:b,setFilterState:x,filterFunctions:S}=Lo({data:r,columns:p,hashParam:t,sortAndGroupOptions:_,noLocalSort:o,noLocalFilter:s}),{isMini:C,collapsedColumns:w,miniColumns:T,requestTween:ee}=so({host:e,columns:p,settings:d,setSettings:f,resizeSpeedFactor:i,sortAndGroupOptions:_}),E=r&&Array.isArray(r)&&r.length>0,{selectedItems:te,setSelectedItems:ne}=Vo({host:e,visibleData:y,sortedFilteredGroupedItems:v,columns:p,filters:b,setFilterState:x,isMini:C,ready:g,..._}),D=fo({host:e,selectedItems:te,sortAndGroupOptions:_,dataIsValid:E,data:r,columns:p,filters:b,collapsedColumns:w,settings:d,filterFunctions:S,settingS:u,setFilterState:x,hideSelectAll:e.hideSelectAll===!0,headerColumns:e.headerColumns??null,requestTween:ee});return{header:D,list:Oo({host:e,error:c,dataIsValid:E,processedItems:v,selectedItems:te,setSelectedItems:ne,columns:p,collapsedColumns:w,miniColumns:T,sortAndGroupOptions:_,rowPartFn:l}),footer:lo({host:e,selectedItems:te,allSelected:D.allSelected,setSelectedItems:ne,columns:p,enableSelectAll:e.enableSelectAll,allItemsCount:e.allItemsCount})}}})))()}var Go;function Ko(){return(Ko=e((()=>{A(),w(),Go=e=>{let{item:t,index:n,renderFn:r}=e;return t==null||n==null||r==null?u:r(t,n)},customElements.define(`cosmoz-grouped-list-row`,P(Go,{useShadowDOM:!1}))})))()}var qo,Jo,Yo,Xo,Zo,Qo,$o,es,ts;function ns(){return(ns=e((()=>{qo={group:Symbol(`group`)},Jo=(e,t)=>(t.has(e)||t.set(e,{}),t.get(e)),Yo=(e,t)=>!!Jo(e,t).expanded,Xo=(e,t)=>!!Jo(e,t).folded,Zo=e=>e?e.items instanceof Array:!1,Qo=e=>{if(!Array.isArray(e)||e.length===0)return;let t=Array.isArray(e[0]?.items);if(!e.every(e=>Array.isArray(e.items)===t))throw Error(`Data must be homogeneous.`)},$o=(e,t,n)=>{if(Array.isArray(e))return Qo(e),e.reduce((e,r)=>{let i=r;return i.items?i.items.length?Jo(r,n).folded?e.concat(r):e.concat(r,i.items.map(e=>Object.assign(e,{[qo.group]:r}))):t?e.concat(r):e:e.concat(r)},[])},es=(e,...t)=>typeof e==`function`?e(...t):e,ts=(e,t)=>e===t})))()}var rs;function is(){return(is=e((()=>{A(),ns(),rs=()=>{let[e,t]=d(()=>[new WeakMap]);return{setItemState:l((e,n)=>t(([t])=>{let r=Jo(e,t);return Object.assign(r,es(n,r)),[t]}),[]),state:e[0],signal:e}}})))()}var as;function os(){return(os=e((()=>{A(),is(),ns(),as=()=>{let{setItemState:e,state:t,signal:n}=rs();return{state:t,signal:n,toggleFold:l((t,n)=>{Zo(t)&&e(t,e=>({folded:n===void 0?!e.folded:n}))},[]),toggleCollapse:l((t,n)=>{Zo(t)||e(t,e=>({expanded:n===void 0?!e.expanded:!n}))},[])}}})))()}var ss;function cs(){return(cs=e((()=>{A(),ea(),ns(),ss=({compareItemsFn:e,data:t,flatData:r})=>{let[i,a]=n(`selectedItems`,()=>[]),[o,c]=d(),u=l(e=>i===$||i.includes(e),[i]),f=l(e=>i===$||(e?.items?.every(u)??!1),[i,u]),p=l(e=>u(e)||f(e),[u,f]),m=l(e=>{let t=e.items??[e];a(e=>e===$?e:[...e,...t.filter(t=>!e.includes(t))]),c(e)},[]),h=l(e=>{let t=e.items??[e];a(e=>e===$?(r??[]).filter(e=>!Zo(e)).filter(e=>!t.includes(e)):e.filter(e=>!t.includes(e))),c(e)},[r]),g=l(e=>{a(e.items?.slice()||[e]),c(e)},[]),_=l(()=>{a(t.flatMap(e=>e.items||e)),c(void 0)},[t]),v=l(()=>{a([]),c(void 0)},[]),y=l((e,t=!p(e))=>t?m(e):h(e),[p]),b=l((t,n)=>{if(!r)return;let i=o?r.findIndex(t=>e(t,o)):-1;if(i<0)return y(t,n);let[a,s]=[i,r.indexOf(t)].sort((e,t)=>e-t);r.slice(a,s+1).forEach((e,t,r)=>{t>0&&t<r.length-1&&Zo(e)||y(e,n)}),c(t)},[r,e,y]);return s(()=>a(t=>t!==$&&t.length>0&&r?r.filter(n=>t.find(t=>e(n,t))):t),[r]),{selectedItems:i,isItemSelected:u,isGroupSelected:f,isSelected:p,select:m,deselect:h,selectOnly:g,selectAll:_,deselectAll:v,toggleSelect:y,toggleSelectTo:b}}})))()}var ls,us,ds;function fs(){return(fs=e((()=>{ae(),y(),A(),w(),Ko(),os(),cs(),ns(),ls={host:{position:`relative`,display:`flex`,flexDirection:`column`}},us=e=>{let{data:t,renderItem:n,renderGroup:r,displayEmptyGroups:i,compareItemsFn:o=ts}=e,{toggleFold:s,toggleCollapse:c,state:u,signal:d}=as(),f=_(()=>$o(t,i,u),[t,i,d]),{selectedItems:p,isItemSelected:h,isGroupSelected:g,isSelected:v,select:y,deselect:b,selectOnly:x,selectAll:S,deselectAll:C,toggleSelect:w,toggleSelectTo:T}=ss({compareItemsFn:o,data:t,flatData:f}),ee=l((e,t)=>Array.isArray(e.items)?r(e,t,{selected:g(e),folded:Xo(e,u),toggleSelect:t=>w(e,typeof t==`boolean`?t:void 0),toggleFold:()=>s(e)}):n(e,t,{selected:h(e),expanded:Yo(e,u),toggleSelect:t=>w(e,typeof t==`boolean`?t:void 0),toggleCollapse:()=>c(e)}),[n,r,p,w,d]);m(()=>{Object.assign(e.style,ls.host)},[]);let E={toggleFold:s,toggleCollapse:c,isItemSelected:h,isGroupSelected:g,isSelected:v,select:y,deselect:b,selectOnly:x,selectAll:S,deselectAll:C,toggleSelect:w,toggleSelectTo:T};return a(E,Object.values(E)),{renderRow:ee,flatData:f}},ds=({renderRow:e,flatData:t})=>ce({items:t,renderItem:(t,n)=>T`<cosmoz-grouped-list-row
 				.item=${t}
 				.index=${n}
 				.renderFn=${e}
