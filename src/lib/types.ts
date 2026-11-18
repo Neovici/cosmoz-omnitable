@@ -160,6 +160,10 @@ export interface ItemRenderParams extends GroupedListRowParams {
 	rowPartFn?: (item: Item, index: number) => string | undefined;
 	groupOnColumn?: Column;
 	dataIsValid: boolean;
+	/** Set when the host has a `rowMenu`: opens it below the event's target, for a custom renderItem's own button. */
+	onRowMenu?: (event: Event) => void;
+	/** Set when the host has a `rowMenu`: opens it at the pointer. */
+	onRowContextMenu?: (event: MouseEvent) => void;
 }
 
 export interface GroupRenderParams extends GroupedListGroupParams {
