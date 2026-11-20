@@ -10,8 +10,10 @@
 //   translate3d(0, -scrollTop, 0) ("move"; the wrapper does the viewport
 //   clipping, the canvas the row coordinate space),
 // - a fixed pool of persistent `cosmoz-grouped-list-row` elements in that
-//   canvas are transform-fixed at their data offsets; offsets are written at
-//   bind time (and reset on idle), never per scroll frame,
+//   canvas are transform-fixed at their data offsets with a 2D
+//   translate(0, offset); a 2D transform does not promote a row to its own
+//   compositor layer, so a scroll does not layerize dozens of rows. Offsets
+//   are written at bind time (and reset on idle), never per scroll frame,
 // - the covered window is re-bound ("fill") via a prefix-sum offset map
 //   (row heights corrected by a ResizeObserver, with scroll anchoring);
 //   only entering/leaving slots re-bind; no row element is created or
@@ -197,7 +199,7 @@ class PooledRecycler extends BaseAsyncDirective {
 
 	// the clip lives INSIDE the scrolled subtree as a position: sticky
 	// child of the host: the sticky displacement cancels the scroller's
-	// scroll displacement exactly once, so the canvas translate(-scrollTop)
+	// scroll displacement exactly once, so the canvas translate3d(0, -scrollTop, 0)
 	// positions rows at (row offset - scrollTop) in the viewport, and all
 	// scrolling - touch, flick momentum, wheel, scroll keys - is native,
 	// driven by the scroller the browser already composites.
@@ -360,7 +362,7 @@ class PooledRecycler extends BaseAsyncDirective {
 			}
 			const want = this._offset(slot.bound);
 			if (want !== slot.off) {
-				slot.el.style.transform = `translate3d(0, ${want}px, 0)`;
+				slot.el.style.transform = `translate(0, ${want}px)`;
 				slot.off = want;
 			}
 		}
@@ -819,10 +821,11 @@ class PooledRecycler extends BaseAsyncDirective {
 				slot.bound as number
 			)) as GroupedListRowHost['renderFn'];
 		slot.el.renderFn = slot.wrapper;
-		// transform-fixed at the data offset: written ONLY here (bind time)
-		// or by the height-change sync; the canvas layer move per scroll
-		// frame happens on the canvas alone
-		slot.el.style.transform = `translate3d(0, ${this._offset(index)}px, 0)`;
+		// transform-fixed at the data offset with a 2D translate(0, offset):
+		// written ONLY here (bind time) or by the height-change sync; the
+		// canvas layer move per scroll frame happens on the canvas alone, and
+		// only the canvas carries the 3D transform
+		slot.el.style.transform = `translate(0, ${this._offset(index)}px)`;
 		slot.off = this._offset(index);
 		slot.el.style.visibility = 'visible';
 		if (this._ro && !this._observing.has(slot.el)) {
