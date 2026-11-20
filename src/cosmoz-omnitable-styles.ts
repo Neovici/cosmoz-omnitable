@@ -267,7 +267,7 @@ export default css`
 		height: calc(var(--cz-spacing) * 10);
 	}
 
-	.tableContent-empty:has(cosmoz-omnitable-skeleton) {
+	.tableContent-empty.has-skeleton {
 		flex-direction: row;
 		justify-content: stretch;
 	}
@@ -283,7 +283,7 @@ export default css`
 	.tableContent-empty.overlay > div {
 		padding-bottom: 0;
 	}
-	.tableContent-empty.overlay:has(cosmoz-omnitable-skeleton) {
+	.tableContent-empty.overlay.has-skeleton {
 		align-items: flex-start;
 	}
 	.tableContent-empty div.tableContent-empty-message {

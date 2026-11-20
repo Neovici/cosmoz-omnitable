@@ -87,7 +87,7 @@ export const renderList = (header: HeaderParams, list: ListParams) => {
 		${when(
 			loading && !processedItems.length,
 			() =>
-				html`<div class="tableContent-empty overlay">
+				html`<div class="tableContent-empty overlay has-skeleton">
 					<cosmoz-omnitable-skeleton
 						.settingsConfig=${settingsConfig}
 					></cosmoz-omnitable-skeleton>
