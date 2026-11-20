@@ -234,7 +234,7 @@ export default css`
 	.tableContent-empty.spinner {
 		pointer-events: none;
 	}
-	.tableContent:has(> .tableContent-empty.spinner) > .tableContent-scroller {
+	.tableContent.has-spinner > .tableContent-scroller {
 		opacity: 0.5;
 		transition: opacity var(--cz-duration-normal, 250ms)
 			var(--cz-ease-out, ease-out) 400ms;
@@ -243,7 +243,7 @@ export default css`
 		.tableContent-scroller {
 			transition: none;
 		}
-		.tableContent:has(> .tableContent-empty.spinner) > .tableContent-scroller {
+		.tableContent.has-spinner > .tableContent-scroller {
 			transition: opacity 0s 400ms;
 		}
 	}
