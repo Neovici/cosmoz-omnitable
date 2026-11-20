@@ -10,6 +10,7 @@ import './cosmoz-omnitable-item-row';
 import { component } from '@pionjs/pion';
 import { html as polymerHtml } from '@polymer/polymer/lib/utils/html-tag';
 import { html } from 'lit-html';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { guard } from 'lit-html/directives/guard.js';
 
 import styles from './cosmoz-omnitable-styles';
@@ -17,6 +18,7 @@ import { renderFooter } from './lib/render-footer';
 import { renderHeader } from './lib/render-header';
 import { renderList } from './lib/render-list';
 import { useOmnitable } from './lib/use-omnitable';
+import { All } from './lib/utils';
 
 import './grouped-list/index';
 
@@ -25,14 +27,29 @@ const shimCSS = (s) => window.ShadyCSS?.ApplyShim?.transformCssText?.(s) || s;
 const Omnitable = (host) => {
 	const { header, list, footer } = useOmnitable(host);
 
+	const hasSpinner = list.loading && list.processedItems.length > 0,
+		hasSelection =
+			footer.selectedItems === All || footer.selectedItems.length > 0;
+
 	return html`
 		<style>
 			${guard([], () => shimCSS(styles))}
 		</style>
 
-		<div class="mainContainer">
+		<div
+			class=${classMap({
+				mainContainer: true,
+				'has-selection': hasSelection,
+			})}
+		>
 			${renderHeader(header)}
-			<div class="tableContent" id="tableContent">
+			<div
+				class=${classMap({
+					tableContent: true,
+					'has-spinner': hasSpinner,
+				})}
+				id="tableContent"
+			>
 				${renderList(header, list)}
 			</div>
 			${renderFooter(footer)}
