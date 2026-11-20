@@ -334,6 +334,12 @@ export default css`
 		font-variant-numeric: tabular-nums;
 		transition: background-color 120ms;
 	}
+	/* A hover repaint must stay in the row and not dirty the document
+	   scrolling layer. */
+	.itemRow,
+	.groupRow {
+		contain: layout paint;
+	}
 	.itemRow-wrapper {
 		display: flex;
 		align-items: center;
