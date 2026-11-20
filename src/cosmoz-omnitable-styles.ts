@@ -171,13 +171,16 @@ export default css`
 				var(--cz-color-border-secondary)
 			)
 			center / 1px 0 no-repeat;
+		background-size: 1px var(--nub-height, 0);
 		cursor: ew-resize;
 		z-index: 1000;
 		user-select: none;
 		transition: background-size 120ms;
 	}
-	.header:hover cosmoz-omnitable-resize-nub {
-		background-size: 1px 14px;
+	/* The tick length is inherited from the header, so the hover state no
+	   longer has to reach the nub with an ancestor selector. */
+	.header:hover {
+		--nub-height: 14px;
 	}
 	.header cosmoz-omnitable-resize-nub:hover {
 		background-image: linear-gradient(
@@ -511,13 +514,23 @@ export default css`
 		);
 	}
 
-	.groupRow:hover .checkbox:not(:checked):not(:hover) {
-		box-shadow: 0 0 0 2px
-			rgb(from var(--cz-color-text-primary) r g b / calc(alpha * 0.75)) inset;
+	/* The ring is inherited from the row; the default reproduces the base
+	   checkbox shadow, so only the values change on hover. */
+	.groupRow:hover {
+		--group-checkbox-ring-width: 2px;
+		--group-checkbox-ring-color: rgb(
+			from var(--cz-color-text-primary) r g b / calc(alpha * 0.75)
+		);
 	}
-	.groupRow:hover cosmoz-button.expand::part(button):not(:hover),
+	.groupRow .checkbox:not(:checked):not(:hover) {
+		box-shadow: inset 0 0 0 var(--group-checkbox-ring-width, 1px)
+			var(--group-checkbox-ring-color, var(--cz-color-border-primary));
+	}
+	/* The tertiary expand button already uses this token
+	   (--cz-color-text-secondary == --cz-color-fg-secondary), so the
+	   ::part(button) override was a no-op and only widened the hover
+	   invalidation set. */
 	.groupRow:hover .expand:not(:hover):not(cosmoz-button),
-	.itemRow:hover cosmoz-button.expand::part(button):not(:hover),
 	.itemRow:hover .expand:not(:hover):not(cosmoz-button) {
 		color: var(--cz-color-fg-secondary);
 	}
@@ -525,12 +538,16 @@ export default css`
 	${checkbox}
 
 	@media (hover: hover) {
-		.itemRow cosmoz-button.expand:not([aria-expanded]) {
-			opacity: 0;
-			transition: opacity 120ms;
+		.itemRow {
+			--row-expand-opacity: 0;
 		}
-		.itemRow:is(:hover, :focus-within) cosmoz-button.expand {
-			opacity: 1;
+		.itemRow:hover,
+		.itemRow:focus-within {
+			--row-expand-opacity: 1;
+		}
+		.itemRow cosmoz-button.expand:not([aria-expanded]) {
+			opacity: var(--row-expand-opacity);
+			transition: opacity 120ms;
 		}
 	}
 
@@ -599,7 +616,7 @@ export default css`
 		color: inherit;
 		padding: 0;
 		transition: transform 0.3s ease;
-		opacity: 0;
+		opacity: var(--cell-sg-opacity, 0);
 
 		height: auto;
 		width: auto;
@@ -625,8 +642,12 @@ export default css`
 	.sg:not([data-on='desc']):not(cosmoz-button) {
 		transform: scaleY(-1);
 	}
-	.cell:hover cosmoz-button.sg::part(button),
-	.cell:hover .sg:not(cosmoz-button),
+	.cell {
+		--cell-sg-opacity: 0;
+	}
+	.cell:hover {
+		--cell-sg-opacity: 1;
+	}
 	cosmoz-button.sg[data-on]::part(button),
 	.sg[data-on]:not(cosmoz-button) {
 		opacity: 1;
