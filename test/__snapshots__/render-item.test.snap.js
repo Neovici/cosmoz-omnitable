@@ -1,7 +1,7 @@
 /* @web/test-runner snapshot v1 */
 export const snapshots = {};
 
-snapshots["render-item renderers renderItem"] = 
+snapshots['render-item renderers renderItem'] = 
 `<div>
   <div
     class="itemRow"
@@ -66,7 +66,7 @@ snapshots["render-item renderers renderItem"] =
 `;
 /* end snapshot render-item renderers renderItem */
 
-snapshots["render-item renderers renderGroup"] = 
+snapshots['render-item renderers renderGroup'] = 
 `<div>
   <div
     class="groupRow"

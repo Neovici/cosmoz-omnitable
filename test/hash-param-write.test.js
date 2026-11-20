@@ -188,7 +188,7 @@ suite('hash params vs saved settings', () => {
 	test('hash params override saved settings', async () => {
 		localStorage.setItem(
 			SETTINGS_KEY,
-			JSON.stringify({ sortOn: 'name', descending: false })
+			JSON.stringify({ sortOn: 'name', descending: false }),
 		);
 		location.hash = '#!/#test-sortOn=id&test-descending=true';
 		await instantiateWithSettings();
@@ -201,7 +201,7 @@ suite('hash params vs saved settings', () => {
 	test('saved settings sync to hash when no hash params', async () => {
 		localStorage.setItem(
 			SETTINGS_KEY,
-			JSON.stringify({ sortOn: 'name', descending: true })
+			JSON.stringify({ sortOn: 'name', descending: true }),
 		);
 		location.hash = '#!/';
 		await instantiateWithSettings();
@@ -256,7 +256,7 @@ suite('hash params vs saved settings', () => {
 					</cosmoz-omnitable-column>
 				</cosmoz-omnitable>
 			`,
-			data
+			data,
 		);
 		await nextFrame();
 
@@ -267,7 +267,7 @@ suite('hash params vs saved settings', () => {
 	test('saved settings load async does not overwrite explicit hash', async () => {
 		localStorage.setItem(
 			SETTINGS_KEY,
-			JSON.stringify({ sortOn: 'name', descending: true })
+			JSON.stringify({ sortOn: 'name', descending: true }),
 		);
 		location.hash = '#!/#test-sortOn=id&test-descending=false';
 		await instantiateWithSettings();
@@ -308,14 +308,14 @@ suite('hash params vs saved settings', () => {
 					></cosmoz-omnitable-column>
 				</cosmoz-omnitable>
 			`,
-			data
+			data,
 		);
 		await nextFrame();
 		await nextFrame();
 
 		assert.deepEqual(
 			notified.filter(([ready]) => ready),
-			[[true, 'name']]
+			[[true, 'name']],
 		);
 	});
 
@@ -329,7 +329,7 @@ suite('hash params vs saved settings', () => {
 	test('multiple params: hash params take precedence individually', async () => {
 		localStorage.setItem(
 			SETTINGS_KEY,
-			JSON.stringify({ sortOn: 'name', groupOn: 'group' })
+			JSON.stringify({ sortOn: 'name', groupOn: 'group' }),
 		);
 		location.hash = '#!/#test-sortOn=id';
 		await instantiateWithSettings();

@@ -1,6 +1,6 @@
 {
   "name": "@neovici/cosmoz-omnitable",
-  "version": "19.5.4",
+  "version": "19.6.1",
   "description": "[![Build Status](https://travis-ci.org/Neovici/cosmoz-omnitable.svg?branch=master)](https://travis-ci.org/Neovici/cosmoz-omnitable)",
   "keywords": [
     "web-components"
@@ -144,6 +144,7 @@
     "@web/dev-server-esbuild": "^2.0.0",
     "husky": "^9.0.0",
     "lint-staged": "^17.0.5",
+    "prettier": "^3.10.1",
     "sinon": "^22.0.0",
     "storybook": "^10.0.4",
     "typescript": "^6.0.2"

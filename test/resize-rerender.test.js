@@ -35,11 +35,11 @@ suite('width changes', () => {
 								name=${name}
 								value-path=${name}
 								title=${name}
-							></cosmoz-omnitable-column>`
+							></cosmoz-omnitable-column>`,
 					)}
 				</cosmoz-omnitable>
 			`,
-			generateTableDemoData(5, 10, 20)
+			generateTableDemoData(5, 10, 20),
 		);
 		await rowVisible();
 		await frames();

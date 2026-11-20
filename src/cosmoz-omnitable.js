@@ -10,6 +10,7 @@ import './cosmoz-omnitable-item-row';
 import { component } from '@pionjs/pion';
 import { html as polymerHtml } from '@polymer/polymer/lib/utils/html-tag';
 import { html } from 'lit-html';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { guard } from 'lit-html/directives/guard.js';
 
 import styles from './cosmoz-omnitable-styles';
@@ -35,16 +36,25 @@ const Omnitable = (host) => {
 			${guard([], () => shimCSS(styles))}
 		</style>
 
-		<div class="mainContainer${hasSelection ? ' bottombar-active' : ''}">
+		<div
+			class=${classMap({
+				mainContainer: true,
+				'has-selection': hasSelection,
+			})}
+		>
 			${renderHeader(header)}
 			<div
-				class="tableContent${hasSpinner ? ' has-spinner' : ''}"
+				class=${classMap({
+					tableContent: true,
+					'has-spinner': hasSpinner,
+				})}
 				id="tableContent"
 			>
 				${renderList(header, list)}
 			</div>
 			${renderFooter(footer)}
 		</div>
+		${list.renderRowMenu()}
 
 		<div id="columns">
 			<slot id="columnsSlot"></slot>

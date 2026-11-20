@@ -15,7 +15,7 @@ export const useMini = ({
 	const breakpoint = host.miniBreakpoint ?? 480;
 	const isMiniSize = useMemo(
 		() => canvasWidth <= breakpoint,
-		[canvasWidth, breakpoint]
+		[canvasWidth, breakpoint],
 	);
 	const columns = useMemo(
 			() =>
@@ -24,7 +24,7 @@ export const useMini = ({
 							?.filter((c) => c.mini != null)
 							.sort((a, b) => (a.mini ?? 0) - (b.mini ?? 0))
 					: [],
-			[_columns, isMiniSize]
+			[_columns, isMiniSize],
 		),
 		// identity-stable rest slice: a new array every render would churn the
 		// connect deps — grouped-list re-renders rows on wrapper identity

@@ -9,7 +9,7 @@ const settingsId = 'saved-settings-test',
 	noop = () => undefined,
 	render = async (settings?: unknown) => {
 		const hook = await renderHook(() =>
-			useSavedSettings(settingsId, settings as never, noop)
+			useSavedSettings(settingsId, settings as never, noop),
 		);
 		await nextFrame();
 		return hook;
@@ -49,7 +49,7 @@ suite('useSavedSettings', () => {
 
 	test('saving a sort change keeps the stored columns', () => {
 		expect(
-			normalizeStore({ sortOn: 'name' } as never, saved as never).columns
+			normalizeStore({ sortOn: 'name' } as never, saved as never).columns,
 		).to.deep.equal(saved.columns);
 	});
 });

@@ -20,10 +20,10 @@ export const renderMinis =
 									item,
 									index,
 								})}
-							</div>`
+							</div>`,
 					)}
 				</div>
-			`
+			`,
 		);
 
 const getMiniColumns = (columns: Column[] | undefined): Column[] =>
@@ -35,7 +35,7 @@ const getMiniColumns = (columns: Column[] | undefined): Column[] =>
 export const renderMini: HostRenderItem = (
 	item,
 	index,
-	{ selected, onItemClick, onCheckboxChange, dataIsValid, columns }
+	{ selected, onItemClick, onCheckboxChange, dataIsValid, columns },
 ) => {
 	const miniColumns = getMiniColumns(columns),
 		[titleColumn] = miniColumns;
@@ -68,9 +68,9 @@ export const renderMini: HostRenderItem = (
 						>
 							${(titleColumn!.renderMini ?? titleColumn!.renderCell)!(
 								titleColumn!,
-								{ item, index }
+								{ item, index },
 							)}
-						</div>`
+						</div>`,
 				)}
 			</div>
 			${renderMinis({ item, index })(miniColumns.slice(1))}

@@ -200,12 +200,12 @@ export const rangeInputMixin = (base) =>
 				fromMax: this.toValue(
 					aMax,
 					this._fromInputString(input.max, 'max'),
-					Math.min
+					Math.min,
 				),
 				toMin: this.toValue(
 					aMin,
 					this._fromInputString(input.min, 'min'),
-					Math.max
+					Math.max,
 				),
 				toMax: aMax,
 			};
@@ -274,7 +274,7 @@ export const rangeInputMixin = (base) =>
 				() => {
 					this._limitInput();
 					this._updateFilter();
-				}
+				},
 			);
 			enqueueDebouncer(this._limitInputDebouncer);
 		}
@@ -297,7 +297,7 @@ export const rangeInputMixin = (base) =>
 		_onKeyDown(event) {
 			const input = event.currentTarget,
 				inputs = Array.from(
-					input.parentElement.querySelectorAll('cosmoz-input')
+					input.parentElement.querySelectorAll('cosmoz-input'),
 				),
 				nextInput = inputs[inputs.findIndex((i) => i === input) + 1],
 				isLastInput = !nextInput,
@@ -387,7 +387,7 @@ export const rangeInputMixin = (base) =>
 				//set value without debouncing _limitInput again.
 				this.set(
 					['_filterInput', path],
-					this._toInputString(limitedValue, path)
+					this._toInputString(limitedValue, path),
 				);
 				if (this._limitInputDebouncer) {
 					this._limitInputDebouncer.cancel();

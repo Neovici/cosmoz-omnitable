@@ -1,5 +1,5 @@
-import { applySingleFilter, renderValue } from '../src/lib/utils-date';
 import { assert } from '@open-wc/testing';
+import { applySingleFilter, renderValue } from '../src/lib/utils-date';
 
 suite('utils-date', () => {
 	suite('renderValue', () => {

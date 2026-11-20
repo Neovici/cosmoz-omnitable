@@ -49,7 +49,7 @@ export const render = ({
 		class="sg"
 		title=${ifDefined(title)}
 		data-on=${ifDefined(
-			(name === on && (descending ? 'desc' : 'asc')) || undefined
+			(name === on && (descending ? 'desc' : 'asc')) || undefined,
 		)}
 		@click=${(e: Event) => {
 			const target = e.currentTarget as HTMLElement;
@@ -67,9 +67,11 @@ export const render = ({
 			}
 		}}
 	>
-		<span>${title}</span> ${name === on
-			? chevronDownIcon({ width: '12', height: '12' })
-			: chevronSelectorVerticalIcon({ width: '12', height: '12' })}
+		<span>${title}</span> ${
+			name === on
+				? chevronDownIcon({ width: '12', height: '12' })
+				: chevronSelectorVerticalIcon({ width: '12', height: '12' })
+		}
 	</cosmoz-button>`;
 };
 
