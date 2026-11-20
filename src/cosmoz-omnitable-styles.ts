@@ -487,7 +487,7 @@ export default css`
 		padding-block: 0;
 		padding-inline: calc(var(--cz-spacing) * 4) calc(var(--cz-spacing) * 2);
 	}
-	.mainContainer:has(cosmoz-bottom-bar[active]) .tableContent-scroller {
+	.mainContainer.has-selection .tableContent-scroller {
 		padding-bottom: calc(var(--cz-spacing) * 20);
 	}
 
