@@ -318,7 +318,6 @@ export default css`
 		position: relative;
 		overflow: auto;
 		overflow-x: hidden;
-		will-change: transform;
 		flex-basis: 0.000001px;
 		display: flex;
 		flex-direction: column;
