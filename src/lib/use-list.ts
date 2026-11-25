@@ -106,22 +106,15 @@ export const useList = ({
 			event.stopPropagation();
 		}, []);
 
+	// The click that toggles a checkbox carries the modifiers. Tracking them from
+	// keydown/keyup instead left Shift "held" when its keyup went elsewhere, e.g.
+	// to a screenshot shortcut, so plain clicks went on selecting ranges.
 	useEffect(() => {
-		const handler = ({
-			shiftKey,
-			ctrlKey,
-		}: {
-			shiftKey: boolean;
-			ctrlKey: boolean;
-		}) => {
+		const handler = ({ shiftKey, ctrlKey }: MouseEvent) => {
 			keyState.current = { shiftKey, ctrlKey };
 		};
-		window.addEventListener('keydown', handler);
-		window.addEventListener('keyup', handler);
-		return () => {
-			window.removeEventListener('keydown', handler);
-			window.removeEventListener('keyup', handler);
-		};
+		host.addEventListener('click', handler, true);
+		return () => host.removeEventListener('click', handler, true);
 	}, []);
 
 	const onItemClick = useCallback((e: Event) => {

@@ -19,6 +19,16 @@ setup(async () => {
 	await setDemoLanguage('en');
 });
 
+const modifiedClick = (el, modifiers) =>
+	el.dispatchEvent(
+		new MouseEvent('click', {
+			bubbles: true,
+			composed: true,
+			cancelable: true,
+			...modifiers,
+		}),
+	);
+
 suite('basic', () => {
 	ignoreResizeObserverLoopErrors(setup, teardown);
 	let omnitable;
@@ -75,21 +85,13 @@ suite('basic', () => {
 
 	test('shift click select multiple items', async () => {
 		const items = Array.from(
-				omnitable.shadowRoot.querySelectorAll(
-					'.itemRow input[type="checkbox"]',
-				),
-			),
-			keyEvent = new KeyboardEvent('keydown', {
-				key: 'Shift',
-				shiftKey: true,
-			});
+			omnitable.shadowRoot.querySelectorAll('.itemRow input[type="checkbox"]'),
+		);
 		items[0].click();
 
 		await nextFrame();
 
-		window.dispatchEvent(keyEvent);
-
-		items[3].click();
+		modifiedClick(items[3], { shiftKey: true });
 
 		await nextFrame();
 
@@ -105,14 +107,8 @@ suite('basic', () => {
 
 	test('ctrl click to remain one item selected', async () => {
 		const items = Array.from(
-				omnitable.shadowRoot.querySelectorAll(
-					'.itemRow input[type="checkbox"]',
-				),
-			),
-			keyEvent = new KeyboardEvent('keydown', {
-				key: 'Ctrl',
-				ctrlKey: true,
-			});
+			omnitable.shadowRoot.querySelectorAll('.itemRow input[type="checkbox"]'),
+		);
 		items[0].click();
 		items[1].click();
 		items[2].click();
@@ -122,9 +118,7 @@ suite('basic', () => {
 		assert.isTrue(items.slice(0, 3).every((el) => el.checked));
 		assert.sameMembers(omnitable.data.slice(0, 3), omnitable.selectedItems);
 
-		window.dispatchEvent(keyEvent);
-
-		items[2].click();
+		modifiedClick(items[2], { ctrlKey: true });
 
 		await nextFrame();
 
@@ -136,5 +130,24 @@ suite('basic', () => {
 				.every((el) => el.checked),
 		);
 		assert.notSameMembers(omnitable.data, omnitable.selectedItems);
+	});
+
+	test('a plain click selects one item after a Shift keyup went missing', async () => {
+		const items = Array.from(
+			omnitable.shadowRoot.querySelectorAll('.itemRow input[type="checkbox"]'),
+		);
+		items[0].click();
+		await nextFrame();
+
+		window.dispatchEvent(
+			new KeyboardEvent('keydown', { key: 'Shift', shiftKey: true }),
+		);
+		items[3].click();
+		await nextFrame();
+
+		assert.sameMembers(omnitable.selectedItems, [
+			omnitable.data[0],
+			omnitable.data[3],
+		]);
 	});
 });
