@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{Xt as t,Yt as n}from"./iframe-Eqer-b30.js";import{t as r}from"./cosmoz-omnitable-Dve3rdK4.js";var i,a,o,s,c,l;function u(){return(u=e((()=>{t(),r(),{action:i}=__STORYBOOK_MODULE_ACTIONS__,a=Array.from({length:20},(e,t)=>({name:`Invoice ${1001+t}`,supplier:[`Acme`,`Globex`,`Initech`,`Umbrella`][t%4],amount:{amount:(t+1)*125.5,currency:`EUR`}})),o=e=>n`
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{Jt as t,Yt as n}from"./iframe-DSY_SlcB.js";import{t as r}from"./cosmoz-omnitable-BKnbs8v8.js";var i,a,o,s,c,l;function u(){return(u=e((()=>{n(),r(),{action:i}=__STORYBOOK_MODULE_ACTIONS__,a=Array.from({length:20},(e,t)=>({name:`Invoice ${1001+t}`,supplier:[`Acme`,`Globex`,`Initech`,`Umbrella`][t%4],amount:{amount:(t+1)*125.5,currency:`EUR`}})),o=e=>t`
         <style>
             [role='menuitem'] {
                 display: block;
@@ -24,13 +24,13 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{Xt as t,Yt as n}from".
         <div class="label">
             ${e.length===1?e[0].name:`${e.length} invoices`}
         </div>
-        ${[`Approve`,`Reject`,`Assign to…`].map(t=>n`<button
+        ${[`Approve`,`Reject`,`Assign to…`].map(n=>t`<button
                     role="menuitem"
-                    @click=${()=>i(t)(e.map(e=>e.name))}
+                    @click=${()=>i(n)(e.map(e=>e.name))}
                 >
-                    ${t}
+                    ${n}
                 </button>`)}
-    `,s={title:`Components/CosmozOmnitableRowMenu`,component:`cosmoz-omnitable`,parameters:{docs:{description:{component:'Set `rowMenu` to `(items) => template` to give each row an action menu. Right-click a row to open it. A row inside a multi-row selection acts on the whole selection. Clicking a `role="menuitem"` closes the menu (logged in the Actions panel).'}}}},c={render:()=>n`
+    `,s={title:`Components/CosmozOmnitableRowMenu`,component:`cosmoz-omnitable`,parameters:{docs:{description:{component:'Set `rowMenu` to `(items) => template` to give each row an action menu. Right-click a row to open it. A row inside a multi-row selection acts on the whole selection. Clicking a `role="menuitem"` closes the menu (logged in the Actions panel).'}}}},c={render:()=>t`
         <style>
             .omnitable-container {
                 height: calc(80vh - 60px);

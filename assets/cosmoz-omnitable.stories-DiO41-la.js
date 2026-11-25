@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{Xt as t,Yt as n}from"./iframe-Eqer-b30.js";import{t as r}from"./cosmoz-omnitable-Dve3rdK4.js";import{n as i,t as a}from"./data-Bh8FuB_z.js";var o,s,c,l,u,d,f,p,m,h,g,_,v,y,b,x;function S(){return(S=e((()=>{t(),r(),i(),o=e=>Array.from({length:e},(e,t)=>({company:`Company ${Math.floor(t/100)+1}`,age:20+t%50,eyeColor:[`blue`,`green`,`brown`,`hazel`][t%4],balance:`$${(Math.random()*1e4).toFixed(2)}`,registered:new Date(2020,0,1+t%1e3).toISOString()})),s={title:`Components/CosmozOmnitable`,component:`cosmoz-omnitable`,parameters:{docs:{description:{component:`A data table component with sorting, filtering, grouping.`}}}},c=e=>n`
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{Jt as t,Yt as n}from"./iframe-DSY_SlcB.js";import{t as r}from"./cosmoz-omnitable-BKnbs8v8.js";import{n as i,t as a}from"./data-Bh8FuB_z.js";var o,s,c,l,u,d,f,p,m,h,g,_,v,y,b,x;function S(){return(S=e((()=>{n(),r(),i(),o=e=>Array.from({length:e},(e,t)=>({company:`Company ${Math.floor(t/100)+1}`,age:20+t%50,eyeColor:[`blue`,`green`,`brown`,`hazel`][t%4],balance:`$${(Math.random()*1e4).toFixed(2)}`,registered:new Date(2020,0,1+t%1e3).toISOString()})),s={title:`Components/CosmozOmnitable`,component:`cosmoz-omnitable`,parameters:{docs:{description:{component:`A data table component with sorting, filtering, grouping.`}}}},c=e=>t`
         <style>
             .omnitable-container {
                 height: calc(80vh - 60px);
@@ -101,7 +101,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{Xt as t,Yt as n}from".
                 </div>
             </cosmoz-omnitable>
         </div>
-    `,l=c.bind({}),l.args={},u=c.bind({}),u.args={sortOn:`company`,descending:!1},d=c.bind({}),d.args={groupOn:`eyeColor`,groupOnDescending:!1},f=c.bind({}),f.args={loading:!0},p=c.bind({}),p.args={hideSelectAll:!0},m=c.bind({}),m.args={disabledFiltering:!0},h=e=>n`
+    `,l=c.bind({}),l.args={},u=c.bind({}),u.args={sortOn:`company`,descending:!1},d=c.bind({}),d.args={groupOn:`eyeColor`,groupOnDescending:!1},f=c.bind({}),f.args={loading:!0},p=c.bind({}),p.args={hideSelectAll:!0},m=c.bind({}),m.args={disabledFiltering:!0},h=e=>t`
         <style>
             cosmoz-omnitable-item-row {
                 border-bottom: 1px solid #e1e2e5;
@@ -171,7 +171,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{Xt as t,Yt as n}from".
 
             <button slot="bottom-bar-toolbar">Approve</button>
         </cosmoz-omnitable>
-    `,g=h.bind({}),g.args={},g.parameters={docs:{description:{story:`Inline mode: the omnitable expands to show all rows without internal scrolling. The page itself scrolls instead.`}}},_=h.bind({}),_.args={disabledFiltering:!0},_.parameters={docs:{description:{story:`Inline mode with disabled filtering, suitable for search results where all rows are shown without internal scrolling.`}}},v=e=>n`
+    `,g=h.bind({}),g.args={},g.parameters={docs:{description:{story:`Inline mode: the omnitable expands to show all rows without internal scrolling. The page itself scrolls instead.`}}},_=h.bind({}),_.args={disabledFiltering:!0},_.parameters={docs:{description:{story:`Inline mode with disabled filtering, suitable for search results where all rows are shown without internal scrolling.`}}},v=e=>t`
     <style>
         .omnitable-container {
             height: calc(80vh - 60px);
