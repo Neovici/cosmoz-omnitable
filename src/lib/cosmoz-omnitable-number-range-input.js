@@ -6,6 +6,7 @@ import { when } from 'lit-html/directives/when.js';
 import { renderDropdown } from './cosmoz-omnitable-dropdown';
 import './cosmoz-omnitable-dropdown-input';
 import { rangeInputMixin } from './cosmoz-omnitable-range-input-mixin';
+import { resolveLocale } from './locale';
 import { polymerHauntedRender } from './polymer-haunted-render-mixin';
 
 class NumberRangeInput extends rangeInputMixin(
@@ -105,7 +106,7 @@ class NumberRangeInput extends rangeInputMixin(
 		if (maximumFractionDigits !== null) {
 			options.maximumFractionDigits = maximumFractionDigits;
 		}
-		return new Intl.NumberFormat(locale || undefined, options);
+		return new Intl.NumberFormat(resolveLocale(locale), options);
 	}
 
 	/**

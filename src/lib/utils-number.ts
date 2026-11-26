@@ -1,5 +1,6 @@
 import { memoooize } from '@neovici/cosmoz-utils/memoize';
 import { get } from '@polymer/polymer/lib/utils/path';
+import { resolveLocale } from './locale';
 import {
 	AmountLimit,
 	GetPath,
@@ -126,7 +127,7 @@ export const getString = <T extends NumberColumn>(
 	}
 
 	const formatter = makeFormatter(
-		locale,
+		resolveLocale(locale),
 		minimumFractionDigits,
 		maximumFractionDigits,
 	);

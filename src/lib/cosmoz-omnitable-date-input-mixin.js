@@ -1,5 +1,6 @@
 import { toLocalISOString } from '@neovici/cosmoz-utils/date';
 import { rangeInputMixin } from './cosmoz-omnitable-range-input-mixin';
+import { resolveLocale } from './locale';
 
 /**
 * @polymer
@@ -150,7 +151,7 @@ export const dateInputMixin = (base) =>
 		}
 
 		_computeFormatter(locale) {
-			return new Intl.DateTimeFormat(locale || undefined);
+			return new Intl.DateTimeFormat(resolveLocale(locale));
 		}
 
 		_toInputString(value) {
