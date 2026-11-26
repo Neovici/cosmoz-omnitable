@@ -1,3 +1,9 @@
+## 19.6.3
+
+### Patch Changes
+
+- 5906c5c: Column titles use the regular secondary label color again instead of the quaternary one, so they're readable.
+
 ## 19.6.2
 
 ### Patch Changes
