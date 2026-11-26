@@ -122,13 +122,6 @@ export default css`
 		inset-inline: calc(var(--cz-spacing) * 2);
 	}
 
-	/* Column titles sit a step below the data they head. The header inputs
-	   nest in shadow roots (autocompletes wrap theirs), so the step is set
-	   through the token their labels read. */
-	cosmoz-omnitable-header-row {
-		--cz-color-text-secondary: var(--cz-color-text-quaternary);
-	}
-
 	[hidden] {
 		display: none;
 	}
