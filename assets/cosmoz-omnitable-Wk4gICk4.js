@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r,Dt as i,E as a,G as o,Gt as s,Ht as c,I as l,It as u,Jt as d,Kt as f,Mt as p,O as m,P as h,Pt as g,Q as _,R as v,Rt as y,S as b,T as x,U as S,Ut as C,V as w,X as T,Yt as E,Z as D,_ as ee,_t as te,at as O,b as k,bt as ne,c as A,ct as re,d as ie,dt as ae,et as oe,f as se,ft as ce,gt as le,ht as ue,i as de,it as fe,kt as pe,l as me,lt as he,m as ge,mt as _e,n as ve,nt as ye,ot as be,p as xe,pt as Se,q as Ce,r as we,rt as Te,s as Ee,st as De,tt as Oe,u as ke,ut as Ae,v as je,vt as j,w as Me,x as M,y as N,yt as P,z as Ne}from"./iframe-DSY_SlcB.js";import{A as Pe,B as F,C as Fe,D as Ie,E as Le,F as I,G as Re,H as ze,I as Be,J as Ve,L as He,M as Ue,N as We,O as Ge,P as L,R as Ke,S as qe,T as Je,U as Ye,V as R,W as Xe,X as Ze,Y as Qe,_ as $e,d as et,f as tt,g as nt,h as rt,j as it,k as at,l as ot,m as st,n as ct,q as lt,r as ut,s as dt,t as ft,u as pt,v as mt,w as ht,x as gt,y as _t,z as vt}from"./dist-BVGCDkWX.js";var yt,bt;function z(){return(z=e((()=>{h(),ae(),re(),j(),yt=ce`
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r,Dt as i,E as a,G as o,Gt as s,Ht as c,I as l,It as u,Jt as d,Kt as f,Mt as p,O as m,P as h,Pt as g,Q as _,R as v,Rt as y,S as b,T as x,U as S,Ut as C,V as w,X as T,Yt as E,Z as D,_ as ee,_t as te,at as O,b as k,bt as ne,c as A,ct as re,d as ie,dt as ae,et as oe,f as se,ft as ce,gt as le,ht as ue,i as de,it as fe,kt as pe,l as me,lt as he,m as ge,mt as _e,n as ve,nt as ye,ot as be,p as xe,pt as Se,q as Ce,r as we,rt as Te,s as Ee,st as De,tt as Oe,u as ke,ut as Ae,v as je,vt as j,w as Me,x as M,y as N,yt as P,z as Ne}from"./iframe-CNhyID_K.js";import{A as Pe,B as F,C as Fe,D as Ie,E as Le,F as I,G as Re,H as ze,I as Be,J as Ve,L as He,M as Ue,N as We,O as Ge,P as L,R as Ke,S as qe,T as Je,U as Ye,V as R,W as Xe,X as Ze,Y as Qe,_ as $e,d as et,f as tt,g as nt,h as rt,j as it,k as at,l as ot,m as st,n as ct,q as lt,r as ut,s as dt,t as ft,u as pt,v as mt,w as ht,x as gt,y as _t,z as vt}from"./dist-BGBRoVgA.js";var yt,bt;function z(){return(z=e((()=>{h(),ae(),re(),j(),yt=ce`
 	:host {
 		display: flex;
 		cursor: pointer;
@@ -832,13 +832,6 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{A as t,At as n,Bt as r
 	}
 	.header::after {
 		inset-inline: calc(var(--cz-spacing) * 2);
-	}
-
-	/* Column titles sit a step below the data they head. The header inputs
-	   nest in shadow roots (autocompletes wrap theirs), so the step is set
-	   through the token their labels read. */
-	cosmoz-omnitable-header-row {
-		--cz-color-text-secondary: var(--cz-color-text-quaternary);
 	}
 
 	[hidden] {
