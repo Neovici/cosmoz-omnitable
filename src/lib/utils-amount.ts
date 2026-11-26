@@ -1,4 +1,5 @@
 import { get } from '@polymer/polymer/lib/utils/path';
+import { resolveLocale } from './locale';
 import {
 	Amount,
 	AmountColumn,
@@ -106,13 +107,14 @@ export const getFormatter = (
 	currency: Currency | string,
 	locale?: Currency,
 ): Intl.NumberFormat => {
-	const id = locale ? locale : '';
+	const lang = resolveLocale(locale);
+	const id = lang ?? '';
 	const key = currency + id || '';
 	if (formatters[key]) {
 		return formatters[key];
 	}
 
-	formatters[key] = new Intl.NumberFormat(locale || undefined, {
+	formatters[key] = new Intl.NumberFormat(lang, {
 		style: 'currency',
 		currency,
 	});

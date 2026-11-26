@@ -1,5 +1,6 @@
 import { ensureDate, toLocalISOString } from '@neovici/cosmoz-utils/date';
 import { get } from '@polymer/polymer/lib/utils/path';
+import { resolveLocale } from './locale';
 import { DateColumn, Item, Limit, LimitFunction } from './types';
 import { toNumber } from './utils-number';
 
@@ -127,7 +128,8 @@ export const renderValue = (
 
 const formatters: Record<string, Intl.DateTimeFormat> = {};
 
-export const getFormatter = (locale?: string): Intl.DateTimeFormat => {
+export const getFormatter = (_locale?: string): Intl.DateTimeFormat => {
+	const locale = resolveLocale(_locale);
 	const key = locale || '';
 
 	if (formatters[key]) {

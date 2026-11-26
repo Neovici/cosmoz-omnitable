@@ -6,6 +6,7 @@ import { when } from 'lit-html/directives/when.js';
 import { renderDropdown } from './cosmoz-omnitable-dropdown';
 import './cosmoz-omnitable-dropdown-input';
 import { rangeInputMixin } from './cosmoz-omnitable-range-input-mixin';
+import { resolveLocale } from './locale';
 import { polymerHauntedRender } from './polymer-haunted-render-mixin';
 
 class AmountRangeInput extends rangeInputMixin(
@@ -232,8 +233,9 @@ class AmountRangeInput extends rangeInputMixin(
 		return value && value.currency;
 	}
 
-	getFormatter(currency, locale) {
-		const id = locale ? locale : '',
+	getFormatter(currency, _locale) {
+		const locale = resolveLocale(_locale),
+			id = locale ?? '',
 			key = currency + id || '',
 			formatters = (this._formatters = this._formatters || {});
 		if (formatters[key]) {

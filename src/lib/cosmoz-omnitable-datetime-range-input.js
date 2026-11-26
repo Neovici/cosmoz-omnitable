@@ -5,6 +5,7 @@ import { when } from 'lit-html/directives/when.js';
 import { dateInputMixin } from './cosmoz-omnitable-date-input-mixin';
 import { renderDropdown } from './cosmoz-omnitable-dropdown';
 import './cosmoz-omnitable-dropdown-input';
+import { resolveLocale } from './locale';
 import { polymerHauntedRender } from './polymer-haunted-render-mixin';
 
 class DatetimeRangeInput extends dateInputMixin(
@@ -85,7 +86,7 @@ class DatetimeRangeInput extends dateInputMixin(
 			hour: 'numeric',
 			minute: 'numeric',
 		};
-		return new Intl.DateTimeFormat(locale || undefined, timeFormatOption);
+		return new Intl.DateTimeFormat(resolveLocale(locale), timeFormatOption);
 	}
 }
 
